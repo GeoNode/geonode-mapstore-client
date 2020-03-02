@@ -9,6 +9,8 @@ var MS2_EDIT_PLUGINS = {
 				"activateQueryTool": true,
 				"activateAddLayerButton": true,
 				"activateMetedataTool": false,
+				// ### Activate the Group Button in TOC
+				"activateAddGroupButton": true,
 				"spatialOperations": [{
 						"id": "INTERSECTS",
 						"name": "queryform.spatialfilter.operations.intersects"
@@ -51,6 +53,14 @@ var MS2_EDIT_PLUGINS = {
 		// ScaleBox, FeatureEditor, QueryPanel, MetadataExplorer, GoFull, FullScreen
 		// 	Widgets, WidgetsTray, SaveAs, Notifications TOCItemSettings, from map_viewer_plugins
 
+		//  // ###  Add the AddGroup Settings
+		"AddGroup",
+		{
+			"name": "Settings",
+			"cfg": {
+				"wrap": true
+			}
+		},
 		"WidgetsBuilder",
 		"Save"
 	]

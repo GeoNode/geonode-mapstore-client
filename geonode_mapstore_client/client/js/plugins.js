@@ -10,6 +10,7 @@ const epics = require("./epics");
 
 module.exports = {
     plugins: {
+        AddGroupPlugin: require('../MapStore2/web/client/plugins/AddGroup').default,
         IdentifyPlugin: require('../MapStore2/web/client/plugins/Identify'),
         TOCPlugin: require('../MapStore2/web/client/plugins/TOC'),
         MapPlugin: require('../MapStore2/web/client/plugins/Map'),
