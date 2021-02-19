@@ -1,2 +1,8 @@
-# -e git+https://github.com/GeoNode/django-mapstore-adapter.git@master#egg=django-mapstore-adapter
-django-mapstore-adapter>=2.0.6
+django>=2.2.0,<4.0
+idna>=2.5,<2.11
+requests>=2.13.0
+Markdown>=3.2.2
+MarkupSafe>=1.1.1
+jsonfield>=3.1.0
+djangorestframework>=3.8.2,<=3.12.2
+urllib3>=1.25.9

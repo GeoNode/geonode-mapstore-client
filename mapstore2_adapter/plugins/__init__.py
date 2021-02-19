@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #########################################################################
 #
@@ -9,12 +8,3 @@
 # LICENSE file in the root directory of this source tree.
 #
 #########################################################################
-import os
-from setuptools import setup, find_packages
-
-here = os.path.abspath(os.path.dirname(__file__))
-
-setup(
-    long_description=open(os.path.join(here, 'README.md')).read(),
-    long_description_content_type='text/markdown',
-)

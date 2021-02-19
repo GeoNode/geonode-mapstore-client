@@ -443,7 +443,7 @@ Update your `GeoNode` > `settings.py` as follows:
 # To enable the MapStore2 based Client enable those
 if 'geonode_mapstore_client' not in INSTALLED_APPS:
     INSTALLED_APPS += (
-        'mapstore2_adapter',
+        'geonode_mapstore_client.mapstore2_adapter',
         'geonode_mapstore_client',)
 
 GEONODE_CLIENT_LAYER_PREVIEW_LIBRARY = 'mapstore'  # DEPRECATED use HOOKSET instead
