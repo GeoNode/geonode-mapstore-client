@@ -10,7 +10,7 @@
     "@fortawesome/fontawesome-free": "5.15.1",
     "bootstrap-v4": "npm:bootstrap@4.5.0",
     "js-cookie": "2.2.1",
-    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#a3e35e11c07bed3807001ea69c99aa4420b9656a",
+    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#96f7ef3708628d12a147d58496be82ed0bc4e6f2",
     "react-bootstrap-v1": "npm:react-bootstrap@1.3.0"
   }
 }
