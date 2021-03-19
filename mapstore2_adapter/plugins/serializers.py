@@ -280,6 +280,17 @@ class GeoNodeSerializer(object):
                         if is_analytics_enabled:
                             event_type = EventType.EVENT_CREATE
 
+                    # Dumps thumbnail from MapStore2 Interface
+                    if _map_thumbnail:
+                        # note: dumping a thumbnail should be performed before update_from_viewer(), to remove
+                        # a race hazard. update_from_viewer() saves an existing map without a thumbnail,
+                        # triggering asynchronous generation of a default thumbnail, which may overwrite uploaded thumb
+                        if _map_thumbnail_format == 'link':
+                            map_obj.thumbnail_url = _map_thumbnail
+                        else:
+                            _map_thumbnail_filename = "map-%s-thumb.%s" % (map_obj.uuid, _map_thumbnail_format)
+                            map_obj.save_thumbnail(_map_thumbnail_filename, _map_thumbnail)
+
                     # Update GeoNode Map
                     _map_conf['map'] = _map_obj
                     map_obj.update_from_viewer(
@@ -288,14 +299,6 @@ class GeoNodeSerializer(object):
 
                     if is_analytics_enabled:
                         register_event(caller.request, event_type, map_obj)
-
-                    # Dumps thumbnail from MapStore2 Interface
-                    if _map_thumbnail:
-                        if _map_thumbnail_format == 'link':
-                            map_obj.thumbnail_url = _map_thumbnail
-                        else:
-                            _map_thumbnail_filename = "map-%s-thumb.%s" % (map_obj.uuid, _map_thumbnail_format)
-                            map_obj.save_thumbnail(_map_thumbnail_filename, _map_thumbnail)
 
                     serializer.validated_data['id'] = map_obj.id
                     serializer.save(user=caller.request.user)
