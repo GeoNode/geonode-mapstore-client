@@ -28,6 +28,9 @@
             "documents": "Documentos",
             "remoteServices": "Servicios remotos",
             "maps": "Mapas",
+            "map": "Mapa",
+            "geostory": "GeoStory",
+            "createNew": "Crear nuevo",
             "about": "Acerca de",
             "people": "Personas",
             "groups": "Grupos",
@@ -48,6 +51,7 @@
             "noPublicContentContent": "Este catálogo no tiene recursos públicos. <br/> Por favor, <a href=\"/account/signup/?next=/\"> regístrese </a> o <a href=\"/account/login/?next=/\"> inicie sesión</a> para navegar por los contenidos. ",
             "noContentYetTitle": "Bienvenido a GeoNode",
             "noContentYetContent": "Este catálogo aún no tiene contenidos publicados. <br/> Estamos trabajando para completarlo con excelentes recursos. <br/> <br/> ¡Estén atentos!",
+            "resourcesFound": "{count, plural, =0 {0 Recursos encontrados} =1 {1 Recurso encontrado} other {# Recursos encontrados}}",
             "noResultsWithFilterTitle": "Sin resultados",
             "noResultsWithFilterContent": "No hay resultados para los filtros seleccionados. <br/> Borre todos los filtros y pruebe con una nueva solicitud.",
             "register": "Registrarse",
@@ -92,7 +96,15 @@
             "developers": "Desarrolladores",
             "customFilterExample": "Filtro personalizado (Global)",
             "copiedResourceUrl": "Se copió la URL del recurso",
-            "copyResourceUrl": "Copiar URL del recurso"
+            "copyResourceUrl": "Copiar URL del recurso",
+            "open": "Abierto",
+            "share": "Cuota",
+            "update": "Actualizar",
+            "delete": "Borrar",
+            "customFiltersTitle": "Recursos",
+            "myResources": "Mis recursos",
+            "pendingApproval": "Aprobación pendiente"
+
         }
     }
 }

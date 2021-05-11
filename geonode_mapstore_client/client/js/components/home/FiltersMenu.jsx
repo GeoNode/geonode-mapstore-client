@@ -7,77 +7,30 @@
  */
 
 import React, { forwardRef } from 'react';
-import { Dropdown, Button } from 'react-bootstrap-v1';
-import ReactResizeDetector from 'react-resize-detector';
+import { Dropdown, Button, Badge } from 'react-bootstrap-v1';
 import Message from '@mapstore/framework/components/I18N/Message';
 import FaIcon from '@js/components/home/FaIcon';
 import useLocalStorage from '@js/hooks/useLocalStorage';
-import { filterMenuItems } from '@js/utils/MenuUtils';
-
-
-const CardsMenu = ({ item, menuItemsProps }) => {
-    const { type, labelId = '', items = [] } = item;
-    const { state } = menuItemsProps;
-
-    if (type === 'dropdown') {
-
-        const dropdownItems = items
-            .filter((opt) => filterMenuItems(state, opt))
-            .map((opt) => {
-                return (
-                    <Dropdown.Item
-                        key={opt.value}
-                        href={(opt.type === 'link' && opt.href) ? opt.href : undefined}
-                    >
-                        <Message msgId={opt.labelId} />
-                    </Dropdown.Item>
-                );
-            });
-
-        return (
-            <Dropdown alignRight>
-                <Dropdown.Toggle
-                    id="create-new-dropdown"
-                    variant="default"
-                    size="sm"
-                >
-                    <Message msgId={labelId} />
-                </Dropdown.Toggle>
-                {<Dropdown.Menu>
-                    {dropdownItems}
-                </Dropdown.Menu>
-                }
-            </Dropdown>
-        );
-    }
-
-    if (type === 'divider') {
-        return <div className="gn-menu-index-divider" ></div>;
-    }
-
-    return null;
-
-};
+import Menu from '@js/components/Menu';
 
 const FiltersMenu = forwardRef(({
     formatHref,
     orderOptions,
     order,
     cardsMenu,
-    filters,
     style,
     onClick,
-    layoutSwitcher,
     defaultLabelId,
-    user
+    onClear,
+    totalResources,
+    filtersActive
 }, ref) => {
 
     const selectedSort = orderOptions.find(({ value }) => order === value);
-    const [cardLayoutStyle] = useLocalStorage('layoutCardsStyle');
-    const state = {
-        user
-    };
-
+    const [cardLayoutStyle, setCardLayoutStyle] = useLocalStorage('layoutCardsStyle');
+    function handleToggleCardLayoutStyle() {
+        setCardLayoutStyle(cardLayoutStyle === 'grid' ? 'list' : 'grid');
+    }
     return (
         <div
             className="gn-filters-menu"
@@ -85,41 +38,39 @@ const FiltersMenu = forwardRef(({
             ref={ref}
         >
             <div className="gn-filters-menu-container">
-                <a className="gn-toogle-filter" onClick={onClick} > <Message msgId="gnhome.filters" /> {`(${filters.length})`}</a>
-                <ReactResizeDetector handleHeight>
-                    {({ height }) => (
-                        <div
-                            className="gn-filters-menu-content"
-                            style={{ height }}
-                        >
-                        </div>
-                    )}
-                </ReactResizeDetector>
-                <ul className="gn-cards-menu">
-                    {cardsMenu
-                        .filter((item) => filterMenuItems(state, item))
-                        .map((item, idx) => {
-                            return (
-                                <li key={idx}>
-                                    <CardsMenu
-                                        item={{ ...item, id: item.id || idx }}
-                                        menuItemsProps={{
-                                            state
-                                        }}
-                                    />
-                                </li>
-                            );
-                        })}
-                </ul>
-
-                <Button variant="default" onClick={layoutSwitcher} >
-                    <FaIcon name={cardLayoutStyle === 'grid' ? 'th' : cardLayoutStyle} />
-                </Button>
-
-                <div
-                    className="gn-filters-menu-tools"
-
+                <div className="gn-filters-menu-main">
+                    <Button
+                        variant="default"
+                        size="sm"
+                        active={filtersActive}
+                        onClick={onClick}
+                    >
+                        <Message msgId="gnhome.filters" />
+                    </Button>
+                    {filtersActive && <Button
+                        variant="default"
+                        size="sm"
+                        onClick={onClear}
+                    >
+                        <Message msgId="gnhome.clearFilters"/>
+                    </Button>}
+                    {' '}
+                    <Badge><Message msgId="gnhome.resourcesFound" msgParams={{ count: totalResources }}/></Badge>
+                </div>
+                <Menu
+                    items={cardsMenu}
+                    containerClass={`gn-cards-menu`}
+                    size="sm"
+                    alignRight
+                />
+                <Button
+                    variant="default"
+                    onClick={handleToggleCardLayoutStyle}
+                    size="sm"
                 >
+                    <FaIcon name={cardLayoutStyle === 'grid' ? 'list' : 'th'} />
+                </Button>
+                <div className="gn-filters-menu-tools">
 
                     {orderOptions.length > 0 && <Dropdown alignRight>
                         <Dropdown.Toggle

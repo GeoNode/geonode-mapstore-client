@@ -51,6 +51,7 @@
             "noPublicContentContent": "Ce catalogue ne contient pas de ressources publiques. <br/> Veuillez vous <a href=\"/account/signup/?next=/\"> vous inscrire </a> ou <a href=\"/account/login/?next=/\"> vous connecter </a> pour parcourir le contenu. ",
             "noContentYetTitle": "Bienvenue dans GeoNode",
             "noContentYetContent": "Ce catalogue n'a pas encore de contenu publié. <br/> Nous travaillons à le remplir avec d'excellentes ressources. <br/> <br/> Restez à l'écoute!",
+            "resourcesFound": "{count, plural, =0 {0 Ressources trouvées} =1 {1 Ressource trouvée} other {# Ressources trouvées}}",
             "noResultsWithFilterTitle": "Aucun résultat",
             "noResultsWithFilterContent": "Il n'y a pas de résultats pour les filtres sélectionnés. <br/> Effacez tous les filtres et essayez avec une nouvelle requête.",
             "register": "S'inscrire",
@@ -95,7 +96,14 @@
             "developers": "Développeurs",
             "customFilterExample": "Filtre personnalisé (Global)",
             "copiedResourceUrl": "URL de la ressource copiée!",
-            "copyResourceUrl": "Copier l'URL de la ressource"
+            "copyResourceUrl": "Copier l'URL de la ressource",
+            "open": "Ouvert",
+            "share": "Partager",
+            "update": "Mettre à jour",
+            "delete": "Effacer",
+            "customFiltersTitle": "Ressources",
+            "myResources": "Mes ressources",
+            "pendingApproval": "En attente de validation"
         }
     }
 }

@@ -24,20 +24,10 @@
         margin: auto;
         width: 100%;
         padding: 0 0.8rem;
-        .gn-filters-menu-content {
+        .gn-filters-menu-main {
             flex: 1;
-            margin: 0 0.4rem;
-            .btn-default {
-                background-color: inherit;
-            }
-            .dropdown-toggle:after {
-                display: none;
-            }
-            li + li {
-                margin-left: 0.25rem;
-            }
         }
-        .gn-cards-menu{
+        .gn-cards-menu {
             margin: 0;
             display: flex;
             align-items: center;
@@ -47,6 +37,7 @@
                 background-color: $gn-body-color;
                 width: 1px;
                 height: 1.2rem;
+                margin: 0.25rem;
             }
         }
         .gn-filters-menu-tools > * {
@@ -61,9 +52,6 @@
             .dropdown-menu-right {
                 right: 0 !important;
             }
-        }
-        .gn-toogle-filter{
-            color:$gn-body-color
         }
     }
 }

@@ -20,7 +20,6 @@ import isObject from 'lodash/isObject';
 import castArray from 'lodash/castArray';
 import get from 'lodash/get';
 import { getUserInfo } from '@js/api/geonode/v1';
-import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { setFilterById } from '@js/utils/GNSearchUtils';
 
 let endpoints = {
@@ -125,10 +124,13 @@ export const getResources = ({
     page = 1,
     sort,
     f,
+    customFilters = [],
     ...params
 }) => {
-    const { query: customQuery } = (getConfigProp('menuFilters') || [])
-        .find(({ id }) => f === id) || {};
+
+    const customQuery = customFilters
+        .filter(({ id }) => castArray(f || []).indexOf(id) !== -1)
+        .reduce((acc, filter) => mergeCustomQuery(acc, filter.query || {}), {}) || {};
 
     return requestOptions(RESOURCES, () => axios.get(parseDevHostname(
         addQueryString(endpoints[RESOURCES], q && {
@@ -145,6 +147,7 @@ export const getResources = ({
     })
         .then(({ data }) => {
             return {
+                total: data.total,
                 isNextPageAvailable: !!data.links.next,
                 resources: (data.resources || [])
                     .map((resource) => {
@@ -343,16 +346,24 @@ export const getResourceTypes = ({}, filterKey = 'resource-types') => {
     return axios.get(parseDevHostname(endpoints[RESOURCE_TYPES]))
         .then(({ data }) => {
             availableResourceTypes = (data?.resource_types || [])
-                .map((value) => {
-                    const selectOption = {
-                        value: value,
-                        label: value
-                    };
+                .map((type) => {
+                    // replace the string with object
+                    // as soon the backend support object results
+                    // currently it's supporting only string response
+                    const selectOption = isObject(type)
+                        ? {
+                            value: type.name,
+                            label: `${type.name} (${type.count || 0})`
+                        }
+                        : {
+                            value: type,
+                            label: type
+                        };
                     const resourceType = {
-                        value,
+                        value: selectOption.value,
                         selectOption
                     };
-                    setFilterById(filterKey + value, resourceType);
+                    setFilterById(filterKey + selectOption.value, resourceType);
                     return resourceType;
                 });
             return [...availableResourceTypes];

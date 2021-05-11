@@ -66,7 +66,16 @@
         {
             "name": "settings",
             "path": "gnsettings"
+        },
+        {
+            "name": "user",
+            "path": "security.user"
+        },
+        {
+            "name": "geoNodeResourcesInfo",
+            "path": "localConfig.geoNodeResourcesInfo"
         }
+
     ],
     "projectionDefs": [
         {
@@ -182,75 +191,70 @@
                 "style": {}
             }
         },
+        "filtersForm": {
+            "items": [
+                {
+                    "type": "group",
+                    "labelId": "gnhome.customFiltersTitle",
+                    "authenticated": true,
+                    "items": [
+                        {
+                            "id": "my-resources",
+                            "labelId": "gnhome.myResources",
+                            "type": "filter",
+                            "query": {
+                                "filter{owner.pk}": "{state('user') && state('user').pk}"
+                            },
+                            "authenticated": true
+                        },
+                        {
+                            "id": "pending-approval",
+                            "labelId": "gnhome.pendingApproval",
+                            "type": "filter",
+                            "query": {
+                                "filter{is_approved}": false
+                            },
+                            "authenticated": true
+                        }
+                    ]
+                },
+                {
+                    "type": "divider",
+                    "authenticated": true
+                },
+                {
+                    "labelId": "gnhome.resourceTypes",
+                    "placeholderId": "gnhome.resourceTypesPlaceholder",
+                    "type": "select",
+                    "suggestionsRequestKey": "resourceTypes"
+                },
+                {
+                    "labelId": "gnhome.categories",
+                    "placeholderId": "gnhome.categoriesPlaceholder",
+                    "type": "select",
+                    "suggestionsRequestKey": "categories"
+                },
+                {
+                    "labelId": "gnhome.keywords",
+                    "placeholderId": "gnhome.keywordsPlaceholder",
+                    "type": "select",
+                    "suggestionsRequestKey": "keywords"
+                },
+                {
+                    "labelId": "gnhome.regions",
+                    "placeholderId": "gnhome.regionsPlaceholder",
+                    "type": "select",
+                    "suggestionsRequestKey": "regions"
+                },
+                {
+                    "labelId": "gnhome.owners",
+                    "placeholderId": "gnhome.ownersPlaceholder",
+                    "type": "select",
+                    "suggestionsRequestKey": "owners"
+                }
+            ]
+        },
         "filters": {
-            "fields": {
-                "options": [
-                    {
-                        "labelId": "gnhome.resourceTypes",
-                        "placeholderId": "gnhome.resourceTypesPlaceholder",
-                        "type": "select",
-                        "suggestionsRequestKey": "resourceTypes"
-                    },
-                    {
-                        "labelId": "gnhome.categories",
-                        "placeholderId": "gnhome.categoriesPlaceholder",
-                        "type": "select",
-                        "suggestionsRequestKey": "categories"
-                    },
-                    {
-                        "labelId": "gnhome.keywords",
-                        "placeholderId": "gnhome.keywordsPlaceholder",
-                        "type": "select",
-                        "suggestionsRequestKey": "keywords"
-                    },
-                    {
-                        "labelId": "gnhome.regions",
-                        "placeholderId": "gnhome.regionsPlaceholder",
-                        "type": "select",
-                        "suggestionsRequestKey": "regions"
-                    },
-                    {
-                        "labelId": "gnhome.owners",
-                        "placeholderId": "gnhome.ownersPlaceholder",
-                        "type": "select",
-                        "suggestionsRequestKey": "owners"
-                    }
-                ],
-                "links": [
-                    {
-                        "myresources": [
-                            {
-                                "labelId": "gnhome.myresources",
-                                "type": "link",
-                                "href": "#",
-                                "authenticated": false
-                            },
-                            {
-                                "labelId": "gnhome.signIn",
-                                "type": "link",
-                                "href": "#",
-                                "authenticated": false
-                            }
-                        ]
-                    },
-                    {
-                        "mylink": [
-                            {
-                                "labelId": "gnhome.myresources",
-                                "type": "link",
-                                "href": "account/signup/?next=/",
-                                "authenticated": false
-                            },
-                            {
-                                "labelId": "gnhome.signIn",
-                                "type": "link",
-                                "href": "account/login/?next=/",
-                                "authenticated": false
-                            }
-                        ]
-                    }
-                ]
-            },
             "order": {
                 "defaultLabelId": "gnhome.orderBy",
                 "options": [
@@ -352,13 +356,13 @@
                     "authenticated": false
                 },
                 {
-                    "image": "${user.avatar}",
+                    "image": "{state('user') && state('user').avatar}",
                     "type": "dropdown",
                     "authenticated": true,
                     "items": [
                         {
                             "type": "link",
-                            "href": "${user.hrefProfile}",
+                            "href": "{state('user') && state('user').hrefProfile}",
                             "labelId": "gnhome.profile"
                         },
                         {
@@ -383,7 +387,7 @@
                             "type": "link",
                             "href": "/admin/",
                             "labelId": "gnhome.admin",
-                            "allowedGroups": [
+                            "allowedRoles": [
                                 "admin"
                             ]
                         },
@@ -391,13 +395,13 @@
                             "type": "link",
                             "href": "/geoserver/",
                             "labelId": "gnhome.geoServer",
-                            "allowedGroups": [
+                            "allowedRoles": [
                                 "admin"
                             ]
                         },
                         {
                             "type": "divider",
-                            "allowedGroups": [
+                            "allowedRoles": [
                                 "admin"
                             ]
                         },
@@ -428,41 +432,53 @@
                             "type": "link",
                             "href": "/layers/?limit=5",
                             "labelId": "gnhome.layers",
-                            "badge": "${layersTotalCount}"
+                            "badge": "{state('geoNodeResourcesInfo') && state('geoNodeResourcesInfo').layersTotalCount}",
+                            "permissions": [],
+                            "allowedRoles": []
                         },
                         {
                             "type": "link",
                             "href": "/documents/?limit=5",
                             "labelId": "gnhome.documents",
-                            "badge": "${documentsTotalCount}"
+                            "badge": "{state('geoNodeResourcesInfo') && state('geoNodeResourcesInfo').documentsTotalCount}",
+                            "permissions": [],
+                            "allowedRoles": []
                         },
                         {
                             "type": "link",
                             "href": "/services/?limit=5",
-                            "labelId": "gnhome.remoteServices"
+                            "labelId": "gnhome.remoteServices",
+                            "permissions": [],
+                            "allowedRoles": []
                         },
                         {
                             "type": "divider",
-                            "authenticated": true
+                            "authenticated": true,
+                            "permissions": [],
+                            "allowedRoles": []
                         },
                         {
                             "type": "link",
                             "href": "/layers/upload",
                             "labelId": "gnhome.uploadLayer",
-                            "authenticated": true
+                            "authenticated": true,
+                            "permissions": [],
+                            "allowedRoles": []
                         },
                         {
                             "type": "link",
                             "href": "/documents/upload",
                             "labelId": "gnhome.uploadDocument",
-                            "authenticated": true
+                            "authenticated": true,
+                            "permissions": [],
+                            "allowedRoles": []
                         },
                         {
                             "type": "link",
                             "href": "/services/register/",
                             "labelId": "gnhome.addRemoteService",
                             "authenticated": true,
-                            "allowedGroups": [
+                            "allowedRoles": [
                                 "admin"
                             ]
                         }
@@ -470,16 +486,17 @@
                 },
                 {
                     "labelId": "gnhome.maps",
-                    "type": "link",
-                    "href": "/maps/?limit=5",
                     "authenticated": false,
-                    "badge": "${mapsTotalCount}"
+                    "type": "link",
+                    "subType": "tag",
+                    "href": "/maps/?limit=5",
+                    "badge": "{state('geoNodeResourcesInfo') && state('geoNodeResourcesInfo').mapsTotalCount}"
                 },
                 {
                     "labelId": "gnhome.maps",
                     "type": "dropdown",
                     "authenticated": true,
-                    "badge": "${mapsTotalCount}",
+                    "badge": "{state('geoNodeResourcesInfo') && state('geoNodeResourcesInfo').mapsTotalCount}",
                     "items": [
                         {
                             "type": "link",
@@ -495,9 +512,10 @@
                 },
                 {
                     "type": "link",
+                    "subType": "tag",
                     "href": "/apps/?limit=5",
                     "labelId": "gnhome.apps",
-                    "badge": "${geoappsTotalCount}"
+                    "badge": "{state('geoNodeResourcesInfo') && state('geoNodeResourcesInfo').geoappsTotalCount}"
                 },
                 {
                     "labelId": "gnhome.about",
@@ -523,7 +541,7 @@
                             "href": "/announcements/",
                             "labelId": "gnhome.announcements",
                             "authenticated": true,
-                            "allowedGroups": [
+                            "allowedRoles": [
                                 "admin"
                             ]
                         },
@@ -542,7 +560,7 @@
                             "href": "/admin/people/profile/add/",
                             "labelId": "gnhome.addUser",
                             "authenticated": true,
-                            "allowedGroups": [
+                            "allowedRoles": [
                                 "admin"
                             ]
                         },
@@ -551,7 +569,7 @@
                             "href": "/groups/create/",
                             "labelId": "gnhome.createGroup",
                             "authenticated": true,
-                            "allowedGroups": [
+                            "allowedRoles": [
                                 "admin"
                             ]
                         }
@@ -559,10 +577,40 @@
                 }
             ]
         },
+        "cardOptions": {
+            "items":[
+                {
+                    "type": "link",
+                    "href": "${detail_url}",
+                    "labelId": "gnhome.open",
+                    "icon": "edit"
+                },
+                {
+                    "type": "link",
+                    "href":"${detail_url}/metadata_advanced",
+                    "labelId": "gnhome.update",
+                    "icon": "paste",
+                    "authenticated": true,
+                    "allowedGroups": [
+                        "admin"
+                    ]
+                },
+                {
+                    "type": "link",
+                    "href":"${detail_url}/remove",
+                    "labelId": "gnhome.delete",
+                    "icon": "trash",
+                    "authenticated": true,
+                    "allowedGroups": [
+                        "admin"
+                    ]
+                }
+            ]
+        },
         "footer": {
             "items": [
                 {
-                    "label": "geonode.org",
+                    "labelId": "geonode.org",
                     "type": "link",
                     "href": "https://geonode.org/"
                 },

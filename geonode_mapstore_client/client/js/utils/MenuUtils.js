@@ -8,9 +8,9 @@
 
 import get from 'lodash/get';
 
-function inAllowedGroups(user, allowedGroups) {
+function inAllowedGroups(user, allowedRoles) {
     const groups = user?.info?.groups || [];
-    return !allowedGroups || !!groups.find(group => allowedGroups.indexOf(group) !== -1);
+    return !allowedRoles || !!groups.find(group => allowedRoles.indexOf(group) !== -1);
 }
 
 export function readProperty(state, value) {
@@ -18,6 +18,12 @@ export function readProperty(state, value) {
         return get(state, value.replace(/^\$\{(.*)\}$/, '$1'));
     }
     return value;
+}
+
+export function buildHrefByTemplate(state, template, sep = '/') {
+    const splittedTmpl = (template).split(sep);
+    const properties = splittedTmpl.map( val => readProperty(state, val));
+    return properties.join(sep);
 }
 
 export function filterMenuItems(state, item, parent) {
@@ -31,3 +37,30 @@ export function filterMenuItems(state, item, parent) {
         || isAuthenticated === true && state?.user && inAllowedGroups(state.user, item.allowedGroups)
         || isAuthenticated === false && !state?.user;
 }
+
+
+export const mapObjectFunc = func => {
+    const iter = value => value && typeof value === 'object'
+        ? Array.isArray(value)
+            ? value.map(iter)
+            : Object.fromEntries(Object.entries(value).map(([key, val]) => [key, iter(val, func)]))
+        : func(value);
+    return iter;
+};
+
+export const reduceArrayRecursive = (arr, func) => {
+    return arr && arr.reduce(
+        (acc, item) => {
+            const newItem = item;
+            Object.entries(item).forEach(([key, value])=>{
+                if (Array.isArray(value)) {
+                    newItem[key] = reduceArrayRecursive(item[key], func);
+                }
+            });
+            func(newItem) ? acc.push(newItem) : undefined;
+
+            return acc;
+        },
+        []
+    );
+};

@@ -10,6 +10,12 @@ import axios from '@mapstore/framework/libs/ajax';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import cookies from 'js-cookie';
 import { setFilterById } from '@js/utils/GNSearchUtils';
+
+
+function addCountToLabel(name, count) {
+    return `${name} (${count || 0})`;
+}
+
 /**
 * Api for GeoNode v1
 * @name api.geonode.v1
@@ -59,7 +65,7 @@ export const getCategories = ({ q, idIn, ...params }, filterKey = 'categories') 
         : '';
     return axios.get(`${endpointV1}/categories${queryIn}`, {
         params: {
-            limit: 30,
+            limit: 9999,
             ...params,
             ...(q && { identifier__icontains: q })
         }
@@ -69,7 +75,7 @@ export const getCategories = ({ q, idIn, ...params }, filterKey = 'categories') 
                 .map((result) => {
                     const selectOption = {
                         value: result.identifier,
-                        label: result.gn_description || result.gn_description_en
+                        label: addCountToLabel(result.gn_description || result.gn_description_en, result.count)
                     };
                     const category = {
                         ...result,
@@ -89,7 +95,7 @@ export const getKeywords = ({ q, idIn, ...params }, filterKey =  'keywords') => 
         : '';
     return axios.get(`${endpointV1}/keywords${queryIn}`, {
         params: {
-            limit: 30,
+            limit: 9999,
             ...params,
             ...(q && { slug__icontains: q })
         }
@@ -99,7 +105,7 @@ export const getKeywords = ({ q, idIn, ...params }, filterKey =  'keywords') => 
                 .map((result) => {
                     const selectOption = {
                         value: result.slug,
-                        label: result.slug
+                        label: addCountToLabel(result.slug, result.count)
                     };
                     const keyword = {
                         ...result,
@@ -119,7 +125,7 @@ export const getRegions = ({ q, idIn, ...params }, filterKey = 'regions') => {
         : '';
     return axios.get(`${endpointV1}/regions${queryIn}`, {
         params: {
-            limit: 30,
+            limit: 9999,
             ...params,
             ...(q && { name__icontains: q })
         }
@@ -129,7 +135,7 @@ export const getRegions = ({ q, idIn, ...params }, filterKey = 'regions') => {
                 .map((result) => {
                     const selectOption = {
                         value: result.name,
-                        label: result.name
+                        label: addCountToLabel(result.name, result.count)
                     };
                     const region = {
                         ...result,
@@ -149,7 +155,7 @@ export const getOwners = ({ q, idIn, ...params }, filterKey = 'owners') => {
         : '';
     return axios.get(`${endpointV1}/owners${queryIn}`, {
         params: {
-            limit: 30,
+            limit: 9999,
             ...params,
             ...(q && { username__icontains: q })
         }
@@ -159,7 +165,7 @@ export const getOwners = ({ q, idIn, ...params }, filterKey = 'owners') => {
                 .map((result) => {
                     const selectOption = {
                         value: result.username,
-                        label: result.username
+                        label: addCountToLabel(result.username, result.count)
                     };
                     const owner = {
                         ...result,

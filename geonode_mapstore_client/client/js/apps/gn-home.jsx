@@ -12,6 +12,7 @@ import MainLoader from '@js/components/app/MainLoader';
 import { connect } from 'react-redux';
 
 import security from '@mapstore/framework/reducers/security';
+import controls from '@mapstore/framework/reducers/controls';
 
 import Home from '@js/routes/Home';
 import SearchRoute from '@js/routes/Search';
@@ -21,7 +22,6 @@ import gnsearch from '@js/reducers/gnsearch';
 import gnresource from '@js/reducers/gnresource';
 import gnsearchEpics from '@js/epics/gnsearch';
 import gnlocaleEpics from '@js/epics/gnlocale';
-import gnfiltersPanel from '@js/reducers/gnfiltersPanel';
 
 import {
     getConfiguration,
@@ -103,8 +103,8 @@ Promise.all([
             appReducers: {
                 gnsearch,
                 gnresource,
-                gnfiltersPanel,
-                security
+                security,
+                controls
             },
             appEpics: {
                 ...gnsearchEpics,

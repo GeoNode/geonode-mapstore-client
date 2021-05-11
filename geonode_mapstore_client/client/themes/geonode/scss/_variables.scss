@@ -49,6 +49,9 @@ $gn-footer-bg: rgba(#397AAB, 0.75);
 $gn-footer-link-color: #ffffff;
 $gn-footer-link-hover-color:  #397AAB;
 
+$gn-badge-color: #ffffff;
+$gn-badge-bg:  #777777;
+
 $gn-theme-light: (
     'body-color': $gn-body-color,
     'body-bg': $gn-body-bg,
@@ -89,7 +92,10 @@ $gn-theme-light: (
     'footer-color': $gn-body-color,
     'footer-bg': $gn-body-bg,
     'footer-link-color': $gn-link-color,
-    'footer-link-hover-color': $gn-link-hover-color
+    'footer-link-hover-color': $gn-link-hover-color,
+
+    'badge-color': $gn-badge-color,
+    'badge-bg': $gn-badge-bg
 );
 
 $gn-theme-dark: (
@@ -131,7 +137,10 @@ $gn-theme-dark: (
     'footer-color': #dddddd,
     'footer-bg':  #222222,
     'footer-link-color': #70b0e0,
-    'footer-link-hover-color': #397AAB
+    'footer-link-hover-color': #397AAB,
+
+    'badge-color': #f2f2f2,
+    'badge-bg': #555555
 );
 
 $gn-themes: (

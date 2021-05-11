@@ -27,6 +27,9 @@
             "layers": "Layers",
             "documents": "Documents",
             "remoteServices": "Remote services",
+            "map": "Map",
+            "geostory": "GeoStory",
+            "createNew": "Create new",
             "maps": "Maps",
             "about": "About",
             "people": "People",
@@ -48,6 +51,7 @@
             "noPublicContentContent": "This catalog doesn’t have public resources. <br/> Please <a href=\"/account/signup/?next=/\">register</a> or <a href=\"/account/login/?next=/\">sign in</a> to browse the contents.",
             "noContentYetTitle": "Welcome to GeoNode",
             "noContentYetContent": "This catalog doesn’t have published contents yet. <br/> We’re working to populate it with great resources. <br/><br/>Stay tuned!",
+            "resourcesFound": "{count, plural, =0 {0 Resources found} =1 {1 Resource found} other {# Resources found}}",
             "noResultsWithFilterTitle": "No results",
             "noResultsWithFilterContent": "There are not results for the selected filters. <br/> Clear all filters and try with a new request.",
             "register": "Register",
@@ -92,7 +96,15 @@
             "developers": "Developers",
             "customFilterExample": "Custom filter (Global)",
             "copiedResourceUrl": "Resource url copied!",
-            "copyResourceUrl": "Copy resource url"
+            "copyResourceUrl": "Copy resource url",
+            "open": "Open",
+            "share": "Share",
+            "update": "Update",
+            "delete": "Delete",
+            "customFiltersTitle": "Resources",
+            "myResources": "My resources",
+            "pendingApproval": "Pending approval"
+
         }
     }
 }

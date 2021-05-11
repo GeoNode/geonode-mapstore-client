@@ -9,13 +9,13 @@
 .gn-filter-form {
     color: $gn-body-color;
     background-color: $gn-body-bg;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    position: -webkit-sticky;
+    display: flex;
+    flex-direction: column;
     position: sticky;
     width: 100%;
-    overflow-y: scroll;
+    height: 100%;
     .gn-filter-form-header {
+        padding: 0.5rem;
         display: flex;
         align-items: center;
         margin-bottom: 0.5rem;
@@ -23,38 +23,50 @@
     .gn-filter-form-body {
         display: flex;
         flex-direction: column;
+        flex: 1;
+        position: relative;
+        width: 100%;
+        overflow-y: auto;
+
+        .gn-filter-form-content{
+            position: absolute;
+            padding: 1rem;
+            width: 100%;
+            padding-top: 0;
+        }
     }
     .gn-filter-form-title {
         flex: 1;
+        padding: 0 0.5rem;
     }
     .gn-filter-form-footer {
         display: flex;
         flex-direction: row-reverse;
         align-items: center;
-        margin-bottom: 0.5rem;
-        @media screen and (max-width: 768px) {
-            margin-top: 5rem;
-        }
-    }
-}
+        position: sticky;
+        bottom: 0;
+        background: white;
+        padding: 0.5rem;
 
-.gn-search-bar {
-    z-index: 16;
-    .gn-filter-form {
-        @extend .shadow-lg;
-        position: absolute;
-        margin-top: 0.5rem;
-        // width: 140%;
-        max-width: $gn-page-max-width;
-        width: 985px;
-        left: 50%;
-        transform: translateX(-50%);
-
-    }
-    @media screen and (max-width: 1128px) {
-        .gn-filter-form {
+        @media only screen and (max-width : 768px) {
             width: 100%;
         }
+    }
+    @media only screen and (max-width : 768px) {
+        max-height:100% !important;
+        height: 100%;
+        top: 0 !important;
+        margin-top: 0 !important;
+
+    }
+    .gn-filter-form-divider {
+        width: calc(100% - 0.5rem);
+        height: 1px;
+        margin: 1rem 0.25rem;
+    }
+    .gn-filter-form-link,
+    .gn-filter-form-group-title {
+        margin: 0.5rem 0;
     }
 }
 

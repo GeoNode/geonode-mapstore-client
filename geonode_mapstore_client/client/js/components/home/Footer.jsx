@@ -7,34 +7,13 @@
  */
 
 import React, { forwardRef } from 'react';
-import { Nav } from 'react-bootstrap-v1';
-import Message from '@mapstore/framework/components/I18N/Message';
-import {
-    readProperty,
-    filterMenuItems
-} from '@js/utils/MenuUtils';
-
-function FooterItem({
-    state,
-    item
-}) {
-    const { type, label, labelId = '', href } = item;
-    if (type === 'link') {
-        return (
-            <Nav.Link href={readProperty(state, href)}>{labelId && <Message msgId={labelId}/> || label}</Nav.Link>
-        );
-    }
-    return null;
-}
+import Menu from '@js/components/Menu';
 
 const Footer = forwardRef(({
     footerItems,
-    user,
     style
 }, ref) => {
-    const state = {
-        user
-    };
+
     return (
         <footer
             ref={ref}
@@ -42,20 +21,9 @@ const Footer = forwardRef(({
             style={style}
         >
             <div>
-                <ul>
-                    {footerItems
-                        .filter((item) => filterMenuItems(state, item))
-                        .map((item, idx) => {
-                            return (
-                                <li key={idx}>
-                                    <FooterItem
-                                        item={{ ...item, id: item.id || idx }}
-                                        state={state}
-                                    />
-                                </li>
-                            );
-                        })}
-                </ul>
+                <Menu
+                    items={footerItems}
+                />
             </div>
         </footer>
     );

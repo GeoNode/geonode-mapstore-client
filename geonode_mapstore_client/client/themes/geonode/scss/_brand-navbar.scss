@@ -22,13 +22,12 @@
         flex-direction: row;
         align-items: center;
         width: 100%;
-        max-width: $gn-page-max-width;
         margin: auto;
         .gn-brand-navbar-left-side,
         .gn-brand-navbar-right-side {
             flex: 1;
             white-space: nowrap;
-            padding: 0 0.5rem;
+            padding: 0 0.4rem;
             list-style-type: none;
             margin: 0;
             margin: 0 0.4rem;

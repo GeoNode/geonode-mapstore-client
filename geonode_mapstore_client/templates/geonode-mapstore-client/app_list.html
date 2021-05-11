@@ -6,7 +6,7 @@
 
 {% block body %}
   <div class="page-header">
-    {% if not READ_ONLY_MODE %}
+    {% if user.is_authenticated and not READ_ONLY_MODE %}
     <div class="dropdown" style="float: right;">
       <button class="btn btn-primary dropdown-toggle" type="button" id="create-new-app-dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         {% trans "Create New" %} {% blocktrans %}{{GEONODE_APPS_NAME}}{% endblocktrans %}

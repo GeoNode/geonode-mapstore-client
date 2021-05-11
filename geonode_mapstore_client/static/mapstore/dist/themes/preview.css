@@ -37928,6 +37928,10 @@ Ported to CodeMirror by Peter Kroon
 .msgapi .page-map-viewer {
   transform: translate(0, 0);
 }
+.msgapi #drawer-menu-button,
+.msgapi #mapstore-navbar-container {
+  z-index: 1;
+}
 .msgapi #map {
   bottom: 0px !important;
 }

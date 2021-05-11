@@ -57,6 +57,7 @@ function gnsearch(state = {
     case UPDATE_RESOURCES_METADATA: {
         return {
             ...state,
+            total: action.metadata.total,
             isNextPageAvailable: action.metadata.isNextPageAvailable,
             ...(action.metadata.params &&
                 {

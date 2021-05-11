@@ -11,20 +11,18 @@ import { Card, Dropdown } from 'react-bootstrap-v1';
 import Message from '@mapstore/framework/components/I18N/Message';
 import FaIcon from '@js/components/home/FaIcon';
 import Tag from '@js/components/home/Tag';
-
-
 import {
     getUserName,
     getResourceTypesInfo
 } from '@js/utils/GNSearchUtils';
-
 const ResourceCard = forwardRef(({
     data,
     active,
-    links,
+    options,
     formatHref,
     getTypesInfo,
-    layoutCardsStyle
+    layoutCardsStyle,
+    buildHrefByTemplate
 }, ref) => {
 
     const res = data;
@@ -78,31 +76,35 @@ const ResourceCard = forwardRef(({
                             }
                         })}>{getUserName(res.owner)}</a>
                     </Card.Text>
-                    {links && links.length > 0 && <Dropdown
-                        className="gn-card-options"
-                        alignRight
+
+                </Card.Body>
+                {options && options.length > 0 && <Dropdown
+                    className="gn-card-options"
+                    alignRight
+                >
+                    <Dropdown.Toggle
+                        id={`gn-card-options-${res.pk}`}
+                        variant="default"
+                        size="sm"
                     >
-                        <Dropdown.Toggle
-                            id={`gn-card-options-${res.pk}`}
-                            variant="default"
-                            size="sm"
-                        >
-                            <FaIcon name="ellipsis-v" />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {links.map(({ label, href }) => {
+                        <FaIcon name="ellipsis-h" />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu  className={`gn-card-dropdown`}  >
+                        {options
+                            .map((opt) => {
+
                                 return (
                                     <Dropdown.Item
-                                        key={href}
-                                        href={href}
+                                        key={opt.href}
+                                        href={buildHrefByTemplate(res, opt.href)}
                                     >
-                                        {label}
+                                        <FaIcon name={opt.icon} /> <Message msgId={opt.labelId}/>
                                     </Dropdown.Item>
                                 );
                             })}
-                        </Dropdown.Menu>
-                    </Dropdown>}
-                </Card.Body>
+                    </Dropdown.Menu>
+                </Dropdown>}
+
             </div>
         </Card>
     );

@@ -1,9 +1,5 @@
 .gn-main-home {
     .gn-container{
-        width: 100%;
-        padding: 0;
-        margin-right: auto;
-        margin-left: auto;
         display: flex;
         flex-wrap: wrap;
         .gn-row{
@@ -23,24 +19,28 @@
         flex-grow: 1;
         min-width: 0;
         max-width: 100%;
-        @media screen and (min-width: 768px) {
-            padding-left: 0.5rem !important;
-        }
-
     }
 
     .gn-filter-form-container{
         position: relative;
-        width: 100%;
-        flex: 0 0 25%;
-        max-width: 25%;
+        width: 400px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
         @media screen and (max-width: 768px) {
-            flex: 0 0 33.3333333333%;
-            max-width: 33.3333333333%;
-        }
-        @media screen and (max-width: 576px){
+            position: fixed;
+            top: 0  !important;
+            left: 0;
+            z-index: 100;
+            background-color: rgb(255,255,255);
+            background-color: rgb(255,255,255, 0.7);
+            transition: 0.5s;
+            padding: 1em;
             flex: 0 0 100%;
             max-width: 100%;
+            max-height: 100% !important;
+            width: 100%;
         }
 
     }

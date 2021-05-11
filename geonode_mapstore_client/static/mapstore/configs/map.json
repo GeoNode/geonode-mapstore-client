@@ -1,0 +1,83 @@
+{
+    "version": 2,
+    "map": {
+        "projection": "EPSG:900913",
+        "units": "m",
+        "center": {
+            "x": 1250000.000000,
+            "y": 5370000.000000,
+            "crs": "EPSG:900913"
+        },
+        "zoom": 5,
+        "maxExtent": [
+            -20037508.34,
+            -20037508.34,
+            20037508.34,
+            20037508.34
+        ],
+        "layers": [
+            {
+                "type": "osm",
+                "title": "Open Street Map",
+                "name": "mapnik",
+                "source": "osm",
+                "group": "background",
+                "visibility": true
+            },
+            {
+                "type": "tileprovider",
+                "title": "NASAGIBS Night 2012",
+                "provider": "NASAGIBS.ViirsEarthAtNight2012",
+                "name": "Night2012",
+                "source": "nasagibs",
+                "group": "background",
+                "visibility": false
+            },
+            {
+                "type": "tileprovider",
+                "title": "OpenTopoMap",
+                "provider": "OpenTopoMap",
+                "name": "OpenTopoMap",
+                "source": "OpenTopoMap",
+                "group": "background",
+                "visibility": false
+            },
+            {
+                "format": "image/jpeg",
+                "group": "background",
+                "name": "s2cloudless:s2cloudless",
+                "opacity": 1,
+                "title": "Sentinel 2 Cloudless",
+                "type": "wms",
+                "url": [
+                    "https://maps1.geosolutionsgroup.com/geoserver/wms",
+                    "https://maps2.geosolutionsgroup.com/geoserver/wms",
+                    "https://maps3.geosolutionsgroup.com/geoserver/wms",
+                    "https://maps4.geosolutionsgroup.com/geoserver/wms",
+                    "https://maps5.geosolutionsgroup.com/geoserver/wms",
+                    "https://maps6.geosolutionsgroup.com/geoserver/wms"
+                ],
+                "source": "s2cloudless",
+                "visibility": false,
+                "singleTile": false,
+                "credits": {
+                    "title": "<a class=\"a-light\" xmlns:dct=\"http://purl.org/dc/terms/\" href=\"https://s2maps.eu\" property=\"dct:title\">Sentinel-2 cloudless 2016</a> by <a class=\"a-light\" xmlns:cc=\"http://creativecommons.org/ns#\" href=\"https://eox.at\" property=\"cc:attributionName\" rel=\"cc:attributionURL\">EOX IT Services GmbH</a>"
+                }
+            },
+            {
+                "source": "ol",
+                "group": "background",
+                "title": "Empty Background",
+                "fixed": true,
+                "type": "empty",
+                "visibility": false,
+                "args": [
+                    "Empty Background",
+                    {
+                        "visibility": false
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -38,6 +38,7 @@ function RootStyle({
                 jumbotron,
                 focus,
                 tag,
+                badge,
                 footer
             } = theme;
             const color = themeColor && tinycolor.mostReadable(themeColor, ['#ffffff', '#000000'], {
@@ -93,6 +94,10 @@ function RootStyle({
                     '--gn-tag-hover-bg': tag.hoverBg || 'rgba(#397AAB, 0.75)',
                     '--gn-tag-active-color': tag.activeColor || '#ffffff',
                     '--gn-tag-active-bg': tag.activeBg || '#397AAB'
+                }),
+                ...(tag && {
+                    '--gn-badge-color': badge.color || '#f2f2f2',
+                    '--gn-badge-bg': badge.bg || '#777777'
                 }),
                 ...(footer && {
                     '--gn-footer-color': footer.color || '#000000',
