@@ -113,6 +113,8 @@ class GeoNodeMapStore2ConfigConverter(BaseMapStore2ConfigConverter):
         """
         # Initialization
         viewer_obj = json.loads(viewer)
+        if isinstance(viewer_obj, str):
+            viewer_obj = json.loads(viewer_obj)
 
         map_id = None
         if 'id' in viewer_obj and viewer_obj['id']:

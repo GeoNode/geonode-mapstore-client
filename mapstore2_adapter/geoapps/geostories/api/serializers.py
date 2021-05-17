@@ -76,6 +76,8 @@ class GeoStorySerializer(ResourceBaseSerializer):
     def to_internal_value(self, data):
         if 'data' in data:
             _data = data.pop('data')
+            if isinstance(_data, str):
+                _data = json.loads(_data)
             if self.is_valid():
                 data['blob'] = _data
 
