@@ -29,6 +29,7 @@
             "remoteServices": "Servicios remotos",
             "maps": "Mapas",
             "map": "Mapa",
+            "layer": "Capa",
             "geostory": "GeoStory",
             "createNew": "Crear nuevo",
             "about": "Acerca de",

@@ -7,6 +7,7 @@
  */
 
 import get from 'lodash/get';
+import isNil from 'lodash/isNil';
 
 function inAllowedGroups(user, allowedRoles) {
     const groups = user?.info?.groups || [];
@@ -38,6 +39,7 @@ export function filterMenuItems(state, item, parent) {
         || isAuthenticated === false && !state?.user;
 }
 
+export const isValidBadgeValue = value => !!(value !== '' && !isNil(value));
 
 export const mapObjectFunc = func => {
     const iter = value => value && typeof value === 'object'

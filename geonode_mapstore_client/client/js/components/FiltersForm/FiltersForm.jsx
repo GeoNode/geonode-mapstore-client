@@ -166,7 +166,7 @@ FilterForm.defaultProps = {
 };
 
 const arePropsEqual = (prevProps, nextProps) => {
-    return isEqual( prevProps.styleContainerForm, nextProps.styleContainerForm );
+    return isEqual( prevProps.query, nextProps.query );
 };
 
 

@@ -19,6 +19,8 @@ import { saveMapConfiguration } from '@mapstore/framework/utils/MapUtils';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { currentStorySelector } from '@mapstore/framework/selectors/geostory';
 import { userSelector } from '@mapstore/framework/selectors/security';
+import { error as errorNotification, success as successNotification } from '@mapstore/framework/actions/notifications';
+import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 
 import {
     creatMapStoreMap,
@@ -29,7 +31,9 @@ import {
     UPDATE_RESOURCE_BEFORE_SAVE,
     saveSuccess,
     saveError,
-    savingResource
+    savingResource, 
+    SAVE_DIRECT_CONTENT, 
+    saveContent
 } from '@js/actions/gnsave';
 import {
     resourceLoading,
@@ -138,14 +142,45 @@ export const gnSaveContent = (action$, store) =>
                             'title': action.metadata.name,
                             'abstract': action.metadata.description,
                             'thumbnail_url': action.metadata.thumbnail
-                        })
+                        }),
+                        action.showNotifications && successNotification({title: "saveDialog.saveSuccessTitle", message: "saveDialog.saveSuccessMessage"})
                     );
                 })
                 .catch((error) => {
-                    return Observable.of(saveError(error.data || error.message));
+                    return Observable.of(
+                        saveError(error.data || error.message),
+                        action.showNotifications && errorNotification({title: "map.mapError.errorTitle", message: "map.mapError.errorDefault"})
+                        );
                 })
-                .startWith(savingResource());
-        });
+
+        }).startWith(savingResource());;
+
+export const gnSaveDirectContent = (action$, store) =>
+    action$.ofType(SAVE_DIRECT_CONTENT)
+        .switchMap(() => {
+            const state = store.getState();
+            const mapInfo = mapInfoSelector(state);
+            const resourceId = mapInfo?.id // injected map id
+            || state?.gnresource?.id; // injected geostory id
+            return Observable.defer(() => getResourceByPk(resourceId))
+                .switchMap((resource) => {
+                    const metadata = {
+                        name: resource?.title,
+                        description: resource?.abstract,
+                        thumbnail: resource?.thumbnail_url
+                    };
+                    return Observable.of(
+                        setResource(resource),
+                        saveContent(resourceId, metadata, false, true /* showNotification */)
+                    );
+                })
+                .catch((error) => {
+                    return Observable.of(
+                        saveError(error.data || error.message),
+                        errorNotification({title: "map.mapError.errorTitle", message: error.data || error.message || "map.mapError.errorDefault"})
+                        );
+                });
+        }).startWith(savingResource());
 
 export const gnUpdateResource = (action$, store) =>
     action$.ofType(UPDATE_RESOURCE_BEFORE_SAVE)
@@ -168,5 +203,6 @@ export const gnUpdateResource = (action$, store) =>
 
 export default {
     gnSaveContent,
-    gnUpdateResource
+    gnUpdateResource,
+    gnSaveDirectContent
 };

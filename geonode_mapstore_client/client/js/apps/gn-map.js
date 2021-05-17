@@ -27,7 +27,6 @@ import {
     standardEpics,
     standardRootReducerFunc
 } from '@mapstore/framework/stores/defaultOptions';
-
 import timeline from '@mapstore/framework/reducers/timeline';
 import dimension from '@mapstore/framework/reducers/dimension';
 import playback from '@mapstore/framework/reducers/playback';
@@ -42,7 +41,7 @@ import MapView from '@js/routes/MapView';
 import gnresource from '@js/reducers/gnresource';
 import gnsettings from '@js/reducers/gnsettings';
 
-import { getConfiguration } from '@js/api/geonode/v2';
+import { getConfiguration, getAccountInfo } from '@js/api/geonode/v2';
 
 import {
     setupConfiguration,
@@ -91,7 +90,8 @@ initializeApp();
 
 
 Promise.all([
-    getConfiguration()
+    getConfiguration(),
+    getAccountInfo()
 ])
     .then(([localConfig, user]) => {
         const {

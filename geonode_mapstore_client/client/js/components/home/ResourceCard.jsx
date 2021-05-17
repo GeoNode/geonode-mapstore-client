@@ -32,7 +32,7 @@ const ResourceCard = forwardRef(({
     return (
         <Card
             ref={ref}
-            className={`gn-resource-card${active ? ' active' : ''} ${layoutCardsStyle === 'list' ? 'rounded-0' : ''}`}
+            className={`gn-resource-card${active ? ' active' : ''} gn-card-type-${layoutCardsStyle} ${layoutCardsStyle === 'list' ? 'rounded-0' : ''}`}
         >
             <a
                 className="gn-resource-card-link"

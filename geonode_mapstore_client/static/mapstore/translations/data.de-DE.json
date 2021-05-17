@@ -29,6 +29,7 @@
             "remoteServices": "Remote-Dienste",
             "maps": "Karten",
             "map": "Karte",
+            "layer": "Ebene",
             "geostory": "GeoStory",
             "createNew": "Erstelle neu",
             "about": "Über",

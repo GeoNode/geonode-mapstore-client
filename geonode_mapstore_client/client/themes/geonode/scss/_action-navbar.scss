@@ -1,0 +1,133 @@
+/*
+ * Copyright 2021, GeoSolutions Sas.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+ .gn-action-navbar {
+    position: sticky;
+    min-height: 3rem;
+    width: 100%;
+    padding: 0.5rem 0;
+    z-index: 15;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .badge {
+        display: inline;
+        margin-left: 0.5rem;
+        padding: 0.2rem;
+        font-size: 0.6rem;
+        border-radius: 0.2rem;
+    }
+    .gn-action-navbar-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: auto;
+        width: 100%;
+        .gn-action-navbar-content {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+            padding: 0 0.8rem;
+            ul {
+                display: inline-block;
+                flex-direction: row;
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                min-width: 360px;
+
+            }
+            li{
+                display: inline-block;
+                align-items: center;
+            }
+
+            li + li {
+                margin-left: 0.4rem;
+            }
+
+            .gn-action-navbar-content-left {
+                display: flex;
+                flex: 1;
+                flex-direction: row;
+            }
+
+            .gn-action-navbar-content-right {
+                display: flex;
+                flex: 1;
+                flex-direction: row-reverse;
+                ul {
+                    display: flex;
+                    flex: 1;
+                    flex-direction: row-reverse;
+
+                }
+                li{
+                    display: flex;
+
+                }
+            }
+
+        }
+        .gn-action-navbar-tools > * {
+            margin: 0 0.8rem;
+        }
+        .gn-action-navbar-divider {
+            width: 1px;
+            height: 1.2rem;
+        }
+        .gn-action-navbar-tools {
+            display: flex;
+            align-items: center;
+            /* remove this inline style of dropdown because they cause issue with overflow x*/
+            .dropdown-menu {
+                transform: none !important;
+                inset: unset !important;
+            }
+            .dropdown-menu-right {
+                right: 0 !important;
+            }
+            .gn-action-navbar-right-items {
+                display: flex;
+                align-items: center;
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                li + li {
+                    margin-left: 0.4rem;
+                }
+            }
+        }
+
+        .btn-default,
+        .gn-tag {
+            font-size: $font-size-base;
+            color: $gn-primary-color;
+            background-color: $gn-primary-bg;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+        .gn-language-selector {
+            &> .btn-default {
+                &.active {
+                    color: inherit;
+                    background-color: inherit;
+                    font-weight: bold;
+                    text-decoration: underline;
+                }
+                @include hover() {
+                    color: inherit;
+                    background-color: inherit;
+                    font-weight: bold;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

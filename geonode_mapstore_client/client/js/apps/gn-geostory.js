@@ -20,7 +20,7 @@ import { registerMediaAPI } from '@mapstore/framework/api/media';
 import * as geoNodeMediaApi from '@js/observables/media/geonode';
 import {
     getEndpoints,
-    getConfiguration
+    getConfiguration,getAccountInfo
 } from '@js/api/geonode/v2';
 import {
     setResourceType,
@@ -110,9 +110,10 @@ initializeApp();
 document.addEventListener('DOMContentLoaded', function() {
     Promise.all([
         getConfiguration(),
-        getEndpoints()
+        getAccountInfo(),
+        getEndpoints(),
     ])
-        .then(([localConfig]) => {
+        .then(([localConfig, user]) => {
             const {
                 securityState,
                 geoNodeConfiguration,
@@ -124,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 onStoreInit,
                 targetId = 'ms-container',
                 settings
-            } = setupConfiguration({ localConfig });
+            } = setupConfiguration({ localConfig, user });
 
             const currentStory = geoNodePageConfig.isNewResource
                 // change id of new story sections and contents

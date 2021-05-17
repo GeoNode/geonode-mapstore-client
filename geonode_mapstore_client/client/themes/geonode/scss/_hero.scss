@@ -10,10 +10,10 @@
     background-color: $gn-jumbotron-bg;
     color: $gn-jumbotron-color;
     position: relative;
-    z-index: 16;
     .jumbotron {
         max-width: $gn-hero-max-width;
         margin: auto;
+        text-align: center;
         .gn-hero-description {
             word-break: break-word;
             font-size: $font-size-base * 1.5; font-weight: lighter;

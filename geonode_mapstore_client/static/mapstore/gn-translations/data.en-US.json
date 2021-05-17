@@ -28,6 +28,7 @@
             "documents": "Documents",
             "remoteServices": "Remote services",
             "map": "Map",
+            "layer": "Layer",
             "geostory": "GeoStory",
             "createNew": "Create new",
             "maps": "Maps",

@@ -12,6 +12,7 @@ export const SAVE_ERROR = 'GEONODE:SAVE_ERROR';
 export const CLEAR_SAVE = 'GEONODE:CLEAR_SAVE';
 export const SAVE_CONTENT = 'GEONODE:SAVE_CONTENT';
 export const UPDATE_RESOURCE_BEFORE_SAVE = 'GEONODE:UPDATE_RESOURCE_BEFORE_SAVE';
+export const SAVE_DIRECT_CONTENT = 'GEONODE:SAVE_DIRECT_CONTENT'
 
 /**
 * Actions for GeoNode save workflow
@@ -68,13 +69,16 @@ export function clearSave() {
 * @param {number|string} id resource id or primary key, create a new resource if undefined
 * @param {object} metadata properties to update { name, description, thumbnail }
 * @param {bool} reload reload page on create
+* @param {bool} showNotifications show notifications to user
+
 */
-export function saveContent(id, metadata, reload) {
+export function saveContent(id, metadata, reload, showNotifications) {
     return {
         type: SAVE_CONTENT,
         id,
         metadata,
-        reload
+        reload,
+        showNotifications
     };
 }
 
@@ -87,5 +91,15 @@ export function updateResourceBeforeSave(id) {
     return {
         type: UPDATE_RESOURCE_BEFORE_SAVE,
         id
+    };
+}
+
+/**
+* Save or updates a resource (trigger epic gnSaveDirectContent)
+* @memberof actions.gnsave
+*/
+export function saveDirectContent() {
+    return {
+        type: SAVE_DIRECT_CONTENT
     };
 }

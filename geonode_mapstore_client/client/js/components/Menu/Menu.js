@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, {forwardRef} from 'react';
 import PropTypes from 'prop-types';
 import MenuItem from './MenuItem';
 
@@ -20,12 +20,12 @@ import MenuItem from './MenuItem';
  * @prop {string} query string to build the query url in case of link item
  * @prop {function} formatHref function to format the href in case of link item
  * @example
- *  <Menu items={items} user={user} />
+ *  <Menu items={items} />
  *
  */
 
 
-const Menu = ({
+const Menu = forwardRef(({
     items,
     containerClass,
     childrenClass,
@@ -33,10 +33,10 @@ const Menu = ({
     formatHref,
     size,
     alignRight
-}) => {
+}, ref) => {
 
     return (
-        <ul className={`${containerClass}`}>
+        <ul ref={ref} className={`${containerClass}`}>
             {items
                 .map((item, idx) => {
                     return (
@@ -56,7 +56,7 @@ const Menu = ({
                 })}
         </ul>
     );
-};
+});
 
 Menu.propTypes = {
     items: PropTypes.array.isRequired,

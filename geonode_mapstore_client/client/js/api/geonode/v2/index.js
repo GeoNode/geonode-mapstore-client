@@ -142,7 +142,8 @@ export const getResources = ({
             ...mergeCustomQuery(params, customQuery),
             ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
             page,
-            page_size: pageSize
+            page_size: pageSize,
+            'filter{metadata_only}': false // exclude resources such as services
         }
     })
         .then(({ data }) => {

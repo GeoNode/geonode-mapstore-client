@@ -98,8 +98,9 @@ export default createPlugin('SaveAs', {
             action: toggleControl.bind(null, 'saveAs', null),
             selector: createSelector(
                 isLoggedIn,
-                (loggedIn) => ({
-                    style: loggedIn ? {} : { display: 'none' }
+                (state) => state?.security?.user?.perms?.includes("add_resource"),
+                (loggedIn, canAddResource) => ({
+                    style: (loggedIn && canAddResource) ? {} : { display: 'none' }
                 })
             )
         }

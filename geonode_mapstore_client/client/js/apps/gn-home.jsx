@@ -79,7 +79,6 @@ Promise.all([
     getEndpoints()
 ])
     .then(([localConfig, user, resourcesTotalCount]) => {
-
         const {
             securityState,
             geoNodeConfiguration

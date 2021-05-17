@@ -47,6 +47,7 @@ The homepage configuration file is located in [localConfig.json](static/mapstore
 | `menu` | {object} | configuration of the main menu | |
 | `menu.items` | {array} | list of menu item objects, left placement | [menu item object entry](#menu-item-object) |
 | `menu.rightItems` | {array} | list of menu item objects, right placement | [menu item object entry](#menu-item-object) |
+| `menu.cfg.rightContents.style.width` | {number} | value to fix width in right side of action navbar | [menu item object entry](#menu-item-object) |
 | `footer` | {object} | configuration of the footer | |
 | `footer.items` | {array} | list of menu item objects, left placement | [menu item object entry](#menu-item-object) |
 | `cardsMenu` | {object} | configuration of the menu of resource cards | |

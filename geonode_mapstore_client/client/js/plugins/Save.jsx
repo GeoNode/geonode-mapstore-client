@@ -10,21 +10,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
-import { toggleControl } from '@mapstore/framework/actions/controls';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { Glyphicon } from 'react-bootstrap';
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
-import {
-    saveContent,
-    clearSave,
-    updateResourceBeforeSave
-} from '@js/actions/gnsave';
+import Loader from '@mapstore/framework/components/misc/Loader';
+
 import { isLoggedIn } from '@mapstore/framework/selectors/security';
 import controls from '@mapstore/framework/reducers/controls';
 import gnresource from '@js/reducers/gnresource';
 import gnsave from '@js/reducers/gnsave';
 import gnsaveEpics from '@js/epics/gnsave';
-import SaveModal from '@js/plugins/save/SaveModal';
+import { saveDirectContent } from '@js/actions/gnsave';
 
 /**
  * Plugin for Save modal
@@ -52,40 +48,21 @@ import SaveModal from '@js/plugins/save/SaveModal';
  * }
  */
 function Save(props) {
-    return (
-        <SaveModal
-            {...props}
-            update
-            labelId="save"
-        />
-    );
+    return props.saving ? (<div
+        style={{ position: 'absolute', width: '100%', 
+            height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.75)',
+            top: '0px', zIndex: 1000, display: 'flex',
+             alignItems: 'center', justifyContent: 'center', right: '0px'}}>
+        <Loader size={150}/>
+    </div>) : null;
 }
 
 const SavePlugin = connect(
     createSelector([
-        state => state?.controls?.save?.enabled,
-        mapInfoSelector,
-        state => state?.gnresource?.data,
-        state => state?.gnresource?.loading,
-        state => state?.gnsave?.saving,
-        state => state?.gnsave?.error,
-        state => state?.gnsave?.success,
-        state => state?.gnresource?.id
-    ], (enabled, mapInfo, resource, loading, saving, error, success, contentId) => ({
-        enabled,
-        contentId: contentId || mapInfo?.id,
-        resource,
-        loading,
-        saving,
-        error,
-        success
-    })),
-    {
-        onClose: toggleControl.bind(null, 'save', null),
-        onInit: updateResourceBeforeSave,
-        onSave: saveContent,
-        onClear: clearSave
-    }
+        state => state?.gnsave?.saving
+    ], (saving) => ({
+        saving
+    }))
 )(Save);
 
 export default createPlugin('Save', {
@@ -96,7 +73,7 @@ export default createPlugin('Save', {
             position: 30,
             text: <Message msgId="save"/>,
             icon: <Glyphicon glyph="floppy-open"/>,
-            action: toggleControl.bind(null, 'save', null),
+            action: saveDirectContent,
             selector: createSelector(
                 isLoggedIn,
                 state => state?.gnresource?.isNew,

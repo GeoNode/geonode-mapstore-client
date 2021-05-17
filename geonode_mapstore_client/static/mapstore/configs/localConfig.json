@@ -313,6 +313,13 @@
                     "type": "dropdown",
                     "items": [
                         {
+                            "labelId": "gnhome.layer",
+                            "value": "map",
+                            "type": "link",
+                            "href": "/layers/upload",
+                            "authenticated": true
+                        },
+                        {
                             "labelId": "gnhome.map",
                             "value": "map",
                             "type": "link",

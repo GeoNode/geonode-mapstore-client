@@ -12,12 +12,19 @@ import {
     savingResource,
     saveSuccess,
     saveError,
-    clearSave
+    clearSave,
+    saveDirectContent
 } from '@js/actions/gnsave';
 
 describe('gnsave reducer', () => {
     it('should test savingResource', () => {
         const state = gnsave({}, savingResource());
+        expect(state).toEqual({
+            saving: true
+        });
+    });
+    it('should test savingResource', () => {
+        const state = gnsave({}, saveDirectContent());
         expect(state).toEqual({
             saving: true
         });

@@ -14,7 +14,7 @@
 '~bootstrap-v4/scss/bootstrap',
 
 'mixins',
-
+'action-navbar',
 'brand-navbar',
 'card-grid',
 'details-panel',
@@ -31,6 +31,7 @@
 'search-bar',
 'swipe-menu',
 'home-container',
+'sub-flat-menu',
 'tag';
 
 
@@ -98,7 +99,8 @@
             @include background-color-var(map.get($theme-vars, 'badge-bg'), --gn-badge-bg);
         }
 
-        .gn-menu-index {
+
+        .gn-menu-index, .gn-action-navbar {
             @include color-var(map.get($theme-vars, 'primary-color'), --gn-primary-color);
             @include background-color-var(map.get($theme-vars, 'primary-bg'), --gn-primary-bg);
             .badge {
@@ -151,7 +153,9 @@
         }
 
         .gn-menu-index .gn-tag,
-        .gn-menu-index .btn-default {
+        .gn-menu-index .btn-default,
+        .gn-action-navbar .gn-tag,
+        .gn-action-navbar .btn-default {
             @include color-var(map.get($theme-vars, 'primary-color'), --gn-primary-color);
             @include background-color-var(map.get($theme-vars, 'primary-bg'), --gn-primary-bg);
             border: none;
@@ -172,7 +176,7 @@
             }
         }
 
-        
+
 
         .gn-details-panel.loading .gn-details-panel-content {
             h1, a, p {

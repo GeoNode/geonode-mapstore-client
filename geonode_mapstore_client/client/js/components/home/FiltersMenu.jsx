@@ -27,7 +27,7 @@ const FiltersMenu = forwardRef(({
 }, ref) => {
 
     const selectedSort = orderOptions.find(({ value }) => order === value);
-    const [cardLayoutStyle, setCardLayoutStyle] = useLocalStorage('layoutCardsStyle');
+    const [cardLayoutStyle, setCardLayoutStyle] = useLocalStorage('layoutCardsStyle', 'grid');
     function handleToggleCardLayoutStyle() {
         setCardLayoutStyle(cardLayoutStyle === 'grid' ? 'list' : 'grid');
     }

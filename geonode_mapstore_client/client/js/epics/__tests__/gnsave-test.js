@@ -15,7 +15,8 @@ import {
     SAVE_SUCCESS,
     SAVE_ERROR,
     saveContent,
-    updateResourceBeforeSave
+    updateResourceBeforeSave,
+    saveDirectContent
 } from '@js/actions/gnsave';
 import {
     UPDATE_RESOURCE_PROPERTIES,
@@ -25,7 +26,8 @@ import {
 } from '@js/actions/gnresource';
 import {
     gnSaveContent,
-    gnUpdateResource
+    gnUpdateResource,
+    gnSaveDirectContent
 } from '@js/epics/gnsave';
 
 let mockAxios;
@@ -81,7 +83,7 @@ describe('gnsave epics', () => {
         testEpic(
             gnSaveContent,
             NUM_ACTIONS,
-            saveContent(id, metadata, false),
+            saveContent(id, metadata, false, false),
             (actions) => {
                 try {
                     expect(actions.map(({ type }) => type))
@@ -167,6 +169,34 @@ describe('gnsave epics', () => {
                 done();
             },
             {}
+        );
+    });
+
+    it('should trigger saveResource (gnSaveDirectContent)', (done) => {
+        const NUM_ACTIONS = 2;
+        const pk = 1
+        const resource = {
+            'id': pk,
+            'title': 'Map',
+            'abstract': 'Description',
+            'thumbnail_url': 'thumbnail.jpeg'
+        };
+        mockAxios.onGet(new RegExp(`resources/${pk}`))
+        .reply(200, resource);
+        testEpic(
+            gnSaveDirectContent,
+            NUM_ACTIONS,
+            saveDirectContent(),
+            (actions) => {
+                try {
+                    expect(actions.map(({ type }) => type))
+                        .toEqual([SAVING_RESOURCE, SET_RESOURCE]);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            {map: {info: {id: pk}}}
         );
     });
 });
