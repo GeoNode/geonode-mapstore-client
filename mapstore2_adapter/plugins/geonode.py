@@ -339,8 +339,11 @@ class GeoNodeMapStore2ConfigConverter(BaseMapStore2ConfigConverter):
                     source = sources[layer['source']]
                     overlay = {}
                     if 'url' in source:
-                        overlay['type'] = "wms" if 'ptype' not in source or \
-                            source['ptype'] != 'gxp_arcrestsource' else 'arcgis'
+                        if 'ptype' not in source or source['ptype'] != 'gxp_arcrestsource': 
+                            overlay['type'] = "wms" 
+                            overlay['tileSize'] = getattr(settings, "DEFAULT_TILE_SIZE", 512)
+                        else:
+                            overlay['type'] = "arcgis"
                         _p_url = parse.urlparse(source['url'])
                         if _p_url.query:
                             overlay['params'] = dict(parse.parse_qsl(_p_url.query))
