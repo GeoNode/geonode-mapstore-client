@@ -17569,7 +17569,7 @@ Ported to CodeMirror by Peter Kroon
   margin: 0;
   align-items: center;
 }
-.msgapi .thema-classes-editor .form-group > * {
+.msgapi .thema-classes-editor .form-group > *:not(.dropdown.btn-group) {
   flex: 1;
 }
 .msgapi .thema-classes-editor .form-group > * + * {
@@ -21904,6 +21904,9 @@ Ported to CodeMirror by Peter Kroon
 .msgapi #drawer-menu-button,
 .msgapi #mapstore-navbar-container {
   z-index: 1;
+}
+.msgapi .add-bar-popover {
+  max-width: 500px;
 }
 .msgapi .app-router,
 .msgapi #container {

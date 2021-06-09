@@ -17600,7 +17600,7 @@ Ported to CodeMirror by Peter Kroon
   margin: 0;
   align-items: center;
 }
-.msgapi .fill:-webkit-full-screen .thema-classes-editor .form-group > * {
+.msgapi .fill:-webkit-full-screen .thema-classes-editor .form-group > *:not(.dropdown.btn-group) {
   flex: 1;
 }
 .msgapi .fill:-webkit-full-screen .thema-classes-editor .form-group > * + * {
@@ -32410,8 +32410,8 @@ Ported to CodeMirror by Peter Kroon
   margin: 0;
   align-items: center;
 }
-.msgapi .app-router .thema-classes-editor .form-group > *,
-.msgapi .fill .thema-classes-editor .form-group > * {
+.msgapi .app-router .thema-classes-editor .form-group > *:not(.dropdown.btn-group),
+.msgapi .fill .thema-classes-editor .form-group > *:not(.dropdown.btn-group) {
   flex: 1;
 }
 .msgapi .app-router .thema-classes-editor .form-group > * + *,
@@ -37931,6 +37931,9 @@ Ported to CodeMirror by Peter Kroon
 .msgapi #drawer-menu-button,
 .msgapi #mapstore-navbar-container {
   z-index: 1;
+}
+.msgapi .add-bar-popover {
+  max-width: 500px;
 }
 .msgapi #map {
   bottom: 0px !important;
