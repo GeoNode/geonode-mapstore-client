@@ -33,6 +33,7 @@ import playback from '@mapstore/framework/reducers/playback';
 import mapPopups from '@mapstore/framework/reducers/mapPopups';
 import catalog from '@mapstore/framework/reducers/catalog';
 import searchconfig from '@mapstore/framework/reducers/searchconfig';
+import { readQueryParamsOnMapEpic } from '@mapstore/framework/epics/queryparams';
 import widgets from '@mapstore/framework/reducers/widgets';
 // end
 
@@ -176,6 +177,7 @@ Promise.all([
                         updateMapLayoutEpic,
                         gnCheckSelectedLayerPermissions,
                         gnSetLayersPermissions,
+                        readQueryParamsOnMapEpic,
                         ...pluginsDefinition.epics
                     },
                     geoNodeConfiguration,

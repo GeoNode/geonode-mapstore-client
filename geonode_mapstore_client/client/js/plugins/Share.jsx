@@ -18,7 +18,12 @@ import controls from '@mapstore/framework/reducers/controls';
 import ShareEmbed from '@mapstore/framework/components/share/ShareEmbed';
 import ShareLink from '@mapstore/framework/components/share/ShareLink';
 import ResizableModal from '@mapstore/framework/components/misc/ResizableModal';
-import { mapInfoSelector } from '@mapstore/framework/selectors/map';
+import { mapInfoSelector, mapSelector } from '@mapstore/framework/selectors/map';
+
+import AdvancedSettings from '@js/components/share/AdvancedSettings';
+import {getExtentFromViewport} from '@mapstore/framework/utils/CoordinatesUtils';
+import ConfigUtils from '@mapstore/framework/utils/ConfigUtils';
+
 import url from 'url';
 
 function getShareUrl({
@@ -33,7 +38,9 @@ function getShareUrl({
     return url.format({
         host,
         protocol,
-        pathname
+        pathname,
+        hash: "#"
+
     });
 }
 
@@ -41,12 +48,54 @@ function Share({
     resourceId,
     pathTemplate,
     enabled,
-    onClose
+    onClose,
+    bbox,
+    formatCoord,
+    zoom,
+    center,
+    advancedSettings = {}
 }) {
     const shareUrl = getShareUrl({
         resourceId,
         pathTemplate
     });
+
+    const [shareApiUrl, setShareApiUrl] = React.useState(shareUrl);
+    const [settings, setSettings] = React.useState({advancedSettings, settings: {
+        bboxEnabled: false,
+        centerAndZoomEnabled: false
+    }});
+
+    const [currentFormatCoord, setCurrentFormatCoord] = React.useState(formatCoord);
+    const [cordinates, setCoordinates] = React.useState([]);
+    const [mapZoom, setZoom] = React.useState(zoom);
+
+    const getCoordinates = () => {
+        const {x, y} = center || {x: "", y: ""};
+        return  [x, y];
+    };
+
+    React.useEffect(() => {
+        setCoordinates(getCoordinates());
+    }, [center]);
+
+    React.useEffect(() => {
+        if (settings.settings.bboxEnabled && bbox) {
+            const bboxParam = bbox.join(',');
+            setShareApiUrl(shareUrl + `?bbox=${bboxParam}`);
+        } else {
+            setShareApiUrl(shareUrl);
+        }
+    }, [settings.settings.bboxEnabled, bbox]);
+
+    React.useEffect(() => {
+        if (settings.settings.centerAndZoomEnabled) {
+            setShareApiUrl(shareUrl + `?center=${cordinates[0]},${cordinates[1]}&zoom=${mapZoom}`);
+        } else {
+            setShareApiUrl(shareUrl);
+        }
+    }, [settings.settings.centerAndZoomEnabled, mapZoom, cordinates]);
+
     return (
         <ResizableModal
             modalClassName="gn-share-modal"
@@ -54,14 +103,35 @@ function Share({
             show={enabled}
             fitContent
             clickOutEnabled={false}
-            onClose={() => onClose()}
+            onClose={() => {
+                onClose();
+                setSettings({advancedSettings: {
+                    centerAndZoomEnabled: true,
+                    bbox: true,
+                    centerAndZoom: true
+                }, settings: {
+                    bboxEnabled: false,
+                    centerAndZoomEnabled: false
+                }});
+            }}
         >
             <ShareLink
-                shareUrl={shareUrl}
+                shareUrl={shareApiUrl}
             />
             <ShareEmbed
                 showTOCToggle={false}
-                shareUrl={shareUrl}
+                shareUrl={shareApiUrl}
+            />
+
+            <AdvancedSettings onUpdateSettings={(newSettings) => setSettings({...settings, settings: newSettings})}
+                advancedSettings={settings.advancedSettings}
+                settings={settings.settings}
+                formatCoord={currentFormatCoord}
+                zoom={mapZoom}
+                coordinate={cordinates}
+                onChangeFormat={(format) => setCurrentFormatCoord(format)}
+                setZoom={setZoom}
+                setCoordinates={setCoordinates}
             />
         </ResizableModal>
     );
@@ -85,10 +155,17 @@ const SharePlugin = connect(
     createSelector([
         state => state?.controls?.share?.enabled,
         state => state?.gnresource?.id,
-        mapInfoSelector
-    ], (enabled, resourceId, mapInfo) => ({
+        mapInfoSelector,
+        state => state.controls && state.controls.share && state.controls.share.enabled,
+        mapSelector,
+        (state) => state.mapInfo && state.mapInfo.formatCoord || ConfigUtils.getConfigProp("defaultCoordinateFormat")
+    ], (enabled, resourceId, mapInfo, isVisible, map, formatCoord) => ({
         enabled,
-        resourceId: resourceId || mapInfo?.id
+        resourceId: resourceId || mapInfo?.id,
+        bbox: isVisible && map && map.bbox && getExtentFromViewport(map.bbox),
+        formatCoord,
+        zoom: map && map.zoom,
+        center: map && map.center && ConfigUtils.getCenter(map.center)
     })),
     {
         onClose: toggleControl.bind(null, 'share', null)
