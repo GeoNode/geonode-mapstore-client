@@ -45,7 +45,6 @@ function FilterForm({
         values
     };
 
-
     useEffect(() => {
         const newValues = state.current.fields.reduce((acc, { id: formId, suggestionsRequestKey }) => {
             const filterKey = suggestionsRequestKey
@@ -59,14 +58,14 @@ function FilterForm({
                 [filterKey]: (filterKey) ? castArray(state.current.query[filterKey]) : []
             };
         }, {});
-
         ((!submitOnChangeField
             || (!isEmpty(newValues) && isEmpty(values))
             || (!isEmpty(query) && isEmpty(values))))
             && setValues({
                 ...newValues,
                 ...(query?.extent && { extent: query.extent }),
-                ...(query?.f && { f: query.f })
+                ...(query?.f && { f: query.f }),
+                ...(query?.storeType && { storeType: query.storeType })
             });
     }, [query]);
 
@@ -77,7 +76,7 @@ function FilterForm({
 
     function handleClear() {
         const emptyValues = Object.keys(values).reduce((acc, filterKey) => {
-            if (filterKey === 'extent' || filterKey === 'f') {
+            if (filterKey === 'extent' || filterKey === 'f' || filterKey === 'storeType') {
                 return {
                     ...acc,
                     [filterKey]: undefined

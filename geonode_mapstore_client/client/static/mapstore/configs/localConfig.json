@@ -200,7 +200,6 @@
                 {
                     "type": "group",
                     "labelId": "gnhome.customFiltersTitle",
-                    "authenticated": true,
                     "items": [
                         {
                             "id": "my-resources",
@@ -221,6 +220,81 @@
                             "authenticated": true
                         },
                         {
+                            "id": "dataset",
+                            "labelId": "gnhome.layers",
+                            "type": "filter",
+                            "query": {
+                                "filter{resource_type.in}": "layer"
+                            },
+                            "items": [
+                                {
+                                    "id": "vector",
+                                    "labelId": "gnhome.vector",
+                                    "type": "filter",
+                                    "query": {
+                                        "storeType": "vector"
+                                    }
+
+                                },
+                                {
+                                    "id": "raster",
+                                    "labelId": "gnhome.raster",
+                                    "type": "filter",
+                                    "query": {
+                                        "storeType": "raster"
+                                    }
+
+                                },
+                                {
+                                    "id": "remote",
+                                    "labelId": "gnhome.remote",
+                                    "type": "filter",
+                                    "query": {
+                                        "storeType": "remote"
+                                    }
+
+                                },
+                                {
+                                    "id": "time-series",
+                                    "labelId": "gnhome.timeSeries",
+                                    "type": "filter",
+                                    "query": {
+                                        "storeType": "time-series"
+                                    }
+
+                                }
+
+
+                            ]
+
+                        },
+                        {
+                            "id": "documents",
+                            "labelId": "gnhome.documents",
+                            "type": "filter",
+                            "query": {
+                                "filter{resource_type.in}": "document"
+                            }
+
+                        },
+                        {
+                            "id": "maps",
+                            "labelId": "gnhome.maps",
+                            "type": "filter",
+                            "query": {
+                                "filter{resource_type.in}": "map"
+                            }
+
+                        },
+                        {
+                            "id": "geostory",
+                            "labelId": "gnhome.geostory",
+                            "type": "filter",
+                            "query": {
+                                "filter{resource_type.in}": "geostory"
+                            }
+                        },
+                        {
                             "id": "favorite",
                             "labelId": "gnhome.favorites",
                             "type": "filter",
@@ -229,17 +303,12 @@
                             },
                             "authenticated": true
                         }
+
                     ]
                 },
                 {
                     "type": "divider",
                     "authenticated": true
-                },
-                {
-                    "labelId": "gnhome.resourceTypes",
-                    "placeholderId": "gnhome.resourceTypesPlaceholder",
-                    "type": "select",
-                    "suggestionsRequestKey": "resourceTypes"
                 },
                 {
                     "labelId": "gnhome.categories",

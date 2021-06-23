@@ -46,6 +46,11 @@
             "viewDocument": "View document",
             "viewImage": "View image",
             "viewVideo": "View video",
+            "vector": "Vector",
+            "raster": "Raster",
+            "remote": "Remote",
+            "timeSeries": "Time series",
+
             "author": "Author",
             "publication": "Publication",
             "creation": "Creation",

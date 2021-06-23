@@ -71,7 +71,10 @@
             "advancedSearch": "Búsqueda avanzada",
             "apply": "Aplicar",
             "clearFilters": "Quitar filtros",
-
+            "vector": "Vector",
+            "raster": "Raster",
+            "remote": "Remota",
+            "timeSeries": "Series de tiempo",
             "categoriesPlaceholder": "Seleccionar categorías",
             "resourceTypes": "Tipos de recursos",
             "resourceTypesPlaceholder": "Seleccionar tipos de recursos",

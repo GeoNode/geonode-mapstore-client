@@ -288,6 +288,7 @@ function Home({
             .reduce((acc, key) =>
                 key.indexOf('filter') === 0
                 || key === 'f'
+                || key === 'storeType'
                     ? {
                         ...acc,
                         [key]: []
