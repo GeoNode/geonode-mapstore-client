@@ -112,7 +112,9 @@ class GeoNodeMapStore2ConfigConverter(BaseMapStore2ConfigConverter):
             output: MapStore2 compliant str(config)
         """
         # Initialization
-        viewer_obj = json.loads(viewer)
+        viewer_obj = viewer
+        if isinstance(viewer_obj, str):
+            viewer_obj = json.loads(viewer_obj)
         if isinstance(viewer_obj, str):
             viewer_obj = json.loads(viewer_obj)
 

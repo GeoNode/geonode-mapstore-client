@@ -55,7 +55,12 @@ class GeoAppDataSerializer(DynamicModelSerializer):
 
     def to_representation(self, value):
         data = GeoAppData.objects.filter(resource__id=value).first()
-        return json.loads(data.blob) if data else {}
+        if data and isinstance(data, str):
+            return json.loads(data.blob)
+        elif data and isinstance(data, dict):
+            return data.blob
+        else:
+            return {}
 
 
 class GeoStorySerializer(ResourceBaseSerializer):
