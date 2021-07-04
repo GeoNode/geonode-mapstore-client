@@ -269,3 +269,10 @@ class MapStoreHookSet(BaseHookSet):
         conf = self.viewer_json(conf, context=context)
         context['config'] = conf
         return 'geonode-mapstore-client/edit_map.html'
+
+    def metadata_update_redirect(self, url):
+        url = url.replace('/metadata', '')
+        resource_identifier = url.split('/')[-1]
+        resource_type = url.split('/')[-2]
+        resource_type = resource_type[0:len(resource_type) - 1]
+        return resource_detail_url(resource_type, resource_identifier)
