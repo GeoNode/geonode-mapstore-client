@@ -20,8 +20,7 @@ const ThumbnailEditable = ({
     useEffect(() => {
         setThumbnail(defaultImage);
 
-    }, [ ]);
-
+    }, [defaultImage]);
     return (
         <>
             <Thumbnail

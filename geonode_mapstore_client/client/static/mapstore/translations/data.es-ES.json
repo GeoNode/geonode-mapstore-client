@@ -129,7 +129,10 @@
             "editStyle": "Editar Estilo",
             "editData": "Editar Datos",
             "backToDataset": "Volver al Conjunto de Datos",
-            "uploadImage": "Haga clic o arrastre y suelte una imagen"
+            "uploadImage": "Haga clic o arrastre y suelte una imagen",
+            "setMapLikeThumbnail": "Establecer miniatura de mapa",
+            "thumbnailsaved": "Miniatura guardada",
+            "thumbnailnotsaved": "Miniatura de error no guardada"
         }
 
 

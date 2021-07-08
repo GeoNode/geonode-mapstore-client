@@ -8,6 +8,7 @@
 
 import { Observable } from 'rxjs';
 import { mapSelector, mapInfoSelector } from '@mapstore/framework/selectors/map';
+import axios from '@mapstore/framework/libs/ajax';
 import { layersSelector, groupsSelector } from '@mapstore/framework/selectors/layers';
 import { backgroundListSelector } from '@mapstore/framework/selectors/backgroundselector';
 import { mapOptionsToSaveSelector } from '@mapstore/framework/selectors/mapsave';
@@ -20,8 +21,6 @@ import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { currentStorySelector } from '@mapstore/framework/selectors/geostory';
 import { userSelector } from '@mapstore/framework/selectors/security';
 import { error as errorNotification, success as successNotification } from '@mapstore/framework/actions/notifications';
-
-
 import {
     creatMapStoreMap,
     updateMapStoreMap
@@ -32,6 +31,7 @@ import {
     saveSuccess,
     saveError,
     savingResource,
+    clearSave,
     SAVE_DIRECT_CONTENT,
     saveContent
 } from '@js/actions/gnsave';
@@ -40,14 +40,16 @@ import {
     setResource,
     resourceError,
     updateResourceProperties,
-    SET_FAVORITE_RESOURCE
+    SET_FAVORITE_RESOURCE,
+    SET_MAP_LIKE_THUMBNAIL
 } from '@js/actions/gnresource';
 import {
     getResourceByPk,
     createGeoStory,
     updateGeoStory,
     updateDocument,
-    setFavoriteResource
+    setFavoriteResource,
+    setMapLikeThumbnail
 } from '@js/api/geonode/v2';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import uuid from 'uuid';
@@ -180,6 +182,40 @@ export const gnSaveContent = (action$, store) =>
 
         });
 
+export const gnSetMapLikeThumbnail = (action$, store) =>
+    action$.ofType(SET_MAP_LIKE_THUMBNAIL)
+        .switchMap(() => {
+            const state = store.getState();
+            const contentType = state.gnresource?.data?.resource_type || 'map';
+            const resourceIDThumbnail = (state.gnresource?.data?.resource_type === 'layer') ? state?.gnresource?.data?.alternate  : state?.gnresource?.id;
+            const resourceId = state?.gnresource?.id;
+            const map =  mapSelector(state) || {};
+            const body = {
+                srid: map.bbox.crs,
+                bbox: Object.values(map.bbox.bounds)
+            };
+            return Observable.defer(() => setMapLikeThumbnail(resourceIDThumbnail, body, contentType))
+                .switchMap((res) => {
+                    return Observable.defer(() => getResourceByPk(resourceId))
+                        .switchMap((response) => {
+                            return Observable.of(
+                                setResource({...response, thumbnail_url: `${response.thumbnail_url}?${Math.random()}`} ),
+                                clearSave(),
+                                ...([successNotification({title: "gnviewer.thumbnailsaved", message: "gnviewer.thumbnailsaved"})])
+
+                            );
+                        });
+                })
+                .catch((error) => {
+                    return Observable.of(
+                        saveError(error.data),
+                        errorNotification({title: "gnviewer.thumbnailnotsaved", message: "gnviewer.thumbnailnotsaved"})
+                    );
+                })
+                .startWith(savingResource());
+        });
+
+
 export const gnSaveDirectContent = (action$, store) =>
     action$.ofType(SAVE_DIRECT_CONTENT)
         .switchMap(() => {
@@ -258,5 +294,6 @@ export default {
     gnSaveContent,
     gnUpdateResource,
     gnSaveDirectContent,
-    gnSaveFavoriteContent
+    gnSaveFavoriteContent,
+    gnSetMapLikeThumbnail
 };

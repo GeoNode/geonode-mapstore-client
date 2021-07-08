@@ -129,7 +129,11 @@
             "editStyle": "Edit Style",
             "editData": "Edit Data",
             "backToDataset": "Back to Dataset",
-            "uploadImage": "Click or drag and drop an image"
+            "uploadImage": "Click or drag and drop an image",
+            "setMapLikeThumbnail": "Set map thumbnail",
+            "thumbnailsaved": "Thumbnail saved",
+            "thumbnailnotsaved": "Error thumbnail not saved"
+
         }
     }
 }

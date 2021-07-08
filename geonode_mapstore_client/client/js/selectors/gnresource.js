@@ -17,7 +17,7 @@ export const getResourcePerms = (state) => {
 };
 
 export const getResourceName = (state) => {
-    return state?.gnresource?.data?.name || false;
+    return state?.gnresource?.data?.title || false;
 };
 
 export const getResourceDescription = (state) => {

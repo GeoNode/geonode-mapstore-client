@@ -2621,6 +2621,10 @@
                                     "labelId": "gnviewer.editData"
                                 }
                             ]
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "Detail"
                         }
                     ]
                 }
@@ -2630,6 +2634,12 @@
             },
             {
                 "name": "DetailViewer"
+            },
+            {
+                "name": "MapLikeThumbnail",
+                "cfg": {
+                    "disablePermission": true
+                }
             },
             {
                 "name": "Map",
@@ -3433,6 +3443,12 @@
             },
             {
                 "name": "Save",
+                "cfg": {
+                    "disablePermission": true
+                }
+            },
+            {
+                "name": "MapLikeThumbnail",
                 "cfg": {
                     "disablePermission": true
                 }
