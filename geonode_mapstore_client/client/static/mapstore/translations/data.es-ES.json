@@ -111,7 +111,6 @@
             "myResources": "Mis recursos",
             "pendingApproval": "Aprobación pendiente",
             "featuredList": "Presentada"
-
         },
         "viewer":{
             "document": {
@@ -120,7 +119,6 @@
             "errors": {
                 "noPermissions": "No tienes permisos para agregar una geohistoria"
             }
-
         },
         "gnviewer":{
             "edit": "Editar",

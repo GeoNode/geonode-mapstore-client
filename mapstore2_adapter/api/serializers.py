@@ -12,8 +12,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import MapStoreResource
-
 import re
 import six
 import json
@@ -81,22 +79,3 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = get_user_model()
         fields = ('url', 'username', 'email', 'is_staff', 'is_active', 'is_superuser',)
 
-
-class MapStoreResourceSerializer(serializers.HyperlinkedModelSerializer):
-    user = serializers.CharField(source='user.username',
-                                 read_only=True)
-    layers = MapLayersJSONArraySerializerField(source='id',
-                                               read_only=True)
-
-    def __init__(self, *args, **kwargs):
-        # Instantiate the superclass normally
-        super(MapStoreResourceSerializer, self).__init__(*args, **kwargs)
-
-        _full = self.context['request'].query_params.get('full')
-        if _full:
-            self.fields['data'] = JSONSerializerField(read_only=False)
-            self.fields['attributes'] = JSONArraySerializerField(read_only=False)
-
-    class Meta:
-        model = MapStoreResource
-        fields = ('id', 'user', 'layers', 'name', 'creation_date', 'last_update')

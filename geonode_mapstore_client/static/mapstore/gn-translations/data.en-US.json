@@ -111,7 +111,6 @@
             "myResources": "My resources",
             "pendingApproval": "Pending approval",
             "featuredList": "Featured"
-
         },
         "viewer":{
             "document": {
@@ -127,7 +126,8 @@
             "editMetadata": "Edit Metadata",
             "editStyle": "Edit Style",
             "editData": "Edit Data",
-            "backToDataset": "Back to Dataset"
+            "backToDataset": "Back to Dataset",
+            "uploadImage": "Click or drag and drop an image"
         }
     }
 }

@@ -449,6 +449,55 @@ export const getResourcesTotalCount = () => {
         });
 };
 
+/**
+* Create a new MapStore map configuration
+* @memberof api.geonode.adapter
+* @param {object} body new map configuration
+* @return {promise} it returns an object with the success map object response
+*/
+export const createMap = (body = {}) => {
+    return axios.post(parseDevHostname(`${endpoints[MAPS]}`),
+        body,
+        {
+            timeout: 10000
+        })
+        .then(({ data }) => data?.map);
+};
+
+/**
+* Update an existing MapStore map configuration
+* @memberof api.geonode.adapter
+* @param {number|string} id resource id
+* @param {object} body map configuration
+* @return {promise} it returns an object with the success map object response
+*/
+export const updateMap = (id, body = {}) => {
+    return axios.patch(parseDevHostname(`${endpoints[MAPS]}/${id}/`),
+        body,
+        {
+            params: {
+                include: ['data']
+            }
+        })
+        .then(({ data }) => data?.map);
+};
+
+/**
+* Get a map configuration
+* @memberof api.geonode.adapter
+* @param {number|string} id resource id
+* @return {promise} it returns an object with the success map object response
+*/
+export const getMapByPk = (pk) => {
+    return axios.get(parseDevHostname(`${endpoints[MAPS]}/${pk}/`),
+        {
+            params: {
+                include: ['data']
+            }
+        })
+        .then(({ data }) => data?.map);
+};
+
 export const getFeaturedResources = (page = 1, page_size =  4) => {
     return axios.get(parseDevHostname(endpoints[RESOURCES]), {
         params: {
@@ -553,8 +602,6 @@ export const getKeywords = ({ q, idIn, ...params }, filterKey =  'keywords') => 
             const results = (data?.HierarchicalKeywords || [])
                 .map((result) => {
 
-
-
                     const selectOption = {
                         value: result.slug,
                         label: addCountToLabel(result.slug, result.count)
@@ -587,6 +634,9 @@ export default {
     getResourcesTotalCount,
     getLayerByPk,
     getDocumentByPk,
+    createMap,
+    updateMap,
+    getMapByPk,
     getCategories,
     getRegions,
     getOwners,

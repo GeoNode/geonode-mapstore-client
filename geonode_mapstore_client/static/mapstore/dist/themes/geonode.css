@@ -22630,25 +22630,35 @@ Ported to CodeMirror by Peter Kroon
   vertical-align: middle;
 }
 .msgapi .gn-action-navbar .gn-action-navbar-container .gn-action-navbar-content ul:not(.dropdown-menu) > li + li {
-  margin-left: 0.4rem;
+  margin-left: 0.1rem;
 }
 .msgapi .gn-action-navbar .gn-action-navbar-container .gn-action-navbar-content .gn-action-navbar-content-left {
   display: flex;
   flex: 1;
   flex-direction: row;
 }
+.msgapi .gn-action-navbar .gn-action-navbar-container .gn-action-navbar-content .gn-action-navbar-content-left .gn-menu-index-divider {
+  width: 1px;
+  height: 1.2rem;
+}
 .msgapi .gn-action-navbar .gn-action-navbar-container .gn-action-navbar-content .gn-action-navbar-content-right {
   display: flex;
   flex: 1;
   flex-direction: row-reverse;
 }
-.msgapi .gn-action-navbar .gn-action-navbar-container .gn-action-navbar-content .gn-action-navbar-content-right ul:not(.dropdown-menu) {
+.msgapi .gn-action-navbar .gn-action-navbar-container .gn-action-navbar-content .gn-action-navbar-content-right > ul:not(.dropdown-menu) {
   display: flex;
   flex: 1;
   flex-direction: row-reverse;
 }
-.msgapi .gn-action-navbar .gn-action-navbar-container .gn-action-navbar-content .gn-action-navbar-content-right ul:not(.dropdown-menu) li {
+.msgapi .gn-action-navbar .gn-action-navbar-container .gn-action-navbar-content .gn-action-navbar-content-right > ul:not(.dropdown-menu) > li {
   display: flex;
+}
+.msgapi .gn-action-navbar .gn-action-navbar-container .gn-action-navbar-content .gn-action-navbar-content-right > ul:not(.dropdown-menu) > li + li {
+  margin-right: 0.4rem;
+}
+.msgapi .gn-action-navbar .gn-action-navbar-container .gn-action-navbar-content .gn-action-navbar-content-tools {
+  margin-left: 0.4rem;
 }
 .msgapi .gn-action-navbar .gn-action-navbar-container .gn-action-navbar-tools > * {
   margin: 0 0.8rem;
@@ -22884,10 +22894,13 @@ Ported to CodeMirror by Peter Kroon
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 4.5em;
+  font-size: 3em;
   opacity: 0.5;
   z-index: 0;
   pointer-events: none;
+}
+.msgapi .gn-details-panel .editContainer.imagepreview .icon-image-preview .fa-file-upload {
+  padding-top: 2em;
 }
 .msgapi .gn-details-panel-header {
   display: flex;
@@ -22905,35 +22918,54 @@ Ported to CodeMirror by Peter Kroon
   padding: 1rem;
   font-size: 0.9em;
 }
-.msgapi .gn-details-panel-content .inEdit {
-  margin-right: 0.5rem;
+.msgapi .gn-details-panel-content .fa-edit,
+.msgapi .gn-details-panel-content .fa-check-circle {
+  font-size: 0.9rem;
+  margin: 0.2em 0 0 0;
 }
 .msgapi .gn-details-panel-title {
   display: flex;
   margin-bottom: 1rem;
 }
 .msgapi .gn-details-panel-title h1 {
-  flex: 1;
+  display: flex;
   word-break: break-word;
   font-size: 1rem;
-  margin: 0;
+  margin: 0.2em 0.4em 0 0;
 }
 .msgapi .gn-details-panel-title h1 .fa {
   margin: 0;
   margin-right: 0.6rem;
 }
+.msgapi .gn-details-panel-title .gn-details-panel-tools {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+}
 .msgapi .gn-details-panel-title .gn-details-panel-tools button,
 .msgapi .gn-details-panel-title .gn-details-panel-tools a {
-  padding: 0 0 0 0.5rem;
+  padding: 0.1rem 0 0 0.5rem;
+}
+.msgapi .gn-details-panel-title .inEdit {
+  align-items: center;
+  display: flex;
 }
 .msgapi .gn-details-panel-description {
   font-size: 0.9rem;
   text-align: justify;
   word-break: break-word;
 }
+.msgapi .gn-details-panel-description .gn-details-panel-text {
+  margin-right: 0.5rem;
+}
 .msgapi .gn-details-panel-description img {
   width: 100% !important;
   height: auto !important;
+}
+.msgapi .gn-details-panel-description .editContainer,
+.msgapi .gn-details-panel-description .gn-text-editable {
+  display: inline-block;
 }
 /*
  * Copyright 2020, GeoSolutions Sas.

@@ -111,7 +111,6 @@
             "myResources": "Mis recursos",
             "pendingApproval": "Aprobación pendiente",
             "featuredList": "Presentada"
-
         },
         "viewer":{
             "document": {
@@ -127,7 +126,8 @@
             "editMetadata": "Editar Metadatos",
             "editStyle": "Editar Estilo",
             "editData": "Editar Datos",
-            "backToDataset": "Volver al Conjunto de Datos"
+            "backToDataset": "Volver al Conjunto de Datos",
+            "uploadImage": "Haga clic o arrastre y suelte una imagen"
         }
 
 

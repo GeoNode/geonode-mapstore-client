@@ -22,8 +22,8 @@ do
     esac
 done
 
-(( do_npx )) && printf " - Cleaning node_modules...\n" && npx rimraf package-lock.json npm-shrinkwrap.json node_modules
-(( do_clean_cache )) && printf " - Cleaning npm cache...\n" && npm cache clean --force && npm install -g npm@latest --force && npm cache clean --force
+(( do_npx )) && printf " - Cleaning node_modules...\n" && rm package-lock.json && npx rimraf package-lock.json npm-shrinkwrap.json node_modules
+(( do_clean_cache )) && printf " - Cleaning npm cache...\n" && npm cache clean --force && sudo npm install -g npm@latest --force && npm cache clean --force
 (( do_update )) && printf " - Executing npm update...\n" && npm update
 (( do_npm_install )) && printf " - Executing npm install...\n" && npm install
 (( do_npm_install_force )) && printf " - Forcing npm install...\n" && npm install --force

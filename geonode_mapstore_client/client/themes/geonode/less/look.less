@@ -1,0 +1,368 @@
+
+.write-gn-theme(@theme-vars) {
+
+    .color-var(@theme-vars[body-color], --gn-body-color);
+    .background-color-var(@theme-vars[body-bg], --gn-body-bg);
+
+    .btn-default {
+        @btn-default-library: {
+            @vars: {
+                button-color: @theme-vars[button-color];
+                button-bg: @theme-vars[button-bg];
+                button-border-color: @theme-vars[button-border-color];
+                button-focus-color: @theme-vars[button-focus-color];
+                button-focus-bg: @theme-vars[button-focus-bg];
+                button-focus-border-color: @theme-vars[button-focus-border-color];
+                button-hover-color: @theme-vars[button-hover-color];
+                button-hover-bg: @theme-vars[button-hover-bg];
+                button-hover-border-color: @theme-vars[button-hover-border-color];
+
+                button-active-color: @theme-vars[button-active-color];
+                button-active-bg: @theme-vars[button-active-bg];
+                button-active-border-color: @theme-vars[button-active-border-color];
+
+                button-active-hover-color: @theme-vars[button-active-hover-color];
+                button-active-hover-bg: @theme-vars[button-active-hover-bg];
+                button-active-hover-border-color: @theme-vars[button-active-hover-border-color];
+
+                button-disabled-color: @theme-vars[button-disabled-color];
+                button-disabled-bg: @theme-vars[button-disabled-bg];
+                button-disabled-border-color: @theme-vars[button-disabled-border-color];
+
+                button-badge-color: @theme-vars[button-badge-color];
+                button-badge-bg: @theme-vars[button-badge-bg];
+            }
+            @css-vars: {
+                button-color: --gn-btn-color;
+                button-bg: --gn-btn-bg;
+                button-border-color: --gn-btn-border-color;
+
+                button-focus-color: --gn-btn-focus-color;
+                button-focus-bg: --gn-btn-focus-bg;
+                button-focus-border-color: --gn-btn-focus-border-color;
+
+                button-hover-color: --gn-btn-hover-color;
+                button-hover-bg: --gn-btn-hover-bg;
+                button-hover-border-color: --gn-btn-hover-border-color;
+
+                button-active-color: --gn-btn-active-color;
+                button-active-bg: --gn-btn-active-bg;
+                button-active-border-color: --gn-btn-active-border-color;
+
+                button-active-hover-color: --gn-btn-active-hover-color;
+                button-active-hover-bg: --gn-btn-active-hover-bg;
+                button-active-hover-border-color: --gn-btn-active-hover-border-color;
+
+                button-disabled-color: --gn-btn-disabled-color;
+                button-disabled-bg: --gn-btn-disabled-bg;
+                button-disabled-border-color: --gn-btn-disabled-border-color;
+
+                button-badge-color: --gn-btn-badge-color;
+                button-badge-bg: --gn-btn-badge-bg;
+            }
+        }
+        @library-vars: @btn-default-library[@vars];
+        @library-css-vars: @btn-default-library[@css-vars];
+        .button-variant-with-css-variable(@library-vars, @library-css-vars);
+    }
+
+    .btn-primary {
+        @btn-default-library: {
+            @vars: {
+                button-color: @theme-vars[button-primary-color];
+                button-bg: @theme-vars[button-primary-bg];
+                button-border-color: @theme-vars[button-primary-border-color];
+                button-focus-color: @theme-vars[button-primary-focus-color];
+                button-focus-bg: @theme-vars[button-primary-focus-bg];
+                button-focus-border-color: @theme-vars[button-primary-focus-border-color];
+                button-hover-color: @theme-vars[button-primary-hover-color];
+                button-hover-bg: @theme-vars[button-primary-hover-bg];
+                button-hover-border-color: @theme-vars[button-primary-hover-border-color];
+
+                button-active-color: @theme-vars[button-primary-active-color];
+                button-active-bg: @theme-vars[button-primary-active-bg];
+                button-active-border-color: @theme-vars[button-primary-active-border-color];
+
+                button-active-hover-color: @theme-vars[button-primary-active-hover-color];
+                button-active-hover-bg: @theme-vars[button-primary-active-hover-bg];
+                button-active-hover-border-color: @theme-vars[button-primary-active-hover-border-color];
+
+                button-disabled-color: @theme-vars[button-primary-disabled-color];
+                button-disabled-bg: @theme-vars[button-primary-disabled-bg];
+                button-disabled-border-color: @theme-vars[button-primary-disabled-border-color];
+
+                button-badge-color: @theme-vars[button-primary-badge-color];
+                button-badge-bg: @theme-vars[button-primary-badge-bg];
+            }
+            @css-vars: {
+                button-color: --gn-btn-primary-color;
+                button-bg: --gn-btn-primary-bg;
+                button-border-color: --gn-btn-primary-border-color;
+
+                button-focus-color: --gn-btn-primary-focus-color;
+                button-focus-bg: --gn-btn-primary-focus-bg;
+                button-focus-border-color: --gn-btn-primary-focus-border-color;
+
+                button-hover-color: --gn-btn-primary-hover-color;
+                button-hover-bg: --gn-btn-primary-hover-bg;
+                button-hover-border-color: --gn-btn-primary-hover-border-color;
+
+                button-active-color: --gn-btn-primary-active-color;
+                button-active-bg: --gn-btn-primary-active-bg;
+                button-active-border-color: --gn-btn-primary-active-border-color;
+
+                button-active-hover-color: --gn-btn-primary-active-hover-color;
+                button-active-hover-bg: --gn-btn-primary-active-hover-bg;
+                button-active-hover-border-color: --gn-btn-primary-active-hover-border-color;
+
+                button-disabled-color: --gn-btn-primary-disabled-color;
+                button-disabled-bg: --gn-btn-primary-disabled-bg;
+                button-disabled-border-color: --gn-btn-primary-disabled-border-color;
+
+                button-badge-color: --gn-btn-primary-badge-color;
+                button-badge-bg: --gn-btn-primary-badge-bg;
+            }
+        }
+        @library-vars: @btn-default-library[@vars];
+        @library-css-vars: @btn-default-library[@css-vars];
+        .button-variant-with-css-variable(@library-vars, @library-css-vars);
+    }
+
+    .btn:focus,
+    .btn.focus {
+        outline: 0;
+        .box-shadow-var(@theme-vars[focus-color], --gn-focus-color);
+    }
+
+    .jumbotron {
+        background-color: transparent;
+    }
+
+    .spinner {
+        display: inline-flex;
+        border-top-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        border-left-color: @theme-vars[body-color];
+        border-left-color: var(--gn-body-color, @theme-vars[body-color]);
+    }
+
+    .gn-brand-navbar,
+    .gn-details-panel,
+    .gn-details-panel > *,
+    .gn-footer,
+    .gn-resource-card,
+    .gn-filter-form,
+    .gn-hero .gn-search-bar,
+    .gn-card-options,
+    .gn-search-bar,
+    input,
+    input:focus,
+    .gn-suggestions,
+    .gn-home-section .gn-card-grid,
+    .dropdown-menu {
+        .color-var(@theme-vars[body-color], --gn-body-color);
+        .background-color-var(@theme-vars[body-bg], --gn-body-bg);
+    }
+
+    .gn-main-home,
+    .gn-card-grid,
+    .gn-filters-menu {
+        .color-var(@theme-vars[body-shade-color], --gn-body-shade-color);
+        .background-color-var(@theme-vars[body-shade-bg], --gn-body-shade-bg);
+    }
+
+    // default badge color
+    .badge {
+        .color-var(@theme-vars[badge-color], --gn-badge-color);
+        .background-color-var(@theme-vars[badge-bg], --gn-badge-bg);
+    }
+
+    .gn-action-navbar {
+        .color-var(@theme-vars[primary-color], --gn-primary-color);
+        .background-color-var(@theme-vars[primary-bg], --gn-primary-bg);
+        .badge {
+            .color-var(@theme-vars[primary-bg], --gn-primary-bg);
+            .background-color-var(@theme-vars[primary-color], --gn-primary-color);
+        }
+        .dropdown-menu .badge {
+            .color-var(@theme-vars[primary-color], --gn-primary-color);
+            .background-color-var(@theme-vars[primary-bg], --gn-primary-bg);
+        }
+    }
+    .gn-menu-index-divider {
+        .background-color-var(@theme-vars[primary-color], --gn-primary-color);
+    }
+    .gn-filter-form-divider {
+        .background-color-var(@theme-vars[body-shade-bg], --gn-shade-bg);
+    }
+    .gn-filter-by-extent-map,
+    .gn-details-panel-preview,
+    .gn-details-panel-preview-loader,
+    .gn-resource-card .card-img-top,
+    .gn-loader-placeholder {
+        .color-var(@theme-vars[image-color], --gn-image-color);
+        .background-color-var(@theme-vars[image-bg], --gn-image-bg);
+    }
+
+    .gn-hero {
+        .color-var(@theme-vars[jumbotron-color], --gn-image-color);
+        .background-color-var(@theme-vars[jumbotron-bg], --gn-image-bg);
+    }
+
+    a {
+        .color-var(@theme-vars[link-color], --gn-link-color);
+        text-decoration: none;
+
+        &:hover {
+            .color-var(@theme-vars[link-hover-color], --gn-link-hover-color);
+            text-decoration: none;
+        }
+    }
+
+    .custom-control-input:checked~.custom-control-label::before {
+        .color-var(@theme-vars[primary-color], --gn-primary-color);
+        .background-color-var(@theme-vars[primary-bg], --gn-primary-bg);
+        .border-color-var(@theme-vars[primary-bg], --gn-primary-bg);
+    }
+
+    .custom-switch .custom-control-input:checked~.custom-control-label::after {
+        .background-color-var(@theme-vars[primary-color], --gn-primary-color);
+    }
+
+    .gn-action-navbar .gn-tag,
+    .gn-action-navbar .btn-default {
+        .btn-primary();
+    }
+
+    .gn-details-panel.loading .gn-details-panel-content {
+        h1, a, p {
+            color: transparent;
+            .background-color-var(@theme-vars[placeholder-bg], --gn-placeholder-bg);
+        }
+    }
+
+    .gn-loader-placeholder .fa {
+        .color-var(@theme-vars[body-bg], --gn-body-bg);
+    }
+
+    .gn-resource-card {
+        .card-title a {
+            .color-var(@theme-vars[body-color], --gn-body-color);
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .gn-tag {
+            .color-var(@theme-vars[body-color], --gn-body-color);
+            font-size: inherit;
+
+            &:hover {
+                color: inherit;
+                background-color: transparent;
+            }
+        }
+
+        &.active {
+            .border-color-var(@theme-vars[focus-color], --gn-focus-color);
+            .outline-color-var(@theme-vars[focus-color], --gn-focus-color);
+        }
+
+        &:hover {
+            .border-color-var(@theme-vars[focus-color], --gn-focus-color);
+        }
+    }
+
+    .gn-filter-link {
+        a {
+            .color-var(@theme-vars[body-color], --gn-body-color);
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .gn-search-bar {
+        .border-color-var(@theme-vars[body-border-color], --gn-body-border-color);
+
+        &.focus {
+            .outline-color-var(@theme-vars[focus-color], --gn-focus-color);
+        }
+    }
+
+    .gn-tag {
+        .color-var(@theme-vars[tag-color], --gn-tag-color);
+        background-color: transparent;
+        &.active {
+            .color-var(@theme-vars[tag-active-color], --gn-tag-active-color);
+            .background-color-var(@theme-vars[tag-active-bg], --gn-tag-active-bg);
+        }
+        &:hover {
+            .color-var(@theme-vars[tag-hover-color], --gn-tag-active-color);
+            .background-color-var(@theme-vars[tag-hover-bg], --gn-tag-active-bg);
+        }
+    }
+
+    .gn-footer {
+        .color-var(@theme-vars[footer-color], --gn-footer-color);
+        .background-color-var(@theme-vars[footer-bg], --gn-footer-bg);
+        a {
+            .color-var(@theme-vars[footer-link-color], --gn-footer-link-color);
+            text-decoration: none;
+
+            &:hover {
+                .color-var(@theme-vars[footer-link-hover-color], --gn-footer-link-hover-color);
+                text-decoration: none;
+            }
+        }
+    }
+
+    .dropdown-item {
+        .hover-focus() {
+            .background-color-var(@theme-vars[body-shade-bg], --gn-body-shade-bg);
+            text-decoration: none;
+        }
+
+        &.active,
+        &:active {
+            .color-var(@theme-vars[primary-color], --gn-primary-color);
+            .background-color-var(@theme-vars[primary-bg], --gn-primary-bg);
+            .hover-focus() {
+                .color-var(@theme-vars[primary-color], --gn-primary-color);
+                .background-color-var(@theme-vars[primary-bg], --gn-primary-bg);
+            }
+        }
+    }
+
+    .list-group-item-action {
+        .color-var(@theme-vars[body-color], --gn-body-color);
+        .background-color-var(@theme-vars[body-bg], --gn-body-bg);
+        .hover-focus() {
+            .color-var(@theme-vars[body-shade-color], --gn-body-shade-color);
+            .background-color-var(@theme-vars[body-shade-bg], --gn-body-shade-bg);
+        }
+        &:active {
+            .color-var(@theme-vars[body-shade-color], --gn-body-shade-color);
+            .background-color-var(@theme-vars[body-shade-bg], --gn-body-shade-bg);
+        }
+    }
+
+    .list-group-item {
+        .color-var(@theme-vars[body-color], --gn-body-color);
+        .background-color-var(@theme-vars[body-bg], --gn-body-bg);
+        .border-color-var(@theme-vars[body-border-color], --gn-body-border-color);
+        &.active {
+            .color-var(@theme-vars[body-shade-color], --gn-body-shade-color);
+            .background-color-var(@theme-vars[body-shade-bg], --gn-body-shade-bg);
+            .border-color-var(@theme-vars[body-border-color], --gn-body-border-color);
+        }
+    }
+    // needed to override the mapstore style of react-select
+    // TODO: we should not import the mapstore one
+    #container & {
+        .get-react-select-theme(@theme-vars);
+    }
+}

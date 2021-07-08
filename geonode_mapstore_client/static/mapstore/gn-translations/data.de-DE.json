@@ -126,7 +126,8 @@
             "editMetadata": "Metadaten bearbeiten",
             "editStyle": "Stil Bearbeiten",
             "editData": "Daten Bearbeiten",
-            "backToDataset": "Zurück zum Datensatz"
+            "backToDataset": "Zurück zum Datensatz",
+            "uploadImage": "Klicken oder ziehen Sie ein Bild und legen Sie es ab"
         }
 
     }

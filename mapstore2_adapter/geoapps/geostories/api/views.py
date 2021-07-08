@@ -44,6 +44,6 @@ class GeoStoryViewSet(DynamicModelViewSet):
     authentication_classes = [SessionAuthentication, BasicAuthentication, OAuth2Authentication]
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     filter_backends = [DynamicFilterBackend, DynamicSortingFilter, DynamicSearchFilter, GeoStoryPermissionsFilter]
-    queryset = GeoStory.objects.all()
+    queryset = GeoStory.objects.all().order_by('-date')
     serializer_class = GeoStorySerializer
     pagination_class = GeoNodeApiPagination

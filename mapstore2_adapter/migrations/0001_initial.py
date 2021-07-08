@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import jsonfield.fields
+from django.db.models.fields.json import JSONField
 
 
 class Migration(migrations.Migration):
@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
             name='MapStoreData',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('blob', jsonfield.fields.JSONField(default={})),
+                ('blob', JSONField(default=dict)),
             ],
         ),
         migrations.CreateModel(

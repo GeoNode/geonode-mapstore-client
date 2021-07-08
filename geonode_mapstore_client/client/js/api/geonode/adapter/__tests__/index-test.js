@@ -10,9 +10,9 @@ import expect from 'expect';
 import MockAdapter from 'axios-mock-adapter';
 import axios from '@mapstore/framework/libs/ajax';
 import {
-    creatMapStoreMap,
-    updateMapStoreMap
-} from '@js/api/geonode/adapter';
+    createMap,
+    updateMap
+} from '@js/api/geonode/v2';
 
 let mockAxios;
 
@@ -28,14 +28,14 @@ describe('GeoNode adapter api', () => {
         mockAxios.restore();
         setTimeout(done);
     });
-    it('should post new configuration to mapstore rest (creatMapStoreMap)', (done) => {
+    it('should post new configuration to mapstore rest (createMap)', (done) => {
         const mapConfiguration = {
             id: 1,
             attributes: [],
             data: {},
             name: 'Map'
         };
-        mockAxios.onPost(/\/mapstore\/rest\/resources/)
+        mockAxios.onPost(/\/api\/v2\/maps/)
             .reply((config) => {
                 try {
                     expect(config.data).toBe(JSON.stringify(mapConfiguration));
@@ -46,9 +46,9 @@ describe('GeoNode adapter api', () => {
                 return [ 200, { }];
             });
 
-        creatMapStoreMap(mapConfiguration);
+        createMap(mapConfiguration);
     });
-    it('should patch configuration to mapstore rest (updateMapStoreMap)', (done) => {
+    it('should patch configuration to mapstore rest (updateMap)', (done) => {
         const id = 1;
         const mapConfiguration = {
             id: 1,
@@ -56,7 +56,7 @@ describe('GeoNode adapter api', () => {
             data: {},
             name: 'Map'
         };
-        mockAxios.onPatch(new RegExp(`/mapstore/rest/resources/${id}`))
+        mockAxios.onPatch(new RegExp(`/api/v2/maps/${id}`))
             .reply((config) => {
                 try {
                     expect(config.data).toBe(JSON.stringify(mapConfiguration));
@@ -67,6 +67,6 @@ describe('GeoNode adapter api', () => {
                 return [ 200, { }];
             });
 
-        updateMapStoreMap(id, mapConfiguration);
+        updateMap(id, mapConfiguration);
     });
 });

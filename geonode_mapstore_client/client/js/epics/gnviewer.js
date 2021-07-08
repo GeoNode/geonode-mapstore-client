@@ -22,10 +22,10 @@ import {
     getLayerByPk,
     getGeoStoryByPk,
     getDocumentByPk,
-    getResourceByPk
+    getMapByPk
 } from '@js/api/geonode/v2';
+
 import { error as errorNotification } from '@mapstore/framework/actions/notifications';
-import { getMapStoreMapById } from '@js/api/geonode/adapter';
 import { configureMap } from '@mapstore/framework/actions/config';
 import { zoomToExtent } from '@mapstore/framework/actions/map';
 import {
@@ -101,21 +101,19 @@ export const gnViewerRequestLayerConfig = (action$) =>
 export const gnViewerRequestMapConfig = (action$) =>
     action$.ofType(REQUEST_MAP_CONFIG)
         .switchMap(({ pk }) => {
-            return Observable.defer(() => axios.all([
-                getMapStoreMapById(pk),
-                getResourceByPk(pk)
-            ])).switchMap((response) => {
-                const [adapterMap, resource] = response;
-                return Observable.of(
-                    configureMap(adapterMap.data),
-                    setResource(resource),
-                    setResourceId(pk),
-                    setResourceType('map')
-                );
-            }).catch(() => {
-                // TODO: implement various error cases
-                return Observable.empty();
-            });
+            return Observable.defer(() => getMapByPk(pk))
+                .switchMap((response) => {
+                    const { data, ...resource }  = response;
+                    return Observable.of(
+                        configureMap(data),
+                        setResource(resource),
+                        setResourceId(pk),
+                        setResourceType('map')
+                    );
+                }).catch(() => {
+                    // TODO: implement various error cases
+                    return Observable.empty();
+                });
         });
 
 export const gnViewerRequestNewMapConfig = (action$) =>

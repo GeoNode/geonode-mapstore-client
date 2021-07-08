@@ -70,6 +70,7 @@ function FilterForm({
 
     }, [query]);
 
+
     function handleApply() {
         onChange(values);
     }

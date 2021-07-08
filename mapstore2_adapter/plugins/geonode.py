@@ -70,7 +70,6 @@ LAYER_PARAMS = {
     'transparent': True,
     'tiled': True,
     'title': '',
-    'name': '',
     'description': '',
     'store': '',
     'group': '',
@@ -255,20 +254,20 @@ class GeoNodeMapStore2ConfigConverter(BaseMapStore2ConfigConverter):
 
         # Additional Configurations
         if map_id:
-            from mapstore2_adapter import fixup_map
-            from mapstore2_adapter.api.models import MapStoreResource
             try:
-                fixup_map(map_id)
-                ms2_resource = MapStoreResource.objects.get(id=map_id)
-                ms2_map_data = ms2_resource.data.blob
-                if isinstance(ms2_map_data, string_types):
-                    ms2_map_data = json.loads(ms2_map_data)
-                if 'map' in ms2_map_data:
-                    for _k, _v in ms2_map_data['map'].items():
-                        if _k not in data['map']:
-                            data['map'][_k] = ms2_map_data['map'][_k]
-                    del ms2_map_data['map']
-                data.update(ms2_map_data)
+                # TODO: MapData will be replaced by ResourceBase.DATA soon...
+                from geonode.maps.models import Map
+                gn_map_query = Map.objects.filter(id=map_id)
+                if gn_map_query.exists() and gn_map_query.count() == 1:
+                    ms2_map_data = gn_map_query.get().blob
+                    if isinstance(ms2_map_data, string_types):
+                        ms2_map_data = json.loads(ms2_map_data)
+                    if 'map' in ms2_map_data:
+                        for _k, _v in ms2_map_data['map'].items():
+                            if _k not in data['map']:
+                                data['map'][_k] = ms2_map_data['map'][_k]
+                        del ms2_map_data['map']
+                    data.update(ms2_map_data)
             except Exception:
                 # traceback.print_exc()
                 tb = traceback.format_exc()
@@ -374,7 +373,7 @@ class GeoNodeMapStore2ConfigConverter(BaseMapStore2ConfigConverter):
                                 overlay['keywords'] = capa['keywords']
                             if 'dimensions' in capa and capa['dimensions']:
                                 overlay['dimensions'] = self.get_layer_dimensions(dimensions=capa['dimensions'])
-                            if 'storeType' in capa and capa['storeType'] == 'dataStore':
+                            if 'storeType' in capa and 'vector' in capa['storeType']:
                                 overlay['search'] = {
                                     "url": get_wfs_endpoint(request),
                                     "type": "wfs"
@@ -413,6 +412,8 @@ class GeoNodeMapStore2ConfigConverter(BaseMapStore2ConfigConverter):
                             overlay['nativeCrs'] = layer['nativeCrs']
                         else:
                             try:
+                                if 'name' not in overlay and 'name' in layer:
+                                    overlay['name'] = layer['name']
                                 from geonode.layers.models import Layer
                                 _gn_layer = Layer.objects.get(
                                     store=overlay['store'],
@@ -476,7 +477,7 @@ class GeoNodeMapStore2ConfigConverter(BaseMapStore2ConfigConverter):
                                                 <iframe src="${properties.%s}" width="100%%" height="360" frameborder="0" allowfullscreen></iframe></div>' % \
                                                 (_field)
                                         else:
-                                            _type = "video/%s" % (displayTypes[_field][11:])
+                                            _type = f"video/{displayTypes[_field][11:]}"
                                             _template += '<div class="col-xs-12" align="center" style="font-weight: bold; word-wrap: break-word;"> \
                                                 <video width="100%%" height="360" controls><source src="${properties.%s}" type="%s">Your browser does not support the video tag.</video></div>' % \
                                                 (_field, _type)

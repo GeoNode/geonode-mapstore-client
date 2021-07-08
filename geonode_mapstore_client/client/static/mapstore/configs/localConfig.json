@@ -22,7 +22,7 @@
     ],
     "defaultLayerFormat": "image/png",
     "geoNodeApi": {
-        "endpointAdapter": "/mapstore/rest",
+        "endpointAdapter": "/mapstore/rest/",
         "endpointAutocomplete": "/base/autocomplete_response",
         "endpointV1": "/api",
         "endpointV2": "/api/v2"

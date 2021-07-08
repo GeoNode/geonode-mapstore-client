@@ -8,18 +8,14 @@
 import { Observable } from 'rxjs';
 import {
     getMaps,
-    getDocumentsByDocType
+    getDocumentsByDocType,
+    getMapByPk
 } from '@js/api/geonode/v2';
-import { getMapStoreMapById } from '@js/api/geonode/adapter';
 import { excludeGoogleBackground, extractTileMatrixFromSources } from '@mapstore/framework/utils/LayersUtils';
 import { convertFromLegacy, normalizeConfig } from '@mapstore/framework/utils/ConfigUtils';
 
-function parseMapConfig({ data, attributes, user, id }, resource) {
-    const metadata = attributes.reduce((acc, attribute) => ({
-        ...acc,
-        [attribute.name]: attribute.value
-    }), { });
-
+function parseMapConfig(mapResponse, resource) {
+    const { data, pk: id } = mapResponse;
     const config = data;
     const mapState = !config.version
         ? convertFromLegacy(config)
@@ -48,13 +44,13 @@ function parseMapConfig({ data, attributes, user, id }, resource) {
     return {
         ...map,
         id,
-        owner: user,
+        owner: mapResponse?.owner?.username,
         canCopy: true,
         canDelete: true,
         canEdit: true,
-        name: resource?.data?.title || metadata.title,
-        description: resource?.data?.description || metadata.abstract,
-        thumbnail: resource?.data?.thumbnail || metadata.thumbnail,
+        name: resource?.data?.title || mapResponse?.title,
+        description: resource?.data?.description || mapResponse?.abstract,
+        thumbnail: resource?.data?.thumbnail || mapResponse?.thumbnail_url,
         type: 'map'
     };
 }
@@ -181,12 +177,11 @@ const loadMediaList = {
                     sourceId
                 }
             }));
-
             const selectedResource = resources.find((resource) => resource.id === selectedId);
             if (selectedResource) {
                 // get resource data when it's selected
                 // this will allow to preview the map and retrieve the correct data
-                return getMapStoreMapById(selectedResource.id)
+                return getMapByPk(selectedResource.id)
                     .then((mapResponse) => ({
                         resources: resources.map((resource) => selectedId && resource.id === selectedId
                             ? {
@@ -253,7 +248,7 @@ export const getData = ({ selectedItem }) => {
 
     if (selectedItem.type === 'map'
     && selectedItem.data && selectedItem.data.id) {
-        return Observable.defer(() => getMapStoreMapById(selectedItem.data.id)
+        return Observable.defer(() => getMapByPk(selectedItem.data.id)
             .then((response) => {
                 return parseMapConfig(response, selectedItem);
             }));
