@@ -361,8 +361,15 @@
                             "href": "/viewer/#/geostory/new",
                             "authenticated": true,
                             "perms": [{ "type": "user", "value": "add_resource" }]
+                        },
+                        {
+                            "labelId": "gnhome.dashboard",
+                            "value": "dashboard",
+                            "type": "link",
+                            "href": "/viewer/#/dashboard/new",
+                            "authenticated": true,
+                            "perms": [{ "type": "user", "value": "add_resource" }]
                         }
-
                     ]
                 },
                 {
@@ -522,9 +529,6 @@
                     ]
                 },
                 {
-                    "type": "divider"
-                },
-                {
                     "labelId": "gnhome.maps",
                     "type": "dropdown",
                     "items": [
@@ -560,7 +564,7 @@
                             "type": "link",
                             "href": "#/search/?filter{resource_type.in}=geostory",
                             "labelId": "gnhome.geostories",
-                            "badge": "{state('geoNodeResourcesInfo') && state('geoNodeResourcesInfo').geoappsTotalCount}"
+                            "badge": "{state('geoNodeResourcesInfo') && state('geoNodeResourcesInfo').geostoriesTotalCount}"
                         },
                         {
                             "type": "divider",
@@ -573,6 +577,34 @@
                             "type": "link",
                             "href": "/viewer/#/geostory/new",
                             "labelId": "gnhome.createGeostory",
+                            "authenticated": true,
+                            "permissions": [],
+                            "allowedRoles": [],
+                            "perms": [{ "type": "user", "value": "add_resource" }]
+                        }
+                    ]
+                },
+                {
+                    "labelId": "gnhome.dashboard",
+                    "type": "dropdown",
+                    "items": [
+                        {
+                            "type": "link",
+                            "href": "#/search/?filter{resource_type.in}=dashboard",
+                            "labelId": "gnhome.dashboard",
+                            "badge": "{state('geoNodeResourcesInfo') && state('geoNodeResourcesInfo').dashboardsTotalCount}"
+                        },
+                        {
+                            "type": "divider",
+                            "authenticated": true,
+                            "permissions": [],
+                            "allowedRoles": [],
+                            "perms": [{ "type": "user", "value": "add_resource" }]
+                        },
+                        {
+                            "type": "link",
+                            "href": "/viewer/#/dashboard/new",
+                            "labelId": "gnhome.createDashboard",
                             "authenticated": true,
                             "permissions": [],
                             "allowedRoles": [],

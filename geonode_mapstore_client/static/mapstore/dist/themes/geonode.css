@@ -3855,7 +3855,7 @@
   background-color: #ffffff;
   background-image: none;
   border: 1px solid #dddddd;
-  border-radius: 2px;
+  border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
@@ -5208,7 +5208,7 @@
   text-align: center;
   background-color: #f2f2f2;
   border: 1px solid #d9d9d9;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 .msgapi .input-group-addon.input-sm {
   padding: 5px 10px;
@@ -15728,7 +15728,7 @@ structure .glyphicon-{iconName}-content
   width: 100%;
   padding-right: 1.9em;
   border: #dddddd 1px solid;
-  border-radius: 2px;
+  border-radius: 4px;
   margin-bottom: 2px;
 }
 .msgapi .rw-rtl .rw-filter-input {
@@ -15752,7 +15752,7 @@ structure .glyphicon-{iconName}-content
   content: "";
 }
 .msgapi .rw-loading-mask {
-  border-radius: 2px;
+  border-radius: 4px;
   position: relative;
 }
 .msgapi .rw-loading-mask:after {
@@ -15897,17 +15897,17 @@ structure .glyphicon-{iconName}-content
 .msgapi .rw-widget {
   background-color: #ffffff;
   border: #dddddd 1px solid;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 .msgapi .rw-widget .rw-input {
-  border-bottom-left-radius: 2px;
-  border-top-left-radius: 2px;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
 }
 .msgapi .rw-rtl .rw-widget .rw-input {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
-  border-bottom-right-radius: 2px;
-  border-top-right-radius: 2px;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
 }
 .msgapi .rw-widget > .rw-select {
   border-left: #dddddd 1px solid;
@@ -16126,7 +16126,7 @@ structure .glyphicon-{iconName}-content
   padding-right: 0;
 }
 .msgapi .rw-datetimepicker.rw-has-neither .rw-input {
-  border-radius: 2px;
+  border-radius: 4px;
 }
 .msgapi .rw-datetimepicker.rw-has-both {
   padding-right: 3.8em;
@@ -16155,7 +16155,7 @@ structure .glyphicon-{iconName}-content
 .msgapi .rw-calendar .rw-header .rw-btn-view {
   width: 75%;
   background-color: #dddddd;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 .msgapi .rw-calendar .rw-header .rw-btn-view[disabled] {
   -webkit-box-shadow: none;
@@ -16192,7 +16192,7 @@ structure .glyphicon-{iconName}-content
   text-align: right;
 }
 .msgapi .rw-calendar-grid td .rw-btn {
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 0 0.4em 0 0.1em;
   outline: 0;
 }
@@ -16266,7 +16266,7 @@ structure .glyphicon-{iconName}-content
   border-color: #adadad;
 }
 .msgapi .rw-multiselect-wrapper {
-  border-radius: 2px;
+  border-radius: 4px;
   position: relative;
   cursor: text;
 }
