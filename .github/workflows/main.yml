@@ -64,7 +64,6 @@ jobs:
         working-directory: ${{env.working-directory}}
  
   build:
-    if: ${{ false }}  # disable for now
     env:
       working-directory: ./geonode_mapstore_client/client
     runs-on: ubuntu-latest
