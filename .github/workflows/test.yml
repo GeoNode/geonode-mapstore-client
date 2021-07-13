@@ -19,12 +19,12 @@ jobs:
       working-directory: ./geonode_mapstore_client/client
     runs-on: ubuntu-latest
     steps:
-      - name: "checking out"
+      - name: "Checking out"
         uses: actions/checkout@v2
       - name: Checkout submodules
         run: git submodule update --init --recursive
 
-      - name: "setting up npm"
+      - name: "Setting up npm"
         uses: actions/setup-node@v2
         with:
             node-version: '12.x'
@@ -32,7 +32,7 @@ jobs:
       ############
       # CACHING
       ##########
-      - name: "cache node modules"
+      - name: "Cache node modules"
         uses: actions/cache@v1
         env:
           cache-name: cache-node-modules
@@ -47,15 +47,15 @@ jobs:
       ###############
       # NPM CHECKS
       #############
-      - name: npm install
+      - name: "Run npm install"
         run: npm install
         working-directory: ${{env.working-directory}}
 
       - name: ESlint
-        run: npm run lint
+        run: "Run npm lint"
         working-directory: ${{env.working-directory}}
 
-      - name: Unit Tests
+      - name: "Run Unit Tests"
         run: npm test
         working-directory: ${{env.working-directory}}
  
