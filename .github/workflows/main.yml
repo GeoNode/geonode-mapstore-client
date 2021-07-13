@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: GeoNode Client CI
 
 # Controls when the workflow will run
 on:
@@ -16,12 +16,15 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   test-front-end:
+    if: ${{ false }}  # disable for now
     env:
       working-directory: ./geonode_mapstore_client/client
     runs-on: ubuntu-latest
     steps:
       - name: "checking out"
         uses: actions/checkout@v2
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
 
       - name: "setting up npm"
         uses: actions/setup-node@v2
@@ -58,13 +61,15 @@ jobs:
         run: npm test
         working-directory: ${{env.working-directory}}
  
-  build:
+  build_and_commit:
     env:
       working-directory: ./geonode_mapstore_client/client
     runs-on: ubuntu-latest
     steps:
       - name: "checking out"
         uses: actions/checkout@v2
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
 
       ###########
       # SET UP 
@@ -90,7 +95,7 @@ jobs:
             ${{ runner.os }}-
 
       ###############
-      # NPM CHECKS
+      # NPM BUILD
       #############
       - name: npm install
         run: npm install
@@ -99,3 +104,14 @@ jobs:
       - name: compile
         run: npm run compile
         working-directory: ${{env.working-directory}}
+
+      ###############
+      # COMMIT
+      #############
+      - name: commit
+        if: ${{ github.event_name=='push' }} # only commit on push to master (PR merge)
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: '--all'
+          message: 'New client build'
+          default_author: github_actions
