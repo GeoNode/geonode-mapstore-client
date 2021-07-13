@@ -389,7 +389,7 @@
                 {
                     "labelId": "gnhome.signIn",
                     "type": "link",
-                    "href": "/account/login/?next=/",
+                    "href": "/account/login/?next=",
                     "authenticated": false
                 },
                 {
