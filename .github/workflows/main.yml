@@ -96,10 +96,33 @@ jobs:
       ###############
       # NPM CHECKS
       #############
-      - name: npm install
+      - name: npm-install
         run: npm install
         working-directory: ${{env.working-directory}}
 
-      - name: compile
+      - name: run-compile
         run: npm run compile
         working-directory: ${{env.working-directory}}
+        
+      ###############
+      # COMMIT
+      #############
+      - name: git-add
+        #if: ${{ github.event_name=='push' }} # only commit on push to master (PR merge)
+        run: git add --all
+        
+      - uses: tibdex/github-app-token@v1
+        #if: ${{ github.event_name=='push' }} # only commit on push to master (PR merge)
+        id: generate-token
+        with:
+          app_id: ${{ secrets.TOKEN_APP_ID }}
+          private_key: ${{ secrets.TOKEN_APP_PRIVATE_KEY }}
+        
+      - name: create-pull-request
+        #if: ${{ github.event_name=='push' }} # only commit on push to master (PR merge)
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          title: "New client build"
+          body: "Automated client build from GeoNode Client CI"
+
