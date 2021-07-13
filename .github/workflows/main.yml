@@ -15,8 +15,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  if: ${{ false }}  # disable for now
   test-front-end:
+    if: ${{ false }}  # disable for now
     env:
       working-directory: ./geonode_mapstore_client/client
     runs-on: ubuntu-latest
