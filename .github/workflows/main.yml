@@ -123,6 +123,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ steps.generate-token.outputs.token }}
+          base: "github_actions"
           title: "New client build"
           body: "Automated client build from GeoNode Client CI"
 
