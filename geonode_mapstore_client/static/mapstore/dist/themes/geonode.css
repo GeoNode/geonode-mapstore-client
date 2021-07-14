@@ -23030,6 +23030,20 @@ Ported to CodeMirror by Peter Kroon
   font-size: 1.3125rem;
   font-weight: lighter;
 }
+.msgapi .gn-hero .gn-carousel {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+}
+.msgapi .gn-hero .gn-carousel .carousel-inner .item {
+  min-height: 400px;
+}
+.msgapi .gn-hero .gn-carousel .carousel-inner .item img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .msgapi .gn-loader-placeholder {
   position: relative;
   height: 100%;
