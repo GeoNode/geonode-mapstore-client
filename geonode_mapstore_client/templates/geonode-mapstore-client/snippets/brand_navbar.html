@@ -1,6 +1,8 @@
 {% load get_menu_json %}
 {% get_user_menu as USER_MENU %}
 
+{% block extra_style %}
+{% endblock %}
 <nav id="{{ id|default:'' }}" class="gn-menu gn-menu-symmetric">
     <div class="gn-menu-container">
         <div class="gn-menu-content">
@@ -8,8 +10,12 @@
                 {% block left_menu %}
                 <ul class="gn-menu-list">
                     <li>
-                        <a href="/">
-                            <img src="/static/mapstore/img/geonode-logo.svg">
+                        <a href="{% block logo_href %}/{% endblock %}">
+                            {% if custom_theme.logo and custom_theme.logo.url %}
+                                <img src="{{ custom_theme.logo.url }}">
+                            {% else %}
+                                <img src="/static/mapstore/img/geonode-logo.svg">
+                            {% endif %}
                         </a>
                     </li>
                 </ul>

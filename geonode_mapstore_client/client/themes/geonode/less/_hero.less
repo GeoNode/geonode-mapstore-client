@@ -44,4 +44,19 @@
             p:not(.gn-hero-tools) { font-size: @font-size-base * 1.5; font-weight: lighter; }
         }
     }
+    .gn-carousel {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        
+        .carousel-inner .item {
+            min-height: 400px;
+            img {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
 }
