@@ -58,7 +58,7 @@ describe('gnsave epics', () => {
             description: 'Description',
             thumbnail: 'thumbnail.jpeg'
         };
-        mockAxios.onPost().reply(() => [200, {}]);
+        mockAxios.onPost().reply(() => [200, { map: {} }]);
         testEpic(
             gnSaveContent,
             NUM_ACTIONS,

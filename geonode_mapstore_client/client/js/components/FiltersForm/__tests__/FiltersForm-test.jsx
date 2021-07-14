@@ -53,7 +53,7 @@ describe('FiltersForm component', () => {
                 done(e);
             }
         };
-        ReactDOM.render( <FiltersForm show onClear={onClear} submitOnChangeField={false} />, document.getElementById("container"));
+        ReactDOM.render( <FiltersForm show onClear={onClear} query={{ q: 'A' }} submitOnChangeField={false} />, document.getElementById("container"));
         const filterFormNode = document.querySelector('.gn-filter-form');
         expect(filterFormNode).toBeTruthy();
         const footerButtons = filterFormNode.querySelectorAll('.gn-filter-form-footer > button');
