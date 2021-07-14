@@ -1502,7 +1502,7 @@
                 "file": "Nombre del fichero",
                 "format": "Formato",
                 "targetStore": "Almacén de destino",
-                "subtype": "Tipo de destino",
+                "storeType": "Tipo de destino",
                 "storeName": "Nombre del almacén",
                 "layer": "Capa",
                 "transforms": "Cadena de transformaciones",

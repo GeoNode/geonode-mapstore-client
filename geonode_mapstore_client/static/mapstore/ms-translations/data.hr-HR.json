@@ -1213,7 +1213,7 @@
                 "file": "Ime datoteke",
                 "format": "Format",
                 "targetStore": "Odredišno skladište podataka",
-                "subtype": "Tip skladišta",
+                "storeType": "Tip skladišta",
                 "storeName": "Ime skladišta",
                 "layer": "Sloj",
                 "transforms": "Lanac transformacija",

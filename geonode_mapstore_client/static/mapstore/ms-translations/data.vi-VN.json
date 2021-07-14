@@ -619,7 +619,7 @@
                 "run": "Nhập gói này",
                 "status": "Trạng thái",
                 "storeName": "Tên cửa hàng",
-                "subtype": "Loại cửa hàng",
+                "storeType": "Loại cửa hàng",
                 "targetStore": "Cửa hàng mục tiêu",
                 "transforms": "Chuỗi biến đổi",
                 "update": "Cập nhật",

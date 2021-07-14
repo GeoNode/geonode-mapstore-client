@@ -1503,7 +1503,7 @@
                 "file": "Nome del file",
                 "format": "Formato",
                 "targetStore": "Destinazione",
-                "subtype": "Tipo di Destinazione",
+                "storeType": "Tipo di Destinazione",
                 "storeName": "Nome Destinazione",
                 "layer": "Layer",
                 "transforms": "Catena di trasformazioni",

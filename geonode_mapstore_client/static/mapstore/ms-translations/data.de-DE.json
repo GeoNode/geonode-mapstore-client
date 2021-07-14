@@ -1502,7 +1502,7 @@
                 "file": "Datei Name",
                 "format": "Format",
                 "targetStore": "Ziel",
-                "subtype": "Art des Ziels",
+                "storeType": "Art des Ziels",
                 "storeName": "Name des Ziels",
                 "layer": "Ebene",
                 "transforms": "Transformationen-Kette",

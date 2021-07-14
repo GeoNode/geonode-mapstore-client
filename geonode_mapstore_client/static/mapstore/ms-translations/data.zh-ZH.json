@@ -1168,7 +1168,7 @@
                 "file": "File Name",
                 "format": "Format",
                 "targetStore": "Target Store",
-                "subtype": "Store Type",
+                "storeType": "Store Type",
                 "storeName": "Store Name",
                 "layer": "Layer",
                 "transforms": "Transformations Chain",

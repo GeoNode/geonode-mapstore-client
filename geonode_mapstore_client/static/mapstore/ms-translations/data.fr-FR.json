@@ -1503,7 +1503,7 @@
                 "file": "Nom du fichier",
                 "format": "Format",
                 "targetStore": "Entrepôt de destination",
-                "subtype": "Type d'entrepôt",
+                "storeType": "Type d'entrepôt",
                 "storeName": "Nom de l'entrepôt",
                 "layer": "Couche",
                 "transforms": "Chaîne de transformations",
