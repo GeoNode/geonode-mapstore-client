@@ -2603,6 +2603,7 @@
                         {
                             "labelId": "gnviewer.save",
                             "type": "dropdown",
+                            "perms": [{ "type": "resource", "value": "change_resourcebase" }],
                             "items": [
                                 {
                                     "type": "plugin",
@@ -3161,6 +3162,7 @@
                         {
                             "labelId": "gnviewer.save",
                             "type": "dropdown",
+                            "perms": [{ "type": "resource", "value": "change_resourcebase" }],
                             "items": [
                                 {
                                     "type": "plugin",
@@ -3581,6 +3583,7 @@
                     "leftMenuItems": [
                         {
                             "labelId": "gnviewer.save",
+                            "perms": [{ "type": "resource", "value": "change_resourcebase" }],
                             "type": "dropdown",
                             "items": [
                                 {
@@ -3600,12 +3603,12 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
+                            "perms": [{ "type": "resource", "value": "change_resourcebase" }],
                             "items": [
                                 {
                                     "type": "link",
                                     "href": "{(state('gnResourceData') || {}).detail_url + '/metadata'}",
-                                    "labelId": "gnviewer.editMetadata",
-                                    "perms": [{ "type": "resource", "value": "change_resourcebase" }]
+                                    "labelId": "gnviewer.editMetadata"
                                 }
                             ]
                         },
@@ -3739,6 +3742,7 @@
                         {
                             "labelId": "gnviewer.save",
                             "type": "dropdown",
+                            "perms": [{ "type": "resource", "value": "change_resourcebase" }],
                             "items": [
                                 {
                                     "type": "plugin",
@@ -3762,8 +3766,7 @@
                                 {
                                     "type": "link",
                                     "href": "{(state('gnResourceData') || {}).detail_url + '/metadata'}",
-                                    "labelId": "gnviewer.editMetadata",
-                                    "perms": [{ "type": "resource", "value": "change_resourcebase" }]
+                                    "labelId": "gnviewer.editMetadata"
                                 }
                             ]
                         },
