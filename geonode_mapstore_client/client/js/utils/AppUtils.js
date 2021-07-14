@@ -24,6 +24,7 @@ import { mapSelector } from '@mapstore/framework/selectors/map';
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
 import isString from 'lodash/isString';
+import { addLocaleData } from 'react-intl';
 
 import url from 'url';
 import axios from '@mapstore/framework/libs/ajax';
@@ -36,6 +37,19 @@ export function getVersion() {
     }
     return 'dev';
 }
+
+export const loadLanguage = (code) => { addLocaleData(require(`react-intl/locale-data/${code}`));};
+
+export const supportedLocalesKeys = {"en": "en", "es": "es", "fr": "fr", "it": "it", "de": "de"};
+
+export const checkAndLoadUnSupportedLocales = (languageConfig = {}) => {
+    const languageKeys = Object.keys(languageConfig);
+    languageKeys.forEach((key) => {
+        if (!supportedLocalesKeys[key]) {
+            loadLanguage(key);
+        }
+    });
+};
 
 export function initializeApp() {
 
@@ -108,6 +122,7 @@ export function setupConfiguration({
     );
     const supportedLocales = defaultSupportedLocales || getSupportedLocales();
     setSupportedLocales(supportedLocales);
+    checkAndLoadUnSupportedLocales(supportedLocales);
     const locale = supportedLocales[geoNodePageConfig.languageCode]?.code;
     setConfigProp('locale', locale);
     const geoNodeResourcesInfo = getConfigProp('geoNodeResourcesInfo') || {};

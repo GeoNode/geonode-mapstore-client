@@ -22,7 +22,8 @@
     "test": "mapstore-project test geonode",
     "test:watch": "mapstore-project test:watch geonode",
     "update-project": "mapstore-project update geonode",
-    "lint": "eslint js --ext .jsx,.js"
+    "lint": "eslint js --ext .jsx,.js",
+    "compileLocales": "node copyUnsupportedLocales.js"
   },
   "author": "GeoSolutions",
   "license": "BSD-2-Clause",
