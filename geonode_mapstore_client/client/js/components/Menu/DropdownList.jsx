@@ -14,7 +14,7 @@ import Dropdown from '@js/components/Dropdown';
 import Badge from '@js/components/Badge';
 import NavLink from './NavLink';
 import { createPortal } from 'react-dom';
-import FaIcon from '@js/components/home/FaIcon';
+import FaIcon from '@js/components/FaIcon';
 import {
     isValidBadgeValue
 } from '@js/utils/MenuUtils';

@@ -11,7 +11,7 @@ import Dropdown from '@js/components/Dropdown';
 import Button from '@js/components/Button';
 import Badge from '@js/components/Badge';
 import Message from '@mapstore/framework/components/I18N/Message';
-import FaIcon from '@js/components/home/FaIcon';
+import FaIcon from '@js/components/FaIcon';
 import useLocalStorage from '@js/hooks/useLocalStorage';
 import Menu from '@js/components/Menu';
 
@@ -36,45 +36,45 @@ const FiltersMenu = forwardRef(({
     }
     return (
         <div
-            className="gn-filters-menu"
+            className="gn-filters-menu gn-menu gn-default"
             style={style}
             ref={ref}
         >
-            <div className="gn-filters-menu-container">
-                <div className="gn-filters-menu-main">
+            <div className="gn-menu-container">
+                <div className="gn-menu-content">
+                    <div className="gn-menu-fill">
+                        <Button
+                            variant={filtersActive ? 'primary' : 'default'}
+                            size="sm"
+                            onClick={onClick}
+                        >
+                            <Message msgId="gnhome.filtersCount" msgParams={{ count: totalFilters }} />
+                        </Button>
+                        {filtersActive && <Button
+                            variant="default"
+                            size="sm"
+                            onClick={onClear}
+                        >
+                            <Message msgId="gnhome.clearFilters"/>
+                        </Button>}
+                        {' '}
+                        <Badge><Message msgId="gnhome.resourcesFound" msgParams={{ count: totalResources }}/></Badge>
+                    </div>
+                    <Menu
+                        items={cardsMenu}
+                        containerClass={`gn-menu-list`}
+                        size="sm"
+                        alignRight
+                    />
                     <Button
-                        variant={filtersActive ? 'primary' : 'default'}
-                        size="sm"
-                        onClick={onClick}
-                    >
-                        <Message msgId="gnhome.filtersCount" msgParams={{ count: totalFilters }} />
-                    </Button>
-                    {filtersActive && <Button
                         variant="default"
+                        onClick={handleToggleCardLayoutStyle}
                         size="sm"
-                        onClick={onClear}
                     >
-                        <Message msgId="gnhome.clearFilters"/>
-                    </Button>}
-                    {' '}
-                    <Badge><Message msgId="gnhome.resourcesFound" msgParams={{ count: totalResources }}/></Badge>
-                </div>
-                <Menu
-                    items={cardsMenu}
-                    containerClass={`gn-cards-menu`}
-                    size="sm"
-                    alignRight
-                />
-                <Button
-                    variant="default"
-                    onClick={handleToggleCardLayoutStyle}
-                    size="sm"
-                >
-                    <FaIcon name={cardLayoutStyle === 'grid' ? 'list' : 'th'} />
-                </Button>
-                <div className="gn-filters-menu-tools">
-
-                    {orderOptions.length > 0 && <Dropdown pullRight>
+                        <FaIcon name={cardLayoutStyle === 'grid' ? 'list' : 'th'} />
+                    </Button>
+                    {orderOptions.length > 0 &&
+                    <Dropdown pullRight>
                         <Dropdown.Toggle
                             id="sort-dropdown"
                             bsStyle="default"

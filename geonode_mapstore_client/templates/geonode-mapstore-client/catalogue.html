@@ -1,0 +1,59 @@
+{% load static %}
+{% load client_lib_tags %}
+{% load client_version %}
+<!DOCTYPE html>
+<html class="msgapi">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+        <link href="{% static 'mapstore/dist/themes/geonode.css' %}?{% client_version %}" rel="stylesheet" />
+        <title>{{ SITE_NAME }}</title>
+        <link rel="shortcut icon" href="{% static 'geonode/img/favicon.ico' %}" />
+        {% include './snippets/loader_style.html' %}
+        {% block extra_style %}
+        {% endblock %}
+    </head>
+
+    <body class="gn-catalogue gn-theme gn-theme-light ms2">
+
+        {% block gn_config %}
+            {% include './_geonode_config.html' %}
+        {% endblock %}
+
+        {% block header %}
+            {% include './snippets/header.html' %}
+        {% endblock %}
+
+        {% block container %}
+            <div id="ms-container">
+                <div class="gn-main-loader-container">
+                    <div class="gn-main-loader-content">
+                        <div class="gn-main-loader"></div>
+                        <div class="gn-main-loader-text"></div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
+        {% block ms_scripts %}
+            <script id="gn-script" src="{% static 'mapstore/dist/gn-catalogue.js' %}?{% client_version %}"></script>
+        {% endblock %}
+
+        {% block footer %}
+            {% include './snippets/footer.html' %}
+        {% endblock %}
+
+        {% block scripts %}
+            <script src="{% static "lib/js/jquery.min.js" %}"></script>
+            <script src="{% static "lib/js/bootstrap.min.js" %}"></script>
+            <script type="text/javascript">
+                // enable dropdown functionalities
+                $('.dropdown-toggle').dropdown();
+            </script>
+        {% endblock %}
+
+    </body>
+</html>

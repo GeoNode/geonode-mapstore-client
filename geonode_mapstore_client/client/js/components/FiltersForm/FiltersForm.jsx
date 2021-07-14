@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import castArray from 'lodash/castArray';
 import Button from '@js/components/Button';
 import Message from '@mapstore/framework/components/I18N/Message';
-import FaIcon from '@js/components/home/FaIcon';
+import FaIcon from '@js/components/FaIcon';
 import isEqual from 'lodash/isEqual';
 import FilterByExtent from './FilterByExtent';
 import FilterItems from './FilterItems';

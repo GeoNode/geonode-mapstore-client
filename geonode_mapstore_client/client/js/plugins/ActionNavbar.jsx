@@ -51,6 +51,8 @@ function ActionNavbarPlugin({
 
         <ActionNavbar
             leftItems={leftItems}
+            variant="default"
+            size="sm"
         />
     );
 }

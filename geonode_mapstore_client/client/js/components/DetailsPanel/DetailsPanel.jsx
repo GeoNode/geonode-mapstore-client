@@ -8,7 +8,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
-import FaIcon from '@js/components/home/FaIcon';
+import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
 import Spinner from '@js/components/Spinner';
 import Message from '@mapstore/framework/components/I18N/Message';

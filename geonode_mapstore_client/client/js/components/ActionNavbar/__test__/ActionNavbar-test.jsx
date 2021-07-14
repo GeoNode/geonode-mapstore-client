@@ -186,7 +186,7 @@ describe('Test GeoNode action navbar component', () => {
     });
     it('should render with default', () => {
         ReactDOM.render( <ActionNavbar/>, document.getElementById("container"));
-        const el = document.querySelector('.gn-action-navbar');
+        const el = document.querySelector('.gn-menu');
         expect(el).toExist();
     });
 
@@ -196,9 +196,9 @@ describe('Test GeoNode action navbar component', () => {
             rightItems={conf.rightItems.items}
         />, document.getElementById("container"));
 
-        const el = document.querySelector('.gn-action-navbar');
+        const el = document.querySelector('.gn-menu');
         expect(el).toExist();
-        const navBarContent = document.querySelector('.gn-action-navbar-content');
+        const navBarContent = document.querySelector('.gn-menu-content');
         expect(navBarContent).toExist();
 
     });

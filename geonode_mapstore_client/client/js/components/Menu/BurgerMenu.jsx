@@ -10,7 +10,7 @@
 import React from 'react';
 import DropdownList from '@js/components/Menu/DropdownList';
 
-const BurgerMenu = ({items}) => {
+const BurgerMenu = ({items, variant}) => {
 
     return (
         <div className={`gn-sub-flat-menu-container`} >
@@ -18,6 +18,7 @@ const BurgerMenu = ({items}) => {
                 toogleIcon={`bars`}
                 className={`gn-sub-flat-menu`}
                 items={items}
+                variant={variant}
             />
         </div>
 

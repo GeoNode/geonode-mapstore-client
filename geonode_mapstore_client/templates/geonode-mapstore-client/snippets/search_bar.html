@@ -1,0 +1,238 @@
+<div id="gn-search-bar" class="gn-search-bar">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <button id="gn-search-bar-clear" type="button" class="btn btn-default" style="display: none;">
+                <i class="fa fa-times"></i>
+            </button>
+            <button id="gn-search-bar-apply" type="button" class="btn btn-default">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+
+        <input
+            placeholder="Search"
+            class="form-control" value=""
+            style="outline: none; box-shadow: none;"
+        >
+        <div class="input-group-append">
+            <div id="gn-search-bar-loading" class="gn-spinner" style="visibility: hidden;"><div></div></div>
+        </div>
+    </div>
+    <div class="gn-suggestions" style="display: none;">
+        <div class="gn-suggestions-header">
+            <button id="gn-search-bar-clear-suggestions" type="button" class="btn btn-default">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <div class="list-group">
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        window.addEventListener('DOMContentLoaded', function() {
+
+            const debounceTime = 300;
+            const scrollOffset = 200;
+            const pageSize = 10;
+            const searchInput = document.querySelector('#gn-search-bar input');
+            const suggestionsPanel = document.querySelector('#gn-search-bar .gn-suggestions');
+            const suggestionsPanelList = document.querySelector('#gn-search-bar .gn-suggestions .list-group');
+
+            const searchClear = document.querySelector('#gn-search-bar-clear');
+            const searchClearSuggestions = document.querySelector('#gn-search-bar-clear-suggestions');
+            const searchApply = document.querySelector('#gn-search-bar-apply');
+            const searchLoading = document.querySelector('#gn-search-bar-loading');
+
+            var request = null;
+            var timeout = null;
+            var value = '';
+            var page = 1;
+            var total = 0;
+            var suggestions = [];
+            var loading = false;
+
+            searchLoading.style.visibility = 'hidden';
+
+            function clearRequest() {
+                if (request && request.abort) {
+                    request.abort();
+                    request = null;
+                }
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                }
+            }
+
+            function renderSuggestions() {
+                suggestionsPanel.style.display = suggestions.length === 0 ? 'none' : 'block';
+                suggestionsPanelList.innerHTML = '';
+                for (var i = 0; i < suggestions.length; i++) {
+                    const button = document.createElement('button');
+                    button._gnSuggestion = suggestions[i];
+                    button.innerHTML = suggestions[i].title;
+                    button.setAttribute('class', 'list-group-item list-group-item-action');
+                    button.onclick = function(event) {
+                        onSearch(event.target._gnSuggestion && event.target._gnSuggestion.title);
+                    }
+                    suggestionsPanelList.appendChild(button);
+                }
+            }
+
+            function getQParamFromHash() {
+                const hash = window.location.hash || '';
+                const splitHash = hash.split('?') || [];
+                const queryHash = splitHash[1] || '';
+                const params = queryHash.split('&');
+                var q = '';
+                for (var i = 0; i < params.length; i++) {
+                    if (params[i].indexOf('q=') === 0) {
+                        q = params[i].replace('q=', '');
+                    }
+                }
+                return q;
+            }
+
+            function onSearch(q) {
+                const hash = window.location.hash || '';
+                const splitHash = hash.split('?') || [];
+                const queryHash = splitHash[1] || '';
+                const params = queryHash.split('&');
+                var newParams = q ? ['q=' + q] : []; 
+                for (var i = 0; i < params.length; i++) {
+                    if (params[i] && params[i].indexOf('q=') !== 0) {
+                        newParams.push(params[i]);
+                    }
+                }
+
+                const newQueryHash = newParams.join('&');
+
+                location.href = '/catalogue/#/search' + (newQueryHash ? '?' + newQueryHash : '');
+
+                clearRequest();
+                suggestions = [];
+                renderSuggestions();
+                searchLoading.style.visibility = 'hidden';
+            }
+
+            function getSuggestions(options) {
+                clearRequest();
+                loading = true;
+                searchLoading.style.visibility = 'visible';
+                timeout = setTimeout(function() {
+                    const url = '/api/v2/resources' +
+                    '?page=' + options.page +
+                    '&search=' + options.value +
+                    '&search_fields=title' +
+                    '&search_fields=abstract';
+                    request = $.ajax({
+                        url: url,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            options.resolve(response);
+                            request = null;
+                            timeout = null;
+                            loading = false;
+                            searchLoading.style.visibility = 'hidden';
+                        },
+                        error: function(response) {
+                            options.resolve({
+                                resources: [],
+                                total: 0
+                            });
+                            request = null;
+                            timeout = null;
+                            loading = false;
+                            searchLoading.style.visibility = 'hidden';
+                        },
+                    });
+                }, options.debounceTime || 0);
+            }
+
+            searchInput.addEventListener('input', function(event) {
+                page = 1;
+                total = 0;
+                value = event.target.value;
+                if (!value) {
+                    clearRequest();
+                    suggestions = [];
+                    loading = false;
+                    searchLoading.style.visibility = 'hidden';
+                    return renderSuggestions();
+                }
+                return getSuggestions({
+                    value: value,
+                    page: page,
+                    pageSize: pageSize,
+                    debounceTime: debounceTime,
+                    resolve: function(response) {
+                        suggestions = response && response.resources || [];
+                        total = response.total;
+                        renderSuggestions();
+                    }
+                });
+            });
+
+            suggestionsPanelList.addEventListener('scroll', function() {
+                const scrollTop = suggestionsPanelList.scrollTop;
+                const clientHeight = suggestionsPanelList.clientHeight;
+                const scrollHeight = suggestionsPanelList.scrollHeight;
+                const isScrolled = scrollTop + clientHeight >= scrollHeight - scrollOffset;
+                if (isScrolled && suggestions.length < total && !loading) {
+                    page = page + 1;
+                    return getSuggestions({
+                        value: value,
+                        page: page,
+                        pageSize: pageSize,
+                        debounceTime: debounceTime,
+                        resolve: function(response) {
+                            const newSuggestions = response && response.resources || [];
+                            suggestions = [...suggestions, ...newSuggestions];
+                            renderSuggestions();
+                        }
+                    });
+                }
+            });
+
+            function hashChange() {
+                const newQParam = getQParamFromHash();
+                if (newQParam !== value) {
+                    searchInput.value = newQParam;
+                }
+                searchClear.style.display = newQParam ? 'block' : 'none';
+            }
+
+            window.addEventListener('hashchange', hashChange, false);
+            hashChange();
+
+
+            searchClear.addEventListener('click', function() {
+                onSearch('');
+            });
+
+            searchClearSuggestions.addEventListener('click', function() {
+                suggestions = [];
+                renderSuggestions();
+            });
+            searchApply.addEventListener('click', function() {
+                if (value) {
+                    onSearch(value);
+                }
+            });
+
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    if (value) {
+                        onSearch(value);
+                    }
+                }
+            });
+
+        });
+    })();
+</script>
+

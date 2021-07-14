@@ -60,7 +60,6 @@ const Router = forwardRef(({
     geoNodeConfiguration,
     lazyPlugins
 }, ref) => {
-    const variant = geoNodeConfiguration?.theme?.variant || 'light';
     return (
         <>
             <RootStyle
@@ -73,7 +72,7 @@ const Router = forwardRef(({
             >
                 <div
                     id={id}
-                    className={`${className} gn-theme-${variant} gn-theme`}
+                    className={className}
                     ref={ref}
                 >
                     <Localized

@@ -307,10 +307,6 @@ export const plugins = {
         'ActionNavbar',
         import(/* webpackChunkName: 'plugins/action-navbar-plugin' */ '@js/plugins/ActionNavbar')
     ),
-    BrandNavbarPlugin: toLazyPlugin(
-        'BrandNavbar',
-        import(/* webpackChunkName: 'plugins/brand-navbar-plugin' */ '@js/plugins/BrandNavbar')
-    ),
     DetailViewerPlugin: toLazyPlugin(
         'DetailViewer',
         import(/* webpackChunkName: 'plugins/detail-viewer-plugin' */ '@js/plugins/DetailViewer')

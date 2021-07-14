@@ -36,11 +36,14 @@ import searchconfig from '@mapstore/framework/reducers/searchconfig';
 import widgets from '@mapstore/framework/reducers/widgets';
 // end
 
+import SearchRoute from '@js/routes/Search';
+import DetailRoute from '@js/routes/Detail';
 import LayerViewerRoute from '@js/routes/LayerViewer';
 import MapViewerRoute from '@js/routes/MapViewer';
 import GeoStoryViewerRoute from '@js/routes/GeoStoryViewer';
 import DocumentViewerRoute from '@js/routes/DocumentViewer';
 
+import gnsearch from '@js/reducers/gnsearch';
 import gnresource from '@js/reducers/gnresource';
 import gnsettings from '@js/reducers/gnsettings';
 
@@ -52,7 +55,6 @@ import {
 
 import {
     setupConfiguration,
-    getVersion,
     initializeApp,
     getPluginsConfiguration
 } from '@js/utils/AppUtils';
@@ -64,6 +66,8 @@ import {
     gnSetLayersPermissions
 } from '@js/epics';
 import gnviewerEpics from '@js/epics/gnviewer';
+import gnsearchEpics from '@js/epics/gnsearch';
+import gnlocaleEpics from '@js/epics/gnlocale';
 import maplayout from '@mapstore/framework/reducers/maplayout';
 
 import pluginsDefinition from '@js/plugins/index';
@@ -126,6 +130,23 @@ const routes = [
             '/document/:pk'
         ],
         component: DocumentViewerRoute
+    },
+    {
+        name: 'resources',
+        path: [
+            '/',
+            '/search/',
+            '/search/filter'
+        ],
+        component: SearchRoute
+    },
+    {
+        name: 'detail',
+        path: [
+            '/detail/:pk',
+            '/detail/:ctype/:pk'
+        ],
+        component: DetailRoute
     }
 ];
 
@@ -172,13 +193,7 @@ Promise.all([
                             }
                         }
                     },
-                    themeCfg: {
-                        path: '/static/mapstore/dist/themes',
-                        prefixContainer: undefined,
-                        version: getVersion(),
-                        prefix: 'msgapi',
-                        theme: 'geonode'
-                    },
+                    themeCfg: null,
                     pluginsConfig: getPluginsConfiguration(localConfig.plugins, pluginsConfigKey),
                     lazyPlugins: pluginsDefinition.lazyPlugins,
                     pluginsDef: {
@@ -210,6 +225,7 @@ Promise.all([
                         searchconfig,
                         widgets,
                         geostory,
+                        gnsearch,
                         ...pluginsDefinition.reducers
                     },
                     appEpics: {
@@ -218,7 +234,9 @@ Promise.all([
                         gnCheckSelectedLayerPermissions,
                         gnSetLayersPermissions,
                         ...pluginsDefinition.epics,
-                        ...gnviewerEpics
+                        ...gnviewerEpics,
+                        ...gnsearchEpics,
+                        ...gnlocaleEpics
                     },
                     geoNodeConfiguration,
                     initialActions: [

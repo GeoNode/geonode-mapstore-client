@@ -36,6 +36,18 @@
     z-index: 20;
     border-width: 2px;
     border-style: solid;
+    min-width: 500px;
+    .input-group {
+        display: flex;
+    }
+    .input-group-append,
+    .input-group-prepend {
+        display: flex;
+        align-items: center;
+    }
+    .input-group-append {
+        padding: 0 0.25rem;
+    }
     &.focus {
         outline-width: 3px;
         outline-style: solid;

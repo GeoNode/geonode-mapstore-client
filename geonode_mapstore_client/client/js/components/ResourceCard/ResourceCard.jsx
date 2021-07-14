@@ -8,8 +8,8 @@
 
 import React, { forwardRef } from 'react';
 import Message from '@mapstore/framework/components/I18N/Message';
-import FaIcon from '@js/components/home/FaIcon';
-import Tag from '@js/components/home/Tag';
+import FaIcon from '@js/components/FaIcon';
+import Tag from '@js/components/Tag';
 import Dropdown from '@js/components/Dropdown';
 import {
     getUserName,

@@ -102,11 +102,13 @@ const SharePlugin = connect(
 function ShareButton({
     enabled,
     variant,
-    onClick
+    onClick,
+    size
 }) {
     return enabled
         ? <Button
             variant={variant || "primary"}
+            size={size}
             onClick={() => onClick()}
         >
             <Message msgId="share.title"/>

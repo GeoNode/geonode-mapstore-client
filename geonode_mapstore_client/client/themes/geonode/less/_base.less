@@ -5,6 +5,7 @@
 
 #gn-base-components-theme(@theme-vars) {
     [data-ms2-container],
+    body,
     .gn-theme {
         .color-var(@theme-vars[main-color]);
         .background-color-var(@theme-vars[main-bg]);
@@ -51,6 +52,20 @@
         .color-var(@theme-vars[badge-color]);
         .background-color-var(@theme-vars[badge-bg]);
     }
+
+    .label {
+        .color-var(@theme-vars[main-color]);
+        .background-color-var(@theme-vars[main-bg]);
+    }
+    
+    .label-default {
+        .color-var(@theme-vars[primary-contrast]);
+        .background-color-var(@theme-vars[primary]);
+    }
+
+    .page-header {
+        .border-color-var(@theme-vars[main-border-color]);
+    }
 }
 
 // **************
@@ -64,4 +79,38 @@
     font-weight: 400;
     line-height: 1.5;
     text-align: left;
+}
+
+.gn-catalogue {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    flex-direction: column;
+    .gn-footer {
+        position: relative;
+    }
+    .gn-main-header {
+        z-index: 150;
+    }
+    #ms-container {
+        flex: 1;
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        overflow: hidden;
+        transform: translate(0, 0);
+    }
+}
+
+.gn-homepage {
+    .app-router {
+        position: relative !important;
+    }
 }

@@ -10,7 +10,7 @@ import React from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import DetailsPanel from '@js/components/home/DetailsPanel';
+import DetailsPanel from '@js/components/DetailsPanel';
 import { userSelector } from '@mapstore/framework/selectors/security';
 import {
     editTitleResource,
@@ -48,8 +48,9 @@ const ConnectedDetailsPanel = connect(
 
 const ButtonViewer = ({
     onClick,
-    isEnabledViewer,
-    hide
+    hide,
+    variant,
+    size
 }) => {
 
     const handleClickButton = () => {
@@ -58,9 +59,10 @@ const ButtonViewer = ({
 
     return !hide
         ? (<Button
-            variant="primary"
+            variant={variant}
+            size={size}
             onClick={handleClickButton}
-            active={!isEnabledViewer} > <Message msgId="gnviewer.details"/>
+        > <Message msgId="gnviewer.details"/>
         </Button>)
         : null
     ;
@@ -68,12 +70,10 @@ const ButtonViewer = ({
 
 const ConnectedButton = connect(
     createSelector([
-        state => state?.controls?.DetailViewer?.enabled || false,
         isNewResource,
         getResourceId
     ],
-    (isEnabledViewer, isNew, resourcePk) => ({
-        isEnabledViewer,
+    (isNew, resourcePk) => ({
         hide: isNew || !resourcePk
     })),
     {
@@ -168,7 +168,7 @@ export default createPlugin('DetailViewer', {
             priority: 1
         },
         ActionNavbar: {
-            name: 'ButtonViewer',
+            name: 'DetailViewerButton',
             Component: ConnectedButton,
             priority: 1
         }

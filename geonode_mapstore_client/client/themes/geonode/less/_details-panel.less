@@ -60,7 +60,7 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        overflow-y: scroll;
+        overflow-y: auto;
     }
     &.loading .gn-details-panel-content {
         h1,
@@ -173,5 +173,29 @@
     }
     .editContainer, .gn-text-editable{
         display: inline-block;
+    }
+}
+
+.gn-fixed-card-grid {
+    .gn-details-panel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        max-width: 600px;
+    }
+    &.gn-size-md {
+        .gn-details-panel {
+            max-width: 500px;
+        }
+    }
+    &.gn-size-sm {
+        .gn-details-panel {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            z-index: 100;
+        }
     }
 }

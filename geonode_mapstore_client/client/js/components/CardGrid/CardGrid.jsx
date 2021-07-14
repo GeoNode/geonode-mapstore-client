@@ -9,8 +9,8 @@
 import React, { useEffect, useRef } from 'react';
 import Spinner from '@js/components/Spinner';
 import HTML from '@mapstore/framework/components/I18N/HTML';
-import FaIcon from '@js/components/home/FaIcon';
-import ResourceCard from '@js/components/home/ResourceCard';
+import FaIcon from '@js/components/FaIcon';
+import ResourceCard from '@js/components/ResourceCard';
 import { withResizeDetector } from 'react-resize-detector';
 import useLocalStorage from '@js/hooks/useLocalStorage';
 import { hasPermissionsTo } from '@js/utils/MenuUtils';
@@ -108,7 +108,7 @@ const Cards = withResizeDetector(({
     );
 });
 
-const CardGrid = withResizeDetector(({
+const CardGrid = ({
     resources,
     loading,
     page,
@@ -119,45 +119,40 @@ const CardGrid = withResizeDetector(({
     containerStyle,
     header,
     cardOptions,
-    column,
-    isColumnActive,
     messageId,
     children,
-    pageSize,
-    width,
-    buildHrefByTemplate
+    buildHrefByTemplate,
+    scrollContainer
 }) => {
 
-    const columnNode = useRef();
-    const columnWidth = columnNode.current
-        ? columnNode.current.getBoundingClientRect().width
-        : 0;
-
-    const state = useRef({});
-
-    state.current = {
-        page,
-        loading,
-        isNextPageAvailable,
-        onLoad
+    const updateOnScroll = useRef({});
+    updateOnScroll.current = () => {
+        const scrollTop = scrollContainer
+            ? scrollContainer.scrollTop
+            : document.body.scrollTop || document.documentElement.scrollTop;
+        const clientHeight = scrollContainer
+            ? scrollContainer.clientHeight
+            : window.innerHeight;
+        const scrollHeight = scrollContainer
+            ? scrollContainer.scrollHeight
+            : document.body.scrollHeight || document.documentElement.scrollHeight;
+        const offset = 200;
+        const isScrolled = scrollTop + clientHeight >= scrollHeight - offset;
+        if (isScrolled && !loading && isNextPageAvailable) {
+            onLoad(page + 1);
+        }
     };
 
     useEffect(() => {
+        let target = scrollContainer || window;
         function onScroll() {
-            const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-            const clientHeight = window.innerHeight;
-            const scrollHeight = document.body.scrollHeight || document.documentElement.scrollHeight;
-            const offset = 200;
-            const isScrolled = scrollTop + clientHeight >= scrollHeight - offset;
-            if (isScrolled && !state.current.loading && state.current.isNextPageAvailable) {
-                state.current.onLoad(state.current.page + 1);
-            }
+            updateOnScroll.current();
         }
-        window.addEventListener('scroll', onScroll);
+        target.addEventListener('scroll', onScroll);
         return () => {
-            window.removeEventListener('scroll', onScroll);
+            target.removeEventListener('scroll', onScroll);
         };
-    }, []);
+    }, [scrollContainer]);
 
     const hasResources = resources?.length > 0;
 
@@ -165,10 +160,7 @@ const CardGrid = withResizeDetector(({
         <div className="gn-card-grid">
             {header}
             <div style={{
-                display: 'flex',
-                ...(pageSize === 'sm' && {
-                    flexDirection: 'column'
-                })
+                display: 'flex'
             }}>
                 <div style={{ flex: 1 }}>
                     <div className="gn-card-grid-container" style={containerStyle}>
@@ -184,7 +176,6 @@ const CardGrid = withResizeDetector(({
                             formatHref={formatHref}
                             isCardActive={isCardActive}
                             options={cardOptions}
-                            containerWidth={pageSize === 'md' && isColumnActive ? width - columnWidth : undefined}
                             buildHrefByTemplate={buildHrefByTemplate}
                         />
                         <div className="gn-card-grid-pagination">
@@ -195,13 +186,10 @@ const CardGrid = withResizeDetector(({
                         </div>
                     </div>
                 </div>
-                <div ref={columnNode}>
-                    {column}
-                </div>
             </div>
         </div>
     );
-});
+};
 
 CardGrid.defaultProps = {
     page: 1,

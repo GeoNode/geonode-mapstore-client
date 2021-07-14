@@ -29,7 +29,7 @@
     background-color: @gn-main-bg;
     display: flex;
     flex-direction: column;
-    position: sticky;
+    position: relative;
     width: 100%;
     height: 100%;
     .gn-filter-form-header {
@@ -67,17 +67,6 @@
         position: sticky;
         bottom: 0;
         padding: 0.5rem;
-
-        @media only screen and (max-width : 768px) {
-            width: 100%;
-        }
-    }
-    @media only screen and (max-width : 768px) {
-        max-height:100% !important;
-        height: 100%;
-        top: 0 !important;
-        margin-top: 0 !important;
-
     }
     .gn-filter-form-divider {
         width: calc(100% - 0.5rem);
@@ -95,4 +84,25 @@
     padding: 0;
     margin-right: auto;
     margin-left: auto;
+}
+
+.gn-fixed-card-grid {
+    .gn-filter-form {
+        max-width: 500px;
+    }
+    &.gn-size-md {
+        .gn-filter-form {
+            max-width: 400px;
+        }
+    }
+    &.gn-size-sm {
+        .gn-filter-form {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            z-index: 100;
+        }
+    }
 }

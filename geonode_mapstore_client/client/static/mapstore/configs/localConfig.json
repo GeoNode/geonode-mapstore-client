@@ -350,7 +350,7 @@
                             "labelId": "gnhome.map",
                             "value": "map",
                             "type": "link",
-                            "href": "/viewer/#/map/new",
+                            "href": "/catalogue/#/map/new",
                             "authenticated": true,
                             "perms": [{ "type": "user", "value": "add_resource" }]
                         },
@@ -358,7 +358,7 @@
                             "labelId": "gnhome.geostory",
                             "value": "geostory",
                             "type": "link",
-                            "href": "/viewer/#/geostory/new",
+                            "href": "/catalogue/#/geostory/new",
                             "authenticated": true,
                             "perms": [{ "type": "user", "value": "add_resource" }]
                         }
@@ -543,7 +543,7 @@
                         },
                         {
                             "type": "link",
-                            "href": "/viewer/#/map/new",
+                            "href": "/catalogue/#/map/new",
                             "labelId": "gnhome.createMap",
                             "authenticated": true,
                             "permissions": [],
@@ -571,7 +571,7 @@
                         },
                         {
                             "type": "link",
-                            "href": "/viewer/#/geostory/new",
+                            "href": "/catalogue/#/geostory/new",
                             "labelId": "gnhome.createGeostory",
                             "authenticated": true,
                             "permissions": [],
@@ -2616,7 +2616,7 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "ButtonViewer"
+                            "name": "DetailViewerButton"
                         },
                         {
                             "labelId": "gnviewer.edit",
@@ -2667,9 +2667,6 @@
                 }
             },
             {
-                "name": "Print"
-            },
-            {
                 "name": "SaveAs",
                 "cfg": {
                     "disablePermission": true
@@ -2686,9 +2683,6 @@
                 "cfg": {
                     "pathTemplate": "/maps/{id}/embed"
                 }
-            },
-            {
-                "name": "BrandNavbar"
             },
             {
                 "name": "DetailViewer"
@@ -2949,9 +2943,6 @@
                 }
             },
             {
-                "name": "BrandNavbar"
-            },
-            {
                 "name": "FeatureEditor",
                 "override": {
                     "ViewerLayout": {
@@ -3068,9 +3059,6 @@
                 }
             },
             {
-                "name": "BrandNavbar"
-            },
-            {
                 "name": "StyleEditor",
                 "cfg": {
                     "styleService": {
@@ -3174,7 +3162,7 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "ButtonViewer"
+                            "name": "DetailViewerButton"
                         },
                         {
                             "labelId": "gnviewer.edit",
@@ -3211,8 +3199,6 @@
                 }
             },
             { "name": "DetailViewer"},
-            { "name": "ButtonViewer"},
-            { "name": "BrandNavbar" },
             {
                 "name": "Map",
                 "cfg": {
@@ -3595,7 +3581,7 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "ButtonViewer"
+                            "name": "DetailViewerButton"
                         },
                         {
                             "labelId": "gnviewer.edit",
@@ -3622,8 +3608,6 @@
                     ]
                 }
             },
-            { "name": "BrandNavbar" },
-            { "name": "ButtonViewer" },
             { "name": "DetailViewer"},
             {
                 "name": "GeoStory",
@@ -3752,7 +3736,7 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "ButtonViewer"
+                            "name": "DetailViewerButton"
                         },
                         {
                             "labelId": "gnviewer.edit",
@@ -3781,9 +3765,7 @@
                     ]
                 }
             },
-            { "name": "BrandNavbar" },
             { "name": "DetailViewer"},
-            { "name": "ButtonViewer"},
             { "name": "Save" },
             { "name": "SaveAs" },
             { "name": "Share" },

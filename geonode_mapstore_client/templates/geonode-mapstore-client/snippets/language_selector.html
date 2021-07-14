@@ -1,0 +1,90 @@
+{% load i18n %}
+{% if csrf_token != "NOTPROVIDED" %}
+{% get_current_language as LANGUAGE %}
+{% get_language_info for LANGUAGE as lang_info %}
+
+<form id="gn-language-selector-form" action="/i18n/setlang/" method="post" style="display:none;">
+    {% csrf_token %}
+    <input name="language" type="hidden" value="{{ LANGUAGE }}"/>
+</form>
+
+    {% if inline %}
+        <li id="gn-language-selector-inline" class="gn-language-selector inline">
+            {% for lang in LANGUAGES %}
+                <button
+                    data-lang-code="{{lang.0}}"
+                    data-lang-state="{% if lang.0 == LANGUAGE %}active{% else %}{% endif %}"
+                    class="btn btn-primary {% if lang.0 == LANGUAGE %} active{% else %}{% endif %}"
+                >
+                    {{lang.0}}
+                </button>
+            {% endfor %}
+        </li>
+        <script>
+            (function() {
+                const languageForm = document.querySelector('#gn-language-selector-form');
+                const languageInput = languageForm.querySelector('input[name="language"]');
+                const languageNodes = document.querySelectorAll('#gn-language-selector-inline button');
+
+                for (var i = 0; i < languageNodes.length; i++) {
+                    if (languageNodes[i].getAttribute('data-lang-state') !== 'active') {
+                        languageNodes[i].addEventListener('click', function(event) {
+                            const language = event.target.getAttribute('data-lang-code');
+                            if (language) {
+                                languageInput.value = language;
+                                languageForm.action = '/i18n/setlang/?next=' + (window.location && (window.location.pathname + window.location.hash) || '/');
+                                languageForm.submit();
+                            }
+                        });
+                    }
+                }
+            })();
+        </script>
+    {% else %}
+
+        <li class="gn-language-selector">
+            
+            <div class="dropdown" id="gn-language-selector-dropdown">
+                <button
+                    id="gn-language-selector"
+                    role="button"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    type="button"
+                    class="dropdown-toggle btn btn-{{variant|default:'default'}}"
+                    data-toggle="dropdown"
+                >
+                    {{ lang_info.name_local }}
+                </button>
+                <ul class="dropdown-menu{% if align_right %} dropdown-menu-right{% endif %}" aria-labelledby="gn-language-selector">
+                    {% for lang in LANGUAGES %}
+                        {% if lang.0 != LANGUAGE %} 
+                            <li>
+                                <a style="cursor:pointer;" data-lang-code="{{lang.0}}">{{ lang.1 }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </li>
+        <script>
+            (function() {
+                const languageForm = document.querySelector('#gn-language-selector-form');
+                const languageInput = languageForm.querySelector('input[name="language"]');
+                
+                const languageNodes = document.querySelectorAll('#gn-language-selector-dropdown .dropdown-menu li a');
+
+                for (var i = 0; i < languageNodes.length; i++) {
+                    languageNodes[i].addEventListener('click', function(event) {
+                        const language = event.target.getAttribute('data-lang-code');
+                        if (language) {
+                            languageInput.value = language;
+                            languageForm.action = '/i18n/setlang/?next=' + (window.location && (window.location.pathname + window.location.hash) || '/');
+                            languageForm.submit();
+                        }
+                    });
+                }
+            })();
+        </script>
+    {% endif %}
+{% endif %}

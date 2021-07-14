@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import FaIcon from '@js/components/home/FaIcon';
+import FaIcon from '@js/components/FaIcon';
 function Tag({
     active,
     children,

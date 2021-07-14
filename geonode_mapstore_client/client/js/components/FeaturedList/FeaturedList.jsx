@@ -10,8 +10,8 @@ import React, { useEffect, useState } from 'react';
 import Button from '@js/components/Button';
 import Spinner from '@js/components/Spinner';
 import HTML from '@mapstore/framework/components/I18N/HTML';
-import ResourceCard from '@js/components/home/ResourceCard';
-import FaIcon from '@js/components/home/FaIcon';
+import ResourceCard from '@js/components/ResourceCard';
+import FaIcon from '@js/components/FaIcon';
 import { withResizeDetector } from 'react-resize-detector';
 
 const Cards = withResizeDetector(({

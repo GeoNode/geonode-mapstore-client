@@ -83,7 +83,7 @@ export const getResourceTypesInfo = () => ({
             config: 'layer_preview',
             theme: 'preview'
         }),
-        formatDetailUrl: (resource) => (`/viewer/#/layer/${resource.pk}`),
+        formatDetailUrl: (resource) => (`/catalogue/#/layer/${resource.pk}`),
         name: 'Layer'
     },
     'map': {
@@ -92,28 +92,28 @@ export const getResourceTypesInfo = () => ({
             config: 'map_preview',
             theme: 'preview'
         }),
-        formatDetailUrl: (resource) => (`/viewer/#/map/${resource.pk}`),
+        formatDetailUrl: (resource) => (`/catalogue/#/map/${resource.pk}`),
         name: 'Map'
     },
     'document': {
         icon: 'file',
         name: 'Document',
-        formatDetailUrl: (resource) => (`/viewer/#/document/${resource.pk}`)
+        formatDetailUrl: (resource) => (`/catalogue/#/document/${resource.pk}`)
     },
     'geostory': {
         icon: 'book-open',
         name: 'GeoStory',
-        formatDetailUrl: (resource) => (`/viewer/#/geostory/${resource.pk}`)
+        formatDetailUrl: (resource) => (`/catalogue/#/geostory/${resource.pk}`)
     },
     'image': {
         icon: 'file-image',
         name: 'Image',
-        formatDetailUrl: (resource) => (`/viewer/#/document/${resource.pk}`)
+        formatDetailUrl: (resource) => (`/catalogue/#/document/${resource.pk}`)
     },
     'video': {
         icon: 'file-video',
         name: 'Video',
-        formatDetailUrl: (resource) => (`/viewer/#/document/${resource.pk}`)
+        formatDetailUrl: (resource) => (`/catalogue/#/document/${resource.pk}`)
     }
 });
 

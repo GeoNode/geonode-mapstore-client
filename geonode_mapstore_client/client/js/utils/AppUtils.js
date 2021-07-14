@@ -179,7 +179,7 @@ export function setupConfiguration({
     };
 }
 
-export function getPageSize(width) {
+export function getThemeLayoutSize(width) {
     if (width < 968) {
         return 'sm';
     }

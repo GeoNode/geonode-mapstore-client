@@ -16,7 +16,7 @@ import {
 
 let mockAxios;
 
-describe('GeoNode adapter api', () => {
+describe('GeoNode v2 api', () => {
     beforeEach(done => {
         global.__DEVTOOLS__ = true;
         mockAxios = new MockAdapter(axios);

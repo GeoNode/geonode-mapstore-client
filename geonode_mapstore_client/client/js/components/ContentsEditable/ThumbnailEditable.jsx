@@ -8,7 +8,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Thumbnail from '@mapstore/framework/components/misc/Thumbnail';
-import FaIcon from '@js/components/home/FaIcon';
+import FaIcon from '@js/components/FaIcon';
 import Message from '@mapstore/framework/components/I18N/Message';
 
 const ThumbnailEditable = ({

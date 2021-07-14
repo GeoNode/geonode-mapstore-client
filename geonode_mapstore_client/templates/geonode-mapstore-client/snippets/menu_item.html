@@ -1,0 +1,59 @@
+{% load i18n %}
+{% if menu_item %}
+    {% if menu_item.type == 'link' %}
+        <li>
+            <a
+                href="{{ menu_item.href }}"
+                target="{{ menu_item.target }}"
+                class="nav-link btn btn-{{variant|default:'default'}}"
+            >
+                {% trans menu_item.label %}
+            </a>
+        </li>
+    {% endif %}
+    {% if menu_item.type == 'divider' %}
+        <li role="separator" class="gn-menu-divider"></li>
+    {% endif %}
+    {% if menu_item.type == 'dropdown' %}
+        <li>
+            <div class="dropdown {{menu_item.className}}">
+                <button
+                    id="{{menu_item.id}}"
+                    role="button"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    type="button"
+                    class="dropdown-toggle btn btn-{{variant|default:'default'}}"
+                    data-toggle="dropdown"
+                >
+                    {% if menu_item.label %}
+                        {% trans menu_item.label %}
+                    {% endif %}
+                    {% if menu_item.image %}
+                        <img src="{{ menu_item.image }}">
+                    {% endif %}
+                </button>
+                <ul class="dropdown-menu{% if align_right %} dropdown-menu-right{% endif %}" aria-labelledby="{{menu_item.id}}">
+                    {% for child_item in menu_item.items %}
+                        {% if child_item.type == 'link' %}
+                            <li>
+                                <a
+                                    href="{{ child_item.href }}"
+                                    target="{{ child_item.target }}"
+                                >
+                                    {% trans child_item.label %}
+                                    {% if menu_item.badge %}
+                                        <span class="badge">{{ menu_item.badge }}</span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if child_item.type == 'divider' %}
+                            <li role="separator" class="divider"></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </li>
+    {% endif %}
+{% endif %}

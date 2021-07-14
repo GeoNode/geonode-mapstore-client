@@ -1,0 +1,34 @@
+{% load get_menu_json %}
+{% get_user_menu as USER_MENU %}
+
+<nav id="{{ id|default:'' }}" class="gn-menu gn-menu-symmetric">
+    <div class="gn-menu-container">
+        <div class="gn-menu-content">
+            <div class="gn-menu-content-left">
+                {% block left_menu %}
+                <ul class="gn-menu-list">
+                    <li>
+                        <a href="/">
+                            <img src="/static/mapstore/img/geonode-logo.svg">
+                        </a>
+                    </li>
+                </ul>
+                {% endblock %}
+            </div>
+            <div class="gn-menu-content-center">
+                {% block center_menu %}
+                    {% include './search_bar.html' %}
+                {% endblock %}
+            </div>
+            <div class="gn-menu-content-right">
+                {% block right_menu %}
+                <ul class="gn-menu-list">
+                    {% for menu_item in USER_MENU %}
+                        {% include './menu_item.html' with menu_item=menu_item align_right=True %}
+                    {% endfor %}
+                </ul>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</nav>
