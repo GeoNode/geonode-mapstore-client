@@ -82,11 +82,11 @@ export function editAbstractResource(abstract) {
 * @param {string} image resource
 */
 
-export function editThumbnailResource(thumbnail_url) {
+export function editThumbnailResource(thumbnailUrl) {
 
     return {
         type: EDIT_THUMBNAIL_RESOURCE,
-        thumbnail_url
+        thumbnailUrl
     };
 }
 

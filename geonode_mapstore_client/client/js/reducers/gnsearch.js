@@ -9,8 +9,6 @@
 import isNil from 'lodash/isNil';
 
 import {
-    UPDATE_SUGGESTIONS,
-    LOADING_SUGGESTIONS,
     SEARCH_RESOURCES,
     UPDATE_RESOURCES,
     LOADING_RESOURCES,
@@ -28,18 +26,6 @@ function gnsearch(state = {
     }
 }, action) {
     switch (action.type) {
-    case UPDATE_SUGGESTIONS: {
-        return {
-            ...state,
-            suggestions: action.suggestions
-        };
-    }
-    case LOADING_SUGGESTIONS: {
-        return {
-            ...state,
-            loading: action.loading
-        };
-    }
     case SEARCH_RESOURCES: {
         return {
             ...state,

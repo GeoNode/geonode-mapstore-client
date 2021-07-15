@@ -108,7 +108,7 @@ export function setupConfiguration({
     );
     const supportedLocales = defaultSupportedLocales || getSupportedLocales();
     setSupportedLocales(supportedLocales);
-    const locale = supportedLocales[geoNodePageConfig.languageCode]?.code;
+    const locale = supportedLocales[geoNodePageConfig.languageCode]?.code || 'en';
     setConfigProp('locale', locale);
     const geoNodeResourcesInfo = getConfigProp('geoNodeResourcesInfo') || {};
     setConfigProp('geoNodeResourcesInfo', { ...geoNodeResourcesInfo, ...resourcesTotalCount });

@@ -1,29 +1,14 @@
 # GeoNode MapStore Client Project
 
 This directory is the root folder where to initialize all the npm scripts. See the main [README.md](../../README.md) for more information about this directory.
+## Configuration
 
-This project contains following applications:
-
-- [MapStore js API](#mapStore-js-api)
-- [GeoStory](#geostory)
-- [Homepage](#homepage)
-
-## MapStore js API
-Api used inside django templates to show map and layer viewers
-
-## GeoStory
-This application allow to show and edit stories with map and geospatial data
-## Homepage
-
-This single application is an alternative homepage that interact with the GeoNode API v2 and shows available resources. You can enable this app by replacing the content of the index.html of a GeoNode project with the [home.html](home.html) template.
-
-The homepage configuration file is located in [localConfig.json](static/mapstore/configs/localConfig.json) and it exposes specific properties to customize the homepage theme and structure:
+The configuration file is located in [localConfig.json](static/mapstore/configs/localConfig.json) and it exposes specific properties to customize:
 
 ### localConfig.json
 
 | property | type | description |  |
 | --- | --- | --- | --- |
-| `geoNodeApi` | {object} |  |  |
 | `supportedLocales` | {object} |  |  |
 | `geoNodeConfiguration` | {object} | contains all the configuration needed to change the theme, filters and navbar structures | [see available properties](#geonode-configuration) |
 
@@ -33,7 +18,6 @@ The homepage configuration file is located in [localConfig.json](static/mapstore
 
 | property | type | description |  |
 | --- | --- | --- | --- |
-| `theme` | {object} | general theme configuration variables | [see available properties](#theme-configuration) |
 | `filters` | {object} | configuration of filter | |
 | `filters.order` | {object} | configuration of order dropdown | |
 | `filters.order.defaultLabelId` | {string} | label id to use for the order dropdown button | |
@@ -41,44 +25,12 @@ The homepage configuration file is located in [localConfig.json](static/mapstore
 | `filters.extent` | {object} | configuration of extent filter | |
 | `filters.extent.layers` | {array} | a list of MapStore layers object used as extent background | |
 | `filters.extent.style` | {object} | a MapStore vector style object | |
-| `navbar` | {object} | configuration of the brand navbar (top) | |
-| `navbar.logo` | {array} | list of logo items | [logo item entry](#logo-item) |
-| `navbar.items` | {array} | list of menu item objects, right placement | [menu item object entry](#menu-item-object) |
-| `menu` | {object} | configuration of the main menu | |
-| `menu.items` | {array} | list of menu item objects, left placement | [menu item object entry](#menu-item-object) |
-| `menu.rightItems` | {array} | list of menu item objects, right placement | [menu item object entry](#menu-item-object) |
-| `menu.cfg.rightContents.style.width` | {number} | value to fix width in right side of action navbar | [menu item object entry](#menu-item-object) |
-| `footer` | {object} | configuration of the footer | |
-| `footer.items` | {array} | list of menu item objects, left placement | [menu item object entry](#menu-item-object) |
 | `cardsMenu` | {object} | configuration of the menu of resource cards | |
 | `cardsMenu.items` | {array} | list of menu item objects, right placement | [menu item object entry](#menu-item-object) |
 | `cardOptions` | {object} | configuration of the resource cards dropdown | |
 | `cardOptions.items` | {array} | list of menu item objects, dropdown placement | [menu item object entry](#menu-item-object) |
 | `filtersForm` | {object} | configuration of the resource cards dropdown | |
 | `filtersForm.items` | {array} | list of filter objects, panel placement | [filter object](#filter-object) |
-### Theme configuration
-
-[geoNodeConfiguration](#geonode-configuration).theme
-
-| property | type | description |
-| --- | --- | --- |
-| `variant` | {string} | "light" or "dark" |
-| `color` | {string} | main theme color |
-| `navbar` | {object} | navbar theme properties |
-| `navbar.style` | {object} | a css style object to apply on the navbar container node |
-| `hero` | {object} | hero image theme properties |
-| `hero.style` | {object} | a css style object to apply on the hero image container node, use backgroundImage css property to apply a background image  |
-| `jumbotron` | {object} | jumbotron text content theme properties |
-| `jumbotron.style` | {object} | a css style object to apply on the jumbotron container node |
-| `languageSelector` | {object} | language selector theme properties |
-| `languageSelector.inline` | {boolean} | shows languages as inline text if true, default false shows a dropdown |
-| `footer` | {object} | footer theme properties |
-| `footer.color` | {string} | footer text color (css variable --gn-footer-color) |
-| `footer.bg` | {string} | footer background color (css variable --gn-footer-bg) |
-| `footer.link` | {object} | theme for footer link |
-| `footer.link.color` | {string} | footer link text color (css variable --gn-footer-link-color) |
-| `footer.link.hoverColor` | {string} | footer link text color on hover (css variable --gn-footer-link-hover-color) |
-| `footer.style` | {string} | a css style object to apply on the footer container node |
 
 ### Order Object
 
@@ -90,31 +42,6 @@ Order object contains properties for an entry of the order dropdown. Configurati
   "value": "title" // value used in the sort filter
 }
 ```
-### Logo Item
-
-Logo item contains properties for an image rendered in the top navbar. Configuration:
-
-```js
-{
-  "src": "path/to/image.png", // image source
-  "href": "#/", // logo href
-  "style": { // default css style object
-    "minHeight": 80
-  },
-  "sm": { // page size key small screen
-    "style": { // small screen css style object
-      "minHeight": 40
-    }
-  },
-  "md": { // page size key medium screen
-    "style": {} // medium screen css style object
-  },
-  "lg": { // page size key large screen
-    "style": {} // large screen css style object
-  }
-}
-```
-
 ### Menu Item Object
 
 Menu item object contains properties for a list item rendered in a menu. Configuration:

@@ -11,7 +11,7 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from '@mapstore/framework/libs/ajax';
 import {
     getResourceByPk
-} from '@js/api/geonode/v1';
+} from '@js/api/geonode/user';
 
 let mockAxios;
 

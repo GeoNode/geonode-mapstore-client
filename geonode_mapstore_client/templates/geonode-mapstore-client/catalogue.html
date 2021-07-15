@@ -13,8 +13,14 @@
         <title>{{ SITE_NAME }}</title>
         <link rel="shortcut icon" href="{% static 'geonode/img/favicon.ico' %}" />
         {% include './snippets/loader_style.html' %}
+
+        {% block custom_theme %}
+            {% include './snippets/custom_theme.html' %}
+        {% endblock %}
+
         {% block extra_style %}
         {% endblock %}
+
     </head>
 
     <body class="gn-catalogue gn-theme gn-theme-light ms2">

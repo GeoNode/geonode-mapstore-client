@@ -9,7 +9,6 @@
 import React, { forwardRef } from 'react';
 import Message from '@mapstore/framework/components/I18N/Message';
 import FaIcon from '@js/components/FaIcon';
-import Tag from '@js/components/Tag';
 import Dropdown from '@js/components/Dropdown';
 import {
     getUserName,
@@ -49,14 +48,14 @@ const ResourceCard = forwardRef(({
                     <div className="card-title">
                         {icon &&
                         <>
-                            <Tag
+                            <a
                                 href={formatHref({
                                     query: {
                                         'filter{resource_type.in}': res.resource_type
                                     }
                                 })}>
                                 <FaIcon name={icon} />
-                            </Tag>
+                            </a>
                         </>}
                         <a href={formatHref({
                             pathname: `/detail/${res.resource_type}/${res.pk}`

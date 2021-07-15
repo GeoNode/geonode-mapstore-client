@@ -11,17 +11,11 @@ import isEqual from 'lodash/isEqual';
 import isArray from 'lodash/isArray';
 import isNil from 'lodash/isNil';
 import {
-    autocomplete
-} from '@js/api/geonode/v1';
-import {
     getResources,
     getResourceByPk,
     getFeaturedResources
 } from '@js/api/geonode/v2';
 import {
-    FETCH_SUGGESTIONS,
-    updateSuggestions,
-    loadingSuggestions,
     SEARCH_RESOURCES,
     REQUEST_RESOURCE,
     updateResources,
@@ -86,21 +80,6 @@ const getNextPage = (action, state) => {
     return isPreviousPageAvailable ? currentPage - 1 : 1;
 };
 
-export const gnsFetchSuggestionsEpic = (action$) =>
-    action$.ofType(FETCH_SUGGESTIONS)
-        .debounceTime(300)
-        .switchMap(({ text }) => {
-            return Observable
-                .defer(() => autocomplete({ q: text }))
-                .switchMap(({ suggestions }) => {
-                    return Observable.of(
-                        updateSuggestions(suggestions),
-                        loadingSuggestions(false)
-                    );
-                })
-                .startWith(loadingSuggestions(true));
-        });
-
 export const gnsSearchResourcesEpic = (action$, store) =>
     action$.ofType(SEARCH_RESOURCES)
         .switchMap(action => {
@@ -164,7 +143,6 @@ const requestResourcesObservable = ({
             );
         })
         .startWith(
-            updateSuggestions([]),
             loadingResources(true)
         );
 };
@@ -258,7 +236,6 @@ export const getFeaturedResourcesEpic = (action$, {getState = () => {}}) =>
 
 
 export default {
-    gnsFetchSuggestionsEpic,
     gnsSearchResourcesEpic,
     gnsSearchResourcesOnLocationChangeEpic,
     gnsSelectResourceEpic,

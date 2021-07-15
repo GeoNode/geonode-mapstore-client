@@ -107,7 +107,7 @@ function gnresource(state = {selectedLayerPermissions: [], data: {}}, action) {
             ...state,
             data: {
                 ...state?.data,
-                thumbnail_url: action?.thumbnail_url
+                thumbnail_url: action?.thumbnailUrl
             }
         };
     }

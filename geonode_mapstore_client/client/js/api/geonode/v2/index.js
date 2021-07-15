@@ -19,7 +19,7 @@ import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
 import castArray from 'lodash/castArray';
 import get from 'lodash/get';
-import { getUserInfo } from '@js/api/geonode/v1';
+import { getUserInfo } from '@js/api/geonode/user';
 import { setFilterById } from '@js/utils/GNSearchUtils';
 
 let endpoints = {

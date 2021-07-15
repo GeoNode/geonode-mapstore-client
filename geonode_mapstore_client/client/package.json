@@ -32,7 +32,6 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.1",
     "dompurify": "2.2.6",
-    "js-cookie": "2.2.1",
     "mapstore": "file:MapStore2",
     "react-helmet": "6.1.0"
   },

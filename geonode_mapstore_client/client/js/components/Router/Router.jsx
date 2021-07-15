@@ -16,7 +16,6 @@ import Theme from '@mapstore/framework/components/theme/Theme';
 import { ErrorBoundary } from 'react-error-boundary';
 import history from '@mapstore/framework/stores/History';
 import ErrorFallback from '@js/components/ErrorFallback';
-import RootStyle from '@js/components/RootStyle';
 
 export const withRoutes = (routes) => (Component) => {
     const WithRoutes = forwardRef((props, ref) => {
@@ -62,10 +61,6 @@ const Router = forwardRef(({
 }, ref) => {
     return (
         <>
-            <RootStyle
-                targetId={id}
-                theme={geoNodeConfiguration.theme}
-            />
             <ThemeLoader
                 themeCfg={themeCfg}
                 loaderComponent={loaderComponent}
@@ -103,7 +98,6 @@ const Router = forwardRef(({
                                                     pluginsConfig={pluginsConfig}
                                                     loaderComponent={loaderComponent}
                                                     geoNodeConfiguration={geoNodeConfiguration}
-                                                    theme={geoNodeConfiguration.theme}
                                                     {...routeConfig}
                                                 />}
                                         />
