@@ -573,6 +573,19 @@
     .wizard--progress > li.is-complete a {
         .color-var(@theme-vars[main-color]);
     }
+
+    .bootstrap-select {
+        .btn-default {
+            .border-color-var(@theme-vars[main-border-color]);
+        }
+    }
+    .input-empty {
+        .border-color-var(@theme-vars[danger], true);
+    }
+    .MuiAppBar-colorPrimary {
+        .color-var(@theme-vars[main-variant-color]);
+        .background-color-var(@theme-vars[main-variant-bg]);
+    }
 }
 
 // **************
@@ -584,8 +597,35 @@
     .modal {
         display: none;
     }
-    .gn-main-header,
+    .gn-main-header {
+        z-index: 1500;
+    }
     #gn-topbar {
-        z-index: 1100;
+        z-index: 1400;
+    }
+    h2, .h2 {
+        font-size: 34px;
+    }
+    .fstChoiceRemove {
+        margin-top: -.64286em;
+    }
+    &.monitoring #wrap {
+        margin-top: 0;
+        h2, .h2 {
+            font-size: 1rem;
+        }
+    }
+    // arrow inside permissions panel in upload pages
+    #permission_form {
+        .panel-title {
+            position: relative;
+            padding-right: 16px;
+            font-size: @font-size-base;
+        }
+        .panel-heading [data-toggle="collapse"]:after {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
     }
 }
