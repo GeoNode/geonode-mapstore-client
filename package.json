@@ -9,7 +9,6 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.1",
     "dompurify": "2.2.6",
-    "js-cookie": "2.2.1",
     "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#dc801616df54ac6daf3f080bc67b009dbd8c8453",
     "react-helmet": "6.1.0"
   }

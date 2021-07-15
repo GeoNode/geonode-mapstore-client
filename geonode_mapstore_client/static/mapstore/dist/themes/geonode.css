@@ -23519,25 +23519,6 @@ Ported to CodeMirror by Peter Kroon
 .msgapi .gn-sub-flat-menu-container .gn-sub-flat-menu-block .nav-link {
   padding: 0rem 0.5rem 0.2rem 1.5rem;
 }
-/*
- * Copyright 2020, GeoSolutions Sas.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree.
- */
-.msgapi .gn-tag {
-  font-size: 0.765625rem;
-  padding: 0.1rem 0.25rem;
-}
-.msgapi .gn-tag .fa,
-.msgapi .gn-tag + .gn-tag:not(.dropdown-item) {
-  margin-left: 0.5rem;
-}
-.msgapi .gn-tag.dropdown-item {
-  margin: 0.2rem;
-  width: calc(100% - 0.4rem);
-}
 .msgapi .shadow-sm {
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.08);
 }
@@ -26565,13 +26546,13 @@ Ported to CodeMirror by Peter Kroon
   border-width: 16px/10;
   border-style: solid;
   border-top-color: rgba(255, 255, 255, 0.2) ;
-  border-top-color: var(--gn-loader-primary-fade-color, rgba(255, 255, 255, 0.2)) ;
+  border-top-color: var(--gn-loader-primary-contrast-fade-color, rgba(255, 255, 255, 0.2)) ;
   border-right-color: rgba(255, 255, 255, 0.2) ;
-  border-right-color: var(--gn-loader-primary-fade-color, rgba(255, 255, 255, 0.2)) ;
+  border-right-color: var(--gn-loader-primary-contrast-fade-color, rgba(255, 255, 255, 0.2)) ;
   border-bottom-color: rgba(255, 255, 255, 0.2) ;
-  border-bottom-color: var(--gn-loader-primary-fade-color, rgba(255, 255, 255, 0.2)) ;
+  border-bottom-color: var(--gn-loader-primary-contrast-fade-color, rgba(255, 255, 255, 0.2)) ;
   border-left-color: #ffffff ;
-  border-left-color: var(--gn-loader-primary-color, #ffffff) ;
+  border-left-color: var(--gn-loader-primary-contrast-color, #ffffff) ;
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);
@@ -26629,13 +26610,13 @@ Ported to CodeMirror by Peter Kroon
   border-width: 16px/10;
   border-style: solid;
   border-top-color: rgba(255, 255, 255, 0.2) ;
-  border-top-color: var(--gn-loader-primary-fade-color, rgba(255, 255, 255, 0.2)) ;
+  border-top-color: var(--gn-loader-primary-contrast-fade-color, rgba(255, 255, 255, 0.2)) ;
   border-right-color: rgba(255, 255, 255, 0.2) ;
-  border-right-color: var(--gn-loader-primary-fade-color, rgba(255, 255, 255, 0.2)) ;
+  border-right-color: var(--gn-loader-primary-contrast-fade-color, rgba(255, 255, 255, 0.2)) ;
   border-bottom-color: rgba(255, 255, 255, 0.2) ;
-  border-bottom-color: var(--gn-loader-primary-fade-color, rgba(255, 255, 255, 0.2)) ;
+  border-bottom-color: var(--gn-loader-primary-contrast-fade-color, rgba(255, 255, 255, 0.2)) ;
   border-left-color: #ffffff ;
-  border-left-color: var(--gn-loader-primary-color, #ffffff) ;
+  border-left-color: var(--gn-loader-primary-contrast-color, #ffffff) ;
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);
@@ -27350,13 +27331,13 @@ Ported to CodeMirror by Peter Kroon
   border-width: 1px;
   border-style: solid;
   border-top-color: rgba(255, 255, 255, 0.2) ;
-  border-top-color: var(--gn-loader-primary-fade-color, rgba(255, 255, 255, 0.2)) ;
+  border-top-color: var(--gn-loader-primary-contrast-fade-color, rgba(255, 255, 255, 0.2)) ;
   border-right-color: rgba(255, 255, 255, 0.2) ;
-  border-right-color: var(--gn-loader-primary-fade-color, rgba(255, 255, 255, 0.2)) ;
+  border-right-color: var(--gn-loader-primary-contrast-fade-color, rgba(255, 255, 255, 0.2)) ;
   border-bottom-color: rgba(255, 255, 255, 0.2) ;
-  border-bottom-color: var(--gn-loader-primary-fade-color, rgba(255, 255, 255, 0.2)) ;
+  border-bottom-color: var(--gn-loader-primary-contrast-fade-color, rgba(255, 255, 255, 0.2)) ;
   border-left-color: #ffffff ;
-  border-left-color: var(--gn-loader-primary-color, #ffffff) ;
+  border-left-color: var(--gn-loader-primary-contrast-color, #ffffff) ;
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);
@@ -28043,19 +28024,19 @@ Ported to CodeMirror by Peter Kroon
   background-color: var(--gn-main-variant-bg, #f2f0f0) ;
 }
 .msgapi .gn-footer {
-  color: #000000 ;
-  color: var(--gn-footer-color, #000000) ;
-  background-color: #ffffff ;
-  background-color: var(--gn-footer-bg, #ffffff) ;
+  color: #ffffff ;
+  color: var(--gn-footer-color, #ffffff) ;
+  background-color: rgba(57, 122, 171, 0.75) ;
+  background-color: var(--gn-footer-bg, rgba(57, 122, 171, 0.75)) ;
 }
 .msgapi .gn-footer a {
-  color: #397AAB ;
-  color: var(--gn-footer-link-color, #397AAB) ;
+  color: #ffffff ;
+  color: var(--gn-footer-link-color, #ffffff) ;
   text-decoration: none;
 }
 .msgapi .gn-footer a:hover {
-  color: #1b4d74 ;
-  color: var(--gn-footer-link-hover-color, #1b4d74) ;
+  color: #397AAB ;
+  color: var(--gn-footer-link-hover-color, #397AAB) ;
   text-decoration: none;
 }
 .msgapi .gn-hero .gn-search-bar {
@@ -28141,15 +28122,6 @@ Ported to CodeMirror by Peter Kroon
 .msgapi .gn-resource-card .card-title a:hover {
   text-decoration: underline;
 }
-.msgapi .gn-resource-card .gn-tag {
-  color: #000000 ;
-  color: var(--gn-main-color, #000000) ;
-  font-size: inherit;
-}
-.msgapi .gn-resource-card .gn-tag:hover {
-  color: inherit;
-  background-color: transparent;
-}
 .msgapi .gn-resource-card.active {
   border-color: rgba(57, 122, 171, 0.4) ;
   border-color: var(--gn-focus-color, rgba(57, 122, 171, 0.4)) ;
@@ -28200,23 +28172,6 @@ Ported to CodeMirror by Peter Kroon
   background-color: #f2f0f0 ;
   background-color: var(--gn-main-variant-bg, #f2f0f0) ;
 }
-.msgapi .gn-tag {
-  color: #000000 ;
-  color: var(--gn-tag-color, #000000) ;
-  background-color: transparent;
-}
-.msgapi .gn-tag.active {
-  color: #ffffff ;
-  color: var(--gn-tag-active-color, #ffffff) ;
-  background-color: #397AAB ;
-  background-color: var(--gn-tag-active-bg, #397AAB) ;
-}
-.msgapi .gn-tag:hover {
-  color: #ffffff ;
-  color: var(--gn-tag-hover-color, #ffffff) ;
-  background-color: rgba(57, 122, 171, 0.75) ;
-  background-color: var(--gn-tag-hover-bg, rgba(57, 122, 171, 0.75)) ;
-}
 .msgapi .gn-theme-light {
   --gn-font-family-sans-serif: 'Montserrat', sans-serif;
   --gn-font-family-serif: Georgia, 'Times New Roman', Times, serif;
@@ -28248,21 +28203,16 @@ Ported to CodeMirror by Peter Kroon
   --gn-image-color: #333333;
   --gn-image-bg: #f2f2f2;
   --gn-focus-color: rgba(57, 122, 171, 0.4);
-  --gn-tag-color: #000000;
-  --gn-tag-hover-color: #ffffff;
-  --gn-tag-hover-bg: rgba(57, 122, 171, 0.75);
-  --gn-tag-active-color: #ffffff;
-  --gn-tag-active-bg: #397AAB;
-  --gn-footer-color: #000000;
-  --gn-footer-bg: #ffffff;
-  --gn-footer-link-color: #397AAB;
-  --gn-footer-link-hover-color: #1b4d74;
+  --gn-footer-color: #ffffff;
+  --gn-footer-bg: rgba(57, 122, 171, 0.75);
+  --gn-footer-link-color: #ffffff;
+  --gn-footer-link-hover-color: #397AAB;
   --gn-badge-color: #ffffff;
   --gn-badge-bg: #777777;
   --gn-loader-color: #000000;
   --gn-loader-fade-color: rgba(0, 0, 0, 0.2);
-  --gn-loader-primary-color: #ffffff;
-  --gn-loader-primary-fade-color: rgba(255, 255, 255, 0.2);
+  --gn-loader-primary-contrast-color: #ffffff;
+  --gn-loader-primary-contrast-fade-color: rgba(255, 255, 255, 0.2);
   --gn-loader-primary-color: #397AAB;
   --gn-loader-primary-fade-color: rgba(57, 122, 171, 0.2);
   --gn-jumbotron-color: #ffffff;
@@ -28444,11 +28394,6 @@ Ported to CodeMirror by Peter Kroon
   --gn-image-color: #ffffff;
   --gn-image-bg: #333333;
   --gn-focus-color: rgba(112, 176, 224, 0.4);
-  --gn-tag-color: #000000;
-  --gn-tag-hover-color: #292929;
-  --gn-tag-hover-bg: rgba(167, 208, 240, 0.75);
-  --gn-tag-active-color: #292929;
-  --gn-tag-active-bg: #a7d0f0;
   --gn-footer-color: #dddddd;
   --gn-footer-bg: #222222;
   --gn-footer-link-color: #70b0e0;
@@ -28457,8 +28402,8 @@ Ported to CodeMirror by Peter Kroon
   --gn-badge-bg: #555555;
   --gn-loader-color: #dddddd;
   --gn-loader-fade-color: rgba(221, 221, 221, 0.2);
-  --gn-loader-primary-color: #292929;
-  --gn-loader-primary-fade-color: rgba(41, 41, 41, 0.2);
+  --gn-loader-primary-contrast-color: #292929;
+  --gn-loader-primary-contrast-fade-color: rgba(41, 41, 41, 0.2);
   --gn-loader-primary-color: #68b4ee;
   --gn-loader-primary-fade-color: rgba(104, 180, 238, 0.2);
   --gn-jumbotron-color: #ffffff;
