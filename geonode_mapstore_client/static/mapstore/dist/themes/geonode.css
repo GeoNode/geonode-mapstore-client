@@ -23249,6 +23249,9 @@ Ported to CodeMirror by Peter Kroon
   top: 0px;
   z-index: 10;
 }
+.msgapi .gn-language-selector {
+  margin-left: 0.4rem;
+}
 /*
  * Copyright 2020, GeoSolutions Sas.
  * All rights reserved.
@@ -28024,19 +28027,19 @@ Ported to CodeMirror by Peter Kroon
   background-color: var(--gn-main-variant-bg, #f2f0f0) ;
 }
 .msgapi .gn-footer {
-  color: #ffffff ;
-  color: var(--gn-footer-color, #ffffff) ;
-  background-color: rgba(57, 122, 171, 0.75) ;
-  background-color: var(--gn-footer-bg, rgba(57, 122, 171, 0.75)) ;
+  color: #000000 ;
+  color: var(--gn-footer-color, #000000) ;
+  background-color: #ffffff ;
+  background-color: var(--gn-footer-bg, #ffffff) ;
 }
 .msgapi .gn-footer a {
-  color: #ffffff ;
-  color: var(--gn-footer-link-color, #ffffff) ;
+  color: #397AAB ;
+  color: var(--gn-footer-link-color, #397AAB) ;
   text-decoration: none;
 }
 .msgapi .gn-footer a:hover {
-  color: #397AAB ;
-  color: var(--gn-footer-link-hover-color, #397AAB) ;
+  color: #1b4d74 ;
+  color: var(--gn-footer-link-hover-color, #1b4d74) ;
   text-decoration: none;
 }
 .msgapi .gn-hero .gn-search-bar {
@@ -28203,10 +28206,10 @@ Ported to CodeMirror by Peter Kroon
   --gn-image-color: #333333;
   --gn-image-bg: #f2f2f2;
   --gn-focus-color: rgba(57, 122, 171, 0.4);
-  --gn-footer-color: #ffffff;
-  --gn-footer-bg: rgba(57, 122, 171, 0.75);
-  --gn-footer-link-color: #ffffff;
-  --gn-footer-link-hover-color: #397AAB;
+  --gn-footer-color: #000000;
+  --gn-footer-bg: #ffffff;
+  --gn-footer-link-color: #397AAB;
+  --gn-footer-link-hover-color: #1b4d74;
   --gn-badge-color: #ffffff;
   --gn-badge-bg: #777777;
   --gn-loader-color: #000000;
