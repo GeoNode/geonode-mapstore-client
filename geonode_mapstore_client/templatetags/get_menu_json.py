@@ -94,7 +94,13 @@ def get_base_left_topbar_menu():
                     "label": "Create GeoStory"
                 }
             ]
-        },
+        }
+    ]
+
+@register.simple_tag
+def get_base_right_topbar_menu():
+
+    return [
         {
             "label": "About",
             "type": "dropdown",
