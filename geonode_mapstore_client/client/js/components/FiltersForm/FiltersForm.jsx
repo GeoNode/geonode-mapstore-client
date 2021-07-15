@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import castArray from 'lodash/castArray';
 import Button from '@js/components/Button';
 import Message from '@mapstore/framework/components/I18N/Message';
 import FaIcon from '@js/components/FaIcon';
@@ -34,64 +33,17 @@ function FilterForm({
     onClear,
     extentProps,
     suggestionsRequestTypes,
-    submitOnChangeField,
-    timeDebounce,
-    formParams
+    timeDebounce
 }) {
 
-    const [values, setValues] = useState({});
-    const state = useRef({});
-    state.current = {
-        query,
-        fields,
-        values
+    const handleFieldChange = (newParam) => {
+        onChange(newParam);
     };
 
-
-    useEffect(() => {
-        const newValues = state.current.fields.reduce((acc, { id: formId, suggestionsRequestKey }) => {
-            const filterKey = suggestionsRequestKey
-                ? suggestionsRequestTypes[suggestionsRequestKey]?.filterKey
-                : `filter{${formId}.in}`;
-            if (filterKey && !state.current.query[filterKey]) {
-                return acc;
-            }
-            return {
-                ...acc,
-                [filterKey]: (filterKey) ? castArray(state.current.query[filterKey]) : []
-            };
-        }, {});
-
-        setValues({
-            ...newValues,
-            ...(query?.extent && { extent: query.extent }),
-            ...(query?.f && { f: query.f })
-        });
-
-    }, [query]);
-
-
-    function handleApply() {
-        onChange(values);
-    }
-
-    useEffect( () => {
-        submitOnChangeField
-        && setValues(formParams);
-    },
-    [formParams]);
-
-    const fieldChange = (val) => {
-        onChange(val);
-    };
-
-    const extentChange =  debounce((extent) => {
-        setValues({
-            ...values,
-            extent
-        });
-        onChange(values);
+    const extentChange = debounce((extent) => {
+        onChange({ extent });
     }, timeDebounce);
+
     return (
         <div className="gn-filter-form" style={styleContainerForm} >
             <div className="gn-filter-form-header">
@@ -117,16 +69,15 @@ function FilterForm({
                             id={id}
                             items={fields}
                             suggestionsRequestTypes={suggestionsRequestTypes}
-                            values={state.current.values}
-                            setValues={fieldChange}
+                            values={query}
+                            onChange={handleFieldChange}
                         />
                         <FilterByExtent
                             id={id}
-                            extent={values.extent}
-                            queryExtent={query.extent}
+                            extent={query.extent}
                             layers={extentProps?.layers}
                             vectorLayerStyle={extentProps?.style}
-                            onChange={(({extent}) =>{
+                            onChange={(({ extent }) =>{
                                 extentChange(extent);
                             })}
                         />
@@ -134,19 +85,11 @@ function FilterForm({
                 </div>
             </div>
             <div className="gn-filter-form-footer">
-                {(!submitOnChangeField) && <Button
-                    size="sm"
-                    variant="primary"
-                    onClick={handleApply}
-                >
-                    <Message msgId="gnhome.apply"/>
-                </Button>
-                }
                 <Button
                     size="sm"
                     variant="default"
                     onClick={onClear}
-                    disabled={ isEmpty(query) }
+                    disabled={isEmpty(query)}
                 >
                     <Message msgId="gnhome.clearFilters"/>
                 </Button>

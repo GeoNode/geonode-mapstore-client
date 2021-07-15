@@ -11,8 +11,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import url from 'url';
 import { createSelector } from 'reselect';
-import castArray from 'lodash/castArray';
-import CardGrid from '@js/components/CardGrid';
 import DetailsPanel from '@js/components/DetailsPanel';
 import FiltersMenu from '@js/components/FiltersMenu';
 import { getParsedGeoNodeConfiguration } from "@js/selectors/config";
@@ -26,7 +24,11 @@ import {
 } from '@js/actions/gnsearch';
 
 import { setFavoriteResource } from '@js/actions/gnresource';
-import { hashLocationToHref } from '@js/utils/GNSearchUtils';
+import {
+    hashLocationToHref,
+    clearQueryParams,
+    getQueryFilters
+} from '@js/utils/GNSearchUtils';
 import { withResizeDetector } from 'react-resize-detector';
 import MetaTags from "@js/components/MetaTags";
 
@@ -34,33 +36,7 @@ import {
     getThemeLayoutSize
 } from '@js/utils/AppUtils';
 
-const DEFAULT_RESOURCES = [];
-
-const CardGridWithMessageId = ({ query, user, isFirstRequest, ...props }) => {
-    const hasResources = props.resources?.length > 0;
-    const hasFilter = Object.keys(query || {}).filter(key => key !== 'sort').length > 0;
-    const isLoggedIn = !!user;
-    const messageId = !hasResources && !isFirstRequest && !props.loading
-        ? hasFilter && 'noResultsWithFilter'
-            || isLoggedIn && 'noContentYet'
-            || 'noPublicContent'
-        : undefined;
-    return <CardGrid { ...props } messageId={messageId}  />;
-};
-
-const ConnectedCardGrid = connect(
-    createSelector([
-        state => state?.gnsearch?.resources || DEFAULT_RESOURCES,
-        state => state?.gnsearch?.loading || false,
-        state => state?.gnsearch?.isNextPageAvailable || false,
-        state => state?.gnsearch?.isFirstRequest
-    ], (resources, loading, isNextPageAvailable, isFirstRequest) => ({
-        resources,
-        loading,
-        isNextPageAvailable,
-        isFirstRequest
-    }))
-)(CardGridWithMessageId);
+import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
 
 const ConnectedDetailsPanel = connect(
     createSelector([
@@ -107,24 +83,12 @@ function Detail({
         const { query } = url.parse(location.search, true);
         onSearch({
             ...query,
-            ...params,
             ...newParams
         }, pathname);
-
     }
 
     function handleClear() {
-        const { query } = url.parse(location.search, true);
-        const newParams = Object.keys(query)
-            .reduce((acc, key) =>
-                key.indexOf('filter') === 0
-                || key === 'f'
-                || key === 'q'
-                    ? {
-                        ...acc,
-                        [key]: []
-                    }
-                    : acc, { extent: undefined });
+        const newParams = clearQueryParams(location);
         handleUpdate(newParams);
     }
 
@@ -142,9 +106,7 @@ function Detail({
     }
 
     const { query } = url.parse(location.search, true);
-    const queryFilters = Object.keys(query).reduce((acc, key) => key.indexOf('sort') === 0
-        ? acc
-        : [...acc, ...castArray(query[key]).map((value) => ({ key, value }))], []);
+    const queryFilters = getQueryFilters(query);
 
     const pk = match.params.pk;
     const ctype = match.params.ctype;

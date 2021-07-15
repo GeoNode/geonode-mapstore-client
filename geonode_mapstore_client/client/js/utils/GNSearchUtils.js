@@ -117,10 +117,34 @@ export const getResourceTypesInfo = () => ({
     }
 });
 
+export function clearQueryParams(location) {
+    const { query } = url.parse(location.search, true);
+    const newParams = Object.keys(query)
+        .reduce((acc, key) =>
+            key.indexOf('filter') === 0
+            || key === 'f'
+            || key === 'q'
+                ? {
+                    ...acc,
+                    [key]: []
+                }
+                : acc, { extent: undefined });
+    return newParams;
+}
+
+export function getQueryFilters(query) {
+    const queryFilters = Object.keys(query).reduce((acc, key) => key.indexOf('sort') === 0
+        ? acc
+        : [...acc, ...castArray(query[key]).map((value) => ({ key, value }))], []);
+    return queryFilters;
+}
+
 export default {
     getQueryKeys,
     getPageSize,
     hashLocationToHref,
     getUserName,
-    getResourceTypesInfo
+    getResourceTypesInfo,
+    clearQueryParams,
+    getQueryFilters
 };

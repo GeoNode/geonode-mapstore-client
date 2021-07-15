@@ -33,8 +33,7 @@ import {
     resourceLoading,
     setResource,
     resourceError,
-    updateResourceProperties,
-    SET_FAVORITE_RESOURCE
+    updateResourceProperties
 } from '@js/actions/gnresource';
 import {
     getResourceByPk,
@@ -42,8 +41,7 @@ import {
     updateGeoStory,
     createMap,
     updateMap,
-    updateDocument,
-    setFavoriteResource
+    updateDocument
 } from '@js/api/geonode/v2';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import uuid from 'uuid';
@@ -208,31 +206,8 @@ export const gnUpdateResource = (action$, store) =>
                 .startWith(resourceLoading());
         });
 
-export const gnSaveFavoriteContent = (action$, store) =>
-    action$.ofType(SET_FAVORITE_RESOURCE)
-        .switchMap((action) => {
-            const state = store.getState();
-            const pk = state?.gnresource?.data.pk;
-            const favorite =  action.favorite;
-            return Observable
-                .defer(() => setFavoriteResource(pk, favorite))
-                .switchMap(() => {
-                    return Observable.of(
-                        updateResourceProperties({
-                            'favorite': favorite
-                        })
-                    );
-                })
-                .catch((error) => {
-                    return Observable.of(resourceError(error.data || error.message));
-                });
-
-        });
-
-
 export default {
     gnSaveContent,
     gnUpdateResource,
-    gnSaveDirectContent,
-    gnSaveFavoriteContent
+    gnSaveDirectContent
 };

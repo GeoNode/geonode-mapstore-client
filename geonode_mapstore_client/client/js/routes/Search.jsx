@@ -12,7 +12,6 @@ import { connect } from 'react-redux';
 import url from 'url';
 import { createSelector } from 'reselect';
 import castArray from 'lodash/castArray';
-import CardGrid from '@js/components/CardGrid';
 import FiltersMenu from '@js/components/FiltersMenu';
 import FiltersForm from '@js/components/FiltersForm';
 import { getParsedGeoNodeConfiguration } from "@js/selectors/config";
@@ -27,7 +26,9 @@ import {
 
 import {
     hashLocationToHref,
-    getFilterById
+    getFilterById,
+    clearQueryParams,
+    getQueryFilters
 } from '@js/utils/GNSearchUtils';
 import { withResizeDetector } from 'react-resize-detector';
 
@@ -38,33 +39,7 @@ import {
     getThemeLayoutSize
 } from '@js/utils/AppUtils';
 
-const DEFAULT_RESOURCES = [];
-
-const CardGridWithMessageId = ({ query, user, isFirstRequest, ...props }) => {
-    const hasResources = props.resources?.length > 0;
-    const hasFilter = Object.keys(query || {}).filter(key => key !== 'sort').length > 0;
-    const isLoggedIn = !!user;
-    const messageId = !hasResources && !isFirstRequest && !props.loading
-        ? hasFilter && 'noResultsWithFilter'
-            || isLoggedIn && 'noContentYet'
-            || 'noPublicContent'
-        : undefined;
-    return <CardGrid { ...props } messageId={messageId}  />;
-};
-
-const ConnectedCardGrid = connect(
-    createSelector([
-        state => state?.gnsearch?.resources || DEFAULT_RESOURCES,
-        state => state?.gnsearch?.loading || false,
-        state => state?.gnsearch?.isNextPageAvailable || false,
-        state => state?.gnsearch?.isFirstRequest
-    ], (resources, loading, isNextPageAvailable, isFirstRequest) => ({
-        resources,
-        loading,
-        isNextPageAvailable,
-        isFirstRequest
-    }))
-)(CardGridWithMessageId);
+import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
 
 const suggestionsRequestTypes = {
     resourceTypes: {
@@ -136,9 +111,33 @@ function Search({
         filtersFormItemsAllowed,
         filters
     } = config;
-    const themeLayoutSize = getThemeLayoutSize(width);
-    const isMounted = useRef();
 
+    const themeLayoutSize = getThemeLayoutSize(width);
+
+    function handleUpdate(newParams, pathname) {
+        const { query } = url.parse(location.search, true);
+        onSearch({
+            ...query,
+            ...newParams
+        }, pathname);
+    }
+
+    function handleClear() {
+        const newParams = clearQueryParams(location);
+        handleUpdate(newParams);
+    }
+
+    function handleFormatHref(options) {
+        return hashLocationToHref({
+            location,
+            ...options
+        });
+    }
+
+    const { query } = url.parse(location.search, true);
+    const queryFilters = getQueryFilters(query);
+
+    const isMounted = useRef();
     useEffect(() => {
         isMounted.current = true;
         return () => {
@@ -152,62 +151,9 @@ function Search({
         }
     }, [match.url]);
 
-    const filtersMenuNode = useRef();
-
-    const [isSmallDevice, setIsSmallDevice] = useState(false);
-    useEffect(() => {
-        setIsSmallDevice((themeLayoutSize === 'sm') ? true : false);
-    }, [themeLayoutSize]);
-
     const handleShowFilterForm = () => {
         onEnableFiltersPanel(!isFiltersPanelEnabled);
     };
-
-    function handleUpdate(newParams, pathname) {
-        const { query } = url.parse(location.search, true);
-        onSearch({
-            ...query,
-            ...params,
-            ...newParams
-        }, pathname);
-
-    }
-    // to update the overlay form in mobile device, after apply,
-    // the form has to close
-    const handleUpdateSmallDevice = (newParams, pathname) => {
-        handleUpdate(newParams, pathname);
-        handleShowFilterForm();
-    };
-    const [formParams, setFormParams] = useState({});
-
-    function handleClear() {
-        const { query } = url.parse(location.search, true);
-        const newParams = Object.keys(query)
-            .reduce((acc, key) =>
-                key.indexOf('filter') === 0
-                || key === 'f'
-                || key === 'q'
-                    ? {
-                        ...acc,
-                        [key]: []
-                    }
-                    : acc, { extent: undefined });
-
-        setFormParams(newParams);
-        handleUpdate(newParams);
-    }
-
-    function handleFormatHref(options) {
-        return hashLocationToHref({
-            location,
-            ...options
-        });
-    }
-
-    const { query } = url.parse(location.search, true);
-    const queryFilters = Object.keys(query).reduce((acc, key) => key.indexOf('sort') === 0
-        ? acc
-        : [...acc, ...castArray(query[key]).map((value) => ({ key, value }))], []);
 
     const pk = match.params.pk;
     const ctype = match.params.ctype;
@@ -219,13 +165,10 @@ function Search({
     // update all the information of filter in use on mount
     // to display the correct labels
     const [reRender, setReRender] = useState(0);
-
     const state = useRef(false);
     state.current = {
         query
-
     };
-
     useEffect(() => {
         const suggestionsRequestTypesArray = Object.keys(suggestionsRequestTypes)
             .map((key) => suggestionsRequestTypes[key]);
@@ -247,8 +190,6 @@ function Search({
                     setReRender(reRender + 1);
                 }
             });
-
-
     }, []);
 
     const scrollContainer = useRef();
@@ -264,17 +205,15 @@ function Search({
             />
             <div className={`gn-fixed-card-grid gn-size-${themeLayoutSize}`}>
                 {isFiltersPanelEnabled && <FiltersForm
-                    key="gn-filter-form"
+                    key={`gn-filter-form-${reRender}`}
                     id="gn-filter-form"
                     fields={filtersFormItemsAllowed}
                     extentProps={filters?.extent}
                     suggestionsRequestTypes={suggestionsRequestTypes}
                     query={query}
-                    onChange={isSmallDevice && handleUpdateSmallDevice || handleUpdate}
+                    onChange={handleUpdate}
                     onClose={handleShowFilterForm}
                     onClear={handleClear}
-                    submitOnChangeField={!isSmallDevice}
-                    formParams={formParams}
                 />}
                 <div ref={scrollContainer} className="gn-grid-container">
                     <ConnectedCardGrid
@@ -293,7 +232,6 @@ function Search({
                         }}
                     >
                         <FiltersMenu
-                            ref={filtersMenuNode}
                             formatHref={handleFormatHref}
                             cardsMenu={filterMenuItemsAllowed || []}
                             order={query?.sort}

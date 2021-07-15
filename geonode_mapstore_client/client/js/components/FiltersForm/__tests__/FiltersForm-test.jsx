@@ -27,23 +27,6 @@ describe('FiltersForm component', () => {
         const filterFormNode = document.querySelector('.gn-filter-form');
         expect(filterFormNode).toBeTruthy();
     });
-    it('should trigger on change after clicking on apply', (done) => {
-        const onChange = (values) => {
-            try {
-                expect(values).toBeTruthy();
-                done();
-            } catch (e) {
-                done(e);
-            }
-        };
-        ReactDOM.render( <FiltersForm show onChange={onChange} submitOnChangeField={false} />, document.getElementById("container"));
-        const filterFormNode = document.querySelector('.gn-filter-form');
-        expect(filterFormNode).toBeTruthy();
-        const footerButtons = filterFormNode.querySelectorAll('.gn-filter-form-footer > button');
-        expect(footerButtons.length).toBe(2);
-        const applyButton = footerButtons[0];
-        Simulate.click(applyButton);
-    });
     it('should trigger on clear', (done) => {
         const onClear = (values) => {
             try {
@@ -57,8 +40,8 @@ describe('FiltersForm component', () => {
         const filterFormNode = document.querySelector('.gn-filter-form');
         expect(filterFormNode).toBeTruthy();
         const footerButtons = filterFormNode.querySelectorAll('.gn-filter-form-footer > button');
-        expect(footerButtons.length).toBe(2);
-        const clearButton = footerButtons[1];
+        expect(footerButtons.length).toBe(1);
+        const clearButton = footerButtons[0];
         Simulate.click(clearButton);
     });
     it('should trigger on close after clicking on times icon', (done) => {
