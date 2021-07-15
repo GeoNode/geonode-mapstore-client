@@ -8129,9 +8129,35 @@
 .msgapi .gn-legacy .modal {
   display: none;
 }
-.msgapi .gn-legacy .gn-main-header,
+.msgapi .gn-legacy .gn-main-header {
+  z-index: 1500;
+}
 .msgapi .gn-legacy #gn-topbar {
-  z-index: 1100;
+  z-index: 1400;
+}
+.msgapi .gn-legacy h2,
+.msgapi .gn-legacy .h2 {
+  font-size: 34px;
+}
+.msgapi .gn-legacy .fstChoiceRemove {
+  margin-top: -0.64286em;
+}
+.msgapi .gn-legacy.monitoring #wrap {
+  margin-top: 0;
+}
+.msgapi .gn-legacy.monitoring #wrap h2,
+.msgapi .gn-legacy.monitoring #wrap .h2 {
+  font-size: 1rem;
+}
+.msgapi .gn-legacy #permission_form .panel-title {
+  position: relative;
+  padding-right: 16px;
+  font-size: 0.875rem;
+}
+.msgapi .gn-legacy #permission_form .panel-heading [data-toggle="collapse"]:after {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 @font-face {
   font-family: "mapstore2";
@@ -27964,6 +27990,20 @@ Ported to CodeMirror by Peter Kroon
 .msgapi .wizard--progress > li.is-complete a {
   color: #000000 ;
   color: var(--gn-main-color, #000000) ;
+}
+.msgapi .bootstrap-select .btn-default {
+  border-color: #dddddd ;
+  border-color: var(--gn-main-border-color, #dddddd) ;
+}
+.msgapi .input-empty {
+  border-color: #bb4940 !important;
+  border-color: var(--gn-danger, #bb4940) !important;
+}
+.msgapi .MuiAppBar-colorPrimary {
+  color: #000000 ;
+  color: var(--gn-main-variant-color, #000000) ;
+  background-color: #f2f0f0 ;
+  background-color: var(--gn-main-variant-bg, #f2f0f0) ;
 }
 .msgapi .gn-home-section .gn-card-grid {
   color: #000000 ;
