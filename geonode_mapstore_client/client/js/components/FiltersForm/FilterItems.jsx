@@ -126,14 +126,14 @@ FilterItems.defaultProps = {
     items: PropTypes.array,
     suggestionsRequestTypes: PropTypes.object,
     values: PropTypes.object,
-    setValues: PropTypes.func
+    onChange: PropTypes.func
 };
 
 FilterItems.defaultProps = {
     items: [],
     suggestionsRequestTypes: {},
     values: {},
-    setValues: () => {}
+    onChange: () => {}
 };
 
 export default FilterItems;
