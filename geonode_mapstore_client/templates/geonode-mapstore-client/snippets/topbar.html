@@ -58,10 +58,10 @@
                 {% block right_menu %}
                 <ul class="gn-menu-list">
                     {% for menu_item in BASE_TOPBAR_MENU_RIGHT %}
-                        {% include './menu_item.html' with menu_item=menu_item variant='primary' %}
+                        {% include './menu_item.html' with menu_item=menu_item variant='primary' align_right=True %}
                     {% endfor %}
                     {% for menu_item in TOPBAR_MENU_RIGHT %}
-                        {% include './menu_item.html' with menu_item=menu_item variant='primary' %}
+                        {% include './menu_item.html' with menu_item=menu_item variant='primary' align_right=True %}
                     {% endfor %}
 
                     {% block language_selector %}
