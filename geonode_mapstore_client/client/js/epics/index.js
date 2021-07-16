@@ -14,7 +14,7 @@ import Rx from "rxjs";
 import { setEditPermissionStyleEditor, INIT_STYLE_SERVICE } from "@mapstore/framework/actions/styleeditor";
 import { getSelectedLayer, layersSelector } from "@mapstore/framework/selectors/layers";
 import { getConfigProp } from "@mapstore/framework/utils/ConfigUtils";
-import { getLayerByName, getLayersByName } from '@js/api/geonode/v2';
+import { getDatasetByName, getDatasetsByName } from '@js/api/geonode/v2';
 import { updateMapLayout } from '@mapstore/framework/actions/maplayout';
 import { TOGGLE_CONTROL, SET_CONTROL_PROPERTY, SET_CONTROL_PROPERTIES } from '@mapstore/framework/actions/controls';
 import { MAP_CONFIG_LOADED } from '@mapstore/framework/actions/config';
@@ -22,7 +22,7 @@ import { SIZE_CHANGE, CLOSE_FEATURE_GRID, OPEN_FEATURE_GRID, setPermission } fro
 import { CLOSE_IDENTIFY, ERROR_FEATURE_INFO, TOGGLE_MAPINFO_STATE, LOAD_FEATURE_INFO, EXCEPTIONS_FEATURE_INFO, PURGE_MAPINFO_RESULTS } from '@mapstore/framework/actions/mapInfo';
 import { SHOW_SETTINGS, HIDE_SETTINGS, SELECT_NODE, updateNode, ADD_LAYER } from '@mapstore/framework/actions/layers';
 import { isMapInfoOpen } from '@mapstore/framework/selectors/mapInfo';
-import { setSelectedLayerPermissions } from '@js/actions/gnresource';
+import { setSelectedDatasetPermissions } from '@js/actions/gnresource';
 import { isFeatureGridOpen, getDockSize } from '@mapstore/framework/selectors/featuregrid';
 import head from 'lodash/head';
 import get from 'lodash/get';
@@ -35,7 +35,7 @@ import { showCoordinateEditorSelector } from '@mapstore/framework/selectors/cont
 /**
  * Handles checking and for permissions of a layer when its selected
  */
-export const gnCheckSelectedLayerPermissions = (action$, { getState } = {}) =>
+export const gnCheckSelectedDatasetPermissions = (action$, { getState } = {}) =>
     action$.ofType(SELECT_NODE, INIT_STYLE_SERVICE)
         .filter(({ nodeType }) => nodeType && nodeType === "layer" && !getConfigProp("disableCheckEditPermissions")
         || !nodeType && !getConfigProp("disableCheckEditPermissions"))
@@ -43,18 +43,18 @@ export const gnCheckSelectedLayerPermissions = (action$, { getState } = {}) =>
             const state = getState() || {};
             const layer = getSelectedLayer(state);
             const permissions = layer?.perms || [];
-            const canEditStyles = permissions.includes("change_layer_style");
-            const canEdit = permissions.includes("change_layer_data");
+            const canEditStyles = permissions.includes("change_dataset_style");
+            const canEdit = permissions.includes("change_dataset_data");
             return layer
                 ? Rx.Observable.of(
                     setPermission({canEdit}),
                     setEditPermissionStyleEditor(canEditStyles),
-                    setSelectedLayerPermissions(permissions)
+                    setSelectedDatasetPermissions(permissions)
                 )
                 : Rx.Observable.of(
                     setPermission({canEdit: false}),
                     setEditPermissionStyleEditor(false),
-                    setSelectedLayerPermissions([])
+                    setSelectedDatasetPermissions([])
                 );
         });
 
@@ -63,12 +63,12 @@ export const gnCheckSelectedLayerPermissions = (action$, { getState } = {}) =>
  * Checks the permissions for layers when a map is loaded and when a new layer is added
  * to a map
  */
-export const gnSetLayersPermissions = (actions$, { getState = () => {}} = {}) =>
+export const gnSetDatasetsPermissions = (actions$, { getState = () => {}} = {}) =>
     actions$.ofType(MAP_CONFIG_LOADED, ADD_LAYER)
         .switchMap((action) => {
             if (action.type === MAP_CONFIG_LOADED) {
                 const layerNames = action.config?.map?.layers?.filter((l) => l?.group !== "background").map((l) => l.name);
-                return Rx.Observable.defer(() => getLayersByName(layerNames))
+                return Rx.Observable.defer(() => getDatasetsByName(layerNames))
                     .switchMap((layers = []) => {
                         const stateLayers = layers.map((l) => ({
                             ...l,
@@ -77,7 +77,7 @@ export const gnSetLayersPermissions = (actions$, { getState = () => {}} = {}) =>
                         return Rx.Observable.of(...stateLayers.map((l) => updateNode(l.id, 'layer', {perms: l.perms || []}) ));
                     });
             }
-            return Rx.Observable.defer(() => getLayerByName(action.layer?.name))
+            return Rx.Observable.defer(() => getDatasetByName(action.layer?.name))
                 .switchMap((layer = {}) => {
                     const layerId = layersSelector(getState())?.find((la) => la.name === layer.alternate)?.id;
                     return Rx.Observable.of(updateNode(layerId, 'layer', {perms: layer.perms}));
@@ -155,7 +155,7 @@ export const updateMapLayoutEpic = (action$, store) =>
             }));
         });
 export default {
-    gnCheckSelectedLayerPermissions,
+    gnCheckSelectedDatasetPermissions,
     updateMapLayoutEpic,
-    gnSetLayersPermissions
+    gnSetDatasetsPermissions
 };

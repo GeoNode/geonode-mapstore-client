@@ -38,7 +38,7 @@ import widgets from '@mapstore/framework/reducers/widgets';
 
 import SearchRoute from '@js/routes/Search';
 import DetailRoute from '@js/routes/Detail';
-import LayerViewerRoute from '@js/routes/LayerViewer';
+import DatasetViewerRoute from '@js/routes/DatasetViewer';
 import MapViewerRoute from '@js/routes/MapViewer';
 import GeoStoryViewerRoute from '@js/routes/GeoStoryViewer';
 import DocumentViewerRoute from '@js/routes/DocumentViewer';
@@ -62,8 +62,8 @@ import {
 import { updateGeoNodeSettings } from '@js/actions/gnsettings';
 
 import {
-    gnCheckSelectedLayerPermissions,
-    gnSetLayersPermissions
+    gnCheckSelectedDatasetPermissions,
+    gnSetDatasetsPermissions
 } from '@js/epics';
 import gnviewerEpics from '@js/epics/gnviewer';
 import gnsearchEpics from '@js/epics/gnsearch';
@@ -90,25 +90,25 @@ const ConnectedRouter = connect((state) => ({
 
 const routes = [
     {
-        name: 'layer_viewer',
+        name: 'dataset_viewer',
         path: [
-            '/layer/:pk'
+            '/dataset/:pk'
         ],
-        component: LayerViewerRoute
+        component: DatasetViewerRoute
     },
     {
-        name: 'layer_edit_data_viewer',
+        name: 'dataset_edit_data_viewer',
         path: [
-            '/layer/:pk/edit/data'
+            '/dataset/:pk/edit/data'
         ],
-        component: LayerViewerRoute
+        component: DatasetViewerRoute
     },
     {
-        name: 'layer_edit_style_viewer',
+        name: 'dataset_edit_style_viewer',
         path: [
-            '/layer/:pk/edit/style'
+            '/dataset/:pk/edit/style'
         ],
-        component: LayerViewerRoute
+        component: DatasetViewerRoute
     },
     {
         name: 'map_viewer',
@@ -231,8 +231,8 @@ Promise.all([
                     appEpics: {
                         ...standardEpics,
                         ...configEpics,
-                        gnCheckSelectedLayerPermissions,
-                        gnSetLayersPermissions,
+                        gnCheckSelectedDatasetPermissions,
+                        gnSetDatasetsPermissions,
                         ...pluginsDefinition.epics,
                         ...gnviewerEpics,
                         ...gnsearchEpics,

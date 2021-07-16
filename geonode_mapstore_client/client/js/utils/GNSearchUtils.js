@@ -77,14 +77,14 @@ function updateUrlQueryParameter(requestUrl, query) {
 }
 
 export const getResourceTypesInfo = () => ({
-    'layer': {
+    'dataset': {
         icon: 'layer-group',
         formatEmbedUrl: (resource) => updateUrlQueryParameter(resource.embed_url, {
             config: 'layer_preview',
             theme: 'preview'
         }),
-        formatDetailUrl: (resource) => (`/catalogue/#/layer/${resource.pk}`),
-        name: 'Layer'
+        formatDetailUrl: (resource) => (`/catalogue/#/dataset/${resource.pk}`),
+        name: 'Dataset'
     },
     'map': {
         icon: 'map-marked',

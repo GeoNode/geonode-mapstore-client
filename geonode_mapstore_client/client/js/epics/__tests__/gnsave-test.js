@@ -23,14 +23,14 @@ import {
     RESOURCE_LOADING,
     SET_RESOURCE,
     RESOURCE_ERROR,
-    SET_SELECTED_LAYER_PERMISSIONS
+    SET_SELECTED_DATASET_PERMISSIONS
 } from '@js/actions/gnresource';
 import {
     gnSaveContent,
     gnUpdateResource,
     gnSaveDirectContent
 } from '@js/epics/gnsave';
-import {gnCheckSelectedLayerPermissions, gnSetLayersPermissions} from '@js/epics';
+import {gnCheckSelectedDatasetPermissions, gnSetDatasetsPermissions} from '@js/epics';
 import { SET_PERMISSION } from '@mapstore/framework/actions/featuregrid';
 import { SET_EDIT_PERMISSION } from '@mapstore/framework/actions/styleeditor';
 import { configureMap } from '@mapstore/framework/actions/config';
@@ -180,13 +180,13 @@ describe('gnsave epics', () => {
         );
     });
 
-    it("gnCheckSelectedLayerPermissions should trigger permission actions for style and edit", (done) => {
+    it("gnCheckSelectedDatasetPermissions should trigger permission actions for style and edit", (done) => {
 
         const NUM_ACTIONS = 3;
-        testEpic(gnCheckSelectedLayerPermissions,
+        testEpic(gnCheckSelectedDatasetPermissions,
             NUM_ACTIONS, selectNode(1, "layer"), (actions) => {
                 try {
-                    expect(actions.map(({type}) => type)).toEqual([SET_PERMISSION, SET_EDIT_PERMISSION, SET_SELECTED_LAYER_PERMISSIONS]);
+                    expect(actions.map(({type}) => type)).toEqual([SET_PERMISSION, SET_EDIT_PERMISSION, SET_SELECTED_DATASET_PERMISSIONS]);
                     done();
                 } catch (error) {
                     done(error);
@@ -195,11 +195,11 @@ describe('gnsave epics', () => {
 
     });
 
-    it('test gnSetLayersPermissions trigger updateNode for MAP_CONFIG_LOADED', (done) => {
+    it('test gnSetDatasetsPermissions trigger updateNode for MAP_CONFIG_LOADED', (done) => {
         mockAxios.onGet().reply(() => [200,
-            {layers: [{perms: ['change_layer_style', 'change_layer_data'], alternate: "testLayer"}]}]);
+            {layers: [{perms: ['change_dataset_style', 'change_dataset_data'], alternate: "testLayer"}]}]);
         const NUM_ACTIONS = 1;
-        testEpic(gnSetLayersPermissions, NUM_ACTIONS, configureMap({map: {layers: [{name: "testLayer", id: "test_id"}]}}), (actions) => {
+        testEpic(gnSetDatasetsPermissions, NUM_ACTIONS, configureMap({map: {layers: [{name: "testLayer", id: "test_id"}]}}), (actions) => {
             try {
                 expect(actions.map(({type}) => type)).toEqual(["UPDATE_NODE"]);
                 done();
@@ -210,11 +210,11 @@ describe('gnsave epics', () => {
         {layers: {flat: [{name: "testLayer", id: "test_id", perms: ['download_resourcebase']}], selected: ["test_id"]}});
     });
 
-    it('test gnSetLayersPermissions trigger updateNode for ADD_LAYER', (done) => {
+    it('test gnSetDatasetsPermissions trigger updateNode for ADD_LAYER', (done) => {
         mockAxios.onGet().reply(() => [200,
-            {layers: [{perms: ['change_layer_style', 'change_layer_data'], alternate: "testLayer"}]}]);
+            {layers: [{perms: ['change_dataset_style', 'change_dataset_data'], alternate: "testLayer"}]}]);
         const NUM_ACTIONS = 1;
-        testEpic(gnSetLayersPermissions, NUM_ACTIONS, addLayer({name: "testLayer"}), (actions) => {
+        testEpic(gnSetDatasetsPermissions, NUM_ACTIONS, addLayer({name: "testLayer"}), (actions) => {
             try {
                 expect(actions.map(({type}) => type)).toEqual(["UPDATE_NODE"]);
                 done();

@@ -22,7 +22,7 @@ def get_base_left_topbar_menu():
     return [
         {
             "type": "link",
-            "href": "/catalogue/#/search/?filter{resource_type.in}=layer",
+            "href": "/catalogue/#/search/?filter{resource_type.in}=dataset",
             "label": "Datasets"
         },
         {

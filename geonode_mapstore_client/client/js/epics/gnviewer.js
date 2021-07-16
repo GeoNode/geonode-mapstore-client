@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import axios from '@mapstore/framework/libs/ajax';
 import uuid from "uuid";
 import {
-    REQUEST_LAYER_CONFIG,
+    REQUEST_DATASET_CONFIG,
     REQUEST_MAP_CONFIG,
     REQUEST_GEOSTORY_CONFIG,
     REQUEST_DOCUMENT_CONFIG,
@@ -19,7 +19,7 @@ import {
 } from '@js/actions/gnviewer';
 import { getNewMapConfiguration, getNewGeoStoryConfig } from '@js/api/geonode/config';
 import {
-    getLayerByPk,
+    getDatasetByPk,
     getGeoStoryByPk,
     getDocumentByPk,
     getMapByPk
@@ -50,12 +50,12 @@ import {
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import { resourceToLayerConfig } from '@js/utils/ResourceUtils';
 
-export const gnViewerRequestLayerConfig = (action$) =>
-    action$.ofType(REQUEST_LAYER_CONFIG)
+export const gnViewerrequestDatasetConfig = (action$) =>
+    action$.ofType(REQUEST_DATASET_CONFIG)
         .switchMap(({ pk, page }) => {
             return Observable.defer(() => axios.all([
                 getNewMapConfiguration(),
-                getLayerByPk(pk)
+                getDatasetByPk(pk)
             ])).switchMap((response) => {
                 const [mapConfig, gnLayer] = response;
                 const newLayer = resourceToLayerConfig(gnLayer);
@@ -76,13 +76,13 @@ export const gnViewerRequestLayerConfig = (action$) =>
                     selectNode(newLayer.id, 'layer', false),
                     setResource(gnLayer),
                     setResourceId(pk),
-                    setResourceType('layer'),
-                    ...(page === 'layer_edit_data_viewer'
+                    setResourceType('dataset'),
+                    ...(page === 'dataset_edit_data_viewer'
                         ? [
                             browseData(newLayer)
                         ]
                         : []),
-                    ...(page === 'layer_edit_style_viewer'
+                    ...(page === 'dataset_edit_style_viewer'
                         ? [
                             showSettings(newLayer.id, 'layers', {
                                 opacity: newLayer.opacity || 1
@@ -201,7 +201,7 @@ export const gnViewerRequestDocumentConfig = (action$) =>
         });
 
 export default {
-    gnViewerRequestLayerConfig,
+    gnViewerrequestDatasetConfig,
     gnViewerRequestMapConfig,
     gnViewerRequestNewMapConfig,
     gnViewerRequestGeoStoryConfig,

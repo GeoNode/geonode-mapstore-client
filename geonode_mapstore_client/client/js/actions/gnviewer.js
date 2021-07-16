@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export const REQUEST_LAYER_CONFIG = 'GEONODE_VIEWER:REQUEST_LAYER_CONFIG';
+export const REQUEST_DATASET_CONFIG = 'GEONODE_VIEWER:REQUEST_DATASET_CONFIG';
 export const REQUEST_MAP_CONFIG = 'GEONODE_VIEWER:REQUEST_MAP_CONFIG';
 export const REQUEST_NEW_MAP_CONFIG = 'GEONODE_VIEWER:REQUEST_NEW_MAP_CONFIG';
 export const REQUEST_GEOSTORY_CONFIG = 'GEONODE_VIEWER:REQUEST_GEOSTORY_CONFIG';
@@ -14,9 +14,9 @@ export const REQUEST_DOCUMENT_CONFIG = 'GEONODE_VIEWER:REQUEST_DOCUMENT_CONFIG';
 export const REQUEST_NEW_GEOSTORY_CONFIG = "GEONODE:VIEWER:REQUEST_NEW_GEOSTORY_CONFIG";
 
 
-export function requestLayerConfig(pk, page) {
+export function requestDatasetConfig(pk, page) {
     return {
-        type: REQUEST_LAYER_CONFIG,
+        type: REQUEST_DATASET_CONFIG,
         pk,
         page
     };

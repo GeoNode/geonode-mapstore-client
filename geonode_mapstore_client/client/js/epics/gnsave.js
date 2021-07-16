@@ -39,7 +39,7 @@ import {
     getResourceByPk,
     createGeoStory,
     updateGeoStory,
-    updateLayer,
+    updateDataset,
     createMap,
     updateMap,
     updateDocument
@@ -81,7 +81,7 @@ const SaveAPI = {
             : createMap(body)
                 .then((response) => {
                     if (reload) {
-                        window.location.href = parseDevHostname(`${getConfigProp('geonodeUrl')}viewer/#/map/${response.pk}`);
+                        window.location.href = parseDevHostname(`${getConfigProp('geonodeUrl')}catalogue/#/map/${response.pk}`);
                         window.location.reload();
                     }
                     return response.data;
@@ -104,7 +104,7 @@ const SaveAPI = {
                 ...body
             }).then((response) => {
                 if (reload) {
-                    window.location.href = parseDevHostname(`${getConfigProp('geonodeUrl')}viewer/#/geostory/${response.pk}`);
+                    window.location.href = parseDevHostname(`${getConfigProp('geonodeUrl')}catalogue/#/geostory/${response.pk}`);
                     window.location.reload();
                 }
                 return response.data;
@@ -126,7 +126,7 @@ const SaveAPI = {
             'abstract': metadata.description,
             'thumbnail_url': metadata.thumbnail
         };
-        return id ? updateLayer(id, body) : false;
+        return id ? updateDataset(id, body) : false;
     }
 };
 

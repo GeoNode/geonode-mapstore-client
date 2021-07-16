@@ -20,7 +20,7 @@
                 });
                 function editPermissionListener(action) {
                     const perms = action && action.options && action.options.perms || [];
-                    const canEditStyle = perms.includes('change_layer_style');
+                    const canEditStyle = perms.includes('change_dataset_style');
                     if(canEditStyle) {
                         MapStoreAPI.offAction('UPDATE_NODE', editPermissionListener);
                         MapStoreAPI.triggerAction({
@@ -52,4 +52,4 @@
         };
     })(window);
 </script>
-{% include "./map_edit.html" with plugins_config_key="layer_style_edit" %}
+{% include "./map_edit.html" with plugins_config_key=dataset_style_edit" %}

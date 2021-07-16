@@ -40,7 +40,7 @@
             "groups": "Gruppen",
             "groupsCategories": "Gruppenkategorien",
             "view": "Ansehen",
-            "viewLayer": "Ebene dataset",
+            "viewDataset": "Ebene dataset",
             "viewMap": "Karte ansehen",
             "viewGeoStory": "GeoStory ansehen",
             "viewDocument": "Dokument ansehen",

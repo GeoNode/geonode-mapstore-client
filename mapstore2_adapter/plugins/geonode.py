@@ -188,7 +188,7 @@ class GeoNodeMapStore2ConfigConverter(BaseMapStore2ConfigConverter):
 
                 try:
                     # - extract from GeoNode guardian
-                    from geonode.layers.views import (_resolve_layer,
+                    from geonode.datasets.views import (_resolve_layer,
                                                       _PERMISSION_MSG_MODIFY,
                                                       _PERMISSION_MSG_DELETE)
                     if _resolve_layer(request,
@@ -414,8 +414,8 @@ class GeoNodeMapStore2ConfigConverter(BaseMapStore2ConfigConverter):
                             try:
                                 if 'name' not in overlay and 'name' in layer:
                                     overlay['name'] = layer['name']
-                                from geonode.layers.models import Layer
-                                _gn_layer = Layer.objects.get(
+                                from geonode.datasets.models import Dataset
+                                _gn_layer = Dataset.objects.get(
                                     store=overlay['store'],
                                     alternate=overlay['name'])
                                 if _gn_layer.srid:

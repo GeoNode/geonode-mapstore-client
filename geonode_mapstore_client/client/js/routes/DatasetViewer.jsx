@@ -16,7 +16,7 @@ import { getMonitoredState } from '@mapstore/framework/utils/PluginsUtils';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import PluginsContainer from '@mapstore/framework/components/plugins/PluginsContainer';
 import useLazyPlugins from '@js/hooks/useLazyPlugins';
-import { requestLayerConfig } from '@js/actions/gnviewer';
+import { requestDatasetConfig } from '@js/actions/gnviewer';
 import MetaTags from "@js/components/MetaTags";
 
 
@@ -30,7 +30,7 @@ const ConnectedPluginsContainer = connect((state) => ({
     }
 }))(PluginsContainer);
 
-function LayerViewerRoute({
+function DatasetViewerRoute({
     name,
     pluginsConfig: propPluginsConfig,
     params,
@@ -82,20 +82,20 @@ function LayerViewerRoute({
     );
 }
 
-LayerViewerRoute.propTypes = {
+DatasetViewerRoute.propTypes = {
     onUpdate: PropTypes.func
 };
 
-const ConnectedLayerViewerRoute = connect(
+const ConnectedDatasetViewerRoute = connect(
     createSelector([
         state => state?.gnresource?.data,
         state => state?.localConfig?.siteName || "Geonode"
     ], (resource, siteName) => ({resource, siteName})),
     {
-        onUpdate: requestLayerConfig
+        onUpdate: requestDatasetConfig
     }
-)(LayerViewerRoute);
+)(DatasetViewerRoute);
 
-ConnectedLayerViewerRoute.displayName = 'ConnectedLayerViewerRoute';
+ConnectedDatasetViewerRoute.displayName = 'ConnectedDatasetViewerRoute';
 
-export default ConnectedLayerViewerRoute;
+export default ConnectedDatasetViewerRoute;

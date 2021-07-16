@@ -188,11 +188,11 @@ geonode_mapstore_client/
 |         |-- app_list.html
 |         |-- app_new.html
 |         |-- app_view.html
-|         |-- layer_data_edit.html
-|         |-- layer_detail.html
-|         |-- layer_embed.html
-|         |-- layer_style_edit.html
-|         |-- layer_view.html
+|         |-- dataset_data_edit.html
+|         |-- dataset_detail.html
+|         |-- dataset_embed.html
+|         |-- dataset_style_edit.html
+|         |-- dataset_view.html
 |         |-- map_detail.html
 |         |-- map_edit.html
 |         |-- map_embed.html
