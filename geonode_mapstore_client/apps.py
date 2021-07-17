@@ -19,6 +19,7 @@ def run_setup_hooks(*args, **kwargs):
     urlpatterns += [
         url(r'^mapstore/', include('mapstore2_adapter.urls')),
         url(r'^', include('mapstore2_adapter.geoapps.geostories.api.urls')),
+        url(r'^', include('mapstore2_adapter.geoapps.dashboards.api.urls')),
     ]
 
 

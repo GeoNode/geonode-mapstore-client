@@ -1,0 +1,4 @@
+{% load static %}
+{% load client_version %}
+
+{% include '../_geonode_config.html' with is_embed=is_embed is_app=True plugins_config_key=plugins_config_key|default:'dashboard' is_new_resource=is_new|default:'true' %}
