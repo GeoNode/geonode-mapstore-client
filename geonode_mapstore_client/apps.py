@@ -10,6 +10,7 @@
 #########################################################################
 from django.apps import AppConfig as BaseAppConfig
 from django.utils.translation import ugettext_lazy as _
+from django.apps import apps
 
 
 def run_setup_hooks(*args, **kwargs):
@@ -28,5 +29,6 @@ class AppConfig(BaseAppConfig):
     label = "geonode_mapstore_client"
 
     def ready(self):
-        run_setup_hooks()
+        if not apps.ready:
+            run_setup_hooks()
         super(AppConfig, self).ready()
