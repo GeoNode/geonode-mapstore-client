@@ -22819,6 +22819,39 @@ Ported to CodeMirror by Peter Kroon
   font-size: 0.9rem;
   margin: 0.2em 0 0 0;
 }
+.msgapi .gn-details-panel-content .tabs-info {
+  margin-top: 2em;
+}
+.msgapi .gn-details-panel-content .tabs-info .tab-content {
+  padding: 2em;
+}
+.msgapi .gn-details-panel-content .DList-containner {
+  margin: 0 0 2em 0;
+}
+.msgapi .gn-details-panel-content .DList-containner .DList {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1em 0;
+  padding: 0;
+  border-width: 1px 1px 0px 1px;
+  border-style: solid;
+  margin: 1em 0 2em 0;
+}
+.msgapi .gn-details-panel-content .DList-containner .DList-cell {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+  padding: 0.8em 1.2em;
+  overflow: hidden;
+  list-style: none;
+  border-bottom: 1px solid;
+}
+.msgapi .gn-details-panel-content .DList-containner .DList--2cols > .DList-cell {
+  width: 50%;
+}
+.msgapi .gn-details-panel-content .DList-containner .moreinfo {
+  margin: 1em 0;
+}
 .msgapi .gn-details-panel-title {
   display: flex;
   margin-bottom: 1rem;
@@ -28037,6 +28070,15 @@ Ported to CodeMirror by Peter Kroon
   color: transparent;
   background-color: #dddddd ;
   background-color: var(--gn-placeholder-bg, #dddddd) ;
+}
+.msgapi .gn-details-panel-content .DList-containner .DList-cell--medium {
+  background-color: #f2f0f0 ;
+  background-color: var(--gn-main-variant-bg, #f2f0f0) ;
+}
+.msgapi .gn-details-panel-content .DList-containner .DList,
+.msgapi .gn-details-panel-content .DList-containner .DList-cell {
+  border-color: #dddddd ;
+  border-color: var(--gn-main-border-color, #dddddd) ;
 }
 .msgapi .gn-edit-toogle {
   background-color: #dddddd ;

@@ -132,7 +132,8 @@
             "uploadImage": "Clicca o trascina un'immagine",
             "save": "Salva",
             "share": "Condividi",
-            "download": "Scarica"
+            "download": "Scarica",
+            "moreinfo": "Maggiori informazioni"
         }
     }
 }
