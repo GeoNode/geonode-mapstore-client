@@ -18,7 +18,5 @@ router.register(r'users', views.UserViewSet)
 router.register(r'resources', views.MapStoreResourceViewSet, basename="resources")
 
 urlpatterns = [
-    url(r'^rest/', include(router.urls)),
-    # rest_framework.urls may be skipped, if it is supposed to be always inside geonode
-    url(r'^api-auth/', include('rest_framework.urls', namespace='mapstore2_adapter_apis'))
+    url(r'^rest/', include(router.urls))
 ]
