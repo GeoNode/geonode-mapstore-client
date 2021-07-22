@@ -27,7 +27,6 @@ import {
 
 import { error as errorNotification } from '@mapstore/framework/actions/notifications';
 import { configureMap } from '@mapstore/framework/actions/config';
-import { zoomToExtent } from '@mapstore/framework/actions/map';
 import {
     browseData,
     selectNode,
@@ -59,6 +58,8 @@ export const gnViewerrequestDatasetConfig = (action$) =>
             ])).switchMap((response) => {
                 const [mapConfig, gnLayer] = response;
                 const newLayer = resourceToLayerConfig(gnLayer);
+                const {minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
+                const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
                 return Observable.of(
                     configureMap({
                         ...mapConfig,
@@ -70,8 +71,8 @@ export const gnViewerrequestDatasetConfig = (action$) =>
                             ]
                         }
                     }),
-                    ...(newLayer?.bbox?.bounds
-                        ? [ zoomToExtent(newLayer.bbox.bounds, 'EPSG:4326') ]
+                    ...(extent
+                        ? [ setControlProperty('fitBounds', 'geometry', extent) ]
                         : []),
                     selectNode(newLayer.id, 'layer', false),
                     setResource(gnLayer),

@@ -314,6 +314,10 @@ export const plugins = {
     MediaViewerPlugin: toLazyPlugin(
         'MediaViewer',
         import(/* webpackChunkName: 'plugins/media-viewer-plugin' */ '@js/plugins/MediaViewer')
+    ),
+    FitBoundsPlugin: toLazyPlugin(
+        'FitBounds',
+        import(/* webpackChunkName: 'plugins/fit-bounds-plugin' */ '@js/plugins/FitBounds')
     )
 
 
