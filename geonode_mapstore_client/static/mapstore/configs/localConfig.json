@@ -2732,6 +2732,9 @@
             },
             {
                 "name": "Notifications"
+            },
+            {
+                "name": "FitBounds"
             }
         ],
         "dataset_edit_style_viewer": [
@@ -2830,6 +2833,9 @@
             },
             {
                 "name": "Notifications"
+            },
+            {
+                "name": "FitBounds"
             }
         ],
         "map_viewer": [
