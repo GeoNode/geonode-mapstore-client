@@ -2613,6 +2613,9 @@
             },
             {
                 "name": "Locate"
+            },
+            {
+                "name": "FitBounds"
             }
         ],
         "dataset_edit_data_viewer": [
