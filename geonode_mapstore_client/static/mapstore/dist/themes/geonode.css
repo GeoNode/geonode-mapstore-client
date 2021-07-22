@@ -22779,11 +22779,8 @@ Ported to CodeMirror by Peter Kroon
   margin-right: 0.5rem;
 }
 .msgapi .gn-details-panel .editContainer.imagepreview {
-  padding: 0rem 5rem;
+  width: 250px;
   z-index: 1;
-}
-.msgapi .gn-details-panel .editContainer.imagepreview .dropzone-thumbnail-container {
-  height: 340px;
 }
 .msgapi .gn-details-panel .editContainer.imagepreview .icon-image-preview {
   position: absolute;
@@ -22810,25 +22807,35 @@ Ported to CodeMirror by Peter Kroon
 .msgapi .gn-details-panel-preview.inediting {
   padding-bottom: 0;
 }
-.msgapi .gn-details-panel-content {
+.msgapi .gn-details-panel-content-text {
+  flex: 1;
+}
+.msgapi .gn-details-panel-info .tabs-info {
+  margin-top: 2em;
+}
+.msgapi .gn-details-panel-info .tabs-info .tab-content {
+  padding: 2em;
+}
+.msgapi .gn-details-panel-content,
+.msgapi .gn-details-panel-info {
   padding: 1rem;
   font-size: 0.9em;
+  display: flex;
+  flex: 1 1 auto;
 }
 .msgapi .gn-details-panel-content .fa-edit,
-.msgapi .gn-details-panel-content .fa-check-circle {
+.msgapi .gn-details-panel-info .fa-edit,
+.msgapi .gn-details-panel-content .fa-check-circle,
+.msgapi .gn-details-panel-info .fa-check-circle {
   font-size: 0.9rem;
   margin: 0.2em 0 0 0;
 }
-.msgapi .gn-details-panel-content .tabs-info {
-  margin-top: 2em;
+.msgapi .gn-details-panel-content .DList-containner,
+.msgapi .gn-details-panel-info .DList-containner {
+  margin: 0 0 2.8em 0;
 }
-.msgapi .gn-details-panel-content .tabs-info .tab-content {
-  padding: 2em;
-}
-.msgapi .gn-details-panel-content .DList-containner {
-  margin: 0 0 2em 0;
-}
-.msgapi .gn-details-panel-content .DList-containner .DList {
+.msgapi .gn-details-panel-content .DList-containner .DList,
+.msgapi .gn-details-panel-info .DList-containner .DList {
   display: flex;
   flex-wrap: wrap;
   margin: 1em 0;
@@ -22837,7 +22844,8 @@ Ported to CodeMirror by Peter Kroon
   border-style: solid;
   margin: 1em 0 2em 0;
 }
-.msgapi .gn-details-panel-content .DList-containner .DList-cell {
+.msgapi .gn-details-panel-content .DList-containner .DList-cell,
+.msgapi .gn-details-panel-info .DList-containner .DList-cell {
   box-sizing: border-box;
   flex-grow: 1;
   width: 100%;
@@ -22846,11 +22854,21 @@ Ported to CodeMirror by Peter Kroon
   list-style: none;
   border-bottom: 1px solid;
 }
-.msgapi .gn-details-panel-content .DList-containner .DList--2cols > .DList-cell {
+.msgapi .gn-details-panel-content .DList-containner .DList--2cols > .DList-cell,
+.msgapi .gn-details-panel-info .DList-containner .DList--2cols > .DList-cell {
   width: 50%;
 }
-.msgapi .gn-details-panel-content .DList-containner .moreinfo {
+.msgapi .gn-details-panel-content .DList-containner .moreinfo,
+.msgapi .gn-details-panel-info .DList-containner .moreinfo {
   margin: 1em 0;
+}
+.msgapi .gn-details-panel-content-img {
+  margin: 0 1.2em 0 0;
+}
+.msgapi .gn-details-panel-content-img img {
+  width: 250px;
+  height: auto;
+  object-fit: cover;
 }
 .msgapi .gn-details-panel-title {
   display: flex;
@@ -22874,7 +22892,7 @@ Ported to CodeMirror by Peter Kroon
 }
 .msgapi .gn-details-panel-title .gn-details-panel-tools button,
 .msgapi .gn-details-panel-title .gn-details-panel-tools a {
-  padding: 0.1rem 0 0 0.5rem;
+  padding: 0 0 0 0.5rem;
 }
 .msgapi .gn-details-panel-title .inEdit {
   align-items: center;
@@ -28071,12 +28089,12 @@ Ported to CodeMirror by Peter Kroon
   background-color: #dddddd ;
   background-color: var(--gn-placeholder-bg, #dddddd) ;
 }
-.msgapi .gn-details-panel-content .DList-containner .DList-cell--medium {
+.msgapi .gn-details-panel-info .DList-containner .DList-cell--medium {
   background-color: #f2f0f0 ;
   background-color: var(--gn-main-variant-bg, #f2f0f0) ;
 }
-.msgapi .gn-details-panel-content .DList-containner .DList,
-.msgapi .gn-details-panel-content .DList-containner .DList-cell {
+.msgapi .gn-details-panel-info .DList-containner .DList,
+.msgapi .gn-details-panel-info .DList-containner .DList-cell {
   border-color: #dddddd ;
   border-color: var(--gn-main-border-color, #dddddd) ;
 }
