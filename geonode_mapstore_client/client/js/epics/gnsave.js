@@ -120,7 +120,7 @@ const SaveAPI = {
         return id ? updateDocument(id, body) : false;
 
     },
-    layer: (state, id, metadata) => {
+    dataset: (state, id, metadata) => {
         const body = {
             'title': metadata.name,
             'abstract': metadata.description,
