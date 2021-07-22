@@ -2299,19 +2299,9 @@
                 "cfg": {
                     "leftMenuItems": [
                         {
-                            "labelId": "gnviewer.save",
-                            "type": "dropdown",
-                            "perms": [{ "type": "resource", "value": "change_resourcebase" }],
-                            "items": [
-                                {
-                                    "type": "plugin",
-                                    "name": "Save"
-                                },
-                                {
-                                    "type": "plugin",
-                                    "name": "SaveAs"
-                                }
-                            ]
+                            "type": "plugin",
+                            "name": "Save",
+                            "perms": [{ "type": "resource", "value": "change_resourcebase" }]
                         },
                         {
                             "type": "plugin",
