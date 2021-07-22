@@ -320,10 +320,10 @@
                     "perms": [{ "type": "user", "value": "add_resource" }],
                     "items": [
                         {
-                            "labelId": "gnhome.layer",
+                            "labelId": "gnhome.dataset",
                             "value": "layer",
                             "type": "link",
-                            "href": "/layers/upload",
+                            "href": "/datasets/upload",
                             "authenticated": true,
                             "perms": [{ "type": "user", "value": "add_resource" }]
                         },
@@ -2290,7 +2290,7 @@
                 "name": "Notifications"
             }
         ],
-        "layer_viewer": [
+        "dataset_viewer": [
             {
                 "name": "ViewerLayout"
             },
@@ -2329,12 +2329,12 @@
                                 },
                                 {
                                     "type": "link",
-                                    "href": "{'#/layer/' + (state('gnResourceData') || {}).pk + '/edit/style'}",
+                                    "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/style'}",
                                     "labelId": "gnviewer.editStyle"
                                 },
                                 {
                                     "type": "link",
-                                    "href": "{'#/layer/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
+                                    "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
                                     "labelId": "gnviewer.editData"
                                 }
                             ]
@@ -2625,7 +2625,7 @@
                 "name": "Locate"
             }
         ],
-        "layer_edit_data_viewer": [
+        "dataset_edit_data_viewer": [
             {
                 "name": "ViewerLayout"
             },
@@ -2635,7 +2635,7 @@
                     "leftMenuItems": [
                         {
                             "type": "link",
-                            "href": "{'#/layer/' + (state('gnResourceData') || {}).pk}",
+                            "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk}",
                             "labelId": "gnviewer.backToDataset"
                         }
                     ]
@@ -2741,7 +2741,7 @@
                 "name": "Notifications"
             }
         ],
-        "layer_edit_style_viewer": [
+        "dataset_edit_style_viewer": [
             {
                 "name": "ViewerLayout"
             },
@@ -2751,7 +2751,7 @@
                     "leftMenuItems": [
                         {
                             "type": "link",
-                            "href": "{'#/layer/' + (state('gnResourceData') || {}).pk}",
+                            "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk}",
                             "labelId": "gnviewer.backToDataset"
                         }
                     ]
@@ -2847,8 +2847,8 @@
                     "leftMenuItems": [
                         {
                             "labelId": "gnviewer.save",
-                            "type": "dropdown",
                             "perms": [{ "type": "resource", "value": "change_resourcebase" }],
+                            "type": "dropdown",
                             "items": [
                                 {
                                     "type": "plugin",
