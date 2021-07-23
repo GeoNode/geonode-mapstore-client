@@ -10,14 +10,14 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import url from 'url';
-import isUndefined from 'lodash/isUndefined';
+import isArray from 'lodash/isArray';
 import { createSelector } from 'reselect';
 import BorderLayout from '@mapstore/framework/components/layout/BorderLayout';
 import { getMonitoredState } from '@mapstore/framework/utils/PluginsUtils';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import PluginsContainer from '@mapstore/framework/components/plugins/PluginsContainer';
 import useLazyPlugins from '@js/hooks/useLazyPlugins';
-import { requestGeoStoryConfig, requestNewGeoStoryConfig } from '@js/actions/gnviewer';
+import { requestDashboardConfig, requestNewDashboardConfig } from '@js/actions/gnviewer';
 import MetaTags from "@js/components/MetaTags";
 
 const urlQuery = url.parse(window.location.href, true).query;
@@ -30,7 +30,7 @@ const ConnectedPluginsContainer = connect((state) => ({
     }
 }))(PluginsContainer);
 
-function GeoStoryViewerRoute({
+function DashboardViewerRouteRoute({
     name,
     pluginsConfig: propPluginsConfig,
     params,
@@ -45,7 +45,9 @@ function GeoStoryViewerRoute({
 }) {
 
     const { pk } = match.params || {};
-    const pluginsConfig = propPluginsConfig && propPluginsConfig[name] || [];
+    const pluginsConfig = isArray(propPluginsConfig)
+        ? propPluginsConfig
+        : propPluginsConfig && propPluginsConfig[name] || [];
 
     const [loading, setLoading] = useState(true);
     const { plugins: loadedPlugins } = useLazyPlugins({
@@ -53,16 +55,11 @@ function GeoStoryViewerRoute({
         pluginsConfig
     });
     useEffect(() => {
-        if (!loading) {
+        if (!loading && pk) {
             pk === "new" ? onCreate() : onUpdate(pk);
         }
     }, [loading, pk]);
 
-    useEffect(() => {
-        if (pk === "new" && !isUndefined(resource?.canEdit) && !(resource?.canEdit)) {
-            window.location.replace('/account/login');
-        }
-    }, [pk, resource]);
     const Loader = loaderComponent;
 
     return (
@@ -75,9 +72,9 @@ function GeoStoryViewerRoute({
                 content={resource.abstract}
             />}
             <ConnectedPluginsContainer
-                key="page-geostory-viewer"
-                id="page-geostory-viewer"
-                className="page page-geostory-viewer"
+                key="page-dashboard-viewer"
+                id="page-dashboard-viewer"
+                className="page page-dashboard-viewer"
                 component={BorderLayout}
                 pluginsConfig={pluginsConfig}
                 plugins={{ ...loadedPlugins, ...plugins }}
@@ -89,21 +86,21 @@ function GeoStoryViewerRoute({
     );
 }
 
-GeoStoryViewerRoute.propTypes = {
+DashboardViewerRouteRoute.propTypes = {
     onUpdate: PropTypes.func
 };
 
-const ConnectedGeoStoryViewerRoute = connect(
+const ConnectedDashboardViewerRouteRoute = connect(
     createSelector([
         state => state?.gnresource?.data,
         state => state?.gnsettings?.siteName || "Geonode"
     ], (resource, siteName) => ({resource, siteName})),
     {
-        onUpdate: requestGeoStoryConfig,
-        onCreate: requestNewGeoStoryConfig
+        onUpdate: requestDashboardConfig,
+        onCreate: requestNewDashboardConfig
     }
-)(GeoStoryViewerRoute);
+)(DashboardViewerRouteRoute);
 
-ConnectedGeoStoryViewerRoute.displayName = 'ConnectedGeoStoryViewerRoute';
+ConnectedDashboardViewerRouteRoute.displayName = 'ConnectedDashboardViewerRouteRoute';
 
-export default ConnectedGeoStoryViewerRoute;
+export default ConnectedDashboardViewerRouteRoute;

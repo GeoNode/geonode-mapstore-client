@@ -318,8 +318,15 @@ export const plugins = {
     FitBoundsPlugin: toLazyPlugin(
         'FitBounds',
         import(/* webpackChunkName: 'plugins/fit-bounds-plugin' */ '@js/plugins/FitBounds')
+    ),
+    DashboardEditorPlugin: toLazyPlugin(
+        'DashboardEditor',
+        import(/* webpackChunkName: 'plugins/dashboard-editor-plugin' */ '@mapstore/framework/plugins/DashboardEditor')
+    ),
+    DashboardPlugin: toLazyPlugin(
+        'Dashboard',
+        import(/* webpackChunkName: 'plugins/dashboard-plugin' */ '@mapstore/framework/plugins/Dashboard')
     )
-
 
 };
 

@@ -1,6 +1,6 @@
 import expect from 'expect';
 import { gnViewerRequestNewGeoStoryConfig, gnViewerRequestNewMapConfig } from '@js/epics/gnviewer';
-import { requestNewGeostoryConfig, requestNewMapConfig  } from '@js/actions/gnviewer';
+import { requestNewGeoStoryConfig, requestNewMapConfig  } from '@js/actions/gnviewer';
 import MockAdapter from 'axios-mock-adapter';
 import axios from '@mapstore/framework/libs/ajax';
 
@@ -68,7 +68,7 @@ describe("gnviewer epics", () => {
         testEpic(
             gnViewerRequestNewGeoStoryConfig,
             NUM_ACTIONS,
-            requestNewGeostoryConfig(),
+            requestNewGeoStoryConfig(),
             (actions) => {
                 try {
                     expect(actions.map(({type}) => type )).toEqual(["GEOSTORY:SET_RESOURCE", "SHOW_NOTIFICATION"]);
@@ -87,7 +87,7 @@ describe("gnviewer epics", () => {
         testEpic(
             gnViewerRequestNewGeoStoryConfig,
             NUM_ACTIONS,
-            requestNewGeostoryConfig(),
+            requestNewGeoStoryConfig(),
             (actions) => {
                 try {
                     expect(actions.map(({type}) => type )).toEqual(["GEONODE:SET_NEW_RESOURCE", "GEOSTORY:SET_CURRENT_STORY", "GEONODE:SET_RESOURCE_TYPE",

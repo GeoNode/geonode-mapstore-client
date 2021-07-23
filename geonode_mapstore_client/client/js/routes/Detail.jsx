@@ -198,7 +198,7 @@ const ConnectedDetail = connect(
         state => state?.controls?.gnFiltersPanel?.enabled || null,
         getParsedGeoNodeConfiguration,
         state => state?.gnsearch?.total || 0,
-        state => state?.localConfig?.siteName || "Geonode"
+        state => state?.gnsettings?.siteName || "Geonode"
     ], (params, user, resource, isFiltersPanelEnabled, config, totalResources, siteName) => ({
         params,
         user,

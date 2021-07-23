@@ -81,7 +81,8 @@ const SaveAPI = {
             : createMap(body)
                 .then((response) => {
                     if (reload) {
-                        window.location.href = parseDevHostname(`${getConfigProp('geonodeUrl')}catalogue/#/map/${response.pk}`);
+                        const { geonodeUrl = '/' } = getConfigProp('geoNodeSettings') || {};
+                        window.location.href = parseDevHostname(`${geonodeUrl}catalogue/#/map/${response.pk}`);
                         window.location.reload();
                     }
                     return response.data;
@@ -104,7 +105,8 @@ const SaveAPI = {
                 ...body
             }).then((response) => {
                 if (reload) {
-                    window.location.href = parseDevHostname(`${getConfigProp('geonodeUrl')}catalogue/#/geostory/${response.pk}`);
+                    const { geonodeUrl = '/' } = getConfigProp('geoNodeSettings') || {};
+                    window.location.href = parseDevHostname(`${geonodeUrl}catalogue/#/geostory/${response.pk}`);
                     window.location.reload();
                 }
                 return response.data;

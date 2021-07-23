@@ -15,7 +15,9 @@ import {
     REQUEST_GEOSTORY_CONFIG,
     REQUEST_DOCUMENT_CONFIG,
     REQUEST_NEW_GEOSTORY_CONFIG,
-    REQUEST_NEW_MAP_CONFIG
+    REQUEST_NEW_MAP_CONFIG,
+    REQUEST_DASHBOARD_CONFIG,
+    REQUEST_NEW_DASHBOARD_CONFIG
 } from '@js/actions/gnviewer';
 import { getNewMapConfiguration, getNewGeoStoryConfig } from '@js/api/geonode/config';
 import {
@@ -43,8 +45,13 @@ import {
 
 import {
     setCurrentStory,
-    setResource as setGeoStoryResource, setEditing
+    setResource as setGeoStoryResource,
+    setEditing
 } from '@mapstore/framework/actions/geostory';
+import {
+    // dashboardLoaded,
+    dashboardLoading
+} from '@mapstore/framework/actions/dashboard';
 
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import { resourceToLayerConfig } from '@js/utils/ResourceUtils';
@@ -155,6 +162,7 @@ export const gnViewerRequestGeoStoryConfig = (action$) =>
                 return Observable.empty();
             });
         });
+
 export const gnViewerRequestNewGeoStoryConfig = (action$, { getState = () => {}}) =>
     action$.ofType(REQUEST_NEW_GEOSTORY_CONFIG)
         .switchMap(() => {
@@ -183,6 +191,7 @@ export const gnViewerRequestNewGeoStoryConfig = (action$, { getState = () => {}}
                 })
                 .startWith(setNewResource());
         });
+
 export const gnViewerRequestDocumentConfig = (action$) =>
     action$.ofType(REQUEST_DOCUMENT_CONFIG)
         .switchMap(({ pk }) => {
@@ -201,11 +210,60 @@ export const gnViewerRequestDocumentConfig = (action$) =>
             });
         });
 
+
+export const gnViewerRequestDashboardConfig = (action$) =>
+    action$.ofType(REQUEST_DASHBOARD_CONFIG)
+        .switchMap(() => {
+
+            return Observable.defer(() => new Promise(resolve => resolve({})))
+                .switchMap(( /* gnDashboard */ ) => {
+                    /*
+                    const { data, ...resource } = gnDashboard;
+                    return Observable.of(
+                        dashboardLoaded(
+                            { // ms dashboard config example
+                                canDelete: false,
+                                canEdit: false,
+                                creation:'2020-02-20T11:10:09.488+01:00',
+                                description: 'Filtering Capabilities',
+                                id: 21694,
+                                lastUpdate: '2021-04-09T10:37:07.870+02:00',
+                                name: 'Demo Dashboard'
+                            },
+                            data
+                        ),
+                        setResource(resource),
+                        setResourceId(pk),
+                        setResourceType('dashboard')
+                    );
+                    */
+                    return Observable.empty();
+                }).catch(() => {
+                    return Observable.empty();
+                })
+                .startWith(dashboardLoading(false));
+        });
+
+export const gnViewerRequestNewDashboardConfig = (action$) =>
+    action$.ofType(REQUEST_NEW_DASHBOARD_CONFIG)
+        .switchMap(() => {
+
+            return Observable.defer(() => new Promise(resolve => resolve({})))
+                .switchMap(() => {
+                    return Observable.empty();
+                }).catch(() => {
+                    return Observable.empty();
+                })
+                .startWith(setNewResource(), dashboardLoading(false));
+        });
+
 export default {
     gnViewerrequestDatasetConfig,
     gnViewerRequestMapConfig,
     gnViewerRequestNewMapConfig,
     gnViewerRequestGeoStoryConfig,
     gnViewerRequestDocumentConfig,
-    gnViewerRequestNewGeoStoryConfig
+    gnViewerRequestNewGeoStoryConfig,
+    gnViewerRequestDashboardConfig,
+    gnViewerRequestNewDashboardConfig
 };

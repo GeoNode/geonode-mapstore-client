@@ -155,10 +155,7 @@ export function setupConfiguration({
         geoNodePageConfig,
         pluginsConfigKey: query.config || geoNodePageConfig.pluginsConfigKey,
         mapType: geoNodePageConfig.mapType,
-        settings: {
-            geonodeUrl: localConfig.geonodeUrl,
-            geoserverUrl: localConfig.geoserverUrl
-        },
+        settings: localConfig.geoNodeSettings,
         permissions: {
             canEdit,
             canView

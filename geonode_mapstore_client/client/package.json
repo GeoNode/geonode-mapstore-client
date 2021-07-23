@@ -27,7 +27,7 @@
   "author": "GeoSolutions",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "@mapstore/project": "1.0.15"
+    "@mapstore/project": "1.0.16"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.1",

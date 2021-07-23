@@ -39,6 +39,9 @@
         const topMenubarLeftItems = getJSONScriptVariable('menu-TOP_MENUBAR_LEFT', []);
         const topMenubarRightItems = getJSONScriptVariable('menu-TOP_MENUBAR_RIGHT', []);
         const cardsMenuItems = getJSONScriptVariable('menu-CARDS_MENU', []);
+        const baseLayers = getJSONScriptVariable('settings-MAP_BASELAYERS', []);
+        const catalogueServices = getJSONScriptVariable('settings-CATALOGUE_SERVICES', {});
+        const catalogueSelectedService = getJSONScriptVariable('settings-CATALOGUE_SELECTED_SERVICE', '');
 
         window.__GEONODE_CONFIG__ = {
             languageCode: '{{ LANGUAGE_CODE }}',
@@ -63,15 +66,21 @@
                     url: '{{ PROXY_URL|default:"/proxy/?url=" }}',
                     useCORS: []
                 },
+                printUrl: '{{ GEOSERVER_PUBLIC_LOCATION }}pdf/info.json',
+                bingApiKey: '{% bing_api_key %}',
                 geoNodeApi: {
                     endpointV1: '{{ SITEURL }}api',
                     endpointV2: '{{ SITEURL }}api/v2'
                 },
-                geonodeUrl: '{{ SITEURL }}',
-                geoserverUrl: '{{ OGC_SERVER.default.PUBLIC_LOCATION|default:"" }}',
-                printUrl: '{{ GEOSERVER_PUBLIC_LOCATION }}pdf/info.json',
-                bingApiKey: '{% bing_api_key %}',
-                siteName: '{{ SITE_NAME|default:"Geonode" }}',
+                // the properties inside geoNodeSettings are stored in the state
+                // and accessible by the monitored state with state('settings')
+                geoNodeSettings: {
+                    catalogueSelectedService: catalogueSelectedService,
+                    catalogueServices: catalogueServices,
+                    geonodeUrl: '{{ SITEURL }}',
+                    geoserverUrl: '{{ OGC_SERVER.default.PUBLIC_LOCATION|default:"" }}',
+                    siteName: '{{ SITE_NAME|default:"Geonode" }}'
+                },
                 geoNodeConfiguration: {
                     menu: {
                         items: [...topBarMenuItems, ...topMenubarLeftItems],
@@ -84,9 +93,7 @@
             }, 
         };
 
-        const baseLayers = getJSONScriptVariable('settings-MAP_BASELAYERS', []);
-        const catalogueServices = getJSONScriptVariable('settings-CATALOGUE_SERVICES', {});
-        const catalogueSelectedService = getJSONScriptVariable('settings-CATALOGUE_SELECTED_SERVICE', '');
+        
 
         // override maps configuration with properties from setting.py
         window.overrideNewMapConfig = function(config) {

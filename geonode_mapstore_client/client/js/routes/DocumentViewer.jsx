@@ -87,7 +87,7 @@ DocumentViewerRoute.propTypes = {
 
 const ConnectedDocumentViewerRoute = connect(
     createSelector([
-        state => state?.localConfig?.siteName || "Geonode",
+        state => state?.gnsettings?.siteName || "Geonode",
         state => state?.gnresource?.data || null
     ], (siteName, resource) => ({siteName, resource})),
     {

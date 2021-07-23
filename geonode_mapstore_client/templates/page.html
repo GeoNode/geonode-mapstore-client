@@ -1,7 +1,7 @@
 {% load static %}
 {% load client_version %}
 <!DOCTYPE html>
-<html class="msgapi">
+<html>
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -19,26 +19,28 @@
         {% block extra_style %}
         {% endblock %}
     </head>
-    <body class="gn-theme gn-theme-light gn-homepage ms2">
+    <body class="msgapi ms2" data-ms2-container="ms2" >
         {% include './geonode-mapstore-client/_geonode_config.html' %}
-        {% block header %}
-            {% include './geonode-mapstore-client/snippets/header.html' %}
-        {% endblock %}
+        <div class="gn-theme gn-theme-light gn-homepage">
+            {% block header %}
+                {% include './geonode-mapstore-client/snippets/header.html' %}
+            {% endblock %}
 
-        {% block container %}
-        {% endblock %}
+            {% block container %}
+            {% endblock %}
 
-        {% block footer %}
-            {% include './geonode-mapstore-client/snippets/footer.html' %}
-        {% endblock %}
+            {% block footer %}
+                {% include './geonode-mapstore-client/snippets/footer.html' %}
+            {% endblock %}
 
-        {% block scripts %}
-            <script src="{% static "lib/js/jquery.min.js" %}"></script>
-            <script src="{% static "lib/js/bootstrap.min.js" %}"></script>
-            <script type="text/javascript">
-                // enable dropdown functionalities
-                $('.dropdown-toggle').dropdown();
-            </script>
-        {% endblock %}
+            {% block scripts %}
+                <script src="{% static "lib/js/jquery.min.js" %}"></script>
+                <script src="{% static "lib/js/bootstrap.min.js" %}"></script>
+                <script type="text/javascript">
+                    // enable dropdown functionalities
+                    $('.dropdown-toggle').dropdown();
+                </script>
+            {% endblock %}
+        </div>
     </body>
 </html>
