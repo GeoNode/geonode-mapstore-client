@@ -22856,7 +22856,11 @@ Ported to CodeMirror by Peter Kroon
 }
 .msgapi .gn-details-panel-content .DList-containner .DList--2cols > .DList-cell,
 .msgapi .gn-details-panel-info .DList-containner .DList--2cols > .DList-cell {
-  width: 50%;
+  width: 75%;
+}
+.msgapi .gn-details-panel-content .DList-containner .DList--2cols > .DList-cell--medium,
+.msgapi .gn-details-panel-info .DList-containner .DList--2cols > .DList-cell--medium {
+  width: 25%;
 }
 .msgapi .gn-details-panel-content .DList-containner .moreinfo,
 .msgapi .gn-details-panel-info .DList-containner .moreinfo {
