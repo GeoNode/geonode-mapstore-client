@@ -9,7 +9,7 @@
 import React, { useRef } from 'react';
 import { Button } from 'react-bootstrap-v1';
 import FaIcon from '@js/components/home/FaIcon';
-import { useSwipeControls } from '@mapstore/framework/components/geostory/navigation/ScrollMenu';
+import useSwipeControls from '@mapstore/framework/components/geostory/common/hooks/useSwipeControls';
 import { withResizeDetector } from 'react-resize-detector';
 
 const SwipeMenu = withResizeDetector(({
