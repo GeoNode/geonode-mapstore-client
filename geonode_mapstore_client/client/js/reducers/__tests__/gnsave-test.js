@@ -20,13 +20,17 @@ describe('gnsave reducer', () => {
     it('should test savingResource', () => {
         const state = gnsave({}, savingResource());
         expect(state).toEqual({
-            saving: true
+            saving: true,
+            error: undefined,
+            success: undefined
         });
     });
-    it('should test savingResource', () => {
+    it('should test saveDirectContent', () => {
         const state = gnsave({}, saveDirectContent());
         expect(state).toEqual({
-            saving: true
+            saving: true,
+            error: undefined,
+            success: undefined
         });
     });
     it('should test saveSuccess', () => {
