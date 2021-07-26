@@ -1,5 +1,0 @@
-{% load static %}
-{% load client_version %}
-
-{% include '../../_geonode_config.html' with is_embed=is_embed is_app=True plugins_config_key=plugins_config_key|default:'dashboard_view' is_new_resource=is_new|default:'true' %}
-<script id="ms2-api" src="{% static 'mapstore/dist/gn-dashboard.js' %}?{% client_version %}"></script>
