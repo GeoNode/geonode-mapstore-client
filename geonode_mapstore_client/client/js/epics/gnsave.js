@@ -18,6 +18,7 @@ import {
 import { saveMapConfiguration } from '@mapstore/framework/utils/MapUtils';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { currentStorySelector } from '@mapstore/framework/selectors/geostory';
+import { widgetsConfig } from '@mapstore/framework/selectors/widgets';
 import { userSelector } from '@mapstore/framework/selectors/security';
 import { error as errorNotification, success as successNotification } from '@mapstore/framework/actions/notifications';
 import {
@@ -51,8 +52,6 @@ import {
     getResourceDescription,
     getResourceThumbnail
 } from '@js/selectors/gnresource';
-
-const GEOAPPS_MAPPER = ['geostory', 'dashboard'];
 
 const SaveAPI = {
     map: (state, id, metadata, reload) => {
@@ -90,7 +89,7 @@ const SaveAPI = {
                     return response.data;
                 });
     },
-    geoapp: (state, id, metadata, reload, resourceType) => {
+    geostory: (state, id, metadata, reload) => {
         const story = currentStorySelector(state);
         const user = userSelector(state);
         const body = {
@@ -104,12 +103,37 @@ const SaveAPI = {
             : createGeoApp({
                 'name': metadata.name + ' ' + uuid(),
                 'owner': user.name,
-                'resource_type': resourceType,
+                'resource_type': 'geostory',
                 ...body
             }).then((response) => {
                 if (reload) {
                     const { geonodeUrl = '/' } = getConfigProp('geoNodeSettings') || {};
                     window.location.href = parseDevHostname(`${geonodeUrl}catalogue/#/geostory/${response.pk}`);
+                    window.location.reload();
+                }
+                return response.data;
+            });
+    },
+    dashboard: (state, id, metadata, reload) => {
+        const dashboard = widgetsConfig(state);
+        const user = userSelector(state);
+        const body = {
+            'title': metadata.name,
+            'abstract': metadata.description,
+            'thumbnail_url': metadata.thumbnail,
+            'data': dashboard
+        };
+        return id
+            ? updateGeoApp(id, body)
+            : createGeoApp({
+                'name': metadata.name + ' ' + uuid(),
+                'owner': user.name,
+                'resource_type': 'dashboard',
+                ...body
+            }).then((response) => {
+                if (reload) {
+                    const { geonodeUrl = '/' } = getConfigProp('geoNodeSettings') || {};
+                    window.location.href = parseDevHostname(`${geonodeUrl}catalogue/#/dashboard/${response.pk}`);
                     window.location.reload();
                 }
                 return response.data;
@@ -138,14 +162,9 @@ const SaveAPI = {
 export const gnSaveContent = (action$, store) =>
     action$.ofType(SAVE_CONTENT)
         .switchMap((action) => {
-            var resourceType = null;
             const state = store.getState();
-            var contentType = state.gnresource?.type || 'map';
-            if (GEOAPPS_MAPPER.includes(contentType)) {
-                resourceType = contentType;
-                contentType = 'geoapp';
-            }
-            return Observable.defer(() => SaveAPI[contentType](state, action.id, action.metadata, action.reload, resourceType))
+            const contentType = state.gnresource?.type || 'map';
+            return Observable.defer(() => SaveAPI[contentType](state, action.id, action.metadata, action.reload))
                 .switchMap((response) => {
                     return Observable.of(
                         saveSuccess(response),
