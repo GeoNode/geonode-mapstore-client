@@ -17,6 +17,7 @@ import dashboard from '@mapstore/framework/reducers/dashboard';
 import widgets from '@mapstore/framework/reducers/widgets';
 import gnresource from '@js/reducers/gnresource';
 import gnsettings from '@js/reducers/gnsettings';
+import { updateGeoNodeSettings } from '@js/actions/gnsettings';
 import {
     getEndpoints,
     getConfiguration,
@@ -24,7 +25,6 @@ import {
 } from '@js/api/geonode/v2';
 import {
     setupConfiguration,
-    getVersion,
     initializeApp,
     getPluginsConfiguration
 } from '@js/utils/AppUtils';
@@ -67,11 +67,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     securityState,
                     geoNodeConfiguration,
                     pluginsConfigKey,
-                    query,
                     configEpics,
                     onStoreInit,
                     geoNodePageConfig,
-                    targetId = 'ms-container'
+                    targetId = 'ms-container',
+                    settings
                 } = setupConfiguration({ localConfig, user });
 
                 main({
@@ -97,13 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             ...securityState
                         }
                     },
-                    themeCfg: {
-                        path: '/static/mapstore/dist/themes',
-                        prefixContainer: '#' + targetId,
-                        version: getVersion(),
-                        prefix: 'msgapi',
-                        theme: query.theme
-                    },
+                    themeCfg: null,
                     appReducers: {
                         dashboard,
                         gnresource,
@@ -119,8 +113,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     onStoreInit,
                     geoNodeConfiguration,
                     initialActions: [
+                        // add some settings in the global state to make them accessible in the monitor state
+                        // later we could use expression in localConfig
+                        updateGeoNodeSettings.bind(null, settings),
                         ...(geoNodePageConfig.resourceId !== undefined
-                            ? [ requestDashboardConfig.bind(null, geoNodePageConfig.resourceId) ]
+                            ? [ requestDashboardConfig.bind(null, geoNodePageConfig.resourceId, {
+                                readOnly: geoNodePageConfig.isEmbed
+                            }) ]
                             : [])
                     ]
                 });

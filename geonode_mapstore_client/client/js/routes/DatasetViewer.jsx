@@ -53,7 +53,7 @@ function DatasetViewerRoute({
 
     useEffect(() => {
         if (!loading) {
-            onUpdate(pk, name);
+            onUpdate(pk, { page: name });
         }
     }, [loading, pk, name]);
     const Loader = loaderComponent;

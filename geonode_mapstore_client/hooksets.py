@@ -243,7 +243,11 @@ class MapStoreHookSet(BaseHookSet):
         self.initialize_context(
             context,
             callback=ms2_config_converter.convert)
-        return 'geonode-mapstore-client/app_embed.html'
+        if context['appType'] == 'dashboard':
+            return 'geonode-mapstore-client/dashboard_embed.html'
+        if context['appType'] == 'geostory':
+            return 'geonode-mapstore-client/geostory_embed.html'
+        return 'geonode-mapstore-client/legacy/app_embed.html'
 
     def geoapp_download_template(self, context=None):
         self.initialize_context(

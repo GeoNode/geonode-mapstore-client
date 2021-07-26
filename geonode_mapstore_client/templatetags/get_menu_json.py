@@ -42,6 +42,11 @@ def get_base_left_topbar_menu():
             "type": "link",
             "href": "/catalogue/#/search/?filter{resource_type.in}=geostory",
             "label": "GeoStories"
+        },
+        {
+            "type": "link",
+            "href": "/catalogue/#/search/?filter{resource_type.in}=dashboard",
+            "label": "Dashboards"
         }
     ]
 

@@ -375,6 +375,19 @@
                                     "value": "add_resource"
                                 }
                             ]
+                        },
+                        {
+                            "labelId": "gnhome.dashboard",
+                            "value": "dashboard",
+                            "type": "link",
+                            "href": "/catalogue/#/dashboard/new",
+                            "authenticated": true,
+                            "perms": [
+                                {
+                                    "type": "user",
+                                    "value": "add_resource"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -3639,6 +3652,7 @@
             {
                 "name": "DashboardEditor",
                 "cfg": {
+                    "disablePluginIf": "{state('gnResourceData') && state('gnResourceData').perms && state('gnResourceData').perms.indexOf('change_resourcebase') === -1 ? true : false}",
                     "selectedService": "{state('settings') && state('settings').catalogueSelectedService ? state('settings').catalogueSelectedService : ''}",
                     "services": "{state('settings') && state('settings').catalogueServices ? state('settings').catalogueServices : {}}",
                     "disableEmptyMap": true

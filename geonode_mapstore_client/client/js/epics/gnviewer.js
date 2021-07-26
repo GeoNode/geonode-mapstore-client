@@ -57,7 +57,8 @@ import { resourceToLayerConfig } from '@js/utils/ResourceUtils';
 
 export const gnViewerRequestDatasetConfig = (action$) =>
     action$.ofType(REQUEST_DATASET_CONFIG)
-        .switchMap(({ pk, page }) => {
+        .switchMap(({ pk, options }) => {
+            const { page } = options || {};
             return Observable.defer(() => axios.all([
                 getNewMapConfiguration(),
                 getDatasetByPk(pk)
@@ -212,21 +213,24 @@ export const gnViewerRequestDocumentConfig = (action$) =>
 
 export const gnViewerRequestDashboardConfig = (action$) =>
     action$.ofType(REQUEST_DASHBOARD_CONFIG)
-        .switchMap(({ pk }) => {
+        .switchMap(({ pk, options }) => {
 
             return Observable.defer(() => getGeoAppByPk(pk))
                 .switchMap(( gnDashboard ) => {
                     const { data, ...resource } = gnDashboard;
+                    const { readOnly } = options || {};
+                    const canEdit = !readOnly && resource?.perms?.includes('change_resourcebase') ? true : false;
+                    const canDelete = !readOnly && resource?.perms?.includes('delete_resourcebase') ? true : false;
                     return Observable.of(
                         dashboardLoaded(
-                            { // ms dashboard config example
-                                canDelete: false,
-                                canEdit: false,
-                                creation: '',
-                                description: '',
+                            {
+                                canDelete,
+                                canEdit,
+                                creation: resource.created,
+                                description: resource.abstract,
                                 id: pk,
-                                lastUpdate: '',
-                                name: ''
+                                lastUpdate: resource.last_updated,
+                                name: resource.title
                             },
                             data
                         ),

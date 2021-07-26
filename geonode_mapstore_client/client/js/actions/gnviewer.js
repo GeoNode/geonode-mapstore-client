@@ -15,11 +15,11 @@ export const REQUEST_DOCUMENT_CONFIG = 'GEONODE_VIEWER:REQUEST_DOCUMENT_CONFIG';
 export const REQUEST_NEW_GEOSTORY_CONFIG = "GEONODE:VIEWER:REQUEST_NEW_GEOSTORY_CONFIG";
 export const REQUEST_NEW_DASHBOARD_CONFIG = "GEONODE:VIEWER:REQUEST_NEW_DASHBOARD_CONFIG";
 
-export function requestDatasetConfig(pk, page) {
+export function requestDatasetConfig(pk, options) {
     return {
         type: REQUEST_DATASET_CONFIG,
         pk,
-        page
+        options
     };
 }
 
@@ -29,10 +29,11 @@ export function requestNewGeoStoryConfig() {
     };
 }
 
-export function requestMapConfig(pk) {
+export function requestMapConfig(pk, options) {
     return {
         type: REQUEST_MAP_CONFIG,
-        pk
+        pk,
+        options
     };
 }
 
@@ -43,17 +44,19 @@ export function requestNewMapConfig() {
 }
 
 
-export function requestGeoStoryConfig(pk) {
+export function requestGeoStoryConfig(pk, options) {
     return {
         type: REQUEST_GEOSTORY_CONFIG,
-        pk
+        pk,
+        options
     };
 }
 
-export function requestDocumentConfig(pk) {
+export function requestDocumentConfig(pk, options) {
     return {
         type: REQUEST_DOCUMENT_CONFIG,
-        pk
+        pk,
+        options
     };
 }
 
@@ -63,9 +66,10 @@ export function requestNewDashboardConfig() {
     };
 }
 
-export function requestDashboardConfig(pk) {
+export function requestDashboardConfig(pk, options) {
     return {
         type: REQUEST_DASHBOARD_CONFIG,
-        pk
+        pk,
+        options
     };
 }

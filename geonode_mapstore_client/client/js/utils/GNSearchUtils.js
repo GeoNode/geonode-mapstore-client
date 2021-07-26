@@ -105,6 +105,11 @@ export const getResourceTypesInfo = () => ({
         name: 'GeoStory',
         formatDetailUrl: (resource) => (`/catalogue/#/geostory/${resource.pk}`)
     },
+    'dashboard': {
+        icon: 'tachometer-alt',
+        name: 'Dashboard',
+        formatDetailUrl: (resource) => (`/catalogue/#/dashboard/${resource.pk}`)
+    },
     'image': {
         icon: 'file-image',
         name: 'Image',
