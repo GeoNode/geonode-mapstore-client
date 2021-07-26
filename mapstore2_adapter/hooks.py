@@ -9,7 +9,7 @@
 #
 #########################################################################
 
-from .conf import settings
+from django.conf import settings
 from six import string_types
 
 

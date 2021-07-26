@@ -38,33 +38,6 @@ logger = logging.getLogger(__name__)
 
 class GeoNodeSerializer(object):
 
-    @classmethod
-    def update_attributes(cls, serializer, attributes):
-        for _a in attributes:
-            serializer.validated_data[_a['name']] = _a['value']
-        serializer.save()
-
-    def get_queryset(self, caller, queryset):
-        allowed_map_ids = []
-        for _q in queryset:
-            mapid = _q.id
-            try:
-                from geonode.maps.views import (_resolve_map,
-                                                _PERMISSION_MSG_VIEW)
-                map_obj = _resolve_map(
-                    caller.request,
-                    str(mapid),
-                    'base.view_resourcebase',
-                    _PERMISSION_MSG_VIEW)
-                if map_obj:
-                    allowed_map_ids.append(mapid)
-            except Exception:
-                tb = traceback.format_exc()
-                logger.debug(tb)
-
-        queryset = queryset.filter(id__in=allowed_map_ids)
-        return queryset
-
     def get_geonode_map(self, caller, serializer):
         from geonode.maps.views import _PERMISSION_MSG_SAVE
         try:

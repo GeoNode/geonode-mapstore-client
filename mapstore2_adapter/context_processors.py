@@ -18,6 +18,7 @@ def resource_urls(request):
         MAP_BASELAYERS=getattr(settings, "MAPSTORE_BASELAYERS", []),
         CATALOGUE_SERVICES=getattr(settings, "MAPSTORE_CATALOGUE_SERVICES", {}),
         CATALOGUE_SELECTED_SERVICE=getattr(settings, "MAPSTORE_CATALOGUE_SELECTED_SERVICE", None),
+        GEOAPPS = ['GeoStory', 'GeoDashboard']
     )
 
     return defaults
