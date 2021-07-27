@@ -11,11 +11,13 @@ import axios from '@mapstore/framework/libs/ajax';
 import { getConfigProp } from "@mapstore/framework/utils/ConfigUtils";
 
 const getLayerEditPerimissions = (name) => {
-    const baseUrl = getConfigProp("geonodeUrl") || "./";
+    const { geonodeUrl = '/' } = getConfigProp('geoNodeSettings') || {};
+    const baseUrl = geonodeUrl || "./";
     return axios.get(`${baseUrl}gs/${name}/edit-check`);
 };
 const getStyleEditPerimissions = (name) => {
-    const baseUrl = getConfigProp("geonodeUrl") || "./";
+    const { geonodeUrl = '/' } = getConfigProp('geoNodeSettings') || {};
+    const baseUrl = geonodeUrl || "./";
     return axios.get(`${baseUrl}gs/${name}/style-check`);
 };
 

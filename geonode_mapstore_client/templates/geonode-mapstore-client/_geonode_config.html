@@ -2,11 +2,25 @@
 {% comment %}
     app and map configuration need to be normalized
 {% endcomment %}
+
+{% comment %} setting.py variables {% endcomment %}
+{{ CATALOGUE_SERVICES|json_script:"settings-CATALOGUE_SERVICES" }}
+{{ CATALOGUE_SELECTED_SERVICE|json_script:"settings-CATALOGUE_SELECTED_SERVICE" }}
+
 <script>
     {% autoescape off %}
     (function(){
 
+        function getJSONScriptVariable(id, fallback) {
+            const node = document.getElementById(id);
+            return node && JSON.parse(node.textContent) || fallback;
+        }
+
         localStorage.setItem('showPopoverSync', false);
+
+        const catalogueServices = getJSONScriptVariable('settings-CATALOGUE_SERVICES', {});
+        const catalogueSelectedService = getJSONScriptVariable('settings-CATALOGUE_SELECTED_SERVICE', '');
+
 
         const username = '{{ user|default:"" }}' || null;
         const token = '{{ access_token|default:"" }}' || '{{ ACCESS_TOKEN|default:"" }}' || null;
@@ -39,10 +53,17 @@
                     endpointV1: '{{ SITEURL }}api',
                     endpointV2: '{{ SITEURL }}api/v2'
                 },
-                geonodeUrl: '{{ SITEURL }}',
-                geoserverUrl: '{{ OGC_SERVER.default.PUBLIC_LOCATION|default:"" }}',
                 printUrl: '{{ GEOSERVER_PUBLIC_LOCATION }}pdf/info.json',
-                bingApiKey: '{% bing_api_key %}'
+                bingApiKey: '{% bing_api_key %}',
+                // the properties inside geoNodeSettings are stored in the state
+                // and accessible by the monitored state with state('settings')
+                geoNodeSettings: {
+                    catalogueSelectedService: catalogueSelectedService,
+                    catalogueServices: catalogueServices,
+                    initialCatalog: catalogueServices[catalogueSelectedService] || {},
+                    geonodeUrl: '{{ SITEURL }}',
+                    geoserverUrl: '{{ OGC_SERVER.default.PUBLIC_LOCATION|default:"" }}'
+                }
             }
         };
     })();

@@ -2420,6 +2420,56 @@
             {
                 "name": "Notifications"
             }
+        ],
+        "dashboard_viewer": [
+            {
+                "name": "OmniBar",
+                "cfg": {
+                    "containerPosition": "header",
+                    "className": "navbar shadow navbar-home"
+                }
+            },
+            {
+                "name": "Save"
+            },
+            {
+                "name": "SaveAs"
+            },
+            {
+                "name": "Share"
+            },
+            {
+                "name": "DashboardEditor",
+                "cfg": {
+                    "catalog": "{ state('settings') && state('settings').initialCatalog }",
+                    "disableEmptyMap": true,
+                    "containerPosition": "columns"
+                }
+            },
+            {
+                "name": "QueryPanel",
+                "cfg": {
+                    "toolsOptions": {
+                        "hideCrossLayer": true,
+                        "hideSpatialFilter": true
+                    },
+                    "containerPosition": "columns"
+                }
+            },
+            {
+                "name": "BurgerMenu"
+            },
+            {
+                "name": "Dashboard"
+            },
+            {
+                "name": "Notifications"
+            }
+        ],
+        "dashboard_embed": [
+            {
+                "name": "Dashboard"
+            }
         ]
     }
 }

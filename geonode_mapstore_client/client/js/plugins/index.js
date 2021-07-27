@@ -251,6 +251,14 @@ export const plugins = {
         'DrawerMenu',
         import(/* webpackChunkName: 'plugins/drawer-menu-plugin' */ '@mapstore/framework/plugins/DrawerMenu')
     ),
+    DashboardEditorPlugin: toLazyPlugin(
+        'DashboardEditor',
+        import(/* webpackChunkName: 'plugins/dashboard-editor-plugin' */ '@mapstore/framework/plugins/DashboardEditor')
+    ),
+    DashboardPlugin: toLazyPlugin(
+        'Dashboard',
+        import(/* webpackChunkName: 'plugins/dashboard-plugin' */ '@mapstore/framework/plugins/Dashboard')
+    ),
     AnnotationsPlugin: toLazyPlugin(
         'Annotations',
         import(/* webpackChunkName: 'plugins/annotations-plugin' */ '@mapstore/framework/plugins/Annotations')
