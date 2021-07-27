@@ -2256,7 +2256,8 @@
             {
                 "name": "Annotations",
                 "cfg": {
-                  "measurementAnnotationEdit": false
+                    "measurementAnnotationEdit": false,
+                    "symbolsPath": "/static/mapstore/symbols/"
                 }
             }
         ],
