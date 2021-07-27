@@ -90,121 +90,121 @@ const routes = [
 initializeApp();
 
 document.addEventListener('DOMContentLoaded', function() {
-Promise.all([
-    getConfiguration(),
-    getAccountInfo()
-])
-    .then(([localConfig, user]) => {
-        const {
-            securityState,
-            geoNodeConfiguration,
-            pluginsConfigKey,
-            geoNodePageConfig,
-            query,
-            configEpics,
-            mapType = 'openlayers',
-            permissions,
-            onStoreInit,
-            targetId = 'ms-container',
-            settings
-        } = setupConfiguration({
-            localConfig,
-            user
-        });
-
-        // get the correct map layout
-        const mapLayout = getConfigProp('mapLayout') || {};
-        setConfigProp('mapLayout', mapLayout[query.theme] || mapLayout.viewer);
-
-        // register custom arcgis layer
-        import('@js/components/' + mapType + '/ArcGisMapServer')
-            .then(() => {
-                main({
-                    targetId,
-                    enableExtensions: true,
-                    appComponent: withRoutes(routes)(ConnectedRouter),
-                    loaderComponent: MainLoader,
-                    initialState: {
-                        defaultState: {
-                            ...securityState,
-                            maptype: {
-                                mapType
-                            },
-                            annotations: {
-                                config: {
-                                    multiGeometry: true,
-                                    validationErrors: {}
-                                },
-                                defaultTextAnnotation: 'New'
-                            }
-                        }
-                    },
-                    themeCfg: {
-                        path: '/static/mapstore/dist/themes',
-                        prefixContainer: '#' + targetId,
-                        version: getVersion(),
-                        prefix: 'msgapi',
-                        theme: query.theme
-                    },
-                    pluginsConfig: getPluginsConfiguration(localConfig.plugins, pluginsConfigKey),
-                    lazyPlugins: pluginsDefinition.lazyPlugins,
-                    pluginsDef: {
-                        plugins: {
-                            ...pluginsDefinition.plugins
-                        },
-                        requires: {
-                            ...requires,
-                            ...pluginsDefinition.requires
-                        }
-                    },
-                    printEnabled: true,
-                    rootReducerFunc: standardRootReducerFunc,
-                    onStoreInit,
-                    appReducers: {
-                        ...standardReducers,
-                        gnresource,
-                        gnsettings,
-                        security,
-                        maptype,
-                        print,
-                        maplayout,
-                        controls,
-                        timeline,
-                        dimension,
-                        playback,
-                        mapPopups,
-                        catalog,
-                        searchconfig,
-                        widgets,
-                        annotations,
-                        ...pluginsDefinition.reducers
-                    },
-                    appEpics: {
-                        ...standardEpics,
-                        ...configEpics,
-                        updateMapLayoutEpic,
-                        gnCheckSelectedLayerPermissions,
-                        gnSetLayersPermissions,
-                        ...pluginsDefinition.epics
-                    },
-                    geoNodeConfiguration,
-                    initialActions: [
-                        // add some settings in the global state to make them accessible in the monitor state
-                        // later we could use expression in localConfig
-                        updateGeoNodeSettings.bind(null, settings),
-                        setControlProperty.bind(null, 'toolbar', 'expanded', false),
-                        loadPrintCapabilities.bind(null, getConfigProp('printUrl')),
-                        setResourcePermissions.bind(null, permissions),
-                        ...(geoNodePageConfig.isNewResource ? [setNewResource] : []),
-                        configureMap.bind(
-                            null,
-                            geoNodePageConfig.resourceConfig,
-                            1,
-                            true
-                        )
-                    ]
-                },
-                withExtensions(StandardApp));
+    Promise.all([
+        getConfiguration(),
+        getAccountInfo()
+    ])
+        .then(([localConfig, user]) => {
+            const {
+                securityState,
+                geoNodeConfiguration,
+                pluginsConfigKey,
+                geoNodePageConfig,
+                query,
+                configEpics,
+                mapType = 'openlayers',
+                permissions,
+                onStoreInit,
+                targetId = 'ms-container',
+                settings
+            } = setupConfiguration({
+                localConfig,
+                user
             });
-    });
+
+            // get the correct map layout
+            const mapLayout = getConfigProp('mapLayout') || {};
+            setConfigProp('mapLayout', mapLayout[query.theme] || mapLayout.viewer);
+
+            // register custom arcgis layer
+            import('@js/components/' + mapType + '/ArcGisMapServer')
+                .then(() => {
+                    main({
+                        targetId,
+                        enableExtensions: true,
+                        appComponent: withRoutes(routes)(ConnectedRouter),
+                        loaderComponent: MainLoader,
+                        initialState: {
+                            defaultState: {
+                                ...securityState,
+                                maptype: {
+                                    mapType
+                                },
+                                annotations: {
+                                    config: {
+                                        multiGeometry: true,
+                                        validationErrors: {}
+                                    },
+                                    defaultTextAnnotation: 'New'
+                                }
+                            }
+                        },
+                        themeCfg: {
+                            path: '/static/mapstore/dist/themes',
+                            prefixContainer: '#' + targetId,
+                            version: getVersion(),
+                            prefix: 'msgapi',
+                            theme: query.theme
+                        },
+                        pluginsConfig: getPluginsConfiguration(localConfig.plugins, pluginsConfigKey),
+                        lazyPlugins: pluginsDefinition.lazyPlugins,
+                        pluginsDef: {
+                            plugins: {
+                                ...pluginsDefinition.plugins
+                            },
+                            requires: {
+                                ...requires,
+                                ...pluginsDefinition.requires
+                            }
+                        },
+                        printEnabled: true,
+                        rootReducerFunc: standardRootReducerFunc,
+                        onStoreInit,
+                        appReducers: {
+                            ...standardReducers,
+                            gnresource,
+                            gnsettings,
+                            security,
+                            maptype,
+                            print,
+                            maplayout,
+                            controls,
+                            timeline,
+                            dimension,
+                            playback,
+                            mapPopups,
+                            catalog,
+                            searchconfig,
+                            widgets,
+                            annotations,
+                            ...pluginsDefinition.reducers
+                        },
+                        appEpics: {
+                            ...standardEpics,
+                            ...configEpics,
+                            updateMapLayoutEpic,
+                            gnCheckSelectedLayerPermissions,
+                            gnSetLayersPermissions,
+                            ...pluginsDefinition.epics
+                        },
+                        geoNodeConfiguration,
+                        initialActions: [
+                            // add some settings in the global state to make them accessible in the monitor state
+                            // later we could use expression in localConfig
+                            updateGeoNodeSettings.bind(null, settings),
+                            setControlProperty.bind(null, 'toolbar', 'expanded', false),
+                            loadPrintCapabilities.bind(null, getConfigProp('printUrl')),
+                            setResourcePermissions.bind(null, permissions),
+                            ...(geoNodePageConfig.isNewResource ? [setNewResource] : []),
+                            configureMap.bind(
+                                null,
+                                geoNodePageConfig.resourceConfig,
+                                1,
+                                true
+                            )
+                        ]
+                    },
+                    withExtensions(StandardApp));
+                });
+        });
 });
