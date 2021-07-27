@@ -93,3 +93,22 @@ export const LayerDownloadActionButton = connect(
         </Button>
     );
 });
+
+export const AnnotationsActionButton = connect(
+    () => ({}),
+    { onClick: setControlProperty.bind(null, 'annotations', 'enabled', true, true) }
+)(({
+    onClick,
+    variant,
+    size
+}) => {
+    return (
+        <Button
+            variant={variant}
+            size={size}
+            onClick={() => onClick()}
+        >
+            <Message msgId="annotationsbutton"/>
+        </Button>
+    );
+});

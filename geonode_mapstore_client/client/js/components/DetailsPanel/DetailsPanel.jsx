@@ -369,7 +369,7 @@ function DetailsPanel({
                                 {resource?.title}
                             </h1>
                             }
-                            {activeEditMode && !editModeTitle && <span onClick={handleEditModeTitle} ><FaIcon name={'edit'} /></span>}
+                            {activeEditMode && !editModeTitle && <span onClick={handleEditModeTitle} ><FaIcon name={'pencil-square-o'} /></span>}
 
 
                             {editModeTitle && <h1>
@@ -384,7 +384,7 @@ function DetailsPanel({
                                     <Button
                                         variant="default"
                                         onClick={debounce(handleFavorite, 500)}>
-                                        <FaIcon stylePrefix={favorite ? `fa` : `far`} name="star" />
+                                        <FaIcon name={favorite ? 'star' : 'star-o'} />
                                     </Button>
                                     }
                                     {documentDownloadUrl &&
@@ -444,7 +444,7 @@ function DetailsPanel({
                                     <span className="gn-details-panel-text" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(resource.abstract) }} />
                                     : null
                             }
-                            {activeEditMode && !editModeAbstract && <span onClick={handleEditModeAbstract} ><FaIcon name={'edit'} /></span>}
+                            {activeEditMode && !editModeAbstract && <span onClick={handleEditModeAbstract} ><FaIcon name={'pencil-square-o'} /></span>}
                         </div>
 
                         <p>

@@ -182,7 +182,7 @@ const CardGrid = ({
                             {loading && <Spinner animation="border" role="status">
                                 <span className="sr-only">Loading...</span>
                             </Spinner>}
-                            {hasResources && !isNextPageAvailable && !loading && <FaIcon name="dot-circle" />}
+                            {hasResources && !isNextPageAvailable && !loading && <FaIcon name="dot-circle-o" />}
                         </div>
                     </div>
                 </div>

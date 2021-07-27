@@ -78,7 +78,7 @@ function updateUrlQueryParameter(requestUrl, query) {
 
 export const getResourceTypesInfo = () => ({
     'dataset': {
-        icon: 'layer-group',
+        icon: 'database',
         formatEmbedUrl: (resource) => updateUrlQueryParameter(resource.embed_url, {
             config: 'layer_preview',
             theme: 'preview'
@@ -87,7 +87,7 @@ export const getResourceTypesInfo = () => ({
         name: 'Dataset'
     },
     'map': {
-        icon: 'map-marked',
+        icon: 'map',
         formatEmbedUrl: (resource) => updateUrlQueryParameter(resource.embed_url, {
             config: 'map_preview',
             theme: 'preview'
@@ -101,17 +101,17 @@ export const getResourceTypesInfo = () => ({
         formatDetailUrl: (resource) => (`/catalogue/#/document/${resource.pk}`)
     },
     'geostory': {
-        icon: 'book-open',
+        icon: 'book',
         name: 'GeoStory',
         formatDetailUrl: (resource) => (`/catalogue/#/geostory/${resource.pk}`)
     },
     'image': {
-        icon: 'file-image',
+        icon: 'file-image-o',
         name: 'Image',
         formatDetailUrl: (resource) => (`/catalogue/#/document/${resource.pk}`)
     },
     'video': {
-        icon: 'file-video',
+        icon: 'file-video-o',
         name: 'Video',
         formatDetailUrl: (resource) => (`/catalogue/#/document/${resource.pk}`)
     }
