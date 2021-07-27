@@ -13,7 +13,8 @@ import {
     PrintActionButton,
     CatalogActionButton,
     MeasureActionButton,
-    LayerDownloadActionButton
+    LayerDownloadActionButton,
+    AnnotationsActionButton
 } from '@js/plugins/actionnavbar/buttons';
 
 function toLazyPlugin(name, imp, overrides) {
@@ -326,6 +327,22 @@ export const plugins = {
     DashboardPlugin: toLazyPlugin(
         'Dashboard',
         import(/* webpackChunkName: 'plugins/dashboard-plugin' */ '@mapstore/framework/plugins/Dashboard')
+    ),
+    AnnotationsPlugin: toLazyPlugin(
+        'Annotations',
+        import(/* webpackChunkName: 'plugins/annotations-plugin' */ '@mapstore/framework/plugins/Annotations'),
+        {
+            containers: {
+                ViewerLayout: {
+                    priority: 2
+                },
+                ActionNavbar: {
+                    name: 'Annotations',
+                    Component: AnnotationsActionButton,
+                    priority: 2
+                }
+            }
+        }
     )
 
 };

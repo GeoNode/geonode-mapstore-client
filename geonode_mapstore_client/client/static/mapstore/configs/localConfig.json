@@ -2358,7 +2358,12 @@
                         {
                             "type": "plugin",
                             "name": "Save",
-                            "perms": [{ "type": "resource", "value": "change_resourcebase" }]
+                            "perms": [
+                                {
+                                    "type": "resource",
+                                    "value": "change_resourcebase"
+                                }
+                            ]
                         },
                         {
                             "type": "plugin",
@@ -2412,6 +2417,10 @@
                         {
                             "type": "plugin",
                             "name": "LayerDownload"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "Measure"
                         }
                     ]
                 }
@@ -2909,7 +2918,12 @@
                     "leftMenuItems": [
                         {
                             "labelId": "gnviewer.save",
-                            "perms": [{ "type": "resource", "value": "change_resourcebase" }],
+                            "perms": [
+                                {
+                                    "type": "resource",
+                                    "value": "change_resourcebase"
+                                }
+                            ],
                             "type": "dropdown",
                             "items": [
                                 {
@@ -2960,6 +2974,18 @@
                         {
                             "type": "plugin",
                             "name": "Catalog"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "Print"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "Annotations"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "Measure"
                         }
                     ]
                 }
@@ -3324,6 +3350,13 @@
                     },
                     "editingAllowedRoles": null,
                     "enableSetDefaultStyle": true
+                }
+            },
+            {
+                "name": "Annotations",
+                "cfg": {
+                    "measurementAnnotationEdit": false,
+                    "geodesic": false
                 }
             }
         ],
