@@ -40221,6 +40221,10 @@ Ported to CodeMirror by Peter Kroon
 .msgapi .add-bar-popover {
   max-width: 500px;
 }
+.msgapi .ms-annotations-panel .items-list .btn {
+  margin-right: 0;
+  margin-top: 0;
+}
 .msgapi #map {
   bottom: 0px !important;
 }
