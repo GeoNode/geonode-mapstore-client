@@ -33,6 +33,7 @@
             "geostory": "GeoStory",
             "geostories": "GeoStories",
             "createGeostory": "Create geostory",
+            "createDashboard": "Create dashboard",
             "createNew": "Create new",
             "maps": "Maps",
             "about": "About",
@@ -46,6 +47,7 @@
             "viewDocument": "View document",
             "viewImage": "View image",
             "viewVideo": "View video",
+            "viewDashboard": "View dashboard",
             "author": "Author",
             "publication": "Publication",
             "creation": "Creation",
@@ -93,6 +95,7 @@
             "addRemoteService": "Add remote service",
             "exploreMaps": "Explore maps",
             "createMap": "Create map",
+            "dashboard": "Dashboard",
             "apps": "Apps",
             "createApp": "Create app",
             "announcements": "Announcements",
@@ -111,6 +114,7 @@
             "myResources": "My resources",
             "pendingApproval": "Pending approval",
             "featuredList": "Featured"
+
         },
         "viewer":{
             "document": {
