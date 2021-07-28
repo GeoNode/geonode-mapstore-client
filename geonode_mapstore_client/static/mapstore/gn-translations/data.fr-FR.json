@@ -132,7 +132,12 @@
             "save": "Sauver",
             "share": "Partager",
             "download": "Télécharger",
-            "moreinfo": "Plus d'informations"
+            "moreinfo": "Plus d'informations",
+            "info": "Info",
+            "attributeName": "Nom d'attribut",
+            "label": "Étiqueter",
+            "description": "La description",
+            "attributes": "Les attributs"
         }
     }
 }

@@ -135,7 +135,13 @@
             "save": "Save",
             "share": "Share",
             "download": "Download",
-            "moreinfo": "More info"
+            "moreinfo": "More info",
+            "info": "Info",
+            "attributeName": "Attribute name",
+            "label": "Label",
+            "description": "Description",
+            "attributes": "Attributes"
+
         }
     }
 }
