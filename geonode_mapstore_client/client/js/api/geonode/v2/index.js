@@ -266,7 +266,7 @@ export const createDashboard = (body) => {
             include: ['data']
         }
     })
-        .then(({ data }) => data.Dashboard);
+        .then(({ data }) => data.dashboard);
 };
 
 export const updateDashboard = (pk, body) => {
@@ -275,7 +275,7 @@ export const updateDashboard = (pk, body) => {
             include: ['data']
         }
     })
-        .then(({ data }) => data.Dashboard);
+        .then(({ data }) => data.dashboard);
 };
 
 export const getUserByPk = (pk) => {

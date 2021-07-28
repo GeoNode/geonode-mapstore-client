@@ -71,8 +71,8 @@ class DashboardSerializer(ResourceBaseSerializer):
 
     class Meta:
         model = Dashboard
-        name = 'Dashboard'
-        view_name = 'Dashboard-list'
+        name = 'dashboard'
+        view_name = 'dashboards-list'
         fields = (
             'pk', 'uuid', 'app_type',
             'zoom', 'projection', 'center_x', 'center_y',

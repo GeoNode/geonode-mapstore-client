@@ -24,8 +24,15 @@ import {
     getAccountInfo
 } from '@js/api/geonode/v2';
 import {
-    setResourceType
+    setResourceType,
+    setNewResource,
+    setResourceId,
+    setResourcePermissions
 } from '@js/actions/gnresource';
+import {
+    dashboardLoaded,
+    dashboardLoading
+} from '@mapstore/framework/actions/dashboard';
 import {
     setupConfiguration,
     getVersion,
@@ -74,7 +81,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     onStoreInit,
                     targetId = 'ms-container',
                     settings,
-                    query
+                    query,
+                    geoNodePageConfig,
+                    permissions
                 } = setupConfiguration({ localConfig, user });
 
                 main({
@@ -124,7 +133,26 @@ document.addEventListener('DOMContentLoaded', function() {
                         // add some settings in the global state to make them accessible in the monitor state
                         // later we could use expression in localConfig
                         updateGeoNodeSettings.bind(null, settings),
-                        setResourceType.bind(null, 'dashboard')
+                        dashboardLoading.bind(null, false),
+                        ...(!geoNodePageConfig.isNewResource
+                            && geoNodePageConfig.resourceConfig
+                            && geoNodePageConfig.resourceId
+                            ? [dashboardLoaded.bind(null,
+                                {
+                                    canDelete: !geoNodePageConfig.isEmbed && permissions.canEdit ? true : false,
+                                    canEdit: !geoNodePageConfig.isEmbed && permissions.canEdit ? true : false,
+                                    creation: '',
+                                    description: '',
+                                    id: geoNodePageConfig.resourceId,
+                                    lastUpdate: '',
+                                    name: ''
+                                },
+                                geoNodePageConfig.resourceConfig
+                            )] : []),
+                        setResourceType.bind(null, 'dashboard'),
+                        setResourcePermissions.bind(null, permissions),
+                        ...(geoNodePageConfig.resourceId ? [setResourceId.bind(null, geoNodePageConfig.resourceId)] : []),
+                        ...(geoNodePageConfig.isNewResource ? [setNewResource] : [])
                     ]
                 });
             });

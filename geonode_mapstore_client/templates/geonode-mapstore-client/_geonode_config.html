@@ -21,7 +21,6 @@
         const catalogueServices = getJSONScriptVariable('settings-CATALOGUE_SERVICES', {});
         const catalogueSelectedService = getJSONScriptVariable('settings-CATALOGUE_SELECTED_SERVICE', '');
 
-
         const username = '{{ user|default:"" }}' || null;
         const token = '{{ access_token|default:"" }}' || '{{ ACCESS_TOKEN|default:"" }}' || null;
         window.__GEONODE_CONFIG__ = {

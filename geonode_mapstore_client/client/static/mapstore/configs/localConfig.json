@@ -70,6 +70,10 @@
         {
             "name": "selectedLayerPermissions",
             "path": "gnresource.selectedLayerPermissions"
+        },
+        {
+            "name": "gnResourcePermissions",
+            "path": "gnresource.permissions"
         }
     ],
     "projectionDefs": [
@@ -2441,6 +2445,7 @@
             {
                 "name": "DashboardEditor",
                 "cfg": {
+                    "disablePluginIf": "{state('gnResourcePermissions') && state('gnResourcePermissions').canEdit ? false : true}",
                     "catalog": "{ state('settings') && state('settings').initialCatalog }",
                     "disableEmptyMap": true,
                     "containerPosition": "columns"
