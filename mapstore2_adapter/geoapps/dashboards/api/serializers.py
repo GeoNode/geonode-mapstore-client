@@ -55,12 +55,7 @@ class DashboardDataSerializer(DynamicModelSerializer):
 
     def to_representation(self, value):
         data = GeoAppData.objects.filter(resource__id=value).first()
-        if data and isinstance(data, str):
-            return json.loads(data.blob)
-        elif data and isinstance(data, dict):
-            return data.blob
-        else:
-            return {}
+        return json.loads(data.blob) if data else {}
 
 
 class DashboardSerializer(ResourceBaseSerializer):
@@ -82,11 +77,8 @@ class DashboardSerializer(ResourceBaseSerializer):
     def to_internal_value(self, data):
         if 'data' in data:
             _data = data.pop('data')
-            if isinstance(_data, str):
-                _data = json.loads(_data)
             if self.is_valid():
                 data['blob'] = _data
-
         return data
 
     def validate(self, data):
