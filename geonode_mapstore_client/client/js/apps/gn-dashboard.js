@@ -24,6 +24,9 @@ import {
     getAccountInfo
 } from '@js/api/geonode/v2';
 import {
+    setResourceType
+} from '@js/actions/gnresource';
+import {
     setupConfiguration,
     getVersion,
     initializeApp,
@@ -120,7 +123,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     initialActions: [
                         // add some settings in the global state to make them accessible in the monitor state
                         // later we could use expression in localConfig
-                        updateGeoNodeSettings.bind(null, settings)
+                        updateGeoNodeSettings.bind(null, settings),
+                        setResourceType.bind(null, 'dashboard')
                     ]
                 });
             });

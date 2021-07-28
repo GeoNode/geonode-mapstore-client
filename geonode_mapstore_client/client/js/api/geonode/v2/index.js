@@ -31,6 +31,7 @@ let endpoints = {
     'maps': '/api/v2/maps',
     'geoapps': '/api/v2/geoapps',
     'geostories': '/api/v2/geostories',
+    'dashboards': '/api/v2/dashboards',
     'users': '/api/v2/users',
     'resource_types': '/api/v2/resources/resource_types'
 };
@@ -41,6 +42,7 @@ const LAYERS = 'layers';
 const MAPS = 'maps';
 const GEOAPPS = 'geoapps';
 const GEOSTORIES = 'geostories';
+const DASHBOARDS = 'dashboards';
 const USERS = 'users';
 const RESOURCE_TYPES = 'resource_types';
 // const GROUPS = 'groups';
@@ -258,6 +260,24 @@ export const updateGeoStory = (pk, body) => {
         .then(({ data }) => data.geostory);
 };
 
+export const createDashboard = (body) => {
+    return axios.post(parseDevHostname(`${endpoints[DASHBOARDS]}`), body, {
+        params: {
+            include: ['data']
+        }
+    })
+        .then(({ data }) => data.Dashboard);
+};
+
+export const updateDashboard = (pk, body) => {
+    return axios.patch(parseDevHostname(`${endpoints[DASHBOARDS]}/${pk}`), body, {
+        params: {
+            include: ['data']
+        }
+    })
+        .then(({ data }) => data.Dashboard);
+};
+
 export const getUserByPk = (pk) => {
     return axios.get(parseDevHostname(`${endpoints[USERS]}/${pk}`))
         .then(({ data }) => data.user);
@@ -390,6 +410,8 @@ export default {
     createGeoApp,
     createGeoStory,
     updateGeoStory,
+    createDashboard,
+    updateDashboard,
     getMaps,
     getDocumentsByDocType,
     getUserByPk,

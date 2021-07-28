@@ -38,7 +38,7 @@ function DashboardRoute({
     const pluginsConfig = isArray(propPluginsConfig)
         ? propPluginsConfig
         : propPluginsConfig && propPluginsConfig[name] || [];
-
+    console.log(pluginsConfig);
     const [loading, setLoading] = useState(true);
     const { plugins: loadedPlugins } = useLazyPlugins({
         pluginsEntries: lazyPlugins,

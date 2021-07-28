@@ -18,6 +18,7 @@ import {
 import { saveMapConfiguration } from '@mapstore/framework/utils/MapUtils';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { currentStorySelector } from '@mapstore/framework/selectors/geostory';
+import { widgetsConfig } from '@mapstore/framework/selectors/widgets';
 import { userSelector } from '@mapstore/framework/selectors/security';
 import { error as errorNotification, success as successNotification } from '@mapstore/framework/actions/notifications';
 
@@ -44,7 +45,9 @@ import {
 import {
     getResourceByPk,
     createGeoStory,
-    updateGeoStory
+    updateGeoStory,
+    createDashboard,
+    updateDashboard
 } from '@js/api/geonode/v2';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import uuid from 'uuid';
@@ -118,6 +121,29 @@ const SaveAPI = {
         return id
             ? updateGeoStory(id, body)
             : createGeoStory({
+                'name': metadata.name + ' ' + uuid(),
+                'owner': user.name,
+                ...body
+            }).then((response) => {
+                if (reload) {
+                    const { geonodeUrl = '/' } = getConfigProp('geoNodeSettings') || {};
+                    window.location.href = parseDevHostname(`${geonodeUrl}apps/${response.pk}/edit`);
+                }
+                return response.data;
+            });
+    },
+    dashboard: (state, id, metadata, reload) => {
+        const dashboard = widgetsConfig(state);
+        const user = userSelector(state);
+        const body = {
+            'title': metadata.name,
+            'abstract': metadata.description,
+            'data': JSON.stringify(dashboard),
+            'thumbnail_url': metadata.thumbnail
+        };
+        return id
+            ? updateDashboard(id, body)
+            : createDashboard({
                 'name': metadata.name + ' ' + uuid(),
                 'owner': user.name,
                 ...body

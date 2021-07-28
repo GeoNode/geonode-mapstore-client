@@ -83,8 +83,7 @@
 {% block gn_geo_app %}
     {% if appType == "GeoStory" or request.GET.appType == "GeoStory" %}
         {% include "./app/geostory.html" with is_embed=is_embed is_new=is_new plugins_config_key=plugins_config_key|default:'geostory' %}
-    {% endif %}
-    {% if appType == "GeoDashboard" or request.GET.appType == "GeoDashboard" %}
+    {% elif appType == "Dashboard" or request.GET.appType == "Dashboard" %}
         {% include "./app/dashboard.html" with is_embed=is_embed is_new=is_new plugins_config_key=plugins_config_key|default:'dashboard_viewer' %}
     {% endif %}
 {% endblock %}
