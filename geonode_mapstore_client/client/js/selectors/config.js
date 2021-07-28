@@ -56,12 +56,19 @@ export const getCustomMenuFilters = (state) => {
     const confWithHandleExpression = mapObjectFunc(v => handleExpression(getMonitorState, {}, v))(geoNodeConfiguration);
     const filtersFormItemsAllowed = reduceArrayRecursive(confWithHandleExpression?.filtersForm?.items, (item) => filterMenuItems(userState, item));
     const menuFilters = [
-        ...filtersFormItemsAllowed.reduce((acc, item) => [
-            ...acc,
-            ...(item.type === 'group'
-                ? item.items || []
-                : [item])
-        ], [])
+        ...filtersFormItemsAllowed
+            .reduce((acc, item) => [
+                ...acc,
+                ...(item.type === 'group'
+                    ? item.items || []
+                    : [item])
+            ], [])
+            .reduce((acc, item) => [
+                ...acc,
+                ...(item.type === 'filter' && item.items
+                    ? item.items && [...item.items, item] || []
+                    : [item])
+            ], [])
     ].filter(({ type }) => type === 'filter');
     return menuFilters;
 };

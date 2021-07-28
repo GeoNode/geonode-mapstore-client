@@ -193,7 +193,6 @@
                 {
                     "type": "group",
                     "labelId": "gnhome.customFiltersTitle",
-                    "authenticated": true,
                     "items": [
                         {
                             "id": "my-resources",
@@ -214,6 +213,72 @@
                             "authenticated": true
                         },
                         {
+                            "id": "dataset",
+                            "labelId": "gnhome.datasets",
+                            "type": "filter",
+                            "query": {
+                                "filter{resource_type.in}": "dataset"
+                            },
+                            "items": [
+                                {
+                                    "id": "store-vector",
+                                    "labelId": "gnhome.vector",
+                                    "type": "filter",
+                                    "query": {
+                                        "filter{subtype.in}": "vector"
+                                    }
+                                },
+                                {
+                                    "id": "store-raster",
+                                    "labelId": "gnhome.raster",
+                                    "type": "filter",
+                                    "query": {
+                                        "filter{subtype.in}": "raster"
+                                    }
+                                },
+                                {
+                                    "id": "store-remote",
+                                    "labelId": "gnhome.remote",
+                                    "type": "filter",
+                                    "query": {
+                                        "filter{subtype.in}": "remote"
+                                    }
+                                },
+                                {
+                                    "id": "store-time-series",
+                                    "labelId": "gnhome.timeSeries",
+                                    "type": "filter",
+                                    "query": {
+                                        "filter{subtype.in}": "vector_time"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "id": "documents",
+                            "labelId": "gnhome.documents",
+                            "type": "filter",
+                            "query": {
+                                "filter{resource_type.in}": "document"
+                            }
+                        },
+                        {
+                            "id": "maps",
+                            "labelId": "gnhome.maps",
+                            "type": "filter",
+                            "query": {
+                                "filter{resource_type.in}": "map"
+                            }
+                        },
+                        {
+                            "id": "geostory",
+                            "labelId": "gnhome.geostory",
+                            "type": "filter",
+                            "query": {
+                                "filter{resource_type.in}": "geostory"
+                            }
+                        },
+                        {
                             "id": "favorite",
                             "labelId": "gnhome.favorites",
                             "type": "filter",
@@ -227,12 +292,6 @@
                 {
                     "type": "divider",
                     "authenticated": true
-                },
-                {
-                    "labelId": "gnhome.resourceTypes",
-                    "placeholderId": "gnhome.resourceTypesPlaceholder",
-                    "type": "select",
-                    "suggestionsRequestKey": "resourceTypes"
                 },
                 {
                     "labelId": "gnhome.categories",
