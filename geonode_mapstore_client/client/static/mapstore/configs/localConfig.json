@@ -255,7 +255,7 @@
                             ]
                         },
                         {
-                            "id": "documents",
+                            "id": "document",
                             "labelId": "gnhome.documents",
                             "type": "filter",
                             "query": {
@@ -263,7 +263,7 @@
                             }
                         },
                         {
-                            "id": "maps",
+                            "id": "map",
                             "labelId": "gnhome.maps",
                             "type": "filter",
                             "query": {
@@ -272,10 +272,18 @@
                         },
                         {
                             "id": "geostory",
-                            "labelId": "gnhome.geostory",
+                            "labelId": "gnhome.geostories",
                             "type": "filter",
                             "query": {
                                 "filter{resource_type.in}": "geostory"
+                            }
+                        },
+                        {
+                            "id": "dashboard",
+                            "labelId": "gnhome.dashboards",
+                            "type": "filter",
+                            "query": {
+                                "filter{resource_type.in}": "dashboard"
                             }
                         },
                         {

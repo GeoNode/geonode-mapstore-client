@@ -26,29 +26,29 @@ def get_base_left_topbar_menu():
             "items": [
                 {
                     "type": "link",
-                    "href": "/catalogue/#/search/?filter{resource_type.in}=dataset",
+                    "href": "/catalogue/#/search/?f=dataset",
                     "label": "Datasets"
                 },
                 {
                     "type": "link",
-                    "href": "/catalogue/#/search/?filter{resource_type.in}=document",
+                    "href": "/catalogue/#/search/?f=document",
                     "label": "Documents"
                 }
             ]
         },
         {
             "type": "link",
-            "href": "/catalogue/#/search/?filter{resource_type.in}=map",
+            "href": "/catalogue/#/search/?f=map",
             "label": "Maps"
         },
         {
             "type": "link",
-            "href": "/catalogue/#/search/?filter{resource_type.in}=geostory",
+            "href": "/catalogue/#/search/?f=geostory",
             "label": "GeoStories"
         },
         {
             "type": "link",
-            "href": "/catalogue/#/search/?filter{resource_type.in}=dashboard",
+            "href": "/catalogue/#/search/?f=dashboard",
             "label": "Dashboards"
         }
     ]
