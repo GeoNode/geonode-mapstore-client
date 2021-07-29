@@ -16,10 +16,6 @@ import {
     SET_FEATURED_RESOURCES
 } from '@js/actions/gnsearch';
 
-import {
-    RESET_RESOURCE_STATE
-} from '@js/actions/gnresource';
-
 const defaultState = {
     resources: [],
     params: {},
@@ -32,9 +28,6 @@ const defaultState = {
 
 function gnsearch(state = defaultState, action) {
     switch (action.type) {
-    case RESET_RESOURCE_STATE: {
-        return defaultState;
-    }
     case SEARCH_RESOURCES: {
         return {
             ...state,
