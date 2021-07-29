@@ -33,7 +33,7 @@ function ActionNavbarPlugin({
 }, context) {
 
     const types = getResourceTypesInfo();
-    const { icon } = types[resource.resource_type] || {};
+    const { icon } = types[resource?.resource_type] || {};
     const { loadedPlugins } = context;
     const configuredItems = usePluginItems({ items, loadedPlugins });
 
