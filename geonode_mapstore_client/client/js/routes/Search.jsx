@@ -29,7 +29,7 @@ import {
     getFilterById,
     clearQueryParams,
     getQueryFilters
-} from '@js/utils/GNSearchUtils';
+} from '@js/utils/SearchUtils';
 import { withResizeDetector } from 'react-resize-detector';
 
 import { getResourceTypes, getCategories, getRegions, getOwners, getKeywords } from '@js/api/geonode/v2';

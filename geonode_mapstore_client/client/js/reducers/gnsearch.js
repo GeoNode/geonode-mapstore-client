@@ -16,7 +16,11 @@ import {
     SET_FEATURED_RESOURCES
 } from '@js/actions/gnsearch';
 
-function gnsearch(state = {
+import {
+    RESET_RESOURCE_STATE
+} from '@js/actions/gnresource';
+
+const defaultState = {
     resources: [],
     params: {},
     previousParams: {},
@@ -24,8 +28,13 @@ function gnsearch(state = {
     featuredResources: {
         resources: []
     }
-}, action) {
+};
+
+function gnsearch(state = defaultState, action) {
     switch (action.type) {
+    case RESET_RESOURCE_STATE: {
+        return defaultState;
+    }
     case SEARCH_RESOURCES: {
         return {
             ...state,

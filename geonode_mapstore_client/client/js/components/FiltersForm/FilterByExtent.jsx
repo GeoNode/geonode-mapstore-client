@@ -16,7 +16,7 @@ import { reprojectBbox } from '@mapstore/framework/utils/CoordinatesUtils';
 import {
     boundsToExtentString,
     getFeatureFromExtent
-} from '@js/utils/GNCoordinatesUtils';
+} from '@js/utils/CoordinatesUtils';
 
 const Map = mapType(BaseMap);
 Map.displayName = 'Map';

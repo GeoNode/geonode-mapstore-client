@@ -12,10 +12,10 @@ function MainLoader({
     text
 }) {
     return (
-        <div className="gn-main-loader-container">
-            <div className="gn-main-loader-content">
+        <div className="gn-main-event-container">
+            <div className="gn-main-event-content">
                 <div className="gn-main-loader"></div>
-                <div className="gn-main-loader-text">{text}</div>
+                <div className="gn-main-event-text">{text}</div>
             </div>
         </div>
     );

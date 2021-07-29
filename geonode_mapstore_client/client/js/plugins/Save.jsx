@@ -24,7 +24,7 @@ import { saveDirectContent } from '@js/actions/gnsave';
 import {
     isNewResource,
     canEditResource
-} from '@js/selectors/gnresource';
+} from '@js/selectors/resource';
 /**
  * Plugin for Save modal
  * @name Save

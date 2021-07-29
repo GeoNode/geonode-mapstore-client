@@ -10,10 +10,8 @@ import React, { forwardRef } from 'react';
 import Message from '@mapstore/framework/components/I18N/Message';
 import FaIcon from '@js/components/FaIcon';
 import Dropdown from '@js/components/Dropdown';
-import {
-    getUserName,
-    getResourceTypesInfo
-} from '@js/utils/GNSearchUtils';
+import { getUserName } from '@js/utils/SearchUtils';
+import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
 const ResourceCard = forwardRef(({
     data,
     active,

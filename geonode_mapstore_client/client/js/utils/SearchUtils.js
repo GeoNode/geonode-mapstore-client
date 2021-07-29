@@ -65,63 +65,6 @@ export function getUserName(user) {
     return user.username;
 }
 
-function updateUrlQueryParameter(requestUrl, query) {
-    const parsedUrl = url.parse(requestUrl, true);
-    return url.format({
-        ...parsedUrl,
-        query: {
-            ...parsedUrl.query,
-            ...query
-        }
-    });
-}
-
-export const getResourceTypesInfo = () => ({
-    'dataset': {
-        icon: 'database',
-        formatEmbedUrl: (resource) => updateUrlQueryParameter(resource.embed_url, {
-            config: 'layer_preview',
-            theme: 'preview'
-        }),
-        formatDetailUrl: (resource) => (`/catalogue/#/dataset/${resource.pk}`),
-        name: 'Dataset'
-    },
-    'map': {
-        icon: 'map',
-        formatEmbedUrl: (resource) => updateUrlQueryParameter(resource.embed_url, {
-            config: 'map_preview',
-            theme: 'preview'
-        }),
-        formatDetailUrl: (resource) => (`/catalogue/#/map/${resource.pk}`),
-        name: 'Map'
-    },
-    'document': {
-        icon: 'file',
-        name: 'Document',
-        formatDetailUrl: (resource) => (`/catalogue/#/document/${resource.pk}`)
-    },
-    'geostory': {
-        icon: 'book',
-        name: 'GeoStory',
-        formatDetailUrl: (resource) => (`/catalogue/#/geostory/${resource.pk}`)
-    },
-    'dashboard': {
-        icon: 'tachometer-alt',
-        name: 'Dashboard',
-        formatDetailUrl: (resource) => (`/catalogue/#/dashboard/${resource.pk}`)
-    },
-    'image': {
-        icon: 'file-image-o',
-        name: 'Image',
-        formatDetailUrl: (resource) => (`/catalogue/#/document/${resource.pk}`)
-    },
-    'video': {
-        icon: 'file-video-o',
-        name: 'Video',
-        formatDetailUrl: (resource) => (`/catalogue/#/document/${resource.pk}`)
-    }
-});
-
 export function clearQueryParams(location) {
     const { query } = url.parse(location.search, true);
     const newParams = Object.keys(query)
@@ -149,7 +92,6 @@ export default {
     getPageSize,
     hashLocationToHref,
     getUserName,
-    getResourceTypesInfo,
     clearQueryParams,
     getQueryFilters
 };

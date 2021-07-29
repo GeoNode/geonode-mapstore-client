@@ -9,7 +9,7 @@
 import { connect } from 'react-redux';
 import main from '@mapstore/framework/components/app/main';
 import MainLoader from '@js/components/MainLoader';
-import GeoStory from '@js/routes/GeoStory';
+import ViewerRoute from '@js/routes/Viewer';
 import Router, { withRoutes } from '@js/components/Router';
 import security from '@mapstore/framework/reducers/security';
 import maptype from '@mapstore/framework/reducers/maptype';
@@ -23,13 +23,14 @@ import {
     getConfiguration, getAccountInfo
 } from '@js/api/geonode/v2';
 import { updateGeoNodeSettings } from '@js/actions/gnsettings';
-import { requestGeoStoryConfig } from '@js/actions/gnviewer';
-import gnviewerEpics from '@js/epics/gnviewer';
+import { requestResourceConfig } from '@js/actions/gnresource';
+import gnresourceEpics from '@js/epics/gnresource';
 import {
     setupConfiguration,
     initializeApp,
     getPluginsConfiguration
 } from '@js/utils/AppUtils';
+import { ResourceTypes } from '@js/utils/ResourceUtils';
 import pluginsDefinition from '@js/plugins/index';
 import ReactSwipe from 'react-swipeable-views';
 import SwipeHeader from '@mapstore/framework/components/data/identify/SwipeHeader';
@@ -51,7 +52,10 @@ const ConnectedRouter = connect((state) => ({
 const routes = [{
     name: 'geostory',
     path: '/',
-    component: GeoStory
+    pageConfig: {
+        resourceType: ResourceTypes.GEOSTORY
+    },
+    component: ViewerRoute
 }];
 
 initializeApp();
@@ -107,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 appEpics: {
                     ...configEpics,
-                    ...gnviewerEpics
+                    ...gnresourceEpics
                 },
                 onStoreInit,
                 geoNodeConfiguration,
@@ -116,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // later we could use expression in localConfig
                     updateGeoNodeSettings.bind(null, settings),
                     ...(geoNodePageConfig.resourceId !== undefined
-                        ? [ requestGeoStoryConfig.bind(null, geoNodePageConfig.resourceId) ]
+                        ? [ requestResourceConfig.bind(null, ResourceTypes.GEOSTORY, geoNodePageConfig.resourceId) ]
                         : [])
                 ]
             });

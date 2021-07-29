@@ -18,10 +18,8 @@ import Spinner from '@js/components/Spinner';
 import Message from '@mapstore/framework/components/I18N/Message';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import moment from 'moment';
-import {
-    getUserName,
-    getResourceTypesInfo
-} from '@js/utils/GNSearchUtils';
+import { getUserName } from '@js/utils/SearchUtils';
+import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
 import debounce from 'lodash/debounce';
 import CopyToClipboardCmp from 'react-copy-to-clipboard';
 import { TextEditable, ThumbnailEditable } from '@js/components/ContentsEditable/';

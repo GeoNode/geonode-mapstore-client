@@ -26,6 +26,7 @@ import gnresource from '@js/reducers/gnresource';
 import gnsave from '@js/reducers/gnsave';
 import gnsaveEpics from '@js/epics/gnsave';
 import SaveModal from '@js/plugins/save/SaveModal';
+import { canAddResource } from '@js/selectors/resource';
 
 /**
  * Plugin for SaveAs modal
@@ -56,6 +57,8 @@ function SaveAs(props) {
     return (
         <SaveModal
             {...props}
+            // add key to reset the component when a new resource is returned
+            key={props?.resource?.pk || 'new'}
             labelId="save"
         />
     );
@@ -109,9 +112,9 @@ function SaveAsButton({
 const ConnectedSaveAsButton = connect(
     createSelector(
         isLoggedIn,
-        (state) => state?.security?.user?.perms?.includes("add_resource"),
-        (loggedIn, canAddResource) => ({
-            enabled: loggedIn && canAddResource
+        canAddResource,
+        (loggedIn, userCanAddResource) => ({
+            enabled: loggedIn && userCanAddResource
         })
     ),
     {
@@ -130,9 +133,9 @@ export default createPlugin('SaveAs', {
             action: toggleControl.bind(null, 'saveAs', null),
             selector: createSelector(
                 isLoggedIn,
-                (state) => state?.security?.user?.perms?.includes("add_resource"),
-                (loggedIn, canAddResource) => ({
-                    style: (loggedIn && canAddResource) ? {} : { display: 'none' }
+                canAddResource,
+                (loggedIn, userCanAddResource) => ({
+                    style: (loggedIn && userCanAddResource) ? {} : { display: 'none' }
                 })
             )
         },

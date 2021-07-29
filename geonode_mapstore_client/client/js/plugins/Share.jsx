@@ -24,7 +24,7 @@ import url from 'url';
 import {
     isNewResource,
     getResourceId
-} from '@js/selectors/gnresource';
+} from '@js/selectors/resource';
 function getShareUrl({
     resourceId,
     pathTemplate

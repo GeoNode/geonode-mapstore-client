@@ -36,7 +36,7 @@ import searchconfig from '@mapstore/framework/reducers/searchconfig';
 import widgets from '@mapstore/framework/reducers/widgets';
 // end
 
-import MapView from '@js/routes/MapView';
+import ViewerRoute from '@js/routes/Viewer';
 
 import gnresource from '@js/reducers/gnresource';
 import gnsettings from '@js/reducers/gnsettings';
@@ -49,7 +49,7 @@ import {
     initializeApp,
     getPluginsConfiguration
 } from '@js/utils/AppUtils';
-
+import { ResourceTypes } from '@js/utils/ResourceUtils';
 import {
     setResourcePermissions,
     setNewResource
@@ -82,7 +82,10 @@ const routes = [
     {
         name: 'map-viewer',
         path: '/',
-        component: MapView
+        pageConfig: {
+            resourceType: ResourceTypes.MAP
+        },
+        component: ViewerRoute
     }
 ];
 

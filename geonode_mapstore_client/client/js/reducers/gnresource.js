@@ -18,7 +18,10 @@ import {
     EDIT_TITLE_RESOURCE,
     EDIT_ABSTRACT_RESOURCE,
     EDIT_THUMBNAIL_RESOURCE,
-    SET_SELECTED_DATASET_PERMISSIONS
+    SET_SELECTED_DATASET_PERMISSIONS,
+    RESET_RESOURCE_STATE,
+    LOADING_RESOURCE_CONFIG,
+    RESOURCE_CONFIG_ERROR
 } from '@js/actions/gnresource';
 
 const defaultState = {
@@ -29,6 +32,23 @@ const defaultState = {
 
 function gnresource(state = defaultState, action) {
     switch (action.type) {
+    case RESET_RESOURCE_STATE: {
+        return defaultState;
+    }
+    case LOADING_RESOURCE_CONFIG: {
+        return {
+            ...state,
+            configError: undefined,
+            loadingResourceConfig: action.loading
+        };
+    }
+    case RESOURCE_CONFIG_ERROR: {
+        return {
+            ...state,
+            loading: false,
+            configError: action.message
+        };
+    }
     case RESOURCE_LOADING: {
         return {
             ...state,

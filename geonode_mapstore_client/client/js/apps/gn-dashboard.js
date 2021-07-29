@@ -9,7 +9,7 @@
 import { connect } from 'react-redux';
 import main from '@mapstore/framework/components/app/main';
 import MainLoader from '@js/components/MainLoader';
-import DashboardViewerRoute from '@js/routes/DashboardViewer';
+import ViewerRoute from '@js/routes/Viewer';
 import Router, { withRoutes } from '@js/components/Router';
 import security from '@mapstore/framework/reducers/security';
 import maptype from '@mapstore/framework/reducers/maptype';
@@ -28,15 +28,17 @@ import {
     initializeApp,
     getPluginsConfiguration
 } from '@js/utils/AppUtils';
+import { ResourceTypes } from '@js/utils/ResourceUtils';
 import pluginsDefinition from '@js/plugins/index';
 import ReactSwipe from 'react-swipeable-views';
 import SwipeHeader from '@mapstore/framework/components/data/identify/SwipeHeader';
-import { requestDashboardConfig } from '@js/actions/gnviewer';
-import gnviewerEpics from '@js/epics/gnviewer';
+import { requestResourceConfig } from '@js/actions/gnresource';
+import gnresourceEpics from '@js/epics/gnresource';
 const requires = {
     ReactSwipe,
     SwipeHeader
 };
+import '@js/observables/persistence';
 
 const DEFAULT_LOCALE = {};
 const ConnectedRouter = connect((state) => ({
@@ -48,10 +50,12 @@ const routes = [{
     path: [
         '/'
     ],
-    component: DashboardViewerRoute
+    pageConfig: {
+        resourceType: ResourceTypes.DASHBOARD
+    },
+    component: ViewerRoute
 }];
 
-import '@js/observables/persistence';
 
 initializeApp();
 
@@ -108,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     appEpics: {
                         ...configEpics,
-                        ...gnviewerEpics
+                        ...gnresourceEpics
                     },
                     onStoreInit,
                     geoNodeConfiguration,
@@ -117,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         // later we could use expression in localConfig
                         updateGeoNodeSettings.bind(null, settings),
                         ...(geoNodePageConfig.resourceId !== undefined
-                            ? [ requestDashboardConfig.bind(null, geoNodePageConfig.resourceId, {
+                            ? [ requestResourceConfig.bind(null, ResourceTypes.DASHBOARD, geoNodePageConfig.resourceId, {
                                 readOnly: geoNodePageConfig.isEmbed
                             }) ]
                             : [])

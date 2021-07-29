@@ -51,10 +51,11 @@ import {
     getResourceName,
     getResourceDescription,
     getResourceThumbnail
-} from '@js/selectors/gnresource';
+} from '@js/selectors/resource';
+import { ResourceTypes } from '@js/utils/ResourceUtils';
 
 const SaveAPI = {
-    map: (state, id, metadata, reload) => {
+    [ResourceTypes.MAP]: (state, id, metadata, reload) => {
         const map =  mapSelector(state) || {};
         const layers = layersSelector(state);
         const groups = groupsSelector(state);
@@ -89,7 +90,7 @@ const SaveAPI = {
                     return response.data;
                 });
     },
-    geostory: (state, id, metadata, reload) => {
+    [ResourceTypes.GEOSTORY]: (state, id, metadata, reload) => {
         const story = currentStorySelector(state);
         const user = userSelector(state);
         const body = {
@@ -103,7 +104,7 @@ const SaveAPI = {
             : createGeoApp({
                 'name': metadata.name + ' ' + uuid(),
                 'owner': user.name,
-                'resource_type': 'geostory',
+                'resource_type': ResourceTypes.GEOSTORY,
                 ...body
             }).then((response) => {
                 if (reload) {
@@ -114,7 +115,7 @@ const SaveAPI = {
                 return response.data;
             });
     },
-    dashboard: (state, id, metadata, reload) => {
+    [ResourceTypes.DASHBOARD]: (state, id, metadata, reload) => {
         const dashboard = widgetsConfig(state);
         const user = userSelector(state);
         const body = {
@@ -128,7 +129,7 @@ const SaveAPI = {
             : createGeoApp({
                 'name': metadata.name + ' ' + uuid(),
                 'owner': user.name,
-                'resource_type': 'dashboard',
+                'resource_type': ResourceTypes.DASHBOARD,
                 ...body
             }).then((response) => {
                 if (reload) {
@@ -139,7 +140,7 @@ const SaveAPI = {
                 return response.data;
             });
     },
-    document: (state, id, metadata) => {
+    [ResourceTypes.DOCUMENT]: (state, id, metadata) => {
         const body = {
             'title': metadata.name,
             'abstract': metadata.description,
@@ -149,7 +150,7 @@ const SaveAPI = {
         return id ? updateDocument(id, body) : false;
 
     },
-    dataset: (state, id, metadata) => {
+    [ResourceTypes.DATASET]: (state, id, metadata) => {
         const body = {
             'title': metadata.name,
             'abstract': metadata.description,

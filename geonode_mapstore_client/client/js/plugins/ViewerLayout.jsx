@@ -14,7 +14,7 @@ import isEqual from 'lodash/isEqual';
 import { resizeMap } from '@mapstore/framework/actions/map';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import usePluginItems from '@js/hooks/usePluginItems';
-import { getResourceId } from '@js/selectors/gnresource';
+import { getResourceId } from '@js/selectors/resource';
 import { withResizeDetector } from 'react-resize-detector';
 
 // ensure the map trigger the force update/resize

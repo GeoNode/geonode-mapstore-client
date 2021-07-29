@@ -25,7 +25,7 @@ import {
     hashLocationToHref,
     clearQueryParams,
     getQueryFilters
-} from '@js/utils/GNSearchUtils';
+} from '@js/utils/SearchUtils';
 import { withResizeDetector } from 'react-resize-detector';
 
 import {

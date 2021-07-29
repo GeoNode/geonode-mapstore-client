@@ -14,8 +14,17 @@ import {
     SAVE_DIRECT_CONTENT
 } from '@js/actions/gnsave';
 
-function gnsave(state = {}, action) {
+import {
+    RESET_RESOURCE_STATE
+} from '@js/actions/gnresource';
+
+const defaultState = {};
+
+function gnsave(state = defaultState, action) {
     switch (action.type) {
+    case RESET_RESOURCE_STATE: {
+        return defaultState;
+    }
     case SAVING_RESOURCE :
     case SAVE_DIRECT_CONTENT: {
         return {

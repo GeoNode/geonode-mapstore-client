@@ -39,11 +39,7 @@ import annotations from '@mapstore/framework/reducers/annotations';
 
 import SearchRoute from '@js/routes/Search';
 import DetailRoute from '@js/routes/Detail';
-import DatasetViewerRoute from '@js/routes/DatasetViewer';
-import MapViewerRoute from '@js/routes/MapViewer';
-import GeoStoryViewerRoute from '@js/routes/GeoStoryViewer';
-import DocumentViewerRoute from '@js/routes/DocumentViewer';
-import DashboardViewerRoute from '@js/routes/DashboardViewer';
+import ViewerRoute from '@js/routes/Viewer';
 
 import gnsearch from '@js/reducers/gnsearch';
 import gnresource from '@js/reducers/gnresource';
@@ -60,14 +56,13 @@ import {
     initializeApp,
     getPluginsConfiguration
 } from '@js/utils/AppUtils';
-
+import { ResourceTypes } from '@js/utils/ResourceUtils';
 import { updateGeoNodeSettings } from '@js/actions/gnsettings';
-
 import {
     gnCheckSelectedDatasetPermissions,
     gnSetDatasetsPermissions
 } from '@js/epics';
-import gnviewerEpics from '@js/epics/gnviewer';
+import gnresourceEpics from '@js/epics/gnresource';
 import gnsearchEpics from '@js/epics/gnsearch';
 import favoriteEpics from '@js/epics/favorite';
 import maplayout from '@mapstore/framework/reducers/maplayout';
@@ -88,9 +83,11 @@ const requires = {
 };
 
 const DEFAULT_LOCALE = {};
-const ConnectedRouter = connect((state) => ({
-    locale: state?.locale || DEFAULT_LOCALE
-}))(Router);
+const ConnectedRouter = connect(
+    (state) => ({
+        locale: state?.locale || DEFAULT_LOCALE
+    })
+)(Router);
 
 const routes = [
     {
@@ -98,49 +95,70 @@ const routes = [
         path: [
             '/dataset/:pk'
         ],
-        component: DatasetViewerRoute
+        pageConfig: {
+            resourceType: ResourceTypes.DATASET
+        },
+        component: ViewerRoute
     },
     {
         name: 'dataset_edit_data_viewer',
         path: [
             '/dataset/:pk/edit/data'
         ],
-        component: DatasetViewerRoute
+        pageConfig: {
+            resourceType: ResourceTypes.DATASET
+        },
+        component: ViewerRoute
     },
     {
         name: 'dataset_edit_style_viewer',
         path: [
             '/dataset/:pk/edit/style'
         ],
-        component: DatasetViewerRoute
+        pageConfig: {
+            resourceType: ResourceTypes.DATASET
+        },
+        component: ViewerRoute
     },
     {
         name: 'map_viewer',
         path: [
             '/map/:pk'
         ],
-        component: MapViewerRoute
+        pageConfig: {
+            resourceType: ResourceTypes.MAP
+        },
+        component: ViewerRoute
     },
     {
         name: 'geostory_viewer',
         path: [
             '/geostory/:pk'
         ],
-        component: GeoStoryViewerRoute
+        pageConfig: {
+            resourceType: ResourceTypes.GEOSTORY
+        },
+        component: ViewerRoute
     },
     {
         name: 'document_viewer',
         path: [
             '/document/:pk'
         ],
-        component: DocumentViewerRoute
+        pageConfig: {
+            resourceType: ResourceTypes.DOCUMENT
+        },
+        component: ViewerRoute
     },
     {
         name: 'dashboard_viewer',
         path: [
             '/dashboard/:pk'
         ],
-        component: DashboardViewerRoute
+        pageConfig: {
+            resourceType: ResourceTypes.DASHBOARD
+        },
+        component: ViewerRoute
     },
     {
         name: 'resources',
@@ -253,7 +271,7 @@ Promise.all([
                         gnCheckSelectedDatasetPermissions,
                         gnSetDatasetsPermissions,
                         ...pluginsDefinition.epics,
-                        ...gnviewerEpics,
+                        ...gnresourceEpics,
                         ...gnsearchEpics,
                         ...favoriteEpics
                     },

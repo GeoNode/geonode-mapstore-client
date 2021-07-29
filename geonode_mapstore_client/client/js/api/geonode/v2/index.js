@@ -20,7 +20,8 @@ import isObject from 'lodash/isObject';
 import castArray from 'lodash/castArray';
 import get from 'lodash/get';
 import { getUserInfo } from '@js/api/geonode/user';
-import { setFilterById } from '@js/utils/GNSearchUtils';
+import { setFilterById } from '@js/utils/SearchUtils';
+import { ResourceTypes } from '@js/utils/ResourceUtils';
 
 let endpoints = {
     // default values
@@ -407,11 +408,11 @@ export const getResourcesTotalCount = () => {
         .then(({ data }) => data.resource_types)
         .then((resourceTypes) => {
             const keysMap = {
-                'document': 'documentsTotalCount',
-                'layer': 'layersTotalCount',
-                'map': 'mapsTotalCount',
-                'geostory': 'geostoriesTotalCount',
-                'dashboard': 'dashboardsTotalCount'
+                [ResourceTypes.DOCUMENT]: 'documentsTotalCount',
+                [ResourceTypes.DATASET]: 'datasetsTotalCount',
+                [ResourceTypes.MAP]: 'mapsTotalCount',
+                [ResourceTypes.GEOSTORY]: 'geostoriesTotalCount',
+                [ResourceTypes.DASHBOARD]: 'dashboardsTotalCount'
             };
             const totalCount = resourceTypes.reduce((acc, { name, count }) => ({
                 ...acc,

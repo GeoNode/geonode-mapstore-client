@@ -36,7 +36,7 @@ import {
 import {
     getQueryKeys,
     getPageSize
-} from '@js/utils/GNSearchUtils';
+} from '@js/utils/SearchUtils';
 import url from 'url';
 import { getCustomMenuFilters } from '@js/selectors/config';
 

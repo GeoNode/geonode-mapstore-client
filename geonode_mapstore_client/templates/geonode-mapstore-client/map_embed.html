@@ -12,7 +12,7 @@
         <title>{{ SITE_NAME }}</title>
         <link rel="shortcut icon" href="{% static 'geonode/img/favicon.ico' %}" />
         <style>
-            .gn-main-loader-container {
+            .gn-main-event-container {
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -24,7 +24,7 @@
                 font-size: 14px;
                 flex-direction: column;
             }
-            .gn-main-loader-content {
+            .gn-main-event-content {
                 position: relative;
                 font-size: inherit;
             }
@@ -38,7 +38,7 @@
                 -webkit-animation: gn-main-loader-animation 1.1s infinite linear;
                 animation: gn-main-loader-animation 1.1s infinite linear;
             }
-            .gn-main-loader-text {
+            .gn-main-event-text {
                 position: absolute;
                 top: 50%;
                 left: 50%;
@@ -84,10 +84,10 @@
     <body>
         {% include './_geonode_config.html' with plugins_config_key='map_embed' %}
         <div id="ms-container" class="ms2">
-            <div class="gn-main-loader-container">
-                <div class="gn-main-loader-content">
+            <div class="gn-main-event-container">
+                <div class="gn-main-event-content">
                     <div class="gn-main-loader"></div>
-                    <div class="gn-main-loader-text"></div>
+                    <div class="gn-main-event-text"></div>
                 </div>
             </div>
         </div>

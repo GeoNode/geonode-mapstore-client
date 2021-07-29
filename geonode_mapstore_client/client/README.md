@@ -52,7 +52,7 @@ Menu item object contains properties for a list item rendered in a menu. Configu
   "labelId": "gnhome.register", // label message id
   "type": "link", // one of 'link', 'dropdown', 'divider' or 'filter'
   "href": "/account/signup/?next=/",
-  "badge": "{state.layersTotalCount}", // (menu configuration only) counter badge. variable available: layersTotalCount, mapsTotalCount,
+  "badge": "{state.datasetsTotalCount}", // (menu configuration only) counter badge. variable available: datasetsTotalCount, mapsTotalCount,
   "authenticated": true, // true shows the item only when user authenticated while false only for anonymous user, if undefined the item is always visible
   "perms": [], // the value in array define the access to the contents
   "allowedRoles": [] // user roles to access  to the contents

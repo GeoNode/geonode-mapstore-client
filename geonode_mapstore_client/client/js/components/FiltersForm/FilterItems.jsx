@@ -13,7 +13,7 @@ import { FormGroup, Checkbox } from 'react-bootstrap';
 import ReactSelect from 'react-select';
 import Message from '@mapstore/framework/components/I18N/Message';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
-import { getFilterLabelById } from '@js/utils/GNSearchUtils';
+import { getFilterLabelById } from '@js/utils/SearchUtils';
 const SelectSync = localizedProps('placeholder')(ReactSelect);
 const SelectAsync = localizedProps('placeholder')(ReactSelect.Async);
 

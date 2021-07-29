@@ -10,15 +10,16 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import url from 'url';
-import isUndefined from 'lodash/isUndefined';
+import isArray from 'lodash/isArray';
 import { createSelector } from 'reselect';
 import BorderLayout from '@mapstore/framework/components/layout/BorderLayout';
 import { getMonitoredState } from '@mapstore/framework/utils/PluginsUtils';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import PluginsContainer from '@mapstore/framework/components/plugins/PluginsContainer';
 import useLazyPlugins from '@js/hooks/useLazyPlugins';
-import { requestGeoStoryConfig, requestNewGeoStoryConfig } from '@js/actions/gnviewer';
-import MetaTags from "@js/components/MetaTags";
+import { requestResourceConfig, requestNewResourceConfig } from '@js/actions/gnresource';
+import MetaTags from '@js/components/MetaTags';
+import MainErrorView from '@js/components/MainErrorView';
 
 const urlQuery = url.parse(window.location.href, true).query;
 
@@ -30,22 +31,27 @@ const ConnectedPluginsContainer = connect((state) => ({
     }
 }))(PluginsContainer);
 
-function GeoStoryViewerRoute({
+function ViewerRoute({
     name,
     pluginsConfig: propPluginsConfig,
     params,
     onUpdate,
+    onCreate = () => {},
     loaderComponent,
     lazyPlugins,
     plugins,
     match,
-    onCreate = () => {},
     resource,
-    siteName
+    siteName,
+    resourceType,
+    loadingConfig,
+    configError
 }) {
 
     const { pk } = match.params || {};
-    const pluginsConfig = propPluginsConfig && propPluginsConfig[name] || [];
+    const pluginsConfig = isArray(propPluginsConfig)
+        ? propPluginsConfig
+        : propPluginsConfig && propPluginsConfig[name] || [];
 
     const [loading, setLoading] = useState(true);
     const { plugins: loadedPlugins } = useLazyPlugins({
@@ -53,57 +59,67 @@ function GeoStoryViewerRoute({
         pluginsConfig
     });
     useEffect(() => {
-        if (!loading) {
-            pk === "new" ? onCreate() : onUpdate(pk);
+        if (!loading && pk !== undefined) {
+            if (pk === 'new') {
+                onCreate(resourceType);
+            } else {
+                onUpdate(resourceType, pk, {
+                    page: name
+                });
+            }
         }
     }, [loading, pk]);
 
-    useEffect(() => {
-        if (pk === "new" && !isUndefined(resource?.canEdit) && !(resource?.canEdit)) {
-            window.location.replace('/account/login');
-        }
-    }, [pk, resource]);
     const Loader = loaderComponent;
 
     return (
         <>
             {resource &&  <MetaTags
                 logo={resource.thumbnail_url}
-                title={(resource?.title) ? resource?.title + " - " + siteName : siteName }
+                title={(resource?.title) ? `${resource?.title} - ${siteName}` : siteName }
                 siteName={siteName}
-                contentURL={resource.detail_url}
-                content={resource.abstract}
+                contentURL={resource?.detail_url}
+                content={resource?.abstract}
             />}
             <ConnectedPluginsContainer
-                key="page-geostory-viewer"
-                id="page-geostory-viewer"
-                className="page page-geostory-viewer"
+                key={`page-${resourceType}-viewer`}
+                id={`page-${resourceType}-viewer`}
+                className={`page page-${resourceType}-viewer`}
                 component={BorderLayout}
                 pluginsConfig={pluginsConfig}
                 plugins={{ ...loadedPlugins, ...plugins }}
                 params={params}
                 onPluginsLoaded={() => setLoading(false)}
             />
-            {loading && Loader && <Loader />}
+            {( loading || loadingConfig ) && Loader && <Loader />}
+            {configError && <MainErrorView msgId={configError}/>}
         </>
     );
 }
 
-GeoStoryViewerRoute.propTypes = {
+ViewerRoute.propTypes = {
     onUpdate: PropTypes.func
 };
 
-const ConnectedGeoStoryViewerRoute = connect(
+const ConnectedViewerRoute = connect(
     createSelector([
         state => state?.gnresource?.data,
-        state => state?.gnsettings?.siteName || "Geonode"
-    ], (resource, siteName) => ({resource, siteName})),
+        state => state?.gnsettings?.siteName || 'GeoNode',
+        state => state?.gnresource?.loadingResourceConfig,
+        state => state?.gnresource?.configError
+    ], (resource, siteName, loadingConfig, configError) => ({
+        resource,
+        siteName,
+        loadingConfig,
+        configError
+    })),
     {
-        onUpdate: requestGeoStoryConfig,
-        onCreate: requestNewGeoStoryConfig
+        onUpdate: requestResourceConfig,
+        onCreate: requestNewResourceConfig
+
     }
-)(GeoStoryViewerRoute);
+)(ViewerRoute);
 
-ConnectedGeoStoryViewerRoute.displayName = 'ConnectedGeoStoryViewerRoute';
+ConnectedViewerRoute.displayName = 'ConnectedViewerRoute';
 
-export default ConnectedGeoStoryViewerRoute;
+export default ConnectedViewerRoute;

@@ -26,7 +26,7 @@ import {
     canEditResource,
     isNewResource,
     getResourceId
-} from '@js/selectors/gnresource';
+} from '@js/selectors/resource';
 import Button from '@js/components/Button';
 import PropTypes from 'prop-types';
 

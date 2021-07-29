@@ -17,9 +17,9 @@ const Item = {
     "items": [
         {
             "type": "link",
-            "href": "/layers/?limit=5",
-            "labelId": "gnhome.layers",
-            "badge": "${layersTotalCount}"
+            "href": "/datasets/?limit=5",
+            "labelId": "gnhome.datasets",
+            "badge": "${datasetsTotalCount}"
         },
         {
             "type": "link",

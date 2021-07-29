@@ -21,7 +21,7 @@ const MenuConf = {
                     "type": "link",
                     "href": "/layers/?limit=5",
                     "labelId": "gnhome.layers",
-                    "badge": "${layersTotalCount}"
+                    "badge": "${datasetsTotalCount}"
                 },
                 {
                     "type": "link",
