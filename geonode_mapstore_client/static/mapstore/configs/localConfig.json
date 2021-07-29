@@ -2603,8 +2603,7 @@
                 "name": "MapFooter",
                 "override": {
                     "ViewerLayout": {
-                        "priority": 1,
-                        "target": "footer"
+                        "priority": 1
                     }
                 }
             },
@@ -2834,8 +2833,7 @@
                 "name": "MapFooter",
                 "override": {
                     "ViewerLayout": {
-                        "priority": 1,
-                        "target": "footer"
+                        "priority": 1
                     }
                 }
             },
@@ -2935,8 +2933,7 @@
                 "name": "MapFooter",
                 "override": {
                     "ViewerLayout": {
-                        "priority": 1,
-                        "target": "footer"
+                        "priority": 1
                     }
                 }
             },
@@ -3164,8 +3161,7 @@
                 "name": "MapFooter",
                 "override": {
                     "ViewerLayout": {
-                        "priority": 1,
-                        "target": "footer"
+                        "priority": 1
                     }
                 }
             },
