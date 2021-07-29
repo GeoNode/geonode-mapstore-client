@@ -97,3 +97,26 @@
 .input-sm {
     height: 1.75rem;
 }
+
+// fix share modal style
+.gn-share-modal {
+    overflow: visible;
+    .modal-dialog,
+    .ms-resizable-modal > .modal-content > .modal-body > div {
+        overflow: visible;
+    }
+    .col-md-4 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .modal-body {
+        margin: 8px;
+    }
+    .modal-footer {
+        display: none;
+    }
+}

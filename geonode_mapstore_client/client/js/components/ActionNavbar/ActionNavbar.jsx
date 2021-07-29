@@ -105,7 +105,8 @@ const ActionNavbar = forwardRef(({
     formatHref,
     cfg,
     variant,
-    size
+    size,
+    children
 }, ref) => {
 
     return (
@@ -130,7 +131,7 @@ const ActionNavbar = forwardRef(({
                             size={size}
                         />
                     }
-
+                    {children}
                     {
 
                         rightItems.length > 0 &&

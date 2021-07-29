@@ -12,9 +12,11 @@ import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import ActionNavbar from '@js/components/ActionNavbar';
+import FaIcon from '@js/components/FaIcon';
 import usePluginItems from '@js/hooks/usePluginItems';
-import { getResourcePerms, canAddResource } from '@js/selectors/resource';
+import { getResourcePerms, canAddResource, getResourceData } from '@js/selectors/resource';
 import { hasPermissionsTo, reduceArrayRecursive } from '@js/utils/MenuUtils';
+import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
 
 function checkResourcePerms(menuItem, resourcePerms) {
     if (menuItem.type && menuItem.perms) {
@@ -26,9 +28,12 @@ function checkResourcePerms(menuItem, resourcePerms) {
 function ActionNavbarPlugin({
     items,
     leftMenuItems,
-    resourcePerms
+    resourcePerms,
+    resource
 }, context) {
 
+    const types = getResourceTypesInfo();
+    const { icon } = types[resource.resource_type] || {};
     const { loadedPlugins } = context;
     const configuredItems = usePluginItems({ items, loadedPlugins });
 
@@ -51,7 +56,9 @@ function ActionNavbarPlugin({
             leftItems={leftItems}
             variant="default"
             size="sm"
-        />
+        >
+            <h1 className="gn-action-navbar-title">{icon && <FaIcon name={icon}/>}{'  '}{resource?.title}</h1>
+        </ActionNavbar>
     );
 }
 
@@ -68,11 +75,13 @@ ActionNavbarPlugin.defaultProps = {
 const ConnectedActionNavbarPlugin = connect(
     createSelector([
         getResourcePerms,
-        canAddResource
-    ], (resourcePerms, userCanAddResource) => ({
+        canAddResource,
+        getResourceData
+    ], (resourcePerms, userCanAddResource, resource) => ({
         resourcePerms: (resourcePerms.length > 0 ) ?
             resourcePerms : ((userCanAddResource)
-                ? [ "change_resourcebase"] : [] )
+                ? [ "change_resourcebase"] : [] ),
+        resource
     }))
 )(ActionNavbarPlugin);
 

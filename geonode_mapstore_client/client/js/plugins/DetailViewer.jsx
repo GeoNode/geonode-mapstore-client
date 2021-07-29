@@ -114,11 +114,11 @@ function DetailViewer({
                     height: '100%'
 
                 }}>
-                { !enabled && <ConnectedDetailsPanel
+                { enabled && <ConnectedDetailsPanel
                     editTitle={handleTitleValue}
                     editAbstract={handleAbstractValue}
                     editThumbnail={handleEditThumbnail}
-                    activeEditMode={!enabled && canEdit}
+                    activeEditMode={enabled && canEdit}
                     enableFavorite={!!user}
                     sectionStyle={{
                         width,
@@ -164,7 +164,7 @@ export default createPlugin('DetailViewer', {
     containers: {
         ViewerLayout: {
             name: 'DetailViewer',
-            target: 'rightColumn',
+            target: 'rightOverlay',
             priority: 1
         },
         ActionNavbar: {

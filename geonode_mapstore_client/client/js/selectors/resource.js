@@ -47,3 +47,7 @@ export const canAddResource = (state) => {
 export const isNewResource = (state) => {
     return !!state?.gnresource?.isNew;
 };
+
+export const getResourceData = (state) => {
+    return state?.gnresource?.data;
+};

@@ -93,6 +93,19 @@ function ViewerLayout({
                         .map(({ Component, name }) => <Component key={name} />)}
                 </div>
             </div>
+            <div
+                className="gn-viewer-right-overlay shadow-far"
+                style={{
+                    position: 'absolute',
+                    right: 0,
+                    height: '100%',
+                    zIndex: 2000,
+                    transform: 'all 0.3s'
+                }}>
+                {configuredItems
+                    .filter(({ target }) => target === 'rightOverlay')
+                    .map(({ Component, name }) => <Component key={name} />)}
+            </div>
             <footer>
                 {configuredItems
                     .filter(({ target }) => target === 'footer')
