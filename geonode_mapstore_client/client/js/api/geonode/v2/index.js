@@ -225,7 +225,7 @@ export const getDocumentsByDocType = (docType = 'image', {
                 params: {
                     ...params,
                     ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
-                    'filter{doc_type}': [docType],
+                    'filter{subtype}': [docType],
                     page,
                     page_size: pageSize
                 }

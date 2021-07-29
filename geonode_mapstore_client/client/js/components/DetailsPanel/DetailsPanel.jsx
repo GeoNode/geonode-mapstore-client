@@ -169,7 +169,7 @@ function DetailsPanel({
         formatDetailUrl = res => res?.detail_url,
         icon,
         name
-    } = resource && (types[resource.doc_type] || types[resource.resource_type]) || {};
+    } = resource && (types[resource.subtype] || types[resource.resource_type]) || {};
     const embedUrl = resource?.embed_url && formatEmbedUrl(resource);
     const detailUrl = resource?.pk && formatDetailUrl(resource);
     const documentDownloadUrl = (resource?.href && resource?.href.includes('download')) ? resource?.href : undefined;
