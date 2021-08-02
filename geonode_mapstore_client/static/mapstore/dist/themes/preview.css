@@ -40225,6 +40225,9 @@ Ported to CodeMirror by Peter Kroon
   margin-right: 0;
   margin-top: 0;
 }
+.msgapi .widget-container .mapstore-widget-card .mapstore-widget-header .widget-icons .btn-group button {
+  top: 0;
+}
 .msgapi #map {
   bottom: 0px !important;
 }
