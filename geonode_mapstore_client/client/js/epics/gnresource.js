@@ -43,7 +43,8 @@ import {
 } from '@mapstore/framework/actions/geostory';
 import {
     dashboardLoaded,
-    dashboardLoading
+    dashboardLoading,
+    resetDashboard
 } from '@mapstore/framework/actions/dashboard';
 
 import {
@@ -188,6 +189,7 @@ const resourceTypes = {
                 .startWith(dashboardLoading(false)),
         newResourceObservable: () =>
             Observable.of(
+                resetDashboard(),
                 dashboardLoading(false)
             )
     }
