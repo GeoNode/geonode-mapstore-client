@@ -24,6 +24,9 @@ export const REQUEST_NEW_RESOURCE_CONFIG = 'GEONODE:REQUEST_NEW_RESOURCE_CONFIG'
 export const LOADING_RESOURCE_CONFIG = 'GEONODE:LOADING_RESOURCE_CONFIG';
 export const RESET_RESOURCE_STATE = 'GEONODE:RESET_RESOURCE_STATE';
 export const RESOURCE_CONFIG_ERROR = 'GEONODE:RESOURCE_CONFIG_ERROR';
+export const SET_RESOURCE_COMPACT_PERMISSIONS = 'GEONODE:SET_RESOURCE_COMPACT_PERMISSIONS';
+export const UPDATE_RESOURCE_COMPACT_PERMISSIONS = 'GEONODE:UPDATE_RESOURCE_COMPACT_PERMISSIONS';
+export const RESET_GEO_LIMITS = 'GEONODE:RESET_GEO_LIMITS';
 
 /**
 * Actions for GeoNode resource
@@ -225,5 +228,25 @@ export function resourceConfigError(message) {
 export function resetResourceState() {
     return {
         type: RESET_RESOURCE_STATE
+    };
+}
+
+export function setResourceCompactPermissions(compactPermissions) {
+    return {
+        type: SET_RESOURCE_COMPACT_PERMISSIONS,
+        compactPermissions
+    };
+}
+
+export function updateResourceCompactPermissions(compactPermissions) {
+    return {
+        type: UPDATE_RESOURCE_COMPACT_PERMISSIONS,
+        compactPermissions
+    };
+}
+
+export function resetGeoLimits() {
+    return {
+        type: RESET_GEO_LIMITS
     };
 }

@@ -77,7 +77,6 @@
             "advancedSearch": "Advanced search",
             "apply": "Apply",
             "clearFilters": "Clear filters",
-
             "categoriesPlaceholder": "Select categories",
             "resourceTypes": "Resource types",
             "resourceTypesPlaceholder": "Select resource types",
@@ -87,7 +86,6 @@
             "regionsPlaceholder": "Select regions",
             "owners": "Owners",
             "ownersPlaceholder": "Select owners",
-
             "profile": "Profile",
             "recentActivity": "Recent activity",
             "favorites": "Favorites",
@@ -119,9 +117,8 @@
             "myResources": "My resources",
             "pendingApproval": "Pending approval",
             "featuredList": "Featured"
-
         },
-        "viewer":{
+        "viewer": {
             "document": {
                 "unSupportedMedia": "Media format is unsupported"
             },
@@ -129,7 +126,7 @@
                 "noPermissions": "You dont have permissions to add a geostory"
             }
         },
-        "gnviewer":{
+        "gnviewer": {
             "edit": "Edit",
             "details": "Details",
             "editMetadata": "Edit Metadata",
@@ -145,8 +142,24 @@
             "attributeName": "Attribute name",
             "label": "Label",
             "description": "Description",
-            "attributes": "Attributes"
-
+            "attributes": "Attributes",
+            "filterBy": "Filter...",
+            "addPermissionsEntry": "Add Users / Groups",
+            "groups": "Groups",
+            "users": "Users",
+            "permissionView": "View",
+            "permissionDownload": "Download",
+            "permissionEdit": "Edit",
+            "permissionManage": "Manage",
+            "permissionOwner": "Owner",
+            "filterByNameOrPermissions": "Filter by name or permissions",
+            "permissionsName": "Name",
+            "permissions": "Permissions",
+            "anonymous": "Anyone",
+            "registered-members": "Contributors",
+            "permissionsEntriesNoResults": "No Results...",
+            "shareThisResource": "Share this resource",
+            "embed": "Embed"
         }
     }
 }

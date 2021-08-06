@@ -6,6 +6,7 @@
  * LICENSE file in the root directory of this source tree.
 */
 
+import isEqual from 'lodash/isEqual';
 import {
     RESOURCE_LOADING,
     SET_RESOURCE,
@@ -21,8 +22,16 @@ import {
     SET_SELECTED_DATASET_PERMISSIONS,
     RESET_RESOURCE_STATE,
     LOADING_RESOURCE_CONFIG,
-    RESOURCE_CONFIG_ERROR
+    RESOURCE_CONFIG_ERROR,
+    SET_RESOURCE_COMPACT_PERMISSIONS,
+    UPDATE_RESOURCE_COMPACT_PERMISSIONS,
+    RESET_GEO_LIMITS
 } from '@js/actions/gnresource';
+
+import {
+    cleanCompactPermissions,
+    getGeoLimitsFromCompactPermissions
+} from '@js/utils/ResourceUtils';
 
 const defaultState = {
     selectedLayerPermissions: [],
@@ -142,6 +151,39 @@ function gnresource(state = defaultState, action) {
             ...state,
             selectedLayerPermissions: action.permissions
         };
+
+    case SET_RESOURCE_COMPACT_PERMISSIONS:
+        return {
+            ...state,
+            initialCompactPermissions: action.compactPermissions,
+            compactPermissions: action.compactPermissions,
+            geoLimits: []
+        };
+
+    case UPDATE_RESOURCE_COMPACT_PERMISSIONS:
+        return {
+            ...state,
+            compactPermissions: action.compactPermissions,
+            isCompactPermissionsChanged: !isEqual(
+                cleanCompactPermissions(state.initialCompactPermissions),
+                cleanCompactPermissions(action.compactPermissions)
+            ),
+            geoLimits: getGeoLimitsFromCompactPermissions(action.compactPermissions)
+        };
+    case RESET_GEO_LIMITS:
+        if (state.compactPermissions) {
+            const { users, organizations, groups } = state.compactPermissions;
+            return {
+                ...state,
+                compactPermissions: {
+                    users: users.map(({ features, ...properties }) => properties),
+                    organizations: organizations.map(({ features, ...properties }) => properties),
+                    groups: groups.map(({ features, ...properties }) => properties)
+                },
+                geoLimits: []
+            };
+        }
+        return state;
     default:
         return state;
     }

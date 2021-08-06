@@ -19,7 +19,7 @@ import {
     setFavoriteResource
 } from '@js/actions/gnresource';
 import controls from '@mapstore/framework/reducers/controls';
-import {toggleControl} from '@mapstore/framework/actions/controls';
+import { setControlProperty } from '@mapstore/framework/actions/controls';
 import gnresource from '@js/reducers/gnresource';
 import Message from '@mapstore/framework/components/I18N/Message';
 import {
@@ -29,6 +29,8 @@ import {
 } from '@js/selectors/resource';
 import Button from '@js/components/Button';
 import PropTypes from 'prop-types';
+import useDetectClickOut from '@js/hooks/useDetectClickOut';
+import OverlayContainer from '@js/components/OverlayContainer';
 
 const ConnectedDetailsPanel = connect(
     createSelector([
@@ -41,7 +43,7 @@ const ConnectedDetailsPanel = connect(
         favorite
     })),
     {
-        closePanel: toggleControl.bind(null, 'DetailViewer', null),
+        closePanel: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),
         onFavorite: setFavoriteResource
     }
 )(DetailsPanel);
@@ -77,7 +79,7 @@ const ConnectedButton = connect(
         hide: isNew || !resourcePk
     })),
     {
-        onClick: toggleControl.bind(null, 'DetailViewer', null)
+        onClick: setControlProperty.bind(null, 'rightOverlay', 'enabled', 'DetailViewer')
     }
 )((ButtonViewer));
 
@@ -90,7 +92,8 @@ function DetailViewer({
     canEdit,
     width,
     hide,
-    user
+    user,
+    onClose
 }) {
 
     const handleTitleValue = (val) => {
@@ -104,30 +107,34 @@ function DetailViewer({
         onEditThumbnail(val);
     };
 
-    return !hide
-        ? (
-            <div
-                style={{
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%'
+    const node = useDetectClickOut({
+        disabled: !enabled,
+        onClickOut: () => {
+            onClose();
+        }
+    });
 
-                }}>
-                { enabled && <ConnectedDetailsPanel
-                    editTitle={handleTitleValue}
-                    editAbstract={handleAbstractValue}
-                    editThumbnail={handleEditThumbnail}
-                    activeEditMode={enabled && canEdit}
-                    enableFavorite={!!user}
-                    sectionStyle={{
-                        width,
-                        position: 'fixed'
-                    }}
-                /> }
-            </div>
-        )
-        : null;
+    if (hide) {
+        return null;
+    }
+
+    return (
+        <OverlayContainer
+            enabled={enabled}
+            ref={node}
+            style={{
+                width
+            }}
+        >
+            <ConnectedDetailsPanel
+                editTitle={handleTitleValue}
+                editAbstract={handleAbstractValue}
+                editThumbnail={handleEditThumbnail}
+                activeEditMode={enabled && canEdit}
+                enableFavorite={!!user}
+            />
+        </OverlayContainer>
+    );
 }
 
 DetailViewer.propTypes = {
@@ -140,7 +147,7 @@ DetailViewer.defaultProps = {
 
 const DetailViewerPlugin = connect(
     createSelector([
-        state => state?.controls?.DetailViewer?.enabled || false,
+        state => state?.controls?.rightOverlay?.enabled === 'DetailViewer',
         canEditResource,
         isNewResource,
         getResourceId,
@@ -154,7 +161,8 @@ const DetailViewerPlugin = connect(
     {
         onEditResource: editTitleResource,
         onEditAbstractResource: editAbstractResource,
-        onEditThumbnail: editThumbnailResource
+        onEditThumbnail: editThumbnailResource,
+        onClose: setControlProperty.bind(null, 'rightOverlay', 'enabled', false)
     }
 )(DetailViewer);
 

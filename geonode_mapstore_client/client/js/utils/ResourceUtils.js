@@ -88,6 +88,77 @@ function updateUrlQueryParameter(requestUrl, query) {
     });
 }
 
+export function resourceToPermissionEntry(type, resource) {
+    if (type === 'user') {
+        return {
+            type: 'user',
+            id: resource.id || resource.pk,
+            avatar: resource.avatar,
+            name: resource.username,
+            permissions: resource.permissions
+        };
+    }
+    return {
+        type: 'group',
+        id: resource.id || resource?.group?.pk,
+        name: resource.title,
+        avatar: resource.logo,
+        permissions: resource.permissions
+    };
+}
+
+export function permissionsListsToCompact({ groups, entries }) {
+    return {
+        groups: groups
+            .filter(({ permissions }) => permissions)
+            .map(({ type, ...properties }) => (properties)),
+        organizations: entries
+            .filter(({ permissions, type }) => permissions && type === 'group')
+            .map(({ type, ...properties }) => (properties)),
+        users: entries
+            .filter(({ permissions, type }) => permissions && type === 'user')
+            .map(({ type, ...properties }) => (properties))
+    };
+}
+
+export function permissionsCompactToLists({ groups, users, organizations }) {
+    return {
+        groups: [
+            ...(groups || []).map((entry) => ({ ...entry, type: 'group', name: entry.name, avatar: entry.logo }))
+        ],
+        entries: [
+            ...(users || []).map((entry) => ({ ...entry, type: 'user', name: entry.username, avatar: entry.avatar })),
+            ...(organizations || []).map((entry) => ({ ...entry, type: 'group', name: entry.title, avatar: entry.logo }))
+        ]
+    };
+}
+
+export function cleanCompactPermissions({ groups, users, organizations }) {
+    return {
+        groups: groups
+            .map(({ id, permissions }) => ({ id, permissions }))
+            .sort((a, b) => a.id > b.id ? -1 : 1),
+        organizations: organizations
+            .map(({ id, permissions }) => ({ id, permissions }))
+            .sort((a, b) => a.id > b.id ? -1 : 1),
+        users: users
+            .map(({ id, permissions }) => ({ id, permissions }))
+            .sort((a, b) => a.id > b.id ? -1 : 1)
+    };
+}
+
+export function getGeoLimitsFromCompactPermissions({ groups = [], users = [], organizations = [] }) {
+    const entries = [
+        ...users
+            .filter(({ isGeoLimitsChanged }) => isGeoLimitsChanged)
+            .map(({ id, features }) => ({ id, features, type: 'user' })),
+        ...[...groups, ...organizations]
+            .filter(({ isGeoLimitsChanged }) => isGeoLimitsChanged)
+            .map(({ id, features }) => ({ id, features, type: 'group' }))
+    ];
+    return entries;
+}
+
 export const ResourceTypes = {
     DATASET: 'dataset',
     MAP: 'map',

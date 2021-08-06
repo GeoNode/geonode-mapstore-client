@@ -35,7 +35,8 @@ let endpoints = {
     'categories': '/api/v2/categories',
     'owners': '/api/v2/owners',
     'keywords': '/api/v2/keywords',
-    'regions': '/api/v2/regions'
+    'regions': '/api/v2/regions',
+    'groups': '/api/v2/groups'
 };
 
 const RESOURCES = 'resources';
@@ -49,8 +50,8 @@ const OWNERS = 'owners';
 const REGIONS = 'regions';
 const CATEGORIES = 'categories';
 const KEYWORDS = 'keywords';
+const GROUPS = 'groups';
 
-// const GROUPS = 'groups';
 
 function addCountToLabel(name, count) {
     return `${name} (${count || 0})`;
@@ -304,6 +305,63 @@ export const updateDocument = (pk, body) => {
         .then(({ data }) => data.document);
 };
 
+export const getUsers = ({
+    q,
+    page = 1,
+    pageSize = 20,
+    ...params
+} = {}) => {
+    return axios.get(
+        parseDevHostname(
+            addQueryString(endpoints[USERS], q && {
+                search: q,
+                search_fields: ['username', 'first_name', 'last_name']
+            })
+        ),
+        {
+            params: {
+                ...params,
+                page,
+                page_size: pageSize
+            }
+        })
+        .then(({ data }) => {
+            return {
+                total: data.total,
+                isNextPageAvailable: !!data.links.next,
+                users: data.users
+            };
+        });
+};
+
+export const getGroups = ({
+    q,
+    page = 1,
+    pageSize = 20,
+    ...params
+} = {}) => {
+    return axios.get(
+        parseDevHostname(
+            addQueryString(endpoints[GROUPS], q && {
+                search: q,
+                search_fields: ['title', 'slug']
+            })
+        ),
+        {
+            params: {
+                ...params,
+                page,
+                page_size: pageSize
+            }
+        })
+        .then(({ data }) => {
+            return {
+                total: data.total,
+                isNextPageAvailable: !!data.links.next,
+                groups: data.group_profiles
+            };
+        });
+};
 
 export const getUserByPk = (pk) => {
     return axios.get(parseDevHostname(`${endpoints[USERS]}/${pk}`))
@@ -588,6 +646,17 @@ export const getKeywords = ({ q, idIn, ...params }, filterKey =  'keywords') => 
             return results;
         });
 };
+
+export const getCompactPermissionsByPk = (pk) => {
+    return axios.get(parseDevHostname(`${endpoints[RESOURCES]}/${pk}/permissions`))
+        .then(({ data }) => data);
+};
+
+export const updateCompactPermissionsByPk = (pk, body) => {
+    return axios.put(parseDevHostname(`${endpoints[RESOURCES]}/${pk}/permissions`), 'permissions=' + JSON.stringify(body))
+        .then(({ data }) => data);
+};
+
 export default {
     getEndpoints,
     getResources,
@@ -599,6 +668,7 @@ export default {
     getMaps,
     getDocumentsByDocType,
     getUserByPk,
+    getUsers,
     getAccountInfo,
     getConfiguration,
     getResourceTypes,
@@ -611,5 +681,7 @@ export default {
     getCategories,
     getRegions,
     getOwners,
-    getKeywords
+    getKeywords,
+    getCompactPermissionsByPk,
+    updateCompactPermissionsByPk
 };

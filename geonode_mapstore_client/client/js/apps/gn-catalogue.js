@@ -60,8 +60,12 @@ import { ResourceTypes } from '@js/utils/ResourceUtils';
 import { updateGeoNodeSettings } from '@js/actions/gnsettings';
 import {
     gnCheckSelectedDatasetPermissions,
-    gnSetDatasetsPermissions
+    gnSetDatasetsPermissions,
+    // to make the current layout work we need this epic
+    // we should improve the layout to avoid the use of side effect to manage the page structure
+    updateMapLayoutEpic
 } from '@js/epics';
+
 import gnresourceEpics from '@js/epics/gnresource';
 import gnsearchEpics from '@js/epics/gnsearch';
 import favoriteEpics from '@js/epics/favorite';
@@ -273,7 +277,8 @@ Promise.all([
                         ...pluginsDefinition.epics,
                         ...gnresourceEpics,
                         ...gnsearchEpics,
-                        ...favoriteEpics
+                        ...favoriteEpics,
+                        updateMapLayoutEpic
                     },
                     geoNodeConfiguration,
                     initialActions: [

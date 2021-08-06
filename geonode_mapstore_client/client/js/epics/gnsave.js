@@ -6,6 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import axios from '@mapstore/framework/libs/ajax';
 import { Observable } from 'rxjs';
 import { mapSelector, mapInfoSelector } from '@mapstore/framework/selectors/map';
 import { layersSelector, groupsSelector } from '@mapstore/framework/selectors/layers';
@@ -34,7 +35,8 @@ import {
     resourceLoading,
     setResource,
     resourceError,
-    updateResourceProperties
+    updateResourceProperties,
+    resetGeoLimits
 } from '@js/actions/gnresource';
 import {
     getResourceByPk,
@@ -43,16 +45,27 @@ import {
     updateGeoApp,
     createMap,
     updateMap,
-    updateDocument
+    updateDocument,
+    updateCompactPermissionsByPk
 } from '@js/api/geonode/v2';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import uuid from 'uuid';
 import {
     getResourceName,
     getResourceDescription,
-    getResourceThumbnail
+    getResourceThumbnail,
+    getPermissionsPayload
 } from '@js/selectors/resource';
-import { ResourceTypes } from '@js/utils/ResourceUtils';
+
+import {
+    updateGeoLimits,
+    deleteGeoLimits
+} from '@js/api/geonode/security';
+
+import {
+    ResourceTypes,
+    cleanCompactPermissions
+} from '@js/utils/ResourceUtils';
 
 const SaveAPI = {
     [ResourceTypes.MAP]: (state, id, metadata, reload) => {
@@ -199,28 +212,49 @@ export const gnSaveDirectContent = (action$, store) =>
             const state = store.getState();
             const mapInfo = mapInfoSelector(state);
             const resourceId = mapInfo?.id
-            || state?.gnresource?.id; // injected geostory id
-            return Observable.defer(() => getResourceByPk(resourceId))
-                .switchMap((resource) => {
-                    const name = getResourceName(state);
-                    const description = getResourceDescription(state);
-                    const thumbnail = getResourceThumbnail(state);
-                    const metadata = {
-                        name: (name) ? name : resource?.title,
-                        description: (description) ? description : resource?.abstract,
-                        thumbnail: (thumbnail) ? thumbnail : resource?.thumbnail_url,
-                        extension: resource?.extension,
-                        href: resource?.href
-                    };
-                    return Observable.of(
-                        setResource(resource),
-                        saveContent(resourceId, metadata, false, true /* showNotification */)
-                    );
-                })
+                || state?.gnresource?.id; // injected geostory id
+            const { compactPermissions, geoLimits } = getPermissionsPayload(state);
+            return Observable.concat(
+                ...(compactPermissions ? [
+                    Observable.defer(() => updateCompactPermissionsByPk(resourceId, cleanCompactPermissions(compactPermissions)))
+                        .switchMap(() => {
+                            return Observable.empty(); // TODO: manage async status
+                        })
+                ] : []),
+                Observable.defer(() => axios.all([
+                    getResourceByPk(resourceId),
+                    ...(geoLimits
+                        ? geoLimits.map((limits) =>
+                            limits.features.length === 0
+                                ? deleteGeoLimits(resourceId, limits.id, limits.type)
+                                    .catch(() => null) // TODO: manage error
+                                : updateGeoLimits(resourceId, limits.id, limits.type, { features: limits.features })
+                                    .catch(() => null) // TODO: manage error
+                        )
+                        : [])
+                ]))
+                    .switchMap(([resource]) => {
+                        const name = getResourceName(state);
+                        const description = getResourceDescription(state);
+                        const thumbnail = getResourceThumbnail(state);
+                        const metadata = {
+                            name: (name) ? name : resource?.title,
+                            description: (description) ? description : resource?.abstract,
+                            thumbnail: (thumbnail) ? thumbnail : resource?.thumbnail_url,
+                            extension: resource?.extension,
+                            href: resource?.href
+                        };
+                        return Observable.of(
+                            setResource(resource),
+                            saveContent(resourceId, metadata, false, true /* showNotification */),
+                            resetGeoLimits()
+                        );
+                    })
+            )
                 .catch((error) => {
                     return Observable.of(
                         saveError(error.data || error.message),
-                        errorNotification({title: "map.mapError.errorTitle", message: error.data || error.message || "map.mapError.errorDefault"})
+                        errorNotification({title: "map.mapError.errorTitle", message: error?.data?.detail || error?.message || "map.mapError.errorDefault"})
                     );
                 })
                 .startWith(savingResource());

@@ -51,3 +51,26 @@ export const isNewResource = (state) => {
 export const getResourceData = (state) => {
     return state?.gnresource?.data;
 };
+
+export const getCompactPermissions = (state) => {
+    const compactPermissions = state?.gnresource?.compactPermissions || {};
+    return compactPermissions;
+};
+
+export const getPermissionsPayload = (state) => {
+    const compactPermissions = state?.gnresource?.compactPermissions;
+    const isCompactPermissionsChanged = state?.gnresource?.isCompactPermissionsChanged;
+    const geoLimits = state?.gnresource?.geoLimits;
+    return {
+        compactPermissions: isCompactPermissionsChanged && compactPermissions ? compactPermissions : null,
+        geoLimits: geoLimits?.length > 0 ? geoLimits : null
+    };
+};
+
+export const canEditPermissions = (state) => {
+    const compactPermissions = getCompactPermissions(state);
+    const users = compactPermissions.users || [];
+    const user = state?.security?.user;
+    const { permissions } = user && users.find(({ id }) => id === user.pk) || {};
+    return ['owner', 'manage'].includes(permissions);
+};

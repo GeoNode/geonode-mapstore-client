@@ -11,20 +11,28 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
-import {toggleControl} from '@mapstore/framework/actions/controls';
+import { setControlProperty } from '@mapstore/framework/actions/controls';
 import Message from '@mapstore/framework/components/I18N/Message';
-import { Glyphicon } from 'react-bootstrap';
 import controls from '@mapstore/framework/reducers/controls';
-import ShareEmbed from '@mapstore/framework/components/share/ShareEmbed';
-import ShareLink from '@mapstore/framework/components/share/ShareLink';
-import ResizableModal from '@mapstore/framework/components/misc/ResizableModal';
 import Button from '@js/components/Button';
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
+import { layersSelector } from '@mapstore/framework/selectors/layers';
+import OverlayContainer from '@js/components/OverlayContainer';
 import url from 'url';
 import {
     isNewResource,
-    getResourceId
+    getResourceId,
+    getCompactPermissions,
+    canEditPermissions
 } from '@js/selectors/resource';
+import { updateResourceCompactPermissions } from '@js/actions/gnresource';
+import FaIcon from '@js/components/FaIcon/FaIcon';
+import Permissions from '@js/components/Permissions';
+import { getUsers, getGroups } from '@js/api/geonode/v2';
+import { resourceToPermissionEntry } from '@js/utils/ResourceUtils';
+import SharePageLink from '@js/plugins/share/SharePageLink';
+import ShareEmbedLink from '@js/plugins/share/ShareEmbedLink';
+
 function getShareUrl({
     resourceId,
     pathTemplate
@@ -41,33 +49,110 @@ function getShareUrl({
     });
 }
 
+const entriesTabs = [
+    {
+        id: 'user',
+        labelId: 'gnviewer.users',
+        request: ({ entries, groups, ...params }) => {
+            const exclude = entries.filter(({ type }) => type === 'user').map(({ id }) => id);
+            return getUsers({
+                ...params,
+                'filter{-pk.in}': [...exclude, -1]
+            });
+        },
+        responseToEntries: ({ response, entries }) => {
+            return response?.users.map(user => {
+                const { permissions } = entries.find(entry => entry.id === user.pk) || {};
+                return {
+                    ...resourceToPermissionEntry('user', user),
+                    permissions
+                };
+            });
+        }
+    },
+    {
+        id: 'group',
+        labelId: 'gnviewer.groups',
+        request: ({ entries, groups, ...params }) => {
+            const excludeEntries = entries.filter(({ type }) => type === 'group').map(({ id }) => id);
+            const excludeGroups = groups.map(({ id }) => id);
+            const exclude = [
+                ...(excludeEntries || []),
+                ...(excludeGroups || [])
+            ];
+            return getGroups({
+                ...params,
+                'filter{-group.pk.in}': exclude
+            });
+        },
+        responseToEntries: ({ response, entries }) => {
+            return response?.groups.map(group => {
+                const { permissions } = entries.find(entry => entry.id === group.pk) || {};
+                return {
+                    ...resourceToPermissionEntry('group', group),
+                    permissions
+                };
+            });
+        }
+    }
+];
 function Share({
+    enabled,
+    width,
+    permissionsOptions,
     resourceId,
     pathTemplate,
-    enabled,
-    onClose
+    compactPermissions,
+    layers,
+    onChangePermissions,
+    enableGeoLimits,
+    onClose,
+    canEdit,
+    permissionsGroupOptions,
+    permissionsDefaultGroupOptions
 }) {
+
     const shareUrl = getShareUrl({
         resourceId,
         pathTemplate
     });
+
     return (
-        <ResizableModal
-            modalClassName="gn-share-modal"
-            title={<Message msgId="share.title"/>}
-            show={enabled}
-            fitContent
-            clickOutEnabled={false}
-            onClose={() => onClose()}
+        <OverlayContainer
+            enabled={enabled}
+            style={{ width }}
         >
-            <ShareLink
-                shareUrl={shareUrl}
-            />
-            <ShareEmbed
-                showTOCToggle={false}
-                shareUrl={shareUrl}
-            />
-        </ResizableModal>
+            <section
+                className="gn-share-panel"
+            >
+                <div className="gn-share-panel-head">
+                    <h2><Message msgId="gnviewer.shareThisResource" /></h2>
+                    <Button size="sm" onClick={() => onClose()}>
+                        <FaIcon name="times"/>
+                    </Button>
+                </div>
+                <div className="gn-share-panel-body">
+                    <SharePageLink />
+                    <div className="gn-share-panel-label"><label><Message msgId="gnviewer.embed" />:</label></div>
+                    <ShareEmbedLink
+                        shareUrl={shareUrl}
+                    />
+                    {canEdit && <>
+                        <div className="gn-share-panel-label"><label><Message msgId="gnviewer.permissions" />:</label></div>
+                        <Permissions
+                            compactPermissions={compactPermissions}
+                            layers={layers} entriesTabs={entriesTabs}
+                            onChange={onChangePermissions}
+                            options={permissionsOptions}
+                            enableGeoLimits={enableGeoLimits}
+                            resourceId={resourceId}
+                            groupOptions={permissionsGroupOptions}
+                            defaultGroupOptions={permissionsDefaultGroupOptions}
+                        />
+                    </>}
+                </div>
+            </section>
+        </OverlayContainer>
     );
 }
 
@@ -75,27 +160,83 @@ Share.propTypes = {
     resourceId: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
     pathTemplate: PropTypes.string,
     enabled: PropTypes.bool,
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
+    width: PropTypes.number,
+    permissionsOptions: PropTypes.array,
+    defaultGroupOptions: PropTypes.array,
+    groupOptions: PropTypes.array
 };
 
 Share.defaultProps = {
     resourceId: null,
     pathTemplate: '/apps/{id}/embed',
     enabled: false,
-    onClose: () => {}
+    onClose: () => {},
+    width: 800,
+    permissionsGroupOptions: {
+        'anonymous': [
+            {
+                value: 'view',
+                labelId: 'gnviewer.permissionView'
+            },
+            {
+                value: 'download',
+                labelId: 'gnviewer.permissionDownload'
+            }
+        ]
+    },
+    permissionsOptions: [
+        {
+            value: 'view',
+            labelId: 'gnviewer.permissionView'
+        },
+        {
+            value: 'download',
+            labelId: 'gnviewer.permissionDownload'
+        },
+        {
+            value: 'edit',
+            labelId: 'gnviewer.permissionEdit'
+        },
+        {
+            value: 'manage',
+            labelId: 'gnviewer.permissionManage'
+        }
+    ],
+    permissionsDefaultGroupOptions: [
+        {
+            value: 'view',
+            labelId: 'gnviewer.permissionView'
+        },
+        {
+            value: 'download',
+            labelId: 'gnviewer.permissionDownload'
+        },
+        {
+            value: 'edit',
+            labelId: 'gnviewer.permissionEdit'
+        }
+    ]
 };
 
 const SharePlugin = connect(
     createSelector([
-        state => state?.controls?.share?.enabled,
+        state => state?.controls?.rightOverlay?.enabled === 'Share',
         state => state?.gnresource?.id,
-        mapInfoSelector
-    ], (enabled, resourceId, mapInfo) => ({
+        mapInfoSelector,
+        getCompactPermissions,
+        layersSelector,
+        canEditPermissions
+    ], (enabled, resourceId, mapInfo, compactPermissions, layers, canEdit) => ({
         enabled,
-        resourceId: resourceId || mapInfo?.id
+        resourceId: resourceId || mapInfo?.id,
+        compactPermissions,
+        layers,
+        canEdit
     })),
     {
-        onClose: toggleControl.bind(null, 'share', null)
+        onClose: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),
+        onChangePermissions: updateResourceCompactPermissions
     }
 )(Share);
 
@@ -127,31 +268,22 @@ const ConnectedShareButton = connect(
         })
     ),
     {
-        onClick: toggleControl.bind(null, 'share', null)
+        onClick: setControlProperty.bind(null, 'rightOverlay', 'enabled', 'Share')
     }
 )((ShareButton));
 
 export default createPlugin('Share', {
     component: SharePlugin,
     containers: {
-        BurgerMenu: {
-            name: 'share',
-            position: 1000,
-            text: <Message msgId="share.title"/>,
-            icon: <Glyphicon glyph="share-alt"/>,
-            action: toggleControl.bind(null, 'share', null),
-            selector: createSelector(
-                isNewResource,
-                getResourceId,
-                mapInfoSelector,
-                (isNew, resourceId, mapInfo) => ({
-                    style: !isNew && (resourceId || mapInfo?.id) ? { } : { display: 'none' }
-                })
-            )
+        ViewerLayout: {
+            name: 'Share',
+            target: 'rightOverlay',
+            priority: 1
         },
         ActionNavbar: {
             name: 'Share',
-            Component: ConnectedShareButton
+            Component: ConnectedShareButton,
+            priority: 1
         }
     },
     epics: {},

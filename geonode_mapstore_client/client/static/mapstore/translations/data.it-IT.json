@@ -1,4 +1,4 @@
-    {
+{
     "locale": "it-IT",
     "messages": {
         "geostory": {
@@ -78,7 +78,6 @@
             "advancedSearch": "Ricerca avanzata",
             "apply": "Applica",
             "clearFilters": "Cancella filtri",
-
             "categoriesPlaceholder": "Seleziona categorie",
             "resourceTypes": "Tipi di risorse",
             "resourceTypesPlaceholder": "Seleziona tipi di risorse",
@@ -88,7 +87,6 @@
             "regionsPlaceholder": "Seleziona regioni",
             "owners": "Proprietari",
             "ownersPlaceholder": "Seleziona proprietari",
-
             "profile": "Profilo",
             "recentActivity": "Attività recente",
             "favorites": "Preferiti",
@@ -121,7 +119,7 @@
             "pendingApproval": "In attesa di approvazione",
             "featuredList": "In primo piano"
         },
-        "viewer":{
+        "viewer": {
             "document": {
                 "unSupportedMedia": "Il formato multimediale non è supportato"
             },
@@ -129,7 +127,7 @@
                 "noPermissions": "Non hai i permessi per aggiungere una geostoria"
             }
         },
-        "gnviewer":{
+        "gnviewer": {
             "edit": "Modifica",
             "details": "Dettagli",
             "editMetadata": "Modifica Metadati",
@@ -145,7 +143,24 @@
             "attributeName": "Nome attributo",
             "label": "Etichetta",
             "description": "Descrizione",
-            "attributes": "Attributi"
+            "attributes": "Attributi",
+            "filterBy": "Filtra...",
+            "addPermissionsEntry": "Aggiungi utenti/gruppi",
+            "groups": "Gruppi",
+            "users": "Utenti",
+            "permissionView": "Visualizza",
+            "permissionDownload": "Scarica",
+            "permissionEdit": "Modifica",
+            "permissionManage": "Gestisci",
+            "permissionOwner": "Proprietario",
+            "filterByNameOrPermissions": "Filtra per nome o permessi",
+            "permissionsName": "Nome",
+            "permissions": "Permessi",
+            "anonymous": "Chiunque",
+            "registered-members": "Collaboratori",
+            "permissionsEntriesNoResults": "Nessun risultato...",
+            "shareThisResource": "Condividi questa risorsa",
+            "embed": "Incorpora"
         }
     }
 }

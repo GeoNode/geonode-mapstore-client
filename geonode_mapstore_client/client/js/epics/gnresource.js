@@ -15,7 +15,8 @@ import {
     getDatasetByPk,
     getGeoAppByPk,
     getDocumentByPk,
-    getMapByPk
+    getMapByPk,
+    getCompactPermissionsByPk
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
 import {
@@ -33,7 +34,8 @@ import {
     REQUEST_RESOURCE_CONFIG,
     resetResourceState,
     loadingResourceConfig,
-    resourceConfigError
+    resourceConfigError,
+    setResourceCompactPermissions
 } from '@js/actions/gnresource';
 
 import {
@@ -76,7 +78,7 @@ const resourceTypes = {
                                 ...mapConfig.map,
                                 layers: [
                                     ...mapConfig.map.layers,
-                                    newLayer
+                                    { ...newLayer, isDataset: true }
                                 ]
                             }
                         }),
@@ -260,6 +262,13 @@ export const gnViewerRequestResourceConfig = (action$) =>
                     loadingResourceConfig(true),
                     setResourceType(action.resourceType)
                 ),
+                Observable.defer(() => getCompactPermissionsByPk(action.pk))
+                    .switchMap((compactPermissions) => {
+                        return Observable.of(setResourceCompactPermissions(compactPermissions));
+                    })
+                    .catch(() => {
+                        return Observable.empty();
+                    }),
                 resourceObservable(action.pk, action.options),
                 Observable.of(
                     loadingResourceConfig(false)
