@@ -14,9 +14,8 @@ import ReactSelect from 'react-select';
 import Message from '@mapstore/framework/components/I18N/Message';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
 import { getFilterLabelById } from '@js/utils/SearchUtils';
+import SelectInfiniteScroll from '@js/components/SelectInfiniteScroll';
 const SelectSync = localizedProps('placeholder')(ReactSelect);
-const SelectAsync = localizedProps('placeholder')(ReactSelect.Async);
-
 function FilterItems({
     id,
     items,
@@ -49,7 +48,7 @@ function FilterItems({
                     const optionsProp = suggestionsRequestKey
                         ? { loadOptions: suggestionsRequestTypes[suggestionsRequestKey]?.loadOptions }
                         : { options: options.map(option => ({ value: option, label: option })) };
-                    const Select = suggestionsRequestKey ? SelectAsync : SelectSync;
+                    const Select = suggestionsRequestKey ? SelectInfiniteScroll : SelectSync;
                     return (
                         <FormGroup
                             key={key}

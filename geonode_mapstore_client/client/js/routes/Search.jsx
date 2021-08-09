@@ -44,48 +44,23 @@ import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
 const suggestionsRequestTypes = {
     resourceTypes: {
         filterKey: 'filter{resource_type.in}',
-        loadOptions: (q, params) => getResourceTypes({ ...params, q }, 'filter{resource_type.in}')
-            .then(results => ({
-                options: results
-                    .map(({ selectOption }) => selectOption)
-            }))
-            .catch(() => null)
+        loadOptions: params => getResourceTypes(params, 'filter{resource_type.in}')
     },
     categories: {
         filterKey: 'filter{category.identifier.in}',
-        loadOptions: (q, params) => getCategories({ ...params, q }, 'filter{category.identifier.in}')
-            .then(results => ({
-                options: results
-                    .map(({ selectOption }) => selectOption)
-            }))
-            .catch(() => null)
+        loadOptions: params => getCategories(params, 'filter{category.identifier.in}')
     },
     keywords: {
         filterKey: 'filter{keywords.slug.in}',
-        loadOptions: (q, params) => getKeywords({ ...params, q }, 'filter{keywords.slug.in}')
-            .then(results => ({
-                options: results
-                    .map(({ selectOption }) => selectOption)
-            }))
-            .catch(() => null)
+        loadOptions: params => getKeywords(params, 'filter{keywords.slug.in}')
     },
     regions: {
         filterKey: 'filter{regions.name.in}',
-        loadOptions: (q, params) => getRegions({ ...params, q }, 'filter{regions.name.in}')
-            .then(results => ({
-                options: results
-                    .map(({ selectOption }) => selectOption)
-            }))
-            .catch(() => null)
+        loadOptions: params => getRegions(params, 'filter{regions.name.in}')
     },
     owners: {
         filterKey: 'filter{owner.username.in}',
-        loadOptions: (q, params) => getOwners({ ...params, q }, 'filter{owner.username.in}')
-            .then(results => ({
-                options: results
-                    .map(({ selectOption }) => selectOption)
-            }))
-            .catch(() => null)
+        loadOptions: params => getOwners(params, 'filter{owner.username.in}')
     }
 };
 
@@ -179,7 +154,7 @@ function Search({
             if (suggestionRequest) {
                 const filtersToUpdate = castArray(state.current.query[queryKey]).filter((value) => !getFilterById(queryKey, value));
                 if (filtersToUpdate?.length > 0) {
-                    const request = suggestionRequest.loadOptions.bind(null, '', { idIn: filtersToUpdate });
+                    const request = suggestionRequest.loadOptions.bind(null, { includes: filtersToUpdate, pageSize: filtersToUpdate.length });
                     updateRequests.push(request);
                 }
             }
