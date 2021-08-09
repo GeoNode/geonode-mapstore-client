@@ -143,12 +143,25 @@
         list-style-type: none;
         padding: 0;
         margin: 0;
-        >li+li {
-            margin-left: 0.4rem;
+        // li is still visible for injected plugin that return a null component
+        // so we need to target the inner component and apply the margin to that element
+        > li > * {
+            margin-right: 0.4rem;
         }
+        
         img {
             width: auto;
             height: 2.5rem;
+        }
+    }
+    .gn-menu-content-right {
+        .gn-menu-list {
+            // li is still visible for injected plugin that return a null component
+            // so we need to target the inner component and apply the margin to that element
+            > li > * {
+                margin-right: 0;
+                margin-left: 0.4rem;
+            }
         }
     }
     .gn-menu-content-side {

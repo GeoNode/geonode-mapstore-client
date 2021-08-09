@@ -2613,14 +2613,6 @@
                 }
             },
             {
-                "name": "ZoomAll",
-                "override": {
-                    "Toolbar": {
-                        "alwaysVisible": false
-                    }
-                }
-            },
-            {
                 "name": "ZoomIn",
                 "override": {
                     "Toolbar": {
@@ -3400,8 +3392,7 @@
                             "Times New Roman"
                         ]
                     },
-                    "editingAllowedRoles": null,
-                    "enableSetDefaultStyle": true
+                    "editingAllowedRoles": null
                 }
             },
             {

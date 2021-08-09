@@ -14,7 +14,10 @@ import isEqual from 'lodash/isEqual';
 import { resizeMap } from '@mapstore/framework/actions/map';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import usePluginItems from '@js/hooks/usePluginItems';
-import { getResourceId } from '@js/selectors/resource';
+import {
+    getResourceId,
+    getSelectedLayerPermissions
+} from '@js/selectors/resource';
 import { withResizeDetector } from 'react-resize-detector';
 
 // ensure the map trigger the force update/resize
@@ -44,10 +47,11 @@ const ConnectedCenter = connect(
 )(withResizeDetector(Center));
 function ViewerLayout({
     items,
-    resourcePk
+    resourcePk,
+    selectedLayerPermissions
 }, context) {
     const { loadedPlugins } = context;
-    const configuredItems = usePluginItems({ items, loadedPlugins }, [resourcePk]);
+    const configuredItems = usePluginItems({ items, loadedPlugins }, [resourcePk, selectedLayerPermissions]);
     return (
         <div
             className="gn-viewer-layout"
@@ -127,9 +131,11 @@ const MemoizeViewerLayout = memo(ViewerLayout, arePropsEqual);
 
 const ViewerLayoutPlugin = connect(
     createSelector([
-        getResourceId
-    ], (resourcePk) => ({
-        resourcePk
+        getResourceId,
+        getSelectedLayerPermissions
+    ], (resourcePk, selectedLayerPermissions) => ({
+        resourcePk,
+        selectedLayerPermissions
     })),
     {}
 )(MemoizeViewerLayout);

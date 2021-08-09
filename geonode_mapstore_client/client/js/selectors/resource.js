@@ -74,3 +74,8 @@ export const canEditPermissions = (state) => {
     const { permissions } = user && users.find(({ id }) => id === user.pk) || {};
     return ['owner', 'manage'].includes(permissions);
 };
+
+export const getSelectedLayerPermissions = (state) => {
+    const selectedLayerPermissions = state?.gnresource?.selectedLayerPermissions;
+    return selectedLayerPermissions;
+};

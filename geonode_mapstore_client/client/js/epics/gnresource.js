@@ -86,6 +86,7 @@ const resourceTypes = {
                         ...(extent
                             ? [ setControlProperty('fitBounds', 'geometry', extent) ]
                             : []),
+                        setControlProperty('toolbar', 'expanded', false),
                         selectNode(newLayer.id, 'layer', false),
                         setResource(gnLayer),
                         setResourceId(pk),
@@ -114,6 +115,7 @@ const resourceTypes = {
                     const { data, ...resource }  = response;
                     return Observable.of(
                         configureMap(data),
+                        setControlProperty('toolbar', 'expanded', false),
                         setResource(resource),
                         setResourceId(pk)
                     );
@@ -122,7 +124,8 @@ const resourceTypes = {
             Observable.defer(() => getNewMapConfiguration())
                 .switchMap((response) => {
                     return Observable.of(
-                        configureMap(response)
+                        configureMap(response),
+                        setControlProperty('toolbar', 'expanded', false)
                     );
                 })
     },
