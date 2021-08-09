@@ -246,7 +246,6 @@ function Permissions({
                                     key={group.id}
                                     {...group}
                                     hideIcon
-                                    clearable
                                     onChange={handleUpdateGroup.bind(null, group.id)}
                                     name={<strong>{<Message msgId={`gnviewer.${group.name}`} />}</strong>}
                                     options={groupOptions[group.name] || defaultGroupOptions}

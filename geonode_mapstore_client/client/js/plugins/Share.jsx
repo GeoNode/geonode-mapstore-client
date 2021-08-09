@@ -176,6 +176,10 @@ Share.defaultProps = {
     permissionsGroupOptions: {
         'anonymous': [
             {
+                value: 'none',
+                labelId: 'gnviewer.permissionNone'
+            },
+            {
                 value: 'view',
                 labelId: 'gnviewer.permissionView'
             },
@@ -204,6 +208,10 @@ Share.defaultProps = {
         }
     ],
     permissionsDefaultGroupOptions: [
+        {
+            value: 'none',
+            labelId: 'gnviewer.permissionNone'
+        },
         {
             value: 'view',
             labelId: 'gnviewer.permissionView'

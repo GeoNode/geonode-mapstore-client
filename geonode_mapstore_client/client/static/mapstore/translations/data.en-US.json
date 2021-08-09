@@ -147,6 +147,7 @@
             "addPermissionsEntry": "Add Users / Groups",
             "groups": "Groups",
             "users": "Users",
+            "permissionNone": "None",
             "permissionView": "View",
             "permissionDownload": "Download",
             "permissionEdit": "Edit",

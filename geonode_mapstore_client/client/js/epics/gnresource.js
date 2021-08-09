@@ -236,7 +236,7 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
                     return Observable.of(
                         resetControls(),
                         resetResourceState(),
-                        resourceConfigError(error.message)
+                        resourceConfigError(error?.data?.detail || error?.statusText || error?.message)
                     );
                 });
         });
@@ -278,7 +278,7 @@ export const gnViewerRequestResourceConfig = (action$) =>
                     return Observable.of(
                         resetControls(),
                         resetResourceState(),
-                        resourceConfigError(error.message)
+                        resourceConfigError(error?.data?.detail || error?.statusText || error?.message)
                     );
                 });
         });
