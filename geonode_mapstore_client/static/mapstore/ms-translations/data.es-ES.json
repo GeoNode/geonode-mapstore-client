@@ -299,44 +299,6 @@
                 "visit_group": "Visite este grupo",
                 "subscribe": "Suscribir",
                 "email": "Correo:"
-            },
-            "examples":{
-                "viewer":{
-                    "html":"<h3>Visor</h3><p>Visualizador simple</p>"
-                },
-                "3dviewer":{
-                    "html":"<h3>Visor 3D</h3><p>Visualizador 3D simple basado en CesiumJS</p>"
-                },
-                "manager":{
-                    "html":"<h3>Administrador</h3><p>Mostrar los mapas Mapstore</p>"
-                },
-                "mouseposition":{
-                    "html":"<h3>Controlador de position del puntero</h3><p>Exemple particulier</p>"
-                },
-                "scalebar":{
-                    "html":"<h3>Controlador de escala</h3><p>Ejemplo personalizado</p>"
-                },
-                "layertree":{
-                    "html":"<h3>Árbol de mapas avanzado</h3><p>Ejemplo personalizado</p>"
-                },
-                "queryform":{
-                    "html":"<h3>Constructor de consultas</h3><p>Ejemplo personalizado</p>"
-                },
-                "featuregrid":{
-                    "html":"<h3>Editor de características</h3><p>Ejemplo personalizado</p>"
-                },
-                "print":{
-                    "html":"<h3>Impresión</h3><p>Ejemplo personalizado</p>"
-                },
-                "plugins":{
-                    "html":"<h3>Plugins</h3><p>Construya su propia aplicación</p>"
-                },
-                "api":{
-                    "html":"<h3>API</h3><p>Use las API para  incluir un mapa de MapStore en su  aplicación</p>"
-                },
-                "rasterstyler":{
-                    "html":"<h3>Estilos ráster</h3><p>Estilo ráster</p>"
-                }
             }
         },
         "cookiesPolicyNotification": {
@@ -2900,7 +2862,25 @@
               "title": "Configurar tema",
               "label": "Tema",
               "themes": "Elige un tema",
-              "noThemes": "No se encontraron"
+              "noThemes": "No se encontraron",
+              "customVariables": "Variables personalizadas",
+              "main": "Color del texto principal",
+              "background": "Color de fondo principal",
+              "primaryContrast": "Color de texto primario",
+              "primary": "Color primario",
+              "success": "Color secundario",
+              "successContrast": "Color de texto secundario",
+              "guidelines": "Asegúrese de no usar un color secundario demasiado similar al primario y, obviamente, el color del texto primario con su contraparte (lo mismo se aplica a las otras parejas de colores: principal, secundario)",
+              "alternativeTextPrimarySecondary": "<p>Advertencia: el color secundario podría no ser legible en comparación con el principal</p><p>Una alternativa es el color {color} &nbsp;<span class=\"ms-custom-theme-picker-alternative-text\" style=\"background-color:{color}\"></span></p>",
+              "tooltips": {
+                "main": "Color de texto utilizado en paneles o cuadros de diálogo",
+                "background": "Color de fondo utilizado en paneles o cuadros de diálogo",
+                "primaryContrast": "Color del texto opuesto al color de fondo principal y de éxito: iconos dentro de las barras de herramientas, encabezados, botones",
+                "primary": "Color primario de fondo: barras de herramientas, encabezados, botones",
+                "successContrast": "El color del texto se aplica cuando el color secundario se utiliza como fondo.",
+                "success": "Color de fondo utilizado para mostrar cuando un botón está 'activo' o 'seleccionado'",
+                "customColorsDescription": "Puede cambiar uno de estos colores además (o no) a un tema preconfigurado elegido anteriormente"
+              }
             },
             "configurePlugins": {
                 "label": "Configurar complementos",
@@ -3016,6 +2996,7 @@
         },
         "mapTemplates": {
             "title": "Plantillas de mapas",
+            "tooltip": "Examinar plantillas de mapas",
             "favouritesTitle": "Favoritos",
             "allTitle": "Todos",
             "filterPlaceholder": "Filtrar plantillas de mapa...",
@@ -3359,6 +3340,7 @@
             "titleContext": "Error al eliminar sesión de usuario",
             "defaultMessage": "Error desconocido"
           },
+          "tooltip": "Borrar la sesión de usuario actual guardada",
           "successRemoved": "Sesión de usuario eliminada",
           "remove": "Restablecer sesión de usuario",
           "confirmRemove": "¿Está seguro de que desea restaurar la configuración predeterminada?"

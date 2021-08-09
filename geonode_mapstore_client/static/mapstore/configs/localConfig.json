@@ -2464,14 +2464,8 @@
                             ]
                         },
                         {
-                            "labelId": "gnviewer.share",
-                            "type": "dropdown",
-                            "items": [
-                                {
-                                    "type": "plugin",
-                                    "name": "Share"
-                                }
-                            ]
+                            "type": "plugin",
+                            "name": "Share"
                         },
                         {
                             "type": "divider",
@@ -2507,7 +2501,8 @@
             {
                 "name": "Share",
                 "cfg": {
-                    "pathTemplate": "/maps/{id}/embed"
+                    "pathTemplate": "/maps/{id}/embed",
+                    "enableGeoLimits": true
                 }
             },
             {
@@ -3022,14 +3017,8 @@
                             ]
                         },
                         {
-                            "labelId": "gnviewer.share",
-                            "type": "dropdown",
-                            "items": [
-                                {
-                                    "type": "plugin",
-                                    "name": "Share"
-                                }
-                            ]
+                            "type": "plugin",
+                            "name": "Share"
                         },
                         {
                             "type": "divider",
@@ -3473,14 +3462,8 @@
                             ]
                         },
                         {
-                            "labelId": "gnviewer.share",
-                            "type": "dropdown",
-                            "items": [
-                                {
-                                    "type": "plugin",
-                                    "name": "Share"
-                                }
-                            ]
+                            "type": "plugin",
+                            "name": "Share"
                         }
                     ]
                 }
@@ -3643,14 +3626,8 @@
                             ]
                         },
                         {
-                            "labelId": "gnviewer.share",
-                            "type": "dropdown",
-                            "items": [
-                                {
-                                    "type": "plugin",
-                                    "name": "Share"
-                                }
-                            ]
+                            "type": "plugin",
+                            "name": "Share"
                         }
                     ]
                 }
@@ -3721,14 +3698,8 @@
                             ]
                         },
                         {
-                            "labelId": "gnviewer.share",
-                            "type": "dropdown",
-                            "items": [
-                                {
-                                    "type": "plugin",
-                                    "name": "Share"
-                                }
-                            ]
+                            "type": "plugin",
+                            "name": "Share"
                         }
                     ]
                 }

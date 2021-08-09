@@ -9,7 +9,7 @@
   "dependencies": {
     "font-awesome": "4.7.0",
     "dompurify": "2.2.6",
-    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#6677dd581fae573ba094f7bad10ca4f57fea4730",
+    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#5576d0990c8d05d6db44b84b5ede699d58f1160c",
     "react-helmet": "6.1.0"
   }
 }
