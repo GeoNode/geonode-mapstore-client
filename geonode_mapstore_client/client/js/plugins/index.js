@@ -17,6 +17,7 @@ import {
     LayerDownloadActionButton,
     AnnotationsActionButton
 } from '@js/plugins/actionnavbar/buttons';
+import { getMetadataUrl } from '@js/utils/ResourceUtils';
 
 const EXCLUDED_EPICS_NAMES = [
     'loadGeostoryEpic',
@@ -368,7 +369,9 @@ export const plugins = {
 
 const pluginsDefinition = {
     plugins,
-    requires: {},
+    requires: {
+        getMetadataUrl
+    },
     epics: {},
     reducers: {}
 };

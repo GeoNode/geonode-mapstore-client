@@ -175,7 +175,8 @@ export const getResourceTypesInfo = () => ({
             theme: 'preview'
         })),
         formatDetailUrl: (resource) => (`/catalogue/#/dataset/${resource.pk}`),
-        name: 'Dataset'
+        name: 'Dataset',
+        formatMetadataUrl: (resource) => (`/datasets/${resource.alternate}/metadata`)
     },
     [ResourceTypes.MAP]: {
         icon: 'map',
@@ -184,24 +185,36 @@ export const getResourceTypesInfo = () => ({
             config: 'map_preview',
             theme: 'preview'
         })),
-        formatDetailUrl: (resource) => (`/catalogue/#/map/${resource.pk}`)
+        formatDetailUrl: (resource) => (`/catalogue/#/map/${resource.pk}`),
+        formatMetadataUrl: (resource) => (`/maps/${resource.pk}/metadata`)
     },
     [ResourceTypes.DOCUMENT]: {
         icon: 'file',
         name: 'Document',
         formatEmbedUrl: (resource) => resource?.embed_url && parseDevHostname(resource.embed_url),
-        formatDetailUrl: (resource) => (`/catalogue/#/document/${resource.pk}`)
+        formatDetailUrl: (resource) => (`/catalogue/#/document/${resource.pk}`),
+        formatMetadataUrl: (resource) => (`/documents/${resource.pk}/metadata`)
     },
     [ResourceTypes.GEOSTORY]: {
         icon: 'book',
         name: 'GeoStory',
         formatEmbedUrl: (resource) => resource?.embed_url && parseDevHostname(resource.embed_url),
-        formatDetailUrl: (resource) => (`/catalogue/#/geostory/${resource.pk}`)
+        formatDetailUrl: (resource) => (`/catalogue/#/geostory/${resource.pk}`),
+        formatMetadataUrl: (resource) => (`/apps/${resource.pk}/metadata`)
     },
     [ResourceTypes.DASHBOARD]: {
         icon: 'dashboard',
         name: 'Dashboard',
         formatEmbedUrl: (resource) => resource?.embed_url && parseDevHostname(resource.embed_url),
-        formatDetailUrl: (resource) => (`/catalogue/#/dashboard/${resource.pk}`)
+        formatDetailUrl: (resource) => (`/catalogue/#/dashboard/${resource.pk}`),
+        formatMetadataUrl: (resource) => (`/apps/${resource.pk}/metadata`)
     }
 });
+
+export const getMetadataUrl = (resource) => {
+    if (resource) {
+        const { formatMetadataUrl = () => '' } = getResourceTypesInfo()[resource?.resource_type] || {};
+        return formatMetadataUrl(resource);
+    }
+    return '';
+};

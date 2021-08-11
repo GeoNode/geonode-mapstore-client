@@ -19,6 +19,9 @@ import { hasPermissionsTo, reduceArrayRecursive } from '@js/utils/MenuUtils';
 import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
 
 function checkResourcePerms(menuItem, resourcePerms) {
+    if (menuItem.disableIf) {
+        return false;
+    }
     if (menuItem.type && menuItem.perms) {
         return hasPermissionsTo(resourcePerms, menuItem.perms, 'resource');
     }

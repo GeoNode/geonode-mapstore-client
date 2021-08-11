@@ -16,7 +16,8 @@ import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import usePluginItems from '@js/hooks/usePluginItems';
 import {
     getResourceId,
-    getSelectedLayerPermissions
+    getSelectedLayerPermissions,
+    isNewResource
 } from '@js/selectors/resource';
 import { withResizeDetector } from 'react-resize-detector';
 
@@ -132,9 +133,10 @@ const MemoizeViewerLayout = memo(ViewerLayout, arePropsEqual);
 const ViewerLayoutPlugin = connect(
     createSelector([
         getResourceId,
-        getSelectedLayerPermissions
-    ], (resourcePk, selectedLayerPermissions) => ({
-        resourcePk,
+        getSelectedLayerPermissions,
+        isNewResource
+    ], (resourcePk, selectedLayerPermissions, isNew) => ({
+        resourcePk: isNew ? 'new' : resourcePk,
         selectedLayerPermissions
     })),
     {}
