@@ -13,6 +13,10 @@ import HTML from '@mapstore/framework/components/I18N/HTML';
 import ResourceCard from '@js/components/ResourceCard';
 import FaIcon from '@js/components/FaIcon';
 import { withResizeDetector } from 'react-resize-detector';
+import {
+    ProcessTypes,
+    ProcessStatus
+} from '@js/utils/ResourceServiceUtils';
 
 const Cards = withResizeDetector(({
     resources,
@@ -48,7 +52,7 @@ const Cards = withResizeDetector(({
             : {
                 width: cardWidth,
                 marginRight: (idx + 1) % count === 0 ? 0 : margin,
-                marginTop: margin
+                marginTop: 8
             };
 
         return gridSpace;
@@ -56,17 +60,25 @@ const Cards = withResizeDetector(({
 
     const containerStyle = isSingleCard
         ? {
-            paddingBottom: margin
+            paddingBottom: 0
         }
         : {
             paddingLeft: ulPadding,
-            paddingBottom: margin
+            paddingBottom: 0
         };
     return (
         <ul
             style={containerStyle}
         >
             {resources.map((resource, idx) => {
+
+                const { processes, ...data } = resource;
+                const isProcessing = processes
+                    ? !!processes.find(({ completed }) => !completed)
+                    : false;
+                const deleteProcess = processes && processes.find(({ processType }) => processType === ProcessTypes.DELETE_RESOURCE);
+                const isDeleting = !!deleteProcess?.output?.status;
+                const isDeleted = deleteProcess?.output?.status === ProcessStatus.FINISHED;
                 return (
                     <li
                         key={resource?.pk}
@@ -74,11 +86,14 @@ const Cards = withResizeDetector(({
                     >
                         <ResourceCard
                             active={isCardActive(resource)}
-                            data={resource}
+                            className={`${isDeleted ? 'deleted' : ''}`}
+                            data={data}
                             formatHref={formatHref}
                             options={options}
                             buildHrefByTemplate={buildHrefByTemplate}
                             layoutCardsStyle="grid"
+                            loading={isProcessing}
+                            readOnly={isDeleted || isDeleting}
                         />
                     </li>
                 );
@@ -105,12 +120,12 @@ const FeaturedList = withResizeDetector(({
 
     const [count, setCount] = useState();
     const nextIconStyles = {
-        fontSize: '2rem',
+        fontSize: '1rem',
         ...(!isNextPageAvailable || loading ? {color: 'grey', cursor: 'not-allowed'} : {cursor: 'pointer'})
     };
 
     const previousIconStyles = {
-        fontSize: '2rem',
+        fontSize: '1rem',
         ...(!isPreviousPageAvailable || loading ? {color: 'grey', cursor: 'not-allowed'} : {cursor: 'pointer'})};
 
     return (
