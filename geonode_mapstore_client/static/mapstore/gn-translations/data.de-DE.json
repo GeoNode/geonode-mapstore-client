@@ -159,7 +159,10 @@
             "registered-members": "Mitwirkende",
             "permissionsEntriesNoResults": "Keine Ergebnisse...",
             "shareThisResource": "Diese Ressource teilen",
-            "embed": "Einbetten"
+            "embed": "Einbetten",
+            "deleteResourceTitle": "{count, plural, =1 {Möchten Sie diese Ressource wirklich löschen?} other {Möchten Sie diese Ressourcen wirklich löschen?}}",
+            "deleteResourceNo": "{count, plural, =1 {Nein, nicht löschen} other {Nein, lösche sie nicht}}",
+            "deleteResourceYes": "Ja, ich bin sicher"
         }
     }
 }

@@ -161,7 +161,10 @@
             "registered-members": "Collaboratori",
             "permissionsEntriesNoResults": "Nessun risultato...",
             "shareThisResource": "Condividi questa risorsa",
-            "embed": "Incorpora"
+            "embed": "Incorpora",
+            "deleteResourceTitle": "{count, plural, =1 {Sei sicuro di voler eliminare questa risorsa?} other {Sei sicuro di voler eliminare queste risorse?}}",
+            "deleteResourceNo": "{count, plural, =1 {No, non eliminarlo} other {No, non eliminarli}}",
+            "deleteResourceYes": "Sì, sono sicuro"
         }
     }
 }

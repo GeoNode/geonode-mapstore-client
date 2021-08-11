@@ -160,7 +160,10 @@
             "registered-members": "Contributors",
             "permissionsEntriesNoResults": "No Results...",
             "shareThisResource": "Share this resource",
-            "embed": "Embed"
+            "embed": "Embed",
+            "deleteResourceTitle": "{count, plural, =1 {Are you sure you want to delete this resource?} other {Are you sure you want to delete these resources?}}",
+            "deleteResourceNo": "{count, plural, =1 {No, don't delete it} other {No, don't delete them}}",
+            "deleteResourceYes": "Yes, I am sure"
         }
     }
 }
