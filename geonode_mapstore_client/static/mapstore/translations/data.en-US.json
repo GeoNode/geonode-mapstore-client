@@ -116,7 +116,9 @@
             "customFiltersTitle": "Resources",
             "myResources": "My resources",
             "pendingApproval": "Pending approval",
-            "featuredList": "Featured"
+            "featuredList": "Featured",
+            "uploadDataset": "Upload dataset",
+            "createDataset": "Create dataset"
         },
         "viewer": {
             "document": {

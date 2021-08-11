@@ -117,7 +117,9 @@
             "customFiltersTitle": "Risorse",
             "myResources": "Le mie risorse",
             "pendingApproval": "In attesa di approvazione",
-            "featuredList": "In primo piano"
+            "featuredList": "In primo piano",
+            "uploadDataset": "Carica dataset",
+            "createDataset": "Crea dataset"
         },
         "viewer": {
             "document": {

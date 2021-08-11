@@ -115,7 +115,9 @@
             "customFiltersTitle": "Ressources",
             "myResources": "Mes ressources",
             "pendingApproval": "En attente de validation",
-            "featuredList": "Mis en exergue"
+            "featuredList": "Mis en exergue",
+            "uploadDataset": "Télécharger l'ensemble de données",
+            "createDataset": "Créer un ensemble de données"
         },
         "viewer": {
             "document": {

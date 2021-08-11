@@ -81,6 +81,10 @@
         {
             "name": "gnResourceData",
             "path": "gnresource.data"
+        },
+        {
+            "name": "isNewResource",
+            "path": "gnresource.isNew"
         }
     ],
     "projectionDefs": [
@@ -392,7 +396,7 @@
                     ],
                     "items": [
                         {
-                            "labelId": "gnhome.dataset",
+                            "labelId": "gnhome.uploadDataset",
                             "value": "layer",
                             "type": "link",
                             "href": "/datasets/upload",
@@ -405,7 +409,20 @@
                             ]
                         },
                         {
-                            "labelId": "gnhome.document",
+                            "labelId": "gnhome.createDataset",
+                            "value": "layer",
+                            "type": "link",
+                            "href": "/createlayer/",
+                            "authenticated": true,
+                            "perms": [
+                                {
+                                    "type": "user",
+                                    "value": "add_resource"
+                                }
+                            ]
+                        },
+                        {
+                            "labelId": "gnhome.uploadDocument",
                             "value": "document",
                             "type": "link",
                             "href": "/documents/upload",
@@ -418,7 +435,7 @@
                             ]
                         },
                         {
-                            "labelId": "gnhome.map",
+                            "labelId": "gnhome.createMap",
                             "value": "map",
                             "type": "link",
                             "href": "/catalogue/#/map/new",
@@ -431,7 +448,7 @@
                             ]
                         },
                         {
-                            "labelId": "gnhome.geostory",
+                            "labelId": "gnhome.createGeostory",
                             "value": "geostory",
                             "type": "link",
                             "href": "/catalogue/#/geostory/new",
@@ -444,7 +461,7 @@
                             ]
                         },
                         {
-                            "labelId": "gnhome.dashboard",
+                            "labelId": "gnhome.createDashboard",
                             "value": "dashboard",
                             "type": "link",
                             "href": "/catalogue/#/dashboard/new",
@@ -2429,7 +2446,7 @@
                             "items": [
                                 {
                                     "type": "link",
-                                    "href": "{(state('gnResourceData') || {}).detail_url + '/metadata'}",
+                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
                                 },
                                 {
@@ -2988,6 +3005,7 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
+                            "disableIf": "{state('isNewResource')}",
                             "perms": [
                                 {
                                     "type": "resource",
@@ -2997,7 +3015,7 @@
                             "items": [
                                 {
                                     "type": "link",
-                                    "href": "{(state('gnResourceData') || {}).detail_url + '/metadata'}",
+                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
                                 }
                             ]
@@ -3445,6 +3463,7 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
+                            "disableIf": "{state('isNewResource')}",
                             "perms": [
                                 {
                                     "type": "resource",
@@ -3454,7 +3473,7 @@
                             "items": [
                                 {
                                     "type": "link",
-                                    "href": "{(state('gnResourceData') || {}).detail_url + '/metadata'}",
+                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
                                 }
                             ]
@@ -3631,7 +3650,7 @@
                             "items": [
                                 {
                                     "type": "link",
-                                    "href": "{(state('gnResourceData') || {}).detail_url + '/metadata'}",
+                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
                                 }
                             ]
@@ -3707,6 +3726,7 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
+                            "disableIf": "{state('isNewResource')}",
                             "perms": [
                                 {
                                     "type": "resource",
@@ -3716,7 +3736,7 @@
                             "items": [
                                 {
                                     "type": "link",
-                                    "href": "{(state('gnResourceData') || {}).detail_url + '/metadata'}",
+                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
                                 }
                             ]
