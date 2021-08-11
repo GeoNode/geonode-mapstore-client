@@ -40,6 +40,8 @@ import {
 } from '@js/utils/AppUtils';
 
 import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
+import DeleteResource from '@js/plugins/DeleteResource';
+const { DeleteResourcePlugin } = DeleteResource;
 
 const suggestionsRequestTypes = {
     resourceTypes: {
@@ -221,6 +223,7 @@ function Search({
                     </ConnectedCardGrid>
                 </div>
             </div>
+            <DeleteResourcePlugin />
         </>
     );
 }

@@ -15,6 +15,7 @@ import { Glyphicon } from 'react-bootstrap';
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import Loader from '@mapstore/framework/components/misc/Loader';
 import Button from '@js/components/Button';
+import Spinner from '@js/components/Spinner';
 import { isLoggedIn } from '@mapstore/framework/selectors/security';
 import controls from '@mapstore/framework/reducers/controls';
 import gnresource from '@js/reducers/gnresource';
@@ -25,6 +26,7 @@ import {
     isNewResource,
     canEditResource
 } from '@js/selectors/resource';
+import { getCurrentResourcePermissionsLoading } from '@js/selectors/resourceservice';
 /**
  * Plugin for Save modal
  * @name Save
@@ -72,15 +74,17 @@ function SaveButton({
     enabled,
     onClick,
     variant,
-    size
+    size,
+    loading
 }) {
     return enabled
         ? <Button
             variant={variant || "primary"}
             size={size}
             onClick={() => onClick()}
+            disabled={loading}
         >
-            <Message msgId="save"/>
+            <Message msgId="save"/>{' '}{loading && <Spinner />}
         </Button>
         : null
     ;
@@ -92,10 +96,12 @@ const ConnectedSaveButton = connect(
         isNewResource,
         canEditResource,
         mapInfoSelector,
-        (loggedIn, isNew, canEdit, mapInfo) => ({
+        getCurrentResourcePermissionsLoading,
+        (loggedIn, isNew, canEdit, mapInfo, permissionsLoading) => ({
             // we should add permList to map pages too
             // currently the canEdit is located inside the map info
-            enabled: loggedIn && !isNew && (canEdit || mapInfo?.canEdit)
+            enabled: loggedIn && !isNew && (canEdit || mapInfo?.canEdit),
+            loading: permissionsLoading
         })
     ),
     {

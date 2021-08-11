@@ -10,8 +10,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import CardGrid from '@js/components/CardGrid';
-
-const DEFAULT_RESOURCES = [];
+import { getSearchResults } from '@js/selectors/search';
+import { processResources } from '@js/actions/gnresource';
+import { setControlProperty } from '@mapstore/framework/actions/controls';
+import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 
 const CardGridWithMessageId = ({ query, user, isFirstRequest, ...props }) => {
     const hasResources = props.resources?.length > 0;
@@ -27,7 +29,7 @@ const CardGridWithMessageId = ({ query, user, isFirstRequest, ...props }) => {
 
 const ConnectedCardGrid = connect(
     createSelector([
-        state => state?.gnsearch?.resources || DEFAULT_RESOURCES,
+        getSearchResults,
         state => state?.gnsearch?.loading || false,
         state => state?.gnsearch?.isNextPageAvailable || false,
         state => state?.gnsearch?.isFirstRequest
@@ -35,8 +37,21 @@ const ConnectedCardGrid = connect(
         resources,
         loading,
         isNextPageAvailable,
-        isFirstRequest
-    }))
+        isFirstRequest,
+        actions: {
+            'delete': {
+                processType: ProcessTypes.DELETE_RESOURCE,
+                isControlled: true
+            },
+            'clone': {
+                processType: ProcessTypes.CLONE_RESOURCE
+            }
+        }
+    })),
+    {
+        onAction: processResources,
+        onControl: setControlProperty
+    }
 )(CardGridWithMessageId);
 
 export default ConnectedCardGrid;

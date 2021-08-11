@@ -31,7 +31,7 @@
             .outline-color-var(@theme-vars[focus-color]);
         }
 
-        &:hover {
+        &:not(.read-only):hover {
             .border-color-var(@theme-vars[focus-color]);
         }
         .gn-card-options {
@@ -105,6 +105,9 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        .gn-spinner {
+            margin-right: 0.4rem;
+        }
     }
     .card-title {
         font-size: 0.875rem;
@@ -141,7 +144,10 @@
         outline-style: solid;
         .shadow();
     }
-    &:hover {
+    &:not(.read-only):hover {
         .shadow();
+    }
+    &.deleted {
+        opacity: 0.4;
     }
 }

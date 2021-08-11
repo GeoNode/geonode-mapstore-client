@@ -43,6 +43,7 @@ import ViewerRoute from '@js/routes/Viewer';
 
 import gnsearch from '@js/reducers/gnsearch';
 import gnresource from '@js/reducers/gnresource';
+import resourceservice from '@js/reducers/resourceservice';
 import gnsettings from '@js/reducers/gnsettings';
 
 import {
@@ -67,6 +68,7 @@ import {
 } from '@js/epics';
 
 import gnresourceEpics from '@js/epics/gnresource';
+import resourceServiceEpics from '@js/epics/resourceservice';
 import gnsearchEpics from '@js/epics/gnsearch';
 import favoriteEpics from '@js/epics/favorite';
 import maplayout from '@mapstore/framework/reducers/maplayout';
@@ -251,6 +253,7 @@ Promise.all([
                     appReducers: {
                         ...standardReducers,
                         gnresource,
+                        resourceservice,
                         gnsettings,
                         security,
                         maptype,
@@ -276,6 +279,7 @@ Promise.all([
                         gnSetDatasetsPermissions,
                         ...pluginsDefinition.epics,
                         ...gnresourceEpics,
+                        ...resourceServiceEpics,
                         ...gnsearchEpics,
                         ...favoriteEpics,
                         updateMapLayoutEpic

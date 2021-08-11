@@ -32,6 +32,7 @@ import { getUsers, getGroups } from '@js/api/geonode/v2';
 import { resourceToPermissionEntry } from '@js/utils/ResourceUtils';
 import SharePageLink from '@js/plugins/share/SharePageLink';
 import ShareEmbedLink from '@js/plugins/share/ShareEmbedLink';
+import { getCurrentResourcePermissionsLoading } from '@js/selectors/resourceservice';
 
 function getShareUrl({
     resourceId,
@@ -109,7 +110,8 @@ function Share({
     onClose,
     canEdit,
     permissionsGroupOptions,
-    permissionsDefaultGroupOptions
+    permissionsDefaultGroupOptions,
+    permissionsLoading
 }) {
 
     const shareUrl = getShareUrl({
@@ -148,6 +150,7 @@ function Share({
                             resourceId={resourceId}
                             groupOptions={permissionsGroupOptions}
                             defaultGroupOptions={permissionsDefaultGroupOptions}
+                            loading={permissionsLoading}
                         />
                     </>}
                 </div>
@@ -234,13 +237,15 @@ const SharePlugin = connect(
         mapInfoSelector,
         getCompactPermissions,
         layersSelector,
-        canEditPermissions
-    ], (enabled, resourceId, mapInfo, compactPermissions, layers, canEdit) => ({
+        canEditPermissions,
+        getCurrentResourcePermissionsLoading
+    ], (enabled, resourceId, mapInfo, compactPermissions, layers, canEdit, permissionsLoading) => ({
         enabled,
         resourceId: resourceId || mapInfo?.id,
         compactPermissions,
         layers,
-        canEdit
+        canEdit,
+        permissionsLoading
     })),
     {
         onClose: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),

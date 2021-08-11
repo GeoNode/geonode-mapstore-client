@@ -359,8 +359,11 @@ export const plugins = {
                 }
             }
         }
+    ),
+    DeleteResourcePlugin: toLazyPlugin(
+        'DeleteResource',
+        import(/* webpackChunkName: 'plugins/delete-resource-plugin' */ '@js/plugins/DeleteResource')
     )
-
 };
 
 const pluginsDefinition = {

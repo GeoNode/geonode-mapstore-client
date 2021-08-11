@@ -27,6 +27,7 @@ export const RESOURCE_CONFIG_ERROR = 'GEONODE:RESOURCE_CONFIG_ERROR';
 export const SET_RESOURCE_COMPACT_PERMISSIONS = 'GEONODE:SET_RESOURCE_COMPACT_PERMISSIONS';
 export const UPDATE_RESOURCE_COMPACT_PERMISSIONS = 'GEONODE:UPDATE_RESOURCE_COMPACT_PERMISSIONS';
 export const RESET_GEO_LIMITS = 'GEONODE:RESET_GEO_LIMITS';
+export const PROCESS_RESOURCES = 'GEONODE:PROCESS_RESOURCES';
 
 /**
 * Actions for GeoNode resource
@@ -248,5 +249,14 @@ export function updateResourceCompactPermissions(compactPermissions) {
 export function resetGeoLimits() {
     return {
         type: RESET_GEO_LIMITS
+    };
+}
+
+export function processResources(processType, resources, redirectTo) {
+    return {
+        type: PROCESS_RESOURCES,
+        processType,
+        resources,
+        redirectTo
     };
 }

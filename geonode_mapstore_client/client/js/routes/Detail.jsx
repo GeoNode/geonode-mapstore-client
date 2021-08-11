@@ -37,6 +37,8 @@ import {
 } from '@js/utils/AppUtils';
 
 import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
+import DeleteResource from '@js/plugins/DeleteResource';
+const { DeleteResourcePlugin } = DeleteResource;
 
 const ConnectedDetailsPanel = connect(
     createSelector([
@@ -163,6 +165,7 @@ function Detail({
                     formatHref={handleFormatHref}
                 />}
             </div>
+            <DeleteResourcePlugin />
         </>
     );
 }

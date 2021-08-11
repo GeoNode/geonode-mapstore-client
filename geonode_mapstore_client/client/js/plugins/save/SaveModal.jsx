@@ -14,6 +14,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import { Form, FormGroup, ControlLabel, FormControl as FormControlRB, Alert } from 'react-bootstrap';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
 import Loader from '@mapstore/framework/components/misc/Loader';
+import Portal from '@mapstore/framework/components/misc/Portal';
 const FormControl = localizedProps('placeholder')(FormControlRB);
 
 function SaveModal({
@@ -69,115 +70,117 @@ function SaveModal({
     const isLoading = loading || saving;
 
     return (
-        <ResizableModal
-            title={<Message msgId={labelId}/>}
-            show={enabled}
-            fitContent
-            clickOutEnabled={false}
-            buttons={isLoading
-                ? []
-                : [
-                    {
-                        text: <Message msgId="close"/>,
-                        onClick: () => onClose()
-                    },
-                    {
-                        text: <Message msgId={labelId}/>,
-                        disabled: !!nameValidation,
-                        onClick: () => onSave(
-                            update ? contentId : undefined,
-                            {
-                                thumbnail,
-                                name,
-                                description
-                            },
-                            true)
-                    }
-                ]}
-            onClose={isLoading ? null : () => onClose()}
-        >
-            {error && <Alert bsStyle="danger" style={{ margin: 0 }}>
-                <div><Message msgId="map.mapError.errorDefault" /></div>
-            </Alert>}
-            {success && <Alert bsStyle="success" style={{ margin: 0 }}>
-                <div><Message msgId="saveDialog.saveSuccessMessage" /></div>
-            </Alert>}
-            <Form>
-                <FormGroup
-                    validationState={thumbnailError ? 'error' : undefined}
-                >
-                    <ControlLabel>
-                        <Message msgId="map.thumbnail"/>
-                    </ControlLabel>
-                    <Thumbnail
-                        thumbnail={thumbnail}
-                        thumbnailOptions={thumbnailOptions}
-                        message={<Message msgId="map.message"/>}
-                        onUpdate={(data) => {
-                            setThumbnail(data);
-                            setThumbnailError(false);
-                        }}
-                        onError={(newThumbnailError) => {
-                            setThumbnailError(newThumbnailError);
-                        }}
-                    />
-                    {thumbnailError && <div>
-                        <div><Message msgId="map.error"/></div>
-                        <div>{thumbnailError.indexOf && thumbnailError.indexOf('FORMAT') !== -1 && <small><Message msgId="map.errorFormat" /></small>}</div>
-                        <div>{thumbnailError.indexOf && thumbnailError.indexOf('SIZE') !== -1 && <small><Message msgId="map.errorSize" /></small>}</div>
-                    </div>}
-                </FormGroup>
-                <FormGroup
-                    validationState={nameValidation}
-                >
-                    <ControlLabel>
-                        <Message msgId="saveDialog.name" />
-                    </ControlLabel>
-                    <FormControl
-                        placeholder="saveDialog.namePlaceholder"
-                        value={name}
-                        onChange={(event) => {
-                            setName(event.target.value);
-                            setNameValidation(!event.target.value
-                                ? 'error'
-                                : undefined);
-                        }}
-                        onBlur={(event) => {
-                            setNameValidation(!event.target.value
-                                ? 'error'
-                                : undefined
-                            );
-                        }}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <ControlLabel>
-                        <Message msgId="saveDialog.description" />
-                    </ControlLabel>
-                    <FormControl
-                        placeholder="saveDialog.descriptionPlaceholder"
-                        value={description}
-                        onChange={(event) => setDescription(event.target.value)}
-                    />
-                </FormGroup>
-            </Form>
-            {isLoading && <div
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                    zIndex: 2,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}
+        <Portal>
+            <ResizableModal
+                title={<Message msgId={labelId}/>}
+                show={enabled}
+                fitContent
+                clickOutEnabled={false}
+                buttons={isLoading
+                    ? []
+                    : [
+                        {
+                            text: <Message msgId="close"/>,
+                            onClick: () => onClose()
+                        },
+                        {
+                            text: <Message msgId={labelId}/>,
+                            disabled: !!nameValidation,
+                            onClick: () => onSave(
+                                update ? contentId : undefined,
+                                {
+                                    thumbnail,
+                                    name,
+                                    description
+                                },
+                                true)
+                        }
+                    ]}
+                onClose={isLoading ? null : () => onClose()}
             >
-                <Loader size={70}/>
-            </div>}
-        </ResizableModal>
+                {error && <Alert bsStyle="danger" style={{ margin: 0 }}>
+                    <div><Message msgId="map.mapError.errorDefault" /></div>
+                </Alert>}
+                {success && <Alert bsStyle="success" style={{ margin: 0 }}>
+                    <div><Message msgId="saveDialog.saveSuccessMessage" /></div>
+                </Alert>}
+                <Form>
+                    <FormGroup
+                        validationState={thumbnailError ? 'error' : undefined}
+                    >
+                        <ControlLabel>
+                            <Message msgId="map.thumbnail"/>
+                        </ControlLabel>
+                        <Thumbnail
+                            thumbnail={thumbnail}
+                            thumbnailOptions={thumbnailOptions}
+                            message={<Message msgId="map.message"/>}
+                            onUpdate={(data) => {
+                                setThumbnail(data);
+                                setThumbnailError(false);
+                            }}
+                            onError={(newThumbnailError) => {
+                                setThumbnailError(newThumbnailError);
+                            }}
+                        />
+                        {thumbnailError && <div>
+                            <div><Message msgId="map.error"/></div>
+                            <div>{thumbnailError.indexOf && thumbnailError.indexOf('FORMAT') !== -1 && <small><Message msgId="map.errorFormat" /></small>}</div>
+                            <div>{thumbnailError.indexOf && thumbnailError.indexOf('SIZE') !== -1 && <small><Message msgId="map.errorSize" /></small>}</div>
+                        </div>}
+                    </FormGroup>
+                    <FormGroup
+                        validationState={nameValidation}
+                    >
+                        <ControlLabel>
+                            <Message msgId="saveDialog.name" />
+                        </ControlLabel>
+                        <FormControl
+                            placeholder="saveDialog.namePlaceholder"
+                            value={name}
+                            onChange={(event) => {
+                                setName(event.target.value);
+                                setNameValidation(!event.target.value
+                                    ? 'error'
+                                    : undefined);
+                            }}
+                            onBlur={(event) => {
+                                setNameValidation(!event.target.value
+                                    ? 'error'
+                                    : undefined
+                                );
+                            }}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <ControlLabel>
+                            <Message msgId="saveDialog.description" />
+                        </ControlLabel>
+                        <FormControl
+                            placeholder="saveDialog.descriptionPlaceholder"
+                            value={description}
+                            onChange={(event) => setDescription(event.target.value)}
+                        />
+                    </FormGroup>
+                </Form>
+                {isLoading && <div
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        zIndex: 2,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Loader size={70}/>
+                </div>}
+            </ResizableModal>
+        </Portal>
     );
 }
 

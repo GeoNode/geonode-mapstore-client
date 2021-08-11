@@ -13,13 +13,14 @@ import { connect } from 'react-redux';
 
 import security from '@mapstore/framework/reducers/security';
 import controls from '@mapstore/framework/reducers/controls';
-
 import Home from '@js/routes/Home';
 
 import gnsearch from '@js/reducers/gnsearch';
 import gnresource from '@js/reducers/gnresource';
+import resourceservice from '@js/reducers/resourceservice';
 import gnsearchEpics from '@js/epics/gnsearch';
 import gnsaveEpics from '@js/epics/gnsave';
+import resourceServiceEpics from '@js/epics/resourceservice';
 
 import {
     getConfiguration,
@@ -78,12 +79,14 @@ Promise.all([
             appReducers: {
                 gnsearch,
                 gnresource,
+                resourceservice,
                 security,
                 controls
             },
             appEpics: {
                 ...gnsearchEpics,
-                ...gnsaveEpics
+                ...gnsaveEpics,
+                ...resourceServiceEpics
             },
             geoNodeConfiguration
         });

@@ -33,12 +33,13 @@ import {
 } from '@js/utils/AppUtils';
 
 import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
-
-const DEFAULT_RESOURCES = [];
+import { getFeaturedResults } from '@js/selectors/search';
+import DeleteResource from '@js/plugins/DeleteResource';
+const { DeleteResourcePlugin } = DeleteResource;
 
 const ConnectedFeatureList = connect(
     createSelector([
-        state => state?.gnsearch?.featuredResources?.resources || DEFAULT_RESOURCES,
+        getFeaturedResults,
         state => state?.gnsearch?.featuredResources?.page || 1,
         state => state?.gnsearch?.featuredResources?.isNextPageAvailable || false,
         state => state?.gnsearch?.featuredResources?.isPreviousPageAvailable || false,
@@ -142,6 +143,7 @@ function Home({
                     </ConnectedCardGrid>
                 </div>
             </div>
+            <DeleteResourcePlugin />
         </div>
     );
 }

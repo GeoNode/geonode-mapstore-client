@@ -21,6 +21,7 @@ import {
 } from '@js/utils/ResourceUtils';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
 import { getGeoLimits } from '@js/api/geonode/security';
+import Spinner from '@js/components/Spinner';
 
 const FormControl = localizedProps('placeholder')(FormControlRB);
 
@@ -34,7 +35,8 @@ function Permissions({
     defaultGroupOptions,
     enableGeoLimits,
     requestGeoLimits = getGeoLimits,
-    resourceId
+    resourceId,
+    loading
 }) {
 
     const { entries = [], groups = [] } = permissionsCompactToLists(compactPermissions);
@@ -301,6 +303,11 @@ function Permissions({
                     <Message msgId="gnviewer.permissionsEntriesNoResults" />
                 </div>
             }
+            {loading && (
+                <div className="gn-spinner-container">
+                    <Spinner />
+                </div>
+            )}
         </div>
     );
 }

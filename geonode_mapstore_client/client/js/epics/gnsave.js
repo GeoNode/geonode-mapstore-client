@@ -54,18 +54,20 @@ import {
     getResourceName,
     getResourceDescription,
     getResourceThumbnail,
-    getPermissionsPayload
+    getPermissionsPayload,
+    getResourceData
 } from '@js/selectors/resource';
 
 import {
     updateGeoLimits,
     deleteGeoLimits
 } from '@js/api/geonode/security';
-
+import { startAsyncProcess } from '@js/actions/resourceservice';
 import {
     ResourceTypes,
     cleanCompactPermissions
 } from '@js/utils/ResourceUtils';
+import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 
 const SaveAPI = {
     [ResourceTypes.MAP]: (state, id, metadata, reload) => {
@@ -214,11 +216,16 @@ export const gnSaveDirectContent = (action$, store) =>
             const resourceId = mapInfo?.id
                 || state?.gnresource?.id; // injected geostory id
             const { compactPermissions, geoLimits } = getPermissionsPayload(state);
+            const currentResource = getResourceData(state);
             return Observable.concat(
                 ...(compactPermissions ? [
-                    Observable.defer(() => updateCompactPermissionsByPk(resourceId, cleanCompactPermissions(compactPermissions)))
-                        .switchMap(() => {
-                            return Observable.empty(); // TODO: manage async status
+                    Observable.defer(() =>
+                        updateCompactPermissionsByPk(resourceId, cleanCompactPermissions(compactPermissions))
+                            .then(output => ({ resource: currentResource, output, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
+                            .catch((error) => ({ resource: currentResource, error: error?.data?.detail || error?.statusText || error?.message || true, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
+                    )
+                        .switchMap((payload) => {
+                            return Observable.of(startAsyncProcess(payload));
                         })
                 ] : []),
                 Observable.defer(() => axios.all([

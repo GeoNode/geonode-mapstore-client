@@ -677,6 +677,16 @@ export const updateCompactPermissionsByPk = (pk, body) => {
         .then(({ data }) => data);
 };
 
+export const deleteResource = (resource) => {
+    return axios.delete(parseDevHostname(`${endpoints[RESOURCES]}/${resource.pk}/delete`))
+        .then(({ data }) => data);
+};
+
+export const copyResource = (resource) => {
+    return axios.put(parseDevHostname(`${endpoints[RESOURCES]}/${resource.pk}/copy`))
+        .then(({ data }) => data);
+};
+
 export default {
     getEndpoints,
     getResources,
@@ -703,5 +713,7 @@ export default {
     getOwners,
     getKeywords,
     getCompactPermissionsByPk,
-    updateCompactPermissionsByPk
+    updateCompactPermissionsByPk,
+    deleteResource,
+    copyResource
 };

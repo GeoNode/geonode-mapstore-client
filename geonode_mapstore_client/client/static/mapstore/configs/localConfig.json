@@ -485,24 +485,8 @@
                     ]
                 },
                 {
-                    "type": "link",
-                    "href": "${detail_url}/metadata_advanced",
-                    "labelId": "gnhome.update",
-                    "icon": "paste",
-                    "authenticated": true,
-                    "perms": [
-                        {
-                            "type": "resource",
-                            "value": "change_resourcebase"
-                        }
-                    ],
-                    "allowedGroups": [
-                        "admin"
-                    ]
-                },
-                {
-                    "type": "link",
-                    "href": "${detail_url}/remove",
+                    "type": "button",
+                    "action": "delete",
                     "labelId": "gnhome.delete",
                     "icon": "trash",
                     "authenticated": true,
@@ -511,9 +495,6 @@
                             "type": "resource",
                             "value": "delete_resourcebase"
                         }
-                    ],
-                    "allowedGroups": [
-                        "admin"
                     ]
                 }
             ]
@@ -2482,6 +2463,16 @@
                         {
                             "type": "plugin",
                             "name": "Measure"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "DeleteResource",
+                            "perms": [
+                                {
+                                    "type": "resource",
+                                    "value": "delete_resourcebase"
+                                }
+                            ]
                         }
                     ]
                 }
@@ -2507,6 +2498,9 @@
             },
             {
                 "name": "DetailViewer"
+            },
+            {
+                "name": "DeleteResource"
             },
             {
                 "name": "Map",
@@ -3031,9 +3025,22 @@
                         {
                             "type": "plugin",
                             "name": "Measure"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "DeleteResource",
+                            "perms": [
+                                {
+                                    "type": "resource",
+                                    "value": "delete_resourcebase"
+                                }
+                            ]
                         }
                     ]
                 }
+            },
+            {
+                "name": "DeleteResource"
             },
             {
                 "name": "DetailViewer"
@@ -3455,12 +3462,25 @@
                         {
                             "type": "plugin",
                             "name": "Share"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "DeleteResource",
+                            "perms": [
+                                {
+                                    "type": "resource",
+                                    "value": "delete_resourcebase"
+                                }
+                            ]
                         }
                     ]
                 }
             },
             {
                 "name": "DetailViewer"
+            },
+            {
+                "name": "DeleteResource"
             },
             {
                 "name": "GeoStory",
@@ -3619,12 +3639,25 @@
                         {
                             "type": "plugin",
                             "name": "Share"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "DeleteResource",
+                            "perms": [
+                                {
+                                    "type": "resource",
+                                    "value": "delete_resourcebase"
+                                }
+                            ]
                         }
                     ]
                 }
             },
             {
                 "name": "DetailViewer"
+            },
+            {
+                "name": "DeleteResource"
             },
             {
                 "name": "Save"
@@ -3691,12 +3724,25 @@
                         {
                             "type": "plugin",
                             "name": "Share"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "DeleteResource",
+                            "perms": [
+                                {
+                                    "type": "resource",
+                                    "value": "delete_resourcebase"
+                                }
+                            ]
                         }
                     ]
                 }
             },
             {
                 "name": "DetailViewer"
+            },
+            {
+                "name": "DeleteResource"
             },
             {
                 "name": "Save"
