@@ -95,7 +95,8 @@ export function resourceToPermissionEntry(type, resource) {
             id: resource.id || resource.pk,
             avatar: resource.avatar,
             name: resource.username,
-            permissions: resource.permissions
+            permissions: resource.permissions,
+            parsed: true
         };
     }
     return {
@@ -103,7 +104,8 @@ export function resourceToPermissionEntry(type, resource) {
         id: resource.id || resource?.group?.pk,
         name: resource.title,
         avatar: resource.logo,
-        permissions: resource.permissions
+        permissions: resource.permissions,
+        parsed: true
     };
 }
 
@@ -124,11 +126,11 @@ export function permissionsListsToCompact({ groups, entries }) {
 export function permissionsCompactToLists({ groups, users, organizations }) {
     return {
         groups: [
-            ...(groups || []).map((entry) => ({ ...entry, type: 'group', name: entry.name, avatar: entry.logo }))
+            ...(groups || []).map((entry) => ({ ...entry, type: 'group', ...(!entry.parsed && { name: entry.name, avatar: entry.logo }) }))
         ],
         entries: [
-            ...(users || []).map((entry) => ({ ...entry, type: 'user', name: entry.username, avatar: entry.avatar })),
-            ...(organizations || []).map((entry) => ({ ...entry, type: 'group', name: entry.title, avatar: entry.logo }))
+            ...(users || []).map((entry) => ({ ...entry, type: 'user', ...(!entry.parsed && { name: entry.username, avatar: entry.avatar }) })),
+            ...(organizations || []).map((entry) => ({ ...entry, type: 'group', ...(!entry.parsed && { name: entry.title, avatar: entry.logo }) }))
         ]
     };
 }
