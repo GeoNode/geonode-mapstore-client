@@ -117,7 +117,8 @@
             "pendingApproval": "Aprobación pendiente",
             "featuredList": "Presentada",
             "uploadDataset": "Subir conjunto de datos",
-            "createDataset": "Crear conjunto de datos"
+            "createDataset": "Crear conjunto de datos",
+            "search": "Buscar..."
         },
         "viewer": {
             "document": {

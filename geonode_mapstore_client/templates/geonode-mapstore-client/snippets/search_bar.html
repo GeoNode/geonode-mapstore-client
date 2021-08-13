@@ -199,8 +199,9 @@
 
             function hashChange() {
                 const newQParam = getQParamFromHash();
-                if (newQParam !== value) {
+                if (!value || newQParam !== value) {
                     searchInput.value = newQParam;
+                    value = newQParam;
                 }
                 searchClear.style.display = newQParam ? 'block' : 'none';
             }
@@ -226,9 +227,9 @@
             searchInput.addEventListener('keyup', function(event) {
                 if (event.keyCode === 13) {
                     event.preventDefault();
-                    if (value) {
-                        onSearch(value);
-                    }
+
+                    onSearch(value);
+
                 }
             });
 
