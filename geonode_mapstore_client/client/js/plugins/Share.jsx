@@ -233,7 +233,7 @@ Share.defaultProps = {
 const SharePlugin = connect(
     createSelector([
         state => state?.controls?.rightOverlay?.enabled === 'Share',
-        state => state?.gnresource?.id,
+        getResourceId,
         mapInfoSelector,
         getCompactPermissions,
         layersSelector,

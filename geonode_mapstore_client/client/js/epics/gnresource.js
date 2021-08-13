@@ -200,6 +200,13 @@ const resourceTypes = {
     }
 };
 
+// collect all the reset action needed before changing a viewer
+const getResetActions = () => [
+    resetControls(),
+    resetResourceState(),
+    setControlProperty('rightOverlay', 'enabled', false)
+];
+
 export const gnViewerRequestNewResourceConfig = (action$, store) =>
     action$.ofType(REQUEST_NEW_RESOURCE_CONFIG)
         .switchMap((action) => {
@@ -218,16 +225,14 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
 
             if (!newResourceObservable) {
                 return Observable.of(
-                    resetControls(),
-                    resetResourceState(),
+                    ...getResetActions(),
                     loadingResourceConfig(false)
                 );
             }
 
             return Observable.concat(
                 Observable.of(
-                    resetControls(),
-                    resetResourceState(),
+                    ...getResetActions(),
                     loadingResourceConfig(true),
                     setNewResource(),
                     setResourceType(action.resourceType)
@@ -239,8 +244,7 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
             )
                 .catch((error) => {
                     return Observable.of(
-                        resetControls(),
-                        resetResourceState(),
+                        ...getResetActions(),
                         resourceConfigError(error?.data?.detail || error?.statusText || error?.message)
                     );
                 });
@@ -254,16 +258,14 @@ export const gnViewerRequestResourceConfig = (action$) =>
 
             if (!resourceObservable) {
                 return Observable.of(
-                    resetControls(),
-                    resetResourceState(),
+                    ...getResetActions(),
                     loadingResourceConfig(false)
                 );
             }
 
             return Observable.concat(
                 Observable.of(
-                    resetControls(),
-                    resetResourceState(),
+                    ...getResetActions(),
                     loadingResourceConfig(true),
                     setResourceType(action.resourceType)
                 ),
@@ -281,8 +283,7 @@ export const gnViewerRequestResourceConfig = (action$) =>
             )
                 .catch((error) => {
                     return Observable.of(
-                        resetControls(),
-                        resetResourceState(),
+                        ...getResetActions(),
                         resourceConfigError(error?.data?.detail || error?.statusText || error?.message)
                     );
                 });

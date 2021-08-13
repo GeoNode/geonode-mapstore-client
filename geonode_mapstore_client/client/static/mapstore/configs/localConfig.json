@@ -862,7 +862,7 @@
             {
                 "name": "Share",
                 "cfg": {
-                    "pathTemplate": "/maps/{id}/embed",
+                    "pathTemplate": "/datasets/{id}/embed",
                     "enableGeoLimits": true
                 }
             },
