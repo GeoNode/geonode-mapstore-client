@@ -686,6 +686,9 @@
         ],
         "geostory_embed": [
             {
+                "name": "ViewerLayout"
+            },
+            {
                 "name": "GeoStory",
                 "cfg": {
                     "mediaEditorSettings": {
@@ -737,12 +740,21 @@
                             }
                         }
                     }
+                },
+                "override": {
+                    "ViewerLayout": {
+                        "priority": 1
+                    }
                 }
             },
             {
                 "name": "GeoStoryNavigation",
-                "cfg": {
-                    "containerPosition": "header"
+                "override": {
+                    "ViewerLayout": {
+                        "priority": 1,
+                        "target": "header",
+                        "name": "GeoStoryNavigation"
+                    }
                 }
             },
             {
@@ -1783,7 +1795,12 @@
         ],
         "geostory_viewer": [
             {
-                "name": "ViewerLayout"
+                "name": "ViewerLayout",
+                "cfg": {
+                    "header": {
+                        "order": [ "ActionNavbar", "GeoStoryNavigation" ]
+                    }
+                }
             },
             {
                 "name": "ActionNavbar",
@@ -1934,12 +1951,10 @@
             },
             {
                 "name": "GeoStoryNavigation",
-                "cfg": {
-                    "containerPosition": "header"
-                },
                 "override": {
                     "ViewerLayout": {
-                        "priority": 1
+                        "priority": 1,
+                        "target": "header"
                     }
                 }
             },
