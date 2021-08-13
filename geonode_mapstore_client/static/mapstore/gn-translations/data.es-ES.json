@@ -164,7 +164,9 @@
             "embed": "Insertar",
             "deleteResourceTitle": "{count, plural, =1 {¿Estás seguro de que deseas eliminar este recurso?} other {¿Está seguro de que desea eliminar estos recursos?}}",
             "deleteResourceNo": "{count, plural, =1 {No, no lo borres} other {No, no los borres}}",
-            "deleteResourceYes": "Sí, estoy seguro"
+            "deleteResourceYes": "Sí, estoy seguro",
+            "underApproval": "Bajo aprobación",
+            "unpublish": "No publicado"
         }
     }
 }
