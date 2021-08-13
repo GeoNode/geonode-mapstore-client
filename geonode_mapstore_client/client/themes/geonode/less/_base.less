@@ -114,3 +114,34 @@
         position: relative !important;
     }
 }
+
+.page-geostory-viewer {
+    .gn-viewer-layout-center {
+        position: relative;
+        .ms-geostory {
+            position: absolute;
+        }
+    }
+    
+    .ms-geostory-editor {
+        height: 100%;
+        .ms-geostory-builder {
+            position: absolute;
+        }
+    }
+}
+
+.page-map-viewer {
+    .gn-viewer-layout-body {
+        // needed to compute the position of ma toolbar and background selector
+        // when the attribute table is open
+        transform: translate(0, 0);
+    }
+}
+
+.page-dashboard-viewer {
+    .gn-viewer-layout-center {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}

@@ -49,10 +49,16 @@ const ConnectedCenter = connect(
 function ViewerLayout({
     items,
     resourcePk,
-    selectedLayerPermissions
+    selectedLayerPermissions,
+    header
 }, context) {
     const { loadedPlugins } = context;
     const configuredItems = usePluginItems({ items, loadedPlugins }, [resourcePk, selectedLayerPermissions]);
+    const headerOrder = header?.order || [];
+    const headerItems = configuredItems
+        .filter(({ target }) => target === 'header')
+        .sort((a, b) => headerOrder.indexOf(a.name) - headerOrder.indexOf(b.name))
+        .map(({ Component, name }) => <Component key={name} />);
     return (
         <div
             className="gn-viewer-layout"
@@ -66,9 +72,7 @@ function ViewerLayout({
                 flexDirection: 'column'
             }}>
             <header>
-                {configuredItems
-                    .filter(({ target }) => target === 'header')
-                    .map(({ Component, name }) => <Component key={name} />)}
+                {headerItems}
             </header>
             <div
                 className="gn-viewer-layout-body"
