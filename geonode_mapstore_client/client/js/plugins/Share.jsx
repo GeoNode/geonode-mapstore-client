@@ -18,12 +18,12 @@ import Button from '@js/components/Button';
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import { layersSelector } from '@mapstore/framework/selectors/layers';
 import OverlayContainer from '@js/components/OverlayContainer';
-import url from 'url';
 import {
     isNewResource,
     getResourceId,
     getCompactPermissions,
-    canEditPermissions
+    canEditPermissions,
+    getResourceData
 } from '@js/selectors/resource';
 import { updateResourceCompactPermissions } from '@js/actions/gnresource';
 import FaIcon from '@js/components/FaIcon/FaIcon';
@@ -33,22 +33,6 @@ import { resourceToPermissionEntry } from '@js/utils/ResourceUtils';
 import SharePageLink from '@js/plugins/share/SharePageLink';
 import ShareEmbedLink from '@js/plugins/share/ShareEmbedLink';
 import { getCurrentResourcePermissionsLoading } from '@js/selectors/resourceservice';
-
-function getShareUrl({
-    resourceId,
-    pathTemplate
-}) {
-    const {
-        host,
-        protocol
-    } = url.parse(location.href);
-    const pathname = pathTemplate.replace(/\{id\}/g, resourceId);
-    return url.format({
-        host,
-        protocol,
-        pathname
-    });
-}
 
 const entriesTabs = [
     {
@@ -102,7 +86,6 @@ function Share({
     width,
     permissionsOptions,
     resourceId,
-    pathTemplate,
     compactPermissions,
     layers,
     onChangePermissions,
@@ -111,13 +94,11 @@ function Share({
     canEdit,
     permissionsGroupOptions,
     permissionsDefaultGroupOptions,
-    permissionsLoading
+    permissionsLoading,
+    embedUrl
 }) {
 
-    const shareUrl = getShareUrl({
-        resourceId,
-        pathTemplate
-    });
+    const shareUrl = embedUrl;
 
     return (
         <OverlayContainer
@@ -161,7 +142,6 @@ function Share({
 
 Share.propTypes = {
     resourceId: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
-    pathTemplate: PropTypes.string,
     enabled: PropTypes.bool,
     onClose: PropTypes.func,
     width: PropTypes.number,
@@ -172,7 +152,6 @@ Share.propTypes = {
 
 Share.defaultProps = {
     resourceId: null,
-    pathTemplate: '/apps/{id}/embed',
     enabled: false,
     onClose: () => {},
     width: 800,
@@ -238,14 +217,16 @@ const SharePlugin = connect(
         getCompactPermissions,
         layersSelector,
         canEditPermissions,
-        getCurrentResourcePermissionsLoading
-    ], (enabled, resourceId, mapInfo, compactPermissions, layers, canEdit, permissionsLoading) => ({
+        getCurrentResourcePermissionsLoading,
+        getResourceData
+    ], (enabled, resourceId, mapInfo, compactPermissions, layers, canEdit, permissionsLoading, resource) => ({
         enabled,
         resourceId: resourceId || mapInfo?.id,
         compactPermissions,
         layers,
         canEdit,
-        permissionsLoading
+        permissionsLoading,
+        embedUrl: resource?.embed_url
     })),
     {
         onClose: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),

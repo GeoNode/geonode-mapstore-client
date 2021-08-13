@@ -874,7 +874,6 @@
             {
                 "name": "Share",
                 "cfg": {
-                    "pathTemplate": "/datasets/{id}/embed",
                     "enableGeoLimits": true
                 }
             },
@@ -1728,10 +1727,7 @@
                 "name": "Notifications"
             },
             {
-                "name": "Share",
-                "cfg": {
-                    "pathTemplate": "/maps/{id}/embed"
-                }
+                "name": "Share"
             },
             {
                 "name": "Swipe"
