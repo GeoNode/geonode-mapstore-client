@@ -55,7 +55,8 @@ import {
     getResourceDescription,
     getResourceThumbnail,
     getPermissionsPayload,
-    getResourceData
+    getResourceData,
+    getResourceId
 } from '@js/selectors/resource';
 
 import {
@@ -213,8 +214,7 @@ export const gnSaveDirectContent = (action$, store) =>
         .switchMap(() => {
             const state = store.getState();
             const mapInfo = mapInfoSelector(state);
-            const resourceId = mapInfo?.id
-                || state?.gnresource?.id; // injected geostory id
+            const resourceId = mapInfo?.id || getResourceId(state);
             const { compactPermissions, geoLimits } = getPermissionsPayload(state);
             const currentResource = getResourceData(state);
             return Observable.concat(

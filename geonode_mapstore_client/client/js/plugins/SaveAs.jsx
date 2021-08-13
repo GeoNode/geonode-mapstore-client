@@ -26,7 +26,11 @@ import gnresource from '@js/reducers/gnresource';
 import gnsave from '@js/reducers/gnsave';
 import gnsaveEpics from '@js/epics/gnsave';
 import SaveModal from '@js/plugins/save/SaveModal';
-import { canAddResource } from '@js/selectors/resource';
+import {
+    canAddResource,
+    getResourceId,
+    getResourceData
+} from '@js/selectors/resource';
 
 /**
  * Plugin for SaveAs modal
@@ -68,12 +72,12 @@ const SaveAsPlugin = connect(
     createSelector([
         state => state?.controls?.saveAs?.enabled,
         mapInfoSelector,
-        state => state?.gnresource?.data,
+        getResourceData,
         state => state?.gnresource?.loading,
         state => state?.gnsave?.saving,
         state => state?.gnsave?.error,
         state => state?.gnsave?.success,
-        state => state?.gnresource?.id
+        getResourceId
     ], (enabled, mapInfo, resource, loading, saving, error, success, contentId) => ({
         enabled,
         contentId: contentId || mapInfo?.id,
