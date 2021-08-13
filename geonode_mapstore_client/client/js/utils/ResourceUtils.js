@@ -173,8 +173,7 @@ export const getResourceTypesInfo = () => ({
     [ResourceTypes.DATASET]: {
         icon: 'database',
         formatEmbedUrl: (resource) => parseDevHostname(updateUrlQueryParameter(resource.embed_url, {
-            config: 'layer_preview',
-            theme: 'preview'
+            config: 'dataset_preview'
         })),
         formatDetailUrl: (resource) => (`/catalogue/#/dataset/${resource.pk}`),
         name: 'Dataset',
@@ -184,8 +183,7 @@ export const getResourceTypesInfo = () => ({
         icon: 'map',
         name: 'Map',
         formatEmbedUrl: (resource) => parseDevHostname(updateUrlQueryParameter(resource.embed_url, {
-            config: 'map_preview',
-            theme: 'preview'
+            config: 'map_preview'
         })),
         formatDetailUrl: (resource) => (`/catalogue/#/map/${resource.pk}`),
         formatMetadataUrl: (resource) => (`/maps/${resource.pk}/metadata`)

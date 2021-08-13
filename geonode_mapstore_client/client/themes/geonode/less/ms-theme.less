@@ -9,11 +9,11 @@
 @ms-font-family-sans-serif: @gn-font-family-sans-serif;
 @ms-font-family-base: @gn-font-family-base;
 
-// @icon-size: 26px;
-// @square-btn-size: 40px;
+@icon-size: 24px;
+@square-btn-size: 40px;
 
-// @icon-size-md: 16px;
-// @square-btn-medium-size: 28px;
+@icon-size-md: 15px;
+@square-btn-medium-size: 30px;
 
 #drawer-menu-button {
     z-index: 5;
@@ -132,5 +132,26 @@
         height: auto;
         line-height: initial;
         white-space: normal;
+    }
+}
+
+// remove fixed height to display the complete text
+.mapstore-side-card .ms-head {
+    height: auto;
+    min-height: 80px;
+}
+
+.mapstore-side-card.ms-sm .ms-head {
+    height: auto;
+    min-height: 40px;
+}
+
+// fix global spinner
+div#mapstore-globalspinner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    &.ms2-loading .sk-circle-wrapper {
+        margin: auto !important;
     }
 }

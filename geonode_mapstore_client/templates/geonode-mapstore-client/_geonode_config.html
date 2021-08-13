@@ -45,7 +45,8 @@
 
         window.__GEONODE_CONFIG__ = {
             languageCode: '{{ LANGUAGE_CODE }}',
-            resourceId: {{ appId|default:'null' }},
+            resourceId: '{{ resource.pk|default:"" }}',
+            resourceType: '{{ resource.resource_type|default:"" }}',
             {% if is_app %}
                 resourceConfig: {{ config|default:'false'|safe }},
             {% else %}
