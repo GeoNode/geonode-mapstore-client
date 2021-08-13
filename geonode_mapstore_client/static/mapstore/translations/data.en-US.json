@@ -118,7 +118,8 @@
             "pendingApproval": "Pending approval",
             "featuredList": "Featured",
             "uploadDataset": "Upload dataset",
-            "createDataset": "Create dataset"
+            "createDataset": "Create dataset",
+            "search": "Search..."
         },
         "viewer": {
             "document": {

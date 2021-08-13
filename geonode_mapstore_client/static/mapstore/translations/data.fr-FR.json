@@ -117,7 +117,8 @@
             "pendingApproval": "En attente de validation",
             "featuredList": "Mis en exergue",
             "uploadDataset": "Télécharger l'ensemble de données",
-            "createDataset": "Créer un ensemble de données"
+            "createDataset": "Créer un ensemble de données",
+            "search": "Chercher..."
         },
         "viewer": {
             "document": {

@@ -117,7 +117,8 @@
             "pendingApproval": "Ausstehende Genehmigung",
             "featuredList": "Vorgestellt",
             "uploadDataset": "Datensatz hochladen",
-            "createDataset": "Dataset erstellen"
+            "createDataset": "Dataset erstellen",
+            "search": "Suchen..."
         },
         "viewer": {
             "document": {
