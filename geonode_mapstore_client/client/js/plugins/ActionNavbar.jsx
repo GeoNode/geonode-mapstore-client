@@ -53,7 +53,7 @@ function ActionNavbarPlugin({
             }
         });
 
-        item.className = item.showSaveStatus && isDirtyState ? 'gn-show-save-status' : '';
+        item.className = item.showPendingChangesIcon && isDirtyState ? 'gn-pending-changes-icon' : '';
         return (item);
     });
 
