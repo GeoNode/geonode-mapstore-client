@@ -167,7 +167,12 @@
             "deleteResourceNo": "{count, plural, =1 {No, no lo borres} other {No, no los borres}}",
             "deleteResourceYes": "Sí, estoy seguro",
             "underApproval": "Bajo aprobación",
-            "unpublish": "No publicado"
+            "unpublish": "No publicado",
+            "prompPendingChanges": "Hay cambios sin guardar, ¿está seguro de que desea salir?",
+            "errorCompactPermissionsTitle": "Error en la actualización de permisos",
+            "errorCompactPermissionsMessage": "No fue posible actualizar los permisos",
+            "warningGeoLimitsSaveTitle": "Proceso de guardado incompleto",
+            "warningGeoLimitsSaveMessage": "No fue posible actualizar los nuevos límites geográficos"
         }
     }
 }
