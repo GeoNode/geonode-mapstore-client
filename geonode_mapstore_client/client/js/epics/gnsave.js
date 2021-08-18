@@ -8,20 +8,14 @@
 
 import axios from '@mapstore/framework/libs/ajax';
 import { Observable } from 'rxjs';
-import { mapSelector, mapInfoSelector } from '@mapstore/framework/selectors/map';
-import { layersSelector, groupsSelector } from '@mapstore/framework/selectors/layers';
-import { backgroundListSelector } from '@mapstore/framework/selectors/backgroundselector';
-import { mapOptionsToSaveSelector } from '@mapstore/framework/selectors/mapsave';
-import {
-    textSearchConfigSelector,
-    bookmarkSearchConfigSelector
-} from '@mapstore/framework/selectors/searchconfig';
-import { saveMapConfiguration } from '@mapstore/framework/utils/MapUtils';
+import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
-import { currentStorySelector } from '@mapstore/framework/selectors/geostory';
-import { widgetsConfig } from '@mapstore/framework/selectors/widgets';
 import { userSelector } from '@mapstore/framework/selectors/security';
-import { error as errorNotification, success as successNotification } from '@mapstore/framework/actions/notifications';
+import {
+    error as errorNotification,
+    success as successNotification,
+    warning as warningNotification
+} from '@mapstore/framework/actions/notifications';
 import {
     SAVE_CONTENT,
     UPDATE_RESOURCE_BEFORE_SAVE,
@@ -35,8 +29,8 @@ import {
     resourceLoading,
     setResource,
     resourceError,
-    updateResourceProperties,
-    resetGeoLimits
+    resetGeoLimits,
+    setResourceCompactPermissions
 } from '@js/actions/gnresource';
 import {
     getResourceByPk,
@@ -56,44 +50,31 @@ import {
     getResourceThumbnail,
     getPermissionsPayload,
     getResourceData,
-    getResourceId
+    getResourceId,
+    getDataPayload,
+    getCompactPermissions
 } from '@js/selectors/resource';
 
 import {
     updateGeoLimits,
     deleteGeoLimits
 } from '@js/api/geonode/security';
-import { startAsyncProcess } from '@js/actions/resourceservice';
+import {
+    STOP_ASYNC_PROCESS,
+    startAsyncProcess
+} from '@js/actions/resourceservice';
 import {
     ResourceTypes,
     cleanCompactPermissions
 } from '@js/utils/ResourceUtils';
-import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
+import {
+    ProcessTypes,
+    ProcessStatus
+} from '@js/utils/ResourceServiceUtils';
+import { setControlProperty } from '@mapstore/framework/actions/controls';
 
 const SaveAPI = {
-    [ResourceTypes.MAP]: (state, id, metadata, reload) => {
-        const map =  mapSelector(state) || {};
-        const layers = layersSelector(state);
-        const groups = groupsSelector(state);
-        const backgrounds = backgroundListSelector(state);
-        const textSearchConfig = textSearchConfigSelector(state);
-        const bookmarkSearchConfig = bookmarkSearchConfigSelector(state);
-        const additionalOptions = mapOptionsToSaveSelector(state);
-        const data = saveMapConfiguration(
-            map,
-            layers,
-            groups,
-            backgrounds,
-            textSearchConfig,
-            bookmarkSearchConfig,
-            additionalOptions
-        );
-        const body = {
-            "title": metadata.name,
-            "abstract": metadata.description,
-            "thumbnail_url": metadata.thumbnail,
-            "data": data
-        };
+    [ResourceTypes.MAP]: (state, id, body, reload) => {
         return id
             ? updateMap(id, { ...body, id })
             : createMap(body)
@@ -106,72 +87,48 @@ const SaveAPI = {
                     return response.data;
                 });
     },
-    [ResourceTypes.GEOSTORY]: (state, id, metadata, reload) => {
-        const story = currentStorySelector(state);
+    [ResourceTypes.GEOSTORY]: (state, id, body, reload) => {
         const user = userSelector(state);
-        const body = {
-            'title': metadata.name,
-            'abstract': metadata.description,
-            'thumbnail_url': metadata.thumbnail,
-            'data': story
-        };
         return id
             ? updateGeoApp(id, body)
             : createGeoApp({
-                'name': metadata.name + ' ' + uuid(),
+                'name': body.title + ' ' + uuid(),
                 'owner': user.name,
                 'resource_type': ResourceTypes.GEOSTORY,
                 ...body
             }).then((response) => {
                 if (reload) {
                     const { geonodeUrl = '/' } = getConfigProp('geoNodeSettings') || {};
+                    // reset all pending changes from localStore
                     window.location.href = parseDevHostname(`${geonodeUrl}catalogue/#/geostory/${response.pk}`);
                     window.location.reload();
                 }
                 return response.data;
             });
     },
-    [ResourceTypes.DASHBOARD]: (state, id, metadata, reload) => {
-        const dashboard = widgetsConfig(state);
+    [ResourceTypes.DASHBOARD]: (state, id, body, reload) => {
         const user = userSelector(state);
-        const body = {
-            'title': metadata.name,
-            'abstract': metadata.description,
-            'thumbnail_url': metadata.thumbnail,
-            'data': dashboard
-        };
         return id
             ? updateGeoApp(id, body)
             : createGeoApp({
-                'name': metadata.name + ' ' + uuid(),
+                'name': body.title + ' ' + uuid(),
                 'owner': user.name,
                 'resource_type': ResourceTypes.DASHBOARD,
                 ...body
             }).then((response) => {
                 if (reload) {
                     const { geonodeUrl = '/' } = getConfigProp('geoNodeSettings') || {};
+                    // reset all pending changes from localStore
                     window.location.href = parseDevHostname(`${geonodeUrl}catalogue/#/dashboard/${response.pk}`);
                     window.location.reload();
                 }
                 return response.data;
             });
     },
-    [ResourceTypes.DOCUMENT]: (state, id, metadata) => {
-        const body = {
-            'title': metadata.name,
-            'abstract': metadata.description,
-            'thumbnail_url': metadata.thumbnail
-        };
-
+    [ResourceTypes.DOCUMENT]: (state, id, body) => {
         return id ? updateDocument(id, body) : false;
-
     },
-    [ResourceTypes.DATASET]: (state, id, metadata) => {
-        const body = {
-            'title': metadata.name,
-            'abstract': metadata.description,
-            'thumbnail_url': metadata.thumbnail
-        };
+    [ResourceTypes.DATASET]: (state, id, body) => {
         return id ? updateDataset(id, body) : false;
     }
 };
@@ -181,19 +138,30 @@ export const gnSaveContent = (action$, store) =>
         .switchMap((action) => {
             const state = store.getState();
             const contentType = state.gnresource?.type || 'map';
-            return Observable.defer(() => SaveAPI[contentType](state, action.id, action.metadata, action.reload))
+            const data = getDataPayload(state, contentType);
+            const body = {
+                'title': action.metadata.name,
+                'abstract': action.metadata.description,
+                'thumbnail_url': action.metadata.thumbnail,
+                ...(data && { 'data': JSON.parse(JSON.stringify(data)) })
+            };
+            const currentResource = getResourceData(state);
+            return Observable.defer(() => SaveAPI[contentType](state, action.id, body, action.reload))
                 .switchMap((response) => {
                     return Observable.of(
+                        // reset all pending changes from localStore
+                        setControlProperty('pendingChanges', 'value', null),
                         saveSuccess(response),
-                        updateResourceProperties({
-                            'title': action.metadata.name,
-                            'abstract': action.metadata.description,
-                            'thumbnail_url': action.metadata.thumbnail,
-                            'extension': response?.extension,
-                            'href': response?.href
+                        setResource({
+                            ...currentResource,
+                            ...body
                         }),
                         ...(action.showNotifications
-                            ? [successNotification({title: "saveDialog.saveSuccessTitle", message: "saveDialog.saveSuccessMessage"})]
+                            ? [
+                                action.showNotifications === true
+                                    ? successNotification({title: "saveDialog.saveSuccessTitle", message: "saveDialog.saveSuccessMessage"})
+                                    : warningNotification(action.showNotifications)
+                            ]
                             : [])
                     );
                 })
@@ -234,13 +202,14 @@ export const gnSaveDirectContent = (action$, store) =>
                         ? geoLimits.map((limits) =>
                             limits.features.length === 0
                                 ? deleteGeoLimits(resourceId, limits.id, limits.type)
-                                    .catch(() => null) // TODO: manage error
+                                    .catch(() => ({ error: true, resourceId, limits }))
                                 : updateGeoLimits(resourceId, limits.id, limits.type, { features: limits.features })
-                                    .catch(() => null) // TODO: manage error
+                                    .catch(() => ({ error: true, resourceId, limits }))
                         )
                         : [])
                 ]))
-                    .switchMap(([resource]) => {
+                    .switchMap(([resource, ...geoLimitsResponses]) => {
+                        const geoLimitsErrors = geoLimitsResponses.filter(({ error }) => error);
                         const name = getResourceName(state);
                         const description = getResourceDescription(state);
                         const thumbnail = getResourceThumbnail(state);
@@ -252,8 +221,16 @@ export const gnSaveDirectContent = (action$, store) =>
                             href: resource?.href
                         };
                         return Observable.of(
-                            setResource(resource),
-                            saveContent(resourceId, metadata, false, true /* showNotification */),
+                            saveContent(
+                                resourceId,
+                                metadata,
+                                false,
+                                geoLimitsErrors.length > 0
+                                    ? {
+                                        title: 'gnviewer.warningGeoLimitsSaveTitle',
+                                        message: 'gnviewer.warningGeoLimitsSaveMessage'
+                                    }
+                                    : true /* showNotification */),
                             resetGeoLimits()
                         );
                     })
@@ -265,6 +242,27 @@ export const gnSaveDirectContent = (action$, store) =>
                     );
                 })
                 .startWith(savingResource());
+        });
+
+export const gnWatchStopPermissionsProcess = (action$, store) =>
+    action$.ofType(STOP_ASYNC_PROCESS)
+        .filter(action => action?.payload?.processType === ProcessTypes.PERMISSIONS_RESOURCE)
+        .switchMap((action) => {
+            const state = store.getState();
+            const resourceId = getResourceId(state);
+            if (resourceId !== action?.payload?.resource?.pk) {
+                return Observable.empty();
+            }
+            const isError = action?.payload?.error || action?.payload?.output?.status === ProcessStatus.FAILED;
+            if (isError) {
+                return Observable.of(errorNotification({
+                    title: 'gnviewer.errorCompactPermissionsTitle',
+                    message: 'gnviewer.errorCompactPermissionsMessage'
+                }));
+            }
+            // reset permission to remove pending changes
+            const compactPermissions = getCompactPermissions(state);
+            return Observable.of(setResourceCompactPermissions(compactPermissions));
         });
 
 export const gnUpdateResource = (action$, store) =>
@@ -289,5 +287,6 @@ export const gnUpdateResource = (action$, store) =>
 export default {
     gnSaveContent,
     gnUpdateResource,
-    gnSaveDirectContent
+    gnSaveDirectContent,
+    gnWatchStopPermissionsProcess
 };

@@ -35,7 +35,8 @@ import {
     resetResourceState,
     loadingResourceConfig,
     resourceConfigError,
-    setResourceCompactPermissions
+    setResourceCompactPermissions,
+    updateResourceProperties
 } from '@js/actions/gnresource';
 
 import {
@@ -109,33 +110,31 @@ const resourceTypes = {
         }
     },
     [ResourceTypes.MAP]: {
-        resourceObservable: (pk) =>
+        resourceObservable: (pk, options) =>
             Observable.defer(() => getMapByPk(pk))
-                .switchMap((response) => {
-                    const { data, ...resource }  = response;
+                .switchMap((resource) => {
                     return Observable.of(
-                        configureMap(data),
+                        configureMap(options.data || resource.data),
                         setControlProperty('toolbar', 'expanded', false),
                         setResource(resource),
                         setResourceId(pk)
                     );
                 }),
-        newResourceObservable: () =>
+        newResourceObservable: (options) =>
             Observable.defer(() => getNewMapConfiguration())
                 .switchMap((response) => {
                     return Observable.of(
-                        configureMap(response),
+                        configureMap(options.data || response),
                         setControlProperty('toolbar', 'expanded', false)
                     );
                 })
     },
     [ResourceTypes.GEOSTORY]: {
-        resourceObservable: (pk) =>
+        resourceObservable: (pk, options) =>
             Observable.defer(() => getGeoAppByPk(pk))
-                .switchMap((gnGeoStory) => {
-                    const { data, ...resource } = gnGeoStory;
+                .switchMap((resource) => {
                     return Observable.of(
-                        setCurrentStory(data),
+                        setCurrentStory(options.data || resource.data),
                         setResource(resource),
                         setResourceId(pk),
                         setGeoStoryResource({
@@ -143,11 +142,11 @@ const resourceTypes = {
                         })
                     );
                 }),
-        newResourceObservable: () =>
+        newResourceObservable: (options) =>
             Observable.defer(() => getNewGeoStoryConfig())
                 .switchMap((gnGeoStory) => {
                     return Observable.of(
-                        setCurrentStory({...gnGeoStory, sections: [{...gnGeoStory.sections[0], id: uuid(),
+                        setCurrentStory(options.data || {...gnGeoStory, sections: [{...gnGeoStory.sections[0], id: uuid(),
                             contents: [{...gnGeoStory.sections[0].contents[0], id: uuid()}]}]}),
                         setEditing(true),
                         setGeoStoryResource({
@@ -169,8 +168,7 @@ const resourceTypes = {
     [ResourceTypes.DASHBOARD]: {
         resourceObservable: (pk, options) =>
             Observable.defer(() => getGeoAppByPk(pk))
-                .switchMap(( gnDashboard ) => {
-                    const { data, ...resource } = gnDashboard;
+                .switchMap(( resource ) => {
                     const { readOnly } = options || {};
                     const canEdit = !readOnly && resource?.perms?.includes('change_resourcebase') ? true : false;
                     const canDelete = !readOnly && resource?.perms?.includes('delete_resourcebase') ? true : false;
@@ -185,16 +183,25 @@ const resourceTypes = {
                                 lastUpdate: resource.last_updated,
                                 name: resource.title
                             },
-                            data
+                            options.data || resource.data
                         ),
                         setResource(resource),
                         setResourceId(pk)
                     );
                 })
                 .startWith(dashboardLoading(false)),
-        newResourceObservable: () =>
+        newResourceObservable: (options) =>
             Observable.of(
                 resetDashboard(),
+                ...(options.data ? [
+                    dashboardLoaded(
+                        {
+                            canDelete: true,
+                            canEdit: true
+                        },
+                        options.data
+                    )
+                ] : []),
                 dashboardLoading(false)
             )
     }
@@ -237,8 +244,9 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
                     setNewResource(),
                     setResourceType(action.resourceType)
                 ),
-                newResourceObservable(),
+                newResourceObservable({}),
                 Observable.of(
+                    setControlProperty('pendingChanges', 'value', null),
                     loadingResourceConfig(false)
                 )
             )
@@ -250,9 +258,18 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
                 });
         });
 
-export const gnViewerRequestResourceConfig = (action$) =>
+export const gnViewerRequestResourceConfig = (action$, store) =>
     action$.ofType(REQUEST_RESOURCE_CONFIG)
         .switchMap((action) => {
+
+            const state = store.getState();
+
+            const currentPendingChanges = state?.controls?.pendingChanges?.value;
+            const pendingChanges = currentPendingChanges
+                && currentPendingChanges.pk === action.pk
+                && currentPendingChanges.resourceType === action.resourceType
+                ? currentPendingChanges
+                : {};
 
             const { resourceObservable } = resourceTypes[action.resourceType] || {};
 
@@ -276,8 +293,15 @@ export const gnViewerRequestResourceConfig = (action$) =>
                     .catch(() => {
                         return Observable.empty();
                     }),
-                resourceObservable(action.pk, action.options),
+                resourceObservable(action.pk, {
+                    ...action.options,
+                    // set the pending changes as the new data fro maps, dashboards and geostories
+                    // if undefined the returned data will be used
+                    data: pendingChanges?.data
+                }),
                 Observable.of(
+                    ...(pendingChanges?.resource ? [updateResourceProperties(pendingChanges.resource)] : []),
+                    setControlProperty('pendingChanges', 'value', null),
                     loadingResourceConfig(false)
                 )
             )

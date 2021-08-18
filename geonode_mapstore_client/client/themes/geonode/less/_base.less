@@ -66,6 +66,12 @@
     .page-header {
         .border-color-var(@theme-vars[main-border-color]);
     }
+    .gn-show-save-status {
+        &::after {
+            .background-color-var(@theme-vars[warning]);
+        }
+    }
+    
 }
 
 // **************
@@ -143,5 +149,21 @@
     .gn-viewer-layout-center {
         overflow-y: auto;
         overflow-x: hidden;
+    }
+}
+
+.gn-show-save-status {
+    position: relative;
+    &::after {
+        content: '';
+        display: block;
+        width: 0.5rem;
+        height: 0.5rem;
+        position: absolute;
+        right: 0;
+        top: 0;
+        border-radius: 50%;
+        .shadow-soft();
+        z-index: 10;
     }
 }

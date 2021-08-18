@@ -6,7 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
@@ -24,9 +25,14 @@ import gnsaveEpics from '@js/epics/gnsave';
 import { saveDirectContent } from '@js/actions/gnsave';
 import {
     isNewResource,
-    canEditResource
+    canEditResource,
+    getResourceDirtyState
 } from '@js/selectors/resource';
 import { getCurrentResourcePermissionsLoading } from '@js/selectors/resourceservice';
+import { withRouter } from 'react-router';
+import { setControlProperty } from '@mapstore/framework/actions/controls';
+import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
+
 /**
  * Plugin for Save modal
  * @name Save
@@ -75,20 +81,56 @@ function SaveButton({
     onClick,
     variant,
     size,
-    loading
-}) {
+    loading,
+    className,
+    dirtyState: dirtyStateProp,
+    location,
+    history,
+    onStorePendingChanges
+}, { messages }) {
+
+    const dirtyState = useRef();
+    dirtyState.current = dirtyStateProp;
+    useEffect(() => {
+        let prevPathname = history?.location?.pathname;
+        function onBeforeUnload(event) {
+            if (dirtyState.current) {
+                (event || window.event).returnValue = null;
+            }
+        }
+        window.addEventListener('beforeunload', onBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', onBeforeUnload);
+            const isLocationChanged = prevPathname !== history?.location?.pathname;
+            if (isLocationChanged && dirtyState.current) {
+                const confirmed = window.confirm(getMessageById(messages, 'gnviewer.prompPendingChanges')); // eslint-disable-line no-alert
+                if (!confirmed) {
+                    onStorePendingChanges(dirtyState.current);
+                    history.replace(location);
+                } else {
+                    onStorePendingChanges(null);
+                }
+            }
+        };
+    }, []);
+
     return enabled
         ? <Button
-            variant={variant || "primary"}
+            variant={dirtyStateProp ? 'warning' : (variant || "primary")}
             size={size}
             onClick={() => onClick()}
             disabled={loading}
+            className={className}
         >
             <Message msgId="save"/>{' '}{loading && <Spinner />}
         </Button>
         : null
     ;
 }
+
+SaveButton.contextTypes = {
+    messages: PropTypes.object
+};
 
 const ConnectedSaveButton = connect(
     createSelector(
@@ -97,17 +139,20 @@ const ConnectedSaveButton = connect(
         canEditResource,
         mapInfoSelector,
         getCurrentResourcePermissionsLoading,
-        (loggedIn, isNew, canEdit, mapInfo, permissionsLoading) => ({
+        getResourceDirtyState,
+        (loggedIn, isNew, canEdit, mapInfo, permissionsLoading, dirtyState) => ({
             // we should add permList to map pages too
             // currently the canEdit is located inside the map info
             enabled: loggedIn && !isNew && (canEdit || mapInfo?.canEdit),
-            loading: permissionsLoading
+            loading: permissionsLoading,
+            dirtyState
         })
     ),
     {
-        onClick: saveDirectContent
+        onClick: saveDirectContent,
+        onStorePendingChanges: setControlProperty.bind(null, 'pendingChanges', 'value')
     }
-)((SaveButton));
+)((withRouter(SaveButton)));
 
 export default createPlugin('Save', {
     component: SavePlugin,

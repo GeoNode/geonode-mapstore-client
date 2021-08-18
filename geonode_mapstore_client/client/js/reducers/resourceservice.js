@@ -12,29 +12,10 @@ import {
     UPDATE_ASYNC_PROCESS
 } from '@js/actions/resourceservice';
 
-import { ProcessStatus } from '@js/utils/ResourceServiceUtils';
-
-const LOCAL_STORAGE_PROCESSES_KEY = 'gn.reducers.resourceservice.processes';
-
-function getLocalStorageProcesses() {
-    try {
-        const processes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PROCESSES_KEY)) || [];
-        return processes.filter(({ completed, output }) => !(completed || output?.status === ProcessStatus.FINISHED || output?.status === ProcessStatus.FAILED));
-    } catch (e) {
-        return [];
-    }
-}
-
-function setLocalStorageProcesses(reducer) {
-    return (state, action) => {
-        const newState = reducer(state, action);
-        try {
-            localStorage.setItem(LOCAL_STORAGE_PROCESSES_KEY, JSON.stringify(newState.processes));
-        } catch (e) {/**/}
-
-        return newState;
-    };
-}
+import {
+    getLocalStorageProcesses,
+    setLocalStorageProcesses
+} from '@js/utils/LocalStorageUtils';
 
 const defaultState = {
     processes: getLocalStorageProcesses()

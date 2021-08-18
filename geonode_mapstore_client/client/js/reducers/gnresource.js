@@ -65,10 +65,12 @@ function gnresource(state = defaultState, action) {
         };
     }
     case SET_RESOURCE: {
+        const { data, ...resource } = action.data || {};
         return {
             ...state,
             error: null,
-            data: action.data,
+            initialResource: { ...action.data },
+            data: resource,
             loading: false,
             isNew: false
         };
@@ -76,6 +78,7 @@ function gnresource(state = defaultState, action) {
     case RESOURCE_ERROR: {
         return {
             ...state,
+            initialResource: null,
             data: null,
             error: action.error,
             loading: false
@@ -157,6 +160,7 @@ function gnresource(state = defaultState, action) {
             ...state,
             initialCompactPermissions: action.compactPermissions,
             compactPermissions: action.compactPermissions,
+            isCompactPermissionsChanged: false,
             geoLimits: []
         };
 

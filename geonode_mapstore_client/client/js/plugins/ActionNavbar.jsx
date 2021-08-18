@@ -14,7 +14,12 @@ import { createSelector } from 'reselect';
 import ActionNavbar from '@js/components/ActionNavbar';
 import FaIcon from '@js/components/FaIcon';
 import usePluginItems from '@js/hooks/usePluginItems';
-import { getResourcePerms, canAddResource, getResourceData } from '@js/selectors/resource';
+import {
+    getResourcePerms,
+    canAddResource,
+    getResourceData,
+    getResourceDirtyState
+} from '@js/selectors/resource';
 import { hasPermissionsTo, reduceArrayRecursive } from '@js/utils/MenuUtils';
 import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
 
@@ -32,7 +37,8 @@ function ActionNavbarPlugin({
     items,
     leftMenuItems,
     resourcePerms,
-    resource
+    resource,
+    isDirtyState
 }, context) {
 
     const types = getResourceTypesInfo();
@@ -46,6 +52,8 @@ function ActionNavbarPlugin({
                 item.Component = plugin?.Component;
             }
         });
+
+        item.className = item.showSaveStatus && isDirtyState ? 'gn-show-save-status' : '';
         return (item);
     });
 
@@ -53,6 +61,7 @@ function ActionNavbarPlugin({
         leftMenuItemsPlugins,
         menuItem => checkResourcePerms(menuItem, resourcePerms)
     );
+
     return (
 
         <ActionNavbar
@@ -79,12 +88,14 @@ const ConnectedActionNavbarPlugin = connect(
     createSelector([
         getResourcePerms,
         canAddResource,
-        getResourceData
-    ], (resourcePerms, userCanAddResource, resource) => ({
+        getResourceData,
+        getResourceDirtyState
+    ], (resourcePerms, userCanAddResource, resource, dirtyState) => ({
         resourcePerms: (resourcePerms.length > 0 ) ?
             resourcePerms : ((userCanAddResource)
                 ? [ "change_resourcebase"] : [] ),
-        resource
+        resource,
+        isDirtyState: !!dirtyState
     }))
 )(ActionNavbarPlugin);
 

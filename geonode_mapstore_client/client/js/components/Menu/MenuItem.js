@@ -39,11 +39,11 @@ import {
  *
  */
 
-const MenuItem = ({ item, menuItemsProps, containerNode, tabIndex, classItem, size, alignRight, variant }) => {
+const MenuItem = ({ item, menuItemsProps, containerNode, tabIndex, classItem = '', size, alignRight, variant }) => {
 
     const { formatHref, query } = menuItemsProps;
-    const { id, type, label, labelId = '', items = [], href, style, badge = '', image, Component, target } = item;
-    const btnClassName = `btn${variant && ` btn-${variant}` || ''}${size && ` btn-${size}` || ''}`;
+    const { id, type, label, labelId = '', items = [], href, style, badge = '', image, Component, target, className } = item;
+    const btnClassName = `btn${variant && ` btn-${variant}` || ''}${size && ` btn-${size}` || ''}${className ? ` ${className}` : ''}`;
 
     const badgeValue = badge;
     if (type === 'dropdown') {
@@ -54,7 +54,7 @@ const MenuItem = ({ item, menuItemsProps, containerNode, tabIndex, classItem, si
             labelId={labelId}
             toogleStyle={style}
             toogleImage={image}
-            dropdownClass={classItem}
+            dropdownClass={`${classItem}${className ? ` ${className}` : ''}`}
             tabIndex={tabIndex}
             badgeValue={badgeValue}
             containerNode={containerNode}
@@ -65,7 +65,7 @@ const MenuItem = ({ item, menuItemsProps, containerNode, tabIndex, classItem, si
     }
 
     if ((type === 'custom' || type === 'plugin') && Component) {
-        return <Component variant={variant} size={size}/>;
+        return <Component variant={variant} size={size} className={className}/>;
     }
 
     if (type === 'link') {

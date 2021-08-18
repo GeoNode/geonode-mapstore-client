@@ -84,7 +84,7 @@ const DropdownList = ({
         .map((itm, idx) => {
 
             if (itm.type === 'plugin' && itm.Component) {
-                return (<li><itm.Component variant="default" /></li>);
+                return (<li><itm.Component variant="default" className={itm.className}/></li>);
             }
             if (itm.type === 'divider') {
                 return <Dropdown.Divider key={idx} />;
@@ -97,6 +97,7 @@ const DropdownList = ({
                         style={itm.style}
                         as={itm?.items ? 'span' : 'a' }
                         target={itm.target}
+                        className={itm.className}
                     >
                         {itm.labelId && <Message msgId={itm.labelId} /> || itm.label}
                         {isValidBadgeValue(itm.badge) && <Badge>{itm.badge}</Badge>}
