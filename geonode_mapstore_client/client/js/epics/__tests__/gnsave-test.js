@@ -16,10 +16,12 @@ import {
     SAVE_ERROR,
     saveContent,
     updateResourceBeforeSave,
-    saveDirectContent
+    saveDirectContent,
+    SAVE_CONTENT
 } from '@js/actions/gnsave';
+import { SET_CONTROL_PROPERTY } from '@mapstore/framework/actions/controls';
 import {
-    UPDATE_RESOURCE_PROPERTIES,
+    RESET_GEO_LIMITS,
     RESOURCE_LOADING,
     SET_RESOURCE,
     RESOURCE_ERROR,
@@ -52,7 +54,7 @@ describe('gnsave epics', () => {
         setTimeout(done);
     });
     it('should create new map with success (gnSaveContent)', (done) => {
-        const NUM_ACTIONS = 3;
+        const NUM_ACTIONS = 4;
         const metadata = {
             title: 'Title',
             description: 'Description',
@@ -68,8 +70,9 @@ describe('gnsave epics', () => {
                     expect(actions.map(({ type }) => type))
                         .toEqual([
                             SAVING_RESOURCE,
+                            SET_CONTROL_PROPERTY,
                             SAVE_SUCCESS,
-                            UPDATE_RESOURCE_PROPERTIES
+                            SET_RESOURCE
                         ]);
                 } catch (e) {
                     done(e);
@@ -80,7 +83,7 @@ describe('gnsave epics', () => {
         );
     });
     it('should update existing map with success (gnSaveContent)', (done) => {
-        const NUM_ACTIONS = 3;
+        const NUM_ACTIONS = 4;
         const id = 1;
         const metadata = {
             title: 'Title',
@@ -97,8 +100,9 @@ describe('gnsave epics', () => {
                     expect(actions.map(({ type }) => type))
                         .toEqual([
                             SAVING_RESOURCE,
+                            SET_CONTROL_PROPERTY,
                             SAVE_SUCCESS,
-                            UPDATE_RESOURCE_PROPERTIES
+                            SET_RESOURCE
                         ]);
                 } catch (e) {
                     done(e);
@@ -226,7 +230,7 @@ describe('gnsave epics', () => {
     });
 
     it('should trigger saveResource (gnSaveDirectContent)', (done) => {
-        const NUM_ACTIONS = 2;
+        const NUM_ACTIONS = 3;
         const pk = 1;
         const resource = {
             'id': pk,
@@ -243,7 +247,11 @@ describe('gnsave epics', () => {
             (actions) => {
                 try {
                     expect(actions.map(({ type }) => type))
-                        .toEqual([SAVING_RESOURCE, SET_RESOURCE]);
+                        .toEqual([
+                            SAVING_RESOURCE,
+                            SAVE_CONTENT,
+                            RESET_GEO_LIMITS
+                        ]);
                 } catch (e) {
                     done(e);
                 }

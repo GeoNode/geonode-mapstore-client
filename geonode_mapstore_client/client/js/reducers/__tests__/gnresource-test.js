@@ -38,7 +38,8 @@ describe('gnresource reducer', () => {
             error: null,
             isNew: false,
             data: resource,
-            loading: false
+            loading: false,
+            initialResource: resource
         });
     });
     it('should test resourceError', () => {
@@ -47,7 +48,8 @@ describe('gnresource reducer', () => {
         expect(state).toEqual({
             data: null,
             error,
-            loading: false
+            loading: false,
+            initialResource: null
         });
     });
     it('should test updateResourceProperties', () => {
