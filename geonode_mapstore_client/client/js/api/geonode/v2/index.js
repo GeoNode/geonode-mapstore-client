@@ -21,7 +21,6 @@ import castArray from 'lodash/castArray';
 import get from 'lodash/get';
 import { getUserInfo } from '@js/api/geonode/v1';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
-import { setFilterById } from '@js/utils/GNSearchUtils';
 
 let endpoints = {
     // default values
@@ -328,7 +327,7 @@ export const getConfiguration = (configUrl = '/static/mapstore/configs/localConf
 
 
 let availableResourceTypes;
-export const getResourceTypes = ({}, filterKey = 'resource-types') => {
+export const getResourceTypes = ({}) => {
     if (availableResourceTypes) {
         return new Promise(resolve => resolve(availableResourceTypes));
     }
@@ -344,7 +343,6 @@ export const getResourceTypes = ({}, filterKey = 'resource-types') => {
                         value,
                         selectOption
                     };
-                    setFilterById(filterKey + value, resourceType);
                     return resourceType;
                 });
             return [...availableResourceTypes];

@@ -332,6 +332,10 @@ geonode-project/
 ```
 The extended _geonode_config.html template should set the `__GEONODE_CONFIG__.overrideLocalConfig` function and return the modified localConfig.
 
+Some examples:
+
+- override localConfig properties
+
 ```html
 {% extends 'geonode-mapstore-client/_geonode_config.html' %}
 {% block override_local_config %}
@@ -363,6 +367,29 @@ The extended _geonode_config.html template should set the `__GEONODE_CONFIG__.ov
                 return srcValue;
             }
         });
+    };
+</script>
+{% endblock %}
+```
+
+- enable plugin
+
+```html
+{% extends 'geonode-mapstore-client/_geonode_config.html' %}
+{% block override_local_config %}
+<script>
+    window.__GEONODE_CONFIG__.overrideLocalConfig = function(localConfig) {
+        /*
+        "SearchServicesConfig" has been disabled by default but still available
+        inside the list of imported plugin.
+        It should be enabled only in the pages that contains the "Search" plugin.
+        */
+        // map_edit page used for path /maps/{pk}/edit
+        localConfig.plugins.map_edit.push({ "name": "SearchServicesConfig" });
+        // map_view page used for path /maps/{pk}/view
+        localConfig.plugins.map_view.push({ "name": "SearchServicesConfig" });
+
+        return localConfig;
     };
 </script>
 {% endblock %}
