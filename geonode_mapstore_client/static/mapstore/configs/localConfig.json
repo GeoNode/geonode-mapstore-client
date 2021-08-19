@@ -857,6 +857,12 @@
                                 }
                             ]
                         }
+                    ],
+                    "rightMenuItems": [
+                        {
+                            "type": "plugin",
+                            "name": "FullScreen"
+                        }
                     ]
                 }
             },
@@ -982,6 +988,9 @@
                 "name": "Measure"
             },
             {
+                "name": "FullScreen"
+            },
+            {
                 "name": "Print",
                 "cfg": {
                     "useFixedScales": true,
@@ -1103,7 +1112,7 @@
                 "name": "FullScreen",
                 "override": {
                     "Toolbar": {
-                        "alwaysVisible": false
+                        "alwaysVisible": true
                     }
                 }
             },
@@ -1420,7 +1429,14 @@
                                 }
                             ]
                         }
+                    ],
+                    "rightMenuItems": [
+                        {
+                            "type": "plugin",
+                            "name": "FullScreen"
+                        }
                     ]
+
                 }
             },
             {
@@ -1539,6 +1555,9 @@
             },
             {
                 "name": "Measure"
+            },
+            {
+                "name": "FullScreen"
             },
             {
                 "name": "Print",
@@ -1861,11 +1880,21 @@
                                 }
                             ]
                         }
+                    ],
+                    "rightMenuItems": [
+                        {
+                            "type": "plugin",
+                            "name": "FullScreen"
+                        }
                     ]
                 }
             },
             {
                 "name": "DetailViewer"
+            },
+            {
+                "type": "plugin",
+                "name": "FullScreen"
             },
             {
                 "name": "DeleteResource"
@@ -2037,8 +2066,18 @@
                                 }
                             ]
                         }
+                    ],
+                    "rightMenuItems": [
+                        {
+                            "type": "plugin",
+                            "name": "FullScreen"
+                        }
                     ]
                 }
+            },
+            {
+                "type": "plugin",
+                "name": "FullScreen"
             },
             {
                 "name": "DetailViewer"

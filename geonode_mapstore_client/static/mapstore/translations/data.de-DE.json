@@ -168,6 +168,8 @@
             "deleteResourceYes": "Ja, ich bin sicher",
             "underApproval": "In Genehmigung",
             "unpublish": "Nicht veröffentlicht",
+            "fullscreen": "Vollbild",
+            "nativescreen": "Vollbildmodus beenden",
             "prompPendingChanges": "Es sind nicht gespeicherte Änderungen vorhanden. Möchten Sie wirklich gehen?",
             "errorCompactPermissionsTitle": "Fehler beim Berechtigungsupdate",
             "errorCompactPermissionsMessage": "Es war nicht möglich die Berechtigungen zu aktualisieren",

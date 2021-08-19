@@ -170,6 +170,8 @@
             "deleteResourceYes": "Sì, sono sicuro",
             "underApproval": "In approvazione",
             "unpublish": "Non pubblicato",
+            "fullscreen": "Schermo intero",
+            "nativescreen": "Esci da modalità schermo intero",
             "prompPendingChanges": "Sono presenti modifiche non salvate, sei sicuro di voler uscire?",
             "errorCompactPermissionsTitle": "Errore nell'aggiornamento delle autorizzazioni",
             "errorCompactPermissionsMessage": "Non è stato possibile aggiornare i permessi",

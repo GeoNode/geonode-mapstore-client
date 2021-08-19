@@ -169,6 +169,8 @@
             "deleteResourceYes": "Yes, I am sure",
             "underApproval": "Under approval",
             "unpublish": "Unpublish",
+            "fullscreen": "Full screen",
+            "nativescreen": "Exit full screen mode",
             "prompPendingChanges": "There are unsaved changes, are you sure you want to leave?",
             "errorCompactPermissionsTitle": "Error on permission update",
             "errorCompactPermissionsMessage": "It was not possible to update the permissions",
