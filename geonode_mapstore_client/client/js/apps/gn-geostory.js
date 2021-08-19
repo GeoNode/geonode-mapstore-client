@@ -116,7 +116,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(([localConfig, user]) => {
             const {
                 securityState,
-                geoNodeConfiguration,
                 pluginsConfigKey,
                 geoNodePageConfig,
                 query,
@@ -202,7 +201,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     ...configEpics
                 },
                 onStoreInit,
-                geoNodeConfiguration,
                 initialActions: [
                     // add some settings in the global state to make them accessible in the monitor state
                     // later we could use expression in localConfig

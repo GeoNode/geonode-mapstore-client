@@ -116,8 +116,7 @@ Router.propTypes = {
     pluginsConfig: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object
-    ]),
-    geoNodeConfiguration: PropTypes.object
+    ])
 };
 
 Router.defaultProps = {
@@ -126,8 +125,7 @@ Router.defaultProps = {
         messages: {},
         current: 'en-US'
     },
-    className: 'app-router fill',
-    geoNodeConfiguration: {}
+    className: 'app-router fill'
 };
 
 export default Router;
