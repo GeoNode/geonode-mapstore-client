@@ -2446,7 +2446,8 @@
                 "name": "DashboardEditor",
                 "cfg": {
                     "disablePluginIf": "{state('gnResourcePermissions') && state('gnResourcePermissions').canEdit ? false : true}",
-                    "catalog": "{ state('settings') && state('settings').initialCatalog }",
+                    "selectedService": "{state('settings') && state('settings').catalogueSelectedService ? state('settings').catalogueSelectedService : ''}",
+                    "services": "{state('settings') && state('settings').catalogueServices ? state('settings').catalogueServices : {}}",
                     "disableEmptyMap": true,
                     "containerPosition": "columns"
                 }

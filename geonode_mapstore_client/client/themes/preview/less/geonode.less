@@ -6,22 +6,22 @@
     
     @icon-size: 18px;
     @small-icon-size: 14px;
-    @padding-left-square: floor(@icon-size/@icon-margin-ratio);
-    @square-btn-size: @padding-left-square * 2 + @icon-size;
+    @padding-left-square: floor((@icon-size/@icon-margin-ratio));
+    @square-btn-size: (@padding-left-square * 2 + @icon-size);
     
-    @icon-size-md: floor(26px / @icon-resize-ratio);
-    @padding-left-square-md: floor(@icon-size-md / @icon-margin-ratio);
-    @square-btn-medium-size: @padding-left-square-md * 2 + @icon-size-md;
+    @icon-size-md: floor((26px / @icon-resize-ratio));
+    @padding-left-square-md: floor((@icon-size-md / @icon-margin-ratio));
+    @square-btn-medium-size: (@padding-left-square-md * 2 + @icon-size-md);
     
-    @icon-size-sm: floor(@icon-size-md / @icon-resize-ratio);
-    @padding-left-square-sm: floor(@icon-size-sm / @icon-margin-ratio);
-    @square-btn-small-size: @padding-left-square-sm * 2 + @icon-size-sm;
+    @icon-size-sm: floor((@icon-size-md / @icon-resize-ratio));
+    @padding-left-square-sm: floor((@icon-size-sm / @icon-margin-ratio));
+    @square-btn-small-size: (@padding-left-square-sm * 2 + @icon-size-sm);
 
 
 
     @icon-size: 18px;
-    @padding-left-square: floor(@icon-size/@icon-margin-ratio);
-    @square-btn-size: @padding-left-square * 2 + @icon-size;
+    @padding-left-square: floor((@icon-size/@icon-margin-ratio));
+    @square-btn-size: (@padding-left-square * 2 + @icon-size);
     @import (multiple) "~mapstore/web/client/themes/default/ms2-theme.less";
     #mapstore-navbar-container{
         height: @square-btn-size;
@@ -47,6 +47,15 @@
     }
 }
 @import   "../../default/less/geonode.less";
+
+// ensure the inline-flex of square-buttons does not override
+// the vertical group style in preview mode
+.btn-group-vertical > .btn,
+.btn-group-vertical > .btn-group,
+.btn-group-vertical > .btn-group > .btn {
+    display: block;
+    width: 100%;
+}
 
 #map{
     bottom: 0px !important;
