@@ -5,6 +5,7 @@
         "msgId0": "{name} a pris {numPhotos, plural, =0 {aucune photo} =1 {une photo} other {# photos}} le {takenDate, date, long}.",
         "htmlTest": "{name} {surname}",
         "about_title": "A propos...",
+        "aboutTooltip": "A propos...",
         "aboutLbl": "A propos",
         "about_p0-0": "MapStore est un cadriciel permettant de développer des applications cartographiques web à l'aide des librairies cartographiques standards telles que",
         "about_p0-1": "et",
@@ -51,7 +52,8 @@
             "404": "Fichier de traduction introuvable"
         },
         "details": {
-            "title": "À propos de cette carte"
+            "title": "À propos de cette carte",
+            "tooltip": "À propos de cette carte"
         },
         "showEmptyMessageGFI": "Afficher un message de résultat vide dans le panneau GetFeatureInfo",
         "remove": "Supprimer",
@@ -99,9 +101,11 @@
             "templateFormatDescription": "Personnaliser le format des résultats d'interrogation des attributs",
             "hideFormatTitle": "DÉSACTIVER L'IDENTIFICATION",
             "hideFormatDescription": "Désactiver les informations sur les caractéristiques de cette couche",
+            "styleWarning": "L'éditeur de style de calque pour le type de géométrie '{geometryType}' n'est pas pris en charge.",
             "templateFormatInfoAlert1": "Cliquez sur le bouton d'édition pour ajouter un nouveau modèle.",
             "templateFormatInfoAlert2": "Utilisez ${ attribut } pour envelopper les propriétés que vous devez afficher",
-            "templateFormatInfoAlertExample": "L'ID de la fonctionnalité est ${ properties }",
+            "templateFormatInfoAlertExample": "L'ID de la fonctionnalité est <span style='white-space:nowrap'>${ properties.ID }</span> ou <span style='white-space:nowrap'>${ properties['données-valeur'] }</span>",
+            "templateError": "Une erreur s'est produite lors de l'application du modèle aux informations renvoyées par le serveur, veuillez vérifier le modèle",
             "templatePreview": "Aperçu du modèle",
             "visibilityLimits": {
                 "title": "Limites de visibilité",
@@ -203,11 +207,14 @@
         "menu": "Menu",
         "options": "Options",
         "settings": "Réglages",
+        "settingsTooltip": "Réglages",
         "help": "Aide",
         "docs": "Documentation",
+        "docsTooltip": "Documentation",
         "gohome": "Retour à la page d'accueil",
         "back": "Retour à l'import",
         "printbutton": "Imprimer",
+        "printToolTip": "Imprimer",
         "annotationsbutton": "Annotations",
         "noresultfound": "Aucun résultat trouvé",
         "save": "Enregistrer",
@@ -292,44 +299,6 @@
                 "visit_group": "Aller à ce groupe",
                 "subscribe": "Souscrire",
                 "email": "Courriel:"
-            },
-            "examples": {
-                "viewer": {
-                    "html": "<h3>Visualiseur</h3><p>Visualiseur simple</p>"
-                },
-                "3dviewer": {
-                    "html": "<h3>Visualiseur 3D</h3><p>Visualiseur 3D simple basé sur CesiumJS</p>"
-                },
-                "manager": {
-                    "html": "<h3>Gestionnaire</h3><p>Parcourir des cartes Mapstore</p>"
-                },
-                "mouseposition": {
-                    "html": "<h3>Contrôleur de position de pointeur</h3><p>Exemples particuliers</p>"
-                },
-                "scalebar": {
-                    "html": "<h3>Contrôleur d'échelle</h3><p>Exemples particuliers</p>"
-                },
-                "layertree": {
-                    "html": "<h3>Arborescence de couches avancée</h3><p>Exemples particuliers</p>"
-                },
-                "queryform": {
-                    "html": "<h3>Constructeur de requête</h3><p>Exemples particuliers</p>"
-                },
-                "featuregrid": {
-                    "html": "<h3>Éditeur d'objet</h3><p>Exemples particuliers</p>"
-                },
-                "print": {
-                    "html": "<h3>Impression</h3><p>Exemples particuliers</p>"
-                },
-                "plugins": {
-                    "html": "<h3>Plugins</h3><p>Contruire sa propre application</p>"
-                },
-                "api": {
-                    "html": "<h3>API</h3><p>Utilisez les API pour inclure une carte MapStore dans votre application</p>"
-                },
-                "rasterstyler": {
-                    "html": "<h3>Représentation d'image</h3><p>Représenter votre couche image</p>"
-                }
             }
         },
         "cookiesPolicyNotification": {
@@ -513,7 +482,7 @@
         "toc": {
             "toggleLayerVisibility": "Changer la visibilité de la couche",
             "toggleGroupVisibility": "Changer la visibilité du groupe",
-            "displayLegendAndTools": "Afficher la légende et les outils",
+            "displayLegendAndTools": "Afficher la légende",
             "zoomToLayerExtent": "Zoomer sur l'étendue de la couche",
             "addLayer": "Ajouter une couche",
             "addLayerToGroup": "Ajouter une couche au groupe sélectionné",
@@ -1147,6 +1116,7 @@
             "loadoverride": "Remplacer les annotations",
             "loaderror": "Sélectionnez un ou plusieurs fichiers d'annotations. (fichiers supportés : JSON)",
             "defaulttitle": "Modifier le titre par défaut",
+            "tooltip": "Annotations",
             "field": {
                 "title": "Titre",
                 "description": "Description"
@@ -1269,6 +1239,7 @@
         },
         "share": {
             "title": "Partager",
+            "tooltip": "Partager",
             "titlePanel": "Partager la carte",
             "socialIntro": "Via votre réseau social favori",
             "directLinkTitle": "Via un lien direct",
@@ -1300,7 +1271,11 @@
             "wrongBboxParamTitle": "Paramètre de rectangle englobant invalide",
             "wrongBboxParamMessage": "Les paramètres du rectangle englobant doivent être en EPSG:4326 et écrit de cette façon : bbox=minx,miny,maxx,maxy",
             "showSectionId": "Inclure la position de défilement",
-            "showConnections": "Afficher les connexions"
+            "showConnections": "Afficher les connexions",
+            "sizeOptions": {
+                "width": "largeur",
+                "height": "la taille"
+            }
         },
         "snapshot": {
             "title": "Prévisualisation de la capture de la carte",
@@ -1339,6 +1314,7 @@
         },
         "mapImport": {
             "title": "Importer",
+            "tooltip": "Importer un fichier de carte ou des données vectorielles.",
             "dropZone": {
                 "heading": "<p> <h4> Déposez votre contextes cartographiques ou vos fichiers vectoriels ici </h4> <small> ou </small> </p>",
                 "selectFiles": "Sélectionnez des fichiers...",
@@ -1348,14 +1324,16 @@
             "errors": {
                 "fileNotSupported": "Fichier non pris en charge",
                 "unknownError": "il y a eu une erreur inconnue lors de l'import",
-                "projectionNotSupported": "La projection du/des fichier(s) que vous essayez d'importer n'est pas prise en charge"
+                "projectionNotSupported": "La projection du/des fichier(s) que vous essayez d'importer n'est pas prise en charge",
+                "fileBeyondBoundaries": "Le fichier {filename} ne peut pas être importé car il ne correspond pas aux limites de la carte"
             }
         },
         "mapExport": {
-            "title": "Exporter la carte",
+            "title": "Exporter",
+            "tooltip": "Exporter la carte actuelle",
             "exportPanel": {
                 "title": "<p><h4>Sélectionnez votre format</h4></p>",
-                "exportButtonLabel": "Export"
+                "exportButtonLabel": "Exporter"
             },
             "formats": {
                 "mapstore2": {
@@ -1376,13 +1354,13 @@
             "end": "Date de fin ",
             "notAvailable": "Indisponible",
             "title": "Catalogue",
+            "tooltip": "Ajouter des couches à la carte",
             "autoload": "Recherche sur la sélection du service",
             "clearValueText": "Effacer la sélection",
             "noResultsText": "Aucun résultat trouvé",
-            "tooltip": "Parcourir le catalogue",
             "addToMap": "Ajouter à la carte",
             "getWMSLink": "Lien WMS",
-            "error": "Une erreur s'est produite lors du chargement des données du catalogue",
+            "error": "Une erreur s'est produite lors du chargement des données.",
             "pageInfo": "{start}-{end} résultats parmi {total}",
             "resultInfo": "{total, plural, =0 {Pas d'objet} =1 {{total} sur {total}} other {{start}-{end} sur {total}}}",
             "pageInfoInfinite": "{total, plural, =undefined {} =0 {Aucun résultat} =1 {{total} sur {total} trouvés} other {chargé {loaded} sur {total} trouvés}}",
@@ -1457,34 +1435,34 @@
             "dropfileImport": "Déposez ici les fichiers à ajouter au traitement"
         },
         "importer": {
-            "title": "Import des données",
-            "imports": "Import des processus",
+            "title": "Importer des données",
+            "imports": "Processus d'import",
             "importN": "Processus {id}",
-            "creatingImportProcess": "Création de l'import ...",
-            "dropfile": "faire glisser les fichiers ici pour créer un nouveau processus d'import",
-            "dropfileImport": "faire glisser les fichiers ici pour les ajouter à ce processus",
+            "creatingImportProcess": "Création d'import...",
+            "dropfile": "faire glisser des fichiers ici pour créer un nouveau processus d'import",
+            "dropfileImport": "faites glisser les fichiers ici pour les ajouter à ce processus",
             "process": "Processus",
             "number": "#",
             "workspace": {
                 "create": "Créer",
-                "createWS": "Créez un nouvel espace de travail: ",
-                "target": "Espace de travail cible: ",
-                "failure": "Erreur de création d'espace de travail: {statusWS}",
+                "createWS": "Créez un nouvel espace de travail : ",
+                "target": "Espace de travail cible : ",
+                "failure": "Erreur de création d'espace de travail : {statusWS}",
                 "success": "Espace de travail {statusWS} créé avec succès",
                 "select": "Sélectionnez l'espace de travail cible",
                 "new": "Nouveau nom..."
             },
             "import": {
                 "actions": "Actions",
-                "tasks": "Paquetages",
-                "runImport": "Lancement",
-                "deleteImport": "Supprimer le processus d'import",
+                "tasks": "Paquet",
+                "runImport": "Début",
+                "deleteImport": "Supprimer le processus",
                 "deleteTask": "Supprimer",
                 "status": "Statut",
-                "archive": "Archivage",
-                "deleting": "Suppression en cours ...",
-                "analyzing": "Analyse du paquetage...",
-                "applyingPreset": "Pré-réglages en cours ..."
+                "archive": "Archives",
+                "deleting": "Nettoyage en cours...",
+                "analyzing": "Analyse du paquet...",
+                "applyingPreset": "Pré-réglages d'application..."
             },
             "task": {
                 "panelTitle": "Import du paquetage {id}",
@@ -1657,7 +1635,7 @@
             "title": "Exporter des données",
             "format": "Format de fichier",
             "srs": "Système de référence spatiale",
-            "export": "Export",
+            "export": "Exporter",
             "downloadonlycurrentpage": "Télécharger uniquement la page actuelle",
             "cropDataSet": "Recadrer le jeu de données dans la fenêtre courante",
             "downloadFilteredDataSet": "Télécharger l'ensemble de données filtré",
@@ -1673,7 +1651,7 @@
                 "downloadEstimatorFailed": "La demande DownloadEstimator a échoué, ce qui signifie que le fichier exporté dépasse les limites configurées du serveur. Essayez de modifier les options de téléchargement ou d'ajouter un filtre à votre couche et réessayez."
             },
             "exportResultsMessages": {
-                "newExport": "Die Datei ist hier verfügbar, wenn der Export abgeschlossen ist",
+                "newExport": "Le fichier sera disponible ici lorsque l'export sera terminé.",
                 "exportFailure": "L'exportation pour le calque \"{layerTitle}\" a échoué! Ouvrez la boîte de dialogue des résultats d'exportation pour plus d'informations.",
                 "exportSuccess": "L'exportation pour le calque \"{layerTitle}\" s'est terminée avec succès.",
                 "invalidHref": "La réponse du serveur ne contenait pas d'adresse URL valide pour les fichiers exportés!"
@@ -2205,8 +2183,8 @@
             "quantile": "Quantile",
             "jenks": "Pauses naturelles (Jenks)",
             "standardDeviation": "Écart type",
-            "switchToTextareaEditor": "Passer à l'éditeur de zone de texte",
-            "switchToVisualEditor": "Passer à l'éditeur visuel",
+            "switchToTextareaEditor": "Éditeur de code",
+            "switchToVisualEditor": "Éditeur visuel",
             "alertForceTranslate": "Vous perdrez toutes les modifications ajoutées dans le texte en passant à l'éditeur visuel. Êtes-vous sûr de passer en mode éditeur de style visuel?",
             "stayInTextareaEditor": "Non, continuez dans la zone de texte",
             "useLatestValidStyle": "Oui, passez à l'éditeur visuel",
@@ -2586,7 +2564,9 @@
             "close": "Fermer",
             "cancel": "Annuler",
             "saveSuccessTitle": "Succès",
-            "saveSuccessMessage": "Enregistré avec succès"
+            "saveSuccessMessage": "Enregistré avec succès",
+            "saveTooltip": "Salvar",
+            "saveAsTooltip": "Enregistrer sous"
         },
         "mapEditor": {
             "modalTitle": "Editeur de carte",
@@ -2609,7 +2589,7 @@
                 "selectService": "Sélectionner un service",
                 "add": "Ajouter",
                 "back": "Retour",
-                "save": "Sauver",
+                "save": "Salvar",
                 "edit": "Modifier",
                 "sourcePlaceholder": "Entrer une source",
                 "source": "Source",
@@ -2874,10 +2854,35 @@
             "generalSettings": {
                 "label": "Paramètres Généraux",
                 "title": "Créer un nouveau contexte applicatif",
+                "edit": "Modifier le contexte de l'application",
                 "name": "Nom",
                 "namePlaceholder": "Entrez le nom du contexte applicatif...",
                 "windowTitle": "Titre de la fenêtre",
                 "windowTitlePlaceholder": "Entrez le titre de la fenêtre..."
+            },
+            "configureThemes": {
+              "title": "Configurer le thème",
+              "label": "Thème",
+              "themes": "Choisissez un thème",
+              "noThemes": "Aucun thème trouvé",
+              "customVariables": "Variables personnalisées",
+              "main": "Couleur du texte principal",
+              "background" : "Couleur d'arrière-plan principale",
+              "primaryContrast": "Couleur primaire du texte",
+              "primary": "Couleur primaire",
+              "success": "Couleur secondaire",
+              "successContrast": "Couleur du texte secondaire",
+              "guidelines": "Attention à ne pas utiliser une couleur secondaire trop proche de la primaire et bien évidemment la couleur primaire du texte avec sa contrepartie (il en est de même pour les autres couples de couleurs : principale, secondaire)",
+              "alternativeTextPrimarySecondary": "<p>Attention : la couleur secondaire pourrait être illisible par rapport à la couleur primaire</p><p>Une couleur alternatif est {color} &nbsp;<span class=\"ms-custom-theme-picker-alternative-text\" style=\"background-color:{color}\"></span></p>",
+              "tooltips": {
+                "main": "Couleur du texte utilisée dans les panneaux ou les boîtes de dialogue",
+                "background": "Couleur d'arrière-plan utilisée dans les panneaux ou les boîtes de dialogue",
+                "primaryContrast": "Couleur du texte opposée à la couleur de fond principale et de réussite : icônes à l'intérieur des barres d'outils, en-têtes, boutons",
+                "primary": "Couleur primaire d'arrière-plan : barres d'outils, en-têtes, boutons",
+                "success": "Couleur d'arrière-plan utilisée pour montrer quand un bouton est 'actif' ou 'sélectionné'",
+                "successContrast": "Couleur du texte appliquée lorsque la couleur secondaire est utilisée comme arrière-plan",
+                "customColorsDescription": "Vous pouvez changer l'une de ces couleurs en plus (ou non) d'un thème préconfiguré choisi ci-dessus"
+              }
             },
             "configurePlugins": {
                 "label": "Configurer les plugins",
@@ -2914,7 +2919,7 @@
                     "pluginDocumentation": "Ouvrir la documentation de configuration du plugin",
                     "uploadPlugin": "Ajouter une extension à MapStore",
                     "removePlugin": "Supprimer cette extension de MapStore",
-                    "mapTemplatesConfig": "Configurer le modèle de carte"
+                    "mapTemplatesConfig": "Configurer les cartes modèles"
                 },
                 "tutorialPlugins": {
                     "availableTitle": "Plugin disponible",
@@ -2928,30 +2933,30 @@
                 }
             },
             "configureTemplates": {
-                "title": "Configurer les modèles de carte",
-                "availableTemplates": "Modèles disponibles",
-                "enabledTemplates": "Modèles activés",
-                "templatesFilterPlaceholder": "Filtrer les modèles par nom...",
-                "availableTemplatesEmpty": "Tous les modèles disponibles sont activés",
-                "enabledTemplatesEmpty": "Ajouter des modèles à la configuration à partir de la liste des modèles disponibles",
-                "searchResultsEmpty": "Aucun modèle trouvé répondant aux critères de recherche",
+                "title": "Configurer les cartes modèles",
+                "availableTemplates": "Cartes modèles disponibles",
+                "enabledTemplates": "Cartes modèles activées",
+                "templatesFilterPlaceholder": "Filtrer les cartes modèles par nom...",
+                "availableTemplatesEmpty": "Tous les cartes modèles disponibles sont activés.",
+                "enabledTemplatesEmpty": "Ajouter des cartes modèles à la configuration à partir de la liste des cartes modèles disponibles.",
+                "searchResultsEmpty": "Aucune carte modèle ne répond aux critères de recherche.",
                 "fileDrop": {
-                    "label": "Modèle",
-                    "clear": "Déposez ou cliquez pour sélectionner un fichier de modèle de carte (les cartes JSON MapStore exportées ou les fichiers WMC sont pris en charge)"
+                    "label": "Carte modèle",
+                    "clear": "Déposez ou cliquez pour sélectionner un fichier de carte (les cartes JSON MapStore exportées ou les fichiers WMC sont pris en charge)"
                 },
                 "uploadDialog": {
-                    "title": "Télécharger un modèle de carte",
+                    "title": "Télécharger une carte modèle",
                     "save": "Télécharger",
                     "jsonParsingError": "Échec de l'analyse JSON: \"{error}\"",
                     "fileReadError": "Une erreur de lecture de fichier inattendue s'est produite"
                 },
                 "tooltips": {
-                    "uploadTool": "Télécharger un nouveau modèle",
-                    "editTemplate": "Modifier les propriétés du modèle",
-                    "deleteTemplate": "Supprimer le modèle"
+                    "uploadTool": "Télécharger une nouvelle carte modèle",
+                    "editTemplate": "Modifier les propriétés de la carte modèle",
+                    "deleteTemplate": "Supprimer la carte modèle"
                 },
-                "deleteError": "Impossible de supprimer le modèle, une erreur s'est produite",
-                "deleteConfirm": "Voulez-vous vraiment supprimer le modèle \"{templateName}\"?"
+                "deleteError": "Impossible de supprimer la carte modèle, une erreur s'est produite",
+                "deleteConfirm": "Voulez-vous vraiment supprimer cette carte modèle \"{templateName}\"?"
             },
             "configureMap": {
                 "label": "Configurer la carte",
@@ -2992,24 +2997,26 @@
           "removeExtension": "Supprimer l'extension"
         },
         "mapTemplates": {
-            "title": "Modèles de carte",
+            "title": "Cartes modèles",
+            "tooltip": "Parcourir les modèles de carte",
             "favouritesTitle": "Favoris",
             "allTitle": "Tout",
-            "filterPlaceholder": "Filtrer les modèles de carte...",
+            "filterPlaceholder": "Filtrer les cartes modèles...",
             "transfer": "Remplacer la carte par ce modèle",
             "merge": "Ajouter ce modèle à la carte",
             "favouriteAdd": "Ajouter aux favoris",
             "favouriteRemove": "Supprimer des favoris",
             "emptyTitle": "Pas de résultat",
-            "emptyDescription": "Le filtre entré ne correspond pas au nom ou à la description d'aucun des modèles",
-            "noTemplatesTitle": "Aucun modèle trouvé",
-            "noTemplatesDescription": "Le contexte actuel ne contient aucun modèle",
+            "emptyDescription": "Le filtre entré ne correspond au nom ou à la description d'aucune des cartes modèles",
+            "noTemplatesTitle": "Aucune carte modèle trouvée",
+            "noTemplatesDescription": "Le contexte actuel ne contient aucune carte modèle",
             "confirmReplaceTitle": "Remplacer le contenu de la carte",
-            "confirmReplaceMessage": "Vous allez remplacer toutes les couches et la configuration de la carte par le modèle sélectionné en cliquant sur le bouton remplacer",
+            "confirmReplaceMessage": "Vous allez remplacer toutes les couches et la configuration de la carte par la carte modèle sélectionnéz en cliquant sur le bouton 'Remplacer'.",
             "confirmReplaceConfirmButton": "Remplacer"
         },
         "mapCatalog": {
             "title": "Catalogue de cartes",
+            "tooltip": "Parcourir et charger des cartes",
             "filterPlaceholder": "Rechercher des cartes...",
             "deleteConfirmContent": "Voulez-vous vraiment supprimer la carte \"{mapName}\"?",
             "tooltips": {
@@ -3258,8 +3265,8 @@
                         "text": "<p>En appuyant sur ce bouton, vous accédez à la page de documentation du plugin où vous pouvez rechercher des informations sur ce que fait le plugin et les paramètres de configuration qu'il prend en charge.</p>"
                     },
                     "mapTemplatesTool": {
-                        "title": "Outils de plug-in: modèles de carte",
-                        "text": "<p>Le plugin Map Templates dispose également d'un outil spécial qui vous permet de configurer des modèles de carte qui seront accessibles dans le contexte.</p>"
+                        "title": "Plugin Tools : Cartes modèles",
+                        "text": "<p>Le greffon 'Cartes modèles' dispose également d'un outil spécial qui vous permet de configurer des cartes modèles qui seront accessibles dans le contexte / l'application.</p>"
                     },
                     "extensions": {
                         "title": "Extensions",
@@ -3334,6 +3341,7 @@
             "titleContext": "La suppression de la session utilisateur a échoué",
             "defaultMessage": "Erreur inconnue"
           },
+          "tooltip": "Effacer la session utilisateur actuelle enregistrée",
           "successRemoved": "Session utilisateur supprimée",
           "remove": "Réinitialiser la session utilisateur",
           "confirmRemove": "Êtes-vous sûr de vouloir restaurer la configuration par défaut?"

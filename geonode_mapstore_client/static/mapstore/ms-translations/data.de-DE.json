@@ -5,6 +5,7 @@
         "msgId0": "{name} machte {numPhotos, plural, =0 {keine Fotos} =1 {ein Foto} other {# Fotos}} am {takenDate, date, long}.",
         "htmlTest": "{name} {surname}",
         "about_title": "Über",
+        "aboutTooltip": "Über",
         "aboutLbl": "Über",
         "about_p0-0": "MapStore ist ein Framework zur Erstellung von webbasierten Karten-Anwendungen mit Standard-Karten-Bibliotheken wie",
         "about_p0-1": "und",
@@ -51,7 +52,8 @@
             "404": "Übersetzungsdatei nicht gefunden"
         },
         "details": {
-            "title": "Infos zu dieser Karte"
+            "title": "Infos zu dieser Karte",
+            "tooltip": "Infos zu dieser Karte"
         },
         "showEmptyMessageGFI": "Nachricht mit leeren Ergebnissen anzeigen",
         "remove": "Löschen",
@@ -99,9 +101,11 @@
             "templateFormatDescription": "Passen Sie das Ergebnis der Feature-Informationen an",
             "hideFormatTitle": "IDENTIFIZIERUNG DEAKTIVIEREN",
             "hideFormatDescription": "Deaktivieren Sie die Funktionsinformationen für diese Ebene",
+            "styleWarning": "Ebenenstil-Editor für Geometrietyp '{geometryType}' wird nicht unterstützt.",
             "templateFormatInfoAlert1": "Klicken Sie auf Bearbeiten, um eine neue Vorlage hinzuzufügen.",
             "templateFormatInfoAlert2": "Verwenden Sie ${ attribute }, um Attribut-Werte anzuzeigen",
-            "templateFormatInfoAlertExample": "Die ID des Features lautet ${ properties }",
+            "templateFormatInfoAlertExample": "Die ID des Features lautet <span style='white-space:nowrap'>${ properties.daten }</span> oder <span style='white-space:nowrap'>${ properties['daten-wert'] }</span>",
+            "templateError": "Beim Anwenden der Vorlage auf die vom Server zurückgegebenen Informationen ist ein Fehler aufgetreten. Bitte überprüfen Sie die Vorlage",
             "templatePreview": "Vorschau template",
             "visibilityLimits": {
                 "title": "Sichtbarkeitsgrenzen",
@@ -203,11 +207,14 @@
         "menu": "Menü",
         "options": "Optionen",
         "settings": "Einstellungen",
+        "settingsTooltip": "Einstellungen",
         "help": "Hilfe",
         "docs": "Dokumentation",
+        "docsTooltip": "Dokumentation",
         "gohome": "Zurück zur Startseite",
         "back": "Zurück zum Import",
         "printbutton": "Drucken",
+        "printToolTip": "Drucken",
         "annotationsbutton": "Notizen / Zeichnen",
         "noresultfound": "Keine Ergebnisse gefunden",
         "save": "Speichern",
@@ -513,7 +520,7 @@
         "toc": {
             "toggleLayerVisibility": "Ebenensichtbarkeit umschalten",
             "toggleGroupVisibility": "Gruppensichtbarkeit umschalten",
-            "displayLegendAndTools": "Legende und Werkzeuge einblenden",
+            "displayLegendAndTools": "Legende einblenden",
             "zoomToLayerExtent": "Zoome auf Ausdehung der Ebene",
             "addLayer": "Ebene hinzufügen",
             "addLayerToGroup": "Ebene zur ausgewählten Gruppe hinzufügen",
@@ -1148,6 +1155,7 @@
             "loadoverride": "Notizen / Zeichnungen ersetzen",
             "loaderror": "Wählen Sie eine oder mehrere Notizen / Zeichnungen aus. (unterstützte Dateien: JSON)",
             "defaulttitle": "Standardtitel bearbeiten",
+            "tooltip": "Notizen / Zeichnen",
             "field": {
                 "title": "Titel",
                 "description": "Beschreibung"
@@ -1270,6 +1278,7 @@
         },
         "share":{
             "title": "Teilen",
+            "tooltip": "Teilen",
             "titlePanel": "Teile die Karte",
             "socialIntro": "In deinem bevorzugten sozialen Netzwerk",
             "directLinkTitle": "Über einen direkten Link",
@@ -1300,7 +1309,11 @@
             "coordTooltip": "Klicken Sie auf die Karte, um die Koordinaten zu ändern / festzulegen",
             "zoomToolTip": "Min: 1 und Max: 35",
             "showSectionId": "Bildlaufposition einschließen",
-            "showConnections": "Verbindungen anzeigen"
+            "showConnections": "Verbindungen anzeigen",
+            "sizeOptions": {
+                "width": "Breite",
+                "height": "Höhe"
+            }
         },
         "snapshot": {
             "title": "Snapshot Vorschau",
@@ -1339,6 +1352,7 @@
         },
         "mapImport": {
                 "title": "Importieren",
+                "tooltip": "Importieren Sie eine Kartendatei oder Vektordaten",
                 "dropZone": {
                     "heading": "<p> <h4> Legen Sie hier Ihre Kartenkonfigurations- oder Vektordateien ab </h4> <small> oder nutzen Sie </small> </p>",
                     "selectFiles": "Dateien auswählen...",
@@ -1348,11 +1362,13 @@
                 "errors": {
                     "fileNotSupported": "Datei wird nicht unterstützt",
                     "unknownError": "Beim Import ist ein unbekannter Fehler aufgetreten",
-                    "projectionNotSupported": "Die Projektion der Datei, die Sie importieren möchten, wird nicht unterstützt"
+                    "projectionNotSupported": "Die Projektion der Datei, die Sie importieren möchten, wird nicht unterstützt",
+                    "fileBeyondBoundaries": "Die Datei {Dateiname} kann nicht importiert werden, da sie nicht zu den Kartengrenzen passt"
                 }
             },
         "mapExport": {
             "title": "Karte exportieren",
+            "tooltip": "Exportieren Sie die aktuelle Karte",
             "exportPanel": {
                 "title": "<p><h4>Wählen Sie ein Format</h4></p>",
                 "exportButtonLabel": "Export"
@@ -1376,13 +1392,13 @@
             "end": "Enddatum ",
             "notAvailable": "Nicht verfügbar",
             "title": "Katalog",
+            "tooltip": "Fügen Sie der Karte Ebenen hinzu",
             "autoload": "Suche in Serviceauswahl",
             "clearValueText": "Auswahl aufheben",
             "noResultsText": "keine Ergebnisse gefunden",
-            "tooltip": "Katalog durchsuchen",
             "addToMap": "Zur Karte hinzufügen",
             "getWMSLink": "WMS Link erhalten",
-            "error": "Es gab einen Fehler beim Laden von Einträgen aus dem Katalog",
+            "error": "Beim Laden der Daten ist ein Fehler aufgetreten",
             "pageInfo": "Resultat {start}-{end} von {total}",
             "resultInfo": "{total, plural, =0 {Keine Gegenstände} =1 {{total} von {total} stimmt überein} other {{start}-{end} von {total}}}",
             "pageInfoInfinite": "{total, plural, =undefined {} =0 {Keine Ergebnisse} =1 {{total} von {total} stimmt überein} other {Geladen {loaded} von {total} übereinstimmend}",
@@ -2204,8 +2220,8 @@
             "quantile": "Quantil",
             "jenks": "Natürliche Pausen (Jenks)",
             "standardDeviation": "Varianz",
-            "switchToTextareaEditor": "Zum Textarea-Editor wechseln",
-            "switchToVisualEditor": "Zum visuellen Editor wechseln",
+            "switchToTextareaEditor": "Code-Editor",
+            "switchToVisualEditor": "Visueller Editor",
             "alertForceTranslate": "Sie verlieren alle im Textaree hinzugefügten Änderungen, wenn Sie zum visuellen Editor wechseln. Sind Sie sicher, dass Sie zum visuellen Stil-Editor wechseln?",
             "stayInTextareaEditor": "Nein, weiter im Textbereich",
             "useLatestValidStyle": "Ja, zum visuellen Editor wechseln",
@@ -2584,7 +2600,9 @@
             "close": "Schließen",
             "cancel": "Abbrechen",
             "saveSuccessTitle": "Erfolg",
-            "saveSuccessMessage": "Erfolgreich gespeichert"
+            "saveSuccessMessage": "Erfolgreich gespeichert",
+            "saveTooltip": "Sparen",
+            "saveAsTooltip": "Speichern als"
         },
         "mapEditor": {
             "modalTitle": "Map Editor",
@@ -2872,10 +2890,35 @@
             "generalSettings": {
                 "label": "Allgemeine Einstellungen",
                 "title": "Erstellen Sie einen neuen App-Kontext",
+                "edit": "App-Kontext bearbeiten",
                 "name": "Name",
                 "namePlaceholder": "Geben Sie den Namen des App-Kontexts ein...",
                 "windowTitle": "Fenstertitel",
                 "windowTitlePlaceholder": "Fenstertitel eingeben..."
+            },
+            "configureThemes": {
+              "title": "Thema konfigurieren",
+              "label": "Thema",
+              "themes": "Wähle ein Thema",
+              "noThemes": "Keine gefunden",
+              "customVariables": "Benutzerdefinierte Variablen",
+              "main": "Haupttextfarbe",
+              "background" : "Haupthintergrundfarbe",
+              "primaryContrast": "Primäre Textfarbe",
+              "primary": "Primärfarbe",
+              "success": "Sekundäre Farbe",
+              "successContrast": "Sekundäre Textfarbe",
+              "guidelines": "Stellen Sie sicher, dass Sie keine Sekundärfarbe verwenden, die der Primärfarbe zu ähnlich ist und offensichtlich die Primärtextfarbe mit ihrem Gegenstück (das gleiche gilt für die anderen Farbpaare: Hauptfarbe, Sekundärfarbe)",
+              "alternativeTextPrimarySecondary": "<p>Achtung: Die Sekundärfarbe könnte im Vergleich zur Primärfarbe nicht lesbar sein</p><p>Eine alternative farbe ist {color} &nbsp;<span class=\"ms-custom-theme-picker-alternative-text\" style=\"background-color:{color}\"></span></p>",
+              "tooltips": {
+                "main": "In Panels oder Dialogen verwendete Textfarbe",
+                "background": "Hintergrundfarbe in Panels oder Dialogen",
+                "primaryContrast": "Textfarbe im Gegensatz zur Primär- und Erfolgshintergrundfarbe: Symbole in Symbolleisten, Kopfzeilen, Tasten",
+                "primary": "Primärfarbe des Hintergrunds: Symbolleisten, Kopfzeilen, Tasten",
+                "successContrast": "Textfarbe angewendet, wenn die Sekundärfarbe als Hintergrund verwendet wird",
+                "success": "Hintergrundfarbe, die verwendet wird, um anzuzeigen, wenn eine Schaltfläche 'aktiv' oder 'ausgewählt' ist",
+                "customColorsDescription": "Sie können eine dieser Farben zusätzlich (oder nicht) zu einem oben ausgewählten vorkonfigurierten Thema ändern"
+              }
             },
             "configurePlugins": {
                 "label": "Plugins konfigurieren",
@@ -2991,6 +3034,7 @@
         },
         "mapTemplates": {
             "title": "Kartenvorlagen",
+            "tooltip": "Kartenvorlagen durchsuchen",
             "favouritesTitle": "Favoriten",
             "allTitle": "Alle",
             "filterPlaceholder": "Kartenvorlagen filtern...",
@@ -3008,6 +3052,7 @@
         },
         "mapCatalog": {
             "title": "Kartenkatalog",
+            "tooltip": "Karten durchsuchen und laden",
             "filterPlaceholder": "Karten suchen...",
             "deleteConfirmContent": "Möchten Sie die Karte \"{mapName}\" wirklich löschen?",
             "tooltips": {
@@ -3333,6 +3378,7 @@
             "titleContext": "Entfernen der Benutzersitzung fehlgeschlagen",
             "defaultMessage": "Unbekannter Fehler"
           },
+          "tooltip": "Aktuelle gespeicherte Benutzersitzung löschen user",
           "successRemoved": "Benutzersitzung entfernt",
           "remove": "Benutzersitzung zurücksetzen",
           "confirmRemove": "Möchten Sie die Standardkonfiguration wirklich wiederherstellen?"

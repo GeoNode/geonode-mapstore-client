@@ -5,6 +5,7 @@
         "msgId0": "{name} took {numPhotos, plural, =0 {no photos} =1 {one photo} other {# photos}} on {takenDate, date, long}.",
         "htmlTest": "{name} {surname}",
         "about_title": "About",
+        "aboutTooltip": "About",
         "aboutLbl": "About",
         "about_p0-0": "MapStore is a framework to build web mapping applications using standard mapping libraries, such as",
         "about_p0-1": "and",
@@ -51,7 +52,8 @@
             "404": "Translation file not found"
         },
         "details": {
-            "title": "About this map"
+            "title": "About this map",
+            "tooltip": "About this map"
         },
         "showEmptyMessageGFI": "Show empty results message in GetFeatureInfo panel",
         "remove": "Delete",
@@ -99,9 +101,11 @@
             "templateFormatDescription": "Customize feature info results format",
             "hideFormatTitle": "DISABLE IDENTIFY",
             "hideFormatDescription": "Disable the feature info for this layer",
+            "styleWarning": "Layer style editor for geometry type '{geometryType}' is not supported.",
             "templateFormatInfoAlert1": "Click on edit button to add a new template.",
             "templateFormatInfoAlert2": "Use ${ attribute } to wrap the properties you need to display",
-            "templateFormatInfoAlertExample": "The id of the feature is ${ properties }",
+            "templateFormatInfoAlertExample": "The id of the feature is <span style='white-space:nowrap'>${ properties.id }</span> or <span style='white-space:nowrap'>${ properties['data-value'] }</span>",
+            "templateError": "There was an error applying the template to the information returned by the server, please check the template",
             "templatePreview": "Template preview",
             "visibilityLimits": {
                 "title": "Visibility limits",
@@ -203,11 +207,14 @@
         "menu": "Menu",
         "options": "Options",
         "settings": "Settings",
+        "settingsTooltip": "Settings",
         "help": "Help",
         "docs": "Docs",
+        "docsTooltip": "Docs",
         "gohome": "Back to home page",
         "back": "Back to the Importer",
         "printbutton": "Print",
+        "printToolTip": "Print",
         "annotationsbutton": "Annotations",
         "noresultfound": "No Result found",
         "save": "Save",
@@ -292,44 +299,6 @@
                 "visit_group": "Visit this group",
                 "subscribe": "Subscribe",
                 "email": "Email:"
-            },
-            "examples":{
-                "viewer":{
-                    "html":"<h3>Viewer</h3><p>Simple Viewer</p>"
-                },
-                "3dviewer":{
-                    "html":"<h3>3D Viewer</h3><p>Simple CesiumJS based 3D Viewer</p>"
-                },
-                "manager":{
-                    "html":"<h3>Manager</h3><p>Browse MapStore maps</p>"
-                },
-                "mouseposition":{
-                    "html":"<h3>Mouse Position Control</h3><p>Custom examples</p>"
-                },
-                "scalebar":{
-                    "html":"<h3>Scale Control</h3><p>Custom examples</p>"
-                },
-                "layertree":{
-                    "html":"<h3>Advanced LayerTree</h3><p>Custom examples</p>"
-                },
-                "queryform":{
-                    "html":"<h3>Query Builder</h3><p>Custom examples</p>"
-                },
-                "featuregrid":{
-                    "html":"<h3>Feature Editor</h3><p>Custom examples</p>"
-                },
-                "print":{
-                    "html":"<h3>Printing</h3><p>Custom examples</p>"
-                },
-                "plugins":{
-                    "html":"<h3>Plugins</h3><p>Build your own application</p>"
-                },
-                "api":{
-                    "html":"<h3>API</h3><p>Use APIs to include a MapStore map in your application</p>"
-                },
-                "rasterstyler":{
-                    "html":"<h3>Raster Styler</h3><p>Style your raster layer</p>"
-                }
             }
         },
         "cookiesPolicyNotification": {
@@ -412,7 +381,7 @@
             "maps": {
                 "title": "Maps ({count})",
                 "noMapAvailable": "No map available",
-                "createNewOne": "Create a new dashboard",
+                "createNewOne": "Create a new one",
                 "unsavedMapConfirmTitle": "Unsaved changes",
                 "unsavedMapConfirmMessage": "Are you sure you want to leave unsaved changes?",
                 "unsavedMapConfirmButtonText": "Leave",
@@ -422,9 +391,9 @@
                 "newGeostory": "New GeoStory",
                 "title": "GeoStories ({count})",
                 "titleNoCount": "GeoStories",
-                  "create": "Create GeoStory",
+                "create": "Create GeoStory",
                 "noGeostoryAvailable": "No GeoStory available",
-                "createANewOne": "Create a new GeoStory",
+                "createANewOne": "Create a new one",
                 "deleteError": "There was an error deleting the GeoStory",
                 "errorLoadingGeostories": "There was an error loading GeoStories"
             }
@@ -513,7 +482,7 @@
         "toc": {
             "toggleLayerVisibility": "Toggle layer visibility",
             "toggleGroupVisibility": "Toggle group visibility",
-            "displayLegendAndTools": "Display legend and tools",
+            "displayLegendAndTools": "Display legend",
             "zoomToLayerExtent": "Zoom to layer extent",
             "addLayer": "Add layer",
             "addLayerToGroup": "Add layer to selected group",
@@ -1147,6 +1116,7 @@
             "loadoverride": "Replace annotations",
             "loaderror": "Select one or more annotations files. (supported files: JSON)",
             "defaulttitle": "Edit default title",
+            "tooltip": "Annotations",
             "field": {
                 "title": "Title",
                 "description": "Description"
@@ -1269,6 +1239,7 @@
         },
         "share":{
             "title": "Share",
+            "tooltip": "Share",
             "titlePanel": "Share the map",
             "socialIntro": "In your favourite social network",
             "directLinkTitle": "Via a direct link",
@@ -1299,7 +1270,11 @@
             "wrongBboxParamMessage": "Bounding box params must be in EPSG:4326 and wrote as bbox=minx,miny,maxx,maxy",
             "showHomeButton": "Link to MapStore home",
             "showSectionId": "Include scroll position",
-            "showConnections": "Show connections"
+            "showConnections": "Show connections",
+            "sizeOptions": {
+                "width": "width",
+                "height": "height"
+            }
         },
         "snapshot": {
             "title": "Snapshot Preview",
@@ -1338,6 +1313,7 @@
         },
         "mapImport": {
             "title": "Import",
+            "tooltip": "Import a map file or vector data",
             "dropZone": {
                 "heading": "<p><h4>Drop your map context or vector files here</h4><small>or</small></p>",
                 "selectFiles": "Select files...",
@@ -1347,11 +1323,13 @@
             "errors": {
                 "fileNotSupported": "File not supported",
                 "unknownError": "there was an unknown error during import",
-                "projectionNotSupported": "The projection of the file(s) you're trying to import is not supported"
+                "projectionNotSupported": "The projection of the file(s) you're trying to import is not supported",
+                "fileBeyondBoundaries": "The file  {filename} cannot be imported because it does not fit the map boundaries"
             }
         },
         "mapExport": {
-            "title": "Export map",
+            "title": "Export",
+            "tooltip": "Export the current map",
             "exportPanel": {
                 "title": "<p><h4>Select your format</h4></p>",
                 "exportButtonLabel": "Export"
@@ -1375,13 +1353,13 @@
             "end": "End date ",
             "notAvailable": "Not Available",
             "title": "Catalog",
+            "tooltip": "Add layers to the map",
             "autoload": "Search on service selection",
             "clearValueText": "Clear selection",
             "noResultsText": "No Result",
-            "tooltip": "Browse Catalog",
             "addToMap": "Add To Map",
             "getWMSLink": "Get WMS Link",
-            "error": "There was an error loading records from the catalog",
+            "error": "An error occurred while loading data",
             "pageInfo": "Results {start}-{end} of {total}",
             "resultInfo": "{total, plural, =0 {No items} =1 {{total} Item of {total}} other {{start}-{end} of {total}}}",
             "pageInfoInfinite": "{total, plural, =undefined {} =0 {No results} =1 {{total} of {total} matched} other {Loaded {loaded} of {total} matched}}",
@@ -2215,8 +2193,8 @@
             "quantile": "Quantile",
             "jenks": "Natural breaks (Jenks)",
             "standardDeviation": "Standard deviation",
-            "switchToTextareaEditor": "Switch to text editor",
-            "switchToVisualEditor": "Switch to visual editor",
+            "switchToTextareaEditor": "Code editor",
+            "switchToVisualEditor": "Visual editor",
             "alertForceTranslate": "You will lose all the changes added in the text mode by switching to visual editor. Are you sure to switch to visual style editor mode?",
             "stayInTextareaEditor": "No, continue with text editor",
             "useLatestValidStyle": "Yes, switch to visual editor",
@@ -2597,7 +2575,9 @@
             "close": "Close",
             "cancel": "Cancel",
             "saveSuccessTitle": "Success",
-            "saveSuccessMessage": "Saved successfully"
+            "saveSuccessMessage": "Saved successfully",
+            "saveTooltip": "Save",
+            "saveAsTooltip": "Save As"
         },
         "mapEditor": {
             "modalTitle": "Map Editor",
@@ -2885,10 +2865,35 @@
             "generalSettings": {
                 "label": "General Settings",
                 "title": "Create new app context",
+                "edit": "Edit app context",
                 "name": "Name",
                 "namePlaceholder": "Enter app context name...",
                 "windowTitle": "Window title",
                 "windowTitlePlaceholder": "Enter window title..."
+            },
+            "configureThemes": {
+              "title": "Configure Theme",
+              "label": "Theme",
+              "themes": "Choose a theme",
+              "noThemes": "No themes found",
+              "customVariables": "Custom Variables",
+              "main": "Main Text Color",
+              "background": "Main Background Color",
+              "primaryContrast": "Primary Text Color",
+              "primary": "Primary Color",
+              "successContrast": "Secondary Text Color",
+              "success": "Secondary Color",
+              "guidelines": "Make sure to not use a secondary color too similar with the primary one and obviously the primary text color with its counterpart (the same applies for the other couples of colors: main, secondary)",
+              "alternativeTextPrimarySecondary": "<p>Warning: the secondary color could be not readable compared to the primary one</p><p>An alternative color is {color} &nbsp;<span class=\"ms-custom-theme-picker-alternative-text\" style=\"background-color:{color}\"></span></p>",
+              "tooltips": {
+                "main": "Text color used in panels or dialogs",
+                "background": "Background color used in panels or dialogs",
+                "primaryContrast": "Text color opposed to the primary and success bacgrkound color: icons inside toolbars, headers, buttons",
+                "primary": "Background primary color: toolbars, headers, buttons",
+                "successContrast": "Text color applied when the secondary color is used as background",
+                "success": "Background color used to show when a button is 'active' or 'selected'",
+                "customColorsDescription": "You may change one of these colors in addition (or not) to a preconfigured theme chosen above"
+              }
             },
             "configurePlugins": {
                 "label": "Configure Plugins",
@@ -2925,7 +2930,7 @@
                     "pluginDocumentation": "Open plugin configuration documentation",
                     "uploadPlugin": "Add an extension to MapStore",
                     "removePlugin": "Remove this extension from MapStore",
-                    "mapTemplatesConfig": "Configure templates"
+                    "mapTemplatesConfig": "Configure the map templates"
                 },
                 "tutorialPlugins": {
                     "availableTitle": "Available Plugin",
@@ -2939,30 +2944,30 @@
                 }
             },
             "configureTemplates": {
-                "title": "Configure Templates",
-                "availableTemplates": "Available Templates",
-                "enabledTemplates": "Enabled Templates",
-                "templatesFilterPlaceholder": "Filter templates by name...",
-                "availableTemplatesEmpty": "All available templates are enabled",
-                "enabledTemplatesEmpty": "Add templates to configuration from list of available templates",
-                "searchResultsEmpty": "No templates found that satisfy the search criteria",
+                "title": "Configure map templates",
+                "availableTemplates": "Available map templates",
+                "enabledTemplates": "Enabled map templates",
+                "templatesFilterPlaceholder": "Filter  map templates by name...",
+                "availableTemplatesEmpty": "All available  map templates are enabled",
+                "enabledTemplatesEmpty": "Add  map templates to configuration from list of available templates",
+                "searchResultsEmpty": "No  map templates found that satisfy the search criteria",
                 "fileDrop": {
-                    "label": "Template",
-                    "clear": "Drop or click to select a map template file (exported JSON MapStore maps or WMC files are supported)"
+                    "label": "Map template",
+                    "clear": "Drop or click to select a map file (exported JSON MapStore maps or WMC files are supported)"
                 },
                 "uploadDialog": {
-                    "title": "Upload Map Template",
+                    "title": "Upload map template",
                     "save": "Upload",
                     "jsonParsingError": "JSON parsing failed: \"{error}\"",
                     "fileReadError": "Unexpected file reading error occurred"
                 },
                 "tooltips": {
-                    "uploadTool": "Upload new template",
-                    "editTemplate": "Edit template properties",
-                    "deleteTemplate": "Delete template"
+                    "uploadTool": "Upload new map template",
+                    "editTemplate": "Edit map template properties",
+                    "deleteTemplate": "Delete map template"
                 },
-                "deleteError": "Couldn't delete the template, an error occurred",
-                "deleteConfirm": "Are you sure you want to delete template \"{templateName}\"?"
+                "deleteError": "Couldn't delete the map template, an error occurred",
+                "deleteConfirm": "Are you sure you want to delete this map template \"{templateName}\"?"
             },
             "configureMap": {
                 "label": "Configure Map",
@@ -3003,24 +3008,26 @@
           "removeExtension": "Remove Extension"
         },
         "mapTemplates": {
-            "title": "Map Templates",
+            "title": "Map templates",
+            "tooltip": "Browse map templates",
             "favouritesTitle": "Favourites",
             "allTitle": "All",
-            "filterPlaceholder": "Filter map templates...",
-            "transfer": "Replace map with this template",
-            "merge": "Add this template to map",
+            "filterPlaceholder": "Filter map template...",
+            "transfer": "Replace map with this map template",
+            "merge": "Add this map template to the map",
             "favouriteAdd": "Add to favourites",
             "favouriteRemove": "Remove from favourites",
             "emptyTitle": "No Result",
-            "emptyDescription": "Entered filter does not match name or description of any of templates",
-            "noTemplatesTitle": "No templates found",
-            "noTemplatesDescription": "Current context contains no templates",
+            "emptyDescription": "Entered filter does not match name or description of any of map template",
+            "noTemplatesTitle": "No map template found",
+            "noTemplatesDescription": "Current context contains no map template",
             "confirmReplaceTitle": "Replace map content",
-            "confirmReplaceMessage": "You will replace all layers and map configuration with the selected template by clicking on replace button",
+            "confirmReplaceMessage": "You will replace all layers and map configuration with the selected map template by clicking on the 'Replace' button",
             "confirmReplaceConfirmButton": "Replace"
         },
         "mapCatalog": {
             "title": "Map Catalog",
+            "tooltip": "Browse and load maps",
             "filterPlaceholder": "Search maps...",
             "deleteConfirmContent": "Are you sure you want to delete \"{mapName}\" map?",
             "tooltips": {
@@ -3271,7 +3278,7 @@
                     },
                     "mapTemplatesTool": {
                         "title": "Plugin Tools: Map Templates",
-                        "text": "<p>Map Templates plugin also has a special tool that allows you to configure map templates that will be accessible within the context.</p>"
+                        "text": "<p>'Map templates' plugin also has a special tool that allows you to configure map template that will be accessible within the context.</p>"
                     },
                     "extensions": {
                         "title": "Extensions",
@@ -3346,6 +3353,7 @@
             "titleContext": "User session removing failed",
             "defaultMessage": "Unknown error"
           },
+          "tooltip": "Clear the current user session saved",
           "successRemoved": "User session removed",
           "remove": "Reset User Session",
           "confirmRemove": "Are you sure you want to restore the default configuration?"

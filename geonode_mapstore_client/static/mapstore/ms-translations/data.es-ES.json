@@ -5,6 +5,7 @@
         "msgId0": "{name} ha tomado {numPhotos, plural, =0 {ninguna foto} =1 {una foto} other {# fotos}} el {takenDate, date, long}.",
         "htmlTest": "{name} {surname}",
         "about_title": "Acerca de",
+        "aboutTooltip": "Acerca de",
         "aboutLbl": "Acerca de",
         "about_p0-0": "MapStore es un marco de trabajo para el desarrollo de aplicaciones cartográficas con la ayuda de librerías cartográficas estándar, tales como:",
         "about_p0-1": "y",
@@ -51,7 +52,8 @@
             "404": "Archivo de traducción no encontrado"
         },
         "details": {
-            "title": "Información en este mapa"
+            "title": "Información en este mapa",
+            "tooltip": "Información en este mapa"
         },
         "showEmptyMessageGFI": "Mostrar mensaje de resultados vacío en el panel de GFI",
         "remove": "Borrar",
@@ -99,6 +101,7 @@
             "templateFormatDescription": "Personalizar el formato de resultados de información de la capa",
             "hideFormatTitle": "DESACTIVAR IDENTIFICAR",
             "hideFormatDescription": "Deshabilite la información de la entidad para esta capa",
+            "styleWarning": "El editor de estilo de capa para el tipo de geometría '{geometryType}' no es compatible.",
             "templateFormatInfoAlert1": "Haga clic en el botón Editar para agregar una nueva plantilla.",
             "templateFormatInfoAlert2": "Use ${ attribute } para ajustar las propiedades que necesita visualizar",
             "visibilityLimits": {
@@ -140,7 +143,8 @@
               "legendHeight": "Altura",
               "legendPreview": "Avance"
             },
-            "templateFormatInfoAlertExample": "La identificación de la característica es ${ properties }",
+            "templateFormatInfoAlertExample": "La identificación de la característica es <span style='white-space:nowrap'>${ properties.datos }</span> ora <span style='white-space:nowrap'>${ properties['datos-valor'] }</span>",
+            "templateError": "Hubo un error al aplicar la plantilla a la información devuelta por el servidor, verifique la plantilla",
             "templatePreview": "Vista previa de la plantilla",
             "enableLocalizedLayerStyles": {
                 "label": "Habilitar estilo localizado",
@@ -203,11 +207,14 @@
         "menu": "Menú",
         "options": "Opciones",
         "settings": "Ajustes",
+        "settingsTooltip": "Ajustes",
         "help": "Ayuda",
         "docs": "Documentación",
+        "docsTooltip": "Documentación",
         "gohome": "Volver a la página de inicio",
         "back": "Volver al Importador",
         "printbutton": "Imprimir",
+        "printToolTip": "Imprimir",
         "annotationsbutton": "Anotaciones",
         "noresultfound": "Ningún resultado encontrado",
         "save": "Guardar",
@@ -292,44 +299,6 @@
                 "visit_group": "Visite este grupo",
                 "subscribe": "Suscribir",
                 "email": "Correo:"
-            },
-            "examples":{
-                "viewer":{
-                    "html":"<h3>Visor</h3><p>Visualizador simple</p>"
-                },
-                "3dviewer":{
-                    "html":"<h3>Visor 3D</h3><p>Visualizador 3D simple basado en CesiumJS</p>"
-                },
-                "manager":{
-                    "html":"<h3>Administrador</h3><p>Mostrar los mapas Mapstore</p>"
-                },
-                "mouseposition":{
-                    "html":"<h3>Controlador de position del puntero</h3><p>Exemple particulier</p>"
-                },
-                "scalebar":{
-                    "html":"<h3>Controlador de escala</h3><p>Ejemplo personalizado</p>"
-                },
-                "layertree":{
-                    "html":"<h3>Árbol de mapas avanzado</h3><p>Ejemplo personalizado</p>"
-                },
-                "queryform":{
-                    "html":"<h3>Constructor de consultas</h3><p>Ejemplo personalizado</p>"
-                },
-                "featuregrid":{
-                    "html":"<h3>Editor de características</h3><p>Ejemplo personalizado</p>"
-                },
-                "print":{
-                    "html":"<h3>Impresión</h3><p>Ejemplo personalizado</p>"
-                },
-                "plugins":{
-                    "html":"<h3>Plugins</h3><p>Construya su propia aplicación</p>"
-                },
-                "api":{
-                    "html":"<h3>API</h3><p>Use las API para  incluir un mapa de MapStore en su  aplicación</p>"
-                },
-                "rasterstyler":{
-                    "html":"<h3>Estilos ráster</h3><p>Estilo ráster</p>"
-                }
             }
         },
         "cookiesPolicyNotification": {
@@ -1147,6 +1116,7 @@
             "loadoverride": "Reemplazar anotaciones",
             "loaderror": "Seleccione uno o más archivos de anotaciones. (archivos compatibles: json)",
             "defaulttitle": "Edita el título predeterminado",
+            "tooltip": "Anotaciones",
             "field": {
                 "title": "Título",
                 "description": "Descripción"
@@ -1269,6 +1239,7 @@
         },
         "share":{
             "title": "Compartir",
+            "tooltip": "Compartir",
             "titlePanel": "Compartir el mapa",
             "socialIntro": "A través de su red social favorita",
             "directLinkTitle": "A través de un enlace directo",
@@ -1299,7 +1270,11 @@
             "coordTooltip": "Haga clic en el mapa para tomar las coordenadas.",
             "zoomToolTip": "Min: 1 y Max: 35",
             "showSectionId": "Incluir posición de desplazamiento",
-            "showConnections": "Mostrar conexiones"
+            "showConnections": "Mostrar conexiones",
+            "sizeOptions": {
+                "width": "ancho",
+                "height": "altura"
+            }
         },
         "snapshot": {
             "title": "Previsualización de la captura del mapa",
@@ -1338,6 +1313,7 @@
         },
         "mapImport": {
             "title": "Importar",
+            "tooltip": "Importar un archivo de mapa o datos vectoriales",
             "dropZone": {
                 "heading": "<p> <h4> Suelta contextos de mapas o archivos vectoriales aquí </h4> <small> o </small> </p>",
                 "selectFiles": "Selecciona archivos...",
@@ -1347,11 +1323,13 @@
             "errors": {
                 "fileNotSupported": "Archivo no compatible",
                 "unknownError": "hubo un error desconocido durante la importación",
-                "projectionNotSupported": "La proyección del archivo que está intentando importar no es compatible"
+                "projectionNotSupported": "La proyección del archivo que está intentando importar no es compatible",
+                "fileBeyondBoundaries": "El archivo {filename} no se pudo importar porque no encaja dentro de los límites del mapa"
             }
         },
         "mapExport": {
-            "title": "Exportar el mapa",
+            "title": "Exportar",
+            "tooltip": "Exportar el mapa actual",
             "exportPanel": {
                 "title": "<p><h4>Seleccione su formato</h4></p>",
                 "exportButtonLabel": "Exportar"
@@ -1375,13 +1353,13 @@
             "end": "Fecha de finalización ",
             "notAvailable": "No disponible",
             "title": "Catálogo",
+            "tooltip": "agregar capas al mapa",
             "autoload": "Buscar en la selección de servicios",
             "clearValueText": "Borrar selección",
             "noResultsText": "No se encontraron resultados",
-            "tooltip": "Buscar en el catálogo",
             "addToMap": "Añadir al mapa",
             "getWMSLink": "Enlace WMS",
-            "error": "Ha ocurrido un error cargando los datos del catálogo",
+            "error": "Ha ocurrido un error al cargar los datos.",
             "pageInfo": "{start}-{end} resultados de {total}",
             "resultInfo": "{total, plural, =0 No hay artículos} =1 {{total} artículo de {total}} other {{start}-{end} de {total}}}",
             "pageInfoInfinite": "{total, plural, =undefined {} =0 {No hay resultados} =1 {{total} de {total} emparejados} other {Cargado {loaded} de {total} emparejados}}",
@@ -2204,8 +2182,8 @@
             "quantile": "Cuantil",
             "jenks": "Descansos naturales (Jenks)",
             "standardDeviation": "Desviación estándar",
-            "switchToTextareaEditor": "Cambiar al editor de textarea",
-            "switchToVisualEditor": "Cambiar al editor visual",
+            "switchToTextareaEditor": "Editor de código",
+            "switchToVisualEditor": "Editora visual",
             "alertForceTranslate": "Perderá todos los cambios agregados en el texto al cambiar al editor visual. ¿Está seguro de cambiar al modo editor de estilo visual?",
             "stayInTextareaEditor": "No, continuar en textarea",
             "useLatestValidStyle": "Sí, cambie al editor visual",
@@ -2584,7 +2562,9 @@
             "close": "Cerrar",
             "cancel": "Cancelar",
             "saveSuccessTitle": "éxito",
-            "saveSuccessMessage": "Guardado con éxito"
+            "saveSuccessMessage": "Guardado con éxito",
+            "saveTooltip": "Salvar",
+            "saveAsTooltip": "Guardar como"
         },
         "mapEditor": {
             "modalTitle": "Map Editor",
@@ -2872,10 +2852,35 @@
             "generalSettings": {
                 "label": "Configuración general",
                 "title": "Crear nuevo contexto de aplicación",
+                "edit": "Editar el contexto de la aplicación",
                 "name": "Nombre",
                 "namePlaceholder": "Ingrese el nombre del contexto de la aplicación...",
                 "windowTitle": "Título de la ventana",
                 "windowTitlePlaceholder": "Ingrese el título de la ventana..."
+            },
+            "configureThemes": {
+              "title": "Configurar tema",
+              "label": "Tema",
+              "themes": "Elige un tema",
+              "noThemes": "No se encontraron",
+              "customVariables": "Variables personalizadas",
+              "main": "Color del texto principal",
+              "background": "Color de fondo principal",
+              "primaryContrast": "Color de texto primario",
+              "primary": "Color primario",
+              "success": "Color secundario",
+              "successContrast": "Color de texto secundario",
+              "guidelines": "Asegúrese de no usar un color secundario demasiado similar al primario y, obviamente, el color del texto primario con su contraparte (lo mismo se aplica a las otras parejas de colores: principal, secundario)",
+              "alternativeTextPrimarySecondary": "<p>Advertencia: el color secundario podría no ser legible en comparación con el principal</p><p>Una alternativa es el color {color} &nbsp;<span class=\"ms-custom-theme-picker-alternative-text\" style=\"background-color:{color}\"></span></p>",
+              "tooltips": {
+                "main": "Color de texto utilizado en paneles o cuadros de diálogo",
+                "background": "Color de fondo utilizado en paneles o cuadros de diálogo",
+                "primaryContrast": "Color del texto opuesto al color de fondo principal y de éxito: iconos dentro de las barras de herramientas, encabezados, botones",
+                "primary": "Color primario de fondo: barras de herramientas, encabezados, botones",
+                "successContrast": "El color del texto se aplica cuando el color secundario se utiliza como fondo.",
+                "success": "Color de fondo utilizado para mostrar cuando un botón está 'activo' o 'seleccionado'",
+                "customColorsDescription": "Puede cambiar uno de estos colores además (o no) a un tema preconfigurado elegido anteriormente"
+              }
             },
             "configurePlugins": {
                 "label": "Configurar complementos",
@@ -2991,6 +2996,7 @@
         },
         "mapTemplates": {
             "title": "Plantillas de mapas",
+            "tooltip": "Examinar plantillas de mapas",
             "favouritesTitle": "Favoritos",
             "allTitle": "Todos",
             "filterPlaceholder": "Filtrar plantillas de mapa...",
@@ -3008,6 +3014,7 @@
         },
         "mapCatalog": {
             "title": "Catálogo de mapas",
+            "tooltip": "Examinar y cargar mapas",
             "filterPlaceholder": "Buscar mapas...",
             "deleteConfirmContent": "¿Estás seguro de que quieres eliminar el mapa \"{mapName}\"?",
             "tooltips": {
@@ -3333,6 +3340,7 @@
             "titleContext": "Error al eliminar sesión de usuario",
             "defaultMessage": "Error desconocido"
           },
+          "tooltip": "Borrar la sesión de usuario actual guardada",
           "successRemoved": "Sesión de usuario eliminada",
           "remove": "Restablecer sesión de usuario",
           "confirmRemove": "¿Está seguro de que desea restaurar la configuración predeterminada?"

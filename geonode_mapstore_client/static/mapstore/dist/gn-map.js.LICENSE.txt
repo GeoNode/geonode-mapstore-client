@@ -5,12 +5,6 @@ object-assign
 */
 
 /*!
-  Copyright (c) 2015 Jed Watson.
-  Based on code that is Copyright 2013-2015, Facebook, Inc.
-  All rights reserved.
-*/
-
-/*!
   Copyright (c) 2016 Jed Watson.
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/classnames
@@ -55,6 +49,8 @@ object-assign
 /*! https://mths.be/punycode v1.3.2 by @mathias */
 
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+/** @license MIT License (c) copyright 2010-2014 original author or authors */
 
 /** @license React v0.16.2
  * scheduler.production.min.js
