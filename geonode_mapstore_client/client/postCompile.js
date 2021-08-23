@@ -1,6 +1,23 @@
-
-const fs = require('fs');
+const rimraf = require('rimraf');
 const childProcess = require('child_process');
+const fs = require('fs-extra');
+const path = require('path');
+const message = require('@mapstore/project/scripts/utils/message');
+const info = require('@mapstore/project/scripts/utils/info');
+const { commit, version, name } = info();
+
+const appDirectory = fs.realpathSync(process.cwd());
+const staticPath = '../static/mapstore';
+const distDirectory = 'dist';
+rimraf.sync(path.resolve(appDirectory, staticPath));
+message.title('cleaned static/mapstore/ directory');
+fs.moveSync(path.resolve(appDirectory, distDirectory), path.resolve(appDirectory, staticPath + '/' + distDirectory));
+fs.moveSync(path.resolve(appDirectory, staticPath + '/' + distDirectory + '/static/mapstore'), path.resolve(appDirectory, staticPath));
+fs.moveSync(path.resolve(appDirectory, staticPath + '/' + distDirectory + '/ms-translations'), path.resolve(appDirectory, staticPath + '/ms-translations'));
+fs.renameSync(path.resolve(appDirectory, staticPath + '/translations'), path.resolve(appDirectory, staticPath + '/gn-translations'));
+fs.writeFileSync(path.resolve(appDirectory, 'version.txt'), `${name}-v${version}-${commit}`);
+fs.writeFileSync(path.resolve(appDirectory, staticPath, 'version.txt'), `${name}-v${version}-${commit}`);
+message.title(`updated version -> version ${version} - commit ${commit}`);
 
 const packageJSONPath = './package.json';
 const rootPackageJSONPath = '../../package.json';

@@ -9,7 +9,6 @@
 import isFunction from 'lodash/isFunction';
 import merge from 'lodash/merge';
 import omit from 'lodash/omit';
-import { extendPluginsDefinition } from '@extend/jsapi/plugins';
 import {
     PrintActionButton,
     CatalogActionButton,
@@ -386,10 +385,4 @@ const pluginsDefinition = {
     reducers: {}
 };
 
-const extendedPluginsDefinition = splitLazyAndStaticPlugins(
-    extendPluginsDefinition
-        ? extendPluginsDefinition(pluginsDefinition, { toLazyPlugin })
-        : pluginsDefinition
-);
-
-export default extendedPluginsDefinition;
+export default splitLazyAndStaticPlugins(pluginsDefinition);

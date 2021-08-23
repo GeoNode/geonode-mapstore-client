@@ -1,8 +1,7 @@
 {
   "name": "geonode-mapstore-client",
   "version": "4.0.0",
-  "description": "MapStore 2 Api bundle specific to geonode framework",
-  "main": "api.js",
+  "description": "MapStore 2 bundles specific to geonode framework",
   "eslintConfig": {
     "extends": [
       "@mapstore/eslint-config-mapstore"
@@ -17,17 +16,16 @@
     }
   },
   "scripts": {
-    "compile": "mapstore-project compile geonode && node postCompile",
-    "start": "mapstore-project start geonode",
-    "test": "mapstore-project test geonode",
-    "test:watch": "mapstore-project test:watch geonode",
-    "update-project": "mapstore-project update geonode",
+    "compile": "mapstore-project compile && node postCompile",
+    "start": "mapstore-project start",
+    "test": "mapstore-project test",
+    "test:watch": "mapstore-project test:watch",
     "lint": "eslint js --ext .jsx,.js"
   },
   "author": "GeoSolutions",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "@mapstore/project": "1.0.16"
+    "@mapstore/project": "1.0.18"
   },
   "dependencies": {
     "font-awesome": "4.7.0",
@@ -41,5 +39,19 @@
       "proxyTargetHost": "localhost:8000",
       "protocol": "http"
     }
+  },
+  "mapstore": {
+    "output": "dist",
+    "publicPath": "/static/mapstore/dist/",
+    "themePrefix": "msgapi",
+    "apps": [
+      "js/apps"
+    ],
+    "html": [
+      ""
+    ],
+    "themes": [
+      "themes/"
+    ]
   }
 }
