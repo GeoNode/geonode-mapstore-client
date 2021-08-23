@@ -2163,8 +2163,18 @@
                                 }
                             ]
                         }
+                    ],
+                    "rightMenuItems": [
+                        {
+                            "type": "plugin",
+                            "name": "FullScreen"
+                        }
                     ]
                 }
+            },
+            {
+                "type": "plugin",
+                "name": "FullScreen"
             },
             {
                 "name": "DetailViewer"
