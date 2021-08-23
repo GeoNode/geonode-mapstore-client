@@ -8,19 +8,28 @@
 
 import React from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
+import { projectionSelector } from '@mapstore/framework/selectors/map';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import isEqual from 'lodash/isEqual';
 import FitBounds from '@mapstore/framework/components/geostory/common/map/FitBounds';
 
-function FitBoundsPlugin(props) {
-    return (<FitBounds active { ...props }/>);
+const MAX_EXTENT_WEB_MERCATOR = [-180, -85.06, 180, 85.06];
+
+function FitBoundsPlugin({ mapProjection, ...props }) {
+    const geometry = ['EPSG:900913', 'EPSG:3857'].includes(mapProjection) && isEqual(props.geometry, [-180, -90, 180, 90])
+        ? MAX_EXTENT_WEB_MERCATOR
+        : props.geometry;
+    return (<FitBounds active { ...props } geometry={geometry}/>);
 }
 
 const ConnectedFitBoundsPlugin = connect(
     createSelector([
-        state => state?.controls?.fitBounds?.geometry
-    ], (geometry) => ({
-        geometry
+        state => state?.controls?.fitBounds?.geometry,
+        projectionSelector
+    ], (geometry, mapProjection) => ({
+        geometry,
+        mapProjection
     }))
 )(FitBoundsPlugin);
 

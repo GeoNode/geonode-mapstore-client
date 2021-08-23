@@ -122,18 +122,11 @@ const ResourceCard = forwardRef(({
                                         </Dropdown.Item>
                                     );
                                 }
-                                const viewResourcebase = opt.perms.filter(obj => {
-                                    return obj.value === "view_resourcebase";
-                                });
 
                                 return (
                                     <Dropdown.Item
                                         key={opt.href}
-                                        href={
-                                            (viewResourcebase.length > 0 ) ? formatHref({
-                                                pathname: `/${res.resource_type}/${res.pk}`
-                                            }) : buildHrefByTemplate(res, opt.href)
-                                        }
+                                        href={buildHrefByTemplate(res, opt.href)}
                                     >
                                         <FaIcon name={opt.icon} /> <Message msgId={opt.labelId}/>
                                     </Dropdown.Item>
