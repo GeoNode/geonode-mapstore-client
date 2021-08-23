@@ -40,26 +40,19 @@
     </div>
 </nav>
 {% block extra_script %}
-    <script src="{% static "lib/js/jquery.min.js" %}"></script>
-    <script src="{% static "lib/js/bootstrap.min.js" %}"></script>
     <script type="text/javascript">
-        var signInElement = document.getElementById("sign-in")
-        $(function () {
-            manageUrlChange(signInElement)
-        });
-        $(window).bind('hashchange', function() {
-            manageUrlChange(signInElement)
-        });
-
-        function manageUrlChange(signInElement) {
-
-            if(signInElement){
-                var href = signInElement.getAttribute("href").split("next=")[0];
-                var url_parts = window.location.href.split(window.location.pathname)
-                var path_name = encodeURIComponent(window.location.pathname + url_parts[url_parts.length-1])
-                signInElement.setAttribute("href", href.concat("next=".concat(path_name)))
+        (function() {
+            function manageUrlChange(signInElement) {
+                var signInElement = document.getElementById("sign-in");
+                if(signInElement){
+                    var href = signInElement.getAttribute("href").split("next=")[0];
+                    var url_parts = window.location.href.split(window.location.pathname);
+                    var path_name = encodeURIComponent(window.location.pathname + url_parts[url_parts.length-1]);
+                    signInElement.setAttribute("href", href.concat("next=".concat(path_name)));
+                }
             }
-        }
-
+            window.addEventListener('DOMContentLoaded', manageUrlChange);
+            window.addEventListener('hashchange', manageUrlChange, false);
+        })();
     </script>
 {% endblock extra_script %}
