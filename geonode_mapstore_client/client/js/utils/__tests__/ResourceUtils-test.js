@@ -10,7 +10,7 @@
 import expect from 'expect';
 import { resourceToLayerConfig } from '../ResourceUtils';
 
-describe('Test Menu Utils', () => {
+describe('Test Resource Utils', () => {
     it('should keep the wms params from the url if available', () => {
         const newLayer = resourceToLayerConfig({
             alternate: 'geonode:layer_name',
