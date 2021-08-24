@@ -2058,6 +2058,16 @@
                         },
                         {
                             "type": "plugin",
+                            "name": "DownloadResource",
+                            "perms": [
+                                {
+                                    "type": "resource",
+                                    "value": "download_resourcebase"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "plugin",
                             "name": "DeleteResource",
                             "perms": [
                                 {
@@ -2078,6 +2088,10 @@
             {
                 "type": "plugin",
                 "name": "FullScreen"
+            },
+            {
+                "type": "plugin",
+                "name": "DownloadResource"
             },
             {
                 "name": "DetailViewer"
