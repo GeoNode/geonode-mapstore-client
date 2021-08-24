@@ -41,19 +41,21 @@ export const resourceToLayerConfig = (resource) => {
         alternate,
         links = [],
         featureinfo_custom_template: template,
-        title
+        title,
+        perms,
+        pk
     } = resource;
 
     const bbox = getExtentFromResource(resource);
 
     const { url: wfsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WFS') || {};
     const { url: wmsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMS') || {};
-
+    const params = wmsUrl && url.parse(wmsUrl, true).query;
     const format = getConfigProp('defaultLayerFormat') || 'image/png';
     return {
-        perms: resource.perms,
+        perms,
         id: uuid(),
-        pk: resource.pk,
+        pk,
         type: 'wms',
         name: alternate,
         url: wmsUrl,
@@ -73,7 +75,8 @@ export const resourceToLayerConfig = (resource) => {
         }),
         style: '',
         title,
-        visibility: true
+        visibility: true,
+        ...(params && { params })
     };
 };
 
