@@ -75,7 +75,7 @@ export const getPermissionsPayload = (state) => {
     const isCompactPermissionsChanged = state?.gnresource?.isCompactPermissionsChanged;
     const geoLimits = state?.gnresource?.geoLimits;
     return {
-        compactPermissions: isCompactPermissionsChanged && compactPermissions ? compactPermissions : null,
+        compactPermissions: (isCompactPermissionsChanged || geoLimits?.length > 0) && compactPermissions ? compactPermissions : null,
         geoLimits: geoLimits?.length > 0 ? geoLimits : null
     };
 };

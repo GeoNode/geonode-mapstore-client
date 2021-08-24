@@ -185,42 +185,43 @@ export const gnSaveDirectContent = (action$, store) =>
             const resourceId = mapInfo?.id || getResourceId(state);
             const { compactPermissions, geoLimits } = getPermissionsPayload(state);
             const currentResource = getResourceData(state);
-            return Observable.concat(
-                ...(compactPermissions ? [
-                    Observable.defer(() =>
-                        updateCompactPermissionsByPk(resourceId, cleanCompactPermissions(compactPermissions))
-                            .then(output => ({ resource: currentResource, output, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
-                            .catch((error) => ({ resource: currentResource, error: error?.data?.detail || error?.statusText || error?.message || true, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
+
+            return Observable.defer(() => axios.all([
+                getResourceByPk(resourceId),
+                ...(geoLimits
+                    ? geoLimits.map((limits) =>
+                        limits.features.length === 0
+                            ? deleteGeoLimits(resourceId, limits.id, limits.type)
+                                .catch(() => ({ error: true, resourceId, limits }))
+                            : updateGeoLimits(resourceId, limits.id, limits.type, { features: limits.features })
+                                .catch(() => ({ error: true, resourceId, limits }))
                     )
-                        .switchMap((payload) => {
-                            return Observable.of(startAsyncProcess(payload));
-                        })
-                ] : []),
-                Observable.defer(() => axios.all([
-                    getResourceByPk(resourceId),
-                    ...(geoLimits
-                        ? geoLimits.map((limits) =>
-                            limits.features.length === 0
-                                ? deleteGeoLimits(resourceId, limits.id, limits.type)
-                                    .catch(() => ({ error: true, resourceId, limits }))
-                                : updateGeoLimits(resourceId, limits.id, limits.type, { features: limits.features })
-                                    .catch(() => ({ error: true, resourceId, limits }))
-                        )
-                        : [])
-                ]))
-                    .switchMap(([resource, ...geoLimitsResponses]) => {
-                        const geoLimitsErrors = geoLimitsResponses.filter(({ error }) => error);
-                        const name = getResourceName(state);
-                        const description = getResourceDescription(state);
-                        const thumbnail = getResourceThumbnail(state);
-                        const metadata = {
-                            name: (name) ? name : resource?.title,
-                            description: (description) ? description : resource?.abstract,
-                            thumbnail: (thumbnail) ? thumbnail : resource?.thumbnail_url,
-                            extension: resource?.extension,
-                            href: resource?.href
-                        };
-                        return Observable.of(
+                    : [])
+            ]))
+                .switchMap(([resource, ...geoLimitsResponses]) => {
+                    const geoLimitsErrors = geoLimitsResponses.filter(({ error }) => error);
+                    const name = getResourceName(state);
+                    const description = getResourceDescription(state);
+                    const thumbnail = getResourceThumbnail(state);
+                    const metadata = {
+                        name: (name) ? name : resource?.title,
+                        description: (description) ? description : resource?.abstract,
+                        thumbnail: (thumbnail) ? thumbnail : resource?.thumbnail_url,
+                        extension: resource?.extension,
+                        href: resource?.href
+                    };
+                    return Observable.concat(
+                        ...(compactPermissions ? [
+                            Observable.defer(() =>
+                                updateCompactPermissionsByPk(resourceId, cleanCompactPermissions(compactPermissions))
+                                    .then(output => ({ resource: currentResource, output, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
+                                    .catch((error) => ({ resource: currentResource, error: error?.data?.detail || error?.statusText || error?.message || true, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
+                            )
+                                .switchMap((payload) => {
+                                    return Observable.of(startAsyncProcess(payload));
+                                })
+                        ] : []),
+                        Observable.of(
                             saveContent(
                                 resourceId,
                                 metadata,
@@ -232,9 +233,9 @@ export const gnSaveDirectContent = (action$, store) =>
                                     }
                                     : true /* showNotification */),
                             resetGeoLimits()
-                        );
-                    })
-            )
+                        )
+                    );
+                })
                 .catch((error) => {
                     return Observable.of(
                         saveError(error.data || error.message),
