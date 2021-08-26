@@ -39,11 +39,18 @@ import {
 } from '@js/utils/SearchUtils';
 import url from 'url';
 import { getCustomMenuFilters } from '@js/selectors/config';
+import { STOP_ASYNC_PROCESS } from '@js/actions/resourceservice';
+import { getResourceId } from '@js/selectors/resource';
+import {
+    ProcessTypes,
+    ProcessStatus
+} from '@js/utils/ResourceServiceUtils';
 
 const UPDATE_RESOURCES_REQUEST = 'GEONODE_SEARCH:UPDATE_RESOURCES_REQUEST';
-const updateResourcesRequest = (payload) => ({
+const updateResourcesRequest = (payload, reset) => ({
     type: UPDATE_RESOURCES_REQUEST,
-    payload
+    payload,
+    reset
 });
 
 const cleanParams = (params) => {
@@ -164,12 +171,12 @@ export const gnsSearchResourcesOnLocationChangeEpic = (action$, store) =>
             const [currentParams, currentPage] = getParams(location.search, nextParams || {});
 
             // history action performed while navigating the browser history
-            if (!nextParams) {
+            if (!nextParams || action.reset) {
                 const page = 1;
                 const params = { ...currentParams, page };
                 // avoid new request while browsing through history
                 // if the latest saved request is equal to the new request
-                if (!isFirstRendering && isEqual(previousParams, currentParams)) {
+                if (!isFirstRendering && isEqual(previousParams, currentParams) && !action.reset) {
                     return Observable.empty();
                 }
                 return requestResourcesObservable({
@@ -234,10 +241,27 @@ export const getFeaturedResourcesEpic = (action$, {getState = () => {}}) =>
                 }).startWith(setFeaturedResources({loading: true}));
         });
 
+export const gnWatchStopCopyProcessOnSearch = (action$, store) =>
+    action$.ofType(STOP_ASYNC_PROCESS)
+        .filter(action => action?.payload?.processType === ProcessTypes.COPY_RESOURCE)
+        .switchMap((action) => {
+            const state = store.getState();
+            const resourceId = getResourceId(state);
+            const isError = action?.payload?.error || action?.payload?.output?.status === ProcessStatus.FAILED;
+            if (!isError && resourceId === action?.payload?.resource?.pk) {
+                return Observable.empty();
+            }
+            // reset search
+            return Observable.of(updateResourcesRequest({
+                action: 'PUSH',
+                location: state?.router?.location
+            }, true));
+        });
 
 export default {
     gnsSearchResourcesEpic,
     gnsSearchResourcesOnLocationChangeEpic,
     gnsSelectResourceEpic,
-    getFeaturedResourcesEpic
+    getFeaturedResourcesEpic,
+    gnWatchStopCopyProcessOnSearch
 };

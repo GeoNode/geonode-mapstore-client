@@ -39,6 +39,10 @@ export const gnMonitorAsyncProcesses = (action$, store) => {
             return Observable
                 .interval(ProcessInterval[action?.payload?.processType] || 1000)
                 .switchMap(() => {
+                    // avoid request after completion
+                    if (isProcessCompleted(store.getState(), action.payload)) {
+                        return Observable.empty();
+                    }
                     return Observable.defer(() =>
                         axios.get(statusUrl)
                             .then(({ data }) => data)
@@ -57,7 +61,7 @@ export const gnMonitorAsyncProcesses = (action$, store) => {
 
 const processAPI = {
     [ProcessTypes.DELETE_RESOURCE]: deleteResource,
-    [ProcessTypes.CLONE_RESOURCE]: copyResource
+    [ProcessTypes.COPY_RESOURCE]: copyResource
 };
 
 export const gnProcessResources = (action$) =>

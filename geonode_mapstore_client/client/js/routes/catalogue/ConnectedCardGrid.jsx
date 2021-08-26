@@ -43,8 +43,9 @@ const ConnectedCardGrid = connect(
                 processType: ProcessTypes.DELETE_RESOURCE,
                 isControlled: true
             },
-            'clone': {
-                processType: ProcessTypes.CLONE_RESOURCE
+            'copy': {
+                processType: ProcessTypes.COPY_RESOURCE,
+                isControlled: true
             }
         }
     })),

@@ -41,7 +41,9 @@ import {
 
 import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
 import DeleteResource from '@js/plugins/DeleteResource';
+import SaveAs from '@js/plugins/SaveAs';
 const { DeleteResourcePlugin } = DeleteResource;
+const { SaveAsPlugin } = SaveAs;
 
 const suggestionsRequestTypes = {
     resourceTypes: {
@@ -224,6 +226,7 @@ function Search({
                 </div>
             </div>
             <DeleteResourcePlugin />
+            <SaveAsPlugin closeOnSave labelId="gnviewer.clone"/>
         </>
     );
 }

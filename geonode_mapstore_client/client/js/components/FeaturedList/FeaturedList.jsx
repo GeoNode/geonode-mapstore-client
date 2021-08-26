@@ -13,10 +13,7 @@ import HTML from '@mapstore/framework/components/I18N/HTML';
 import ResourceCard from '@js/components/ResourceCard';
 import FaIcon from '@js/components/FaIcon';
 import { withResizeDetector } from 'react-resize-detector';
-import {
-    ProcessTypes,
-    ProcessStatus
-} from '@js/utils/ResourceServiceUtils';
+import { getResourceStatuses } from '@js/utils/ResourceUtils';
 
 const Cards = withResizeDetector(({
     resources,
@@ -71,14 +68,10 @@ const Cards = withResizeDetector(({
             style={containerStyle}
         >
             {resources.map((resource, idx) => {
-
-                const { processes, ...data } = resource;
-                const isProcessing = processes
-                    ? !!processes.find(({ completed }) => !completed)
-                    : false;
-                const deleteProcess = processes && processes.find(({ processType }) => processType === ProcessTypes.DELETE_RESOURCE);
-                const isDeleting = !!deleteProcess?.output?.status;
-                const isDeleted = deleteProcess?.output?.status === ProcessStatus.FINISHED;
+                const {
+                    isProcessing,
+                    isDeleted
+                } = getResourceStatuses(resource);
                 return (
                     <li
                         key={resource?.pk}
@@ -87,13 +80,13 @@ const Cards = withResizeDetector(({
                         <ResourceCard
                             active={isCardActive(resource)}
                             className={`${isDeleted ? 'deleted' : ''}`}
-                            data={data}
+                            data={resource}
                             formatHref={formatHref}
                             options={options}
                             buildHrefByTemplate={buildHrefByTemplate}
                             layoutCardsStyle="grid"
                             loading={isProcessing}
-                            readOnly={isDeleted || isDeleting}
+                            readOnly={isDeleted || isProcessing}
                         />
                     </li>
                 );

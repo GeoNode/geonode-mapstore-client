@@ -19,6 +19,23 @@
         .color-var(@theme-vars[main-variant-color]);
         .background-color-var(@theme-vars[main-variant-bg]);
     }
+
+    .gn-resource-status-warning {
+        .background-color-var(@theme-vars[warning]);
+        .color-var(@theme-vars[warning-contrast]);
+    }
+    .gn-resource-status-danger {
+        .background-color-var(@theme-vars[danger]);
+        .color-var(@theme-vars[danger-contrast]);
+    }
+    .gn-resource-status-primary {
+        .background-color-var(@theme-vars[primary]);
+        .color-var(@theme-vars[primary-contrast]);
+    }
+    .gn-resource-status-success {
+        .background-color-var(@theme-vars[success]);
+        .color-var(@theme-vars[success-contrast]);
+    }
 }
 
 // **************
@@ -97,12 +114,14 @@
             object-fit: cover;
         }
     }
-    .underApproval, .unpublish {
-        padding: 0.2em 0.5em;
-        border-radius: 2px;
-    }
 }
 
+.gn-resource-status {
+    padding: 0.2em 0.5em;
+    border-radius: 2px;
+    font-size: @font-size-sm;
+    margin-right: 0.25rem;
+}
 
 .gn-fixed-card-grid {
     display: flex;

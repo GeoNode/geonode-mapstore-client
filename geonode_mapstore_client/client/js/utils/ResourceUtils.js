@@ -11,6 +11,7 @@ import uuid from 'uuid';
 import url from 'url';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { parseDevHostname } from '@js/utils/APIUtils';
+import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
 
 function getExtentFromResource({ ll_bbox_polygon: llBboxPolygon }) {
     if (!llBboxPolygon) {
@@ -58,7 +59,7 @@ export const resourceToLayerConfig = (resource) => {
         pk,
         type: 'wms',
         name: alternate,
-        url: wmsUrl,
+        url: wmsUrl || '',
         format,
         ...(wfsUrl && {
             search: {
@@ -220,4 +221,28 @@ export const getMetadataUrl = (resource) => {
         return formatMetadataUrl(resource);
     }
     return '';
+};
+
+export const getResourceStatuses = (resource) => {
+    const { processes } = resource || {};
+    const isProcessing = processes
+        ? !!processes.find(({ completed }) => !completed)
+        : false;
+    const deleteProcess = processes && processes.find(({ processType }) => processType === ProcessTypes.DELETE_RESOURCE);
+    const isDeleting = isProcessing && !!deleteProcess?.output?.status && !deleteProcess?.completed;
+    const isDeleted = deleteProcess?.output?.status === ProcessStatus.FINISHED;
+    const copyProcess = processes && processes.find(({ processType }) => processType === ProcessTypes.COPY_RESOURCE);
+    const isCopying = isProcessing && !!copyProcess?.output?.status && !copyProcess?.completed;
+    const isCopied = deleteProcess?.output?.status === ProcessStatus.FINISHED;
+    const isApproved = resource?.is_approved;
+    const isPublished = isApproved && resource?.is_published;
+    return {
+        isApproved,
+        isPublished,
+        isProcessing,
+        isDeleting,
+        isDeleted,
+        isCopying,
+        isCopied
+    };
 };

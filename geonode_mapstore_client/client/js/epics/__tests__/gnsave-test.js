@@ -13,23 +13,18 @@ import { testEpic } from '@mapstore/framework/epics/__tests__/epicTestUtils';
 import {
     SAVING_RESOURCE,
     SAVE_SUCCESS,
-    SAVE_ERROR,
     saveContent,
-    updateResourceBeforeSave,
     saveDirectContent,
     SAVE_CONTENT
 } from '@js/actions/gnsave';
 import { SET_CONTROL_PROPERTY } from '@mapstore/framework/actions/controls';
 import {
     RESET_GEO_LIMITS,
-    RESOURCE_LOADING,
     SET_RESOURCE,
-    RESOURCE_ERROR,
     SET_SELECTED_DATASET_PERMISSIONS
 } from '@js/actions/gnresource';
 import {
     gnSaveContent,
-    gnUpdateResource,
     gnSaveDirectContent
 } from '@js/epics/gnsave';
 import {gnCheckSelectedDatasetPermissions, gnSetDatasetsPermissions} from '@js/epics';
@@ -112,78 +107,6 @@ describe('gnsave epics', () => {
             {}
         );
     });
-    it('should save content with error (updateResourceBeforeSave)', (done) => {
-        const NUM_ACTIONS = 2;
-        const metadata = {
-            title: 'Title',
-            description: 'Description',
-            thumbnail: 'thumbnail.jpeg'
-        };
-        testEpic(
-            gnSaveContent,
-            NUM_ACTIONS,
-            saveContent(undefined, metadata),
-            (actions) => {
-                try {
-                    expect(actions.map(({ type }) => type))
-                        .toEqual([
-                            SAVING_RESOURCE,
-                            SAVE_ERROR
-                        ]);
-                } catch (e) {
-                    done(e);
-                }
-                done();
-            },
-            {}
-        );
-    });
-    it('should update resource before save (gnUpdateResource)', (done) => {
-        const NUM_ACTIONS = 2;
-        const id = 1;
-        mockAxios.onGet().reply(() => [200, {}]);
-        testEpic(
-            gnUpdateResource,
-            NUM_ACTIONS,
-            updateResourceBeforeSave(id),
-            (actions) => {
-                try {
-                    expect(actions.map(({ type }) => type))
-                        .toEqual([
-                            RESOURCE_LOADING,
-                            SET_RESOURCE
-                        ]);
-                } catch (e) {
-                    done(e);
-                }
-                done();
-            },
-            {}
-        );
-    });
-    it('should update resource before save with error (gnUpdateResource)', (done) => {
-        const NUM_ACTIONS = 2;
-        const id = 1;
-        testEpic(
-            gnUpdateResource,
-            NUM_ACTIONS,
-            updateResourceBeforeSave(id),
-            (actions) => {
-                try {
-                    expect(actions.map(({ type }) => type))
-                        .toEqual([
-                            RESOURCE_LOADING,
-                            RESOURCE_ERROR
-                        ]);
-                } catch (e) {
-                    done(e);
-                }
-                done();
-            },
-            {}
-        );
-    });
-
     it("gnCheckSelectedDatasetPermissions should trigger permission actions for style and edit", (done) => {
 
         const NUM_ACTIONS = 3;

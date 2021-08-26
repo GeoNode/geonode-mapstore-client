@@ -35,7 +35,9 @@ import {
 import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
 import { getFeaturedResults } from '@js/selectors/search';
 import DeleteResource from '@js/plugins/DeleteResource';
+import SaveAs from '@js/plugins/SaveAs';
 const { DeleteResourcePlugin } = DeleteResource;
+const { SaveAsPlugin } = SaveAs;
 
 const ConnectedFeatureList = connect(
     createSelector([
@@ -144,6 +146,7 @@ function Home({
                 </div>
             </div>
             <DeleteResourcePlugin />
+            <SaveAsPlugin closeOnSave labelId="gnviewer.clone"/>
         </div>
     );
 }

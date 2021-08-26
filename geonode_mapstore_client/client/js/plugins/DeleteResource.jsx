@@ -32,7 +32,6 @@ function DeleteResourcePlugin({
     return (
         <Portal>
             <ResizableModal
-                size="lg"
                 title={<Message msgId="gnviewer.deleteResourceTitle" msgParams={{ count: resources.length }}/>}
                 show={enabled}
                 fitContent

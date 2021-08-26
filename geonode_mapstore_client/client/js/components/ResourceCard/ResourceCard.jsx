@@ -13,7 +13,7 @@ import Dropdown from '@js/components/Dropdown';
 import Spinner from '@js/components/Spinner';
 import { getUserName } from '@js/utils/SearchUtils';
 import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
-import ResourceStatus from '@js/components/ResourceStatus/';
+import ResourceStatus from '@js/components/ResourceStatus';
 
 function ALink({ href, readOnly, children }) {
     return readOnly ? children : <a href={href}>{children}</a>;
@@ -74,13 +74,7 @@ const ResourceCard = forwardRef(({
                             {res.title}
                         </ALink>
                     </div>
-                    {
-                        (!res?.is_approved || !res?.is_published) &&
-                        <p><ResourceStatus
-                            isApproved={res?.is_approved}
-                            isPublished={res?.is_published}/>
-                        </p>
-                    }
+                    <ResourceStatus resource={res}/>
                     <p
                         className="card-text gn-card-description"
                     >

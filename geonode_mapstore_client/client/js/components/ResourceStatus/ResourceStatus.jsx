@@ -8,22 +8,39 @@
 import React from 'react';
 import Message from '@mapstore/framework/components/I18N/Message';
 import PropTypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
+import { getResourceStatuses } from '@js/utils/ResourceUtils';
 
-const ResourceStatus = ({isApproved, isPublished}) => {
-
-    const itemStatus = (!isApproved) ?
-        ({messageId: "gnviewer.underApproval", className: "underApproval" }) :
-        ((isApproved && !isPublished) ?
-            ({messageId: "gnviewer.unpublish", className: "unpublish" }) : undefined);
-
-    return (
-        <>
-            {itemStatus && <span className={itemStatus?.className} >
-                <Message msgId={itemStatus?.messageId} />
-            </span>
-            }
-        </>
-    );
+const ResourceStatus = ({ resource = {} }) => {
+    const {
+        isApproved,
+        isPublished,
+        isProcessing,
+        isCopying,
+        isDeleting,
+        isDeleted
+    } = getResourceStatuses(resource);
+    return !isEmpty(resource)
+        ? (
+            <p>
+                {(!isProcessing && !isApproved) && <span className={'gn-resource-status gn-resource-status-warning'} >
+                    <Message msgId={'gnviewer.underApproval'} />
+                </span>}
+                {(!isProcessing && !isPublished) && <span className={'gn-resource-status gn-resource-status-danger'} >
+                    <Message msgId={'gnviewer.unpublish'} />
+                </span>}
+                {isDeleting && <span className={'gn-resource-status gn-resource-status-danger'} >
+                    <Message msgId={'gnviewer.deleting'} />
+                </span>}
+                {isDeleted && <span className={'gn-resource-status gn-resource-status-danger'} >
+                    <Message msgId={'gnviewer.deleted'} />
+                </span>}
+                {isCopying && <span className={'gn-resource-status gn-resource-status-primary'} >
+                    <Message msgId={'gnviewer.cloning'} />
+                </span>}
+            </p>
+        )
+        : null;
 };
 
 ResourceStatus.propTypes = {

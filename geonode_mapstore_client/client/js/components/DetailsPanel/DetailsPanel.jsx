@@ -424,15 +424,7 @@ function DetailsPanel({
 
 
                         </div>
-                        {
-                            (!resource?.is_approved || !resource?.is_published) &&
-                            <p>
-                                <ResourceStatus
-                                    isApproved={resource?.is_approved}
-                                    isPublished={resource?.is_published}/>
-                            </p>
-                        }
-
+                        <ResourceStatus resource={resource} />
                         {<p>
                             {resource?.owner && <><a href={formatHref({
                                 query: {

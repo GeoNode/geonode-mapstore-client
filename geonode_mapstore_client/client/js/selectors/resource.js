@@ -12,6 +12,10 @@ import { compareMapChanges } from '@mapstore/framework/utils/MapUtils';
 import { currentStorySelector } from '@mapstore/framework/selectors/geostory';
 import { widgetsConfig } from '@mapstore/framework/selectors/widgets';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
+import {
+    getCurrentResourceDeleteLoading,
+    getCurrentResourceCopyLoading
+} from '@js/selectors/resourceservice';
 import omit from 'lodash/omit';
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
@@ -170,7 +174,9 @@ function isResourceDataEqual(state, initialData = {}, currentData = {}) {
 
 export const getResourceDirtyState = (state) => {
     const canEdit = canEditPermissions(state);
-    if (!canEdit) {
+    const isDeleting = getCurrentResourceDeleteLoading(state);
+    const isCopying = getCurrentResourceCopyLoading(state);
+    if (!canEdit || isDeleting || isCopying) {
         return null;
     }
     const resourceType = state?.gnresource?.type;

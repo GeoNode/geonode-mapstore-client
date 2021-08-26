@@ -432,6 +432,19 @@
                             "value": "delete_resourcebase"
                         }
                     ]
+                },
+                {
+                    "type": "button",
+                    "action": "copy",
+                    "labelId": "gnviewer.clone",
+                    "icon": "copy",
+                    "authenticated": true,
+                    "perms": [
+                        {
+                            "type": "resource",
+                            "value": "change_resourcebase"
+                        }
+                    ]
                 }
             ]
         }
@@ -786,13 +799,23 @@
                 "cfg": {
                     "leftMenuItems": [
                         {
-                            "type": "plugin",
-                            "name": "Save",
+                            "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
                             "perms": [
                                 {
                                     "type": "resource",
                                     "value": "change_resourcebase"
+                                }
+                            ],
+                            "type": "dropdown",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "Save"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "SaveAs"
                                 }
                             ]
                         },

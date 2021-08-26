@@ -15,10 +15,7 @@ import { withResizeDetector } from 'react-resize-detector';
 import useLocalStorage from '@js/hooks/useLocalStorage';
 import { hasPermissionsTo } from '@js/utils/MenuUtils';
 import useInfiniteScroll from '@js/hooks/useInfiniteScroll';
-import {
-    ProcessTypes,
-    ProcessStatus
-} from '@js/utils/ResourceServiceUtils';
+import { getResourceStatuses } from '@js/utils/ResourceUtils';
 
 const Cards = withResizeDetector(({
     resources,
@@ -91,18 +88,13 @@ const Cards = withResizeDetector(({
             style={cardLayoutStyle === 'list' ? {} : containerStyle}
         >
             {resources.map((resource, idx) => {
+                const {
+                    isProcessing,
+                    isDeleted
+                } = getResourceStatuses(resource);
                 // enable allowedOptions (menu cards) only for list layout
-                const { processes, ...data } = resource;
-                const isProcessing = processes
-                    ? !!processes.find(({ completed }) => !completed)
-                    : false;
-                const deleteProcess = processes && processes.find(({ processType }) => processType === ProcessTypes.DELETE_RESOURCE);
-                const isDeleting = !!deleteProcess?.output?.status;
-                const isDeleted = deleteProcess?.output?.status === ProcessStatus.FINISHED;
-
                 const allowedOptions =  (cardLayoutStyle === 'list' && !isProcessing) ? options
                     .filter((opt) => hasPermissionsTo(resource?.perms, opt?.perms, 'resource')) : [];
-
                 return (
                     <li
                         key={resource.pk}
@@ -111,7 +103,7 @@ const Cards = withResizeDetector(({
                         <ResourceCard
                             className={`${isDeleted ? 'deleted' : ''}`}
                             active={isCardActive(resource)}
-                            data={data}
+                            data={resource}
                             formatHref={formatHref}
                             options={allowedOptions}
                             buildHrefByTemplate={buildHrefByTemplate}
@@ -119,7 +111,7 @@ const Cards = withResizeDetector(({
                             actions={actions}
                             onAction={onAction}
                             loading={isProcessing}
-                            readOnly={isDeleted || isDeleting}
+                            readOnly={isDeleted || isProcessing}
                         />
                     </li>
                 );

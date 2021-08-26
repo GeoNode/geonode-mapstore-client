@@ -255,6 +255,15 @@ export const getResourceByPk = (pk) => {
         .then(({ data }) => data.resource);
 };
 
+export const getResourceByUuid = (uuid) => {
+    return axios.get(parseDevHostname(`${endpoints[RESOURCES]}`), {
+        params: {
+            'filter{uuid}': uuid
+        }
+    })
+        .then(({ data }) => data?.resources?.[0]);
+};
+
 export const getDatasetByPk = (pk) => {
     return axios.get(parseDevHostname(`${endpoints[DATASETS]}/${pk}`))
         .then(({ data }) => data.dataset);
@@ -683,7 +692,11 @@ export const deleteResource = (resource) => {
 };
 
 export const copyResource = (resource) => {
-    return axios.put(parseDevHostname(`${endpoints[RESOURCES]}/${resource.pk}/copy`))
+    const defaults = {
+        title: resource.title,
+        ...(resource.data && { data: resource.data })
+    };
+    return axios.put(parseDevHostname(`${endpoints[RESOURCES]}/${resource.pk}/copy`), 'defaults=' + JSON.stringify(defaults))
         .then(({ data }) => data);
 };
 
@@ -691,6 +704,7 @@ export default {
     getEndpoints,
     getResources,
     getResourceByPk,
+    getResourceByUuid,
     createGeoApp,
     getGeoAppByPk,
     updateDataset,

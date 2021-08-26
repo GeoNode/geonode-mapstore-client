@@ -29,8 +29,9 @@ function SaveModal({
     enabled,
     onClose,
     onSave,
-    onInit,
     onClear,
+    hideThumbnail,
+    hideDescription,
     thumbnailOptions
 }) {
 
@@ -47,11 +48,7 @@ function SaveModal({
     };
 
     useEffect(() => {
-        if (enabled) {
-            onInit(state.current.contentId);
-        } else {
-            onClear();
-        }
+        onClear();
     }, [ enabled ]);
 
     useEffect(() => {
@@ -86,6 +83,7 @@ function SaveModal({
                         {
                             text: <Message msgId={labelId}/>,
                             disabled: !!nameValidation,
+                            bsStyle: 'primary',
                             onClick: () => onSave(
                                 update ? contentId : undefined,
                                 {
@@ -105,7 +103,7 @@ function SaveModal({
                     <div><Message msgId="saveDialog.saveSuccessMessage" /></div>
                 </Alert>}
                 <Form>
-                    <FormGroup
+                    {!hideThumbnail && <FormGroup
                         validationState={thumbnailError ? 'error' : undefined}
                     >
                         <ControlLabel>
@@ -128,15 +126,15 @@ function SaveModal({
                             <div>{thumbnailError.indexOf && thumbnailError.indexOf('FORMAT') !== -1 && <small><Message msgId="map.errorFormat" /></small>}</div>
                             <div>{thumbnailError.indexOf && thumbnailError.indexOf('SIZE') !== -1 && <small><Message msgId="map.errorSize" /></small>}</div>
                         </div>}
-                    </FormGroup>
+                    </FormGroup>}
                     <FormGroup
                         validationState={nameValidation}
                     >
                         <ControlLabel>
-                            <Message msgId="saveDialog.name" />
+                            <Message msgId="gnviewer.title" />
                         </ControlLabel>
                         <FormControl
-                            placeholder="saveDialog.namePlaceholder"
+                            placeholder="gnviewer.titlePlaceholder"
                             value={name}
                             onChange={(event) => {
                                 setName(event.target.value);
@@ -152,7 +150,7 @@ function SaveModal({
                             }}
                         />
                     </FormGroup>
-                    <FormGroup>
+                    {!hideDescription && <FormGroup>
                         <ControlLabel>
                             <Message msgId="saveDialog.description" />
                         </ControlLabel>
@@ -161,7 +159,7 @@ function SaveModal({
                             value={description}
                             onChange={(event) => setDescription(event.target.value)}
                         />
-                    </FormGroup>
+                    </FormGroup>}
                 </Form>
                 {isLoading && <div
                     style={{

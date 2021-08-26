@@ -36,14 +36,13 @@ describe('SaveModal plugin component', () => {
         const modalNode = document.querySelector('.ms-resizable-modal');
         expect(modalNode).toBeTruthy();
     });
-    it('should trigger onInit when enabled change', (done) => {
+    it('should trigger onClear when enabled change', (done) => {
         act(() => {
             ReactDOM.render(
                 <SaveModal
                     contentId={1}
                     enabled
-                    onInit={(contentId) => {
-                        expect(contentId).toBe(1);
+                    onClear={() => {
                         done();
                     }}
                 />, document.getElementById('container')

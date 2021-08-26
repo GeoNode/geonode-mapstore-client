@@ -13,6 +13,10 @@ import {
 } from '@js/actions/resourceservice';
 
 import {
+    PROCESS_RESOURCES
+} from '@js/actions/gnresource';
+
+import {
     getLocalStorageProcesses,
     setLocalStorageProcesses
 } from '@js/utils/LocalStorageUtils';
@@ -23,6 +27,20 @@ const defaultState = {
 
 function resourceservice(state = defaultState, action) {
     switch (action.type) {
+    case PROCESS_RESOURCES: {
+        return {
+            ...state,
+            processes: [
+                ...state.processes.filter((process) =>
+                    !action.resources.find((resource) =>
+                        process?.resource?.pk === resource?.pk
+                        && process?.processType === action.processType
+                    )
+                ),
+                ...action.resources.map((resource) => ({ resource, processType: action.processType }))
+            ]
+        };
+    }
     case START_ASYNC_PROCESS: {
         return {
             ...state,

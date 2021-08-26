@@ -24,3 +24,23 @@ export const getCurrentResourcePermissionsLoading = (state) => {
     const isLoading = permissionsProcess ? !permissionsProcess?.completed : false;
     return isLoading;
 };
+
+export const getCurrentResourceCopyLoading = (state) => {
+    const resource = getResourceData(state);
+    const permissionsProcess = resource && state?.resourceservice?.processes?.find(process =>
+        process?.resource?.pk === resource?.pk
+            && process?.processType === ProcessTypes.COPY_RESOURCE
+    );
+    const isLoading = permissionsProcess ? !permissionsProcess?.completed : false;
+    return isLoading;
+};
+
+export const getCurrentResourceDeleteLoading = (state) => {
+    const resource = getResourceData(state);
+    const permissionsProcess = resource && state?.resourceservice?.processes?.find(process =>
+        process?.resource?.pk === resource?.pk
+            && process?.processType === ProcessTypes.DELETE_RESOURCE
+    );
+    const isLoading = permissionsProcess ? !permissionsProcess?.completed : false;
+    return isLoading;
+};

@@ -11,7 +11,6 @@ export const SAVE_SUCCESS = 'GEONODE:SAVE_SUCCESS';
 export const SAVE_ERROR = 'GEONODE:SAVE_ERROR';
 export const CLEAR_SAVE = 'GEONODE:CLEAR_SAVE';
 export const SAVE_CONTENT = 'GEONODE:SAVE_CONTENT';
-export const UPDATE_RESOURCE_BEFORE_SAVE = 'GEONODE:UPDATE_RESOURCE_BEFORE_SAVE';
 export const SAVE_DIRECT_CONTENT = 'GEONODE:SAVE_DIRECT_CONTENT';
 
 /**
@@ -79,18 +78,6 @@ export function saveContent(id, metadata, reload, showNotifications) {
         metadata,
         reload,
         showNotifications
-    };
-}
-
-/**
-* Update current resource properties (trigger epic gnUpdateResource)
-* @memberof actions.gnsave
-* @param {number|string} id resource id or primary key
-*/
-export function updateResourceBeforeSave(id) {
-    return {
-        type: UPDATE_RESOURCE_BEFORE_SAVE,
-        id
     };
 }
 

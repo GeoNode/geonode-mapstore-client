@@ -8,7 +8,7 @@
 
 export const ProcessTypes = {
     DELETE_RESOURCE: 'deleteResource',
-    CLONE_RESOURCE: 'cloneResource',
+    COPY_RESOURCE: 'copyResource',
     PERMISSIONS_RESOURCE: 'permissionsResource'
 };
 
@@ -21,6 +21,6 @@ export const ProcessStatus = {
 
 export const ProcessInterval = {
     [ProcessTypes.DELETE_RESOURCE]: 5000,
-    [ProcessTypes.CLONE_RESOURCE]: 1000,
+    [ProcessTypes.COPY_RESOURCE]: 1000,
     [ProcessTypes.PERMISSIONS_RESOURCE]: 1000
 };
