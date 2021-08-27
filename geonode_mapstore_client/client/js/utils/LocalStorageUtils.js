@@ -13,7 +13,7 @@ const LOCAL_STORAGE_PROCESSES_KEY = 'gn.reducers.resourceservice.processes';
 export function getLocalStorageProcesses() {
     try {
         const processes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PROCESSES_KEY)) || [];
-        return processes.filter(({ completed, output }) => !(completed || output?.status === ProcessStatus.FINISHED || output?.status === ProcessStatus.FAILED));
+        return processes.filter(({ completed, output }) => !(completed || !output || output?.status === ProcessStatus.FINISHED || output?.status === ProcessStatus.FAILED));
     } catch (e) {
         return [];
     }

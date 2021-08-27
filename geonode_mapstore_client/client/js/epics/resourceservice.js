@@ -66,7 +66,8 @@ const processAPI = {
 
 export const gnProcessResources = (action$) =>
     action$.ofType(PROCESS_RESOURCES)
-        .switchMap((action) => {
+        // all the processes must be listened for this reason we should use flatMap instead of switchMap
+        .flatMap((action) => {
             return Observable.defer(() => axios.all(
                 action.resources.map(resource =>
                     processAPI[action.processType](resource)
