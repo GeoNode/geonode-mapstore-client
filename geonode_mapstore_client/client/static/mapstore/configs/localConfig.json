@@ -841,12 +841,24 @@
                                 {
                                     "type": "link",
                                     "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/style'}",
-                                    "labelId": "gnviewer.editStyle"
+                                    "labelId": "gnviewer.editStyle",
+                                    "perms": [
+                                        {
+                                            "type": "resource",
+                                            "value": "change_dataset_style"
+                                        }
+                                    ]
                                 },
                                 {
                                     "type": "link",
                                     "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
-                                    "labelId": "gnviewer.editData"
+                                    "labelId": "gnviewer.editData",
+                                    "perms": [
+                                        {
+                                            "type": "resource",
+                                            "value": "change_dataset_data"
+                                        }
+                                    ]
                                 }
                             ]
                         },

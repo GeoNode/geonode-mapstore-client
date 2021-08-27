@@ -44,15 +44,29 @@ export const resourceToLayerConfig = (resource) => {
         featureinfo_custom_template: template,
         title,
         perms,
-        pk
+        pk,
+        has_time: hasTime
     } = resource;
 
     const bbox = getExtentFromResource(resource);
 
     const { url: wfsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WFS') || {};
     const { url: wmsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMS') || {};
+    const { url: wmtsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMTS') || {};
+
+    const dimensions = [
+        ...(hasTime ? [{
+            name: 'time',
+            source: {
+                type: 'multidim-extension',
+                url: wmtsUrl || (wmsUrl || '').split('/geoserver/')[0] + '/geoserver/gwc/service/wmts'
+            }
+        }] : [])
+    ];
+
     const params = wmsUrl && url.parse(wmsUrl, true).query;
     const format = getConfigProp('defaultLayerFormat') || 'image/png';
+
     return {
         perms,
         id: uuid(),
@@ -77,7 +91,8 @@ export const resourceToLayerConfig = (resource) => {
         style: '',
         title,
         visibility: true,
-        ...(params && { params })
+        ...(params && { params }),
+        ...(dimensions.length > 0 && ({ dimensions }))
     };
 };
 
