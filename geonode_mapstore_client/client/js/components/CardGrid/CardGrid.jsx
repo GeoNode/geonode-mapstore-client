@@ -95,6 +95,11 @@ const Cards = withResizeDetector(({
                 // enable allowedOptions (menu cards) only for list layout
                 const allowedOptions =  (cardLayoutStyle === 'list' && !isProcessing) ? options
                     .filter((opt) => hasPermissionsTo(resource?.perms, opt?.perms, 'resource')) : [];
+
+                if (isDeleted) {
+                    return null;
+                }
+
                 return (
                     <li
                         key={resource.pk}

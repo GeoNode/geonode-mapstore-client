@@ -6,6 +6,8 @@
  * LICENSE file in the root directory of this source tree.
 */
 
+import { getResourceStatuses } from '@js/utils/ResourceUtils';
+
 export const getSearchResults = (state) => {
     const resources = state?.gnsearch?.resources || [];
     const processes = state?.resourceservice?.processes || [];
@@ -28,4 +30,11 @@ export const getFeaturedResults = (state) => {
         }
         return resource;
     });
+};
+
+export const getTotalResources = (state) => {
+    const resources = getSearchResults(state);
+    const deletedResourcesCount = resources.filter(resource => getResourceStatuses(resource).isDeleted).length;
+    const temporaryResourcesCount = resources.filter(resource => resource['@temporary']).length;
+    return (state?.gnsearch?.total || 0) - deletedResourcesCount + temporaryResourcesCount;
 };

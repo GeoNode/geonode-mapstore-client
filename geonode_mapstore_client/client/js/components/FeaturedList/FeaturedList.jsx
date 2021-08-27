@@ -72,6 +72,11 @@ const Cards = withResizeDetector(({
                     isProcessing,
                     isDeleted
                 } = getResourceStatuses(resource);
+
+                if (isDeleted) {
+                    return null;
+                }
+
                 return (
                     <li
                         key={resource?.pk}

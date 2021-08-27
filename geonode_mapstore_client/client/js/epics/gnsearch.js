@@ -13,7 +13,8 @@ import isNil from 'lodash/isNil';
 import {
     getResources,
     getResourceByPk,
-    getFeaturedResources
+    getFeaturedResources,
+    getResourceByUuid
 } from '@js/api/geonode/v2';
 import {
     SEARCH_RESOURCES,
@@ -40,7 +41,6 @@ import {
 import url from 'url';
 import { getCustomMenuFilters } from '@js/selectors/config';
 import { STOP_ASYNC_PROCESS } from '@js/actions/resourceservice';
-import { getResourceId } from '@js/selectors/resource';
 import {
     ProcessTypes,
     ProcessStatus
@@ -244,18 +244,27 @@ export const getFeaturedResourcesEpic = (action$, {getState = () => {}}) =>
 export const gnWatchStopCopyProcessOnSearch = (action$, store) =>
     action$.ofType(STOP_ASYNC_PROCESS)
         .filter(action => action?.payload?.processType === ProcessTypes.COPY_RESOURCE)
-        .switchMap((action) => {
-            const state = store.getState();
-            const resourceId = getResourceId(state);
+        .flatMap((action) => {
             const isError = action?.payload?.error || action?.payload?.output?.status === ProcessStatus.FAILED;
-            if (!isError && resourceId === action?.payload?.resource?.pk) {
+            if (isError) {
                 return Observable.empty();
             }
-            // reset search
-            return Observable.of(updateResourcesRequest({
-                action: 'PUSH',
-                location: state?.router?.location
-            }, true));
+            const newResourceUuid = action?.payload?.output?.output_params?.output?.uuid;
+            if (newResourceUuid === undefined) {
+                return Observable.empty();
+            }
+            const pk = action?.payload?.output?.input_params?.instance;
+            return Observable.defer(() => getResourceByUuid(newResourceUuid))
+                .switchMap((resource) => {
+                    const resources = store.getState().gnsearch?.resources || [];
+                    const newResources = resources.reduce((acc, res) => {
+                        if (res.pk === (pk + '')) {
+                            return [...acc, { ...resource, '@temporary': true }, res];
+                        }
+                        return [...acc, res];
+                    }, []);
+                    return Observable.of(updateResources(newResources, true));
+                });
         });
 
 export default {

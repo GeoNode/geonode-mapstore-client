@@ -85,7 +85,7 @@ const ResourceCard = forwardRef(({
                     >
                         <Message msgId="gnhome.author"/>: <ALink readOnly={readOnly} href={formatHref({
                             query: {
-                                'filter{owner.username.in}': res.owner.username
+                                'filter{owner.username.in}': res?.owner?.username
                             }
                         })}>{getUserName(res.owner)}</ALink>
                     </p>

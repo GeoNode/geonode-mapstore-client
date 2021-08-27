@@ -251,7 +251,8 @@ export const gnWatchStopCopyProcessOnSave = (action$, store) =>
         .switchMap((action) => {
             const state = store.getState();
             const resourceId = getResourceId(state);
-            if (resourceId !== action?.payload?.resource?.pk) {
+            const pathname = state?.router?.location?.pathname;
+            if (resourceId !== action?.payload?.resource?.pk || pathname.includes('/detail/')) {
                 return Observable.empty();
             }
             const isError = action?.payload?.error || action?.payload?.output?.status === ProcessStatus.FAILED;
@@ -268,7 +269,7 @@ export const gnWatchStopCopyProcessOnSave = (action$, store) =>
             return Observable.defer(() => getResourceByUuid(newResourceUuid))
                 .switchMap((resource) => {
                     window.location.href = parseDevHostname(resource?.detail_url);
-                    return Observable.of();
+                    return Observable.empty();
                 })
                 .startWith(loadingResourceConfig(true));
         });
