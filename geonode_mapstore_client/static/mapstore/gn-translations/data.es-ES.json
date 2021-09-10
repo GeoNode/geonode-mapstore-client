@@ -131,7 +131,6 @@
         },
         "gnviewer": {
             "edit": "Editar",
-            "details": "Detalles",
             "editMetadata": "Editar Metadatos",
             "editStyle": "Editar Estilo",
             "editData": "Editar Datos",
