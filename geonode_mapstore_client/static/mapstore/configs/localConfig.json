@@ -591,282 +591,20 @@
             {
                 "name": "LayerDownload",
                 "cfg": {
-                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
-                }
-            },
-            {
-                "name": "AddLayer"
-            },
-            {
-                "name": "FilterLayer"
-            },
-            {
-                "name": "ScaleBox"
-            },
-            {
-                "name": "FeatureEditor"
-            },
-            {
-                "name": "QueryPanel",
-                "cfg": {
-                    "activateQueryTool": true,
-                    "spatialOperations": [
-                        {
-                            "id": "INTERSECTS",
-                            "name": "queryform.spatialfilter.operations.intersects"
-                        },
-                        {
-                            "id": "BBOX",
-                            "name": "queryform.spatialfilter.operations.bbox"
-                        },
-                        {
-                            "id": "CONTAINS",
-                            "name": "queryform.spatialfilter.operations.contains"
-                        },
-                        {
-                            "id": "WITHIN",
-                            "name": "queryform.spatialfilter.operations.within"
-                        }
-                    ],
-                    "spatialMethodOptions": [
-                        {
-                            "id": "Viewport",
-                            "name": "queryform.spatialfilter.methods.viewport"
-                        },
-                        {
-                            "id": "BBOX",
-                            "name": "queryform.spatialfilter.methods.box"
-                        },
-                        {
-                            "id": "Circle",
-                            "name": "queryform.spatialfilter.methods.circle"
-                        },
-                        {
-                            "id": "Polygon",
-                            "name": "queryform.spatialfilter.methods.poly"
-                        }
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                    "formats": [
+                        {"name": "application/json", "label": "GeoJSON", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/arcgrid", "label": "ArcGrid", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/tiff", "label": "TIFF", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/png", "label": "PNG", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/jpeg", "label": "JPEG", "type": "raster", "validServices": ["wps"]},
+                        {"name": "application/wfs-collection-1.0", "label": "wfs-collection-1.0", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/wfs-collection-1.1", "label": "wfs-collection-1.1", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/zip", "label": "Shapefile", "type": "vector", "validServices": ["wps"]},
+                        {"name": "text/csv", "label": "CSV", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/geopackage+sqlite3", "label": "GeoPackage", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/geopackage+sqlite3", "label": "GeoPackage", "type": "raster", "validServices": ["wps"]}
                     ]
-                }
-            },
-            {
-                "name": "MetadataExplorer",
-                "cfg": {
-                    "wrap": true
-                }
-            },
-            {
-                "name": "MousePosition",
-                "cfg": {
-                    "editCRS": true,
-                    "showLabels": true,
-                    "showToggle": true,
-                    "filterAllowedCRS": [
-                        "EPSG:4326",
-                        "EPSG:3857"
-                    ],
-                    "additionalCRS": {}
-                }
-            },
-            {
-                "name": "Search",
-                "cfg": {
-                    "withToggle": [
-                        "max-width: 768px",
-                        "min-width: 768px"
-                    ]
-                }
-            },
-            {
-                "name": "GoFull",
-                "override": {
-                    "Toolbar": {
-                        "alwaysVisible": false
-                    }
-                }
-            },
-            {
-                "name": "FullScreen",
-                "override": {
-                    "Toolbar": {
-                        "alwaysVisible": false
-                    }
-                }
-            },
-            {
-                "name": "TOCItemsSettings",
-                "cfg": {
-                    "hideTitleTranslations": true,
-                    "showFeatureInfoTab": false
-                }
-            },
-            {
-                "name": "Notifications"
-            },
-            {
-                "name": "Share",
-                "cfg": {
-                    "pathTemplate": "/maps/{id}/embed"
-                }
-            },
-            {
-                "name": "AddGroup"
-            },
-            {
-                "name": "StyleEditor",
-                "cfg": {
-                    "styleService": {
-                        "baseUrl": "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}",
-                        "formats": [
-                            "css",
-                            "sld"
-                        ],
-                        "availableUrls": [
-                            "{state('settings') && state('settings').geoserverUrl || '/geoserver/'}",
-                            "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}"
-                        ],
-                        "fonts": [
-                            "Arial",
-                            "Courier New",
-                            "Monospaced",
-                            "SansSerif",
-                            "Serif",
-                            "Times New Roman"
-                        ]
-                    },
-                    "editingAllowedRoles": null,
-                    "enableSetDefaultStyle": true
-                }
-            }
-        ],
-        "layer_export": [
-            {
-                "name": "Map",
-                "cfg": {
-                    "tools": [
-                        "measurement",
-                        "draw",
-                        "box"
-                    ],
-                    "mapOptions": {
-                        "openlayers": {
-                            "attribution": {
-                                "container": "#footer-attribution-container"
-                            },
-                            "interactions": {
-                                "pinchRotate": false,
-                                "altShiftDragRotate": false
-                            }
-                        }
-                    }
-                }
-            },
-            {
-                "name": "BackgroundSelector"
-            },
-            {
-                "name": "Identify",
-                "cfg": {
-                    "viewerOptions": {
-                        "container": "{context.ReactSwipe}"
-                    }
-                },
-                "override": {
-                    "Toolbar": {
-                        "position": 11,
-                        "alwaysVisible": false
-                    }
-                }
-            },
-            {
-                "name": "TOC",
-                "cfg": {
-                    "activateMetedataTool": false
-                }
-            },
-            {
-                "name": "Settings",
-                "cfg": {
-                    "wrap": true
-                }
-            },
-            {
-                "name": "Toolbar",
-                "id": "NavigationBar",
-                "cfg": {
-                    "id": "navigationBar",
-                    "layout": "horizontal"
-                }
-            },
-            {
-                "name": "MapLoading",
-                "override": {
-                    "Toolbar": {
-                        "alwaysVisible": true
-                    }
-                }
-            },
-            {
-                "name": "DrawerMenu"
-            },
-            {
-                "name": "Cookie"
-            },
-            {
-                "name": "OmniBar"
-            },
-            {
-                "name": "Expander"
-            },
-            {
-                "name": "BurgerMenu"
-            },
-            {
-                "name": "MapFooter"
-            },
-            {
-                "name": "Measure"
-            },
-            {
-                "name": "Print",
-                "cfg": {
-                    "useFixedScales": true,
-                    "mapWidth": 256
-                }
-            },
-            {
-                "name": "ZoomAll",
-                "override": {
-                    "Toolbar": {
-                        "alwaysVisible": false
-                    }
-                }
-            },
-            {
-                "name": "ZoomIn",
-                "override": {
-                    "Toolbar": {
-                        "alwaysVisible": true
-                    }
-                }
-            },
-            {
-                "name": "ZoomOut",
-                "override": {
-                    "Toolbar": {
-                        "alwaysVisible": true
-                    }
-                }
-            },
-            {
-                "name": "Timeline"
-            },
-            {
-                "name": "Playback"
-            },
-            {
-                "name": "LayerDownload",
-                "cfg": {
-                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
                 }
             },
             {
@@ -1141,7 +879,20 @@
             {
                 "name": "LayerDownload",
                 "cfg": {
-                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                    "formats": [
+                        {"name": "application/json", "label": "GeoJSON", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/arcgrid", "label": "ArcGrid", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/tiff", "label": "TIFF", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/png", "label": "PNG", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/jpeg", "label": "JPEG", "type": "raster", "validServices": ["wps"]},
+                        {"name": "application/wfs-collection-1.0", "label": "wfs-collection-1.0", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/wfs-collection-1.1", "label": "wfs-collection-1.1", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/zip", "label": "Shapefile", "type": "vector", "validServices": ["wps"]},
+                        {"name": "text/csv", "label": "CSV", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/geopackage+sqlite3", "label": "GeoPackage", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/geopackage+sqlite3", "label": "GeoPackage", "type": "raster", "validServices": ["wps"]}
+                    ]
                 }
             },
             {
@@ -1413,7 +1164,20 @@
             {
                 "name": "LayerDownload",
                 "cfg": {
-                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                    "formats": [
+                        {"name": "application/json", "label": "GeoJSON", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/arcgrid", "label": "ArcGrid", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/tiff", "label": "TIFF", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/png", "label": "PNG", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/jpeg", "label": "JPEG", "type": "raster", "validServices": ["wps"]},
+                        {"name": "application/wfs-collection-1.0", "label": "wfs-collection-1.0", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/wfs-collection-1.1", "label": "wfs-collection-1.1", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/zip", "label": "Shapefile", "type": "vector", "validServices": ["wps"]},
+                        {"name": "text/csv", "label": "CSV", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/geopackage+sqlite3", "label": "GeoPackage", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/geopackage+sqlite3", "label": "GeoPackage", "type": "raster", "validServices": ["wps"]}
+                    ]
                 }
             },
             {
@@ -1665,7 +1429,20 @@
             {
                 "name": "LayerDownload",
                 "cfg": {
-                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                    "formats": [
+                        {"name": "application/json", "label": "GeoJSON", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/arcgrid", "label": "ArcGrid", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/tiff", "label": "TIFF", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/png", "label": "PNG", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/jpeg", "label": "JPEG", "type": "raster", "validServices": ["wps"]},
+                        {"name": "application/wfs-collection-1.0", "label": "wfs-collection-1.0", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/wfs-collection-1.1", "label": "wfs-collection-1.1", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/zip", "label": "Shapefile", "type": "vector", "validServices": ["wps"]},
+                        {"name": "text/csv", "label": "CSV", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/geopackage+sqlite3", "label": "GeoPackage", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/geopackage+sqlite3", "label": "GeoPackage", "type": "raster", "validServices": ["wps"]}
+                    ]
                 }
             },
             {
@@ -1935,7 +1712,20 @@
             {
                 "name": "LayerDownload",
                 "cfg": {
-                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                    "formats": [
+                        {"name": "application/json", "label": "GeoJSON", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/arcgrid", "label": "ArcGrid", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/tiff", "label": "TIFF", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/png", "label": "PNG", "type": "raster", "validServices": ["wps"]},
+                        {"name": "image/jpeg", "label": "JPEG", "type": "raster", "validServices": ["wps"]},
+                        {"name": "application/wfs-collection-1.0", "label": "wfs-collection-1.0", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/wfs-collection-1.1", "label": "wfs-collection-1.1", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/zip", "label": "Shapefile", "type": "vector", "validServices": ["wps"]},
+                        {"name": "text/csv", "label": "CSV", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/geopackage+sqlite3", "label": "GeoPackage", "type": "vector", "validServices": ["wps"]},
+                        {"name": "application/geopackage+sqlite3", "label": "GeoPackage", "type": "raster", "validServices": ["wps"]}
+                    ]
                 }
             },
             {
