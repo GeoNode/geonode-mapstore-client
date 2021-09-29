@@ -7,11 +7,28 @@
  */
 
 import isFunction from 'lodash/isFunction';
+import merge from 'lodash/merge';
+import omit from 'lodash/omit';
 import { extendPluginsDefinition } from '@extend/jsapi/plugins';
 
-function toLazyPlugin(name, imp) {
+const EXCLUDED_EPICS_NAMES = [
+    'loadGeostoryEpic',
+    'reloadGeoStoryOnLoginLogout',
+    'loadStoryOnHistoryPop',
+    'saveGeoStoryResource'
+];
+
+function cleanEpics(epics, excludedNames = EXCLUDED_EPICS_NAMES) {
+    const containsExcludedEpic = !!excludedNames.find((epicName) => epics[epicName]);
+    if (containsExcludedEpic) {
+        return omit(epics, excludedNames);
+    }
+    return epics;
+}
+
+function toLazyPlugin(name, implFunc, overrides) {
     const getLazyPlugin = () => {
-        return imp.then((mod) => {
+        return implFunc().then((mod) => {
             const impl = mod.default;
             const pluginName = name + 'Plugin';
             if (!isFunction(impl[pluginName])) {
@@ -22,26 +39,26 @@ function toLazyPlugin(name, imp) {
                     ...containers
                 } = impl[pluginName];
                 return {
-                    'default': {
+                    'default': merge({
                         name,
                         component: impl[pluginName],
                         reducers: impl.reducers || {},
-                        epics: impl.epics || {},
+                        epics: cleanEpics(impl.epics || {}),
                         containers,
                         disablePluginIf,
                         enabler,
                         loadPlugin
-                    }
+                    }, overrides)
                 };
             }
             return {
-                'default': {
+                'default': merge({
                     name,
                     component: impl[pluginName],
                     reducers: impl.reducers || {},
-                    epics: impl.epics || {},
+                    epics: cleanEpics(impl.epics || {}),
                     containers: impl.containers || {}
-                }
+                }, overrides)
             };
         });
     };
@@ -77,191 +94,191 @@ function splitLazyAndStaticPlugins(pluginsDefinition) {
 export const plugins = {
     LayerDownloadPlugin: toLazyPlugin(
         'LayerDownload',
-        import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload')
+        () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload')
     ),
     SwipePlugin: toLazyPlugin(
         'Swipe',
-        import(/* webpackChunkName: 'plugins/swipe' */ '@mapstore/framework/plugins/Swipe')
+        () => import(/* webpackChunkName: 'plugins/swipe' */ '@mapstore/framework/plugins/Swipe')
     ),
     SearchServicesConfigPlugin: toLazyPlugin(
         'SearchServicesConfig',
-        import(/* webpackChunkName: 'plugins/search-service-config' */ '@mapstore/framework/plugins/SearchServicesConfig')
+        () => import(/* webpackChunkName: 'plugins/search-service-config' */ '@mapstore/framework/plugins/SearchServicesConfig')
     ),
     MousePositionPlugin: toLazyPlugin(
         'MousePosition',
-        import(/* webpackChunkName: 'plugins/mouse-position' */ '@mapstore/framework/plugins/MousePosition')
+        () => import(/* webpackChunkName: 'plugins/mouse-position' */ '@mapstore/framework/plugins/MousePosition')
     ),
     StyleEditorPlugin: toLazyPlugin(
         'StyleEditor',
-        import(/* webpackChunkName: 'plugins/style-editor' */ '@mapstore/framework/plugins/StyleEditor')
+        () => import(/* webpackChunkName: 'plugins/style-editor' */ '@mapstore/framework/plugins/StyleEditor')
     ),
     MetadataExplorerPlugin: toLazyPlugin(
         'MetadataExplorer',
-        import(/* webpackChunkName: 'plugins/metadata-explorer' */ '@mapstore/framework/plugins/MetadataExplorer')
+        () => import(/* webpackChunkName: 'plugins/metadata-explorer' */ '@mapstore/framework/plugins/MetadataExplorer')
     ),
     QueryPanelPlugin: toLazyPlugin(
         'QueryPanel',
-        import(/* webpackChunkName: 'plugins/query-panel' */ '@mapstore/framework/plugins/QueryPanel')
+        () => import(/* webpackChunkName: 'plugins/query-panel' */ '@mapstore/framework/plugins/QueryPanel')
     ),
     FeatureEditorPlugin: toLazyPlugin(
         'FeatureEditor',
-        import(/* webpackChunkName: 'plugins/feature-editor-plugin' */ '@mapstore/framework/plugins/FeatureEditor')
+        () => import(/* webpackChunkName: 'plugins/feature-editor-plugin' */ '@mapstore/framework/plugins/FeatureEditor')
     ),
     WidgetsTrayPlugin: toLazyPlugin(
         'WidgetsTray',
-        import(/* webpackChunkName: 'plugins/widgets-tray-plugin' */ '@mapstore/framework/plugins/WidgetsTray')
+        () => import(/* webpackChunkName: 'plugins/widgets-tray-plugin' */ '@mapstore/framework/plugins/WidgetsTray')
     ),
     WidgetsBuilderPlugin: toLazyPlugin(
         'WidgetsBuilder',
-        import(/* webpackChunkName: 'plugins/widgets-builder-plugin' */ '@mapstore/framework/plugins/WidgetsBuilder')
+        () => import(/* webpackChunkName: 'plugins/widgets-builder-plugin' */ '@mapstore/framework/plugins/WidgetsBuilder')
     ),
     WidgetsPlugin: toLazyPlugin(
         'Widgets',
-        import(/* webpackChunkName: 'plugins/widgets-plugin' */ '@mapstore/framework/plugins/Widgets')
+        () => import(/* webpackChunkName: 'plugins/widgets-plugin' */ '@mapstore/framework/plugins/Widgets')
     ),
     TOCItemsSettingsPlugin: toLazyPlugin(
         'TOCItemsSettings',
-        import(/* webpackChunkName: 'plugins/toc-items-settings-plugin' */ '@mapstore/framework/plugins/TOCItemsSettings')
+        () => import(/* webpackChunkName: 'plugins/toc-items-settings-plugin' */ '@mapstore/framework/plugins/TOCItemsSettings')
     ),
     FilterLayerPlugin: toLazyPlugin(
         'FilterLayer',
-        import(/* webpackChunkName: 'plugins/filter-layer-plugin' */ '@mapstore/framework/plugins/FilterLayer')
+        () => import(/* webpackChunkName: 'plugins/filter-layer-plugin' */ '@mapstore/framework/plugins/FilterLayer')
     ),
     MeasurePlugin: toLazyPlugin(
         'Measure',
-        import(/* webpackChunkName: 'plugins/measure-plugin' */ '@mapstore/framework/plugins/Measure')
+        () => import(/* webpackChunkName: 'plugins/measure-plugin' */ '@mapstore/framework/plugins/Measure')
     ),
     FullScreenPlugin: toLazyPlugin(
         'FullScreen',
-        import(/* webpackChunkName: 'plugins/fullscreen-plugin' */ '@mapstore/framework/plugins/FullScreen')
+        () => import(/* webpackChunkName: 'plugins/fullscreen-plugin' */ '@mapstore/framework/plugins/FullScreen')
     ),
     AddGroupPlugin: toLazyPlugin(
         'AddGroup',
-        import(/* webpackChunkName: 'plugins/add-group-plugin' */ '@mapstore/framework/plugins/AddGroup')
+        () => import(/* webpackChunkName: 'plugins/add-group-plugin' */ '@mapstore/framework/plugins/AddGroup')
     ),
     OmniBarPlugin: toLazyPlugin(
         'OmniBar',
-        import(/* webpackChunkName: 'plugins/omni-bar-plugin' */ '@mapstore/framework/plugins/OmniBar')
+        () => import(/* webpackChunkName: 'plugins/omni-bar-plugin' */ '@mapstore/framework/plugins/OmniBar')
     ),
     BurgerMenuPlugin: toLazyPlugin(
         'BurgerMenu',
-        import(/* webpackChunkName: 'plugins/burger-menu-plugin' */ '@mapstore/framework/plugins/BurgerMenu')
+        () => import(/* webpackChunkName: 'plugins/burger-menu-plugin' */ '@mapstore/framework/plugins/BurgerMenu')
     ),
     GeoStoryPlugin: toLazyPlugin(
         'GeoStory',
-        import(/* webpackChunkName: 'plugins/geostory-plugin' */ '@mapstore/framework/plugins/GeoStory')
+        () => import(/* webpackChunkName: 'plugins/geostory-plugin' */ '@mapstore/framework/plugins/GeoStory')
     ),
     MapPlugin: toLazyPlugin(
         'Map',
-        import(/* webpackChunkName: 'plugins/map-plugin' */ '@mapstore/framework/plugins/Map')
+        () => import(/* webpackChunkName: 'plugins/map-plugin' */ '@mapstore/framework/plugins/Map')
     ),
     MediaEditorPlugin: toLazyPlugin(
         'MediaEditor',
-        import(/* webpackChunkName: 'plugins/media-editor-plugin' */ '@mapstore/framework/plugins/MediaEditor')
+        () => import(/* webpackChunkName: 'plugins/media-editor-plugin' */ '@mapstore/framework/plugins/MediaEditor')
     ),
     GeoStoryEditorPlugin: toLazyPlugin(
         'GeoStoryEditor',
-        import(/* webpackChunkName: 'plugins/geostory-editor-plugin' */ '@mapstore/framework/plugins/GeoStoryEditor')
+        () => import(/* webpackChunkName: 'plugins/geostory-editor-plugin' */ '@mapstore/framework/plugins/GeoStoryEditor')
     ),
     GeoStoryNavigationPlugin: toLazyPlugin(
         'GeoStoryNavigation',
-        import(/* webpackChunkName: 'plugins/geostory-navigation-plugin' */ '@mapstore/framework/plugins/GeoStoryNavigation')
+        () => import(/* webpackChunkName: 'plugins/geostory-navigation-plugin' */ '@mapstore/framework/plugins/GeoStoryNavigation')
     ),
     NotificationsPlugin: toLazyPlugin(
         'Notifications',
-        import(/* webpackChunkName: 'plugins/notifications-plugin' */ '@mapstore/framework/plugins/Notifications')
+        () => import(/* webpackChunkName: 'plugins/notifications-plugin' */ '@mapstore/framework/plugins/Notifications')
     ),
     SavePlugin: toLazyPlugin(
         'Save',
-        import(/* webpackChunkName: 'plugins/save-plugin' */ '@js/plugins/Save')
+        () => import(/* webpackChunkName: 'plugins/save-plugin' */ '@js/plugins/Save')
     ),
     SaveAsPlugin: toLazyPlugin(
         'SaveAs',
-        import(/* webpackChunkName: 'plugins/save-as-plugin' */ '@js/plugins/SaveAs')
+        () => import(/* webpackChunkName: 'plugins/save-as-plugin' */ '@js/plugins/SaveAs')
     ),
     SearchPlugin: toLazyPlugin(
         'Search',
-        import(/* webpackChunkName: 'plugins/search-plugin' */ '@mapstore/framework/plugins/Search')
+        () => import(/* webpackChunkName: 'plugins/search-plugin' */ '@mapstore/framework/plugins/Search')
     ),
     SharePlugin: toLazyPlugin(
         'Share',
-        import(/* webpackChunkName: 'plugins/share-plugin' */ '@js/plugins/Share')
+        () => import(/* webpackChunkName: 'plugins/share-plugin' */ '@js/plugins/Share')
     ),
     IdentifyPlugin: toLazyPlugin(
         'Identify',
-        import(/* webpackChunkName: 'plugins/identify-plugin' */ '@mapstore/framework/plugins/Identify')
+        () => import(/* webpackChunkName: 'plugins/identify-plugin' */ '@mapstore/framework/plugins/Identify')
     ),
     ToolbarPlugin: toLazyPlugin(
         'Toolbar',
-        import(/* webpackChunkName: 'plugins/toolbar-plugin' */ '@mapstore/framework/plugins/Toolbar')
+        () => import(/* webpackChunkName: 'plugins/toolbar-plugin' */ '@mapstore/framework/plugins/Toolbar')
     ),
     ZoomAllPlugin: toLazyPlugin(
         'ZoomAll',
-        import(/* webpackChunkName: 'plugins/zoom-all-plugin' */ '@mapstore/framework/plugins/ZoomAll')
+        () => import(/* webpackChunkName: 'plugins/zoom-all-plugin' */ '@mapstore/framework/plugins/ZoomAll')
     ),
     MapLoadingPlugin: toLazyPlugin(
         'MapLoading',
-        import(/* webpackChunkName: 'plugins/map-loading-plugin' */ '@mapstore/framework/plugins/MapLoading')
+        () => import(/* webpackChunkName: 'plugins/map-loading-plugin' */ '@mapstore/framework/plugins/MapLoading')
     ),
     BackgroundSelectorPlugin: toLazyPlugin(
         'BackgroundSelector',
-        import(/* webpackChunkName: 'plugins/background-selector-plugin' */ '@mapstore/framework/plugins/BackgroundSelector')
+        () => import(/* webpackChunkName: 'plugins/background-selector-plugin' */ '@mapstore/framework/plugins/BackgroundSelector')
     ),
     ZoomInPlugin: toLazyPlugin(
         'ZoomIn',
-        import(/* webpackChunkName: 'plugins/zoom-in-plugin' */ '@mapstore/framework/plugins/ZoomIn')
+        () => import(/* webpackChunkName: 'plugins/zoom-in-plugin' */ '@mapstore/framework/plugins/ZoomIn')
     ),
     ZoomOutPlugin: toLazyPlugin(
         'ZoomOut',
-        import(/* webpackChunkName: 'plugins/zoom-out-plugin' */ '@mapstore/framework/plugins/ZoomOut')
+        () => import(/* webpackChunkName: 'plugins/zoom-out-plugin' */ '@mapstore/framework/plugins/ZoomOut')
     ),
     ExpanderPlugin: toLazyPlugin(
         'Expander',
-        import(/* webpackChunkName: 'plugins/expander-plugin' */ '@mapstore/framework/plugins/Expander')
+        () => import(/* webpackChunkName: 'plugins/expander-plugin' */ '@mapstore/framework/plugins/Expander')
     ),
     ScaleBoxPlugin: toLazyPlugin(
         'ScaleBox',
-        import(/* webpackChunkName: 'plugins/scale-box-plugin' */ '@mapstore/framework/plugins/ScaleBox')
+        () => import(/* webpackChunkName: 'plugins/scale-box-plugin' */ '@mapstore/framework/plugins/ScaleBox')
     ),
     MapFooterPlugin: toLazyPlugin(
         'MapFooter',
-        import(/* webpackChunkName: 'plugins/map-footer-plugin' */ '@mapstore/framework/plugins/MapFooter')
+        () => import(/* webpackChunkName: 'plugins/map-footer-plugin' */ '@mapstore/framework/plugins/MapFooter')
     ),
     PrintPlugin: toLazyPlugin(
         'Print',
-        import(/* webpackChunkName: 'plugins/print-plugin' */ '@mapstore/framework/plugins/Print')
+        () => import(/* webpackChunkName: 'plugins/print-plugin' */ '@mapstore/framework/plugins/Print')
     ),
     TimelinePlugin: toLazyPlugin(
         'Timeline',
-        import(/* webpackChunkName: 'plugins/timeline-plugin' */ '@mapstore/framework/plugins/Timeline')
+        () => import(/* webpackChunkName: 'plugins/timeline-plugin' */ '@mapstore/framework/plugins/Timeline')
     ),
     PlaybackPlugin: toLazyPlugin(
         'Playback',
-        import(/* webpackChunkName: 'plugins/playback-plugin' */ '@mapstore/framework/plugins/Playback')
+        () => import(/* webpackChunkName: 'plugins/playback-plugin' */ '@mapstore/framework/plugins/Playback')
     ),
     LocatePlugin: toLazyPlugin(
         'Locate',
-        import(/* webpackChunkName: 'plugins/locate-plugin' */ '@mapstore/framework/plugins/Locate')
+        () => import(/* webpackChunkName: 'plugins/locate-plugin' */ '@mapstore/framework/plugins/Locate')
     ),
     TOCPlugin: toLazyPlugin(
         'TOC',
-        import(/* webpackChunkName: 'plugins/toc-plugin' */ '@mapstore/framework/plugins/TOC')
+        () => import(/* webpackChunkName: 'plugins/toc-plugin' */ '@mapstore/framework/plugins/TOC')
     ),
     DrawerMenuPlugin: toLazyPlugin(
         'DrawerMenu',
-        import(/* webpackChunkName: 'plugins/drawer-menu-plugin' */ '@mapstore/framework/plugins/DrawerMenu')
+        () => import(/* webpackChunkName: 'plugins/drawer-menu-plugin' */ '@mapstore/framework/plugins/DrawerMenu')
     ),
     DashboardEditorPlugin: toLazyPlugin(
         'DashboardEditor',
-        import(/* webpackChunkName: 'plugins/dashboard-editor-plugin' */ '@mapstore/framework/plugins/DashboardEditor')
+        () => import(/* webpackChunkName: 'plugins/dashboard-editor-plugin' */ '@mapstore/framework/plugins/DashboardEditor')
     ),
     DashboardPlugin: toLazyPlugin(
         'Dashboard',
-        import(/* webpackChunkName: 'plugins/dashboard-plugin' */ '@mapstore/framework/plugins/Dashboard')
+        () => import(/* webpackChunkName: 'plugins/dashboard-plugin' */ '@mapstore/framework/plugins/Dashboard')
     ),
     AnnotationsPlugin: toLazyPlugin(
         'Annotations',
-        import(/* webpackChunkName: 'plugins/annotations-plugin' */ '@mapstore/framework/plugins/Annotations')
+        () => import(/* webpackChunkName: 'plugins/annotations-plugin' */ '@mapstore/framework/plugins/Annotations')
     )
 };
 

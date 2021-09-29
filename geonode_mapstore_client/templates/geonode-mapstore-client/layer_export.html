@@ -1,48 +1,42 @@
 <script>
     (function(window) {
 
-        function openDataserExportWindow(MapStoreAPI, config) {
-
+        function openDatasetExportWindow(MapStoreAPI, config) {
             const layers = config.resourceConfig && config.resourceConfig.map && config.resourceConfig.map.layers;
-            var layer = layers && layers[layers.length - 1];
+            const originalLayer = layers && layers[layers.length - 1];
+            const searchUrl = originalLayer && originalLayer.search && originalLayer.search.url;
 
-            function openModal(layer){
+            const INIT_ACTION = 'CHANGE_MAP_VIEW';
 
-                if(layer){
-
+            function openModal(){
+                MapStoreAPI.offAction(INIT_ACTION, openModal);
+                if(originalLayer){
                     MapStoreAPI.triggerAction({
-                                type: 'LAYERS:SELECT_NODE',
-                                id: layer.node,
-                                nodeType: layer.nodeType,
-                                ctrlKey: false
+                        type: 'LAYERDOWNLOAD:CHECK_WPS_AVAILABILITY',
+                        url: originalLayer.url
                     });
                     MapStoreAPI.triggerAction({
-                                type: 'GEONODE:SET_SELECTED_LAYER_PERMISSIONS',
-                                permissions: layer.options.perms || []
-                    });
-
-                    MapStoreAPI.triggerAction({
-                                type: 'SET_CONTROL_PROPERTY',
-                                control: 'layerdownload',
-                                property: 'available',
-                            value: true
+                        type: 'LAYERS:SELECT_NODE',
+                        id: originalLayer.id,
+                        nodeType: 'layer',
+                        ctrlKey: false
                     });
                     MapStoreAPI.triggerAction({
-                            type: 'TOGGLE_CONTROL',
-                            control: 'layerdownload'
+                        type: 'LAYERS:DOWNLOAD',
+                        layer: {
+                            id: originalLayer.id,
+                            name: originalLayer.name,
+                            url: searchUrl || originalLayer.url
+                        }
                     });
-
                 }
-
-
             }
-            MapStoreAPI.onAction('UPDATE_NODE', openModal);
+            MapStoreAPI.onAction(INIT_ACTION, openModal);
         }
 
         window.onInitMapStoreAPI =  function(MapStoreAPI, config) {
-            openDataserExportWindow(MapStoreAPI, config);
+            openDatasetExportWindow(MapStoreAPI, config);
         };
-
 
     })(window);
 </script>
