@@ -7,11 +7,7 @@
   "license": "BSD-2-Clause",
   "devDependencies": {},
   "dependencies": {
-    "@fortawesome/fontawesome-free": "5.15.1",
-    "bootstrap-v4": "npm:bootstrap@4.5.0",
-    "dompurify": "2.2.6",
     "js-cookie": "2.2.1",
-    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#52d99c40112f75391ff544ca084abb8300c0de40",
-    "react-bootstrap-v1": "npm:react-bootstrap@1.3.0"
+    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#52d99c40112f75391ff544ca084abb8300c0de40"
   }
 }
