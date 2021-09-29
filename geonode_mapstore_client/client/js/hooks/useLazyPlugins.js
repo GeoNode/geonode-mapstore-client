@@ -23,6 +23,9 @@ function filterRemoved(registry, removed = []) {
     }, {});
 }
 
+const existingEpics = {};
+const existingReducers = {};
+
 function useLazyPlugins({
     pluginsEntries = {},
     pluginsConfig = [],
@@ -64,7 +67,39 @@ function useLazyPlugins({
                     reducers: {},
                     epics: {}
                 });
-                augmentStore({ reducers, epics });
+
+                // the epics and reducers once included in the store cannot be overridden
+                // so we need to filter out the one previously added and include only new one
+                const filterOutExistingEpics = Object.keys(epics)
+                    .reduce((acc, key) => {
+                        if (existingEpics[key]) {
+                            return acc;
+                        }
+                        existingEpics[key] = true;
+                        return {
+                            ...acc,
+                            [key]: epics[key]
+                        };
+                    }, {});
+
+
+                const filterOutExistingReducers = Object.keys(reducers)
+                    .reduce((acc, key) => {
+                        if (existingReducers[key]) {
+                            return acc;
+                        }
+                        existingReducers[key] = true;
+                        return {
+                            ...acc,
+                            [key]: reducers[key]
+                        };
+                    }, {});
+
+                augmentStore({
+                    reducers: filterOutExistingReducers,
+                    epics: filterOutExistingEpics
+                });
+
                 return pluginsKeys.map((pluginName, idx) => {
                     const { loadPlugin, enabler, ...impl } = impls[idx];
                     const pluginDef = {

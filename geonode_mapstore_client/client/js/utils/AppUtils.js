@@ -106,7 +106,7 @@ export function setupConfiguration({
 
     setConfigProp('translationsPath', config.translationsPath
         ? config.translationsPath
-        : __MAPSTORE_PROJECT_CONFIG__.translationsPath
+        : ['/static/mapstore/gn-translations', '/static/mapstore/ms-translations']
     );
     const supportedLocales = defaultSupportedLocales || getSupportedLocales();
     setSupportedLocales(supportedLocales);

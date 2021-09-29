@@ -9,7 +9,6 @@
 import isFunction from 'lodash/isFunction';
 import merge from 'lodash/merge';
 import omit from 'lodash/omit';
-import { extendPluginsDefinition } from '@extend/jsapi/plugins';
 
 const EXCLUDED_EPICS_NAMES = [
     'loadGeostoryEpic',
@@ -289,10 +288,4 @@ const pluginsDefinition = {
     reducers: {}
 };
 
-const extendedPluginsDefinition = splitLazyAndStaticPlugins(
-    extendPluginsDefinition
-        ? extendPluginsDefinition(pluginsDefinition, { toLazyPlugin })
-        : pluginsDefinition
-);
-
-export default extendedPluginsDefinition;
+export default splitLazyAndStaticPlugins(pluginsDefinition);
