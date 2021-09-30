@@ -1,3 +1,50 @@
+{% if request.user_agent.is_mobile and is_embed != "true" %}
+    <style>
+        body {
+            padding-top: 0px !important;
+        }
+        #ms-container {
+            position: absolute;
+            top: 72px !important;
+            bottom: 0px;
+            width: 100%;
+            z-index: 1029;
+        }
+        #ms-container > iframe {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        #wrap {
+            display: none;
+        }
+    </style>
+    <div id="ms-container">
+        {% if request.GET.layer %}
+            <iframe src="/layers/{{request.GET.layer}}/embed"></iframe>
+        {% else %}
+            <iframe></iframe>
+            <script>
+                // the only way to get the id from a map context
+                // is to look inside the map.info config
+                // probably this could be simplified by injecting the GeoNode resource
+                // end use the {{ resource.embed_url }} property
+                (function(){
+                    try {
+                        const config = {{ ms2_config|default:'false'|safe }};
+                        const iframe = document.querySelector('#ms-container > iframe');
+                        iframe.setAttribute('src', '/maps/' + config.map.info.id + '/embed')
+                    } catch (e) {
+                        console.error(e);
+                    }
+                })();
+            </script>
+        {% endif %}
+        
+    </div>
+{% else %}
+
 {% load static %}
 {% load client_version %}
 <style>
@@ -88,3 +135,4 @@
 </div>
 <script id="gn-script" src="{% static 'mapstore/dist/js/gn-map.js' %}?{% client_version %}"></script>
 {% endblock %}
+{% endif %}

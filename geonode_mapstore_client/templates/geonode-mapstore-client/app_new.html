@@ -1,3 +1,30 @@
+
+{% if request.user_agent.is_mobile and is_embed != "true" %}
+    <style>
+        body {
+            padding-top: 0px !important;
+        }
+        #ms-container {
+            position: absolute;
+            top: 72px !important;
+            bottom: 0px;
+            width: 100%;
+            z-index: 1029;
+        }
+        #ms-container > iframe {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        #wrap {
+            display: none;
+        }
+    </style>
+    <div id="ms-container">
+        <iframe src="{{ resource.embed_url }}"></iframe>
+    </div>
+{% else %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
     .gn-main-loader-container {
@@ -99,3 +126,4 @@
         </div>
     </div>
 </div>
+{% endif %}

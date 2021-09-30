@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // get the correct map layout
             const mapLayout = getConfigProp('mapLayout') || {};
-            setConfigProp('mapLayout', mapLayout[query.theme] || mapLayout.viewer);
+            setConfigProp('mapLayout', mapLayout[query.theme] || mapLayout[pluginsConfigKey] || mapLayout.viewer);
 
             // register custom arcgis layer
             import('@js/components/' + mapType + '/ArcGisMapServer')
