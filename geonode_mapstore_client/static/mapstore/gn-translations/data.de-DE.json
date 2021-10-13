@@ -139,11 +139,14 @@
             "viewMetadata": "Metadaten anzeigen",
             "viewData":  "Daten anzeigen",
             "backToDataset": "Zurück zum Datensatz",
-            "uploadImage": "Klicken oder ziehen Sie ein Bild und legen Sie es ab",
+            "uploadImage": "Klicken Sie hier, um ein Bild hochzuladen",
             "save": "Speichern",
             "share": "Teilen",
             "download": "Herunterladen",
             "moreinfo": "Mehr Info",
+            "setMapLikeThumbnail": "Kartenminiatur einstellen",
+            "thumbnailsaved": "Miniaturansicht gespeichert",
+            "thumbnailnotsaved": "Fehler-Thumbnail nicht gespeicher",
             "info": "Info",
             "attributeName": "Attributname",
             "label": "Etikett",
@@ -184,7 +187,8 @@
             "errorCompactPermissionsTitle": "Fehler beim Berechtigungsupdate",
             "errorCompactPermissionsMessage": "Es war nicht möglich die Berechtigungen zu aktualisieren",
             "warningGeoLimitsSaveTitle": "Unvollständiger Speichervorgang",
-            "warningGeoLimitsSaveMessage": "Es war nicht möglich die neuen Geolimits zu aktualisieren"
+            "warningGeoLimitsSaveMessage": "Es war nicht möglich die neuen Geolimits zu aktualisieren",
+            "saveMapThumbnail": "Klicken Sie hier, um die Karte als Bild festzulegen"
         }
     }
 }

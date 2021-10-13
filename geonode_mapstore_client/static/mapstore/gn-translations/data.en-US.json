@@ -140,11 +140,14 @@
             "viewMetadata": "View Metadata",
             "viewData": "View Data",
             "backToDataset": "Back to Dataset",
-            "uploadImage": "Click or drag and drop an image",
+            "uploadImage": "Click to upload an image",
             "save": "Save",
             "share": "Share",
             "download": "Download",
             "moreinfo": "More info",
+            "setMapLikeThumbnail": "Set map thumbnail",
+            "thumbnailsaved": "Thumbnail saved",
+            "thumbnailnotsaved": "Error thumbnail not saved",
             "info": "Info",
             "attributeName": "Attribute name",
             "label": "Label",
@@ -185,7 +188,8 @@
             "errorCompactPermissionsTitle": "Error on permission update",
             "errorCompactPermissionsMessage": "It was not possible to update the permissions",
             "warningGeoLimitsSaveTitle": "Incomplete saving process",
-            "warningGeoLimitsSaveMessage": "It was not possible to update the new geo limits"
+            "warningGeoLimitsSaveMessage": "It was not possible to update the new geo limits",
+            "saveMapThumbnail": "Click to set the map as an image"
         }
     }
 }

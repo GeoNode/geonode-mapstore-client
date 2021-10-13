@@ -906,6 +906,9 @@
                 }
             },
             {
+                "name": "MapThumbnail"
+            },
+            {
                 "name": "Share",
                 "cfg": {
                     "enableGeoLimits": true
@@ -1387,6 +1390,9 @@
         "map_viewer": [
             {
                 "name": "ViewerLayout"
+            },
+            {
+                "name": "MapThumbnail"
             },
             {
                 "name": "ActionNavbar",

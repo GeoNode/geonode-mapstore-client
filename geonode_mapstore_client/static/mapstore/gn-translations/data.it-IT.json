@@ -141,11 +141,14 @@
             "editStyle": "Modifica Stile",
             "editData": "Modifica Dati",
             "backToDataset": "Torna al Dataset",
-            "uploadImage": "Clicca o trascina un'immagine",
+            "uploadImage": "Clicca per caricare l'immagine",
             "save": "Salva",
             "share": "Condividi",
             "download": "Scarica",
             "moreinfo": "Maggiori informazioni",
+            "setMapLikeThumbnail": "Imposta immagine mappa",
+            "thumbnailsaved": "Immagine salvata",
+            "thumbnailnotsaved": "Errore immagine non salvata",
             "info": "Info",
             "attributeName": "Nome attributo",
             "label": "Etichetta",
@@ -186,7 +189,8 @@
             "errorCompactPermissionsTitle": "Errore nell'aggiornamento delle autorizzazioni",
             "errorCompactPermissionsMessage": "Non è stato possibile aggiornare i permessi",
             "warningGeoLimitsSaveTitle": "Processo di salvataggio incompleto",
-            "warningGeoLimitsSaveMessage": "Non è stato possibile aggiornare i nuovi limiti geografici"
+            "warningGeoLimitsSaveMessage": "Non è stato possibile aggiornare i nuovi limiti geografici",
+            "saveMapThumbnail": "Clicca per impostare la mappa come immagine"
         }
     }
 }

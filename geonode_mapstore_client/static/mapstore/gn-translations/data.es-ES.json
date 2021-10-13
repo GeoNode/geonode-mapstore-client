@@ -139,11 +139,14 @@
             "viewMetadata": "Ver metadatos",
             "viewData":  "Ver datos",
             "backToDataset": "Volver al Conjunto de Datos",
-            "uploadImage": "Haga clic o arrastre y suelte una imagen",
+            "uploadImage": "Haz clic para subir una imagen",
             "save": "Ahorrar",
             "share": "Cuota",
             "download": "Descargar",
             "moreinfo": "Más información",
+            "setMapLikeThumbnail": "Establecer miniatura de mapa",
+            "thumbnailsaved": "Miniatura guardada",
+            "thumbnailnotsaved": "Miniatura de error no guardada",
             "info": "Info",
             "attributeName": "Nombre del Atributo",
             "label": "Etiqueta",
@@ -184,7 +187,8 @@
             "errorCompactPermissionsTitle": "Error en la actualización de permisos",
             "errorCompactPermissionsMessage": "No fue posible actualizar los permisos",
             "warningGeoLimitsSaveTitle": "Proceso de guardado incompleto",
-            "warningGeoLimitsSaveMessage": "No fue posible actualizar los nuevos límites geográficos"
+            "warningGeoLimitsSaveMessage": "No fue posible actualizar los nuevos límites geográficos",
+            "saveMapThumbnail": "Haga clic para configurar el mapa como una imagen"
         }
     }
 }
