@@ -131,7 +131,11 @@
         },
         "gnviewer": {
             "edit": "Éditer",
+            "export": "Exportation",
             "editMetadata": "Modifier les Métadonnées",
+            "view": "Vue",
+            "viewMetadata": "Afficher les métadonnées",
+            "viewData":  "Afficher les données",
             "editStyle": "Modifier le Style",
             "editData": "Modifier les Données",
             "backToDataset": "Retour à l'Ensemble de Données",

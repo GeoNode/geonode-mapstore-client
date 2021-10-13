@@ -411,7 +411,7 @@
                 {
                     "type": "link",
                     "href": "${detail_url}",
-                    "labelId": "gnhome.open",
+                    "labelId": "gnhome.view",
                     "icon": "edit",
                     "perms": [
                         {
@@ -801,12 +801,7 @@
                         {
                             "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "change_resourcebase"
-                                }
-                            ],
+                            "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "type": "dropdown",
                             "items": [
                                 {
@@ -826,12 +821,7 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "change_resourcebase"
-                                }
-                            ],
+                            "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
                                     "type": "link",
@@ -842,23 +832,30 @@
                                     "type": "link",
                                     "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/style'}",
                                     "labelId": "gnviewer.editStyle",
-                                    "perms": [
-                                        {
-                                            "type": "resource",
-                                            "value": "change_dataset_style"
-                                        }
-                                    ]
+                                    "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'change_dataset_style')}"
                                 },
                                 {
                                     "type": "link",
                                     "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
                                     "labelId": "gnviewer.editData",
-                                    "perms": [
-                                        {
-                                            "type": "resource",
-                                            "value": "change_dataset_data"
-                                        }
-                                    ]
+                                    "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'change_dataset_data')}"
+                                }
+                            ]
+                        },
+                        {
+                            "labelId": "gnviewer.view",
+                            "type": "dropdown",
+                            "disableIf": "{context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "items": [
+                                {
+                                    "type": "link",
+                                    "href": "{context.getMetadataDetailUrl(state('gnResourceData'))}",
+                                    "labelId": "gnviewer.viewMetadata"
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
+                                    "labelId": "gnviewer.viewData"
                                 }
                             ]
                         },
@@ -885,12 +882,7 @@
                         {
                             "type": "plugin",
                             "name": "DeleteResource",
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "delete_resourcebase"
-                                }
-                            ]
+                            "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
                         }
                     ],
                     "rightMenuItems": [
@@ -1403,12 +1395,7 @@
                         {
                             "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "change_resourcebase"
-                                }
-                            ],
+                            "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "type": "dropdown",
                             "items": [
                                 {
@@ -1428,18 +1415,24 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "disableIf": "{state('isNewResource')}",
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "change_resourcebase"
-                                }
-                            ],
+                            "disableIf": "{state('isNewResource') || !context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
+                                }
+                            ]
+                        },
+                        {
+                            "labelId": "gnviewer.view",
+                            "type": "dropdown",
+                            "disableIf": "{context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "items": [
+                                {
+                                    "type": "link",
+                                    "href": "{context.getMetadataDetailUrl(state('gnResourceData'))}",
+                                    "labelId": "gnviewer.viewMetadata"
                                 }
                             ]
                         },
@@ -1470,12 +1463,7 @@
                         {
                             "type": "plugin",
                             "name": "DeleteResource",
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "delete_resourcebase"
-                                }
-                            ]
+                            "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
                         }
                     ],
                     "rightMenuItems": [
@@ -1887,12 +1875,7 @@
                         {
                             "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "change_resourcebase"
-                                }
-                            ],
+                            "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "type": "dropdown",
                             "items": [
                                 {
@@ -1912,18 +1895,24 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "disableIf": "{state('isNewResource')}",
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "change_resourcebase"
-                                }
-                            ],
+                            "disableIf": "{state('isNewResource') || !context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
+                                }
+                            ]
+                        },
+                        {
+                            "labelId": "gnviewer.view",
+                            "type": "dropdown",
+                            "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "items": [
+                                {
+                                    "type": "link",
+                                    "href": "{context.getMetadataDetailUrl(state('gnResourceData'))}",
+                                    "labelId": "gnviewer.viewMetadata"
                                 }
                             ]
                         },
@@ -2075,12 +2064,7 @@
                             "labelId": "gnviewer.save",
                             "type": "dropdown",
                             "showPendingChangesIcon": true,
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "change_resourcebase"
-                                }
-                            ],
+                            "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
                                     "type": "plugin",
@@ -2099,17 +2083,24 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "change_resourcebase"
-                                }
-                            ],
+                            "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
+                                }
+                            ]
+                        },
+                        {
+                            "labelId": "gnviewer.view",
+                            "type": "dropdown",
+                            "disableIf": "{context.resourseHasPermission(state('gnResourceData'), 'download_resourcebase')}",
+                            "items": [
+                                {
+                                    "type": "link",
+                                    "href": "{context.getMetadataDetailUrl(state('gnResourceData'))}",
+                                    "labelId": "gnviewer.viewMetadata"
                                 }
                             ]
                         },
@@ -2120,22 +2111,12 @@
                         {
                             "type": "plugin",
                             "name": "DownloadResource",
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "download_resourcebase"
-                                }
-                            ]
+                            "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'download_resourcebase')}"
                         },
                         {
                             "type": "plugin",
                             "name": "DeleteResource",
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "delete_resourcebase"
-                                }
-                            ]
+                            "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
                         }
                     ],
                     "rightMenuItems": [
@@ -2185,12 +2166,7 @@
                             "labelId": "gnviewer.save",
                             "type": "dropdown",
                             "showPendingChangesIcon": true,
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "change_resourcebase"
-                                }
-                            ],
+                            "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
                                     "type": "plugin",
@@ -2209,18 +2185,24 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "disableIf": "{state('isNewResource')}",
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "change_resourcebase"
-                                }
-                            ],
+                            "disableIf": "{state('isNewResource') || !context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
+                                }
+                            ]
+                        },
+                        {
+                            "labelId": "gnviewer.view",
+                            "type": "dropdown",
+                            "disableIf": "{context.resourseHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "items": [
+                                {
+                                    "type": "link",
+                                    "href": "{context.getMetadataDetailUrl(state('gnResourceData'))}",
+                                    "labelId": "gnviewer.viewMetadata"
                                 }
                             ]
                         },
@@ -2231,12 +2213,7 @@
                         {
                             "type": "plugin",
                             "name": "DeleteResource",
-                            "perms": [
-                                {
-                                    "type": "resource",
-                                    "value": "delete_resourcebase"
-                                }
-                            ]
+                            "disableIf": "{!context.resourseHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
                         }
                     ],
                     "rightMenuItems": [

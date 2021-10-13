@@ -131,9 +131,13 @@
         },
         "gnviewer": {
             "edit": "Editar",
+            "export": "Exportar",
             "editMetadata": "Editar Metadatos",
             "editStyle": "Editar Estilo",
             "editData": "Editar Datos",
+            "view": "Vista",
+            "viewMetadata": "Ver metadatos",
+            "viewData":  "Ver datos",
             "backToDataset": "Volver al Conjunto de Datos",
             "uploadImage": "Haga clic o arrastre y suelte una imagen",
             "save": "Ahorrar",
