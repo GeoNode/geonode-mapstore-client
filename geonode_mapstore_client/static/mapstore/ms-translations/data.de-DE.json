@@ -38,7 +38,7 @@
             "label": "Version"
         },
         "errorPage": {
-            "title":"Ups, etwas ist schief gelaufen",
+            "title":"Ups, etwas ist schief gelaufen...",
             "subtitle":"Klicken Sie auf das Symbol unten, um MapStore neu zu laden",
             "description":"Wenn Sie diesen Fehler melden möchten, können Sie eine E-Mail an unsere Mailingliste senden",
             "descriptionAdmin":"Bitte wenden Sie sich an den Administrator"
@@ -1459,6 +1459,18 @@
             "format": {
                 "noOption": "Keine Option",
                 "loading": "Wird geladen..."
+            },
+            "filter": {
+                "static": {
+                    "label": "Statischer Filter",
+                    "info": "Filter wird immer angewendet, auch bei leerer Suche"
+                },
+                "dynamic": {
+                    "label": "Dynamischer Filter",
+                    "info": "Filter wird verwendet, wenn Suchtext vorhanden ist und wird in 'UND' mit statischem Filter angewendet",
+                    "helpText": "Verwenden Sie eine Vorlage mit dem Platzhalter ${searchText}, um die Suchzeichenfolge zu erfassen"
+                },
+              "error": "Ungültige XML-Syntax"
             }
         },
         "uploader": {
@@ -1757,7 +1769,8 @@
                 "nodatainviewport": "Keine Daten im aktuellen Ansichtsfenster",
                 "timeoutExpired": "Der Aufruf des Service hat zu lange gedauert. Vielleicht ist die Abfrage zu komplex oder der Server ist beschäftigt",
                 "genericError": "Beim Abrufen der Daten ist ein Fehler aufgetreten",
-                "genericErrorWithMessage": "Beim Abrufen der Daten ist ein Fehler aufgetreten: \"{message}\""
+                "genericErrorWithMessage": "Beim Abrufen der Daten ist ein Fehler aufgetreten: \"{message}\"",
+                "layerNotAvailable": "Der Layer {layerName} ist nicht mehr verfügbar"
             },
             "builder": {
                 "header": {
@@ -2171,6 +2184,12 @@
             "fontWeightBold": "Bold",
             "boolTrue": "True",
             "boolFalse": "False",
+            "colorMapType": {
+              "label": "Farbkartentyp",
+              "ramp": "Rampe",
+              "intervals": "Intervalle",
+              "values": "Werte"
+            },
             "addRuleBefore": "Fügen Sie zuvor einen neuen Eintrag hinzu",
             "addRuleAfter": "Neuen Eintrag hinzufügen nach",
             "remove": "Entfernen",
@@ -2231,6 +2250,7 @@
             "emptyRuleEditor": "Es gibt keine Regeln für diesen Stil. Fügen Sie eine neue Regel hinzu, indem Sie in der Symbolleiste auf den gewünschten Symbolisierungstyp klicken",
             "classificationError": "Dienst nicht verfügbar. Derzeit ist es nicht möglich, eine Klassifizierung zu erstellen",
             "classificationRasterError": "Dienst nicht verfügbar. Derzeit ist es nicht möglich, eine Rasterklassifizierung zu erstellen.",
+            "classificationRasterUniqueIntervalError": "Eindeutige Wertklassifizierung über Raster vom Typ Float nicht möglich, nur Ganzzahlen werden unterstützt. Versuchen Sie es stattdessen mit einer anderen Klassifizierung",
             "classificationUniqueIntervalError": "Maximale Intervallgrenzen überschritten! Sie versuchen, eine eindeutige Intervallklassifizierung mit einem Attribut zu generieren, das mehr als {intervalsForUnique} verschiedene Klassen enthält. Eine eindeutige Intervallklassifizierung sollte auf Attribute mit einem begrenzten Satz von Intervallen angewendet werden, um eine bessere Lesbarkeit des Stils zu ermöglichen. Sie können eine andere Methode für das ausgewählte Attribut ausprobieren",
             "redChannel": "Red channel",
             "greenChannel": "Green channel",
