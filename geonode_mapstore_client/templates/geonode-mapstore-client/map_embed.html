@@ -11,6 +11,8 @@
         <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
         <title>{{ SITE_NAME }}</title>
         <link rel="shortcut icon" href="{% static 'geonode/img/favicon.ico' %}" />
+        <!-- we need to preload the font awesome style for annotation icons -->
+        <link rel="stylesheet" href="{% static 'geonode/css/font-awesome.min.css' %}" />
         <style>
             .gn-main-loader-container {
                 position: absolute;

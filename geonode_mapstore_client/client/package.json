@@ -25,7 +25,7 @@
   "author": "GeoSolutions",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "@mapstore/project": "1.0.19"
+    "@mapstore/project": "1.0.20"
   },
   "dependencies": {
     "js-cookie": "2.2.1",
