@@ -180,7 +180,7 @@ export function getGeoLimitsFromCompactPermissions({ groups = [], users = [], or
     return entries;
 }
 
-export const resourseHasPermission = (resource, perm) => {
+export const resourceHasPermission = (resource, perm) => {
     return resource?.perms?.includes(perm);
 };
 
@@ -196,7 +196,7 @@ export const ResourceTypes = {
 export const getResourceTypesInfo = () => ({
     [ResourceTypes.DATASET]: {
         icon: 'database',
-        canPreviewed: (resource) => resourseHasPermission(resource, 'view_resourcebase'),
+        canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: (resource) => parseDevHostname(updateUrlQueryParameter(resource.embed_url, {
             config: 'dataset_preview'
         })),
@@ -207,7 +207,7 @@ export const getResourceTypesInfo = () => ({
     [ResourceTypes.MAP]: {
         icon: 'map',
         name: 'Map',
-        canPreviewed: (resource) => resourseHasPermission(resource, 'view_resourcebase'),
+        canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: (resource) => parseDevHostname(updateUrlQueryParameter(resource.embed_url, {
             config: 'map_preview'
         })),
@@ -217,7 +217,7 @@ export const getResourceTypesInfo = () => ({
     [ResourceTypes.DOCUMENT]: {
         icon: 'file',
         name: 'Document',
-        canPreviewed: (resource) => resourseHasPermission(resource, 'download_resourcebase'),
+        canPreviewed: (resource) => resourceHasPermission(resource, 'download_resourcebase'),
         formatEmbedUrl: (resource) => resource?.embed_url && parseDevHostname(resource.embed_url),
         formatDetailUrl: (resource) => resource?.detail_url && parseDevHostname(resource.detail_url),
         formatMetadataUrl: (resource) => (`/documents/${resource.pk}/metadata`)
@@ -225,7 +225,7 @@ export const getResourceTypesInfo = () => ({
     [ResourceTypes.GEOSTORY]: {
         icon: 'book',
         name: 'GeoStory',
-        canPreviewed: (resource) => resourseHasPermission(resource, 'view_resourcebase'),
+        canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: (resource) => resource?.embed_url && parseDevHostname(resource.embed_url),
         formatDetailUrl: (resource) => resource?.detail_url && parseDevHostname(resource.detail_url),
         formatMetadataUrl: (resource) => (`/apps/${resource.pk}/metadata`)
@@ -233,6 +233,7 @@ export const getResourceTypesInfo = () => ({
     [ResourceTypes.DASHBOARD]: {
         icon: 'dashboard',
         name: 'Dashboard',
+        canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: (resource) => resource?.embed_url && parseDevHostname(resource.embed_url),
         formatDetailUrl: (resource) => resource?.detail_url && parseDevHostname(resource.detail_url),
         formatMetadataUrl: (resource) => (`/apps/${resource.pk}/metadata`)

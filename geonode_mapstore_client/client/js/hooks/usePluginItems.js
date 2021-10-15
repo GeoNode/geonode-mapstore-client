@@ -17,7 +17,6 @@ const usePluginItems = ({
 }, dependencies = []) => {
     function configurePluginItems(props) {
         return [...props.items]
-            .filter(item => !item?.plugin?.loadPlugin) // remove plugins not completely loaded
             .sort((a, b) => a.position > b.position ? 1 : -1)
             .map(plg => ({
                 ...plg,

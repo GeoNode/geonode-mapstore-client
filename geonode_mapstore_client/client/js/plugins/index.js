@@ -19,7 +19,7 @@ import {
 } from '@js/plugins/actionnavbar/buttons';
 import { getMetadataUrl,
     getMetadataDetailUrl,
-    resourseHasPermission } from '@js/utils/ResourceUtils';
+    resourceHasPermission } from '@js/utils/ResourceUtils';
 
 const EXCLUDED_EPICS_NAMES = [
     'loadGeostoryEpic',
@@ -392,7 +392,7 @@ const pluginsDefinition = {
     requires: {
         getMetadataUrl,
         getMetadataDetailUrl,
-        resourseHasPermission
+        resourceHasPermission
     },
     epics: {},
     reducers: {}
