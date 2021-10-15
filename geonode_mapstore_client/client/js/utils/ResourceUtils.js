@@ -45,7 +45,9 @@ export const resourceToLayerConfig = (resource) => {
         title,
         perms,
         pk,
-        has_time: hasTime
+        has_time: hasTime,
+        default_style: defaultStyle,
+        styles
     } = resource;
 
     const bbox = getExtentFromResource(resource);
@@ -91,6 +93,14 @@ export const resourceToLayerConfig = (resource) => {
         style: '',
         title,
         visibility: true,
+        defaultStyle: {
+            title: defaultStyle.sld_title,
+            name: defaultStyle.workspace ? `${defaultStyle.workspace}:${defaultStyle.name}` : defaultStyle.name
+        },
+        availableStyles: [ ...styles ].map((style) => ({
+            title: style.sld_title,
+            name: style.workspace ? `${style.workspace}:${style.name}` : style.name
+        })),
         ...(params && { params }),
         ...(dimensions.length > 0 && ({ dimensions }))
     };

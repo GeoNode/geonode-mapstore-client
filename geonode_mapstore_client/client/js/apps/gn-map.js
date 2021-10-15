@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { getConfigProp, setConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { loadPrintCapabilities } from '@mapstore/framework/actions/print';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
+import { changeMapInfoFormat } from '@mapstore/framework/actions/mapInfo';
 import StandardApp from '@mapstore/framework/components/app/StandardApp';
 import withExtensions from '@mapstore/framework/components/app/withExtensions';
 
@@ -182,7 +183,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             setControlProperty.bind(null, 'toolbar', 'expanded', false),
                             ...(resourceId !== undefined
                                 ? [ requestResourceConfig.bind(null, geoNodePageConfig.resourceType || ResourceTypes.MAP, resourceId) ]
-                                : [])
+                                : []),
+                            changeMapInfoFormat.bind(null, 'application/json')
                         ]
                     },
                     withExtensions(StandardApp));

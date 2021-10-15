@@ -139,3 +139,13 @@ div#mapstore-globalspinner {
 .feature-grid-container .ms2-border-layout-body .react-grid-HeaderRow .react-grid-HeaderCell .rw-datetimepicker.rw-widget input {
     height: auto;
 }
+
+.ms-popover-overlay {
+    z-index: 2000;
+}
+
+// show ellipsis if the title overflow the get feature info popup
+.ms-map-popup .mapstore-identify-viewer .ms-identify-swipe-header-title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

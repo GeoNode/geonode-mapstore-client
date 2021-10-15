@@ -21,10 +21,12 @@ import {
 import { configureMap } from '@mapstore/framework/actions/config';
 import {
     browseData,
-    selectNode,
-    showSettings
+    selectNode
 } from '@mapstore/framework/actions/layers';
-import { toggleStyleEditor } from '@mapstore/framework/actions/styleeditor';
+import {
+    updateStatus,
+    initStyleService
+} from '@mapstore/framework/actions/styleeditor';
 import {
     setNewResource,
     setResourceType,
@@ -59,18 +61,34 @@ import {
     ResourceTypes
 } from '@js/utils/ResourceUtils';
 import { canAddResource } from '@js/selectors/resource';
+import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallayers';
+import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
+import StylesAPI from '@mapstore/framework/api/geoserver/Styles';
+import { styleServiceSelector } from '@mapstore/framework/selectors/styleeditor';
+import { updateStyleService } from '@mapstore/framework/api/StyleEditor';
 
 const resourceTypes = {
     [ResourceTypes.DATASET]: {
         resourceObservable: (pk, options) => {
             const { page } = options || {};
-            return Observable.defer(() => axios.all([
-                getNewMapConfiguration(),
-                getDatasetByPk(pk)
-            ]))
+            return Observable.defer(() =>
+                axios.all([
+                    getNewMapConfiguration(),
+                    getDatasetByPk(pk)
+                ])
+                    .then((response) => {
+                        const [mapConfig, gnLayer] = response;
+                        const newLayer = resourceToLayerConfig(gnLayer);
+                        return StylesAPI.getStylesInfo({
+                            baseUrl: options?.styleService?.baseUrl,
+                            styles: [newLayer.defaultStyle]
+                        }).then((availableStyles) => {
+                            return [mapConfig, gnLayer, { ...newLayer, availableStyles }];
+                        });
+                    })
+            )
                 .switchMap((response) => {
-                    const [mapConfig, gnLayer] = response;
-                    const newLayer = resourceToLayerConfig(gnLayer);
+                    const [mapConfig, gnLayer, newLayer] = response;
                     const {minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
                     const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
                     return Observable.of(
@@ -98,11 +116,9 @@ const resourceTypes = {
                             : []),
                         ...(page === 'dataset_edit_style_viewer'
                             ? [
-                                showSettings(newLayer.id, 'layers', {
-                                    opacity: newLayer.opacity || 1
-                                }),
-                                setControlProperty('layersettings', 'activeTab', 'style'),
-                                toggleStyleEditor(null, true)
+                                setControlProperty('visualStyleEditor', 'enabled', true),
+                                updateAdditionalLayer(newLayer.id, STYLE_OWNER_NAME, 'override', {}),
+                                updateStatus('edit')
                             ]
                             : [])
                     );
@@ -279,7 +295,7 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     loadingResourceConfig(false)
                 );
             }
-
+            const styleService = styleServiceSelector(state);
             return Observable.concat(
                 Observable.of(
                     ...getResetActions(),
@@ -293,11 +309,20 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     .catch(() => {
                         return Observable.empty();
                     }),
+                ...(styleService?.baseUrl
+                    ? [Observable.defer(() => updateStyleService({
+                        styleService
+                    }))
+                        .switchMap((updatedStyleService) => {
+                            return Observable.of(initStyleService(updatedStyleService));
+                        })]
+                    : []),
                 resourceObservable(action.pk, {
                     ...action.options,
                     // set the pending changes as the new data fro maps, dashboards and geostories
                     // if undefined the returned data will be used
-                    data: pendingChanges?.data
+                    data: pendingChanges?.data,
+                    styleService: styleServiceSelector(state)
                 }),
                 Observable.of(
                     ...(pendingChanges?.resource ? [updateResourceProperties(pendingChanges.resource)] : []),

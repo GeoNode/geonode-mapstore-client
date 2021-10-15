@@ -383,6 +383,10 @@ export const plugins = {
     DownloadResourcePlugin: toLazyPlugin(
         'DownloadResource',
         () => import(/* webpackChunkName: 'plugins/download-resource-plugin' */ '@js/plugins/DownloadResource')
+    ),
+    VisualStyleEditorPlugin: toLazyPlugin(
+        'VisualStyleEditor',
+        () => import(/* webpackChunkName: 'plugins/visual-style-editor-plugin' */ '@js/plugins/VisualStyleEditor')
     )
 
 };

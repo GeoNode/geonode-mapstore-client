@@ -1300,12 +1300,22 @@
                             "type": "link",
                             "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk}",
                             "labelId": "gnviewer.backToDataset"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "SaveStyle"
+                        }
+                    ],
+                    "rightMenuItems": [
+                        {
+                            "type": "plugin",
+                            "name": "FullScreen"
                         }
                     ]
                 }
             },
             {
-                "name": "StyleEditor",
+                "name": "VisualStyleEditor",
                 "cfg": {
                     "styleService": {
                         "baseUrl": "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}",
@@ -1331,18 +1341,20 @@
                 }
             },
             {
+                "name": "Identify",
+                "cfg": {
+                    "showInMapPopup":true,
+                    "viewerOptions": {
+                        "container": "{context.ReactSwipe}"
+                    }
+                }
+            },
+            {
                 "name": "DrawerMenu",
                 "override": {
                     "ViewerLayout": {
                         "priority": 1
                     }
-                }
-            },
-            {
-                "name": "TOCItemsSettings",
-                "cfg": {
-                    "hideTitleTranslations": true,
-                    "showFeatureInfoTab": false
                 }
             },
             {
@@ -1361,7 +1373,8 @@
                     "tools": [
                         "measurement",
                         "draw",
-                        "box"
+                        "box",
+                        "popup"
                     ],
                     "mapOptions": {
                         "openlayers": {
@@ -1386,6 +1399,20 @@
             },
             {
                 "name": "FitBounds"
+            },
+            {
+                "name": "BackgroundSelector",
+                "override": {
+                    "ViewerLayout": {
+                        "priority": 1
+                    }
+                }
+            },
+            {
+                "name": "ScaleBox"
+            },
+            {
+                "name": "FullScreen"
             }
         ],
         "map_viewer": [
