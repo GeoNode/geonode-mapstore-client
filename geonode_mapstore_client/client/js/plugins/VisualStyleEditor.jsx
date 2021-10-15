@@ -185,11 +185,11 @@ function VisualStyleEditor({
     const hasTemplates = !!(styleTemplates?.length > 0);
 
     function replaceTemplateMetadata(code) {
-        const title = selectedStyle?.metadata?.title || selectedStyle?.label || selectedStyle?.title || selectedStyle?.name || '';
-        const description = selectedStyle?.metadata?.description || selectedStyle?._abstract || '';
+        const styleTitle = selectedStyle?.metadata?.title || selectedStyle?.label || selectedStyle?.title || selectedStyle?.name || '';
+        const styleDescription = selectedStyle?.metadata?.description || selectedStyle?._abstract || '';
         return code
-            .replace(/\$\{styleTitle\}/, title)
-            .replace(/\$\{styleAbstract\}/, description)
+            .replace(/\$\{styleTitle\}/, styleTitle)
+            .replace(/\$\{styleAbstract\}/, styleDescription);
     }
 
     return (
