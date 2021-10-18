@@ -79,6 +79,11 @@ const resourceTypes = {
                     .then((response) => {
                         const [mapConfig, gnLayer] = response;
                         const newLayer = resourceToLayerConfig(gnLayer);
+
+                        if (!newLayer.defaultStyle || page !== 'dataset_edit_style_viewer') {
+                            return [mapConfig, gnLayer, newLayer];
+                        }
+
                         return StylesAPI.getStylesInfo({
                             baseUrl: options?.styleService?.baseUrl,
                             styles: [newLayer.defaultStyle]
