@@ -563,11 +563,11 @@ export const getCategories = ({ q, includes, page, pageSize, ...params }, filter
         }
     })
         .then(({ data }) => {
-            const results = (data?.TopicCategories || [])
+            const results = (data?.categories || [])
                 .map((result) => {
                     const selectOption = {
                         value: result.identifier,
-                        label: addCountToLabel(result.gn_description || result.gn_description_en, result.total)
+                        label: addCountToLabel(result.gn_description || result.gn_description_en, result.count)
                     };
                     const category = {
                         ...result,
@@ -595,11 +595,11 @@ export const getRegions = ({ q, includes, page, pageSize, ...params }, filterKey
         }
     })
         .then(({ data }) => {
-            const results = (data?.Regions || [])
+            const results = (data?.regions || [])
                 .map((result) => {
                     const selectOption = {
                         value: result.name,
-                        label: addCountToLabel(result.name, result.total)
+                        label: addCountToLabel(result.name, result.count)
                     };
                     const region = {
                         ...result,
@@ -627,11 +627,11 @@ export const getOwners = ({ q, includes, page, pageSize, ...params }, filterKey 
         }
     })
         .then(({ data }) => {
-            const results = (data?.users || [])
+            const results = (data?.owners || [])
                 .map((result) => {
                     const selectOption = {
                         value: result.username,
-                        label: addCountToLabel(result.username, result.total)
+                        label: addCountToLabel(result.username, result.count)
                     };
                     const owner = {
                         ...result,
@@ -659,11 +659,11 @@ export const getKeywords = ({ q, includes, page, pageSize, ...params }, filterKe
         }
     })
         .then(({ data }) => {
-            const results = (data?.HierarchicalKeywords || [])
+            const results = (data?.keywords || [])
                 .map((result) => {
                     const selectOption = {
                         value: result.slug,
-                        label: addCountToLabel(result.slug, result.total)
+                        label: addCountToLabel(result.slug, result.count)
                     };
                     const keyword = {
                         ...result,
