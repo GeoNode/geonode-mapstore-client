@@ -189,7 +189,8 @@
             "errorCompactPermissionsMessage": "Es war nicht möglich die Berechtigungen zu aktualisieren",
             "warningGeoLimitsSaveTitle": "Unvollständiger Speichervorgang",
             "warningGeoLimitsSaveMessage": "Es war nicht möglich die neuen Geolimits zu aktualisieren",
-            "saveMapThumbnail": "Klicken Sie hier, um die Karte als Bild festzulegen"
+            "saveMapThumbnail": "Klicken Sie hier, um die Karte als Bild festzulegen",
+            "templates": "Vorlagen"
         }
     }
 }
