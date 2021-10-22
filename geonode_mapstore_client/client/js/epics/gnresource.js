@@ -60,7 +60,10 @@ import {
     resourceToLayerConfig,
     ResourceTypes
 } from '@js/utils/ResourceUtils';
-import { canAddResource } from '@js/selectors/resource';
+import {
+    canAddResource,
+    getResourceData
+} from '@js/selectors/resource';
 import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallayers';
 import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
 import StylesAPI from '@mapstore/framework/api/geoserver/Styles';
@@ -74,7 +77,9 @@ const resourceTypes = {
             return Observable.defer(() =>
                 axios.all([
                     getNewMapConfiguration(),
-                    getDatasetByPk(pk)
+                    options?.isSamePreviousResource
+                        ? new Promise(resolve => resolve(options.resourceData))
+                        : getDatasetByPk(pk)
                 ])
                     .then((response) => {
                         const [mapConfig, gnLayer] = response;
@@ -229,9 +234,9 @@ const resourceTypes = {
 };
 
 // collect all the reset action needed before changing a viewer
-const getResetActions = () => [
+const getResetActions = (isSameResource) => [
     resetControls(),
-    resetResourceState(),
+    ...(!isSameResource ? [ resetResourceState() ] : []),
     setControlProperty('rightOverlay', 'enabled', false)
 ];
 
@@ -301,19 +306,25 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                 );
             }
             const styleService = styleServiceSelector(state);
+            const resourceData = getResourceData(state);
+            const isSamePreviousResource = !resourceData?.['@ms-detail'] && resourceData?.pk === action.pk;
             return Observable.concat(
                 Observable.of(
-                    ...getResetActions(),
+                    ...getResetActions(isSamePreviousResource),
                     loadingResourceConfig(true),
                     setResourceType(action.resourceType)
                 ),
-                Observable.defer(() => getCompactPermissionsByPk(action.pk))
-                    .switchMap((compactPermissions) => {
-                        return Observable.of(setResourceCompactPermissions(compactPermissions));
-                    })
-                    .catch(() => {
-                        return Observable.empty();
-                    }),
+                ...(!isSamePreviousResource
+                    ? [
+                        Observable.defer(() => getCompactPermissionsByPk(action.pk))
+                            .switchMap((compactPermissions) => {
+                                return Observable.of(setResourceCompactPermissions(compactPermissions));
+                            })
+                            .catch(() => {
+                                return Observable.empty();
+                            })
+                    ]
+                    : []),
                 ...(styleService?.baseUrl
                     ? [Observable.defer(() => updateStyleService({
                         styleService
@@ -327,7 +338,9 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     // set the pending changes as the new data fro maps, dashboards and geostories
                     // if undefined the returned data will be used
                     data: pendingChanges?.data,
-                    styleService: styleServiceSelector(state)
+                    styleService: styleServiceSelector(state),
+                    isSamePreviousResource,
+                    resourceData
                 }),
                 Observable.of(
                     ...(pendingChanges?.resource ? [updateResourceProperties(pendingChanges.resource)] : []),

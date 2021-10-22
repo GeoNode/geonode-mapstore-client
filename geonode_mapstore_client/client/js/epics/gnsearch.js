@@ -214,7 +214,11 @@ export const gnsSelectResourceEpic = (action$, store) =>
                 pk === action.pk && action.ctype === resourceType);
             return Observable.defer(() => getResourceByPk(action.pk))
                 .switchMap((resource) => {
-                    return Observable.of(setResource(resource));
+                    return Observable.of(setResource({
+                        ...resource,
+                        /* store information related to detail */
+                        '@ms-detail': true
+                    }));
                 })
                 .catch((error) => {
                     return Observable.of(resourceError(error.data || error.message));
@@ -222,7 +226,11 @@ export const gnsSelectResourceEpic = (action$, store) =>
                 .startWith(
                     // preload the resource if available
                     ...(selectedResource
-                        ? [ setResource(selectedResource) ]
+                        ? [ setResource({
+                            ...selectedResource,
+                            /* store information related to detail */
+                            '@ms-detail': true
+                        }) ]
                         : [ resourceLoading() ])
                 );
         });

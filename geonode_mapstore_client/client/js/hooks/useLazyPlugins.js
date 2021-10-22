@@ -8,7 +8,7 @@
 
 import { useEffect, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
-import { getPlugins } from '@mapstore/framework/utils/PluginsUtils';
+import { getPlugins, createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { augmentStore } from '@mapstore/framework/utils/StateUtils';
 import join from 'lodash/join';
 
@@ -24,6 +24,7 @@ function filterRemoved(registry, removed = []) {
     }, {});
 }
 
+let storedPlugins = {};
 const pluginsCache = {};
 const epicsCache = {};
 const reducersCache = {};
@@ -43,18 +44,20 @@ function useLazyPlugins({
     const pluginsString = join(pluginsKeys, ',');
 
     useEffect(() => {
-        if (!pluginsCache[pluginsString]) {
+        const filteredPluginsKeys = pluginsKeys
+            .filter((pluginName) => !pluginsCache[pluginName]);
+        if (filteredPluginsKeys.length > 0) {
             setPending(true);
-            Promise.all(
-                pluginsKeys.map(pluginName => {
+            const loadPlugins = filteredPluginsKeys
+                .map(pluginName => {
                     return pluginsEntries[pluginName]().then((mod) => {
                         const impl = mod.default;
                         return impl;
                     });
-                })
-            )
+                });
+            Promise.all(loadPlugins)
                 .then((impls) => {
-                    const { reducers, epics } = pluginsKeys.reduce((acc, pluginName, idx) => {
+                    const { reducers, epics } = filteredPluginsKeys.reduce((acc, pluginName, idx) => {
                         const impl = impls[idx];
                         return {
                             reducers: {
@@ -104,37 +107,19 @@ function useLazyPlugins({
                             epics: filterOutExistingEpics
                         });
                     }
-
-                    return pluginsKeys.map((pluginName, idx) => {
-                        const { loadPlugin, enabler, ...impl } = impls[idx];
-                        const pluginDef = {
-                            [pluginName]: {
-                                [pluginName]: {
-                                    ...impl.containers,
-                                    ...(enabler && { enabler }),
-                                    loadPlugin: loadPlugin
-                                        ? (resolve) => loadPlugin((component) => {
-                                            resolve({ ...impl, component });
-                                        })
-                                        : (resolve) => {
-                                            resolve(impl);
-                                        }
-                                }
-                            }
-                        };
-                        return { plugin: pluginDef };
+                    return getPlugins({
+                        ...filterRemoved(impls.map(impl => createPlugin(impl.name, impl)), removed)
                     });
                 })
-                .then((loaded) => {
-                    pluginsCache[pluginsString] = getPlugins(
-                        {
-                            ...filterRemoved(
-                                loaded.reduce((previous, current) => ({ ...previous, ...current.plugin }), {}),
-                                removed
-                            )
-                        }
-                    );
-                    setPlugins(pluginsCache[pluginsString]);
+                .then((newPlugins) => {
+                    Object.keys(newPlugins).forEach(pluginName => {
+                        pluginsCache[pluginName] = true;
+                    });
+                    storedPlugins = {
+                        ...storedPlugins,
+                        ...newPlugins
+                    };
+                    setPlugins(storedPlugins);
                     setPending(false);
                 })
                 .catch(() => {
@@ -142,7 +127,7 @@ function useLazyPlugins({
                     setPending(false);
                 });
         } else {
-            setPlugins(pluginsCache[pluginsString]);
+            setPlugins(storedPlugins);
         }
     }, [ pluginsString ]);
 

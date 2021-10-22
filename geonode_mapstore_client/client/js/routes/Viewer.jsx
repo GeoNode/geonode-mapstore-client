@@ -6,12 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import url from 'url';
 import isArray from 'lodash/isArray';
-import { createSelector } from 'reselect';
 import BorderLayout from '@mapstore/framework/components/layout/BorderLayout';
 import { getMonitoredState } from '@mapstore/framework/utils/PluginsUtils';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
@@ -20,17 +20,24 @@ import useLazyPlugins from '@js/hooks/useLazyPlugins';
 import { requestResourceConfig, requestNewResourceConfig } from '@js/actions/gnresource';
 import MetaTags from '@js/components/MetaTags';
 import MainErrorView from '@js/components/MainErrorView';
+import { createShallowSelector } from '@mapstore/framework/utils/ReselectUtils';
 
 const urlQuery = url.parse(window.location.href, true).query;
 
-const ConnectedPluginsContainer = connect((state) => ({
-    mode: urlQuery.mode || (urlQuery.mobile || state.browser && state.browser.mobile ? 'mobile' : 'desktop'),
-    monitoredState: getMonitoredState(state, getConfigProp('monitorState')),
-    pluginsState: {
-        ...state.controls
-    }
-}))(PluginsContainer);
+const ConnectedPluginsContainer = connect(
+    createShallowSelector(
+        state => urlQuery.mode || (urlQuery.mobile || state.browser && state.browser.mobile ? 'mobile' : 'desktop'),
+        state => getMonitoredState(state, getConfigProp('monitorState')),
+        state => state?.controls,
+        (mode, monitoredState, controls) => ({
+            mode,
+            monitoredState,
+            pluginsState: controls
+        })
+    )
+)(PluginsContainer);
 
+const DEFAULT_PLUGINS_CONFIG = [];
 function ViewerRoute({
     name,
     pluginsConfig: propPluginsConfig,
@@ -51,15 +58,15 @@ function ViewerRoute({
     const { pk } = match.params || {};
     const pluginsConfig = isArray(propPluginsConfig)
         ? propPluginsConfig
-        : propPluginsConfig && propPluginsConfig[name] || [];
+        : propPluginsConfig && propPluginsConfig[name] || DEFAULT_PLUGINS_CONFIG;
 
-    const [loading, setLoading] = useState(true);
-    const { plugins: loadedPlugins } = useLazyPlugins({
+
+    const { plugins: loadedPlugins, pending } = useLazyPlugins({
         pluginsEntries: lazyPlugins,
         pluginsConfig
     });
     useEffect(() => {
-        if (!loading && pk !== undefined) {
+        if (!pending && pk !== undefined) {
             if (pk === 'new') {
                 onCreate(resourceType);
             } else {
@@ -68,30 +75,30 @@ function ViewerRoute({
                 });
             }
         }
-    }, [loading, pk]);
+    }, [pending, pk]);
 
+    const parsedPlugins = useMemo(() => ({ ...loadedPlugins, ...plugins }), [loadedPlugins]);
     const Loader = loaderComponent;
 
     return (
         <>
-            {resource &&  <MetaTags
+            {resource && <MetaTags
                 logo={resource.thumbnail_url}
                 title={(resource?.title) ? `${resource?.title} - ${siteName}` : siteName }
                 siteName={siteName}
                 contentURL={resource?.detail_url}
                 content={resource?.abstract}
             />}
-            <ConnectedPluginsContainer
+            {(!pending) && <ConnectedPluginsContainer
                 key={`page-${resourceType}-viewer`}
                 id={`page-${resourceType}-viewer`}
                 className={`page page-${resourceType}-viewer`}
                 component={BorderLayout}
                 pluginsConfig={pluginsConfig}
-                plugins={{ ...loadedPlugins, ...plugins }}
+                plugins={parsedPlugins}
                 params={params}
-                onPluginsLoaded={() => setLoading(false)}
-            />
-            {( loading || loadingConfig ) && Loader && <Loader />}
+            />}
+            {( loadingConfig || pending ) && Loader && <Loader />}
             {configError && <MainErrorView msgId={configError}/>}
         </>
     );
