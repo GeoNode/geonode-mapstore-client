@@ -8,7 +8,7 @@
 
 import { useEffect, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
-import { getPlugins, createPlugin } from '@mapstore/framework/utils/PluginsUtils';
+import { getPlugins, createPlugin, isMapStorePlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { augmentStore } from '@mapstore/framework/utils/StateUtils';
 import join from 'lodash/join';
 
@@ -108,7 +108,16 @@ function useLazyPlugins({
                         });
                     }
                     return getPlugins({
-                        ...filterRemoved(impls.map(impl => createPlugin(impl.name, impl)), removed)
+                        ...filterRemoved(impls.map(impl => {
+                            if (!isMapStorePlugin(impl?.component)) {
+                                // plugin similar to Toolbar implement a selector function
+                                // so need to be parsed separately
+                                return {
+                                    [impl.name + 'Plugin']: impl.component
+                                };
+                            }
+                            return createPlugin(impl.name, impl);
+                        }), removed)
                     });
                 })
                 .then((newPlugins) => {
