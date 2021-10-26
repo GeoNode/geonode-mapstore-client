@@ -190,7 +190,8 @@
             "warningGeoLimitsSaveTitle": "Proceso de guardado incompleto",
             "warningGeoLimitsSaveMessage": "No fue posible actualizar los nuevos límites geográficos",
             "saveMapThumbnail": "Haga clic para configurar el mapa como una imagen",
-            "templates": "Plantillas"
+            "templates": "Plantillas",
+            "createMap": "Crear Mapa"
         }
     }
 }

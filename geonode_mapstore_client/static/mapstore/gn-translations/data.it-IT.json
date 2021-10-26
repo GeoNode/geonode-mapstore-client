@@ -192,7 +192,8 @@
             "warningGeoLimitsSaveTitle": "Processo di salvataggio incompleto",
             "warningGeoLimitsSaveMessage": "Non è stato possibile aggiornare i nuovi limiti geografici",
             "saveMapThumbnail": "Clicca per impostare la mappa come immagine",
-            "templates": "Modelli"
+            "templates": "Modelli",
+            "createMap": "Crea Mappa"
         }
     }
 }
