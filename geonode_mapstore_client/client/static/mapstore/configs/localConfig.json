@@ -867,6 +867,12 @@
                             "name": "Share"
                         },
                         {
+                            "type": "link",
+                            "href": "{'#/map/new?gn-dataset=' + (state('gnResourceData') || {}).pk}",
+                            "labelId": "gnviewer.createMap",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                        },
+                        {
                             "type": "divider",
                             "authenticated": true
                         },
@@ -2098,6 +2104,9 @@
                     "measurementAnnotationEdit": false,
                     "geodesic": false
                 }
+            },
+            {
+                "name": "FitBounds"
             }
         ],
         "geostory_viewer": [

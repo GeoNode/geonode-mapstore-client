@@ -147,10 +147,33 @@ const resourceTypes = {
                     );
                 }),
         newResourceObservable: (options) =>
-            Observable.defer(() => getNewMapConfiguration())
-                .switchMap((response) => {
+            Observable.defer(() => axios.all([
+                getNewMapConfiguration(),
+                ...(options?.query?.['gn-dataset']
+                    ? [ getDatasetByPk(options.query['gn-dataset']) ]
+                    : [])
+            ]))
+                .switchMap(([ response, gnLayer ]) => {
+                    const mapConfig = options.data || response;
+                    const newLayer = gnLayer ? resourceToLayerConfig(gnLayer) : null;
+                    const { minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
+                    const extent = newLayer?.bbox?.bounds && [ minx, miny, maxx, maxy ];
                     return Observable.of(
-                        configureMap(options.data || response),
+                        configureMap(newLayer
+                            ? {
+                                ...mapConfig,
+                                map: {
+                                    ...mapConfig?.map,
+                                    layers: [
+                                        ...(mapConfig?.map?.layers || []),
+                                        newLayer
+                                    ]
+                                }
+                            }
+                            : mapConfig),
+                        ...(extent
+                            ? [ setControlProperty('fitBounds', 'geometry', extent) ]
+                            : []),
                         setControlProperty('toolbar', 'expanded', false)
                     );
                 })
@@ -244,7 +267,8 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
     action$.ofType(REQUEST_NEW_RESOURCE_CONFIG)
         .switchMap((action) => {
             const { newResourceObservable } = resourceTypes[action.resourceType] || {};
-            if (!canAddResource(store.getState())) {
+            const state = store.getState();
+            if (!canAddResource(state)) {
                 const formattedUrl = url.format({
                     ...window.location,
                     pathname: '/account/login/',
@@ -255,6 +279,8 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
                 window.reload();
                 return Observable.empty();
             }
+
+            const { query = {} } = url.parse(state?.router?.location?.search, true) || {};
 
             if (!newResourceObservable) {
                 return Observable.of(
@@ -270,7 +296,7 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
                     setNewResource(),
                     setResourceType(action.resourceType)
                 ),
-                newResourceObservable({}),
+                newResourceObservable({ query }),
                 Observable.of(
                     setControlProperty('pendingChanges', 'value', null),
                     loadingResourceConfig(false)

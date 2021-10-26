@@ -36,7 +36,7 @@ function useLazyPlugins({
 }) {
 
     const [plugins, setPlugins] = useState({});
-    const [pending, setPending] = useState(false);
+    const [pending, setPending] = useState(true);
 
     const pluginsKeys = pluginsConfig
         .map(({ name }) => name + 'Plugin')
@@ -137,6 +137,7 @@ function useLazyPlugins({
                 });
         } else {
             setPlugins(storedPlugins);
+            setPending(false);
         }
     }, [ pluginsString ]);
 
