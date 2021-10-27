@@ -260,15 +260,9 @@ const ConnectedShareButton = connect(
 export default createPlugin('Share', {
     component: SharePlugin,
     containers: {
-        ViewerLayout: {
-            name: 'Share',
-            target: 'rightOverlay',
-            priority: 1
-        },
         ActionNavbar: {
             name: 'Share',
-            Component: ConnectedShareButton,
-            priority: 1
+            Component: ConnectedShareButton
         }
     },
     epics: {},

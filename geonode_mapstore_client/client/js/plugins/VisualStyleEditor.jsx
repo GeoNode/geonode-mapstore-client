@@ -414,20 +414,13 @@ const ConnectedStyleEditorTocButton = connect(createSelector([
 export default createPlugin('VisualStyleEditor', {
     component: VisualStyleEditorPlugin,
     containers: {
-        ViewerLayout: {
-            name: 'VisualStyleEditor',
-            priority: 1,
-            target: 'leftColumn'
-        },
         ActionNavbar: {
             name: 'SaveStyle',
-            Component: ConnectedSaveStyleButton,
-            priority: 1
+            Component: ConnectedSaveStyleButton
         },
         TOC: {
             target: 'toolbar',
-            Component: ConnectedStyleEditorTocButton,
-            priority: 1
+            Component: ConnectedStyleEditorTocButton
         }
     },
     reducers: {

@@ -138,13 +138,12 @@ export const plugins = {
                 ActionNavbar: {
                     name: 'Catalog',
                     Component: CatalogActionButton,
-                    priority: 1
-                },
-                ViewerLayout: {
-                    priority: 1
+                    priority: 1,
+                    doNotHide: true
                 },
                 TOC: {
-                    priority: 1
+                    priority: 1,
+                    doNotHide: true
                 }
             }
         }
@@ -332,10 +331,6 @@ export const plugins = {
         'DrawerMenu',
         () => import(/* webpackChunkName: 'plugins/drawer-menu-plugin' */ '@mapstore/framework/plugins/DrawerMenu')
     ),
-    ViewerLayoutPlugin: toLazyPlugin(
-        'ViewerLayout',
-        () => import(/* webpackChunkName: 'plugins/viewer-layout-plugin' */ '@js/plugins/ViewerLayout')
-    ),
     ActionNavbarPlugin: toLazyPlugin(
         'ActionNavbar',
         () => import(/* webpackChunkName: 'plugins/action-navbar-plugin' */ '@js/plugins/ActionNavbar')
@@ -365,13 +360,11 @@ export const plugins = {
         () => import(/* webpackChunkName: 'plugins/annotations-plugin' */ '@mapstore/framework/plugins/Annotations'),
         {
             containers: {
-                ViewerLayout: {
-                    priority: 2
-                },
                 ActionNavbar: {
                     name: 'Annotations',
                     Component: AnnotationsActionButton,
-                    priority: 2
+                    priority: 2,
+                    doNotHide: true
                 }
             }
         }

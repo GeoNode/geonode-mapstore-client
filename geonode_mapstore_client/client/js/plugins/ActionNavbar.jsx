@@ -19,7 +19,8 @@ import {
     getResourcePerms,
     canAddResource,
     getResourceData,
-    getResourceDirtyState
+    getResourceDirtyState,
+    getSelectedLayerPermissions
 } from '@js/selectors/resource';
 import { hasPermissionsTo, reduceArrayRecursive } from '@js/utils/MenuUtils';
 import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
@@ -40,13 +41,14 @@ function ActionNavbarPlugin({
     rightMenuItems,
     resourcePerms,
     resource,
-    isDirtyState
+    isDirtyState,
+    selectedLayerPermissions
 }, context) {
 
     const types = getResourceTypesInfo();
     const { icon } = types[resource?.resource_type] || {};
     const { loadedPlugins } = context;
-    const configuredItems = usePluginItems({ items, loadedPlugins });
+    const configuredItems = usePluginItems({ items, loadedPlugins }, [resource?.pk, selectedLayerPermissions]);
 
     const leftMenuItemsPlugins = reduceArrayRecursive(leftMenuItems, (item) => {
         configuredItems.find(plugin => {
@@ -108,24 +110,21 @@ const ConnectedActionNavbarPlugin = connect(
         getResourcePerms,
         canAddResource,
         getResourceData,
-        getResourceDirtyState
-    ], (resourcePerms, userCanAddResource, resource, dirtyState) => ({
+        getResourceDirtyState,
+        getSelectedLayerPermissions
+    ], (resourcePerms, userCanAddResource, resource, dirtyState, selectedLayerPermissions) => ({
         resourcePerms: (resourcePerms.length > 0 ) ?
             resourcePerms : ((userCanAddResource)
                 ? [ "change_resourcebase"] : [] ),
         resource,
-        isDirtyState: !!dirtyState
+        isDirtyState: !!dirtyState,
+        selectedLayerPermissions
     }))
 )(ActionNavbarPlugin);
 
 export default createPlugin('ActionNavbar', {
     component: ConnectedActionNavbarPlugin,
-    containers: {
-        ViewerLayout: {
-            priority: 1,
-            target: 'header'
-        }
-    },
+    containers: {},
     epics: {},
     reducers: {}
 });

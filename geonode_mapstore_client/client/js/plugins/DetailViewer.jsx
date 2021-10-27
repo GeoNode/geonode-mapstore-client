@@ -191,15 +191,9 @@ const DetailViewerPlugin = connect(
 export default createPlugin('DetailViewer', {
     component: DetailViewerPlugin,
     containers: {
-        ViewerLayout: {
-            name: 'DetailViewer',
-            target: 'rightOverlay',
-            priority: 1
-        },
         ActionNavbar: {
             name: 'DetailViewerButton',
-            Component: ConnectedButton,
-            priority: 1
+            Component: ConnectedButton
         }
     },
     epics: {},

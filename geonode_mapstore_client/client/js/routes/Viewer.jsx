@@ -12,7 +12,6 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import url from 'url';
 import isArray from 'lodash/isArray';
-import BorderLayout from '@mapstore/framework/components/layout/BorderLayout';
 import { getMonitoredState } from '@mapstore/framework/utils/PluginsUtils';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import PluginsContainer from '@mapstore/framework/components/plugins/PluginsContainer';
@@ -20,6 +19,7 @@ import useLazyPlugins from '@js/hooks/useLazyPlugins';
 import { requestResourceConfig, requestNewResourceConfig } from '@js/actions/gnresource';
 import MetaTags from '@js/components/MetaTags';
 import MainErrorView from '@js/components/MainErrorView';
+import ViewerLayout from '@js/components/ViewerLayout';
 import { createShallowSelector } from '@mapstore/framework/utils/ReselectUtils';
 
 const urlQuery = url.parse(window.location.href, true).query;
@@ -77,8 +77,10 @@ function ViewerRoute({
         }
     }, [pending, pk]);
 
+    const loading = loadingConfig || pending;
     const parsedPlugins = useMemo(() => ({ ...loadedPlugins, ...plugins }), [loadedPlugins]);
     const Loader = loaderComponent;
+    const className = `page-${resourceType}-viewer`;
 
     return (
         <>
@@ -89,16 +91,16 @@ function ViewerRoute({
                 contentURL={resource?.detail_url}
                 content={resource?.abstract}
             />}
-            {(!pending) && <ConnectedPluginsContainer
-                key={`page-${resourceType}-viewer`}
-                id={`page-${resourceType}-viewer`}
-                className={`page page-${resourceType}-viewer`}
-                component={BorderLayout}
+            {!loading && <ConnectedPluginsContainer
+                key={className}
+                id={className}
+                className={className}
+                component={ViewerLayout}
                 pluginsConfig={pluginsConfig}
                 plugins={parsedPlugins}
                 params={params}
             />}
-            {( loadingConfig || pending ) && Loader && <Loader />}
+            {loading && Loader && <Loader />}
             {configError && <MainErrorView msgId={configError}/>}
         </>
     );

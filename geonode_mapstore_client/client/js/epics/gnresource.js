@@ -69,6 +69,7 @@ import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
 import StylesAPI from '@mapstore/framework/api/geoserver/Styles';
 import { styleServiceSelector } from '@mapstore/framework/selectors/styleeditor';
 import { updateStyleService } from '@mapstore/framework/api/StyleEditor';
+import { resizeMap } from '@mapstore/framework/actions/map';
 
 const resourceTypes = {
     [ResourceTypes.DATASET]: {
@@ -128,7 +129,8 @@ const resourceTypes = {
                             ? [
                                 setControlProperty('visualStyleEditor', 'enabled', true),
                                 updateAdditionalLayer(newLayer.id, STYLE_OWNER_NAME, 'override', {}),
-                                updateStatus('edit')
+                                updateStatus('edit'),
+                                resizeMap()
                             ]
                             : [])
                     );
@@ -260,7 +262,8 @@ const resourceTypes = {
 const getResetActions = (isSameResource) => [
     resetControls(),
     ...(!isSameResource ? [ resetResourceState() ] : []),
-    setControlProperty('rightOverlay', 'enabled', false)
+    setControlProperty('rightOverlay', 'enabled', false),
+    setControlProperty('fitBounds', 'geometry', null)
 ];
 
 export const gnViewerRequestNewResourceConfig = (action$, store) =>

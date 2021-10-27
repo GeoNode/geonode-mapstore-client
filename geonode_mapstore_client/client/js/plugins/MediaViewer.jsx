@@ -42,12 +42,7 @@ const MediaViewerPlugin = connect(
 
 export default createPlugin('MediaViewer', {
     component: MediaViewerPlugin,
-    containers: {
-        ViewerLayout: {
-            name: 'MediaViewer',
-            priority: 1
-        }
-    },
+    containers: {},
     epics: {},
     reducers: {
         gnresource

@@ -49,7 +49,8 @@ export default createPlugin('DownloadResource', {
     containers: {
         ActionNavbar: {
             name: 'DownloadResource',
-            Component: ConnectedDownloadResource
+            Component: ConnectedDownloadResource,
+            priority: 1
         }
     },
     epics: {},
