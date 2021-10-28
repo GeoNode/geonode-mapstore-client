@@ -30,6 +30,18 @@ function getExtentFromResource({ ll_bbox_polygon: llBboxPolygon }) {
     return bbox;
 }
 
+const GXP_PTYPES = {
+    'AUTO': 'gxp_wmscsource',
+    'OWS': 'gxp_wmscsource',
+    'WMS': 'gxp_wmscsource',
+    'WFS': 'gxp_wmscsource',
+    'WCS': 'gxp_wmscsource',
+    'REST_MAP': 'gxp_arcrestsource',
+    'REST_IMG': 'gxp_arcrestsource',
+    'HGL': 'gxp_hglsource',
+    'GN_WMS': 'gxp_geonodecataloguesource'
+};
+
 /**
 * convert resource layer configuration to a mapstore layer object
 * @memberof MenuUtils
@@ -47,67 +59,84 @@ export const resourceToLayerConfig = (resource) => {
         pk,
         has_time: hasTime,
         default_style: defaultStyle,
-        styles
+        styles,
+        ptype
     } = resource;
 
     const bbox = getExtentFromResource(resource);
+    switch (ptype) {
+    case GXP_PTYPES.REST_MAP:
+    case GXP_PTYPES.REST_IMG: {
+        const { url: arcgisUrl } = links.find(({ mime }) => mime === 'text/html') || {};
+        return {
+            perms,
+            id: uuid(),
+            pk,
+            type: 'arcgis',
+            name: alternate.replace('remoteWorkspace:', ''),
+            url: arcgisUrl,
+            ...(bbox && { bbox }),
+            title,
+            visibility: true
+        };
+    }
+    default:
+        const { url: wfsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WFS') || {};
+        const { url: wmsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMS') || {};
+        const { url: wmtsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMTS') || {};
 
-    const { url: wfsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WFS') || {};
-    const { url: wmsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMS') || {};
-    const { url: wmtsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMTS') || {};
+        const dimensions = [
+            ...(hasTime ? [{
+                name: 'time',
+                source: {
+                    type: 'multidim-extension',
+                    url: wmtsUrl || (wmsUrl || '').split('/geoserver/')[0] + '/geoserver/gwc/service/wmts'
+                }
+            }] : [])
+        ];
 
-    const dimensions = [
-        ...(hasTime ? [{
-            name: 'time',
-            source: {
-                type: 'multidim-extension',
-                url: wmtsUrl || (wmsUrl || '').split('/geoserver/')[0] + '/geoserver/gwc/service/wmts'
-            }
-        }] : [])
-    ];
-
-    const params = wmsUrl && url.parse(wmsUrl, true).query;
-    const format = getConfigProp('defaultLayerFormat') || 'image/png';
-
-    return {
-        perms,
-        id: uuid(),
-        pk,
-        type: 'wms',
-        name: alternate,
-        url: wmsUrl || '',
-        format,
-        ...(wfsUrl && {
-            search: {
-                type: 'wfs',
-                url: wfsUrl
-            }
-        }),
-        ...(bbox && { bbox }),
-        ...(template && {
-            featureInfo: {
-                format: 'TEMPLATE',
-                template
-            }
-        }),
-        style: '',
-        title,
-        visibility: true,
-        ...(defaultStyle && {
-            defaultStyle: {
-                title: defaultStyle.sld_title,
-                name: defaultStyle.workspace ? `${defaultStyle.workspace}:${defaultStyle.name}` : defaultStyle.name
-            }
-        }),
-        ...(styles && {
-            availableStyles: [ ...styles ].map((style) => ({
-                title: style.sld_title,
-                name: style.workspace ? `${style.workspace}:${style.name}` : style.name
-            }))
-        }),
-        ...(params && { params }),
-        ...(dimensions.length > 0 && ({ dimensions }))
-    };
+        const params = wmsUrl && url.parse(wmsUrl, true).query;
+        const format = getConfigProp('defaultLayerFormat') || 'image/png';
+        return {
+            perms,
+            id: uuid(),
+            pk,
+            type: 'wms',
+            name: alternate,
+            url: wmsUrl || '',
+            format,
+            ...(wfsUrl && {
+                search: {
+                    type: 'wfs',
+                    url: wfsUrl
+                }
+            }),
+            ...(bbox && { bbox }),
+            ...(template && {
+                featureInfo: {
+                    format: 'TEMPLATE',
+                    template
+                }
+            }),
+            style: '',
+            title,
+            visibility: true,
+            ...(defaultStyle && {
+                defaultStyle: {
+                    title: defaultStyle.sld_title,
+                    name: defaultStyle.workspace ? `${defaultStyle.workspace}:${defaultStyle.name}` : defaultStyle.name
+                }
+            }),
+            ...(styles && {
+                availableStyles: [ ...styles ].map((style) => ({
+                    title: style.sld_title,
+                    name: style.workspace ? `${style.workspace}:${style.name}` : style.name
+                }))
+            }),
+            ...(params && { params }),
+            ...(dimensions.length > 0 && ({ dimensions }))
+        };
+    }
 };
 
 function updateUrlQueryParameter(requestUrl, query) {
@@ -216,7 +245,7 @@ export const getResourceTypesInfo = () => ({
         })),
         formatDetailUrl: (resource) => resource?.detail_url && parseDevHostname(resource.detail_url),
         name: 'Dataset',
-        formatMetadataUrl: (resource) => (`/datasets/${resource.alternate}/metadata`)
+        formatMetadataUrl: (resource) => (`/datasets/${resource.store}:${resource.alternate}/metadata`)
     },
     [ResourceTypes.MAP]: {
         icon: 'map',

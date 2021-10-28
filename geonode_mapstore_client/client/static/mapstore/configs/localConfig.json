@@ -818,7 +818,7 @@
                                     "type": "link",
                                     "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
                                     "labelId": "gnviewer.viewData",
-                                    "disableIf": "{state('gnResourceData') && state('gnResourceData').subtype === 'raster'}"
+                                    "disableIf": "{state('gnResourceData') && (state('gnResourceData').subtype === 'raster' || state('gnResourceData').subtype === 'remote')}"
                                 }
                             ]
                         },
