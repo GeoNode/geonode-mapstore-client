@@ -482,12 +482,6 @@
                     "viewerOptions": {
                         "container": "{context.ReactSwipe}"
                     }
-                },
-                "override": {
-                    "Toolbar": {
-                        "position": 11,
-                        "alwaysVisible": false
-                    }
                 }
             },
             {
@@ -545,12 +539,6 @@
                 "cfg": {
                     "viewerOptions": {
                         "container": "{context.ReactSwipe}"
-                    }
-                },
-                "override": {
-                    "Toolbar": {
-                        "position": 11,
-                        "alwaysVisible": false
                     }
                 }
             },
@@ -629,12 +617,6 @@
                     "viewerOptions": {
                         "container": "{context.ReactSwipe}"
                     }
-                },
-                "override": {
-                    "Toolbar": {
-                        "position": 11,
-                        "alwaysVisible": false
-                    }
                 }
             },
             {
@@ -701,9 +683,6 @@
         ],
         "geostory_embed": [
             {
-                "name": "ViewerLayout"
-            },
-            {
                 "name": "GeoStory",
                 "cfg": {
                     "mediaEditorSettings": {
@@ -755,21 +734,12 @@
                             }
                         }
                     }
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
                 }
             },
             {
                 "name": "GeoStoryNavigation",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1,
-                        "target": "header",
-                        "name": "GeoStoryNavigation"
-                    }
+                "cfg": {
+                    "containerPosition": "header"
                 }
             },
             {
@@ -778,27 +748,17 @@
         ],
         "dashboard_embed": [
             {
-                "name": "ViewerLayout"
-            },
-            {
                 "name": "Dashboard",
                 "cfg": {
                     "minLayoutWidth": 768
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 2
-                    }
                 }
             }
         ],
         "dataset_viewer": [
             {
-                "name": "ViewerLayout"
-            },
-            {
                 "name": "ActionNavbar",
                 "cfg": {
+                    "containerPosition": "header",
                     "leftMenuItems": [
                         {
                             "labelId": "gnviewer.save",
@@ -920,11 +880,15 @@
             {
                 "name": "Share",
                 "cfg": {
+                    "containerPosition": "rightOverlay",
                     "enableGeoLimits": true
                 }
             },
             {
-                "name": "DetailViewer"
+                "name": "DetailViewer",
+                "cfg": {
+                    "containerPosition": "rightOverlay"
+                }
             },
             {
                 "name": "DeleteResource"
@@ -950,36 +914,16 @@
                             }
                         }
                     }
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
                 }
             },
             {
-                "name": "BackgroundSelector",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "BackgroundSelector"
             },
             {
                 "name": "Identify",
                 "cfg": {
                     "viewerOptions": {
                         "container": "{context.ReactSwipe}"
-                    }
-                },
-                "override": {
-                    "Toolbar": {
-                        "position": 11,
-                        "alwaysVisible": false,
-                        "priority": 1
-                    },
-                    "ViewerLayout": {
-                        "priority": 1
                     }
                 }
             },
@@ -989,11 +933,6 @@
                 "cfg": {
                     "id": "navigationBar",
                     "layout": "horizontal"
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
                 }
             },
             {
@@ -1005,23 +944,13 @@
                 }
             },
             {
-                "name": "OmniBar",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "OmniBar"
             },
             {
                 "name": "Expander"
             },
             {
-                "name": "MapFooter",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "MapFooter"
             },
             {
                 "name": "Measure"
@@ -1053,12 +982,7 @@
                 }
             },
             {
-                "name": "Timeline",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "Timeline"
             },
             {
                 "name": "Playback"
@@ -1208,11 +1132,6 @@
                             "name": "queryform.spatialfilter.methods.poly"
                         }
                     ]
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
                 }
             },
             {
@@ -1257,11 +1176,9 @@
         ],
         "dataset_edit_data_viewer": [
             {
-                "name": "ViewerLayout"
-            },
-            {
                 "name": "ActionNavbar",
                 "cfg": {
+                    "containerPosition": "header",
                     "leftMenuItems": [
                         {
                             "type": "link",
@@ -1272,19 +1189,33 @@
                 }
             },
             {
+                "name": "Map",
+                "cfg": {
+                    "shouldLoadFont": false,
+                    "fonts": [],
+                    "tools": [
+                        "measurement",
+                        "draw",
+                        "box"
+                    ],
+                    "mapOptions": {
+                        "openlayers": {
+                            "attribution": {
+                                "container": "#footer-attribution-container"
+                            },
+                            "interactions": {
+                                "pinchRotate": false,
+                                "altShiftDragRotate": false
+                            }
+                        }
+                    }
+                }
+            },
+            {
                 "name": "FeatureEditor",
                 "cfg": {
                     "hideCloseButton": true,
                     "hideLayerTitle": true
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    },
-                    "TOC": {
-                        "priority": 1,
-                        "doNotHide": false
-                    }
                 }
             },
             {
@@ -1327,20 +1258,10 @@
                             "name": "queryform.spatialfilter.methods.poly"
                         }
                     ]
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
                 }
             },
             {
-                "name": "BackgroundSelector",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "BackgroundSelector"
             },
             {
                 "name": "Toolbar",
@@ -1348,11 +1269,6 @@
                 "cfg": {
                     "id": "navigationBar",
                     "layout": "horizontal"
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
                 }
             },
             {
@@ -1383,40 +1299,7 @@
                 "name": "ScaleBox"
             },
             {
-                "name": "MapFooter",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
-            },
-            {
-                "name": "Map",
-                "cfg": {
-                    "shouldLoadFont": false,
-                    "fonts": [],
-                    "tools": [
-                        "measurement",
-                        "draw",
-                        "box"
-                    ],
-                    "mapOptions": {
-                        "openlayers": {
-                            "attribution": {
-                                "container": "#footer-attribution-container"
-                            },
-                            "interactions": {
-                                "pinchRotate": false,
-                                "altShiftDragRotate": false
-                            }
-                        }
-                    }
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "MapFooter"
             },
             {
                 "name": "Notifications"
@@ -1427,11 +1310,9 @@
         ],
         "dataset_edit_style_viewer": [
             {
-                "name": "ViewerLayout"
-            },
-            {
                 "name": "ActionNavbar",
                 "cfg": {
+                    "containerPosition": "header",
                     "leftMenuItems": [
                         {
                             "type": "link",
@@ -1454,6 +1335,7 @@
             {
                 "name": "VisualStyleEditor",
                 "cfg": {
+                    "containerPosition": "leftColumn",
                     "styleService": {
                         "baseUrl": "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}",
                         "formats": [
@@ -1487,20 +1369,10 @@
                 }
             },
             {
-                "name": "DrawerMenu",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "DrawerMenu"
             },
             {
-                "name": "MapFooter",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "MapFooter"
             },
             {
                 "name": "Map",
@@ -1524,11 +1396,6 @@
                             }
                         }
                     }
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
                 }
             },
             {
@@ -1538,12 +1405,7 @@
                 "name": "FitBounds"
             },
             {
-                "name": "BackgroundSelector",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "BackgroundSelector"
             },
             {
                 "name": "ScaleBox"
@@ -1554,7 +1416,27 @@
         ],
         "map_viewer": [
             {
-                "name": "ViewerLayout"
+                "name": "Map",
+                "cfg": {
+                    "shouldLoadFont": false,
+                    "fonts": [],
+                    "tools": [
+                        "measurement",
+                        "draw",
+                        "box"
+                    ],
+                    "mapOptions": {
+                        "openlayers": {
+                            "attribution": {
+                                "container": "#footer-attribution-container"
+                            },
+                            "interactions": {
+                                "pinchRotate": false,
+                                "altShiftDragRotate": false
+                            }
+                        }
+                    }
+                }
             },
             {
                 "name": "MapThumbnail"
@@ -1562,6 +1444,7 @@
             {
                 "name": "ActionNavbar",
                 "cfg": {
+                    "containerPosition": "header",
                     "leftMenuItems": [
                         {
                             "labelId": "gnviewer.save",
@@ -1649,59 +1532,19 @@
                 "name": "DeleteResource"
             },
             {
-                "name": "DetailViewer"
-            },
-            {
-                "name": "Map",
+                "name": "DetailViewer",
                 "cfg": {
-                    "shouldLoadFont": false,
-                    "fonts": [],
-                    "tools": [
-                        "measurement",
-                        "draw",
-                        "box"
-                    ],
-                    "mapOptions": {
-                        "openlayers": {
-                            "attribution": {
-                                "container": "#footer-attribution-container"
-                            },
-                            "interactions": {
-                                "pinchRotate": false,
-                                "altShiftDragRotate": false
-                            }
-                        }
-                    }
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
+                    "containerPosition": "rightOverlay"
                 }
             },
             {
-                "name": "BackgroundSelector",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "BackgroundSelector"
             },
             {
                 "name": "Identify",
                 "cfg": {
                     "viewerOptions": {
                         "container": "{context.ReactSwipe}"
-                    }
-                },
-                "override": {
-                    "Toolbar": {
-                        "position": 11,
-                        "alwaysVisible": false,
-                        "priority": 1
-                    },
-                    "ViewerLayout": {
-                        "priority": 1
                     }
                 }
             },
@@ -1717,11 +1560,6 @@
                 "cfg": {
                     "id": "navigationBar",
                     "layout": "horizontal"
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
                 }
             },
             {
@@ -1733,31 +1571,16 @@
                 }
             },
             {
-                "name": "DrawerMenu",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "DrawerMenu"
             },
             {
-                "name": "OmniBar",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "OmniBar"
             },
             {
                 "name": "Expander"
             },
             {
-                "name": "MapFooter",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "MapFooter"
             },
             {
                 "name": "Measure"
@@ -1797,12 +1620,7 @@
                 }
             },
             {
-                "name": "Timeline",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "Timeline"
             },
             {
                 "name": "Playback"
@@ -1913,16 +1731,7 @@
                 "name": "ScaleBox"
             },
             {
-                "name": "FeatureEditor",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    },
-                    "TOC": {
-                        "priority": 1,
-                        "doNotHide": false
-                    }
-                }
+                "name": "FeatureEditor"
             },
             {
                 "name": "QueryPanel",
@@ -1964,11 +1773,6 @@
                             "name": "queryform.spatialfilter.methods.poly"
                         }
                     ]
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
                 }
             },
             {
@@ -2015,24 +1819,10 @@
                 }
             },
             {
-                "name": "Widgets",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    },
-                    "TOC": {
-                        "priority": 1,
-                        "doNotHide": false
-                    }
-                }
+                "name": "Widgets"
             },
             {
-                "name": "WidgetsTray",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
-                }
+                "name": "WidgetsTray"
             },
             {
                 "name": "SaveAs",
@@ -2044,7 +1834,10 @@
                 "name": "Notifications"
             },
             {
-                "name": "Share"
+                "name": "Share",
+                "cfg": {
+                    "containerPosition": "rightOverlay"
+                }
             },
             {
                 "name": "Swipe"
@@ -2053,16 +1846,7 @@
                 "name": "Locate"
             },
             {
-                "name": "WidgetsBuilder",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    },
-                    "TOC": {
-                        "priority": 1,
-                        "doNotHide": false
-                    }
-                }
+                "name": "WidgetsBuilder"
             },
             {
                 "name": "Save",
@@ -2111,19 +1895,9 @@
         ],
         "geostory_viewer": [
             {
-                "name": "ViewerLayout",
-                "cfg": {
-                    "header": {
-                        "order": [
-                            "ActionNavbar",
-                            "GeoStoryNavigation"
-                        ]
-                    }
-                }
-            },
-            {
                 "name": "ActionNavbar",
                 "cfg": {
+                    "containerPosition": "header",
                     "leftMenuItems": [
                         {
                             "labelId": "gnviewer.save",
@@ -2188,7 +1962,10 @@
                 }
             },
             {
-                "name": "DetailViewer"
+                "name": "DetailViewer",
+                "cfg": {
+                    "containerPosition": "rightOverlay"
+                }
             },
             {
                 "type": "plugin",
@@ -2249,11 +2026,6 @@
                             }
                         }
                     }
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1
-                    }
                 }
             },
             {
@@ -2262,26 +2034,14 @@
             {
                 "name": "GeoStoryEditor",
                 "cfg": {
-                    "disablePluginIf": "{!!(state('browser') && state('browser').mobile)}"
-                },
-                "override": {
-                    "GeoStoryNavigation": {
-                        "priority": 1
-                    },
-                    "ViewerLayout": {
-                        "priority": 1,
-                        "target": "leftColumn",
-                        "name": "GeoStoryEditor"
-                    }
+                    "disablePluginIf": "{!!(state('browser') && state('browser').mobile)}",
+                    "containerPosition": "leftColumn"
                 }
             },
             {
                 "name": "GeoStoryNavigation",
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 1,
-                        "target": "header"
-                    }
+                "cfg": {
+                    "containerPosition": "header"
                 }
             },
             {
@@ -2297,16 +2057,17 @@
                 "name": "SaveAs"
             },
             {
-                "name": "Share"
+                "name": "Share",
+                "cfg": {
+                    "containerPosition": "rightOverlay"
+                }
             }
         ],
         "document_viewer": [
             {
-                "name": "ViewerLayout"
-            },
-            {
                 "name": "ActionNavbar",
                 "cfg": {
+                    "containerPosition": "header",
                     "leftMenuItems": [
                         {
                             "labelId": "gnviewer.save",
@@ -2384,7 +2145,10 @@
                 "name": "DownloadResource"
             },
             {
-                "name": "DetailViewer"
+                "name": "DetailViewer",
+                "cfg": {
+                    "containerPosition": "rightOverlay"
+                }
             },
             {
                 "name": "DeleteResource"
@@ -2396,7 +2160,10 @@
                 "name": "SaveAs"
             },
             {
-                "name": "Share"
+                "name": "Share",
+                "cfg": {
+                    "containerPosition": "rightOverlay"
+                }
             },
             {
                 "name": "MediaViewer"
@@ -2404,11 +2171,9 @@
         ],
         "dashboard_viewer": [
             {
-                "name": "ViewerLayout"
-            },
-            {
                 "name": "ActionNavbar",
                 "cfg": {
+                    "containerPosition": "header",
                     "leftMenuItems": [
                         {
                             "labelId": "gnviewer.save",
@@ -2477,7 +2242,10 @@
                 "name": "FullScreen"
             },
             {
-                "name": "DetailViewer"
+                "name": "DetailViewer",
+                "cfg": {
+                    "containerPosition": "rightOverlay"
+                }
             },
             {
                 "name": "DeleteResource"
@@ -2489,35 +2257,28 @@
                 "name": "SaveAs"
             },
             {
-                "name": "Share"
+                "name": "Share",
+                "cfg": {
+                    "containerPosition": "rightOverlay"
+                }
             },
             {
                 "name": "DashboardEditor",
                 "cfg": {
                     "disablePluginIf": "{state('gnResourceData') && state('gnResourceData').perms && state('gnResourceData').perms.indexOf('change_resourcebase') === -1 ? true : false}",
+                    "containerPosition": "leftColumn",
                     "selectedService": "{state('settings') && state('settings').catalogueSelectedService ? state('settings').catalogueSelectedService : ''}",
                     "services": "{state('settings') && state('settings').catalogueServices ? state('settings').catalogueServices : {}}",
                     "disableEmptyMap": true
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 2,
-                        "target": "leftColumn"
-                    }
                 }
             },
             {
                 "name": "QueryPanel",
                 "cfg": {
+                    "containerPosition": "leftColumn",
                     "toolsOptions": {
                         "hideCrossLayer": true,
                         "hideSpatialFilter": true
-                    }
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 2,
-                        "target": "leftColumn"
                     }
                 }
             },
@@ -2525,11 +2286,6 @@
                 "name": "Dashboard",
                 "cfg": {
                     "minLayoutWidth": 768
-                },
-                "override": {
-                    "ViewerLayout": {
-                        "priority": 2
-                    }
                 }
             },
             {
