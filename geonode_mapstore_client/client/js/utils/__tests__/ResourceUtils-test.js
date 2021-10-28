@@ -27,4 +27,24 @@ describe('Test Resource Utils', () => {
         });
         expect(newLayer.params).toEqual({ map: 'name', map_resolution: '91' } );
     });
+
+    it('should parse arcgis dataset', () => {
+        const newLayer = resourceToLayerConfig({
+            alternate: 'remoteWorkspace:1',
+            title: 'Layer title',
+            perms: [],
+            links: [{
+                extension: 'html',
+                link_type: 'image',
+                mime: 'text/html',
+                name: 'ArcGIS REST ImageServer',
+                url: 'http://localhost:8080/MapServer'
+            }],
+            pk: 1,
+            ptype: 'gxp_arcrestsource'
+        });
+        expect(newLayer.type).toBe('arcgis');
+        expect(newLayer.name).toBe('1');
+        expect(newLayer.url).toBe('http://localhost:8080/MapServer');
+    });
 });
