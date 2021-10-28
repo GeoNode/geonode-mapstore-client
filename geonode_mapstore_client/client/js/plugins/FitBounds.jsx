@@ -12,11 +12,10 @@ import { projectionSelector } from '@mapstore/framework/selectors/map';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import FitBounds from '@mapstore/framework/components/geostory/common/map/FitBounds';
-import { resizeMap } from '@mapstore/framework/actions/map';
 
 const MAX_EXTENT_WEB_MERCATOR = [-180, -85, 180, 85];
 
-function FitBoundsPlugin({ mapProjection, onReset, ...props }) {
+function FitBoundsPlugin({ mapProjection, ...props }) {
     function validateGeometry(geometry, projection) {
         if (geometry && ['EPSG:900913', 'EPSG:3857'].includes(projection)) {
             const [minx, miny, maxx, maxy] = geometry;
@@ -41,10 +40,7 @@ const ConnectedFitBoundsPlugin = connect(
     ], (geometry, mapProjection) => ({
         geometry,
         mapProjection
-    })),
-    {
-        onReset: resizeMap
-    }
+    }))
 )(FitBoundsPlugin);
 
 export default createPlugin('FitBounds', {
