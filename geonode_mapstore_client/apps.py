@@ -17,11 +17,22 @@ def run_setup_hooks(*args, **kwargs):
     from django.conf import settings
     from django.conf.urls import url, include
     from geonode.api.urls import router
+    from geonode.security.permissions import (
+        VIEW_PERMISSIONS,
+        OWNER_PERMISSIONS
+    )
+    from geonode.groups.conf import settings as groups_settings
 
     LOCAL_ROOT = os.path.abspath(os.path.dirname(__file__))
     settings.TEMPLATES[0]["DIRS"].insert(0, os.path.join(LOCAL_ROOT, "templates"))
 
+    allowed_perms = {
+        "anonymous": VIEW_PERMISSIONS,
+        "default": OWNER_PERMISSIONS,
+        groups_settings.REGISTERED_MEMBERS_GROUP_NAME: OWNER_PERMISSIONS
+    }
     setattr(settings, "CLIENT_APP_LIST", ['geostory', "dashboard"])
+    setattr(settings, "CLIENT_APP_ALLOWED_PERMS", [{'geostory': allowed_perms}, {"dashboard": allowed_perms}])
 
     urlpatterns += [
         url(r'^mapstore/', include('mapstore2_adapter.urls')),
