@@ -413,18 +413,6 @@
         "cardOptions": {
             "items": [
                 {
-                    "type": "link",
-                    "href": "${detail_url}",
-                    "labelId": "gnhome.view",
-                    "icon": "edit",
-                    "perms": [
-                        {
-                            "type": "resource",
-                            "value": "view_resourcebase"
-                        }
-                    ]
-                },
-                {
                     "type": "button",
                     "action": "delete",
                     "labelId": "gnhome.delete",
