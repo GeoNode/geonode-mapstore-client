@@ -13,6 +13,8 @@ module.exports = (devServerDefault, projectConfig) => {
     const proxyTargetHost = devServerOptions.proxyTargetHost || envJson.DEV_SERVER_PROXY_TARGET_HOST || 'localhost:8000';
     const protocol = devServerOptions.protocol || envJson.DEV_SERVER_HOST_PROTOCOL || 'http';
 
+    const proxyTargetURL = `${protocol}://${proxyTargetHost}`;
+
     return {
         clientLogLevel: 'debug',
         https: protocol === 'https' ? true : false,
@@ -36,6 +38,11 @@ module.exports = (devServerDefault, projectConfig) => {
                     req.path = req.path.replace(hashRegex, '.js');
                     req.originalUrl = req.originalUrl.replace(hashRegex, '.js');
                 }
+                if (req.url.matches(proxyTargetURL)) {
+                    req.url = req.url.replace(proxyTargetURL, '');
+                    req.path = req.path.replace(proxyTargetURL, '');
+                    req.originalUrl = req.originalUrl.replace(proxyTargetURL, '');
+                }
                 next();
             });
         },
@@ -47,10 +54,10 @@ module.exports = (devServerDefault, projectConfig) => {
                     '!**/MapStore2/**',
                     '!**/node_modules/**'
                 ],
-                target: `${protocol}://${proxyTargetHost}`,
+                target: proxyTargetURL,
                 headers: {
                     Host: proxyTargetHost,
-                    Referer: `${protocol}://${proxyTargetHost}/`
+                    Referer: `${proxyTargetURL}/`
                 }
             },
             {
