@@ -29,6 +29,8 @@ import url from 'url';
 import axios from '@mapstore/framework/libs/ajax';
 
 let actionListeners = {};
+// Add a taget url here to fix proxy issue
+const targetURL = '';
 
 export function getVersion() {
     if (!__DEVTOOLS__) {
@@ -58,6 +60,12 @@ export function initializeApp() {
                         ...config.params,
                         v: getVersion()
                     }
+                };
+            }
+            if (__DEVTOOLS__ && targetURL && config.url?.match(targetURL)?.[0]) {
+                return {
+                    ...config,
+                    url: config.url.replace(targetURL, '')
                 };
             }
             return config;
