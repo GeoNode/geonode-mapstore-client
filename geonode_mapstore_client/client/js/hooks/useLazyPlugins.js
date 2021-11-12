@@ -7,7 +7,8 @@
  */
 
 import { useEffect, useState } from 'react';
-import { getPlugins } from '@mapstore/framework/utils/PluginsUtils';
+import isEmpty from 'lodash/isEmpty';
+import { getPlugins, createPlugin, isMapStorePlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { augmentStore } from '@mapstore/framework/utils/StateUtils';
 import join from 'lodash/join';
 
@@ -23,8 +24,10 @@ function filterRemoved(registry, removed = []) {
     }, {});
 }
 
-const existingEpics = {};
-const existingReducers = {};
+let storedPlugins = {};
+const pluginsCache = {};
+const epicsCache = {};
+const reducersCache = {};
 
 function useLazyPlugins({
     pluginsEntries = {},
@@ -33,7 +36,7 @@ function useLazyPlugins({
 }) {
 
     const [plugins, setPlugins] = useState({});
-    const [pending, setPending] = useState(false);
+    const [pending, setPending] = useState(true);
 
     const pluginsKeys = pluginsConfig
         .map(({ name }) => name + 'Plugin')
@@ -41,102 +44,101 @@ function useLazyPlugins({
     const pluginsString = join(pluginsKeys, ',');
 
     useEffect(() => {
-        setPending(true);
-        Promise.all(
-            pluginsKeys.map(pluginName => {
-                return pluginsEntries[pluginName]().then((mod) => {
-                    const impl = mod.default;
-                    return impl;
+        const filteredPluginsKeys = pluginsKeys
+            .filter((pluginName) => !pluginsCache[pluginName]);
+        if (filteredPluginsKeys.length > 0) {
+            setPending(true);
+            const loadPlugins = filteredPluginsKeys
+                .map(pluginName => {
+                    return pluginsEntries[pluginName]().then((mod) => {
+                        const impl = mod.default;
+                        return impl;
+                    });
                 });
-            })
-        )
-            .then((impls) => {
-                const { reducers, epics } = pluginsKeys.reduce((acc, pluginName, idx) => {
-                    const impl = impls[idx];
-                    return {
-                        reducers: {
-                            ...acc.reducers,
-                            ...impl.reducers
-                        },
-                        epics: {
-                            ...acc.epics,
-                            ...impl.epics
-                        }
-                    };
-                }, {
-                    reducers: {},
-                    epics: {}
-                });
-
-                // the epics and reducers once included in the store cannot be overridden
-                // so we need to filter out the one previously added and include only new one
-                const filterOutExistingEpics = Object.keys(epics)
-                    .reduce((acc, key) => {
-                        if (existingEpics[key]) {
-                            return acc;
-                        }
-                        existingEpics[key] = true;
+            Promise.all(loadPlugins)
+                .then((impls) => {
+                    const { reducers, epics } = filteredPluginsKeys.reduce((acc, pluginName, idx) => {
+                        const impl = impls[idx];
                         return {
-                            ...acc,
-                            [key]: epics[key]
-                        };
-                    }, {});
-
-
-                const filterOutExistingReducers = Object.keys(reducers)
-                    .reduce((acc, key) => {
-                        if (existingReducers[key]) {
-                            return acc;
-                        }
-                        existingReducers[key] = true;
-                        return {
-                            ...acc,
-                            [key]: reducers[key]
-                        };
-                    }, {});
-
-                augmentStore({
-                    reducers: filterOutExistingReducers,
-                    epics: filterOutExistingEpics
-                });
-
-                return pluginsKeys.map((pluginName, idx) => {
-                    const { loadPlugin, enabler, ...impl } = impls[idx];
-                    const pluginDef = {
-                        [pluginName]: {
-                            [pluginName]: {
-                                ...impl.containers,
-                                ...(enabler && { enabler }),
-                                loadPlugin: loadPlugin
-                                    ? (resolve) => loadPlugin((component) => {
-                                        resolve({ ...impl, component });
-                                    })
-                                    : (resolve) => {
-                                        resolve(impl);
-                                    }
+                            reducers: {
+                                ...acc.reducers,
+                                ...impl.reducers
+                            },
+                            epics: {
+                                ...acc.epics,
+                                ...impl.epics
                             }
-                        }
+                        };
+                    }, {
+                        reducers: {},
+                        epics: {}
+                    });
+
+                    // the epics and reducers once included in the store cannot be overridden
+                    // so we need to filter out the one previously added and include only new one
+                    const filterOutExistingEpics = Object.keys(epics)
+                        .reduce((acc, key) => {
+                            if (epicsCache[key]) {
+                                return acc;
+                            }
+                            epicsCache[key] = true;
+                            return {
+                                ...acc,
+                                [key]: epics[key]
+                            };
+                        }, {});
+
+
+                    const filterOutExistingReducers = Object.keys(reducers)
+                        .reduce((acc, key) => {
+                            if (reducersCache[key]) {
+                                return acc;
+                            }
+                            reducersCache[key] = true;
+                            return {
+                                ...acc,
+                                [key]: reducers[key]
+                            };
+                        }, {});
+
+                    if (!(isEmpty(filterOutExistingReducers) && isEmpty(filterOutExistingEpics))) {
+                        augmentStore({
+                            reducers: filterOutExistingReducers,
+                            epics: filterOutExistingEpics
+                        });
+                    }
+                    return getPlugins({
+                        ...filterRemoved(impls.map(impl => {
+                            if (!isMapStorePlugin(impl?.component)) {
+                                // plugin similar to Toolbar implement a selector function
+                                // so need to be parsed separately
+                                return {
+                                    [impl.name + 'Plugin']: impl.component
+                                };
+                            }
+                            return createPlugin(impl.name, impl);
+                        }), removed)
+                    });
+                })
+                .then((newPlugins) => {
+                    Object.keys(newPlugins).forEach(pluginName => {
+                        pluginsCache[pluginName] = true;
+                    });
+                    storedPlugins = {
+                        ...storedPlugins,
+                        ...newPlugins
                     };
-                    return { plugin: pluginDef };
+                    setPlugins(storedPlugins);
+                    setPending(false);
+                })
+                .catch(() => {
+                    setPlugins({});
+                    setPending(false);
                 });
-            })
-            .then((loaded) => {
-                setPlugins(
-                    getPlugins(
-                        {
-                            ...filterRemoved(
-                                loaded.reduce((previous, current) => ({ ...previous, ...current.plugin }), {}),
-                                removed
-                            )
-                        }
-                    )
-                );
-                setPending(false);
-            })
-            .catch(() => {
-                setPlugins({});
-                setPending(false);
-            });
+        } else {
+            setPlugins(storedPlugins);
+            setPending(false);
+        }
     }, [ pluginsString ]);
 
     return { plugins, pending };

@@ -15,6 +15,8 @@ import security from '@mapstore/framework/reducers/security';
 import maptype from '@mapstore/framework/reducers/maptype';
 import dashboard from '@mapstore/framework/reducers/dashboard';
 import widgets from '@mapstore/framework/reducers/widgets';
+import widgetsEpics from '@mapstore/framework/epics/widgets';
+import dashboardEpics from '@mapstore/framework/epics/dashboard';
 import gnresource from '@js/reducers/gnresource';
 import gnsettings from '@js/reducers/gnsettings';
 import { updateGeoNodeSettings } from '@js/actions/gnsettings';
@@ -124,7 +126,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         widgets
                     },
                     appEpics: {
-                        ...configEpics
+                        ...configEpics,
+                        // epics related to dashboard are imported at root levele
+                        // because of the use of initial action
+                        // in particular `dashboardLoaded`
+                        ...widgetsEpics,
+                        ...dashboardEpics
                     },
                     onStoreInit,
                     initialActions: [

@@ -5,7 +5,7 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import isArray from 'lodash/isArray';
@@ -39,16 +39,15 @@ function DashboardRoute({
         ? propPluginsConfig
         : propPluginsConfig && propPluginsConfig[name] || [];
 
-    const [loading, setLoading] = useState(true);
-    const { plugins: loadedPlugins } = useLazyPlugins({
+    const { plugins: loadedPlugins, pending } = useLazyPlugins({
         pluginsEntries: lazyPlugins,
         pluginsConfig
     });
     useEffect(() => {
-        if (!loading && onMount) {
+        if (!pending && onMount) {
             onMount(true);
         }
-    }, [ loading, onMount ]);
+    }, [ pending, onMount ]);
     const Loader = loaderComponent;
     return (
         <>
@@ -60,9 +59,8 @@ function DashboardRoute({
                 pluginsConfig={pluginsConfig}
                 plugins={{ ...loadedPlugins, ...plugins }}
                 params={params}
-                onPluginsLoaded={() => setLoading(false)}
             />
-            {loading && Loader && <Loader />}
+            {pending && Loader && <Loader />}
         </>
     );
 }

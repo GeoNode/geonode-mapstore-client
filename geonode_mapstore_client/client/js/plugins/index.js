@@ -269,11 +269,17 @@ export const plugins = {
     ),
     DashboardEditorPlugin: toLazyPlugin(
         'DashboardEditor',
-        () => import(/* webpackChunkName: 'plugins/dashboard-editor-plugin' */ '@mapstore/framework/plugins/DashboardEditor')
+        () => import(/* webpackChunkName: 'plugins/dashboard-editor-plugin' */ '@mapstore/framework/plugins/DashboardEditor'),
+        // exclude epics to import them at app level
+        // because of an issue on initialization
+        { epics: {} }
     ),
     DashboardPlugin: toLazyPlugin(
         'Dashboard',
-        () => import(/* webpackChunkName: 'plugins/dashboard-plugin' */ '@mapstore/framework/plugins/Dashboard')
+        () => import(/* webpackChunkName: 'plugins/dashboard-plugin' */ '@mapstore/framework/plugins/Dashboard'),
+        // exclude epics to import them at app level
+        // because of an issue on initialization
+        { epics: {} }
     ),
     AnnotationsPlugin: toLazyPlugin(
         'Annotations',
