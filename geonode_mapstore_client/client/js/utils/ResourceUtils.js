@@ -158,7 +158,8 @@ export function resourceToPermissionEntry(type, resource) {
             avatar: resource.avatar,
             name: resource.username,
             permissions: resource.permissions,
-            parsed: true
+            parsed: true,
+            is_superuser: resource.is_superuser
         };
     }
     return {

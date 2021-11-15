@@ -188,6 +188,7 @@ function Permissions({
                                 <PermissionsRow
                                     key={group.id}
                                     {...group}
+                                    superUser={group.is_superuser}
                                     hideIcon
                                     onChange={handleUpdateGroup.bind(null, group.id)}
                                     name={<strong>{<Message msgId={`gnviewer.${group.name}`} />}</strong>}
@@ -278,6 +279,7 @@ function Permissions({
                                 key={entry.id + '-' + idx}>
                                 <PermissionsRow
                                     {...entry}
+                                    superUser={entry.is_superuser}
                                     onChange={handleUpdateEntry.bind(null, entry.id)}
                                     options={options}
                                 >

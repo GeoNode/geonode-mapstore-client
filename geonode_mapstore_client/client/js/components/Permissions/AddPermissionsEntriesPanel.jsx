@@ -135,6 +135,7 @@ function AddPermissionsEntriesPanel({
                         >
                             <PermissionsRow
                                 {...entry}
+                                superUser={entry.is_superuser}
                                 hideOptions
                             >
                                 {entry.permissions
