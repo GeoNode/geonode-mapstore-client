@@ -20,9 +20,8 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@js/components/Button';
 import FaIcon from '@js/components/FaIcon';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
-/**
- * buttons override to use in ActionNavbar for plugin imported from mapstore
- */
+
+// buttons override to use in ActionNavbar for plugin imported from mapstore
 
 export const PrintActionButton = connect(
     () => ({}),

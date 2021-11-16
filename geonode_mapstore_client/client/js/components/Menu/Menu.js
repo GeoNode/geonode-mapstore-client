@@ -11,9 +11,12 @@ import PropTypes from 'prop-types';
 import MenuItem from './MenuItem';
 
 /**
+* @module components/Menu
+*/
+
+/**
  * Menu component
  * @name Menu
- * @memberof components.Menu
  * @prop {array} items list of menu item
  * @prop {string} containerClass css class of list container
  * @prop {string} childrenClass css class of item in list
@@ -23,8 +26,6 @@ import MenuItem from './MenuItem';
  *  <Menu items={items} />
  *
  */
-
-
 const Menu = forwardRef(({
     items,
     containerClass,

@@ -1,18 +1,18 @@
-# GeoNode MapStore Client Project
+## GeoNode MapStore Client Project
 
 This directory is the root folder where to initialize all the npm scripts. See the main [README.md](../../README.md) for more information about this directory.
-## Configuration
+### Configuration
 
 The configuration file is located in [localConfig.json](static/mapstore/configs/localConfig.json) and it exposes specific properties to customize:
 
-### localConfig.json
+#### localConfig.json
 
 | property | type | description |  |
 | --- | --- | --- | --- |
 | `supportedLocales` | {object} |  |  |
 | `geoNodeConfiguration` | {object} | contains all the configuration needed to change the theme, filters and navbar structures | [see available properties](#geonode-configuration) |
 
-### GeoNode configuration
+#### GeoNode configuration
 
 [localConfig](#geonode-configuration).geoNodeConfiguration
 
@@ -32,7 +32,7 @@ The configuration file is located in [localConfig.json](static/mapstore/configs/
 | `filtersForm` | {object} | configuration of the resource cards dropdown | |
 | `filtersForm.items` | {array} | list of filter objects, panel placement | [filter object](#filter-object) |
 
-### Order Object
+#### Order Object
 
 Order object contains properties for an entry of the order dropdown. Configuration:
 
@@ -42,7 +42,7 @@ Order object contains properties for an entry of the order dropdown. Configurati
   "value": "title" // value used in the sort filter
 }
 ```
-### Menu Item Object
+#### Menu Item Object
 
 Menu item object contains properties for a list item rendered in a menu. Configuration:
 
@@ -100,7 +100,7 @@ Menu item object contains properties for a list item rendered in a menu. Configu
 }
 ```
 
-### Filter Object
+#### Filter Object
 
 Filter object contains properties for a select input rendered inside the filter form. Configurations:
 

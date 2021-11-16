@@ -34,10 +34,12 @@ import { setControlProperty } from '@mapstore/framework/actions/controls';
 import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 
 /**
+* @module plugins/Save
+*/
+
+/**
  * Plugin for Save modal
  * @name Save
- * @class
- * @memberof plugins
  * @prop {object} cfg.thumbnailOptions the thumbnail is scaled based on the following configuration
  * @prop {number} cfg.thumbnailOptions.width final width of thumbnail
  * @prop {number} cfg.thumbnailOptions.height final height of thumbnail

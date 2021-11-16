@@ -14,16 +14,17 @@ function inAllowedGroups(user, allowedRoles) {
     return !allowedRoles || !!groups.find(group => allowedRoles.indexOf(group) !== -1);
 }
 
+/**
+* @module utils/MenuUtils
+*/
 
 /**
 * check if the menu perms is allowed by user or resource
-* @memberof MenuUtils
 * @param {array} perms array with perms of user or resource
 * @param {array} objResource menu or resource perms
 * @param {string} objType type of objcet (user / resource)
 * @return {boolean}
 */
-
 export function hasPermissionsTo(perms, objResource, objType) {
 
     const res = (objResource) ? objResource.filter(obj => obj.type === objType) : undefined;

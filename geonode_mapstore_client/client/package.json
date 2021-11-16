@@ -20,16 +20,18 @@
     "start": "mapstore-project start",
     "test": "mapstore-project test",
     "test:watch": "mapstore-project test:watch",
-    "lint": "eslint js --ext .jsx,.js"
+    "lint": "eslint js --ext .jsx,.js",
+    "docs": "jsdoc -r js/ -R README.md -d ./docs"
   },
   "author": "GeoSolutions",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "@mapstore/project": "1.0.20"
+    "@mapstore/project": "1.0.20",
+    "jsdoc": "3.6.7"
   },
   "dependencies": {
-    "font-awesome": "4.7.0",
     "dompurify": "2.2.6",
+    "font-awesome": "4.7.0",
     "mapstore": "file:MapStore2",
     "react-helmet": "6.1.0"
   },

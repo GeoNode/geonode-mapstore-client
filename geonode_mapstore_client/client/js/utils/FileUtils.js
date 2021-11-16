@@ -1,8 +1,11 @@
 import axios from '@mapstore/framework/libs/ajax';
 
 /**
+* @module utils/FileUtils
+*/
+
+/**
 * Generates a blob path for a resource
-* @memberof FileUtils
 * @param {string} downloadURL remote path to a resource
 * @param {string} type type of the file to be converted to default application/json
 * @return {string} Object url to view resource in browser
@@ -24,7 +27,6 @@ export const videoExtensions = ['mp4', 'mpg', 'avi', 'm4v', 'mp2', '3gp', 'flv',
 
 /**
 * check if a resource extension is supported for display in the media viewer
-* @memberof FileUtils
 * @param {string} extension extension of the resource accessed on resource.extenstion
 * @return {string} pdf image video unsupported
 */

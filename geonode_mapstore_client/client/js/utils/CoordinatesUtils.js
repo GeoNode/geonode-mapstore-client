@@ -11,6 +11,11 @@ import isNil from 'lodash/isNil';
 import join from 'lodash/join';
 import { reprojectBbox, getViewportGeometry } from '@mapstore/framework/utils/CoordinatesUtils';
 
+/**
+* Utilities for api requests
+* @module utils/CoordinatesUtils
+*/
+
 export const getBBOX = (extent) => {
     const [minx, miny, maxx, maxy] = extent;
     return {

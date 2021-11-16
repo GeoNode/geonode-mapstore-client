@@ -16,6 +16,11 @@ import {
     mapObjectFunc
 } from '@js/utils/MenuUtils';
 
+
+/**
+* @module selectors/config
+*/
+
 /**
  * get the parsed geonode configuration that take into account
  * user permissions and expressions

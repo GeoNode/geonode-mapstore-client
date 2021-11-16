@@ -23,6 +23,11 @@ import { getUserInfo } from '@js/api/geonode/user';
 import { setFilterById } from '@js/utils/SearchUtils';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 
+/**
+ * Actions for GeoNode save workflow
+ * @module api/geonode/v2
+ */
+
 let endpoints = {
     // default values
     'resources': '/api/v2/resources',
@@ -98,6 +103,9 @@ export const setEndpoints = (data) => {
     endpoints = { ...endpoints, ...data };
 };
 
+/**
+ * get all thw endpoints available from API V2
+ */
 export const getEndpoints = () => {
     return axios.get('/api/v2/')
         .then(({ data }) => {

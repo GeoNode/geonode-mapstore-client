@@ -13,6 +13,10 @@ import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
 
+/**
+* @module utils/ResourceUtils
+*/
+
 function getExtentFromResource({ ll_bbox_polygon: llBboxPolygon }) {
     if (!llBboxPolygon) {
         return null;
@@ -44,7 +48,6 @@ const GXP_PTYPES = {
 
 /**
 * convert resource layer configuration to a mapstore layer object
-* @memberof MenuUtils
 * @param {object} resource geonode layer resource
 * @return {object}
 */

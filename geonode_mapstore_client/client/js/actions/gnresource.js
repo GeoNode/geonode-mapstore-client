@@ -33,12 +33,11 @@ export const PROCESS_RESOURCES = 'GEONODE:PROCESS_RESOURCES';
 /**
 * Actions for GeoNode resource
 * store information of the resource in use
-* @name actions.gnresource
+* @module actions/gnresource
 */
 
 /**
 * Initialize loading state
-* @memberof actions.gnresource
 */
 export function resourceLoading() {
     return {
@@ -48,7 +47,6 @@ export function resourceLoading() {
 
 /**
 * Set the resource in the state
-* @memberof actions.gnresource
 * @param {object} data resource data object
 */
 export function setResource(data) {
@@ -60,7 +58,6 @@ export function setResource(data) {
 
 /**
 * edit the title resource in the state
-* @memberof actions.gnresource
 * @param {string} title resource
 */
 export function editTitleResource(title) {
@@ -73,7 +70,6 @@ export function editTitleResource(title) {
 
 /**
 * edit the abstract resource in the state
-* @memberof actions.gnresource
 * @param {string} abstract resource
 */
 export function editAbstractResource(abstract) {
@@ -86,7 +82,6 @@ export function editAbstractResource(abstract) {
 
 /**
 * edit the image resource in the state
-* @memberof actions.gnresource
 * @param {string} image resource
 */
 
@@ -100,7 +95,6 @@ export function editThumbnailResource(thumbnailUrl) {
 
 /**
 * Set the resource type in the state
-* @memberof actions.gnresource
 * @param {object} resourceType resource type
 */
 export function setResourceType(resourceType) {
@@ -112,7 +106,6 @@ export function setResourceType(resourceType) {
 
 /**
 * Set error of resource request
-* @memberof actions.gnresource
 * @param {object} error error data object
 */
 export function resourceError(error) {
@@ -124,7 +117,6 @@ export function resourceError(error) {
 
 /**
 * Update resource properties
-* @memberof actions.gnresource
 * @param {object} properties resource properties to override
 */
 export function updateResourceProperties(properties) {
@@ -136,7 +128,6 @@ export function updateResourceProperties(properties) {
 
 /**
 * Set the current resource as new
-* @memberof actions.gnresource
 */
 export function setNewResource() {
     return {
@@ -146,7 +137,6 @@ export function setNewResource() {
 
 /**
 * Set resource id or primary key
-* @memberof actions.gnresource
 * @param {number|string} id resource id or primary key
 */
 export function setResourceId(id) {
@@ -158,7 +148,6 @@ export function setResourceId(id) {
 
 /**
 * Set resource permissions
-* @memberof actions.gnresource
 * @param {object} permissions permissions info
 * @param {bool} permissions.canEdit can edit permission
 * @param {bool} permissions.canView can view permission
@@ -172,7 +161,6 @@ export function setResourcePermissions(permissions) {
 
 /**
 * Set resource permissions
-* @memberof actions.gnresource
 * @param {object} permissions permissions info
 * @param {bool} permissions.canEdit can edit permission
 * @param {bool} permissions.canView can view permission
@@ -187,7 +175,6 @@ export function setSelectedDatasetPermissions(permissions) {
 
 /**
 * Set the resource favorite field (trigger epic gnSaveFavoriteContent)
-* @memberof actions.gnresource
 * @param {bool} favorite resource data field
 */
 export function setFavoriteResource(favorite) {
@@ -201,7 +188,6 @@ export function setFavoriteResource(favorite) {
 
 /**
 * Set map like thumbnail to map or layer (trigger epic gnSaveDirectContent)
-* @memberof actions.gnresource
 */
 
 export function setMapThumbnail() {

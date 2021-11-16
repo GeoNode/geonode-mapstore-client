@@ -14,13 +14,12 @@ export const SAVE_CONTENT = 'GEONODE:SAVE_CONTENT';
 export const SAVE_DIRECT_CONTENT = 'GEONODE:SAVE_DIRECT_CONTENT';
 
 /**
-* Actions for GeoNode save workflow
-* @name actions.gnsave
-*/
+ * Actions for GeoNode save workflow
+ * @module actions/gnsave
+ */
 
 /**
 * Initialize saving loading state
-* @memberof actions.gnsave
 */
 export function savingResource() {
     return {
@@ -30,7 +29,6 @@ export function savingResource() {
 
 /**
 * Set success response of save workflow
-* @memberof actions.gnsave
 * @param {object} success success response
 */
 export function saveSuccess(success) {
@@ -42,7 +40,6 @@ export function saveSuccess(success) {
 
 /**
 * Set error response of save workflow
-* @memberof actions.gnsave
 * @param {object} error error response
 */
 export function saveError(error) {
@@ -53,8 +50,7 @@ export function saveError(error) {
 }
 
 /**
-* Clear state of gnsave reducer
-* @memberof actions.gnsave
+* Clear state of actions.gnsave reducer
 */
 export function clearSave() {
     return {
@@ -63,13 +59,11 @@ export function clearSave() {
 }
 
 /**
-* Save or create a resource (trigger epic gnSaveContent)
-* @memberof actions.gnsave
+* Save or create a resource (trigger epic actions.gnsaveContent)
 * @param {number|string} id resource id or primary key, create a new resource if undefined
 * @param {object} metadata properties to update { name, description, thumbnail }
 * @param {bool} reload reload page on create
 * @param {bool} showNotifications show notifications to user
-
 */
 export function saveContent(id, metadata, reload, showNotifications) {
     return {
@@ -82,8 +76,7 @@ export function saveContent(id, metadata, reload, showNotifications) {
 }
 
 /**
-* Save or updates a resource (trigger epic gnSaveDirectContent)
-* @memberof actions.gnsave
+* Save or updates a resource (trigger epic actions.gnsaveDirectContent)
 */
 export function saveDirectContent() {
     return {

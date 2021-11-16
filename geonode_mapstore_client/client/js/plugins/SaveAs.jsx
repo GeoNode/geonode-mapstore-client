@@ -37,10 +37,12 @@ import { processResources } from '@js/actions/gnresource';
 import { getCurrentResourceCopyLoading } from '@js/selectors/resourceservice';
 
 /**
+* @module plugins/SaveAs
+*/
+
+/**
  * Plugin for SaveAs modal
  * @name SaveAs
- * @class
- * @memberof plugins
  * @prop {object} cfg.thumbnailOptions the thumbnail is scaled based on the following configuration
  * @prop {number} cfg.thumbnailOptions.width final width of thumbnail
  * @prop {number} cfg.thumbnailOptions.height final height of thumbnail

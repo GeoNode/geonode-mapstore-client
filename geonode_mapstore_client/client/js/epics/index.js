@@ -27,10 +27,14 @@ import { isFeatureGridOpen, getDockSize } from '@mapstore/framework/selectors/fe
 import head from 'lodash/head';
 import get from 'lodash/get';
 
-/**
- * We need to include missing epics. The plugins that normally include this epic is not used.
- */
+
+// We need to include missing epics. The plugins that normally include this epic is not used.
+
 import { showCoordinateEditorSelector } from '@mapstore/framework/selectors/controls';
+
+/**
+* @module epics/index
+*/
 
 /**
  * Handles checking and for permissions of a layer when its selected

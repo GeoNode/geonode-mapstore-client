@@ -52,7 +52,8 @@ module.exports = (devServerDefault, projectConfig) => {
                     '**',
                     '!**/static/mapstore/**',
                     '!**/MapStore2/**',
-                    '!**/node_modules/**'
+                    '!**/node_modules/**',
+                    '!**/docs/**'
                 ],
                 target: proxyTargetURL,
                 headers: {
@@ -63,7 +64,8 @@ module.exports = (devServerDefault, projectConfig) => {
             {
                 context: [
                     '/static/mapstore/ms-translations/**',
-                    '/static/mapstore/gn-translations/**'
+                    '/static/mapstore/gn-translations/**',
+                    '/docs/**'
                 ],
                 target: `${protocol}://${devServerHost}:8081`,
                 secure: false,

@@ -15,6 +15,12 @@ export const UPDATE_RESOURCES_METADATA = 'GEONODE_SEARCH:UPDATE_RESOURCES_METADA
 export const SET_FEATURED_RESOURCES = 'GEONODE:SET_FEATURED_RESOURCES';
 export const UPDATE_FEATURED_RESOURCES = 'GEONODE_SEARCH:UPDATE_FEATURED_RESOURCES';
 
+/**
+* Actions for GeoNode resource featured items
+* set new Featured Resources includes data, page, links
+* @module actions/gnsearch
+*/
+
 export function searchResources(params, pathname) {
     return {
         type: SEARCH_RESOURCES,
@@ -53,12 +59,6 @@ export function requestResource(pk, ctype) {
     };
 }
 
-
-/**
-* Actions for GeoNode resource featured items
-* set new Featured Resources includes data, page, links
-* @name actions.gnsearch
-*/
 export function setFeaturedResources(data) {
     return {
         type: SET_FEATURED_RESOURCES,
@@ -71,7 +71,6 @@ export function setFeaturedResources(data) {
 * loads new featured resources basing on the action, previous or next
 * @param action {string} can be either next or previous
 * @param pageSize { number } page_size of items to load defaults to 4;
-* @name actions.gnsearch
 */
 export function loadFeaturedResources(action, pageSize = 4) {
     return {
