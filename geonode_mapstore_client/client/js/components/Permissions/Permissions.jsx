@@ -170,7 +170,7 @@ function Permissions({
             <ul className="gn-share-permissions-list">
                 <li className="gn-share-permissions-pinned">
                     {filteredEntries
-                        .filter((item) => item.permissions === 'owner'  )
+                        .filter((item) => item.permissions === 'owner' && !item.is_superuser)
                         .map((item) => {
                             return (<p className="gn-share-permissions-name" >
                                 <Message msgId="gnviewer.permissionOwner" />: {' '}
@@ -188,7 +188,6 @@ function Permissions({
                                 <PermissionsRow
                                     key={group.id}
                                     {...group}
-                                    superUser={group.is_superuser}
                                     hideIcon
                                     onChange={handleUpdateGroup.bind(null, group.id)}
                                     name={<strong>{<Message msgId={`gnviewer.${group.name}`} />}</strong>}
@@ -272,14 +271,13 @@ function Permissions({
             </div>
             <ul className="gn-share-permissions-list">
                 {filteredEntries
-                    .filter((item) => item.permissions !== 'owner'  )
+                    .filter((item) => item.permissions !== 'owner' && !item.is_superuser)
                     .map((entry, idx) => {
                         return (
                             <li
                                 key={entry.id + '-' + idx}>
                                 <PermissionsRow
                                     {...entry}
-                                    superUser={entry.is_superuser}
                                     onChange={handleUpdateEntry.bind(null, entry.id)}
                                     options={options}
                                 >
