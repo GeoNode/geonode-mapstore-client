@@ -8,7 +8,7 @@
  */
 
 import expect from 'expect';
-import { resourceToLayerConfig } from '../ResourceUtils';
+import { resourceToLayerConfig, getResourcePermissions, availableResourceTypes, setAvailableResourceTypes } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
     it('should keep the wms params from the url if available', () => {
@@ -46,5 +46,31 @@ describe('Test Resource Utils', () => {
         expect(newLayer.type).toBe('arcgis');
         expect(newLayer.name).toBe('1');
         expect(newLayer.url).toBe('http://localhost:8080/MapServer');
+    });
+
+    it('should getViewedResourcePermissions', () => {
+        const data = [{
+            name: "testType",
+            allowed_perms: {
+                compact: {
+                    test1: [
+                        "none",
+                        "view"
+                    ]
+                }
+            }
+        }];
+        const permissionOptions = getResourcePermissions(data[0].allowed_perms.compact);
+        expect(permissionOptions).toEqual({
+            test1: [{ value: 'none', labelId: `gnviewer.nonePermission` },
+                { value: 'view', labelId: `gnviewer.viewPermission` }
+            ]
+        });
+    });
+
+    it('should setAvailableResourceTypes', () => {
+        setAvailableResourceTypes({ test: 'test data' });
+
+        expect(availableResourceTypes).toEqual({ test: 'test data' });
     });
 });
