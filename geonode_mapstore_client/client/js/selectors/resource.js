@@ -45,6 +45,11 @@ export const getResourceThumbnail = (state) => {
     return state?.gnresource?.data?.thumbnail_url || false;
 };
 
+export const getViewedResourceType = (state) => {
+    const viewedResourceType = state?.gnresource?.type || false;
+    return viewedResourceType;
+};
+
 export const canEditResource = (state) => {
     const canEdit = state?.gnresource?.permissions?.canEdit;
     const perms = state?.gnresource?.data?.perms || [];
