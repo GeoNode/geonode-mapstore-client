@@ -41,7 +41,8 @@ const entriesTabs = [
             const exclude = entries.filter(({ type }) => type === 'user').map(({ id }) => id);
             return getUsers({
                 ...params,
-                'filter{-pk.in}': [...exclude, -1]
+                'filter{-pk.in}': [...exclude, -1],
+                'filter{is_superuser}': false
             });
         },
         responseToEntries: ({ response, entries }) => {
