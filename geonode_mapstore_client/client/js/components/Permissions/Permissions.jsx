@@ -30,13 +30,11 @@ function Permissions({
     layers = [],
     onChange = () => {},
     entriesTabs = [],
-    options,
-    groupOptions,
-    defaultGroupOptions,
     enableGeoLimits,
     requestGeoLimits = getGeoLimits,
     resourceId,
-    loading
+    loading,
+    permissionOptions
 }) {
 
     const { entries = [], groups = [] } = permissionsCompactToLists(compactPermissions);
@@ -173,7 +171,7 @@ function Permissions({
                         .filter((item) => item.permissions === 'owner'  )
                         .map((item) => {
                             return (<p className="gn-share-permissions-name" >
-                                <Message msgId="gnviewer.permissionOwner" />: {' '}
+                                <Message msgId="gnviewer.ownerPermission" />: {' '}
                                 <a href={`/people/profile/${item?.username}/`}>
                                     {(item?.first_name !== "" && item?.last_name !== "") ?
                                         (item?.first_name + ' ' + item?.last_name) :
@@ -191,7 +189,7 @@ function Permissions({
                                     hideIcon
                                     onChange={handleUpdateGroup.bind(null, group.id)}
                                     name={<strong>{<Message msgId={`gnviewer.${group.name}`} />}</strong>}
-                                    options={groupOptions[group.name] || defaultGroupOptions}
+                                    options={permissionOptions?.[group.name] || permissionOptions?.default}
                                 />
                             );
                         })}
@@ -279,7 +277,7 @@ function Permissions({
                                 <PermissionsRow
                                     {...entry}
                                     onChange={handleUpdateEntry.bind(null, entry.id)}
-                                    options={options}
+                                    options={permissionOptions?.default}
                                 >
                                     {entry.permissions !== 'owner' &&
                                     <>
