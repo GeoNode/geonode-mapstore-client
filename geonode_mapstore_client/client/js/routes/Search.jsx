@@ -32,7 +32,7 @@ import {
 } from '@js/utils/SearchUtils';
 import { withResizeDetector } from 'react-resize-detector';
 
-import { getResourceTypes, getCategories, getRegions, getOwners, getKeywords } from '@js/api/geonode/v2';
+import { getCategories, getRegions, getOwners, getKeywords } from '@js/api/geonode/v2';
 import MetaTags from "@js/components/MetaTags";
 
 import {
@@ -46,10 +46,6 @@ const { DeleteResourcePlugin } = DeleteResource;
 const { SaveAsPlugin } = SaveAs;
 
 const suggestionsRequestTypes = {
-    resourceTypes: {
-        filterKey: 'filter{resource_type.in}',
-        loadOptions: params => getResourceTypes(params, 'filter{resource_type.in}')
-    },
     categories: {
         filterKey: 'filter{category.identifier.in}',
         loadOptions: params => getCategories(params, 'filter{category.identifier.in}')
