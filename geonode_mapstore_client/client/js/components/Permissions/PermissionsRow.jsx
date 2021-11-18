@@ -22,8 +22,7 @@ function PermissionsRow({
     avatar,
     children,
     clearable,
-    onChange,
-    superUser
+    onChange
 }) {
 
     return (
@@ -39,7 +38,7 @@ function PermissionsRow({
             <div className="gn-share-permissions-tools">
                 {children}
             </div>
-            {!hideOptions && !superUser && <div className="gn-share-permissions-options">
+            {!hideOptions && <div className="gn-share-permissions-options">
                 <Select
                     clearable={clearable}
                     options={options.map(({ value, labelId }) => ({ value, label: <Message msgId={labelId} /> }))}
@@ -54,8 +53,7 @@ function PermissionsRow({
 PermissionsRow.propTypes = {
     options: PropTypes.array,
     clearable: PropTypes.bool,
-    onChange: PropTypes.func,
-    superUser: PropTypes.bool
+    onChange: PropTypes.func
 };
 
 PermissionsRow.defaultProps = {
@@ -78,8 +76,7 @@ PermissionsRow.defaultProps = {
         }
     ],
     clearable: false,
-    onChange: () => { },
-    superUser: false
+    onChange: () => { }
 };
 
 export default PermissionsRow;
