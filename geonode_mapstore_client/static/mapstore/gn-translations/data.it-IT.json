@@ -122,7 +122,8 @@
             "featuredList": "In primo piano",
             "uploadDataset": "Carica dataset",
             "createDataset": "Crea dataset",
-            "search": "Cerca..."
+            "search": "Cerca...",
+            "permissionsMissing": "Non hai i permessi per visualizzare o scaricare la risorsa"
         },
         "viewer": {
             "document": {

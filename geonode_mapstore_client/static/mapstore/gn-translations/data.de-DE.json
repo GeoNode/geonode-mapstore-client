@@ -120,7 +120,8 @@
             "featuredList": "Vorgestellt",
             "uploadDataset": "Datensatz hochladen",
             "createDataset": "Dataset erstellen",
-            "search": "Suchen..."
+            "search": "Suchen...",
+            "permissionsMissing": "Sie sind nicht berechtigt, die Ressource anzuzeigen"
         },
         "viewer": {
             "document": {

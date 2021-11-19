@@ -120,7 +120,8 @@
             "featuredList": "Presentada",
             "uploadDataset": "Subir conjunto de datos",
             "createDataset": "Crear conjunto de datos",
-            "search": "Buscar..."
+            "search": "Buscar...",
+            "permissionsMissing": "Sie sind nicht berechtigt, die Ressource anzuzeigen oder herunterzuladen"
         },
         "viewer": {
             "document": {
