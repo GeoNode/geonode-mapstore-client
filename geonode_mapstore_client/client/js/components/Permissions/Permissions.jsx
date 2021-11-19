@@ -172,7 +172,7 @@ function Permissions({
                         .map((item) => {
                             return (
                                 <div className="gn-share-permissions-row">
-                                    <p className="gn-share-permissions-label"><Message msgId="gnviewer.permissionOwner" />:</p>
+                                    <p className="gn-share-permissions-label gn-share-permissions-name"><Message msgId="gnviewer.permissionOwner" />:</p>
                                     <div className="gn-share-permissions-owner">
                                         <div className="gn-share-permission-tag">
                                             <div className="gn-share-permissions-icon">
