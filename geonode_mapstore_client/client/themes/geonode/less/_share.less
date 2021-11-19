@@ -6,12 +6,14 @@
     .gn-share-panel {
         .color-var(@theme-vars[main-color]);
         .background-color-var(@theme-vars[main-bg]);
-        .gn-share-permissions-list-head {
+        .gn-share-permissions-list-head,
+        .gn-share-permission-tag {
             .background-color-var(@theme-vars[main-bg]);
         }
     }
     .gn-share-permissions-head,
-    .gn-share-permissions-container {
+    .gn-share-permissions-container,
+    .gn-share-permission-tag {
         .border-color-var(@theme-vars[main-border-color]);
     }
     .gn-share-permissions-pinned {
@@ -155,6 +157,42 @@
         top: 0;
         margin: 0.5rem;
     }
+}
+
+.gn-share-permissions-label {
+    flex: 1;
+    font-weight: bold;
+    padding: 0 0.5rem;
+    margin: 0;
+}
+
+.gn-share-permissions-owner {
+    min-width: 200px;
+    padding: 0 0.25rem;
+
+
+}
+
+.gn-share-permission-tag {
+    display: flex;
+    align-items: center;
+    max-width: calc(200px - 0.5rem);
+    border-radius: 20px;
+    border-width: 1px;
+    border-style: solid;
+    white-space: nowrap;
+    padding: .25rem;
+}
+
+.gn-share-permission-tag a {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-left: 0.25rem;
+}
+
+.gn-share-permission-tag .gn-share-permissions-icon img {
+    width: unset;
 }
 
 .gn-geo-limits {
