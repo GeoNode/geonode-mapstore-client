@@ -818,7 +818,8 @@
                             "type": "link",
                             "href": "{'#/map/new?gn-dataset=' + (state('gnResourceData') || {}).pk}",
                             "labelId": "gnviewer.createMap",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                            "disableIf": "{( state('user') && !state('user').perms.includes('add_resource'))}"
+
                         },
                         {
                             "type": "divider",
