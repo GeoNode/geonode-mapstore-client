@@ -170,7 +170,7 @@ function Permissions({
             <ul className="gn-share-permissions-list">
                 <li className="gn-share-permissions-pinned">
                     {filteredEntries
-                        .filter((item) => item.permissions === 'owner')
+                        .filter((item) => item.permissions === 'owner'  )
                         .map((item) => {
                             return (
                                 <div className="gn-share-permissions-row">
