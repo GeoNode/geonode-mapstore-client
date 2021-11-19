@@ -321,3 +321,38 @@ export const getResourceStatuses = (resource) => {
         isCopied
     };
 };
+
+
+export let availableResourceTypes; // resource types utils to be imported intoby @js/api/geonode/v2, Share plugin and anywhere else needed
+/**
+ * A setter funtion to assign a value to availableResourceTypes
+ * @param {*} value Value to be assign to availableResourceTypes (gotten from resource_types response payload)
+ */
+export const setAvailableResourceTypes = (value) => {
+    availableResourceTypes = value;
+};
+
+/**
+ * Extracts lists of permissions into an object for use in the Share plugin select elements
+ * @param {Object} options Permission Object to extract permissions from
+ * @returns An object containing permissions for each type of user/group
+ */
+export const getResourcePermissions = (options) => {
+    const permissionsOptions = {};
+    Object.keys(options).forEach((key) => {
+        const permissions = options[key];
+        let selectOptions = [];
+        for (let indx = 0; indx < permissions.length; indx++) {
+            const permission = permissions[indx];
+            if (permission !== 'owner') {
+                selectOptions.push({
+                    value: permission,
+                    labelId: `gnviewer.${permission}Permission`
+                });
+            }
+        }
+        permissionsOptions[key] = selectOptions;
+    });
+
+    return permissionsOptions;
+};

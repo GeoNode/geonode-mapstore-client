@@ -120,7 +120,8 @@
             "featuredList": "Presentada",
             "uploadDataset": "Subir conjunto de datos",
             "createDataset": "Crear conjunto de datos",
-            "search": "Buscar..."
+            "search": "Buscar...",
+            "permissionsMissing": "Sie sind nicht berechtigt, die Ressource anzuzeigen oder herunterzuladen"
         },
         "viewer": {
             "document": {
@@ -157,12 +158,12 @@
             "addPermissionsEntry": "Agregar usuarios / grupos",
             "groups": "Grupos",
             "users": "Usuarios",
-            "permissionNone": "Ninguno",
-            "permissionView": "Ver",
-            "permissionDownload": "Descargar",
-            "permissionEdit": "Editar",
-            "permissionManage": "Administrar",
-            "permissionOwner": "Propietario",
+            "nonePermission": "Ninguno",
+            "viewPermission": "Ver",
+            "downloadPermission": "Descargar",
+            "editPermission": "Editar",
+            "managePermission": "Administrar",
+            "ownerPermission": "Propietario",
             "filterByNameOrPermissions": "Filtrar por nombre o permisos",
             "permissionsName": "Nombre",
             "permissions": "Permisos",

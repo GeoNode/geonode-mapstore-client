@@ -21,7 +21,7 @@ import castArray from 'lodash/castArray';
 import get from 'lodash/get';
 import { getUserInfo } from '@js/api/geonode/user';
 import { setFilterById } from '@js/utils/SearchUtils';
-import { ResourceTypes } from '@js/utils/ResourceUtils';
+import { ResourceTypes, availableResourceTypes, setAvailableResourceTypes } from '@js/utils/ResourceUtils';
 
 /**
  * Actions for GeoNode save workflow
@@ -432,35 +432,13 @@ export const getConfiguration = (configUrl = '/static/mapstore/configs/localConf
         });
 };
 
-
-let availableResourceTypes;
-export const getResourceTypes = ({}, filterKey = 'resource-types') => {
+export const getResourceTypes = () => {
     if (availableResourceTypes) {
         return new Promise(resolve => resolve(availableResourceTypes));
     }
     return axios.get(parseDevHostname(endpoints[RESOURCE_TYPES]))
         .then(({ data }) => {
-            availableResourceTypes = (data?.resource_types || [])
-                .map((type) => {
-                    // replace the string with object
-                    // as soon the backend support object results
-                    // currently it's supporting only string response
-                    const selectOption = isObject(type)
-                        ? {
-                            value: type.name,
-                            label: `${type.name} (${type.count || 0})`
-                        }
-                        : {
-                            value: type,
-                            label: type
-                        };
-                    const resourceType = {
-                        value: selectOption.value,
-                        selectOption
-                    };
-                    setFilterById(filterKey + selectOption.value, resourceType);
-                    return resourceType;
-                });
+            setAvailableResourceTypes(data?.resource_types || []);
             return [...availableResourceTypes];
         });
 };

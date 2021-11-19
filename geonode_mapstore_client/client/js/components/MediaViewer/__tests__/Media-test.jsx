@@ -15,29 +15,42 @@ describe('Test Media', () => {
     });
 
     it('should render by default', () => {
-        ReactDOM.render( <Media resource={{href: "http://example.com", extension: "jpeg", "abstract": "test", id: 1 }}/>, document.getElementById("container"));
+        ReactDOM.render( <Media resource={{href: "http://example.com", resource_type: "document", extension: "jpeg", "abstract": "test", pk: 1, perms: [
+            "download_resourcebase"] }}/>, document.getElementById("container"));
         const mediaViewer = document.querySelector('.ms-media');
         expect(mediaViewer).toExist();
     });
 
     it('should render video player if resource extension is video', () => {
-        ReactDOM.render( <Media resource={{href: "http://example.com", extension: "mp4", "abstract": "test", id: 1 }}/>, document.getElementById("container"));
+        ReactDOM.render( <Media resource={{href: "http://example.com", resource_type: "document", extension: "mp4", "abstract": "test", pk: 1, perms: [
+            "download_resourcebase"
+        ] }}/>, document.getElementById("container"));
         const mediaViewer = document.querySelector('.ms-video');
         expect(mediaViewer).toExist();
     });
 
     it('should render pdf viewer if resource extension is pdf', () => {
-        ReactDOM.render( <Media resource={{href: "http://example.com", extension: "pdf", "abstract": "test", id: 1 }}/>, document.getElementById("container"));
+        ReactDOM.render( <Media resource={{href: "http://example.com", resource_type: "document", extension: "pdf", "abstract": "test", pk: 1, perms: [
+            "download_resourcebase"
+        ] }}/>, document.getElementById("container"));
         const mediaViewer = document.querySelector('.gn-pdf-viewer');
         expect(mediaViewer).toExist();
     });
 
     it('should render caption viewer if resource extension is unSupported', () => {
-        ReactDOM.render( <Media resource={{href: "http://example.com", extension: "docx", "abstract": "test", id: 1 }}/>, document.getElementById("container"));
+        ReactDOM.render( <Media resource={{href: "http://example.com", resource_type: "document", extension: "docx", "abstract": "test", pk: 1, perms: [
+            "download_resourcebase"
+        ] }}/>, document.getElementById("container"));
         const mediaViewer = document.querySelector('.ms-media'); // unSupported Media is shown in ImageViewer
         expect(mediaViewer).toExist();
         const unSupportedCaptions = document.querySelector('.unsupported-media-caption');
         expect(unSupportedCaptions).toExist();
     });
-});
 
+    it('should render error message if resource has not download perms', () => {
+        ReactDOM.render( <Media resource={{href: "http://example.com", resource_type: "document", extension: "jpeg", "abstract": "test", pk: 1 }}/>, document.getElementById("container"));
+        const ErrorMess = document.querySelector('.gn-main-event-text');
+        expect(ErrorMess).toExist();
+    });
+
+});

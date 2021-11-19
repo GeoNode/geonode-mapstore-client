@@ -88,7 +88,7 @@ export const FullScreenActionButton = connect(createSelector([
 ], (enabled) => ({
     enabled
 })), {
-    onClick: (enabled) => toggleFullscreen(enabled, "#ms-container")
+    onClick: (enabled) => toggleFullscreen(enabled)
 }
 )(({
     onClick,

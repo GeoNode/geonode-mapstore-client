@@ -6,10 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { findIndex } from 'lodash';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import Message from '@mapstore/framework/components/I18N/Message';
@@ -23,13 +24,14 @@ import {
     getResourceId,
     getCompactPermissions,
     canEditPermissions,
-    getResourceData
+    getResourceData,
+    getViewedResourceType
 } from '@js/selectors/resource';
 import { updateResourceCompactPermissions } from '@js/actions/gnresource';
 import FaIcon from '@js/components/FaIcon/FaIcon';
 import Permissions from '@js/components/Permissions';
-import { getUsers, getGroups } from '@js/api/geonode/v2';
-import { resourceToPermissionEntry } from '@js/utils/ResourceUtils';
+import { getUsers, getGroups, getResourceTypes } from '@js/api/geonode/v2';
+import { resourceToPermissionEntry, availableResourceTypes, getResourcePermissions } from '@js/utils/ResourceUtils';
 import SharePageLink from '@js/plugins/share/SharePageLink';
 import { getCurrentResourcePermissionsLoading } from '@js/selectors/resourceservice';
 
@@ -41,7 +43,8 @@ const entriesTabs = [
             const exclude = entries.filter(({ type }) => type === 'user').map(({ id }) => id);
             return getUsers({
                 ...params,
-                'filter{-pk.in}': [...exclude, -1]
+                'filter{-pk.in}': [...exclude, -1],
+                'filter{is_superuser}': false
             });
         },
         responseToEntries: ({ response, entries }) => {
@@ -83,7 +86,6 @@ const entriesTabs = [
 function Share({
     enabled,
     width,
-    permissionsOptions,
     resourceId,
     compactPermissions,
     layers,
@@ -91,10 +93,23 @@ function Share({
     enableGeoLimits,
     onClose,
     canEdit,
-    permissionsGroupOptions,
-    permissionsDefaultGroupOptions,
-    permissionsLoading
+    permissionsLoading,
+    resourceType
 }) {
+
+    const [permissionsObject, setPermissionsObject] = useState({});
+    useEffect(() => {
+        getResourceTypes().then((data) => {
+            const resourceIndex = findIndex(data, { name: resourceType });
+            let responseOptions;
+            if (resourceIndex !== - 1) {
+                responseOptions  = getResourcePermissions(data[resourceIndex].allowed_perms.compact);
+            } else { // set a default permission object
+                responseOptions = getResourcePermissions(data[0].allowed_perms.compact);
+            }
+            setPermissionsObject(responseOptions);
+        });
+    }, [availableResourceTypes]);
 
     return (
         <OverlayContainer
@@ -117,12 +132,10 @@ function Share({
                             compactPermissions={compactPermissions}
                             layers={layers} entriesTabs={entriesTabs}
                             onChange={onChangePermissions}
-                            options={permissionsOptions}
                             enableGeoLimits={enableGeoLimits}
                             resourceId={resourceId}
-                            groupOptions={permissionsGroupOptions}
-                            defaultGroupOptions={permissionsDefaultGroupOptions}
                             loading={permissionsLoading}
+                            permissionOptions={permissionsObject}
                         />
                     </>}
                 </div>
@@ -135,69 +148,14 @@ Share.propTypes = {
     resourceId: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
     enabled: PropTypes.bool,
     onClose: PropTypes.func,
-    width: PropTypes.number,
-    permissionsOptions: PropTypes.array,
-    defaultGroupOptions: PropTypes.array,
-    groupOptions: PropTypes.array
+    width: PropTypes.number
 };
 
 Share.defaultProps = {
     resourceId: null,
     enabled: false,
     onClose: () => {},
-    width: 800,
-    permissionsGroupOptions: {
-        'anonymous': [
-            {
-                value: 'none',
-                labelId: 'gnviewer.permissionNone'
-            },
-            {
-                value: 'view',
-                labelId: 'gnviewer.permissionView'
-            },
-            {
-                value: 'download',
-                labelId: 'gnviewer.permissionDownload'
-            }
-        ]
-    },
-    permissionsOptions: [
-        {
-            value: 'view',
-            labelId: 'gnviewer.permissionView'
-        },
-        {
-            value: 'download',
-            labelId: 'gnviewer.permissionDownload'
-        },
-        {
-            value: 'edit',
-            labelId: 'gnviewer.permissionEdit'
-        },
-        {
-            value: 'manage',
-            labelId: 'gnviewer.permissionManage'
-        }
-    ],
-    permissionsDefaultGroupOptions: [
-        {
-            value: 'none',
-            labelId: 'gnviewer.permissionNone'
-        },
-        {
-            value: 'view',
-            labelId: 'gnviewer.permissionView'
-        },
-        {
-            value: 'download',
-            labelId: 'gnviewer.permissionDownload'
-        },
-        {
-            value: 'edit',
-            labelId: 'gnviewer.permissionEdit'
-        }
-    ]
+    width: 800
 };
 
 const SharePlugin = connect(
@@ -209,15 +167,17 @@ const SharePlugin = connect(
         layersSelector,
         canEditPermissions,
         getCurrentResourcePermissionsLoading,
-        getResourceData
-    ], (enabled, resourceId, mapInfo, compactPermissions, layers, canEdit, permissionsLoading, resource) => ({
+        getResourceData,
+        getViewedResourceType
+    ], (enabled, resourceId, mapInfo, compactPermissions, layers, canEdit, permissionsLoading, resource, type) => ({
         enabled,
         resourceId: resourceId || mapInfo?.id,
         compactPermissions,
         layers,
         canEdit,
         permissionsLoading,
-        embedUrl: resource?.embed_url
+        embedUrl: resource?.embed_url,
+        resourceType: type
     })),
     {
         onClose: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),

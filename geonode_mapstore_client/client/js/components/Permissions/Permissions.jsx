@@ -30,13 +30,11 @@ function Permissions({
     layers = [],
     onChange = () => {},
     entriesTabs = [],
-    options,
-    groupOptions,
-    defaultGroupOptions,
     enableGeoLimits,
     requestGeoLimits = getGeoLimits,
     resourceId,
-    loading
+    loading,
+    permissionOptions
 }) {
 
     const { entries = [], groups = [] } = permissionsCompactToLists(compactPermissions);
@@ -170,7 +168,7 @@ function Permissions({
             <ul className="gn-share-permissions-list">
                 <li className="gn-share-permissions-pinned">
                     {filteredEntries
-                        .filter((item) => item.permissions === 'owner'  )
+                        .filter((item) => item.permissions === 'owner' && !item.is_superuser)
                         .map((item) => {
                             return (
                                 <div className="gn-share-permissions-row">
@@ -201,7 +199,7 @@ function Permissions({
                                     hideIcon
                                     onChange={handleUpdateGroup.bind(null, group.id)}
                                     name={<strong>{<Message msgId={`gnviewer.${group.name}`} />}</strong>}
-                                    options={groupOptions[group.name] || defaultGroupOptions}
+                                    options={permissionOptions?.[group.name] || permissionOptions?.default}
                                 />
                             );
                         })}
@@ -281,7 +279,7 @@ function Permissions({
             </div>
             <ul className="gn-share-permissions-list">
                 {filteredEntries
-                    .filter((item) => item.permissions !== 'owner'  )
+                    .filter((item) => item.permissions !== 'owner' && !item.is_superuser)
                     .map((entry, idx) => {
                         return (
                             <li
@@ -289,7 +287,7 @@ function Permissions({
                                 <PermissionsRow
                                     {...entry}
                                     onChange={handleUpdateEntry.bind(null, entry.id)}
-                                    options={options}
+                                    options={permissionOptions?.default}
                                 >
                                     {entry.permissions !== 'owner' &&
                                     <>

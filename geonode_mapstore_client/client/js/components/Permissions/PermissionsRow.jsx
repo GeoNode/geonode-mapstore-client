@@ -60,23 +60,23 @@ PermissionsRow.defaultProps = {
     options: [
         {
             value: 'view',
-            labelId: 'gnviewer.permissionView'
+            labelId: 'gnviewer.viewPermission'
         },
         {
             value: 'download',
-            labelId: 'gnviewer.permissionDownload'
+            labelId: 'gnviewer.downloadPermission'
         },
         {
             value: 'edit',
-            labelId: 'gnviewer.permissionEdit'
+            labelId: 'gnviewer.editPermission'
         },
         {
             value: 'manage',
-            labelId: 'gnviewer.permissionManage'
+            labelId: 'gnviewer.managePermission'
         }
     ],
     clearable: false,
-    onChange: () => {}
+    onChange: () => { }
 };
 
 export default PermissionsRow;

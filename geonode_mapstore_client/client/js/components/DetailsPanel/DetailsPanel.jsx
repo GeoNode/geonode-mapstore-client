@@ -356,6 +356,7 @@ function DetailsPanel({
                     </Button>
                 </div>
                 }
+
                 {resourceCanPreviewed && !activeEditMode && !editThumbnail && <div className="gn-details-panel-preview">
                     <div
                         className="gn-loader-placeholder"
