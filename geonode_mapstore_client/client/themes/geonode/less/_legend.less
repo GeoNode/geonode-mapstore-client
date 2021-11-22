@@ -1,0 +1,43 @@
+// **************
+// Theme
+// **************
+
+#gn-components-theme(@theme-vars) {
+    .gn-legend-wrapper {
+        .color-var(@theme-vars[main-color]);
+        .background-color-var(@theme-vars[main-bg]);
+    }
+}
+
+// **************
+// Layout
+// **************
+
+.gn-legend-wrapper {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    z-index: 9999;
+    padding: .5rem;
+    min-width: 120px;
+    max-height: 180px;
+    overflow-y: auto;
+    border-radius: 2px;
+
+    .gn-legend-list {
+        list-style: none;
+        padding: 0;
+
+        .gn-legend-list-item {
+            margin: 0;
+            margin-bottom: .5rem;
+            font-weight: bold;
+
+            p {
+                margin: 0;
+                font-weight: normal;
+            }
+        }
+    }
+}
+
