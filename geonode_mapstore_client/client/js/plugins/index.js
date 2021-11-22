@@ -380,8 +380,11 @@ export const plugins = {
     VisualStyleEditorPlugin: toLazyPlugin(
         'VisualStyleEditor',
         () => import(/* webpackChunkName: 'plugins/visual-style-editor-plugin' */ '@js/plugins/VisualStyleEditor')
+    ),
+    LegendPlugin: toLazyPlugin(
+        'Legend',
+        () => import(/* webpackChunkName: 'plugins/visual-style-editor-plugin' */ '@js/plugins/Legend')
     )
-
 };
 
 const pluginsDefinition = {
