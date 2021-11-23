@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {Fragment} from 'react';
+import React, { useState, Fragment } from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -18,9 +18,18 @@ function Legend({
     hideLayerTitle
 }) {
 
-    return layers.length > 0 && <div className="shadow gn-legend-wrapper">
-        <ul className="gn-legend-list">
-            <li className="gn-legend-list-item">Legend</li>
+    const [expandLegend, setExpandLegend] = useState(false);
+
+    const expand = () => {
+        setExpandLegend(ex => !ex);
+    };
+
+    return layers.length > 0 && <div className="shadow gn-legend-wrapper" style={{width: expandLegend ? 'auto' : '80px'}}>
+        <div onClick={expand}>
+            <span role="button" className={`identify-icon glyphicon glyphicon-chevron-${expandLegend ? 'down' : 'right'}`} title="Expand layer legend" />
+            <span className="gn-legend-list-item">Legend</span>
+        </div>
+        <ul className="gn-legend-list" style={{height: expandLegend ? 'fit-content' : 0, overflowY: expandLegend ? 'auto' : 'hidden'}}>
             {layers.map((layer, ind) => <Fragment key={ind}>
                 {!hideLayerTitle &&
                     <li className="gn-legend-list-item"><p>{layer.title}</p></li>
