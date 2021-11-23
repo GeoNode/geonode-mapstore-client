@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {useEffect, useState, Fragment} from 'react';
+import React, {Fragment} from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -18,19 +18,10 @@ function Legend({
     hideLayerTitle
 }) {
 
-    const [layerList, setLayerList] = useState([]);
-
-    useEffect(() => {
-        if (layers) {
-            const usedLayers = layers.filter(layer => layer.group !== 'background' && layer.type === 'wms');
-            setLayerList(usedLayers);
-        }
-    }, [layers]);
-
-    return layerList.length > 0 && <div className="shadow gn-legend-wrapper">
+    return layers.length > 0 && <div className="shadow gn-legend-wrapper">
         <ul className="gn-legend-list">
             <li className="gn-legend-list-item">Legend</li>
-            {layerList.map((layer, ind) => <Fragment key={ind}>
+            {layers.map((layer, ind) => <Fragment key={ind}>
                 {!hideLayerTitle &&
                     <li className="gn-legend-list-item"><p>{layer.title}</p></li>
                 }
@@ -44,7 +35,7 @@ function Legend({
 }
 
 const ConnectedLegend = connect(
-    createSelector([layersSelector], (layers) => ({ layers })),
+    createSelector([layersSelector], (layers) => ({layers: layers.filter(layer => layer.group !== 'background' && layer.type === 'wms')})),
     {}
 )(Legend);
 
