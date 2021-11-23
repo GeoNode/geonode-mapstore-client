@@ -383,7 +383,7 @@ export const plugins = {
     ),
     LegendPlugin: toLazyPlugin(
         'Legend',
-        () => import(/* webpackChunkName: 'plugins/visual-style-editor-plugin' */ '@js/plugins/Legend')
+        () => import(/* webpackChunkName: 'plugins/legend-plugin' */ '@js/plugins/Legend')
     )
 };
 
