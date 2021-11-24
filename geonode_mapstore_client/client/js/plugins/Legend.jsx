@@ -25,11 +25,11 @@ function Legend({
     };
 
     return layers.length > 0 && <div className="shadow gn-legend-wrapper" style={{width: expandLegend ? 'auto' : '80px'}}>
-        <div onClick={expand}>
+        <div onClick={expand} className="gn-legend-head">
             <span role="button" className={`identify-icon glyphicon glyphicon-chevron-${expandLegend ? 'down' : 'right'}`} title="Expand layer legend" />
             <span className="gn-legend-list-item">Legend</span>
         </div>
-        <ul className="gn-legend-list" style={{height: expandLegend ? 'fit-content' : 0, overflowY: expandLegend ? 'auto' : 'hidden'}}>
+        <ul className="gn-legend-list" style={{display: expandLegend ? 'inline-block' : 'none'}}>
             {layers.map((layer, ind) => <Fragment key={ind}>
                 {!hideLayerTitle &&
                     <li className="gn-legend-list-item"><p>{layer.title}</p></li>

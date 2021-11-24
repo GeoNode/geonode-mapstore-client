@@ -18,21 +18,28 @@
     left: 10px;
     top: 10px;
     z-index: 9999;
-    padding: .5rem;
+    display: flex;
+    flex-direction: column;
     min-width: 120px;
-    max-height: 180px;
     border-radius: 2px;
+    max-height: 50%;
+
+    .gn-legend-head {
+        padding: 0.5rem;
+    }
 
     .gn-legend-list {
         list-style: none;
         padding: 0;
+        flex: 1;
         margin: 0;
+        padding: 0.5rem;
+        padding-top: 0;
+        overflow-y: auto;
     }
 
     .gn-legend-list-item {
             margin: 0;
-            margin-bottom: .5rem;
-            font-weight: bold;
         p {
             margin: 0;
             font-weight: normal;
@@ -44,7 +51,8 @@
     }
 
     span.gn-legend-list-item {
-                margin-left: .5rem;
+        margin-left: .5rem;
+        font-size: @font-size-small;
     }
 
     .identify-icon {
