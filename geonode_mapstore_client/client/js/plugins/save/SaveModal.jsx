@@ -9,7 +9,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ResizableModal from '@mapstore/framework/components/misc/ResizableModal';
-import Thumbnail from '@mapstore/framework/components/misc/Thumbnail';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { Form, FormGroup, ControlLabel, FormControl as FormControlRB, Alert } from 'react-bootstrap';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
@@ -30,13 +29,10 @@ function SaveModal({
     onClose,
     onSave,
     onClear,
-    hideThumbnail,
-    hideDescription,
-    thumbnailOptions
+    hideDescription
 }) {
 
     const [thumbnail, setThumbnail] =  useState();
-    const [thumbnailError, setThumbnailError] =  useState();
     const [name, setName] =  useState('');
     const [description, setDescription] =  useState('');
     const [nameValidation, setNameValidation] =  useState(false);
@@ -57,7 +53,6 @@ function SaveModal({
             setThumbnail(res.thumbnail_url);
             setName(res.title);
             setDescription(res.abstract);
-            setThumbnailError(false);
             setNameValidation(!res.title
                 ? 'error'
                 : undefined);
@@ -103,30 +98,6 @@ function SaveModal({
                     <div><Message msgId="saveDialog.saveSuccessMessage" /></div>
                 </Alert>}
                 <Form>
-                    {!hideThumbnail && <FormGroup
-                        validationState={thumbnailError ? 'error' : undefined}
-                    >
-                        <ControlLabel>
-                            <Message msgId="map.thumbnail"/>
-                        </ControlLabel>
-                        <Thumbnail
-                            thumbnail={thumbnail}
-                            thumbnailOptions={thumbnailOptions}
-                            message={<Message msgId="map.message"/>}
-                            onUpdate={(data) => {
-                                setThumbnail(data);
-                                setThumbnailError(false);
-                            }}
-                            onError={(newThumbnailError) => {
-                                setThumbnailError(newThumbnailError);
-                            }}
-                        />
-                        {thumbnailError && <div>
-                            <div><Message msgId="map.error"/></div>
-                            <div>{thumbnailError.indexOf && thumbnailError.indexOf('FORMAT') !== -1 && <small><Message msgId="map.errorFormat" /></small>}</div>
-                            <div>{thumbnailError.indexOf && thumbnailError.indexOf('SIZE') !== -1 && <small><Message msgId="map.errorSize" /></small>}</div>
-                        </div>}
-                    </FormGroup>}
                     <FormGroup
                         validationState={nameValidation}
                     >

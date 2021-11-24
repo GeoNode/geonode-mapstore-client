@@ -75,7 +75,6 @@ function SaveAs({
     return (
         <SaveModal
             {...props}
-            hideThumbnail={!isNew}
             hideDescription={!isNew}
             // add key to reset the component when a new resource is returned
             key={props?.resource?.pk || 'new'}

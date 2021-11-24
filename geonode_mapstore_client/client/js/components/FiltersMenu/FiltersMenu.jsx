@@ -14,6 +14,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import FaIcon from '@js/components/FaIcon';
 import useLocalStorage from '@js/hooks/useLocalStorage';
 import Menu from '@js/components/Menu';
+import Spinner from '@js/components/Spinner';
 
 const FiltersMenu = forwardRef(({
     formatHref,
@@ -26,7 +27,8 @@ const FiltersMenu = forwardRef(({
     onClear,
     totalResources,
     totalFilters,
-    filtersActive
+    filtersActive,
+    loading
 }, ref) => {
 
     const selectedSort = orderOptions.find(({ value }) => order === value);
@@ -63,7 +65,7 @@ const FiltersMenu = forwardRef(({
                                 </span>
 
                             }
-
+                            {loading && <Spinner spinnerName="circle" style={{"float": "right", "paddingLeft": "0.7em"}}noFadeIn/> }
                         </Badge>
                     </div>
                     <Menu

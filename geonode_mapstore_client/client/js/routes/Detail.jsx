@@ -66,7 +66,8 @@ function Detail({
     width,
     resource,
     totalResources,
-    siteName
+    siteName,
+    loading
 }) {
 
     const {
@@ -156,7 +157,10 @@ function Detail({
                             totalResources={totalResources}
                             totalFilters={queryFilters.length}
                             filtersActive={!!(queryFilters.length > 0)}
+                            loading={loading}
+
                         />
+
                     </ConnectedCardGrid>
                 </div>
                 {!!resource &&
@@ -208,15 +212,17 @@ const ConnectedDetail = connect(
         state => state?.controls?.gnFiltersPanel?.enabled || null,
         getParsedGeoNodeConfiguration,
         getTotalResources,
-        state => state?.gnsettings?.siteName || "Geonode"
-    ], (params, user, resource, isFiltersPanelEnabled, config, totalResources, siteName) => ({
+        state => state?.gnsettings?.siteName || "Geonode",
+        state => state?.gnsearch?.loading || false
+    ], (params, user, resource, isFiltersPanelEnabled, config, totalResources, siteName, loading) => ({
         params,
         user,
         resource,
         isFiltersPanelEnabled,
         config,
         totalResources,
-        siteName
+        siteName,
+        loading
     })),
     {
         onSearch: searchResources,

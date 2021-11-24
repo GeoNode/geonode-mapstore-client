@@ -1161,6 +1161,12 @@
             },
             {
                 "name": "FitBounds"
+            },
+            {
+                "name": "Legend",
+                "cfg": {
+                    "hideLayerTitle": true
+                }
             }
         ],
         "dataset_edit_data_viewer": [

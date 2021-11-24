@@ -77,9 +77,9 @@ function Search({
     width,
     totalResources,
     resource,
-    siteName
+    siteName,
+    loading
 }) {
-
     const {
         filterMenuItemsAllowed,
         cardOptionsItemsAllowed,
@@ -217,6 +217,7 @@ function Search({
                             totalResources={totalResources}
                             totalFilters={queryFilters.length}
                             filtersActive={!!(queryFilters.length > 0)}
+                            loading={loading}
                         />
                     </ConnectedCardGrid>
                 </div>
@@ -258,15 +259,17 @@ const ConnectedSearch = connect(
         state => state?.controls?.gnFiltersPanel?.enabled || null,
         getParsedGeoNodeConfiguration,
         getTotalResources,
-        state => state?.gnsettings?.siteName || "Geonode"
-    ], (params, user, resource, isFiltersPanelEnabled, config, totalResources, siteName) => ({
+        state => state?.gnsettings?.siteName || "Geonode",
+        state => state?.gnsearch.loading || false
+    ], (params, user, resource, isFiltersPanelEnabled, config, totalResources, siteName, loading) => ({
         params,
         user,
         resource,
         isFiltersPanelEnabled,
         config,
         totalResources,
-        siteName
+        siteName,
+        loading
     })),
     {
         onSearch: searchResources,

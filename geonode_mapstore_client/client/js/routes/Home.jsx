@@ -59,7 +59,8 @@ function Home({
     user,
     width,
     totalResources,
-    fetchFeaturedResources = () => {}
+    fetchFeaturedResources = () => {},
+    loading
 }) {
 
     const cataloguePage = '/catalogue/';
@@ -141,6 +142,7 @@ function Home({
                             totalResources={totalResources}
                             totalFilters={queryFilters.length}
                             filtersActive={!!(queryFilters.length > 0)}
+                            loading={loading}
                         />
                     </ConnectedCardGrid>
                 </div>
@@ -174,12 +176,14 @@ const ConnectedHome = connect(
         state => state?.gnsearch?.params || DEFAULT_PARAMS,
         userSelector,
         getParsedGeoNodeConfiguration,
-        getTotalResources
-    ], (params, user, config, totalResources) => ({
+        getTotalResources,
+        state => state?.gnsearch?.loading || false
+    ], (params, user, config, totalResources, loading) => ({
         params,
         user,
         config,
-        totalResources
+        totalResources,
+        loading
     })),
     {
         onSearch: searchResources,
