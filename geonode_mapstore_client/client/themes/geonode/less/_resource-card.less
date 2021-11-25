@@ -62,10 +62,25 @@
         height: 100%;
     }
 
+    .gn-footer-wrapper {
+        position: relative;
+        min-height: 30px;
+    }
+
+    .gn-card-footer {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        bottom: 0.1rem;
+    }
+
+    .gn-card-user {
+        flex: 1;
+        margin: 0;
+    }
+
     .gn-card-actions{
-        position: absolute;
-        right: 0;
-        bottom: 0;
         display: flex;
     }
 
@@ -116,7 +131,11 @@
         z-index: 2;
         flex: 1 1 auto;
         min-height: 1px;
-        padding: 1.25rem;
+        padding: 0.5rem;
+
+        .gn-card-description {
+            margin-bottom: 0.25rem;
+        }
     }
     &.gn-card-type-list .card-body {
         width: 20vw;
@@ -179,4 +198,12 @@
     &.deleted {
         opacity: 0.4;
     }
+}
+
+.gn-card-author-image {
+        width: 15px;
+        height: 15px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-right: 0.25rem;
 }
