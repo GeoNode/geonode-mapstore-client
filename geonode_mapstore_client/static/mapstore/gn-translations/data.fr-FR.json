@@ -80,6 +80,7 @@
             "clearFilters": "Effacer les filtres",
             "categoriesPlaceholder": "Sélectionner des catégories",
             "resourceTypes": "Types de ressources",
+            "resourceType": "Type de ressource",
             "resourceTypesPlaceholder": "Sélectionnez les types de ressources",
             "keywords": "Mots clés",
             "keywordsPlaceholder": "Sélectionnez des mots clés",

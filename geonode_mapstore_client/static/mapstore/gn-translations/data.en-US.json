@@ -81,6 +81,7 @@
             "clearFilters": "Clear filters",
             "categoriesPlaceholder": "Select categories",
             "resourceTypes": "Resource types",
+            "reasourceType": "Resource type",
             "resourceTypesPlaceholder": "Select resource types",
             "keywords": "Keywords",
             "keywordsPlaceholder": "Select keywords",
