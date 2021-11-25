@@ -92,6 +92,7 @@ const Cards = withResizeDetector(({
                             layoutCardsStyle="grid"
                             loading={isProcessing}
                             readOnly={isDeleted || isProcessing}
+                            featured
                         />
                     </li>
                 );
@@ -136,6 +137,7 @@ const FeaturedList = withResizeDetector(({
                     <div className="gn-card-grid-container" style={containerStyle}>
                         <h3><HTML msgId={`gnhome.featuredList`}/></h3>
                         <Cards
+                            featured
                             resources={resources}
                             formatHref={formatHref}
                             isCardActive={isCardActive}

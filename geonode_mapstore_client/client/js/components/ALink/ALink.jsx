@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function ALink({ href, readOnly, children }) {
-    return readOnly ? children : <a href={href}>{children}</a>;
+function ALink({ href, readOnly, children, ...props }) {
+    return readOnly ? children : <a href={href} {...props}>{children}</a>;
 }
 
 ALink.PropTypes = {

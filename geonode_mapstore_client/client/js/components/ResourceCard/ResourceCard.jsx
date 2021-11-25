@@ -30,7 +30,8 @@ const ResourceCard = forwardRef(({
     actions,
     onAction,
     className,
-    loading
+    loading,
+    featured
 }, ref) => {
     const res = data;
     const types = getTypesInfo();
@@ -74,7 +75,7 @@ const ResourceCard = forwardRef(({
                                     </ALink>
                                 </>}
                             {loading && <Spinner />}
-                            <ALink readOnly={readOnly} href={formatHref({
+                            <ALink style={{fontWeight: featured ? 'bold' : 'normal'}} readOnly={readOnly} href={formatHref({
                                 pathname: `/detail/${res.resource_type}/${res.pk}`
                             })}>
                                 {res.title}
@@ -154,7 +155,8 @@ ResourceCard.defaultProps = {
     links: [],
     theme: 'light',
     getTypesInfo: getResourceTypesInfo,
-    formatHref: () => '#'
+    formatHref: () => '#',
+    featured: false
 };
 
 export default ResourceCard;
