@@ -49,7 +49,6 @@ import uuid from 'uuid';
 import {
     getResourceName,
     getResourceDescription,
-    getResourceThumbnail,
     getPermissionsPayload,
     getResourceData,
     getResourceId,
@@ -67,7 +66,8 @@ import {
 } from '@js/actions/resourceservice';
 import {
     ResourceTypes,
-    cleanCompactPermissions
+    cleanCompactPermissions,
+    toGeoNodeMapConfig
 } from '@js/utils/ResourceUtils';
 import {
     ProcessTypes,
@@ -75,11 +75,20 @@ import {
 } from '@js/utils/ResourceServiceUtils';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 
+function parseMapBody(body, map) {
+    const geoNodeMap = toGeoNodeMapConfig(body.data, map);
+    return {
+        ...body,
+        ...geoNodeMap
+    };
+}
+
 const SaveAPI = {
     [ResourceTypes.MAP]: (state, id, body) => {
+        const map =  mapSelector(state) || {};
         return id
-            ? updateMap(id, { ...body, id })
-            : createMap(body);
+            ? updateMap(id, { ...parseMapBody(body, map), id })
+            : createMap(parseMapBody(body, map));
     },
     [ResourceTypes.GEOSTORY]: (state, id, body) => {
         const user = userSelector(state);
@@ -120,7 +129,6 @@ export const gnSaveContent = (action$, store) =>
             const body = {
                 'title': action.metadata.name,
                 'abstract': action.metadata.description,
-                'thumbnail_url': action.metadata.thumbnail,
                 ...(data && { 'data': JSON.parse(JSON.stringify(data)) })
             };
             const currentResource = getResourceData(state);
@@ -217,11 +225,9 @@ export const gnSaveDirectContent = (action$, store) =>
                     const geoLimitsErrors = geoLimitsResponses.filter(({ error }) => error);
                     const name = getResourceName(state);
                     const description = getResourceDescription(state);
-                    const thumbnail = getResourceThumbnail(state);
                     const metadata = {
                         name: (name) ? name : resource?.title,
                         description: (description) ? description : resource?.abstract,
-                        thumbnail: (thumbnail) ? thumbnail : resource?.thumbnail_url,
                         extension: resource?.extension,
                         href: resource?.href
                     };

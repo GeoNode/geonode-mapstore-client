@@ -384,6 +384,10 @@ export const plugins = {
     LegendPlugin: toLazyPlugin(
         'Legend',
         () => import(/* webpackChunkName: 'plugins/legend-plugin' */ '@js/plugins/Legend')
+    ),
+    DatasetsCatalogPlugin: toLazyPlugin(
+        'DatasetsCatalog',
+        () => import(/* webpackChunkName: 'plugins/dataset-catalog' */ '@js/plugins/DatasetsCatalog')
     )
 };
 

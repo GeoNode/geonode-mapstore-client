@@ -1,0 +1,90 @@
+
+// **************
+// Theme
+// **************
+
+#gn-components-theme(@theme-vars) {
+    .gn-datasets-catalog {
+        .color-var(@theme-vars[main-color]);
+        .background-color-var(@theme-vars[main-bg]);
+    }
+}
+
+// **************
+// Layout
+// **************
+
+.gn-datasets-catalog {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 500;
+    width: 658px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .shadow-soft();
+    .gn-datasets-catalog-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .gn-datasets-catalog-title {
+            padding: 0 0.5rem;
+            font-size: @font-size-lg;
+        }
+    }
+    .gn-datasets-catalog-body {
+        position: relative;
+        overflow: auto;
+        flex: 1;
+    }
+    .gn-datasets-catalog-list {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        list-style-type: none;
+        padding: 0.5rem;
+        li + li {
+            margin-top: 0.5rem;
+        }
+        li {
+            cursor: pointer;
+        }
+        li:hover {
+            .gn-resource-card {
+                .shadow();
+            }
+        }
+        .card-resource-list {
+            .gn-resource-card-body-wrapper {
+                width: ~"calc(100% - 160px)";
+            }
+        }
+    }
+    .gn-datasets-catalog-filter {
+        margin: 0.5rem;
+        display: flex;
+        align-items: center;
+        position: relative;
+        .form-control {
+            width: 100%;
+            padding-right: 2rem;
+        }
+        .gn-spinner,
+        .btn {
+            position: absolute;
+            right: 1px;
+            padding: 0.25rem 0.5rem;
+        }
+    }
+    .gn-datasets-catalog-alert {
+        width: 100%;
+        padding: 0.25rem;
+        padding-top: 1rem;
+        text-align: center;
+        font-style: italic;
+        position: relative;
+    }
+}

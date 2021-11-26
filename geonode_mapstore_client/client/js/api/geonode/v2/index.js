@@ -214,6 +214,41 @@ export const getMaps = ({
         }));
 };
 
+export const getDatasets = ({
+    q,
+    pageSize = 20,
+    page = 1,
+    sort,
+    ...params
+}) => {
+    return requestOptions(DATASETS, () => axios
+        .get(
+            parseDevHostname(
+                addQueryString(endpoints[DATASETS], q && {
+                    search: q,
+                    search_fields: ['title', 'abstract']
+                })
+            ), {
+                // axios will format query params array to `key[]=value1&key[]=value2`
+                params: {
+                    ...params,
+                    ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
+                    page,
+                    page_size: pageSize
+                }
+            })
+        .then(({ data }) => {
+            return {
+                totalCount: data.total,
+                isNextPageAvailable: !!data.links.next,
+                resources: (data.datasets || [])
+                    .map((resource) => {
+                        return resource;
+                    })
+            };
+        }));
+};
+
 export const getDocumentsByDocType = (docType = 'image', {
     q,
     pageSize = 20,
@@ -719,5 +754,6 @@ export default {
     getCompactPermissionsByPk,
     updateCompactPermissionsByPk,
     deleteResource,
-    copyResource
+    copyResource,
+    getDatasets
 };

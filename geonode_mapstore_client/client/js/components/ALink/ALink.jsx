@@ -5,7 +5,7 @@ function ALink({ href, readOnly, children, ...props }) {
     return readOnly ? children : <a href={href} {...props}>{children}</a>;
 }
 
-ALink.PropTypes = {
+ALink.propTypes = {
     href: PropTypes.string,
     readOnly: PropTypes.bool.isRequired,
     children: PropTypes.any

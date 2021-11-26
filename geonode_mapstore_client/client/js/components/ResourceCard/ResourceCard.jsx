@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import Message from '@mapstore/framework/components/I18N/Message';
 import FaIcon from '@js/components/FaIcon';
 import Dropdown from '@js/components/Dropdown';
@@ -31,7 +31,8 @@ const ResourceCard = forwardRef(({
     onAction,
     className,
     loading,
-    featured
+    featured,
+    onClick
 }, ref) => {
     const res = data;
     const types = getTypesInfo();
@@ -43,9 +44,17 @@ const ResourceCard = forwardRef(({
     const detailUrl = res?.pk && formatDetailUrl(res);
     const resourceCanPreviewed = res?.pk && canPreviewed && canPreviewed(res);
     const metadataDetailUrl = res?.pk && getMetadataDetailUrl(res);
+
+    const [imgError, setImgError] = useState(false);
+
+    function handleClick() {
+        onClick(data);
+    }
+    const imgClassName = layoutCardsStyle === 'list' ? 'card-img-left' : 'card-img-top';
     return (
         <div
             ref={ref}
+            onClick={handleClick}
             className={`gn-resource-card${active ? ' active' : ''}${readOnly ? ' read-only' : ''} gn-card-type-${layoutCardsStyle} ${layoutCardsStyle === 'list' ? 'rounded-0' : ''}${className ? ` ${className}` : ''}`}
         >
             {!readOnly && <a
@@ -55,11 +64,14 @@ const ResourceCard = forwardRef(({
                 })}
             />}
             <div className={`card-resource-${layoutCardsStyle}`}>
-                <img
-                    className={`${(layoutCardsStyle === 'list') ? 'card-img-left' : 'card-img-top'}`}
-                    src={res.thumbnail_url}
-                />
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                {imgError
+                    ? <div className={`${imgClassName} card-img-placeholder`} />
+                    : <img
+                        className={imgClassName}
+                        src={res.thumbnail_url}
+                        onError={() => setImgError(true)}
+                    />}
+                <div className="gn-resource-card-body-wrapper">
                     <div className="card-body">
                         <div className="card-title">
                             {(icon && !loading) &&
@@ -156,7 +168,8 @@ ResourceCard.defaultProps = {
     theme: 'light',
     getTypesInfo: getResourceTypesInfo,
     formatHref: () => '#',
-    featured: false
+    featured: false,
+    onClick: () => {}
 };
 
 export default ResourceCard;

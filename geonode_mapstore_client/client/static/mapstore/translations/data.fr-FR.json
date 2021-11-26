@@ -193,7 +193,11 @@
             "warningGeoLimitsSaveMessage": "Il n'a pas été possible de mettre à jour les nouvelles limites géographiques",
             "saveMapThumbnail": "Cliquez pour définir la carte comme une image",
             "templates": "Modèles",
-            "createMap": "Créer une Carte"
+            "createMap": "Créer une Carte",
+            "addLayer": "Ajouter un calque",
+            "datasetsCatalogTitle": "Catalogue de couches",
+            "datasetsCatalogFilterPlaceholder": "Filtrer les jeux de données par titre ou résumé...",
+            "datasetsCatalogEntriesNoResults": "Aucun résultat ne correspond à votre recherche"
         }
     }
 }

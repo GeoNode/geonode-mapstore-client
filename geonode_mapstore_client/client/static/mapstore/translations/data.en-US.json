@@ -194,7 +194,11 @@
             "warningGeoLimitsSaveMessage": "It was not possible to update the new geo limits",
             "saveMapThumbnail": "Click to set the map as an image",
             "templates": "Templates",
-            "createMap": "Create Map"
+            "createMap": "Create Map",
+            "addLayer": "Add layer",
+            "datasetsCatalogTitle": "Layers catalog",
+            "datasetsCatalogFilterPlaceholder": "Filter datasets by title or abstract...",
+            "datasetsCatalogEntriesNoResults": "No results match your search"
         }
     }
 }

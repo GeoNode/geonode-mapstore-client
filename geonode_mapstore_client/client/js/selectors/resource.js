@@ -147,8 +147,8 @@ function isResourceDataEqual(state, initialData = {}, currentData = {}) {
     switch (resourceType) {
     case ResourceTypes.MAP: {
         return isMapCenterEqual(initialData?.map?.center, currentData?.map?.center) && compareMapChanges(
-            removeProperty(initialData, ['extraParams', 'getFeatureInfo', 'store', 'capability']),
-            removeProperty(currentData, ['extraParams', 'getFeatureInfo', 'store', 'capability'])
+            removeProperty(initialData, ['extraParams', 'getFeatureInfo', 'store', 'capability', 'extendedParams']),
+            removeProperty(currentData, ['extraParams', 'getFeatureInfo', 'store', 'capability', 'extendedParams'])
         );
     }
     case ResourceTypes.GEOSTORY: {

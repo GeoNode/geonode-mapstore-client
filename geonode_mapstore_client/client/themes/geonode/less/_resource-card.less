@@ -38,6 +38,9 @@
             .color-var(@theme-vars[main-color]);
             .background-color-var(@theme-vars[main-bg]);
         }
+        .card-img-placeholder {
+            .background-color-var(@theme-vars[main-variant-bg]);
+        }
     }
 }
 
@@ -133,6 +136,11 @@
             font-size: 0.75rem;
         }
     }
+    .gn-resource-card-body-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
     .card-body {
         position: relative;
         pointer-events: none;
@@ -144,9 +152,6 @@
         .gn-card-description {
             margin-bottom: 0.25rem;
         }
-    }
-    &.gn-card-type-list .card-body {
-        width: 20vw;
     }
     .card-img-top {
         width: 100%;
@@ -206,12 +211,24 @@
     &.deleted {
         opacity: 0.4;
     }
+    .card-resource-list {
+        display: flex;
+        flex: 1 1 auto;
+        .card-img-left{
+            width: 160px;
+            height: 135px;
+            object-fit: cover;
+        }
+        .gn-resource-card-body-wrapper {
+            width: 20vw;
+        }
+    }
 }
 
 .gn-card-author-image {
-        width: 15px;
-        height: 15px;
-        object-fit: cover;
-        border-radius: 50%;
-        margin-right: 0.25rem;
+    width: 15px;
+    height: 15px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 0.25rem;
 }

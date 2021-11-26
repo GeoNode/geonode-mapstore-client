@@ -12,6 +12,7 @@ import url from 'url';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
+import { bboxToPolygon } from '@js/utils/CoordinatesUtils';
 
 /**
 * @module utils/ResourceUtils
@@ -62,11 +63,25 @@ export const resourceToLayerConfig = (resource) => {
         pk,
         has_time: hasTime,
         default_style: defaultStyle,
-        styles,
         ptype
     } = resource;
 
     const bbox = getExtentFromResource(resource);
+    const defaultStyleParams = defaultStyle && {
+        defaultStyle: {
+            title: defaultStyle.sld_title,
+            name: defaultStyle.workspace ? `${defaultStyle.workspace}:${defaultStyle.name}` : defaultStyle.name
+        }
+    };
+
+    const extendedParams = {
+        pk,
+        mapLayer: {
+            dataset: resource
+        },
+        ...defaultStyleParams
+    };
+
     switch (ptype) {
     case GXP_PTYPES.REST_MAP:
     case GXP_PTYPES.REST_IMG: {
@@ -80,7 +95,8 @@ export const resourceToLayerConfig = (resource) => {
             url: arcgisUrl,
             ...(bbox && { bbox }),
             title,
-            visibility: true
+            visibility: true,
+            extendedParams
         };
     }
     default:
@@ -121,23 +137,12 @@ export const resourceToLayerConfig = (resource) => {
                     template
                 }
             }),
-            style: '',
+            style: defaultStyleParams?.defaultStyle?.name || '',
             title,
             visibility: true,
-            ...(defaultStyle && {
-                defaultStyle: {
-                    title: defaultStyle.sld_title,
-                    name: defaultStyle.workspace ? `${defaultStyle.workspace}:${defaultStyle.name}` : defaultStyle.name
-                }
-            }),
-            ...(styles && {
-                availableStyles: [ ...styles ].map((style) => ({
-                    title: style.sld_title,
-                    name: style.workspace ? `${style.workspace}:${style.name}` : style.name
-                }))
-            }),
             ...(params && { params }),
-            ...(dimensions.length > 0 && ({ dimensions }))
+            ...(dimensions.length > 0 && ({ dimensions })),
+            extendedParams
         };
     }
 };
@@ -356,3 +361,105 @@ export const getResourcePermissions = (options) => {
 
     return permissionsOptions;
 };
+
+
+export function getGeoNodeMapLayers(data) {
+    return (data?.map?.layers || [])
+        .filter(layer => layer?.extendedParams?.mapLayer)
+        .map((layer) => {
+            return {
+                ...(layer?.extendedParams?.mapLayer && {
+                    pk: layer.extendedParams.mapLayer.pk
+                }),
+                extra_params: {
+                    msId: layer.id,
+                    styles: layer.availableStyles
+                        ? layer.availableStyles.map(({ name, title }) => ({ name, title }))
+                        : []
+                },
+                current_style: layer.style || '',
+                name: layer.name
+            };
+        });
+}
+
+export function toGeoNodeMapConfig(data, mapState) {
+    if (!data) {
+        return {};
+    }
+    const maplayers = getGeoNodeMapLayers(data);
+    const { projection } = data?.map || {};
+    const { bbox } = mapState || {};
+    const llBboxPolygon = bboxToPolygon(bbox, 'EPSG:4326');
+    const bboxPolygon = bboxToPolygon(bbox, projection);
+    return {
+        maplayers,
+        ll_bbox_polygon: llBboxPolygon,
+        srid: projection,
+        // following properties are using the srid definition
+        bbox_polygon: bboxPolygon
+    };
+}
+
+function compareBackgroundLayers(aLayer, bLayer) {
+    return aLayer.type === bLayer.type
+        && aLayer.name === bLayer.name
+        && aLayer.source === bLayer.source
+        && aLayer.provider === bLayer.provider
+        && aLayer.url === bLayer.url;
+}
+
+export function toMapStoreMapConfig(resource, baseConfig) {
+    const { maplayers = [], data } = resource || {};
+    const baseMapBackgroundLayers = (baseConfig?.map?.layers || []).filter(layer => layer.group === 'background');
+    const currentBackgroundLayer = (data?.map?.layers || [])
+        .filter(layer => layer.group === 'background')
+        .find(layer => layer.visibility && baseMapBackgroundLayers.find(bLayer => compareBackgroundLayers(layer, bLayer)));
+
+    const backgroundLayers = !currentBackgroundLayer
+        ? baseMapBackgroundLayers
+        : baseMapBackgroundLayers.map((layer) => ({
+            ...layer,
+            visibility: compareBackgroundLayers(layer, currentBackgroundLayer)
+        }));
+
+    const layers = (data?.map?.layers || [])
+        .filter(layer => layer.group !== 'background')
+        .map((layer) => {
+            const mapLayer = maplayers.find(mLayer => layer.id !== undefined && mLayer?.extra_params?.msId === layer.id);
+            if (mapLayer) {
+                return {
+                    ...layer,
+                    style: mapLayer.current_style || layer.style || '',
+                    availableStyles: [],
+                    extendedParams: {
+                        ...layer.extendedParams,
+                        mapLayer
+                    }
+                };
+            }
+            if (!mapLayer && layer?.extendedParams?.mapLayer) {
+                return null;
+            }
+            return layer;
+        })
+        .filter(layer => layer);
+
+    // add all the map layers not included in the blob
+    const addMapLayers = maplayers
+        .filter(mLayer => mLayer?.dataset)
+        .filter(mLayer => !layers.find(layer => layer.id !== undefined && mLayer?.extra_params?.msId === layer.id))
+        .map(mLayer => resourceToLayerConfig(mLayer?.dataset));
+
+    return {
+        ...data,
+        map: {
+            ...data?.map,
+            layers: [
+                ...backgroundLayers,
+                ...layers,
+                ...addMapLayers
+            ]
+        }
+    };
+}

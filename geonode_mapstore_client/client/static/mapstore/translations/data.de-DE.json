@@ -193,7 +193,11 @@
             "warningGeoLimitsSaveMessage": "Es war nicht möglich die neuen Geolimits zu aktualisieren",
             "saveMapThumbnail": "Klicken Sie hier, um die Karte als Bild festzulegen",
             "templates": "Vorlagen",
-            "createMap": "Karte Erstellen"
+            "createMap": "Karte Erstellen",
+            "addLayer": "Ebene hinzufügen",
+            "datasetsCatalogTitle": "Ebenenkatalog",
+            "datasetsCatalogFilterPlaceholder": "Datensätze nach Titel oder Zusammenfassung filtern...",
+            "datasetsCatalogEntriesNoResults": "Keine Ergebnisse entsprechen Ihrer Suche"
         }
     }
 }

@@ -58,7 +58,8 @@ import {
 } from '@mapstore/framework/actions/controls';
 import {
     resourceToLayerConfig,
-    ResourceTypes
+    ResourceTypes,
+    toMapStoreMapConfig
 } from '@js/utils/ResourceUtils';
 import {
     canAddResource,
@@ -86,13 +87,13 @@ const resourceTypes = {
                         const [mapConfig, gnLayer] = response;
                         const newLayer = resourceToLayerConfig(gnLayer);
 
-                        if (!newLayer.defaultStyle || page !== 'dataset_edit_style_viewer') {
+                        if (!newLayer?.extendedParams?.defaultStyle || page !== 'dataset_edit_style_viewer') {
                             return [mapConfig, gnLayer, newLayer];
                         }
 
                         return StylesAPI.getStylesInfo({
                             baseUrl: options?.styleService?.baseUrl,
-                            styles: [newLayer.defaultStyle]
+                            styles: [newLayer.extendedParams.defaultStyle]
                         }).then((availableStyles) => {
                             return [mapConfig, gnLayer, { ...newLayer, availableStyles }];
                         });
@@ -139,10 +140,16 @@ const resourceTypes = {
     },
     [ResourceTypes.MAP]: {
         resourceObservable: (pk, options) =>
-            Observable.defer(() => getMapByPk(pk))
-                .switchMap((resource) => {
+            Observable.defer(() =>  axios.all([
+                getNewMapConfiguration(),
+                getMapByPk(pk)
+            ]))
+                .switchMap(([baseConfig, resource]) => {
+                    const mapConfig = options.data
+                        ? options.data
+                        : toMapStoreMapConfig(resource, baseConfig);
                     return Observable.of(
-                        configureMap(options.data || resource.data),
+                        configureMap(mapConfig),
                         setControlProperty('toolbar', 'expanded', false),
                         setResource(resource),
                         setResourceId(pk)

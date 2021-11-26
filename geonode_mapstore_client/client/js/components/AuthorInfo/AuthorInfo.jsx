@@ -16,7 +16,7 @@ function AuthorInfo({ resource, readOnly, formatHref, ...props}) {
     </p>);
 }
 
-AuthorInfo.PropTypes = {
+AuthorInfo.propTypes = {
     resource: PropTypes.object,
     readOnly: PropTypes.bool,
     formatHref: PropTypes.func,
