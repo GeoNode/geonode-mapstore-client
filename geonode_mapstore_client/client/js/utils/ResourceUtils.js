@@ -401,7 +401,7 @@ export function toGeoNodeMapConfig(data, mapState) {
     };
 }
 
-function compareBackgroundLayers(aLayer, bLayer) {
+export function compareBackgroundLayers(aLayer, bLayer) {
     return aLayer.type === bLayer.type
         && aLayer.name === bLayer.name
         && aLayer.source === bLayer.source

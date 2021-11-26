@@ -8,7 +8,15 @@
  */
 
 import expect from 'expect';
-import { resourceToLayerConfig, getResourcePermissions, availableResourceTypes, setAvailableResourceTypes } from '../ResourceUtils';
+import {
+    resourceToLayerConfig,
+    getResourcePermissions,
+    availableResourceTypes,
+    setAvailableResourceTypes,
+    getGeoNodeMapLayers,
+    toGeoNodeMapConfig,
+    compareBackgroundLayers
+} from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
     it('should keep the wms params from the url if available', () => {
@@ -72,5 +80,77 @@ describe('Test Resource Utils', () => {
         setAvailableResourceTypes({ test: 'test data' });
 
         expect(availableResourceTypes).toEqual({ test: 'test data' });
+    });
+    it.only('should convert data blob to geonode maplayers', () => {
+        const data = {
+            map: {
+                layers: [
+                    { id: '01', type: 'osm', source: 'osm' },
+                    { id: '02', type: 'vector', features: [] },
+                    {
+                        id: '03',
+                        type: 'wms',
+                        name: 'geonode:layer',
+                        url: 'geoserver/wms',
+                        style: 'geonode:style',
+                        availableStyles: [{ name: 'custom:style', title: 'My Style' }],
+                        extendedParams: {
+                            mapLayer: {
+                                pk: 10
+                            }
+                        }
+                    }
+                ]
+            }
+        };
+        const mapLayers = getGeoNodeMapLayers(data);
+        expect(mapLayers.length).toBe(1);
+        expect(mapLayers[0]).toEqual({
+            pk: 10,
+            extra_params: {
+                msId: '03',
+                styles: [{ name: 'custom:style', title: 'My Style' }]
+            },
+            current_style: 'geonode:style',
+            name: 'geonode:layer'
+        });
+    });
+    it.only('should convert data blob to geonode map properties', () => {
+        const data = {
+            map: {
+                projection: 'EPSG:3857',
+                layers: [
+                    { id: '01', type: 'osm', source: 'osm' },
+                    { id: '02', type: 'vector', features: [] },
+                    {
+                        id: '03',
+                        type: 'wms',
+                        name: 'geonode:layer',
+                        url: 'geoserver/wms',
+                        style: 'geonode:style',
+                        availableStyles: [{ name: 'custom:style', title: 'My Style' }],
+                        extendedParams: {
+                            mapLayer: {
+                                pk: 10
+                            }
+                        }
+                    }
+                ]
+            }
+        };
+        const mapState = {
+            bbox: {
+                bounds: {minx: -10, miny: -10, maxx: 10, maxy: 10},
+                crs: 'EPSG:4326'
+            }
+        };
+        const geoNodeMapConfig = toGeoNodeMapConfig(data, mapState);
+        expect(geoNodeMapConfig.maplayers.length).toBe(1);
+        expect(geoNodeMapConfig.srid).toBe('EPSG:3857');
+        expect(geoNodeMapConfig.bbox_polygon).toBeTruthy();
+        expect(geoNodeMapConfig.ll_bbox_polygon).toBeTruthy();
+    });
+    it.only('should be able to compare background layers with different ids', () => {
+        expect(compareBackgroundLayers({ type: 'osm', source: 'osm', id: '11' }, { type: 'osm', source: 'osm' })).toBe(true);
     });
 });
