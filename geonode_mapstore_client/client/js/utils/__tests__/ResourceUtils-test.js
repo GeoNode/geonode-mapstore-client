@@ -81,7 +81,7 @@ describe('Test Resource Utils', () => {
 
         expect(availableResourceTypes).toEqual({ test: 'test data' });
     });
-    it.only('should convert data blob to geonode maplayers', () => {
+    it('should convert data blob to geonode maplayers', () => {
         const data = {
             map: {
                 layers: [
@@ -115,7 +115,7 @@ describe('Test Resource Utils', () => {
             name: 'geonode:layer'
         });
     });
-    it.only('should convert data blob to geonode map properties', () => {
+    it('should convert data blob to geonode map properties', () => {
         const data = {
             map: {
                 projection: 'EPSG:3857',
@@ -150,7 +150,7 @@ describe('Test Resource Utils', () => {
         expect(geoNodeMapConfig.bbox_polygon).toBeTruthy();
         expect(geoNodeMapConfig.ll_bbox_polygon).toBeTruthy();
     });
-    it.only('should be able to compare background layers with different ids', () => {
+    it('should be able to compare background layers with different ids', () => {
         expect(compareBackgroundLayers({ type: 'osm', source: 'osm', id: '11' }, { type: 'osm', source: 'osm' })).toBe(true);
     });
 });

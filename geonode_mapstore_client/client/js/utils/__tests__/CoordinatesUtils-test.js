@@ -13,7 +13,7 @@ import {
 } from '../CoordinatesUtils';
 
 describe('Test Coordinates Utils', () => {
-    it.only('should keep the wms params from the url if available', () => {
+    it('should keep the wms params from the url if available', () => {
         const bbox = {
             bounds: {minx: -10, miny: -10, maxx: 10, maxy: 10},
             crs: 'EPSG:4326'
