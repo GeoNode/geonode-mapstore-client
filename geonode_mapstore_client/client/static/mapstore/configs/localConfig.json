@@ -332,10 +332,10 @@
                             ]
                         },
                         {
-                            "labelId": "gnhome.createDataset",
-                            "value": "layer",
+                            "labelId": "gnhome.uploadDocument",
+                            "value": "document",
                             "type": "link",
-                            "href": "/createlayer/",
+                            "href": "/documents/upload",
                             "authenticated": true,
                             "perms": [
                                 {
@@ -345,10 +345,10 @@
                             ]
                         },
                         {
-                            "labelId": "gnhome.uploadDocument",
-                            "value": "document",
+                            "labelId": "gnhome.createDataset",
+                            "value": "layer",
                             "type": "link",
-                            "href": "/documents/upload",
+                            "href": "/createlayer/",
                             "authenticated": true,
                             "perms": [
                                 {
