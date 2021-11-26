@@ -311,6 +311,7 @@
                     "labelId": "gnhome.createNew",
                     "authenticated": true,
                     "type": "dropdown",
+                    "variant": "primary",
                     "perms": [
                         {
                             "type": "user",
@@ -332,10 +333,10 @@
                             ]
                         },
                         {
-                            "labelId": "gnhome.createDataset",
-                            "value": "layer",
+                            "labelId": "gnhome.uploadDocument",
+                            "value": "document",
                             "type": "link",
-                            "href": "/createlayer/",
+                            "href": "/documents/upload",
                             "authenticated": true,
                             "perms": [
                                 {
@@ -345,10 +346,10 @@
                             ]
                         },
                         {
-                            "labelId": "gnhome.uploadDocument",
-                            "value": "document",
+                            "labelId": "gnhome.createDataset",
+                            "value": "layer",
                             "type": "link",
-                            "href": "/documents/upload",
+                            "href": "/createlayer/",
                             "authenticated": true,
                             "perms": [
                                 {
