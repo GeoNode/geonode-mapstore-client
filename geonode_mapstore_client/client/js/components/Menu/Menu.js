@@ -44,7 +44,7 @@ const Menu = forwardRef(({
                     return (
                         <li key={idx}>
                             <MenuItem
-                                variant={item.labelId === 'gnhome.createNew' ? 'primary' : variant}
+                                variant={item.variant || variant}
                                 item={{ ...item, id: item.id || idx }}
                                 size={size}
                                 alignRight={alignRight}

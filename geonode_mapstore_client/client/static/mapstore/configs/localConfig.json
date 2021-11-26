@@ -311,6 +311,7 @@
                     "labelId": "gnhome.createNew",
                     "authenticated": true,
                     "type": "dropdown",
+                    "variant": "primary",
                     "perms": [
                         {
                             "type": "user",
