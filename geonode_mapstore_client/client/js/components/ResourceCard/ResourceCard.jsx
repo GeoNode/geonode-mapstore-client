@@ -75,7 +75,7 @@ const ResourceCard = forwardRef(({
                                     </ALink>
                                 </>}
                             {loading && <Spinner />}
-                            <ALink style={{fontWeight: featured ? 'bold' : 'normal'}} readOnly={readOnly} href={formatHref({
+                            <ALink className={featured ? 'gn-featured-card-title' : 'gn-card-title'} readOnly={readOnly} href={formatHref({
                                 pathname: `/detail/${res.resource_type}/${res.pk}`
                             })}>
                                 {res.title}
