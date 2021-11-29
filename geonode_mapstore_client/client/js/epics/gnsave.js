@@ -128,7 +128,7 @@ export const gnSaveContent = (action$, store) =>
             const data = getDataPayload(state, contentType);
             const body = {
                 'title': action.metadata.name,
-                'abstract': action.metadata.description,
+                ...(action.metadata.description && { 'abstract': action.metadata.description }),
                 ...(data && { 'data': JSON.parse(JSON.stringify(data)) })
             };
             const currentResource = getResourceData(state);
