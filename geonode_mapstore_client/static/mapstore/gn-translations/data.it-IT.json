@@ -195,7 +195,11 @@
             "warningGeoLimitsSaveMessage": "Non è stato possibile aggiornare i nuovi limiti geografici",
             "saveMapThumbnail": "Clicca per impostare la mappa come immagine",
             "templates": "Modelli",
-            "createMap": "Crea Mappa"
+            "createMap": "Crea Mappa",
+            "addLayer": "Aggiungi layer",
+            "datasetsCatalogTitle": "Catalogo layers",
+            "datasetsCatalogFilterPlaceholder": "Filtra set di dati per titolo o descrizione...",
+            "datasetsCatalogEntriesNoResults": "Nessun risultato corrisponde alla tua ricerca"
         }
     }
 }
