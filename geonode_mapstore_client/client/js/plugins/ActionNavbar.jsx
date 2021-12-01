@@ -13,7 +13,6 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import ActionNavbar from '@js/components/ActionNavbar';
 
-import FaIcon from '@js/components/FaIcon';
 import usePluginItems from '@js/hooks/usePluginItems';
 import {
     getResourcePerms,
@@ -23,7 +22,6 @@ import {
     getSelectedLayerPermissions
 } from '@js/selectors/resource';
 import { hasPermissionsTo, reduceArrayRecursive } from '@js/utils/MenuUtils';
-import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
 
 function checkResourcePerms(menuItem, resourcePerms) {
     if (menuItem.disableIf) {
@@ -35,61 +33,82 @@ function checkResourcePerms(menuItem, resourcePerms) {
     return true;
 }
 
-function ActionNavbarPlugin({
-    items,
-    leftMenuItems,
-    rightMenuItems,
-    resourcePerms,
-    resource,
-    isDirtyState,
-    selectedLayerPermissions
-}, context) {
-
-    const types = getResourceTypesInfo();
-    const { icon } = types[resource?.resource_type] || {};
+function ActionNavbarPlugin(
+    {
+        items,
+        leftMenuItems,
+        rightMenuItems,
+        resourcePerms,
+        resource,
+        isDirtyState,
+        selectedLayerPermissions,
+        titleItems
+    },
+    context
+) {
     const { loadedPlugins } = context;
-    const configuredItems = usePluginItems({ items, loadedPlugins }, [resource?.pk, selectedLayerPermissions]);
+    const configuredItems = usePluginItems({ items, loadedPlugins }, [
+        resource?.pk,
+        selectedLayerPermissions
+    ]);
 
     const leftMenuItemsPlugins = reduceArrayRecursive(leftMenuItems, (item) => {
-        configuredItems.find(plugin => {
-            if ( item.type === 'plugin' && plugin.name === item.name ) {
+        configuredItems.find((plugin) => {
+            if (item.type === 'plugin' && plugin.name === item.name) {
                 item.Component = plugin?.Component;
             }
         });
 
-        item.className = item.showPendingChangesIcon && isDirtyState ? 'gn-pending-changes-icon' : '';
-        return (item);
+        item.className =
+            item.showPendingChangesIcon && isDirtyState
+                ? 'gn-pending-changes-icon'
+                : '';
+        return item;
     });
 
-    const rightMenuItemsPlugins = reduceArrayRecursive(rightMenuItems, (item) => {
-        configuredItems.find(plugin => {
-            if ( item.type === 'plugin' && plugin.name === item.name ) {
-                item.Component = plugin?.Component;
-            }
-        });
-        return (item);
-    });
-
-    const leftItems = reduceArrayRecursive(
-        leftMenuItemsPlugins,
-        menuItem => checkResourcePerms(menuItem, resourcePerms)
+    const rightMenuItemsPlugins = reduceArrayRecursive(
+        rightMenuItems,
+        (item) => {
+            configuredItems.find((plugin) => {
+                if (item.type === 'plugin' && plugin.name === item.name) {
+                    item.Component = plugin?.Component;
+                }
+            });
+            return item;
+        }
     );
 
-    const rightItems = reduceArrayRecursive(
-        rightMenuItemsPlugins,
-        menuItem => checkResourcePerms(menuItem, resourcePerms)
+    const titleItemsPlugins = reduceArrayRecursive(titleItems, (item) => {
+        configuredItems.find((plugin) => {
+            if (item.type === 'plugin' && plugin.name === item.name) {
+                item.Component = plugin?.Component;
+            }
+        });
+        return item;
+    });
+
+    const leftItems = reduceArrayRecursive(leftMenuItemsPlugins, (menuItem) =>
+        checkResourcePerms(menuItem, resourcePerms)
+    );
+
+    const rightItems = reduceArrayRecursive(rightMenuItemsPlugins, (menuItem) =>
+        checkResourcePerms(menuItem, resourcePerms)
+    );
+
+    const titleNavbarItems = reduceArrayRecursive(
+        titleItemsPlugins,
+        (menuItem) => checkResourcePerms(menuItem, resourcePerms)
     );
 
     return (
-
         <ActionNavbar
             leftItems={leftItems}
             rightItems={rightItems}
-            variant="default"
+            variant="primary"
             size="sm"
-        >
-            <h1 className="gn-action-navbar-title">{icon && <FaIcon name={icon}/>}{'  '}{resource?.title}</h1>
-        </ActionNavbar>
+            resource={resource}
+            titleItems={titleNavbarItems}
+        />
     );
 }
 
@@ -106,20 +125,32 @@ ActionNavbarPlugin.defaultProps = {
 };
 
 const ConnectedActionNavbarPlugin = connect(
-    createSelector([
-        getResourcePerms,
-        canAddResource,
-        getResourceData,
-        getResourceDirtyState,
-        getSelectedLayerPermissions
-    ], (resourcePerms, userCanAddResource, resource, dirtyState, selectedLayerPermissions) => ({
-        resourcePerms: (resourcePerms.length > 0 ) ?
-            resourcePerms : ((userCanAddResource)
-                ? [ "change_resourcebase"] : [] ),
-        resource,
-        isDirtyState: !!dirtyState,
-        selectedLayerPermissions
-    }))
+    createSelector(
+        [
+            getResourcePerms,
+            canAddResource,
+            getResourceData,
+            getResourceDirtyState,
+            getSelectedLayerPermissions
+        ],
+        (
+            resourcePerms,
+            userCanAddResource,
+            resource,
+            dirtyState,
+            selectedLayerPermissions
+        ) => ({
+            resourcePerms:
+                resourcePerms.length > 0
+                    ? resourcePerms
+                    : userCanAddResource
+                        ? ['change_resourcebase']
+                        : [],
+            resource,
+            isDirtyState: !!dirtyState,
+            selectedLayerPermissions
+        })
+    )
 )(ActionNavbarPlugin);
 
 export default createPlugin('ActionNavbar', {
