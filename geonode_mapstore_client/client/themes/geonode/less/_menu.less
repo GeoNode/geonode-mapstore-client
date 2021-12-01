@@ -3,6 +3,10 @@
 // **************
 
 #gn-components-theme(@theme-vars) {
+    .gn-action-navbar-title {
+        .background-color-var(@theme-vars[info]);
+        .color-var(@theme-vars[info-contrast]);
+    }
     .gn-menu-divider {
         .background-color-var(@theme-vars[primary-contrast]);
     }
@@ -34,7 +38,6 @@
                     .background-color-var(@theme-vars[primary]);
                 }
             }
-
         }
     }
 }
@@ -62,6 +65,10 @@
 .gn-main-header-placeholder {
     position: relative;
     width: 100%;
+}
+
+nav.hide-navigation#gn-topbar {
+    display: none;
 }
 
 #gn-topbar {
@@ -100,6 +107,12 @@
             font-size: @font-size-sm;
         }
     }
+
+    &.gn-primary {
+        padding: 0.25rem 0;
+        min-height: 2rem;
+    }
+
     .dropdown-menu li button {
         width: 100%;
         text-align: left;
@@ -171,7 +184,7 @@
     .gn-menu-content-side {
         position: relative;
     }
-    >.dropdown {
+    > .dropdown {
         visibility: hidden;
     }
 
@@ -193,17 +206,17 @@
     .gn-menu-fill {
         flex: 1;
 
-        .clear-pointer{
+        .clear-pointer {
             cursor: pointer;
         }
-        .resources-found{
+        .resources-found {
             cursor: pointer;
             text-decoration: underline;
         }
-        .resources-count{
+        .resources-count {
             padding: 0em 0.2em;
         }
-        .badge{
+        .badge {
             font-weight: normal;
             background-color: transparent;
         }
@@ -217,10 +230,46 @@
 }
 
 .gn-action-navbar-title {
-    margin: 0;
     font-weight: 400;
     font-size: 1rem;
-    padding: 0 0.5rem;
+    display: flex;
+    align-items: center;
+    max-width: 11rem;
+    border-color: #275a7f;
+    color: white;
+    padding-left: 0.5rem;
+
+    button.btn {
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    }
+
+    i {
+    font-size: @font-size-lg;
+    }
+}
+
+.gn-action-navbar-resource-title {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: default;
+}
+
+
+a.gn-action-navbar-breadcrumb-link {
+    padding: 0;
+    color: inherit;
+
+    &:hover {
+        color: inherit;
+    }
+}
+
+.gn-action-navbar-breadcrumb-seperator {
+    margin: 0 0.5rem;
 }
 
 .gn-language-selector {
