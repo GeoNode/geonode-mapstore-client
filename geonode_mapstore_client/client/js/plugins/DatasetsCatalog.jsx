@@ -222,7 +222,8 @@ const ConnectedDatasetsCatalogPlugin = connect(
 
 const DatasetsCatalogButton = ({
     onClick,
-    size
+    size,
+    variant
 }) => {
 
     const handleClickButton = () => {
@@ -233,6 +234,7 @@ const DatasetsCatalogButton = ({
         <Button
             size={size}
             onClick={handleClickButton}
+            variant={variant}
         >
             <Message msgId="gnviewer.addLayer"/>
         </Button>
