@@ -13,6 +13,13 @@ import ActionNavbar from '../ActionNavbar';
 
 
 const conf = {
+    titleNavbarItems: [
+        {
+            "type": "plugin",
+            "name": "DetailViewerButton",
+            "Component": 'i'
+        }
+    ],
     leftItems: [
         {
             "labelId": "gnhome.data",
@@ -194,6 +201,7 @@ describe('Test GeoNode action navbar component', () => {
         ReactDOM.render( <ActionNavbar
             leftItems={conf.leftItems.items}
             rightItems={conf.rightItems.items}
+            titleItems={conf.titleNavbarItems}
         />, document.getElementById("container"));
 
         const el = document.querySelector('.gn-menu');

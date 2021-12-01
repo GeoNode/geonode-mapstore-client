@@ -146,6 +146,7 @@ ActionNavbar.propTypes = {
 ActionNavbar.defaultProps = {
     leftItems: [],
     rightItems: [],
+    titleItems: [],
     query: {},
     formatHref: () => '#',
     variant: 'primary'
