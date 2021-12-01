@@ -56,6 +56,7 @@ function ViewerRoute({
 }) {
 
     const { pk } = match.params || {};
+    const { url: resourceUrl } = match;
     const pluginsConfig = isArray(propPluginsConfig)
         ? propPluginsConfig
         : propPluginsConfig && propPluginsConfig[name] || DEFAULT_PLUGINS_CONFIG;
@@ -76,6 +77,17 @@ function ViewerRoute({
             }
         }
     }, [pending, pk]);
+
+    useEffect(() => {
+        // hide the naviagtion bar is a recource is being viewed
+        if (resourceUrl?.split('/')[1] === resourceType) {
+            document.getElementById('gn-topbar')?.classList.add('hide-navigation');
+        } else {
+            document.getElementById('gn-topbar')?.classList.remove('hide-navigation');
+        }
+
+        return () => document.getElementById('gn-topbar')?.classList.remove('hide-navigation');
+    }, [resourceUrl]);
 
     const loading = loadingConfig || pending;
     const parsedPlugins = useMemo(() => ({ ...loadedPlugins, ...plugins }), [loadedPlugins]);
