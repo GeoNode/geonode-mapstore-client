@@ -22,7 +22,6 @@ import {
 import controls from '@mapstore/framework/reducers/controls';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import gnresource from '@js/reducers/gnresource';
-import Message from '@mapstore/framework/components/I18N/Message';
 import {
     canEditResource,
     isNewResource,
@@ -33,79 +32,83 @@ import PropTypes from 'prop-types';
 import useDetectClickOut from '@js/hooks/useDetectClickOut';
 import OverlayContainer from '@js/components/OverlayContainer';
 import { withRouter } from 'react-router';
-import {
-    hashLocationToHref
-} from '@js/utils/SearchUtils';
+import { hashLocationToHref } from '@js/utils/SearchUtils';
+import FaIcon from '@js/components/FaIcon/FaIcon';
 
 const ConnectedDetailsPanel = connect(
-    createSelector([
-        state => state?.gnresource?.data || null,
-        state => state?.gnresource?.loading || false,
-        state => state?.gnresource?.data?.favorite || false
-    ], (resource, loading, favorite) => ({
-        resource,
-        loading,
-        favorite
-    })),
+    createSelector(
+        [
+            (state) => state?.gnresource?.data || null,
+            (state) => state?.gnresource?.loading || false,
+            (state) => state?.gnresource?.data?.favorite || false
+        ],
+        (resource, loading, favorite) => ({
+            resource,
+            loading,
+            favorite
+        })
+    ),
     {
-        closePanel: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),
+        closePanel: setControlProperty.bind(
+            null,
+            'rightOverlay',
+            'enabled',
+            false
+        ),
         onFavorite: setFavoriteResource
     }
 )(DetailsPanel);
 
-const ButtonViewer = ({
-    onClick,
-    hide,
-    variant,
-    size
-}) => {
-
+const ButtonViewer = ({ onClick, hide, variant, size }) => {
     const handleClickButton = () => {
         onClick();
     };
 
-    return !hide
-        ? (<Button
+    return !hide ? (
+        <Button
             variant={variant}
             size={size}
             onClick={handleClickButton}
-        > <Message msgId="gnviewer.info"/>
-        </Button>)
-        : null
-    ;
+        >
+            <FaIcon name="info-circle" />
+        </Button>
+    ) : null;
 };
 
 const ConnectedButton = connect(
-    createSelector([
-        isNewResource,
-        getResourceId
-    ],
-    (isNew, resourcePk) => ({
+    createSelector([isNewResource, getResourceId], (isNew, resourcePk) => ({
         hide: isNew || !resourcePk
     })),
     {
-        onClick: setControlProperty.bind(null, 'rightOverlay', 'enabled', 'DetailViewer')
+        onClick: setControlProperty.bind(
+            null,
+            'rightOverlay',
+            'enabled',
+            'DetailViewer'
+        )
     }
-)((ButtonViewer));
+)(ButtonViewer);
 
-
-function DetailViewer({
-    items,
-    location,
-    enabled,
-    onEditResource,
-    onEditAbstractResource,
-    onEditThumbnail,
-    canEdit,
-    width,
-    hide,
-    user,
-    onClose
-}, context) {
-
+function DetailViewer(
+    {
+        items,
+        location,
+        enabled,
+        onEditResource,
+        onEditAbstractResource,
+        onEditThumbnail,
+        canEdit,
+        width,
+        hide,
+        user,
+        onClose
+    },
+    context
+) {
     const { loadedPlugins } = context;
     const configuredItems = usePluginItems({ items, loadedPlugins });
-    const buttonSaveThumbnailMap = configuredItems.filter(({ name }) => name === "MapThumbnail")
+    const buttonSaveThumbnailMap = configuredItems
+        .filter(({ name }) => name === 'MapThumbnail')
         .map(({ Component, name }) => <Component key={name} />);
 
     const handleTitleValue = (val) => {
@@ -167,18 +170,22 @@ DetailViewer.defaultProps = {
 };
 
 const DetailViewerPlugin = connect(
-    createSelector([
-        state => state?.controls?.rightOverlay?.enabled === 'DetailViewer',
-        canEditResource,
-        isNewResource,
-        getResourceId,
-        userSelector
-    ], (enabled, canEdit, isNew, resourcePk, user) => ({
-        enabled,
-        canEdit,
-        hide: isNew || !resourcePk,
-        user
-    })),
+    createSelector(
+        [
+            (state) =>
+                state?.controls?.rightOverlay?.enabled === 'DetailViewer',
+            canEditResource,
+            isNewResource,
+            getResourceId,
+            userSelector
+        ],
+        (enabled, canEdit, isNew, resourcePk, user) => ({
+            enabled,
+            canEdit,
+            hide: isNew || !resourcePk,
+            user
+        })
+    ),
     {
         onEditResource: editTitleResource,
         onEditAbstractResource: editAbstractResource,
@@ -186,7 +193,6 @@ const DetailViewerPlugin = connect(
         onClose: setControlProperty.bind(null, 'rightOverlay', 'enabled', false)
     }
 )(withRouter(DetailViewer));
-
 
 export default createPlugin('DetailViewer', {
     component: DetailViewerPlugin,
