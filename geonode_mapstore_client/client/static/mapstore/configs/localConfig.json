@@ -758,7 +758,6 @@
                         {
                             "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
-                            "variant": "primary",
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "type": "dropdown",
                             "items": [
@@ -775,7 +774,6 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "variant": "primary",
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
@@ -800,7 +798,6 @@
                         {
                             "labelId": "gnviewer.view",
                             "type": "dropdown",
-                            "variant": "primary",
                             "disableIf": "{context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
@@ -818,12 +815,10 @@
                         },
                         {
                             "type": "plugin",
-                            "variant": "primary",
                             "name": "Share"
                         },
                         {
                             "type": "link",
-                            "variant": "primary",
                             "href": "{'#/map/new?gn-dataset=' + (state('gnResourceData') || {}).pk}",
                             "labelId": "gnviewer.createMap",
                             "disableIf": "{!(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}"
@@ -834,17 +829,14 @@
                         },
                         {
                             "type": "plugin",
-                            "variant": "primary",
                             "name": "Print"
                         },
                         {
                             "type": "plugin",
-                            "variant": "primary",
                             "name": "LayerDownload"
                         },
                         {
                             "type": "plugin",
-                            "variant": "primary",
                             "name": "Measure"
                         },
                         {
@@ -856,7 +848,6 @@
                     "rightMenuItems": [
                         {
                             "type": "plugin",
-                            "variant": "primary",
                             "name": "FullScreen"
                         }
                     ]
@@ -1461,7 +1452,6 @@
                         {
                             "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
-                            "variant": "primary",
                             "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "type": "dropdown",
                             "items": [
@@ -1478,7 +1468,6 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "variant": "primary",
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
@@ -1491,7 +1480,6 @@
                         {
                             "labelId": "gnviewer.view",
                             "type": "dropdown",
-                            "variant": "primary",
                             "disableIf": "{state('isNewResource') || context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
@@ -1503,8 +1491,7 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "Share",
-                            "variant": "primary"
+                            "name": "Share"
                         },
                         {
                             "type": "divider",
@@ -1512,23 +1499,19 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "DatasetsCatalog",
-                            "variant": "primary"
+                            "name": "DatasetsCatalog"
                         },
                         {
                             "type": "plugin",
-                            "name": "Print",
-                            "variant": "primary"
+                            "name": "Print"
                         },
                         {
                             "type": "plugin",
-                            "name": "Annotations",
-                            "variant": "primary"
+                            "name": "Annotations"
                         },
                         {
                             "type": "plugin",
-                            "name": "Measure",
-                            "variant": "primary"
+                            "name": "Measure"
                         },
                         {
                             "type": "plugin",
@@ -1539,8 +1522,7 @@
                     "rightMenuItems": [
                         {
                             "type": "plugin",
-                            "name": "FullScreen",
-                            "variant": "primary"
+                            "name": "FullScreen"
                         }
                     ]
                 }
@@ -1897,7 +1879,6 @@
                         {
                             "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
-                            "variant": "primary",
                             "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "type": "dropdown",
                             "items": [
@@ -1914,7 +1895,6 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "variant": "primary",
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
@@ -1927,7 +1907,6 @@
                         {
                             "labelId": "gnviewer.view",
                             "type": "dropdown",
-                            "variant": "primary",
                             "disableIf": "{state('isNewResource') || context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
@@ -1939,7 +1918,6 @@
                         },
                         {
                             "type": "plugin",
-                            "variant": "primary",
                             "name": "Share"
                         },
                         {
@@ -1951,7 +1929,6 @@
                     "rightMenuItems": [
                         {
                             "type": "plugin",
-                            "variant": "primary",
                             "name": "FullScreen"
                         }
                     ]
@@ -2074,7 +2051,6 @@
                         {
                             "labelId": "gnviewer.save",
                             "type": "dropdown",
-                            "variant": "primary",
                             "showPendingChangesIcon": true,
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
@@ -2091,7 +2067,6 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "variant": "primary",
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
@@ -2104,7 +2079,6 @@
                         {
                             "labelId": "gnviewer.view",
                             "type": "dropdown",
-                            "variant": "primary",
                             "disableIf": "{context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
@@ -2116,12 +2090,10 @@
                         },
                         {
                             "type": "plugin",
-                            "variant": "primary",
                             "name": "Share"
                         },
                         {
                             "type": "plugin",
-                            "variant": "primary",
                             "name": "DownloadResource",
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'download_resourcebase')}"
                         },
@@ -2134,7 +2106,6 @@
                     "rightMenuItems": [
                         {
                             "type": "plugin",
-                            "variant": "primary",
                             "name": "FullScreen"
                         }
                     ]
@@ -2188,7 +2159,6 @@
                         {
                             "labelId": "gnviewer.save",
                             "type": "dropdown",
-                            "variant": "primary",
                             "showPendingChangesIcon": true,
                             "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
@@ -2205,7 +2175,6 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "variant": "primary",
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
@@ -2218,7 +2187,6 @@
                         {
                             "labelId": "gnviewer.view",
                             "type": "dropdown",
-                            "variant": "primary",
                             "disableIf": "{state('isNewResource') || context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
@@ -2230,7 +2198,6 @@
                         },
                         {
                             "type": "plugin",
-                            "variant": "primary",
                             "name": "Share"
                         },
                         {
@@ -2242,7 +2209,6 @@
                     "rightMenuItems": [
                         {
                             "type": "plugin",
-                            "variant": "primary",
                             "name": "FullScreen"
                         }
                     ]
