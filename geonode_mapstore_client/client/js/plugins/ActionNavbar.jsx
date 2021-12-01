@@ -115,13 +115,15 @@ function ActionNavbarPlugin(
 ActionNavbarPlugin.propTypes = {
     items: PropTypes.array,
     leftMenuItems: PropTypes.array,
-    rightMenuItems: PropTypes.array
+    rightMenuItems: PropTypes.array,
+    titleItems: PropTypes.array
 };
 
 ActionNavbarPlugin.defaultProps = {
     items: [],
     leftMenuItems: [],
-    rightMenuItems: []
+    rightMenuItems: [],
+    titleItems: []
 };
 
 const ConnectedActionNavbarPlugin = connect(
