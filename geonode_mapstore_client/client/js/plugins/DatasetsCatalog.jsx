@@ -30,7 +30,7 @@ import localizedProps from '@mapstore/framework/components/misc/enhancers/locali
 const FormControl = localizedProps('placeholder')(FormControlRB);
 
 function InputControl({ onChange, value, ...props }) {
-    return <FormControl {...props} value={value} onChange={event => onChange(event.target.value)}/>;
+    return <FormControl {...props} value={value} onChange={event => onChange(event.target.value)} />;
 }
 
 const InputControlWithDebounce = withDebounceOnCallback('onChange', 'value')(InputControl);
@@ -60,13 +60,13 @@ function DatasetsCatalog({
             setPage(page + 1);
         }
     });
-
     const updateRequest = useRef();
     updateRequest.current = (options) => {
         if (!loading && request) {
-            if (scrollContainer.current) {
+            if (scrollContainer.current && options.reset) {
                 scrollContainer.current.scrollTop = 0;
             }
+
             setLoading(true);
             request({
                 q,
@@ -111,7 +111,7 @@ function DatasetsCatalog({
         const layer = resourceToLayerConfig(entry);
         onAdd(layer);
         const { minx, miny, maxx, maxy } = layer?.bbox?.bounds || {};
-        const extent = layer?.bbox?.bounds && [ minx, miny, maxx, maxy ];
+        const extent = layer?.bbox?.bounds && [minx, miny, maxx, maxy];
         if (extent) {
             onZoomTo(extent, layer?.bbox?.crs);
         }
@@ -122,9 +122,9 @@ function DatasetsCatalog({
         style={style}
     >
         <div className="gn-datasets-catalog-head">
-            <div className="gn-datasets-catalog-title"><Message msgId="gnviewer.datasetsCatalogTitle"/></div>
+            <div className="gn-datasets-catalog-title"><Message msgId="gnviewer.datasetsCatalogTitle" /></div>
             <Button className="square-button" onClick={() => onClose()}>
-                <Glyphicon glyph="1-close"/>
+                <Glyphicon glyph="1-close" />
             </Button>
         </div>
         <div className="gn-datasets-catalog-filter">
@@ -135,7 +135,7 @@ function DatasetsCatalog({
                 onChange={(value) => setQ(value)}
             />
             {(q && !loading) && <Button onClick={() => setQ('')}>
-                <FaIcon name="times"/>
+                <FaIcon name="times" />
             </Button>}
             {loading && <Spinner />}
         </div>
@@ -162,23 +162,25 @@ function DatasetsCatalog({
                     </div>
                 }
             </ul>
-            {loading && <div
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                    zIndex: 2,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}
-            >
-                <Loader size={70}/>
-            </div>}
+
         </div>
+        {loading && <div
+            style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                zIndex: 2,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}
+        >
+            <Loader size={70} />
+        </div>}
+
     </div>);
 }
 
@@ -196,13 +198,13 @@ DatasetsCatalog.defaultProps = {
     request: getDatasets,
     responseToEntries: res => res.resources,
     pageSize: 10,
-    onAdd: () => {},
+    onAdd: () => { },
     placeholderId: 'gnviewer.datasetsCatalogFilterPlaceholder',
-    onZoomTo: () => {},
-    onClose: () => {}
+    onZoomTo: () => { },
+    onClose: () => { }
 };
 
-function DatasetsCatalogPlugin({ enabled, ...props}) {
+function DatasetsCatalogPlugin({ enabled, ...props }) {
     return enabled ? <DatasetsCatalog {...props} /> : null;
 }
 
@@ -236,7 +238,7 @@ const DatasetsCatalogButton = ({
             onClick={handleClickButton}
             variant={variant}
         >
-            <Message msgId="gnviewer.addLayer"/>
+            <Message msgId="gnviewer.addLayer" />
         </Button>
     );
 };

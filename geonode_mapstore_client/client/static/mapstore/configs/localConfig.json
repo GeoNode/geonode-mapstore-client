@@ -131,6 +131,15 @@
                             "authenticated": true
                         },
                         {
+                            "id": "unpublished",
+                            "labelId": "gnhome.unpublished",
+                            "type": "filter",
+                            "query": {
+                                "filter{is_published}": false
+                            },
+                            "authenticated": true
+                        },
+                        {
                             "id": "pending-approval",
                             "labelId": "gnhome.pendingApproval",
                             "type": "filter",

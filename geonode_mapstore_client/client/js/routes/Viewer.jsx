@@ -94,6 +94,14 @@ function ViewerRoute({
     const Loader = loaderComponent;
     const className = `page-${resourceType}-viewer`;
 
+    useEffect(() => {
+        // hide the naviagtion bar is a recource is being viewed
+        if (!loading) {
+            document.getElementById('gn-topbar')?.classList.add('hide-navigation');
+        }
+        return () => document.getElementById('gn-topbar')?.classList.remove('hide-navigation');
+    }, [loading]);
+
     return (
         <>
             {resource && <MetaTags
