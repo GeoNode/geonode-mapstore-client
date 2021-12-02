@@ -748,6 +748,12 @@
                 "name": "ActionNavbar",
                 "cfg": {
                     "containerPosition": "header",
+                    "titleItems": [
+                        {
+                            "type": "plugin",
+                            "name": "DetailViewerButton"
+                        }
+                    ],
                     "leftMenuItems": [
                         {
                             "labelId": "gnviewer.save",
@@ -764,10 +770,6 @@
                                     "name": "SaveAs"
                                 }
                             ]
-                        },
-                        {
-                            "type": "plugin",
-                            "name": "DetailViewerButton"
                         },
                         {
                             "labelId": "gnviewer.edit",
@@ -1440,6 +1442,12 @@
                 "name": "ActionNavbar",
                 "cfg": {
                     "containerPosition": "header",
+                    "titleItems": [
+                        {
+                            "type": "plugin",
+                            "name": "DetailViewerButton"
+                        }
+                    ],
                     "leftMenuItems": [
                         {
                             "labelId": "gnviewer.save",
@@ -1456,10 +1464,6 @@
                                     "name": "SaveAs"
                                 }
                             ]
-                        },
-                        {
-                            "type": "plugin",
-                            "name": "DetailViewerButton"
                         },
                         {
                             "labelId": "gnviewer.edit",
@@ -1865,6 +1869,12 @@
                 "name": "ActionNavbar",
                 "cfg": {
                     "containerPosition": "header",
+                    "titleItems": [
+                        {
+                            "type": "plugin",
+                            "name": "DetailViewerButton"
+                        }
+                    ],
                     "leftMenuItems": [
                         {
                             "labelId": "gnviewer.save",
@@ -1881,10 +1891,6 @@
                                     "name": "SaveAs"
                                 }
                             ]
-                        },
-                        {
-                            "type": "plugin",
-                            "name": "DetailViewerButton"
                         },
                         {
                             "labelId": "gnviewer.edit",
@@ -2035,6 +2041,12 @@
                 "name": "ActionNavbar",
                 "cfg": {
                     "containerPosition": "header",
+                    "titleItems": [
+                        {
+                            "type": "plugin",
+                            "name": "DetailViewerButton"
+                        }
+                    ],
                     "leftMenuItems": [
                         {
                             "labelId": "gnviewer.save",
@@ -2051,10 +2063,6 @@
                                     "name": "SaveAs"
                                 }
                             ]
-                        },
-                        {
-                            "type": "plugin",
-                            "name": "DetailViewerButton"
                         },
                         {
                             "labelId": "gnviewer.edit",
@@ -2141,6 +2149,12 @@
                 "name": "ActionNavbar",
                 "cfg": {
                     "containerPosition": "header",
+                    "titleItems": [
+                        {
+                            "type": "plugin",
+                            "name": "DetailViewerButton"
+                        }
+                    ],
                     "leftMenuItems": [
                         {
                             "labelId": "gnviewer.save",
@@ -2157,10 +2171,6 @@
                                     "name": "SaveAs"
                                 }
                             ]
-                        },
-                        {
-                            "type": "plugin",
-                            "name": "DetailViewerButton"
                         },
                         {
                             "labelId": "gnviewer.edit",
