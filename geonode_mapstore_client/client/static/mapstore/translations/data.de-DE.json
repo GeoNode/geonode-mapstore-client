@@ -198,7 +198,17 @@
             "addLayer": "Ebene hinzufügen",
             "datasetsCatalogTitle": "Ebenenkatalog",
             "datasetsCatalogFilterPlaceholder": "Datensätze nach Titel oder Zusammenfassung filtern...",
-            "datasetsCatalogEntriesNoResults": "Keine Ergebnisse entsprechen Ihrer Suche"
+            "datasetsCatalogEntriesNoResults": "Keine Ergebnisse entsprechen Ihrer Suche",
+            "generalSettings": "Allgemeine Einstellungen",
+            "visibilitySettings": "Sichtbarkeitseinstellungen",
+            "styleSettings": "Stileinstellungen",
+            "tilingSettings": "Kacheleinstellungen",
+            "style": "Stil",
+            "legendWidth": "Symbolbreite",
+            "legendHeight": "Symbolhöhe",
+            "legendPreview": "Legendenvorschau",
+            "nodeTooltipContent": "Tooltip-Inhalt",
+            "nodeTooltipPlacement": "Tooltip-Platzierung"
         }
     }
 }

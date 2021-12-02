@@ -28,7 +28,7 @@
     "mapLayout": {
         "preview": {
             "left": {
-                "sm": 300,
+                "sm": 350,
                 "md": 500,
                 "lg": 600
             },
@@ -41,7 +41,7 @@
         },
         "viewer": {
             "left": {
-                "sm": 300,
+                "sm": 350,
                 "md": 500,
                 "lg": 600
             },
@@ -676,7 +676,12 @@
                 }
             },
             {
-                "name": "DrawerMenu"
+                "name": "DrawerMenu",
+                "cfg": {
+                    "menuOptions": {
+                        "width": 350
+                    }
+                }
             }
         ],
         "geostory_embed": [
@@ -1375,7 +1380,12 @@
                 }
             },
             {
-                "name": "DrawerMenu"
+                "name": "DrawerMenu",
+                "cfg": {
+                    "menuOptions": {
+                        "width": 350
+                    }
+                }
             },
             {
                 "name": "MapFooter"
@@ -1579,7 +1589,12 @@
                 }
             },
             {
-                "name": "DrawerMenu"
+                "name": "DrawerMenu",
+                "cfg": {
+                    "menuOptions": {
+                        "width": 350
+                    }
+                }
             },
             {
                 "name": "OmniBar"
@@ -1814,11 +1829,7 @@
                 }
             },
             {
-                "name": "TOCItemsSettings",
-                "cfg": {
-                    "hideTitleTranslations": true,
-                    "showFeatureInfoTab": false
-                }
+                "name": "LayerSettings"
             },
             {
                 "name": "Widgets"

@@ -388,6 +388,10 @@ export const plugins = {
     DatasetsCatalogPlugin: toLazyPlugin(
         'DatasetsCatalog',
         () => import(/* webpackChunkName: 'plugins/dataset-catalog' */ '@js/plugins/DatasetsCatalog')
+    ),
+    LayerSettingsPlugin: toLazyPlugin(
+        'LayerSettings',
+        () => import(/* webpackChunkName: 'plugins/layer-settings' */ '@js/plugins/LayerSettings')
     )
 };
 

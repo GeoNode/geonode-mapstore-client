@@ -199,7 +199,17 @@
             "addLayer": "Add layer",
             "datasetsCatalogTitle": "Layers catalog",
             "datasetsCatalogFilterPlaceholder": "Filter datasets by title or abstract...",
-            "datasetsCatalogEntriesNoResults": "No results match your search"
+            "datasetsCatalogEntriesNoResults": "No results match your search",
+            "generalSettings": "General settings",
+            "visibilitySettings": "Visibility settings",
+            "styleSettings": "Style settings",
+            "tilingSettings": "Tiling settings",
+            "style": "Style",
+            "legendWidth": "Symbol width",
+            "legendHeight": "Symbol height",
+            "legendPreview": "Legend preview",
+            "nodeTooltipContent": "Tooltip content",
+            "nodeTooltipPlacement": "Tooltip placement"
         }
     }
 }
