@@ -234,9 +234,12 @@ nav.hide-navigation#gn-topbar {
     font-size: 1rem;
     display: flex;
     align-items: center;
-    max-width: 11rem;
+    justify-content: space-between;
+    width: 13rem;
     margin-right: 0.4rem;
-    padding-left: 0.5rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 2px;
+    font-size: @font-size-sm;
 
     button.btn {
     background-color: transparent;
@@ -246,6 +249,11 @@ nav.hide-navigation#gn-topbar {
 
     i {
     font-size: @font-size-lg;
+    }
+
+    div:first-child {
+        display: flex;
+        align-items: center;
     }
 }
 

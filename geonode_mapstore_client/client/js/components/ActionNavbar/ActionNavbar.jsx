@@ -89,22 +89,24 @@ const ActionNavbar = forwardRef(
                 <div className="gn-menu-container">
                     <div className="gn-menu-content">
                         <div className="gn-action-navbar-title">
-                            <NavLink
-                                href="#"
-                                className="gn-action-navbar-breadcrumb-link"
-                            >
-                                <FaIcon name="home" />
-                            </NavLink>
-                            <FaIcon
-                                name="angle-right"
-                                className="gn-action-navbar-breadcrumb-seperator"
-                            />
-                            <p
-                                title={resource?.title}
-                                className="gn-action-navbar-resource-title"
-                            >
-                                {resource?.title}
-                            </p>
+                            <div>
+                                <NavLink
+                                    href="#"
+                                    className="gn-action-navbar-breadcrumb-link"
+                                >
+                                    <FaIcon name="home" />
+                                </NavLink>
+                                <FaIcon
+                                    name="angle-right"
+                                    className="gn-action-navbar-breadcrumb-seperator"
+                                />
+                                <p
+                                    title={resource?.title}
+                                    className="gn-action-navbar-resource-title"
+                                >
+                                    {resource?.title}
+                                </p>
+                            </div>
                             {titleItems.map(({ Component, name }) => (
                                 <Component key={name} variant="info"/>
                             ))}
