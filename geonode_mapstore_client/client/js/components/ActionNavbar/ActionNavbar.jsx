@@ -106,7 +106,7 @@ const ActionNavbar = forwardRef(
                                 {resource?.title}
                             </p>
                             {titleItems.map(({ Component, name }) => (
-                                <Component key={name} />
+                                <Component key={name} variant="info"/>
                             ))}
                         </div>
                         {leftItems.length > 0 && (
