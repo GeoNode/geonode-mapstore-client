@@ -90,7 +90,7 @@ const ActionNavbar = forwardRef(
                     <div className="gn-menu-content">
                         <div className="gn-action-navbar-title">
                             <NavLink
-                                href="/catalogue/"
+                                href="#"
                                 className="gn-action-navbar-breadcrumb-link"
                             >
                                 <FaIcon name="home" />
