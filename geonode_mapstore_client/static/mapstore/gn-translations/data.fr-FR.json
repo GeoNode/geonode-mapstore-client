@@ -198,7 +198,17 @@
             "addLayer": "Ajouter un calque",
             "datasetsCatalogTitle": "Catalogue de couches",
             "datasetsCatalogFilterPlaceholder": "Filtrer les jeux de données par titre ou résumé...",
-            "datasetsCatalogEntriesNoResults": "Aucun résultat ne correspond à votre recherche"
+            "datasetsCatalogEntriesNoResults": "Aucun résultat ne correspond à votre recherche",
+            "generalSettings": "Paramètres généraux",
+            "visibilitySettings": "Paramètres de visibilité",
+            "styleSettings": "Paramètres de style",
+            "tilingSettings": "Paramètres de mosaïque",
+            "style": "Style",
+            "legendWidth": "Largeur du symbole",
+            "legendHeight": "Hauteur du symbole",
+            "legendPreview": "Aperçu de la légende",
+            "nodeTooltipContent": "Contenu de l'info-bulle",
+            "nodeTooltipPlacement": "Placement de l'info-bulle"
         }
     }
 }

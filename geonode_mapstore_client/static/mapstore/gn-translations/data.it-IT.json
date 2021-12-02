@@ -200,7 +200,17 @@
             "addLayer": "Aggiungi layer",
             "datasetsCatalogTitle": "Catalogo layers",
             "datasetsCatalogFilterPlaceholder": "Filtra set di dati per titolo o descrizione...",
-            "datasetsCatalogEntriesNoResults": "Nessun risultato corrisponde alla tua ricerca"
+            "datasetsCatalogEntriesNoResults": "Nessun risultato corrisponde alla tua ricerca",
+            "generalSettings": "Impostazioni generali",
+            "visibilitySettings": "Impostazioni visibilità",
+            "styleSettings": "Impostazioni stile",
+            "tilingSettings": "Impostazioni tiling",
+            "style": "Stile",
+            "legendWidth": "Larghezza simbolo",
+            "legendHeight": "Altezza simbolo",
+            "legendPreview": "Anteprima legenda",
+            "nodeTooltipContent": "Contenuto tooltip",
+            "nodeTooltipPlacement": "Posizionamento tooltip"
         }
     }
 }
