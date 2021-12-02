@@ -110,7 +110,7 @@ const resourceTypes = {
                                 ...mapConfig.map,
                                 layers: [
                                     ...mapConfig.map.layers,
-                                    { ...newLayer, isDataset: true }
+                                    { ...newLayer, isDataset: true, _v_: Date.now() }
                                 ]
                             }
                         }),
