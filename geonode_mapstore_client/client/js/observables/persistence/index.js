@@ -11,7 +11,25 @@ import { addApi, setApi } from '@mapstore/framework/api/persistence';
 import { getMaps, getMapByPk } from '@js/api/geonode/v2';
 
 const getResource = (pk) => {
-    return Observable.defer(() => getMapByPk(pk));
+    return Observable.defer(() => {
+        return getMapByPk(pk)
+            .then((resource) => {
+                return {
+                    ...resource,
+                    data: {
+                        ...resource?.data,
+                        map: {
+                            ...resource?.data?.map,
+                            extraParams: {
+                                ...resource?.data?.map?.extraParams,
+                                // add the original pk to keep track in future synchronizations
+                                pk: resource?.pk
+                            }
+                        }
+                    }
+                };
+            });
+    });
 };
 
 const getResources = ({ category, options, query }) => {
