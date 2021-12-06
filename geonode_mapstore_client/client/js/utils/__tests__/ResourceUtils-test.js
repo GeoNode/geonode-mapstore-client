@@ -95,7 +95,7 @@ describe('Test Resource Utils', () => {
                         name: 'geonode:layer',
                         url: 'geoserver/wms',
                         style: 'geonode:style',
-                        availableStyles: [{ name: 'custom:style', title: 'My Style' }],
+                        availableStyles: [{ name: 'custom:style', title: 'My Style', format: 'css', metadata: {} }],
                         extendedParams: {
                             mapLayer: {
                                 pk: 10
@@ -111,7 +111,7 @@ describe('Test Resource Utils', () => {
             pk: 10,
             extra_params: {
                 msId: '03',
-                styles: [{ name: 'custom:style', title: 'My Style' }]
+                styles: [{ name: 'custom:style', title: 'My Style', format: 'css', metadata: {} }]
             },
             current_style: 'geonode:style',
             name: 'geonode:layer'
@@ -222,7 +222,8 @@ describe('Test Resource Utils', () => {
                                     }
                                 }
                             },
-                            availableStyles: []
+                            availableStyles: [],
+                            featureInfo: { template: '' }
                         }
                     ]
                 }
@@ -296,7 +297,8 @@ describe('Test Resource Utils', () => {
                                     }
                                 }
                             },
-                            availableStyles: []
+                            availableStyles: [],
+                            featureInfo: { template: '' }
                         }
                     ]
                 }
@@ -384,7 +386,8 @@ describe('Test Resource Utils', () => {
                                     }
                                 }
                             },
-                            availableStyles: []
+                            availableStyles: [],
+                            featureInfo: { template: '' }
                         }
                     ]
                 }
