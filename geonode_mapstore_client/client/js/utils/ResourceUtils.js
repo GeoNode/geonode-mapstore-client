@@ -379,7 +379,7 @@ function parseStyleName({ workspace, name }) {
     return  name;
 }
 
-export function cleanStyles(styles, excluded = []) {
+export function cleanStyles(styles = [], excluded = []) {
     return uniqBy(styles
         .map(({ name, sld_title: sldTitle, title, workspace, metadata, format }) => ({
             name: parseStyleName({ workspace, name }),
