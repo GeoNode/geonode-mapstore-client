@@ -1346,7 +1346,6 @@
             {
                 "name": "VisualStyleEditor",
                 "cfg": {
-                    "containerPosition": "leftColumn",
                     "styleService": {
                         "baseUrl": "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}",
                         "formats": [
@@ -1882,6 +1881,33 @@
             },
             {
                 "name": "DatasetsCatalog"
+            },
+            {
+                "name": "VisualStyleEditor",
+                "cfg": {
+                    "showLayerProperties": true,
+                    "styleService": {
+                        "baseUrl": "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}",
+                        "formats": [
+                            "css",
+                            "sld"
+                        ],
+                        "availableUrls": [
+                            "{state('settings') && state('settings').geoserverUrl || '/geoserver/'}",
+                            "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}"
+                        ],
+                        "fonts": [
+                            "Arial",
+                            "Courier New",
+                            "Monospaced",
+                            "SansSerif",
+                            "Serif",
+                            "Times New Roman"
+                        ]
+                    },
+                    "editingAllowedRoles": null,
+                    "enableSetDefaultStyle": true
+                }
             }
         ],
         "geostory_viewer": [

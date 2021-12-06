@@ -19,12 +19,18 @@
 // **************
 
 .gn-visual-style-editor {
-    position: relative;
+    position: absolute;
     display: flex;
     flex-direction: column;
-    z-index: 100000;
+    z-index: 1050;
     height: 100%;
     width: 500px;
+    top: 0;
+    left: 0;
+    .shadow-soft();
+    .Select-menu-outer {
+        z-index: 100;
+    }
 }
 
 .gn-visual-style-editor-layer-info {

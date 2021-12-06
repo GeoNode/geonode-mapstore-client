@@ -104,7 +104,7 @@ function DatasetsCatalog({
 
     useEffect(() => {
         setPage(1);
-        updateRequest.current({ page: 1 });
+        updateRequest.current({ page: 1, reset: true });
     }, [q]);
 
     function handleSelectResource(entry) {
@@ -164,7 +164,7 @@ function DatasetsCatalog({
             </ul>
 
         </div>
-        {loading && <div
+        {(loading && entries.length === 0) && <div
             style={{
                 position: 'absolute',
                 top: 0,

@@ -204,11 +204,25 @@
             "styleSettings": "Stileinstellungen",
             "tilingSettings": "Kacheleinstellungen",
             "style": "Stil",
-            "legendWidth": "Symbolbreite",
-            "legendHeight": "Symbolhöhe",
+            "legendWidth": "Legendensymbolbreite",
+            "legendHeight": "Höhe des Legendensymbols",
             "legendPreview": "Legendenvorschau",
             "nodeTooltipContent": "Tooltip-Inhalt",
-            "nodeTooltipPlacement": "Tooltip-Platzierung"
+            "nodeTooltipPlacement": "Tooltip-Platzierung",
+
+            "zoomToLayer": "Auf Layerausmaß zoomen",
+            "applyCurrentStyleToLayer": "Aktuellen Stil auf Ebene anwenden",
+            "deleteCurrentStyle": "Aktuellen Stil löschen",
+            "createNewStyle": "Neuen Stil erstellen",
+
+            "createStyleTitle": "Neuen Stil hinzufügen",
+            "createStyleTitleInput": "Titel:",
+            "createStyleClose": "Schließen",
+            "createStyleCreate": "Erstellen",
+            "deleteStyleTitle": "Stil löschen",
+            "deleteStyleMessage": "Möchten Sie diesen Stil wirklich löschen?",
+            "deleteStyleCancel": "Nein, nicht löschen",
+            "deleteStyleConfirm": "Ja, ich bin sicher"
         }
     }
 }

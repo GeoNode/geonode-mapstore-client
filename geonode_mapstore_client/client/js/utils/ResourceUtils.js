@@ -13,6 +13,9 @@ import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
 import { bboxToPolygon } from '@js/utils/CoordinatesUtils';
+import uniqBy from 'lodash/uniqBy';
+import isString from 'lodash/isString';
+import isObject from 'lodash/isObject';
 
 /**
 * @module utils/ResourceUtils
@@ -362,6 +365,30 @@ export const getResourcePermissions = (options) => {
     return permissionsOptions;
 };
 
+function parseStyleName({ workspace, name }) {
+    const nameParts = name.split(':');
+    if (nameParts.length > 1) {
+        return name;
+    }
+    if (isString(workspace)) {
+        return `${workspace}:${name}`;
+    }
+    if (isObject(workspace) && workspace?.name !== undefined) {
+        return `${workspace.name}:${name}`;
+    }
+    return  name;
+}
+
+export function cleanStyles(styles, excluded = []) {
+    return uniqBy(styles
+        .map(({ name, sld_title: sldTitle, title, workspace, metadata, format }) => ({
+            name: parseStyleName({ workspace, name }),
+            title: sldTitle || title || name,
+            metadata,
+            format
+        })), 'name')
+        .filter(({ name }) => !excluded.includes(name));
+}
 
 export function getGeoNodeMapLayers(data) {
     return (data?.map?.layers || [])
@@ -373,9 +400,7 @@ export function getGeoNodeMapLayers(data) {
                 }),
                 extra_params: {
                     msId: layer.id,
-                    styles: layer.availableStyles
-                        ? layer.availableStyles.map(({ name, title }) => ({ name, title }))
-                        : []
+                    styles: cleanStyles(layer?.availableStyles)
                 },
                 current_style: layer.style || '',
                 name: layer.name
@@ -428,10 +453,18 @@ export function toMapStoreMapConfig(resource, baseConfig) {
         .map((layer) => {
             const mapLayer = maplayers.find(mLayer => layer.id !== undefined && mLayer?.extra_params?.msId === layer.id);
             if (mapLayer) {
+                const mapLayerDatasetStyles = cleanStyles([
+                    ...(mapLayer?.dataset?.defaul_style ? [mapLayer.dataset.defaul_style] : []),
+                    ...(mapLayer?.dataset?.styles || [])
+                ]).map(({ name }) => name);
                 return {
                     ...layer,
                     style: mapLayer.current_style || layer.style || '',
-                    availableStyles: [],
+                    availableStyles: cleanStyles(mapLayer?.extra_params?.styles || [], mapLayerDatasetStyles),
+                    featureInfo: {
+                        ...layer?.featureInfo,
+                        template: mapLayer?.dataset?.featureinfo_custom_template || ''
+                    },
                     extendedParams: {
                         ...layer.extendedParams,
                         mapLayer

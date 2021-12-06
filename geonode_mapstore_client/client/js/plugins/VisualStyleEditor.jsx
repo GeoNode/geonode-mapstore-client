@@ -10,7 +10,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Glyphicon, FormControl as FormControlRB } from 'react-bootstrap';
+import { Glyphicon, FormControl as FormControlRB, ControlLabel } from 'react-bootstrap';
 import { StyleCodeEditor } from '@mapstore/framework/plugins/styleeditor/index';
 import styleeditor from '@mapstore/framework/reducers/styleeditor';
 import styleeditorEpics from '@mapstore/framework/epics/styleeditor';
@@ -30,7 +30,7 @@ import {
     requestDatasetAvailableStyles
 } from '@js/actions/visualstyleeditor';
 
-import { updateSettingsParams } from '@mapstore/framework/actions/layers';
+import { updateNode, updateSettingsParams } from '@mapstore/framework/actions/layers';
 import { zoomToExtent } from '@mapstore/framework/actions/map';
 import {
     getUpdatedLayer,
@@ -48,16 +48,21 @@ import Select from 'react-select';
 import Message from '@mapstore/framework/components/I18N/Message';
 import SVGPreview from '@mapstore/framework/components/styleeditor/SVGPreview';
 import Popover from '@mapstore/framework/components/styleeditor/Popover';
-import Button from '@js/components/Button';
+import GNButton from '@js/components/Button';
 import Portal from '@mapstore/framework/components/misc/Portal';
 import ResizableModal from '@mapstore/framework/components/misc/ResizableModal';
 import StylesAPI from '@mapstore/framework/api/geoserver/Styles';
 import { getStyleTemplates } from '@mapstore/framework/utils/StyleEditorUtils';
+import { getResourcePerms } from '@js/selectors/resource';
 import Spinner from '@js/components/Spinner';
+import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
+import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
+import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
 const FormControl = localizedProps('placeholder')(FormControlRB);
 
 const defaultStyleTemplates = getStyleTemplates().filter((styleTemplate) => !['Base CSS', 'Base SLD'].includes(styleTemplate.title));
+const Button = tooltip(GNButton);
 
 function SaveStyleButton({
     variant,
@@ -115,10 +120,12 @@ function VisualStyleEditor({
     enabled,
     onClose,
     onZoomTo,
-    onRefresh,
     onCreate,
     onDelete,
-    selectedStyle
+    selectedStyle,
+    style: styleProp,
+    originalStyle,
+    onUpdateNode
 }) {
 
     const [creating, setCreating] = useState(false);
@@ -160,6 +167,10 @@ function VisualStyleEditor({
         onUpdateMetadata({ styleJSON: null });
     }
 
+    function handleUpdateLayerStyle() {
+        onUpdateNode(layer.id, 'layers', { style: layer.style });
+    }
+
     function handleClose() {
         onReset();
         onClose();
@@ -171,17 +182,12 @@ function VisualStyleEditor({
         onZoomTo(extent, layer.bbox.crs);
     }
 
-    function handleRefresh() {
-        onRefresh(layer, { forceUpdate: true });
-    }
-
     const styleTemplates = defaultStyleTemplates.filter((styleTemplate) => styleTemplate.types.includes(geometryType) && format === styleTemplate.format);
 
     if (!enabled || !layer.id) {
         return null;
     }
 
-    const hasAvailableStyles = !!(layer?.availableStyles?.length > 0);
     const hasTemplates = !!(styleTemplates?.length > 0);
 
     function replaceTemplateMetadata(code) {
@@ -193,23 +199,23 @@ function VisualStyleEditor({
     }
 
     return (
-        <div className="gn-visual-style-editor">
+        <div className="gn-visual-style-editor" style={styleProp}>
             {showLayerProperties &&
             <div className="gn-visual-style-editor-layer-info">
                 <div className="gn-visual-style-editor-layer-title">{layer.title}</div>
-                {layer.bbox && <Button onClick={handleZoomTo}>
+                {layer.bbox && <Button onClick={handleZoomTo} tooltipId="gnviewer.zoomToLayer">
                     <Glyphicon glyph="zoom-to"/>
                 </Button>}
-                <Button onClick={handleClose}>
+                <Button onClick={handleClose} className="square-button">
                     <Glyphicon glyph="1-close"/>
                 </Button>
             </div>}
-            {(showLayerProperties && hasAvailableStyles) &&
+            {showLayerProperties &&
             <div className="gn-visual-style-editor-styles">
                 <div className="gn-visual-style-editor-styles-select">
                     <Select
-                        value={layer.style || layer.availableStyles?.[0]?.name}
-                        options={layer.availableStyles.map((style) => ({
+                        value={layer.style}
+                        options={(layer?.availableStyles || []).map((style) => ({
                             value: style.name,
                             label: style.title
                         }))}
@@ -217,17 +223,23 @@ function VisualStyleEditor({
                         onChange={handleStyleChange}
                     />
                 </div>
-                <Button onClick={handleRefresh}>
-                    <Glyphicon glyph="refresh"/>
+                <Button
+                    onClick={handleUpdateLayerStyle} tooltipId="gnviewer.applyCurrentStyleToLayer">
+                    <Glyphicon glyph={layer.style === originalStyle ? 'star' : 'star-empty'}/>
                 </Button>
-                <Button onClick={() => setDeleting(true)}>
+                <Button
+                    disabled={layer?.availableStyles?.length < 2}
+                    onClick={() => setDeleting(true)}
+                    tooltipId="gnviewer.deleteCurrentStyle">
                     <Glyphicon glyph="trash"/>
                 </Button>
-                <Button onClick={() => setCreating(true)}>
+                <Button
+                    onClick={() => setCreating(true)}
+                    tooltipId="gnviewer.createNewStyle">
                     <Glyphicon glyph="plus"/>
                 </Button>
             </div>}
-            {(hasAvailableStyles && (hasTemplates || showLayerProperties)) &&
+            {(hasTemplates || showLayerProperties) &&
             <div className="gn-visual-style-editor-toolbar">
                 {showLayerProperties && <ConnectedSaveStyleButton variant="default" size="xs"/>}
                 {hasTemplates && <Popover
@@ -263,7 +275,7 @@ function VisualStyleEditor({
             </div>
             <Portal>
                 <ResizableModal
-                    title="Add new style"
+                    title={<Message msgId="gnviewer.createStyleTitle"/>}
                     fitContent
                     clickOutEnabled={false}
                     show={creating}
@@ -273,14 +285,15 @@ function VisualStyleEditor({
                     }}
                     buttons={[
                         {
-                            text: 'Close',
+                            text: <Message msgId="gnviewer.createStyleClose"/>,
                             onClick: () => {
                                 setCreating(false);
                                 setTitle('');
                             }
                         },
                         {
-                            text: 'Create',
+                            text: <Message msgId="gnviewer.createStyleCreate"/>,
+                            bsStyle: 'primary',
                             onClick: () => {
                                 setCreating(false);
                                 onCreate(title);
@@ -289,16 +302,18 @@ function VisualStyleEditor({
                         }
                     ]}
                 >
-                    <label>Title: </label>
-                    <FormControl
-                        value={title}
-                        onChange={event => setTitle(event?.target?.value)}
-                    />
+                    <div style={{ padding: '1rem' }}>
+                        <ControlLabel><Message msgId="gnviewer.createStyleTitleInput"/> </ControlLabel>
+                        <FormControl
+                            value={title}
+                            onChange={event => setTitle(event?.target?.value)}
+                        />
+                    </div>
                 </ResizableModal>
             </Portal>
             <Portal>
                 <ResizableModal
-                    title="Delete style"
+                    title={<Message msgId="gnviewer.deleteStyleTitle"/>}
                     show={deleting}
                     fitContent
                     clickOutEnabled={false}
@@ -307,21 +322,22 @@ function VisualStyleEditor({
                     }}
                     buttons={[
                         {
-                            text: 'No, don\'t delete it',
+                            text: <Message msgId="gnviewer.deleteStyleCancel"/>,
                             onClick: () => {
                                 setDeleting(false);
                             }
                         },
                         {
-                            text: 'Yes, I\'m sure',
+                            text: <Message msgId="gnviewer.deleteStyleConfirm"/>,
+                            bsStyle: 'danger',
                             onClick: () => {
-                                onDelete();
+                                onDelete(layer.style);
                                 setDeleting(false);
                             }
                         }
                     ]}
                 >
-                    Are you sure you want to delete this style?
+                    <div style={{ padding: '1rem' }}><Message msgId="gnviewer.deleteStyleMessage"/></div>
                 </ResizableModal>
             </Portal>
         </div>
@@ -337,8 +353,10 @@ const VisualStyleEditorPlugin = connect(
         geometryTypeSelector,
         initialCodeStyleSelector,
         state => state?.controls?.visualStyleEditor?.enabled,
-        selectedStyleSelector
-    ], (layer, temporaryStyleId, styleService, format, geometryType, initialCode, enabled, selectedStyleName) => ({
+        selectedStyleSelector,
+        state => mapLayoutValuesSelector(state, { height: true }),
+        getSelectedLayer
+    ], (layer, temporaryStyleId, styleService, format, geometryType, initialCode, enabled, selectedStyleName, style, originalLayer) => ({
         layer,
         temporaryStyleId,
         styleService,
@@ -346,7 +364,9 @@ const VisualStyleEditorPlugin = connect(
         geometryType,
         initialCode,
         enabled,
-        selectedStyle: layer?.availableStyles?.find((style) => style.name === selectedStyleName)
+        selectedStyle: layer?.availableStyles?.find(({ name }) => name === selectedStyleName),
+        style,
+        originalStyle: originalLayer?.style
     })),
     {
         onUpdateStatus: updateStatus,
@@ -358,9 +378,9 @@ const VisualStyleEditorPlugin = connect(
         onSave: updateStyleCode,
         onClose: setControlProperty.bind(null, 'visualStyleEditor', 'enabled', false),
         onZoomTo: zoomToExtent,
-        onRefresh: requestDatasetAvailableStyles,
         onCreate: createGeoNodeStyle,
-        onDelete: deleteGeoNodeStyle
+        onDelete: deleteGeoNodeStyle,
+        onUpdateNode: updateNode
     },
     (stateProps, dispatchProps, ownProps) => {
         // detect if the static service has been updated with new information in the global state
@@ -382,9 +402,11 @@ const VisualStyleEditorPlugin = connect(
 function StyleEditorTocButton({
     layer,
     status,
-    onClick = () => {}
+    onClick = () => {},
+    enabled
 }) {
-    if (status !== 'LAYER') {
+
+    if (!(enabled && status === 'LAYER' && layer?.extendedParams?.mapLayer)) {
         return null;
     }
 
@@ -404,9 +426,11 @@ function StyleEditorTocButton({
 }
 
 const ConnectedStyleEditorTocButton = connect(createSelector([
-    getUpdatedLayer
-], (layer) => ({
-    layer
+    getUpdatedLayer,
+    getResourcePerms
+], (layer, perms) => ({
+    layer,
+    enabled: !!perms?.includes('change_resourcebase')
 })), {
     onClick: requestDatasetAvailableStyles
 })(StyleEditorTocButton);

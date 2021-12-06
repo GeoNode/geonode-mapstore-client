@@ -7,92 +7,181 @@
  */
 
 import { Observable } from 'rxjs';
-import { getDatasetByName } from '@js/api/geonode/v2';
-import { updateNode } from '@mapstore/framework/actions/layers';
+import uuidv1 from 'uuid/v1';
+import { updateNode, updateSettingsParams } from '@mapstore/framework/actions/layers';
 import { updateStatus } from '@mapstore/framework/actions/styleeditor';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallayers';
 import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
 import StylesAPI from '@mapstore/framework/api/geoserver/Styles';
-import { styleServiceSelector } from '@mapstore/framework/selectors/styleeditor';
+import {
+    styleServiceSelector,
+    getUpdatedLayer,
+    geometryTypeSelector
+} from '@mapstore/framework/selectors/styleeditor';
 import {
     CREATE_GEONODE_STYLE,
     DELETE_GEONODE_STYLE,
     REQUEST_DATASET_AVAILABLE_STYLES
 } from '@js/actions/visualstyleeditor';
+import { getResourceId } from '@js/selectors/resource';
+import { saveDirectContent } from '@js/actions/gnsave';
+import tinycolor from 'tinycolor2';
+
+function getBaseCSSStyle({ type, title }) {
+    const color = tinycolor(`hsl(${Math.floor(Math.random() * 270)}, 90%, 70%)`).toHexString();
+    switch (type) {
+    case 'raster': {
+        return '@mode \'Flat\'; @styleTitle \'' + title + '\'; \n* {\n\traster-channels: auto;\n\traster-opacity: 1;\n}\n';
+    }
+    case 'point': {
+        return '@mode \'Flat\'; @styleTitle \'' + title + '\'; \n* {\n\tmark: symbol(\'square\');\n\t:mark {\n\t\tfill: ' + color + ';\n\t\tsize: 4;\n\t}\n}\n';
+    }
+    case 'linestring': {
+        return '@mode \'Flat\'; @styleTitle \'' + title + '\'; \n* {\n\tstroke: ' + color + ';\n}\n';
+    }
+    case 'polygon': {
+        return '@mode \'Flat\'; @styleTitle \'' + title + '\'; \n* {\n\tfill: ' + color + ';\n}\n';
+    }
+    default:
+        return '@mode \'Flat\'; @styleTitle \'' + title + '\'; \n* {\n\tmark: symbol(\'square\');\n\t:mark {\n\t\tfill: ' + color + ';\n\t\tsize: 4;\n\t}\n}\n';
+    }
+}
+
+function getStyleId({ name }) {
+    // geonode allows to create styles with this structure {uuid}_ms_{*}
+    return `geonode:${uuidv1()}_ms_${name}`;
+}
+
+function getGeoNodeStyles({ layer, styleService, mapPk }) {
+    const geometryType = layer?.extendedParams?.mapLayer?.dataset?.subtype;
+    const styles = layer?.availableStyles || [];
+    if (styles.length === 0) {
+        const layerParts = layer.name.split(':');
+        const layerName = layerParts.length === 1 ? layerParts[0] : layerParts[layerParts.length - 1];
+        const styleName = getStyleId({ name: layerName });
+        const metadata = {
+            title: layerName,
+            description: '',
+            msStyleJSON: null,
+            msEditorType: 'visual',
+            gnDatasetPk: layer?.extendedParams?.mapLayer?.dataset?.pk,
+            gnMapPk: mapPk
+        };
+        const format = 'css';
+        return StylesAPI.createStyle({
+            baseUrl: styleService?.baseUrl,
+            code: getBaseCSSStyle({ type: geometryType, title: layerName }),
+            format,
+            styleName,
+            metadata
+        })
+            .then(() => {
+                return [[{ name: styleName, title: layerName, metadata, format }], true];
+            });
+    }
+    return new Promise((resolve) => resolve([styles]));
+}
 
 export const gnRequestDatasetAvailableStyles = (action$, store) =>
     action$.ofType(REQUEST_DATASET_AVAILABLE_STYLES)
         .switchMap((action) => {
-            if (action?.layer?.availableStyles && !action?.options?.forceUpdate) {
-                return Observable.of(
-                    setControlProperty('visualStyleEditor', 'enabled', true),
-                    updateAdditionalLayer(action.layer.id, STYLE_OWNER_NAME, 'override', {}),
-                    updateStatus('edit')
-                );
-            }
             const state = store.getState();
             const styleService = action?.options?.styleService || styleServiceSelector(state);
-            return Observable.concat(
-                Observable.of(setControlProperty('visualStyleEditor', 'enabled', true)),
-                Observable.defer(() => getDatasetByName(action?.layer?.name))
-                    .switchMap((gnLayer) => {
-                        return Observable.defer(() => StylesAPI.getStylesInfo({
+            return Observable.defer(() => getGeoNodeStyles({ layer: action.layer, styleService, mapPk: getResourceId(state) }))
+                .switchMap(([styles, update]) => {
+                    const currentStyleName = action?.layer?.style;
+                    const style = !!styles.find(({ name }) => name === currentStyleName)
+                        ? currentStyleName
+                        : styles?.[0]?.name;
+                    return Observable.concat(
+                        Observable.of(setControlProperty('visualStyleEditor', 'enabled', true)),
+                        Observable.defer(() => StylesAPI.getStylesInfo({
                             baseUrl: styleService?.baseUrl,
-                            styles: (gnLayer?.styles || []).map((style) => ({
-                                title: style.sld_title,
-                                name: style.workspace ? `${style.workspace}:${style.name}` : style.name
-                            }))
+                            styles
                         }))
                             .switchMap((availableStyles) => {
                                 return Observable.of(
                                     updateNode(action.layer.id, 'layer', { availableStyles }),
+                                    updateSettingsParams({ style }, true),
                                     updateAdditionalLayer(action.layer.id, STYLE_OWNER_NAME, 'override', {}),
-                                    updateStatus('edit')
+                                    updateStatus('edit'),
+                                    ...(update ? [saveDirectContent()] : [])
                                 );
-                            });
-                    })
-            );
+                            })
+                    );
+                });
         });
 
-export const gnCreateStyle = (action$) =>
+export const gnCreateStyle = (action$, store) =>
     action$.ofType(CREATE_GEONODE_STYLE)
-        .switchMap(() => {
-            return Observable.empty();
-            /*
+        .switchMap((action) => {
             const state = store.getState();
             const styleService = action?.options?.styleService || styleServiceSelector(state);
-
-            const editorMetadata = {
-                msStyleJSON: null,
-                msEditorType: 'visual'
-            };
-
+            const styleName = getStyleId({ name: action.title.toLowerCase().replace(/\W/g, '') });
+            const layer = action.layer || getUpdatedLayer(state);
+            const format = 'css';
             const metadata = {
                 title: action.title,
                 description: '',
-                ...editorMetadata
+                msStyleJSON: null,
+                msEditorType: 'visual',
+                gnLayerName: layer.name,
+                gnDatasetPk: layer?.extendedParams?.mapLayer?.dataset?.pk,
+                gnMapPk: getResourceId(state)
             };
-
+            const geometryType = geometryTypeSelector(state);
             return Observable.defer(
                 () => StylesAPI.createStyle({
                     baseUrl: styleService?.baseUrl,
-                    code: '@mode \'Flat\'; @styleTitle \'' + action.title + '\'; \n* {\n\tfill: #ff0000;\n}\n',
-                    format: 'css',
-                    styleName: 'geonode:' + action.title.toLowerCase().replace(/\W/g, '') + '_' + Math.random(),
+                    code: getBaseCSSStyle({ type: geometryType, title: action.title }),
+                    format,
+                    styleName,
                     metadata
                 })
             )
                 .switchMap(() => {
-                    return Observable.empty();
+                    return Observable.of(
+                        updateNode(layer.id, 'layer', { availableStyles: [...layer.availableStyles, { format, metadata, name: styleName, title: action.title }] }),
+                        updateAdditionalLayer(layer.id, STYLE_OWNER_NAME, 'override', {}),
+                        updateSettingsParams({ style: styleName }, true),
+                        updateStatus('edit'),
+                        saveDirectContent()
+                    );
                 });
-                */
         });
 
-export const gnDeleteStyle = (action$) =>
+export const gnDeleteStyle = (action$, store) =>
     action$.ofType(DELETE_GEONODE_STYLE)
-        .switchMap(() => {
-            return Observable.empty();
+        .switchMap((action) => {
+            const state = store.getState();
+            const styleService = action?.options?.styleService || styleServiceSelector(state);
+            const layer = action.layer || getUpdatedLayer(state);
+
+            const completeDeleteProcess = () => {
+                const newAvailableStyles = (layer.availableStyles || []).filter(({ name }) => name !== action.styleName);
+                return Observable.of(
+                    updateNode(layer.id, 'layer', { availableStyles: newAvailableStyles }),
+                    updateAdditionalLayer(layer.id, STYLE_OWNER_NAME, 'override', {}),
+                    updateSettingsParams({ style: newAvailableStyles?.[0]?.name || '' }, true),
+                    updateStatus('edit'),
+                    saveDirectContent()
+                );
+            };
+
+            return Observable.defer(() =>
+                Observable.defer(() =>
+                    StylesAPI.deleteStyle({
+                        baseUrl: styleService?.baseUrl,
+                        styleName: action.styleName
+                    })
+                ))
+                .switchMap(() => {
+                    return completeDeleteProcess();
+                })
+                .catch(() => {
+                    return completeDeleteProcess();
+                });
         });
 
 export default {

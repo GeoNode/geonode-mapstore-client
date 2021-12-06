@@ -9,7 +9,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import isNumber from 'lodash/isNumber';
 import clamp from 'lodash/clamp';
-import uniqBy from 'lodash/uniqBy';
 import { Glyphicon, FormGroup, ControlLabel, Checkbox } from 'react-bootstrap';
 import Button from '@js/components/Button';
 import IntlNumberFormControl from '@mapstore/framework/components/I18N/IntlNumberFormControl';
@@ -23,18 +22,21 @@ import GeneralSettings from '@js/plugins/layersettings/GeneralSettings';
 import VisibilitySettings from '@js/plugins/layersettings/VisibilitySettings';
 import SettingsSection from '@js/plugins/layersettings/SettingsSection';
 import useLocalStorage from '@js/hooks/useLocalStorage';
+import { cleanStyles } from '@js/utils/ResourceUtils';
 
 function getStyleOptions(layer) {
     const mapLayerStyles = layer?.extendedParams?.mapLayer?.extra_params?.styles || [];
     const datasetStyles = layer?.extendedParams?.mapLayer?.dataset?.styles || [];
     const defaultStyle = layer?.extendedParams?.mapLayer?.dataset?.default_style;
-    return uniqBy([
+    const availableStyles = layer?.availableStyles || [];
+    return cleanStyles([
+        ...(defaultStyle ? [defaultStyle] : []),
         ...datasetStyles,
         ...mapLayerStyles,
-        ...(defaultStyle ? [defaultStyle] : [])
-    ], 'name').map(({ name, sld_title: sldTitle, title, workspace }) => ({
-        value: workspace ? `${workspace}:${name}` : name,
-        label: sldTitle || title || name
+        ...availableStyles
+    ]).map(({ name, title }) => ({
+        value: name,
+        label: title
     }));
 }
 

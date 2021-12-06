@@ -204,11 +204,24 @@
             "styleSettings": "Configuración de estilo",
             "tilingSettings": "Configuración de mosaico",
             "style": "Estilo",
-            "legendWidth": "Ancho del símbolo",
-            "legendHeight": "Altura del símbolo",
+            "legendWidth": "Ancho del símbolo de leyenda",
+            "legendHeight": "Altura del símbolo de leyenda",
             "legendPreview": "Vista previa de la leyenda",
             "nodeTooltipContent": "Contenido de la información sobre herramientas",
-            "nodeTooltipPlacement": "Ubicación de información sobre herramientas"
+            "nodeTooltipPlacement": "Ubicación de información sobre herramientas",
+            "zoomToLayer": "Zoom a la extensión de la capa",
+            "applyCurrentStyleToLayer": "Aplicar el estilo actual a la capa",
+            "deleteCurrentStyle": "Eliminar estilo actual",
+            "createNewStyle": "Crear nuevo estilo",
+
+            "createStyleTitle": "Agregar nuevo estilo",
+            "createStyleTitleInput": "Título:",
+            "createStyleClose": "Cerrar",
+            "createStyleCreate": "Crear",
+            "deleteStyleTitle": "Eliminar estilo",
+            "deleteStyleMessage": "¿Está seguro de que desea eliminar este estilo?",
+            "deleteStyleCancel": "No, no lo elimines",
+            "deleteStyleConfirm": "Sí, estoy seguro"
         }
     }
 }
