@@ -204,11 +204,25 @@
             "styleSettings": "Paramètres de style",
             "tilingSettings": "Paramètres de mosaïque",
             "style": "Style",
-            "legendWidth": "Largeur du symbole",
-            "legendHeight": "Hauteur du symbole",
+            "legendWidth": "Largeur du symbole de la légende",
+            "legendHeight": "Hauteur du symbole de la légende",
             "legendPreview": "Aperçu de la légende",
             "nodeTooltipContent": "Contenu de l'info-bulle",
-            "nodeTooltipPlacement": "Placement de l'info-bulle"
+            "nodeTooltipPlacement": "Placement de l'info-bulle",
+
+            "zoomToLayer": "Zoomer sur l'étendue du calque",
+            "applyCurrentStyleToLayer": "Appliquer le style actuel au calque",
+            "deleteCurrentStyle": "Supprimer le style actuel",
+            "createNewStyle": "Créer un nouveau style",
+
+            "createStyleTitle": "Ajouter un nouveau style",
+            "createStyleTitleInput": "Titre:",
+            "createStyleClose": "Fermer",
+            "createStyleCreate": "Créer",
+            "deleteStyleTitle": "Supprimer le style",
+            "deleteStyleMessage": "Voulez-vous vraiment supprimer ce style?",
+            "deleteStyleCancel": "Non, ne le supprime pas",
+            "deleteStyleConfirm": "Oui, je suis sûr"
         }
     }
 }

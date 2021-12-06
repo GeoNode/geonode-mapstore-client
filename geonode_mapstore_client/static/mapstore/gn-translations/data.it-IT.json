@@ -206,11 +206,25 @@
             "styleSettings": "Impostazioni stile",
             "tilingSettings": "Impostazioni tiling",
             "style": "Stile",
-            "legendWidth": "Larghezza simbolo",
-            "legendHeight": "Altezza simbolo",
+            "legendWidth": "Larghezza simbolo legenda",
+            "legendHeight": "Altezza simbolo legenda",
             "legendPreview": "Anteprima legenda",
             "nodeTooltipContent": "Contenuto tooltip",
-            "nodeTooltipPlacement": "Posizionamento tooltip"
+            "nodeTooltipPlacement": "Posizionamento tooltip",
+
+            "zoomToLayer": "Zoom all'estensione del layer",
+            "applyCurrentStyleToLayer": "Applica lo stile corrente al layer",
+            "deleteCurrentStyle": "Elimina lo stile corrente",
+            "createNewStyle": "Crea nuovo stile",
+
+            "createStyleTitle": "Aggiungi nuovo stile",
+            "createStyleTitleInput": "Titolo:",
+            "createStyleClose": "Chiudi",
+            "createStyleCreate": "Crea",
+            "deleteStyleTitle": "Elimina stile",
+            "deleteStyleMessage": "Sei sicuro di voler eliminare questo stile?",
+            "deleteStyleCancel": "No, non cancellarlo",
+            "deleteStyleConfirm": "Si, cancella stile"
         }
     }
 }

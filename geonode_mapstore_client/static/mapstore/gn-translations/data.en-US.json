@@ -205,11 +205,25 @@
             "styleSettings": "Style settings",
             "tilingSettings": "Tiling settings",
             "style": "Style",
-            "legendWidth": "Symbol width",
-            "legendHeight": "Symbol height",
+            "legendWidth": "Legend symbol width",
+            "legendHeight": "Legend symbol height",
             "legendPreview": "Legend preview",
             "nodeTooltipContent": "Tooltip content",
-            "nodeTooltipPlacement": "Tooltip placement"
+            "nodeTooltipPlacement": "Tooltip placement",
+
+            "zoomToLayer": "Zoom to layer extent",
+            "applyCurrentStyleToLayer": "Apply current style to layer",
+            "deleteCurrentStyle": "Delete current style",
+            "createNewStyle": "Create new style",
+
+            "createStyleTitle": "Add new style",
+            "createStyleTitleInput": "Title:",
+            "createStyleClose": "Close",
+            "createStyleCreate": "Create",
+            "deleteStyleTitle": "Delete style",
+            "deleteStyleMessage": "Are you sure you want to delete this style?",
+            "deleteStyleCancel": "No, don't delete it",
+            "deleteStyleConfirm": "Yes, I'm sure"
         }
     }
 }
