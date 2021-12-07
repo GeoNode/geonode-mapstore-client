@@ -791,6 +791,10 @@
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
+                                    "type": "plugin",
+                                    "name": "DetailViewerButton"
+                                },
+                                {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"

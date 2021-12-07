@@ -34,6 +34,7 @@ import OverlayContainer from '@js/components/OverlayContainer';
 import { withRouter } from 'react-router';
 import { hashLocationToHref } from '@js/utils/SearchUtils';
 import FaIcon from '@js/components/FaIcon/FaIcon';
+import Message from '@mapstore/framework/components/I18N/Message';
 
 const ConnectedDetailsPanel = connect(
     createSelector(
@@ -59,7 +60,7 @@ const ConnectedDetailsPanel = connect(
     }
 )(DetailsPanel);
 
-const ButtonViewer = ({ onClick, hide, variant, size }) => {
+const ButtonViewer = ({ onClick, hide, variant, size, showMessage }) => {
     const handleClickButton = () => {
         onClick();
     };
@@ -70,7 +71,7 @@ const ButtonViewer = ({ onClick, hide, variant, size }) => {
             size={size}
             onClick={handleClickButton}
         >
-            <FaIcon name="info-circle" />
+            {!showMessage ? <FaIcon name="info-circle" /> : <Message msgId="gnviewer.editInfo"/>}
         </Button>
     ) : null;
 };
