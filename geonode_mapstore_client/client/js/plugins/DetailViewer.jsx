@@ -12,13 +12,14 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import DetailsPanel from '@js/components/DetailsPanel';
 import { userSelector } from '@mapstore/framework/selectors/security';
-import usePluginItems from '@js/hooks/usePluginItems';
 import {
     editTitleResource,
     editAbstractResource,
     editThumbnailResource,
-    setFavoriteResource
+    setFavoriteResource,
+    setMapThumbnail
 } from '@js/actions/gnresource';
+import FaIcon from '@js/components/FaIcon/FaIcon';
 import controls from '@mapstore/framework/reducers/controls';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import gnresource from '@js/reducers/gnresource';
@@ -35,28 +36,26 @@ import { withRouter } from 'react-router';
 import { hashLocationToHref } from '@js/utils/SearchUtils';
 import FaIcon from '@js/components/FaIcon/FaIcon';
 import Message from '@mapstore/framework/components/I18N/Message';
+import { layersSelector } from '@mapstore/framework/selectors/layers';
 
 const ConnectedDetailsPanel = connect(
-    createSelector(
-        [
-            (state) => state?.gnresource?.data || null,
-            (state) => state?.gnresource?.loading || false,
-            (state) => state?.gnresource?.data?.favorite || false
-        ],
-        (resource, loading, favorite) => ({
-            resource,
-            loading,
-            favorite
-        })
-    ),
+    createSelector([
+        state => state?.gnresource?.data || null,
+        state => state?.gnresource?.loading || false,
+        state => state?.gnresource?.data?.favorite || false,
+        state => state?.gnsave?.savingThumbnailMap || false,
+        layersSelector
+    ], (resource, loading, favorite, savingThumbnailMap, layers) => ({
+        layers: layers,
+        resource,
+        loading,
+        savingThumbnailMap,
+        favorite
+    })),
     {
-        closePanel: setControlProperty.bind(
-            null,
-            'rightOverlay',
-            'enabled',
-            false
-        ),
-        onFavorite: setFavoriteResource
+        closePanel: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),
+        onFavorite: setFavoriteResource,
+        onMapThumbnail: setMapThumbnail
     }
 )(DetailsPanel);
 
@@ -88,29 +87,22 @@ const ConnectedButton = connect(
             'DetailViewer'
         )
     }
-)(ButtonViewer);
+)((ButtonViewer));
 
-function DetailViewer(
-    {
-        items,
-        location,
-        enabled,
-        onEditResource,
-        onEditAbstractResource,
-        onEditThumbnail,
-        canEdit,
-        width,
-        hide,
-        user,
-        onClose
-    },
-    context
-) {
-    const { loadedPlugins } = context;
-    const configuredItems = usePluginItems({ items, loadedPlugins });
-    const buttonSaveThumbnailMap = configuredItems
-        .filter(({ name }) => name === 'MapThumbnail')
-        .map(({ Component, name }) => <Component key={name} />);
+
+function DetailViewer({
+    location,
+    enabled,
+    onEditResource,
+    onEditAbstractResource,
+    onEditThumbnail,
+    canEdit,
+    width,
+    hide,
+    user,
+    onClose
+}) {
+
 
     const handleTitleValue = (val) => {
         onEditResource(val);
@@ -154,7 +146,6 @@ function DetailViewer(
                 editAbstract={handleAbstractValue}
                 editThumbnail={handleEditThumbnail}
                 activeEditMode={enabled && canEdit}
-                buttonSaveThumbnailMap={buttonSaveThumbnailMap}
                 enableFavorite={!!user}
                 formatHref={handleFormatHref}
             />

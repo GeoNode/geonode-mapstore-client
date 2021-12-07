@@ -15,7 +15,8 @@ import {
 } from '@js/actions/gnsave';
 
 import {
-    RESET_RESOURCE_STATE
+    RESET_RESOURCE_STATE,
+    SET_MAP_THUMBNAIL
 } from '@js/actions/gnresource';
 
 const defaultState = {};
@@ -31,6 +32,11 @@ function gnsave(state = defaultState, action) {
             saving: true,
             error: undefined,
             success: undefined
+        };
+    }
+    case SET_MAP_THUMBNAIL: {
+        return {
+            savingThumbnailMap: true
         };
     }
     case SAVE_SUCCESS: {

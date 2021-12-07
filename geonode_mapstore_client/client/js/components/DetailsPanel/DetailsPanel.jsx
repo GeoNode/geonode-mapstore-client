@@ -22,8 +22,17 @@ import debounce from 'lodash/debounce';
 import CopyToClipboardCmp from 'react-copy-to-clipboard';
 import { TextEditable, ThumbnailEditable } from '@js/components/ContentsEditable/';
 import ResourceStatus from '@js/components/ResourceStatus/';
+import turfBbox from '@turf/bbox';
+import BaseMap from '@mapstore/framework/components/map/BaseMap';
+import mapTypeHOC from '@mapstore/framework/components/map/enhancers/mapType';
+import { boundsToExtentString, getFeatureFromExtent } from '@js/utils/CoordinatesUtils';
 import AuthorInfo from '@js/components/AuthorInfo/AuthorInfo';
+import Loader from '@mapstore/framework/components/misc/Loader';
 
+const Map = mapTypeHOC(BaseMap);
+Map.displayName = 'Map';
+
+const MapThumbnailButtonToolTip = tooltip(Button);
 const CopyToClipboard = tooltip(CopyToClipboardCmp);
 
 const EditTitle = ({ title, onEdit, tagName, disabled }) => {
@@ -118,6 +127,98 @@ const DefinitionListMoreItem = ({itemslist, extraItemsList}) => {
     );
 };
 
+function getExtent({
+    features,
+    layers
+}) {
+    if (features && features.length > 0) {
+        return turfBbox({ type: 'FeatureCollection', features });
+    }
+    const { bbox } = layers.find(({ isDataset }) => isDataset) || {};
+    const { bounds, crs } = bbox || {};
+    if (bounds && crs === 'EPSG:4326') {
+        const { minx, miny, maxx, maxy } = bounds;
+        return [ minx, miny, maxx, maxy ];
+    }
+    return null;
+}
+
+const MapThumbnailView = ({ layers, featuresProp = [], onMapThumbnail, onClose, savingThumbnailMap } ) => {
+
+    const [currentExtent, setCurrentExtent] = useState();
+    const [currentBbox, setCurrentBbox] = useState();
+
+    function handleOnMapViewChanges(center, zoom, bbox) {
+        const { bounds, crs } = bbox;
+        const newExtent = boundsToExtentString(bounds, crs);
+        setCurrentBbox(bbox);
+        setCurrentExtent(newExtent);
+    }
+
+    const [extent] = useState(getExtent({ layers, features: featuresProp }));
+
+    const featureFromExtent = currentExtent ? currentExtent : extent?.join();
+
+    return (
+        <div>
+            <div
+                className="gn-detail-extent"
+            >
+                <Map
+                    id="gn-filter-by-extent-map"
+                    mapType="openlayers"
+                    map={{
+                        registerHooks: false,
+                        projection: 'EPSG:3857' // da usare paramentro projection
+                    }}
+                    styleMap={{
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%'
+                    }}
+                    eventHandlers={{
+                        onMapViewChanges: handleOnMapViewChanges
+                    }}
+                    layers={[
+                        ...(layers ? layers : []),
+                        ...(featureFromExtent
+                            ? [{
+                                id: 'highlight',
+                                type: 'vector',
+                                features: [getFeatureFromExtent(featureFromExtent)],
+                                style: {
+                                    color: '#397AAB',
+                                    opacity: 0.8,
+                                    fillColor: '#397AAB',
+                                    fillOpacity: 0.4,
+                                    weight: 0.001
+                                }
+                            }]
+                            : []
+                        )
+                    ]}
+                >
+                </Map>
+                {savingThumbnailMap && <div
+                    style={{
+                        position: 'absolute', width: '100%',
+                        height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.75)',
+                        top: '0px', zIndex: 2000, display: 'flex',
+                        alignItems: 'center', justifyContent: 'center', right: '0px'
+                    }}>
+
+                    <Loader size={150} />
+                </div>
+                }
+            </div>
+            <div className="gn-detail-extent-action" >
+                <Button onClick={() => onMapThumbnail(currentBbox)} ><Message msgId={"gnviewer.save"} /></Button><Button onClick={() => onClose() }><Message msgId={"gnviewer.close"} /></Button></div>
+        </div>
+    );
+
+};
+
+
 const extractResourceString = (res) => {
     const resourceFirstLetter = res?.charAt(0).toUpperCase();
     const restOfResourceLetters = res?.slice(1);
@@ -141,7 +242,9 @@ function DetailsPanel({
     favorite,
     onFavorite,
     enableFavorite,
-    buttonSaveThumbnailMap
+    onMapThumbnail,
+    savingThumbnailMap,
+    layers
 }) {
     const detailsContainerNode = useRef();
     const isMounted = useRef();
@@ -184,6 +287,16 @@ function DetailsPanel({
     const documentDownloadUrl = (resource?.href && resource?.href.includes('download')) ? resource?.href : undefined;
     const attributeSet = resource?.attribute_set;
     const metadataDetailUrl = resource?.pk && getMetadataDetailUrl(resource);
+
+    const [enableMapViewer, setEnableMapViewer] = useState(false);
+
+    const handleEnableMapViewer = () => {
+        setEnableMapViewer(false);
+    };
+
+    const handleMapViewer = () => {
+        setEnableMapViewer(!enableMapViewer);
+    };
 
     const validateDataType = (data) => {
 
@@ -423,11 +536,31 @@ function DetailsPanel({
                     {editThumbnail && <div className="gn-details-panel-content-img">
                         {!activeEditMode && <ThumbnailPreview src={resource?.thumbnail_url} />}
                         {activeEditMode && <div className="gn-details-panel-preview inediting">
-                            <EditThumbnail
+                            {!enableMapViewer ? <> <EditThumbnail
                                 onEdit={editThumbnail}
                                 image={resource?.thumbnail_url}
                             />
-                            { buttonSaveThumbnailMap }
+
+                            <MapThumbnailButtonToolTip
+                                variant="default"
+                                onClick={handleMapViewer}
+                                className={"map-thumbnail"}
+                                tooltip={<Message msgId="gnviewer.saveMapThumbnail" />}
+                                tooltipPosition={"top"}
+
+                            >
+                                <FaIcon name="map" />
+
+                            </MapThumbnailButtonToolTip></>
+                                : <MapThumbnailView
+                                    layers={layers}
+                                    onMapThumbnail={onMapThumbnail}
+                                    onClose={handleEnableMapViewer}
+                                    savingThumbnailMap={savingThumbnailMap}
+                                />
+
+                            }
+
                         </div>}
                     </div>
                     }

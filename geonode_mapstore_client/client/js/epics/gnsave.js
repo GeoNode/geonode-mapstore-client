@@ -169,18 +169,19 @@ export const gnSaveContent = (action$, store) =>
         });
 export const gnSetMapThumbnail = (action$, store) =>
     action$.ofType(SET_MAP_THUMBNAIL)
-        .switchMap(() => {
+        .switchMap((action) => {
+
             const state = store.getState();
             const contentType = state.gnresource?.data?.resource_type || 'map';
             const resourceIDThumbnail = state?.gnresource?.id;
             const currentResource = state.gnresource?.data || {};
-            const map =  mapSelector(state) || {};
+
             const body = {
-                srid: map.bbox.crs,
-                bbox: [ Object.values(map.bbox.bounds)[2],
-                    Object.values(map.bbox.bounds)[0],
-                    Object.values(map.bbox.bounds)[3],
-                    Object.values(map.bbox.bounds)[1]
+                srid: action.bbox.crs,
+                bbox: [ Object.values(action.bbox.bounds)[2],
+                    Object.values(action.bbox.bounds)[0],
+                    Object.values(action.bbox.bounds)[3],
+                    Object.values(action.bbox.bounds)[1]
                 ]
             };
             return Observable.defer(() => setMapThumbnail(resourceIDThumbnail, body, contentType))
@@ -198,7 +199,7 @@ export const gnSetMapThumbnail = (action$, store) =>
                         errorNotification({title: "gnviewer.thumbnailnotsaved", message: "gnviewer.thumbnailnotsaved"})
                     );
                 })
-                .startWith(savingResource());
+                .startWith();
         });
 export const gnSaveDirectContent = (action$, store) =>
     action$.ofType(SAVE_DIRECT_CONTENT)
