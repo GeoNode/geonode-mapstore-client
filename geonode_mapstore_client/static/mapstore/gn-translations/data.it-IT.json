@@ -142,6 +142,7 @@
             "view": "Visualizza",
             "viewMetadata": "Visualizza i metadati",
             "viewData": "Visualizza i dati",
+            "editInfo": "Modifica informazioni",
             "editStyle": "Modifica Stile",
             "editData": "Modifica Dati",
             "backToDataset": "< Torna al dataset",

@@ -137,6 +137,7 @@
         "gnviewer": {
             "edit": "Edit",
             "export": "Export",
+            "editInfo": "Edit Info",
             "editMetadata": "Edit Metadata",
             "editStyle": "Edit Style",
             "editData": "Edit Data",

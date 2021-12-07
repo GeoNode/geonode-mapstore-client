@@ -140,6 +140,7 @@
             "view": "Vue",
             "viewMetadata": "Afficher les métadonnées",
             "viewData":  "Afficher les données",
+            "editInfo": "Modifier les informations",
             "editStyle": "Modifier le Style",
             "editData": "Modifier les Données",
             "backToDataset": "< Retourner au jeu de données",

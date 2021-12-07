@@ -791,6 +791,10 @@
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
+                                    "type": "plugin",
+                                    "name": "DetailViewerButton"
+                                },
+                                {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
@@ -1489,6 +1493,10 @@
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
+                                    "type": "plugin",
+                                    "name": "DetailViewerButton"
+                                },
+                                {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
@@ -1944,6 +1952,10 @@
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
+                                    "type": "plugin",
+                                    "name": "DetailViewerButton"
+                                },
+                                {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
@@ -2116,6 +2128,10 @@
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
+                                    "type": "plugin",
+                                    "name": "DetailViewerButton"
+                                },
+                                {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
@@ -2223,6 +2239,10 @@
                             "type": "dropdown",
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "DetailViewerButton"
+                                },
                                 {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
