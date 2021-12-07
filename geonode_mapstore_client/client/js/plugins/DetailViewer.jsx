@@ -34,7 +34,6 @@ import useDetectClickOut from '@js/hooks/useDetectClickOut';
 import OverlayContainer from '@js/components/OverlayContainer';
 import { withRouter } from 'react-router';
 import { hashLocationToHref } from '@js/utils/SearchUtils';
-import FaIcon from '@js/components/FaIcon/FaIcon';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { layersSelector } from '@mapstore/framework/selectors/layers';
 
