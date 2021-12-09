@@ -8,17 +8,23 @@
 
 import expect from 'expect';
 import {
-    getViewedResourceType
+    getViewedResourceType,
+    isNewResource
 } from '../resource';
 
 const testState = {
     gnresource: {
-        type: 'testResource'
+        type: 'testResource',
+        isNew: true
     }
 };
 
 describe('resource selector', () => {
     it('resource type', () => {
         expect(getViewedResourceType(testState)).toBe('testResource');
+    });
+
+    it('is new resource', () => {
+        expect(isNewResource(testState)).toBeTruthy();
     });
 });
