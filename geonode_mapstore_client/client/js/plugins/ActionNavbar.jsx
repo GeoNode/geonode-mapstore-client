@@ -8,8 +8,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
-import { connect } from 'react-redux';
+import { connect, createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { createSelector } from 'reselect';
 import ActionNavbar from '@js/components/ActionNavbar';
 
@@ -19,10 +18,10 @@ import {
     canAddResource,
     getResourceData,
     getResourceDirtyState,
-    getSelectedLayerPermissions
+    getSelectedLayerPermissions,
+    isNewResource
 } from '@js/selectors/resource';
 import { hasPermissionsTo, reduceArrayRecursive } from '@js/utils/MenuUtils';
-import { getLocation } from '@js/selectors/routes';
 
 function checkResourcePerms(menuItem, resourcePerms) {
     if (menuItem.disableIf) {
@@ -44,7 +43,7 @@ function ActionNavbarPlugin(
         isDirtyState,
         selectedLayerPermissions,
         titleItems,
-        url
+        disableTitle
     },
     context
 ) {
@@ -110,7 +109,7 @@ function ActionNavbarPlugin(
             size="sm"
             resource={resource}
             titleItems={titleNavbarItems}
-            location={url}
+            disableTitle={disableTitle}
         />
     );
 }
@@ -137,7 +136,7 @@ const ConnectedActionNavbarPlugin = connect(
             getResourceData,
             getResourceDirtyState,
             getSelectedLayerPermissions,
-            getLocation
+            isNewResource
         ],
         (
             resourcePerms,
@@ -145,13 +144,13 @@ const ConnectedActionNavbarPlugin = connect(
             resource,
             dirtyState,
             selectedLayerPermissions,
-            location
+            newResource
         ) => ({
             resourcePerms: resourcePerms.length > 0 ? resourcePerms : userCanAddResource ? ['change_resourcebase'] : [],
             resource,
             isDirtyState: !!dirtyState,
             selectedLayerPermissions,
-            url: location
+            disableTitle: newResource
         })
     )
 )(ActionNavbarPlugin);
