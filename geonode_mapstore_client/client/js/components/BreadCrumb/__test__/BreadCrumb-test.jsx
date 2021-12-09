@@ -21,9 +21,7 @@ const testConf = {
     ],
     resource: {
         title: 'test resource'
-    },
-    locationNew: '/new',
-    locationEdit: '/edit/map'
+    }
 };
 
 describe('Test Genode BreadCrumb component', () => {
@@ -60,20 +58,10 @@ describe('Test Genode BreadCrumb component', () => {
         expect(resourceTitle.innerHTML).toEqual('test resource');
         expect(breadcrumbWrapper.childElementCount).toBe(2);
     });
-    it('should not show breadcrumb on new resource', () => {
+    it('should not show breadcrumb on new or edit resource', () => {
         ReactDOM.render(
             <BreadCrumb
-                location={testConf.locationNew}
-            />,
-            document.getElementById('container')
-        );
-        const el = document.querySelector('.gn-action-navbar-title');
-        expect(el).toNotExist();
-    });
-    it('should not show breadcrumb on edit resource', () => {
-        ReactDOM.render(
-            <BreadCrumb
-                location={testConf.locationEdit}
+                disableTitle
             />,
             document.getElementById('container')
         );
