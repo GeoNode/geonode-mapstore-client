@@ -22,6 +22,7 @@ import {
     getSelectedLayerPermissions
 } from '@js/selectors/resource';
 import { hasPermissionsTo, reduceArrayRecursive } from '@js/utils/MenuUtils';
+import { getLocation } from '@js/selectors/routes';
 
 function checkResourcePerms(menuItem, resourcePerms) {
     if (menuItem.disableIf) {
@@ -42,7 +43,8 @@ function ActionNavbarPlugin(
         resource,
         isDirtyState,
         selectedLayerPermissions,
-        titleItems
+        titleItems,
+        url
     },
     context
 ) {
@@ -108,6 +110,7 @@ function ActionNavbarPlugin(
             size="sm"
             resource={resource}
             titleItems={titleNavbarItems}
+            location={url}
         />
     );
 }
@@ -133,24 +136,22 @@ const ConnectedActionNavbarPlugin = connect(
             canAddResource,
             getResourceData,
             getResourceDirtyState,
-            getSelectedLayerPermissions
+            getSelectedLayerPermissions,
+            getLocation
         ],
         (
             resourcePerms,
             userCanAddResource,
             resource,
             dirtyState,
-            selectedLayerPermissions
+            selectedLayerPermissions,
+            location
         ) => ({
-            resourcePerms:
-                resourcePerms.length > 0
-                    ? resourcePerms
-                    : userCanAddResource
-                        ? ['change_resourcebase']
-                        : [],
+            resourcePerms: resourcePerms.length > 0 ? resourcePerms : userCanAddResource ? ['change_resourcebase'] : [],
             resource,
             isDirtyState: !!dirtyState,
-            selectedLayerPermissions
+            selectedLayerPermissions,
+            url: location
         })
     )
 )(ActionNavbarPlugin);
