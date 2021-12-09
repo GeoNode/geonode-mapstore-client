@@ -80,7 +80,7 @@ const ActionNavbar = forwardRef(
             size,
             resource,
             titleItems,
-            location
+            disableTitle
         },
         ref
     ) => {
@@ -91,7 +91,7 @@ const ActionNavbar = forwardRef(
                         <BreadCrumb
                             resource={resource}
                             titleItems={titleItems}
-                            location={location}
+                            disableTitle={disableTitle}
                         />
                         {leftItems.length > 0 && (
                             <LeftContentMenu

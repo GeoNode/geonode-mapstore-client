@@ -10,12 +10,9 @@ import PropTypes from 'prop-types';
 import FaIcon from '@js/components/FaIcon';
 import NavLink from '@js/components/Menu/NavLink';
 
-function BreadCrumb({ resource, titleItems, location }) {
-    const urlParts = location.split('/');
-    const isNew = urlParts[urlParts.length - 1] === 'new';
-    const isEditing = urlParts[urlParts.length - 2] === 'edit';
+function BreadCrumb({ resource, titleItems, disableTitle }) {
 
-    return isNew || isEditing ? null : (
+    return disableTitle ? null : (
         <div className="gn-action-navbar-title">
             <div>
                 <NavLink href="#" className="gn-action-navbar-breadcrumb-link">
@@ -42,13 +39,13 @@ function BreadCrumb({ resource, titleItems, location }) {
 BreadCrumb.propTypes = {
     resource: PropTypes.object,
     titleItems: PropTypes.array,
-    location: PropTypes.string
+    disableTitle: PropTypes.bool
 };
 
 BreadCrumb.defaultProps = {
     resource: {},
     titleItems: [],
-    location: ''
+    disableTitle: false
 };
 
 export default BreadCrumb;
