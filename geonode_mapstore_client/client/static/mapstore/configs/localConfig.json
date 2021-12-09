@@ -1194,6 +1194,7 @@
                 "name": "ActionNavbar",
                 "cfg": {
                     "containerPosition": "header",
+                    "disableTitle": true,
                     "leftMenuItems": [
                         {
                             "type": "link",
@@ -1328,6 +1329,7 @@
                 "name": "ActionNavbar",
                 "cfg": {
                     "containerPosition": "header",
+                    "disableTitle": true,
                     "leftMenuItems": [
                         {
                             "type": "link",
