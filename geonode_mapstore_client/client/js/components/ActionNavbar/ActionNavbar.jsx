@@ -11,8 +11,7 @@ import PropTypes from 'prop-types';
 import Menu from '@js/components/Menu';
 import BurgerMenu from '@js/components/Menu/BurgerMenu';
 import useResizeElement from '@js/hooks/useResizeElement';
-import FaIcon from '@js/components/FaIcon';
-import NavLink from '@js/components/Menu/NavLink';
+import BreadCrumb from '@js/components/BreadCrumb';
 
 const LeftContentMenu = ({ items, formatHref, query, variant, size }) => {
     const navbarContentLeft = useRef();
@@ -80,7 +79,8 @@ const ActionNavbar = forwardRef(
             variant,
             size,
             resource,
-            titleItems
+            titleItems,
+            location
         },
         ref
     ) => {
@@ -88,29 +88,11 @@ const ActionNavbar = forwardRef(
             <nav ref={ref} className={`gn-menu gn-${variant}`} style={style}>
                 <div className="gn-menu-container">
                     <div className="gn-menu-content">
-                        <div className="gn-action-navbar-title">
-                            <div>
-                                <NavLink
-                                    href="#"
-                                    className="gn-action-navbar-breadcrumb-link"
-                                >
-                                    <FaIcon name="home" />
-                                </NavLink>
-                                <FaIcon
-                                    name="angle-right"
-                                    className="gn-action-navbar-breadcrumb-seperator"
-                                />
-                                <p
-                                    title={resource?.title}
-                                    className="gn-action-navbar-resource-title"
-                                >
-                                    {resource?.title}
-                                </p>
-                            </div>
-                            {titleItems.map(({ Component, name }) => (
-                                <Component key={name} variant="info"/>
-                            ))}
-                        </div>
+                        <BreadCrumb
+                            resource={resource}
+                            titleItems={titleItems}
+                            location={location}
+                        />
                         {leftItems.length > 0 && (
                             <LeftContentMenu
                                 items={leftItems}
