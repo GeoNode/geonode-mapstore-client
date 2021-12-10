@@ -13,7 +13,7 @@ import BurgerMenu from '@js/components/Menu/BurgerMenu';
 import useResizeElement from '@js/hooks/useResizeElement';
 import BreadCrumb from '@js/components/BreadCrumb';
 
-const LeftContentMenu = ({ items, formatHref, query, variant, size }) => {
+const LeftContentMenu = ({ items, formatHref, query, variant, size, resourceName }) => {
     const navbarContentLeft = useRef();
     const navbarLeft = useRef();
     const { width: widthContentLeft } = useResizeElement(navbarContentLeft);
@@ -41,6 +41,7 @@ const LeftContentMenu = ({ items, formatHref, query, variant, size }) => {
                     query={query}
                     variant={variant}
                     size={size}
+                    resourceName={resourceName}
                 />
             )}
         </div>
@@ -100,6 +101,7 @@ const ActionNavbar = forwardRef(
                                 query={query}
                                 variant={variant}
                                 size={size}
+                                resourceName={resource.title}
                             />
                         )}
                         {rightItems.length > 0 && (

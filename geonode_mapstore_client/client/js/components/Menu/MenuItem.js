@@ -39,7 +39,7 @@ import {
  *
  */
 
-const MenuItem = ({ item, menuItemsProps, containerNode, tabIndex, classItem = '', size, alignRight, variant }) => {
+const MenuItem = ({ item, menuItemsProps, containerNode, tabIndex, classItem = '', size, alignRight, variant, resourceName }) => {
 
     const { formatHref, query } = menuItemsProps;
     const { id, type, label, labelId = '', items = [], href, style, badge = '', image, Component, target, className } = item;
@@ -70,7 +70,7 @@ const MenuItem = ({ item, menuItemsProps, containerNode, tabIndex, classItem = '
 
     if (type === 'link') {
         return (
-            <NavLink href={href} target={target} className={btnClassName}>{labelId && <Message msgId={labelId} /> || label}</NavLink>
+            <NavLink href={href} target={target} className={btnClassName}>{labelId && <Message msgId={labelId} /> || label}{item.datasetEditor && resourceName}</NavLink>
         );
 
     }
