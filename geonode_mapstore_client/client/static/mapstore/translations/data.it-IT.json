@@ -146,6 +146,7 @@
             "editStyle": "Modifica Stile",
             "editData": "Modifica Dati",
             "backToDataset": "< Torna al dataset",
+            "goBackTo": "< Torna a ",
             "uploadImage": "Clicca per caricare l'immagine",
             "save": "Salva",
             "close": "Chiudi",
