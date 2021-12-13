@@ -70,7 +70,7 @@ const MenuItem = ({ item, menuItemsProps, containerNode, tabIndex, classItem = '
 
     if (type === 'link') {
         return (
-            <NavLink href={href} target={target} className={btnClassName}>{labelId && <Message msgId={labelId} /> || label}{item.datasetEditor && resourceName}</NavLink>
+            <NavLink href={href} target={target} className={btnClassName}>{labelId && <Message msgId={labelId} msgParams={{ resourceName }} /> || label}</NavLink>
         );
 
     }

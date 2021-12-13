@@ -145,7 +145,7 @@
             "viewMetadata": "View Metadata",
             "viewData": "View Data",
             "backToDataset": "< Go back to the dataset",
-            "goBackTo": "< Go back to ",
+            "goBackTo": "< Go back to { resourceName }",
             "uploadImage": "Click to upload an image",
             "save": "Save",
             "close": "Close",
