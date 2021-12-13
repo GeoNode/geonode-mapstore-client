@@ -198,6 +198,7 @@
             "warningGeoLimitsSaveMessage": "Non è stato possibile aggiornare i nuovi limiti geografici",
             "saveMapThumbnail": "Clicca per impostare la mappa come immagine",
             "templates": "Modelli",
+            "copyFrom": "Copia da",
             "createMap": "Crea Mappa",
             "addLayer": "Aggiungi layer",
             "datasetsCatalogTitle": "Catalogo layers",

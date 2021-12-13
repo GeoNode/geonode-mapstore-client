@@ -196,6 +196,7 @@
             "warningGeoLimitsSaveMessage": "Es war nicht möglich die neuen Geolimits zu aktualisieren",
             "saveMapThumbnail": "Klicken Sie hier, um die Karte als Bild festzulegen",
             "templates": "Vorlagen",
+            "copyFrom": "Kopie von",
             "createMap": "Karte Erstellen",
             "addLayer": "Ebene hinzufügen",
             "datasetsCatalogTitle": "Ebenenkatalog",

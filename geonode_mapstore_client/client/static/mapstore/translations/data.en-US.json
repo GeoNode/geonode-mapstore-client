@@ -197,6 +197,7 @@
             "warningGeoLimitsSaveMessage": "It was not possible to update the new geo limits",
             "saveMapThumbnail": "Click to set the map as an image",
             "templates": "Templates",
+            "copyFrom": "Copy from",
             "createMap": "Create Map",
             "addLayer": "Add layer",
             "datasetsCatalogTitle": "Layers catalog",

@@ -196,6 +196,7 @@
             "warningGeoLimitsSaveMessage": "Il n'a pas été possible de mettre à jour les nouvelles limites géographiques",
             "saveMapThumbnail": "Cliquez pour définir la carte comme une image",
             "templates": "Modèles",
+            "copyFrom": "Copier de",
             "createMap": "Créer une Carte",
             "addLayer": "Ajouter un calque",
             "datasetsCatalogTitle": "Catalogue de couches",

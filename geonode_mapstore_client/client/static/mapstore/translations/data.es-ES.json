@@ -196,6 +196,7 @@
             "warningGeoLimitsSaveMessage": "No fue posible actualizar los nuevos límites geográficos",
             "saveMapThumbnail": "Haga clic para configurar el mapa como una imagen",
             "templates": "Plantillas",
+            "copyFrom": "Copiado de",
             "createMap": "Crear Mapa",
             "addLayer": "Agregar capa",
             "datasetsCatalogTitle": "Catálogo de capas",
