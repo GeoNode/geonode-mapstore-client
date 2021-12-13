@@ -1199,8 +1199,7 @@
                         {
                             "type": "link",
                             "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk}",
-                            "labelId": "gnviewer.goBackTo",
-                            "datasetEditor": true
+                            "labelId": "gnviewer.goBackTo"
                         }
                     ]
                 }
@@ -1335,8 +1334,7 @@
                         {
                             "type": "link",
                             "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk}",
-                            "labelId": "gnviewer.goBackTo",
-                            "datasetEditor": true
+                            "labelId": "gnviewer.goBackTo"
                         },
                         {
                             "type": "plugin",
