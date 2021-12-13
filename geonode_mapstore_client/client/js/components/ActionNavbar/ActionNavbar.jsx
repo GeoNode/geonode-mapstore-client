@@ -89,11 +89,10 @@ const ActionNavbar = forwardRef(
             <nav ref={ref} className={`gn-menu gn-${variant}`} style={style}>
                 <div className="gn-menu-container">
                     <div className="gn-menu-content">
-                        <BreadCrumb
+                        {!disableTitle && <BreadCrumb
                             resource={resource}
                             titleItems={titleItems}
-                            disableTitle={disableTitle}
-                        />
+                        />}
                         {leftItems.length > 0 && (
                             <LeftContentMenu
                                 items={leftItems}
@@ -126,7 +125,8 @@ ActionNavbar.propTypes = {
     rightItems: PropTypes.array,
     query: PropTypes.object,
     formatHref: PropTypes.func,
-    variant: PropTypes.string
+    variant: PropTypes.string,
+    disableTitle: PropTypes.bool
 };
 
 ActionNavbar.defaultProps = {
@@ -135,7 +135,8 @@ ActionNavbar.defaultProps = {
     titleItems: [],
     query: {},
     formatHref: () => '#',
-    variant: 'primary'
+    variant: 'primary',
+    disableTitle: false
 };
 
 export default ActionNavbar;

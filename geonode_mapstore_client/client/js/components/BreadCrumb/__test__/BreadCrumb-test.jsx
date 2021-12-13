@@ -58,14 +58,4 @@ describe('Test Genode BreadCrumb component', () => {
         expect(resourceTitle.innerHTML).toEqual('test resource');
         expect(breadcrumbWrapper.childElementCount).toBe(2);
     });
-    it('should not show breadcrumb on new or edit resource', () => {
-        ReactDOM.render(
-            <BreadCrumb
-                disableTitle
-            />,
-            document.getElementById('container')
-        );
-        const el = document.querySelector('.gn-action-navbar-title');
-        expect(el).toNotExist();
-    });
 });

@@ -208,7 +208,16 @@ describe('Test GeoNode action navbar component', () => {
         expect(el).toExist();
         const navBarContent = document.querySelector('.gn-menu-content');
         expect(navBarContent).toExist();
-
     });
-
+    it('should not render breadcrumb on new or edit resource', () => {
+        ReactDOM.render(
+            <ActionNavbar
+                disableTitle
+                titleItems={conf.titleNavbarItems}
+            />,
+            document.getElementById('container')
+        );
+        const el = document.querySelector('.gn-action-navbar-title');
+        expect(el).toNotExist();
+    });
 });
