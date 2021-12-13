@@ -144,6 +144,7 @@
             "editStyle": "Modifier le Style",
             "editData": "Modifier les Données",
             "backToDataset": "< Retourner au jeu de données",
+            "goBackTo": "< Retourner a { resourceName }",
             "uploadImage": "Cliquez pour télécharger une image",
             "save": "Sauver",
             "close": "Proche",

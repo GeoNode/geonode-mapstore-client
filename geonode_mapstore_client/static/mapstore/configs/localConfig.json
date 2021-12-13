@@ -1194,11 +1194,12 @@
                 "name": "ActionNavbar",
                 "cfg": {
                     "containerPosition": "header",
+                    "disableTitle": true,
                     "leftMenuItems": [
                         {
                             "type": "link",
                             "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk}",
-                            "labelId": "gnviewer.backToDataset"
+                            "labelId": "gnviewer.goBackTo"
                         }
                     ]
                 }
@@ -1328,11 +1329,12 @@
                 "name": "ActionNavbar",
                 "cfg": {
                     "containerPosition": "header",
+                    "disableTitle": true,
                     "leftMenuItems": [
                         {
                             "type": "link",
                             "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk}",
-                            "labelId": "gnviewer.backToDataset"
+                            "labelId": "gnviewer.goBackTo"
                         },
                         {
                             "type": "plugin",
