@@ -44,7 +44,6 @@ import {
     errorStyleSelector,
     selectedStyleSelector
 } from '@mapstore/framework/selectors/styleeditor';
-import Select from 'react-select';
 import Message from '@mapstore/framework/components/I18N/Message';
 import SVGPreview from '@mapstore/framework/components/styleeditor/SVGPreview';
 import Popover from '@mapstore/framework/components/styleeditor/Popover';
@@ -53,7 +52,7 @@ import Portal from '@mapstore/framework/components/misc/Portal';
 import ResizableModal from '@mapstore/framework/components/misc/ResizableModal';
 import StylesAPI from '@mapstore/framework/api/geoserver/Styles';
 import { getStyleTemplates } from '@mapstore/framework/utils/StyleEditorUtils';
-import { getResourcePerms } from '@js/selectors/resource';
+import { getResourcePerms, isNewResource } from '@js/selectors/resource';
 import Spinner from '@js/components/Spinner';
 import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
@@ -107,8 +106,6 @@ function VisualStyleEditor({
     editorConfig,
     styleService,
     onInit,
-    onUpdateStatus,
-    onUpdateParams,
     onReset,
     temporaryStyleId,
     showLayerProperties,
@@ -123,9 +120,7 @@ function VisualStyleEditor({
     onCreate,
     onDelete,
     selectedStyle,
-    style: styleProp,
-    originalStyle,
-    onUpdateNode
+    style: styleProp
 }) {
 
     const [creating, setCreating] = useState(false);
@@ -155,20 +150,9 @@ function VisualStyleEditor({
         };
     }, []);
 
-    function handleStyleChange(option) {
-        onUpdateParams({
-            style: option.value
-        }, true);
-        onUpdateStatus('edit');
-    }
-
     function handleSelect(styleTemplate) {
         onSelect(styleTemplate);
         onUpdateMetadata({ styleJSON: null });
-    }
-
-    function handleUpdateLayerStyle() {
-        onUpdateNode(layer.id, 'layers', { style: layer.style });
     }
 
     function handleClose() {
@@ -210,35 +194,6 @@ function VisualStyleEditor({
                     <Glyphicon glyph="1-close"/>
                 </Button>
             </div>}
-            {showLayerProperties &&
-            <div className="gn-visual-style-editor-styles">
-                <div className="gn-visual-style-editor-styles-select">
-                    <Select
-                        value={layer.style}
-                        options={(layer?.availableStyles || []).map((style) => ({
-                            value: style.name,
-                            label: style.title
-                        }))}
-                        clearable={false}
-                        onChange={handleStyleChange}
-                    />
-                </div>
-                <Button
-                    onClick={handleUpdateLayerStyle} tooltipId="gnviewer.applyCurrentStyleToLayer">
-                    <Glyphicon glyph={layer.style === originalStyle ? 'star' : 'star-empty'}/>
-                </Button>
-                <Button
-                    disabled={layer?.availableStyles?.length < 2}
-                    onClick={() => setDeleting(true)}
-                    tooltipId="gnviewer.deleteCurrentStyle">
-                    <Glyphicon glyph="trash"/>
-                </Button>
-                <Button
-                    onClick={() => setCreating(true)}
-                    tooltipId="gnviewer.createNewStyle">
-                    <Glyphicon glyph="plus"/>
-                </Button>
-            </div>}
             {(hasTemplates || showLayerProperties) &&
             <div className="gn-visual-style-editor-toolbar">
                 {showLayerProperties && <ConnectedSaveStyleButton variant="default" size="xs"/>}
@@ -265,7 +220,7 @@ function VisualStyleEditor({
                         </ul>
                     }
                 >
-                    <Button size="xs"><Message msgId="gnviewer.templates"/></Button>
+                    <Button size="xs"><Message msgId="gnviewer.copyFrom"/></Button>
                 </Popover>}
             </div>}
             <div className="gn-visual-style-editor-body">
@@ -403,10 +358,11 @@ function StyleEditorTocButton({
     layer,
     status,
     onClick = () => {},
-    enabled
+    enabled,
+    isNew
 }) {
 
-    if (!(enabled && status === 'LAYER' && layer?.extendedParams?.mapLayer)) {
+    if (!(status === 'LAYER' && layer?.extendedParams?.mapLayer && (enabled || isNew))) {
         return null;
     }
 
@@ -427,10 +383,12 @@ function StyleEditorTocButton({
 
 const ConnectedStyleEditorTocButton = connect(createSelector([
     getUpdatedLayer,
-    getResourcePerms
-], (layer, perms) => ({
+    getResourcePerms,
+    isNewResource
+], (layer, perms, newMap) => ({
     layer,
-    enabled: !!perms?.includes('change_resourcebase')
+    enabled: !!perms?.includes('change_resourcebase'),
+    isNew: newMap
 })), {
     onClick: requestDatasetAvailableStyles
 })(StyleEditorTocButton);
