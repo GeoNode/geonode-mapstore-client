@@ -16,7 +16,8 @@ import {
     getGeoNodeMapLayers,
     toGeoNodeMapConfig,
     compareBackgroundLayers,
-    toMapStoreMapConfig
+    toMapStoreMapConfig,
+    parseStyleName
 } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
@@ -393,5 +394,16 @@ describe('Test Resource Utils', () => {
                 }
             }
         );
+    });
+
+    it('should parse style name into accepted format', () => {
+        const styleObj = {
+            name: 'testName',
+            workspace: 'test'
+        };
+
+        const pasrsedStyleName = parseStyleName(styleObj);
+
+        expect(pasrsedStyleName).toBe('test:testName');
     });
 });
