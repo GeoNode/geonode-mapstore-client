@@ -185,6 +185,7 @@
             "deleting": "Suppression...",
             "cloning": "Clonage...",
             "clone": "Cloner",
+            "stylesFirstClone": "Les modifications apportées aux styles ne s'appliqueront qu'à la couche actuelle de votre carte, et non au jeu de données d'origine.",
             "title": "Titre",
             "titlePlaceholder": "Tapez un titre...",
             "fullscreen": "Plein écran",

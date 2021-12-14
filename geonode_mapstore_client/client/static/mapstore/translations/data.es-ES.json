@@ -185,6 +185,7 @@
             "deleting": "Eliminando ...",
             "cloning": "Clonación ...",
             "clone": "Clonar",
+            "stylesFirstClone": "Los cambios realizados en los estilos solo se aplicarán a la capa actual en su mapa, y no al dataset original.",
             "title": "Título",
             "titlePlaceholder": "Escriba un título...",
             "fullscreen": "Pantalla completa",

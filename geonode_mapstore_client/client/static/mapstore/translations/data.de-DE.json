@@ -185,6 +185,7 @@
             "deleting": "Löschen...",
             "cloning": "Klonen...",
             "clone": "Klon",
+            "stylesFirstClone": "An den Stilen vorgenommene Änderungen gelten nur für den aktuellen Layer in Ihrer Karte und nicht für das ursprüngliche Dataset.",
             "title": "Titel",
             "titlePlaceholder": "Titel eingeben...",
             "fullscreen": "Vollbild",

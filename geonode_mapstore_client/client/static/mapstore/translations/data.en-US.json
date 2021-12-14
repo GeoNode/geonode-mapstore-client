@@ -186,6 +186,7 @@
             "deleting": "Deleting...",
             "cloning": "Cloning...",
             "clone": "Clone",
+            "stylesFirstClone": "Changes made to the styles will only apply to the current layer in your map, and not the original dataset.",
             "title": "Title",
             "titlePlaceholder": "Type a title...",
             "fullscreen": "Full screen",

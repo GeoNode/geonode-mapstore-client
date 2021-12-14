@@ -187,6 +187,7 @@
             "deleting": "Eliminazione in corso...",
             "cloning": "Copia in corso...",
             "clone": "Clona",
+            "stylesFirstClone": "Le modifiche apportate agli stili verranno applicate solo al livello corrente nella mappa e non al set di dati originale.",
             "title": "Titolo",
             "titlePlaceholder": "Aggiungi un titolo...",
             "fullscreen": "Schermo intero",
