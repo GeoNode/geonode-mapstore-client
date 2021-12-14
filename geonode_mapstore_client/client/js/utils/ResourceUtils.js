@@ -365,7 +365,7 @@ export const getResourcePermissions = (options) => {
     return permissionsOptions;
 };
 
-function parseStyleName({ workspace, name }) {
+export function parseStyleName({ workspace, name }) {
     const nameParts = name.split(':');
     if (nameParts.length > 1) {
         return name;
@@ -376,7 +376,7 @@ function parseStyleName({ workspace, name }) {
     if (isObject(workspace) && workspace?.name !== undefined) {
         return `${workspace.name}:${name}`;
     }
-    return  name;
+    return name;
 }
 
 export function cleanStyles(styles = [], excluded = []) {
