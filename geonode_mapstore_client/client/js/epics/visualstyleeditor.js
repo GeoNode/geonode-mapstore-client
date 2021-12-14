@@ -55,29 +55,29 @@ function getStyleId({ name }) {
 }
 
 /**
- * Get Mapstore style in JSON, editor type and code for layer style
+ * Get Mapstore style in JSON, editor type and code for layer style in Promise
  * @param {Object} style layer default style
  * @param {Object} styleService Object containing baseUrl for getStylesInfo
- * @returns {Object}
+ * @returns {Promise}
  */
 function getGnStyleQueryParams(style, styleService) {
+
+    let code;
+    let msEditorType = 'visual';
+    let msStyleJSON = null;
+
     if (!style) {
-        return { msStyleJSON: null, msEditorType: 'visual' };
+        return new Promise(resolve => resolve([{ metadata: { msStyleJSON, msEditorType }, code}]));
     }
 
-    let msEditorType;
-    let msStyleJSON;
-    let code;
-    StylesAPI.getStylesInfo({
+    return StylesAPI.getStylesInfo({
         baseUrl: styleService?.baseUrl,
-        styles: [{name: parseStyleName(style)}]
-    }).then(updatedStyles => {
-        msStyleJSON = updatedStyles?.metadata?.msStyleJSON;
-        msEditorType = updatedStyles?.metadata?.msEditorType;
-        code = updatedStyles?.code;
-    });
+        styles: [{ name: parseStyleName(style) }]
+    }).then(updatedStyles => new Promise((resolve) => {
 
-    return { msStyleJSON, msEditorType, code };
+        resolve(updatedStyles);
+
+    })).catch(() => ([{ metadata: { msEditorType, msStyleJSON }, code}]));
 }
 
 function getGeoNodeStyles({ layer, styleService }) {
@@ -85,29 +85,37 @@ function getGeoNodeStyles({ layer, styleService }) {
     const styles = layer?.availableStyles || [];
     if (styles.length === 0) {
         const defaultStyle = layer?.extendedParams?.mapLayer?.dataset?.default_style;
-        const { msStyleJSON, msEditorType, code } = getGnStyleQueryParams(defaultStyle, styleService);
+        let msEditorType;
+        let msStyleJSON;
+        let code;
+        return getGnStyleQueryParams(defaultStyle, styleService).then((updatedStyles) => {
+            if (updatedStyles?.[0]?.metadata) {
+                ({ msEditorType, msStyleJSON } = updatedStyles[0].metadata);
+                ({ code } = updatedStyles[0]);
+            }
+            const layerParts = layer.name.split(':');
+            const layerName = layerParts.length === 1 ? layerParts[0] : layerParts[layerParts.length - 1];
+            const styleName = getStyleId({ name: layerName });
+            const metadata = {
+                title: layerName,
+                description: '',
+                msStyleJSON: msStyleJSON || null,
+                msEditorType: msEditorType || 'visual',
+                gnDatasetPk: layer?.extendedParams?.mapLayer?.dataset?.pk
+            };
+            const format = 'css';
+            return StylesAPI.createStyle({
+                baseUrl: styleService?.baseUrl,
+                code: code || getBaseCSSStyle({ type: geometryType, title: layerName }),
+                format,
+                styleName,
+                metadata
+            })
+                .then(() => {
+                    return [[{ name: styleName, title: layerName, metadata, format }], true];
+                });
+        });
 
-        const layerParts = layer.name.split(':');
-        const layerName = layerParts.length === 1 ? layerParts[0] : layerParts[layerParts.length - 1];
-        const styleName = getStyleId({ name: layerName });
-        const metadata = {
-            title: layerName,
-            description: '',
-            msStyleJSON: msStyleJSON || null,
-            msEditorType: msEditorType || 'visual',
-            gnDatasetPk: layer?.extendedParams?.mapLayer?.dataset?.pk
-        };
-        const format = 'css';
-        return StylesAPI.createStyle({
-            baseUrl: styleService?.baseUrl,
-            code: code || getBaseCSSStyle({ type: geometryType, title: layerName }),
-            format,
-            styleName,
-            metadata
-        })
-            .then(() => {
-                return [[{ name: styleName, title: layerName, metadata, format }], true];
-            });
     }
     return new Promise((resolve) => resolve([styles]));
 }
