@@ -59,6 +59,7 @@ import localizedProps from '@mapstore/framework/components/misc/enhancers/locali
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
 const FormControl = localizedProps('placeholder')(FormControlRB);
+import useLocalStorage from '@js/hooks/useLocalStorage';
 
 const defaultStyleTemplates = getStyleTemplates().filter((styleTemplate) => !['Base CSS', 'Base SLD'].includes(styleTemplate.title));
 const Button = tooltip(GNButton);
@@ -127,6 +128,27 @@ function VisualStyleEditor({
     const [deleting, setDeleting] = useState(false);
     const [title, setTitle] = useState('');
 
+    // localstorage for style notification when cloning for the first time
+    const [styleNotification, setStyleNotification] = useLocalStorage('style-notifcation', {
+        style: layer?.availableStyles || [],
+        notificationOpen: false,
+        hasBeenClosed: false
+    });
+
+    useEffect(() => {
+        if (styleNotification.style.length === 0 && !styleNotification.hasBeenClosed) {
+            setStyleNotification({
+                ...styleNotification,
+                notificationOpen: true
+            });
+        } else {
+            setStyleNotification({
+                ...styleNotification,
+                notificationOpen: false
+            });
+        }
+    }, []);
+
     const deleteStyle = useRef();
 
     deleteStyle.current = () => {
@@ -182,6 +204,14 @@ function VisualStyleEditor({
             .replace(/\$\{styleAbstract\}/, styleDescription);
     }
 
+    function closeNotification() {
+        setStyleNotification({
+            ...styleNotification,
+            notificationOpen: false,
+            hasBeenClosed: true
+        });
+    }
+
     return (
         <div className="gn-visual-style-editor" style={styleProp}>
             {showLayerProperties &&
@@ -222,6 +252,9 @@ function VisualStyleEditor({
                 >
                     <Button size="xs"><Message msgId="gnviewer.copyFrom"/></Button>
                 </Popover>}
+            </div>}
+            {styleNotification.notificationOpen && <div className="gn-visual-style-editor-alert alert-info"><Message msgId="gnviewer.stylesFirstClone" />
+                <Button size="xs" variant="transparent" onClick={closeNotification}><Glyphicon glyph="remove" /></Button>
             </div>}
             <div className="gn-visual-style-editor-body">
                 <div>
