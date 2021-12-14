@@ -43,7 +43,8 @@
 }
 
 .gn-visual-style-editor-toolbar,
-.gn-visual-style-editor-styles {
+.gn-visual-style-editor-styles,
+.gn-visual-style-editor-alert {
     display: flex;
     flex-direction: 1;
     padding: 4px;
@@ -51,6 +52,19 @@
     border-bottom-style: solid;
     .gn-visual-style-editor-styles-select {
         flex: 1;
+    }
+}
+
+.gn-visual-style-editor-toolbar, .gn-visual-style-editor-alert {
+    align-items: center;
+}
+
+.gn-visual-style-editor-alert {
+    justify-content: space-between;
+
+    button.btn {
+        background-color: transparent;
+        align-self: flex-start;
     }
 }
 
