@@ -73,11 +73,10 @@ function getGnStyleQueryParams(style, styleService) {
     return StylesAPI.getStylesInfo({
         baseUrl: styleService?.baseUrl,
         styles: [{ name: parseStyleName(style) }]
-    }).then(updatedStyles => new Promise((resolve) => {
-
-        resolve(updatedStyles);
-
-    })).catch(() => ([{ metadata: { msEditorType, msStyleJSON }, code}]));
+    }).then(updatedStyles => {
+      const { metadata = {}, code: updateStyleCode } = updatedStyles?.[0]|| {};
+      return { msEditorType, msStyleJSON, ...metadata, code: updateStyleCode };
+    }).catch(() => ({ msEditorType, msStyleJSON, code}));
 }
 
 function getGeoNodeStyles({ layer, styleService }) {
