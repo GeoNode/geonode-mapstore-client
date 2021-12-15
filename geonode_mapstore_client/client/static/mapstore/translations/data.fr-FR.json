@@ -196,6 +196,7 @@
             "warningGeoLimitsSaveTitle": "Processus de sauvegarde incomplet",
             "warningGeoLimitsSaveMessage": "Il n'a pas été possible de mettre à jour les nouvelles limites géographiques",
             "saveMapThumbnail": "Cliquez pour définir la carte comme une image",
+            "dismissMessage": "Ne plus afficher ce message",
             "templates": "Modèles",
             "copyFrom": "Copier de",
             "createMap": "Créer une Carte",

@@ -197,6 +197,7 @@
             "warningGeoLimitsSaveTitle": "Incomplete saving process",
             "warningGeoLimitsSaveMessage": "It was not possible to update the new geo limits",
             "saveMapThumbnail": "Click to set the map as an image",
+            "dismissMessage": "Don't show this message again",
             "templates": "Templates",
             "copyFrom": "Copy from",
             "createMap": "Create Map",

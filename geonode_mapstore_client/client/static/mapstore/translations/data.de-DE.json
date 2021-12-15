@@ -196,6 +196,7 @@
             "warningGeoLimitsSaveTitle": "Unvollständiger Speichervorgang",
             "warningGeoLimitsSaveMessage": "Es war nicht möglich die neuen Geolimits zu aktualisieren",
             "saveMapThumbnail": "Klicken Sie hier, um die Karte als Bild festzulegen",
+            "dismissMessage": "Diese Nachricht nicht mehr anzeigen",
             "templates": "Vorlagen",
             "copyFrom": "Kopie von",
             "createMap": "Karte Erstellen",
