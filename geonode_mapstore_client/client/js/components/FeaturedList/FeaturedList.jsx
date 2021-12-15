@@ -14,6 +14,7 @@ import ResourceCard from '@js/components/ResourceCard';
 import FaIcon from '@js/components/FaIcon';
 import { withResizeDetector } from 'react-resize-detector';
 import { getResourceStatuses } from '@js/utils/ResourceUtils';
+import { actionButtons } from '@js/utils/ResourceServiceUtils';
 
 const Cards = withResizeDetector(({
     resources,
@@ -23,7 +24,9 @@ const Cards = withResizeDetector(({
     containerWidth,
     width: detectedWidth,
     options,
-    onResize
+    onResize,
+    actions,
+    onAction
 }) => {
 
     const width = detectedWidth || containerWidth;
@@ -93,6 +96,8 @@ const Cards = withResizeDetector(({
                             loading={isProcessing}
                             readOnly={isDeleted || isProcessing}
                             featured
+                            actions={actions}
+                            onAction={onAction}
                         />
                     </li>
                 );
@@ -114,7 +119,9 @@ const FeaturedList = withResizeDetector(({
     isPreviousPageAvailable,
     loadFeaturedResources,
     onLoad,
-    width
+    width,
+    onControl,
+    onAction
 }) => {
 
     const [count, setCount] = useState();
@@ -125,7 +132,8 @@ const FeaturedList = withResizeDetector(({
 
     const previousIconStyles = {
         fontSize: '1rem',
-        ...(!isPreviousPageAvailable || loading ? {color: 'grey', cursor: 'not-allowed'} : {cursor: 'pointer'})};
+        ...(!isPreviousPageAvailable || loading ? { color: 'grey', cursor: 'not-allowed' } : { cursor: 'pointer' })
+    };
 
     return (
         <div className="gn-card-grid" style={resources.length === 0 ? { display: 'none' } : {}}>
@@ -147,6 +155,14 @@ const FeaturedList = withResizeDetector(({
                             onResize={(cardsCount) => {
                                 !isNaN(cardsCount) && onLoad(undefined, cardsCount);
                                 setCount(cardsCount);
+                            }}
+                            actions={actionButtons}
+                            onAction={(action, payload) => {
+                                if (action.isControlled) {
+                                    onControl(action.processType, 'value', payload);
+                                } else {
+                                    onAction(action.processType, payload, action.redirectTo);
+                                }
                             }}
                         />
                         <div className="gn-card-grid-pagination featured-list">
