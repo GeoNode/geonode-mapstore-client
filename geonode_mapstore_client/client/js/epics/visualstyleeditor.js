@@ -84,9 +84,6 @@ function getGeoNodeStyles({ layer, styleService }) {
     const styles = layer?.availableStyles || [];
     if (styles.length === 0) {
         const defaultStyle = layer?.extendedParams?.mapLayer?.dataset?.default_style;
-        let msEditorType;
-        let msStyleJSON;
-        let code;
         return getGnStyleQueryParams(defaultStyle, styleService).then((updatedStyles) => {
             if (updatedStyles?.[0]?.metadata) {
                 ({ msEditorType, msStyleJSON } = updatedStyles[0].metadata);
