@@ -74,8 +74,8 @@ function getGnStyleQueryParams(style, styleService) {
         baseUrl: styleService?.baseUrl,
         styles: [{ name: parseStyleName(style) }]
     }).then(updatedStyles => {
-      const { metadata = {}, code: updateStyleCode } = updatedStyles?.[0]|| {};
-      return { msEditorType, msStyleJSON, ...metadata, code: updateStyleCode };
+        const { metadata = {}, code: updateStyleCode } = updatedStyles?.[0] || {};
+        return { msEditorType, msStyleJSON, ...metadata, code: updateStyleCode };
     }).catch(() => ({ msEditorType, msStyleJSON, code}));
 }
 
@@ -85,7 +85,7 @@ function getGeoNodeStyles({ layer, styleService }) {
     if (styles.length === 0) {
         const defaultStyle = layer?.extendedParams?.mapLayer?.dataset?.default_style;
         return getGnStyleQueryParams(defaultStyle, styleService).then((defaultStyleInfo) => {
-                const { msEditorType, msStyleJSON, code } = defaultStyleInfo || {};
+            const { msEditorType, msStyleJSON, code } = defaultStyleInfo || {};
             const layerParts = layer.name.split(':');
             const layerName = layerParts.length === 1 ? layerParts[0] : layerParts[layerParts.length - 1];
             const styleName = getStyleId({ name: layerName });
