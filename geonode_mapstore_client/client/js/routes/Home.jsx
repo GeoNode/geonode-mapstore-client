@@ -36,6 +36,8 @@ import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
 import { getFeaturedResults, getTotalResources } from '@js/selectors/search';
 import DeleteResource from '@js/plugins/DeleteResource';
 import SaveAs from '@js/plugins/SaveAs';
+import { processResources } from '@js/actions/gnresource';
+import { setControlProperty } from '@mapstore/framework/actions/controls';
 const { DeleteResourcePlugin } = DeleteResource;
 const { SaveAsPlugin } = SaveAs;
 
@@ -45,10 +47,15 @@ const ConnectedFeatureList = connect(
         state => state?.gnsearch?.featuredResources?.page || 1,
         state => state?.gnsearch?.featuredResources?.isNextPageAvailable || false,
         state => state?.gnsearch?.featuredResources?.isPreviousPageAvailable || false,
-        state => state?.gnsearch?.featuredResources?.loading || false
-    ], (resources, page, isNextPageAvailable, isPreviousPageAvailable, loading) => ({
-        resources, page, isNextPageAvailable, isPreviousPageAvailable, loading})
-    ), {loadFeaturedResources}
+        state => state?.gnsearch?.featuredResources?.loading || false,
+        getParsedGeoNodeConfiguration
+    ], (resources, page, isNextPageAvailable, isPreviousPageAvailable, loading, { cardOptionsItemsAllowed }) => ({
+        resources, page, isNextPageAvailable, isPreviousPageAvailable, loading, cardOptions: cardOptionsItemsAllowed})
+    ), {
+        loadFeaturedResources,
+        onAction: processResources,
+        onControl: setControlProperty
+    }
 )(FeaturedList);
 
 function Home({
