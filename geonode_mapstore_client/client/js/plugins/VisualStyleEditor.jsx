@@ -128,26 +128,9 @@ function VisualStyleEditor({
     const [deleting, setDeleting] = useState(false);
     const [title, setTitle] = useState('');
 
-    // localstorage for style notification when cloning for the first time
-    const [styleNotification, setStyleNotification] = useLocalStorage('style-notifcation', {
-        style: layer?.availableStyles || [],
-        notificationOpen: false,
-        hasBeenClosed: false
-    });
-
-    useEffect(() => {
-        if (styleNotification.style.length === 0 && !styleNotification.hasBeenClosed) {
-            setStyleNotification({
-                ...styleNotification,
-                notificationOpen: true
-            });
-        } else {
-            setStyleNotification({
-                ...styleNotification,
-                notificationOpen: false
-            });
-        }
-    }, []);
+    // localstorage for style notification
+    const [dismissStyleNotification, setDismissStyleNotification] = useLocalStorage('style-notifcation', false);
+    const [notificationClose, setNotificationClose] = useState(false);
 
     const deleteStyle = useRef();
 
@@ -205,11 +188,11 @@ function VisualStyleEditor({
     }
 
     function closeNotification() {
-        setStyleNotification({
-            ...styleNotification,
-            notificationOpen: false,
-            hasBeenClosed: true
-        });
+        setNotificationClose(true);
+    }
+
+    function dismissNotification() {
+        setDismissStyleNotification(true);
     }
 
     return (
@@ -253,7 +236,15 @@ function VisualStyleEditor({
                     <Button size="xs"><Message msgId="gnviewer.copyFrom"/></Button>
                 </Popover>}
             </div>}
-            {styleNotification.notificationOpen && <div className="gn-visual-style-editor-alert alert-info"><Message msgId="gnviewer.stylesFirstClone" />
+            {(!notificationClose && !dismissStyleNotification) && <div className="gn-visual-style-editor-alert alert-info">
+                <div className="gn-visual-style-editor-alert-message">
+                    <Message msgId="gnviewer.stylesFirstClone" />
+                    <Button size="xs" variant="transparent" onClick={dismissNotification}>
+                        <p>
+                            <Message msgId="gnviewer.dismissMessage" />
+                        </p>
+                    </Button>
+                </div>
                 <Button size="xs" variant="transparent" onClick={closeNotification}><Glyphicon glyph="remove" /></Button>
             </div>}
             <div className="gn-visual-style-editor-body">
