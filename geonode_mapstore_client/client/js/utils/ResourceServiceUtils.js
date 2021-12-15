@@ -24,3 +24,14 @@ export const ProcessInterval = {
     [ProcessTypes.COPY_RESOURCE]: 1000,
     [ProcessTypes.PERMISSIONS_RESOURCE]: 1000
 };
+
+export const actionButtons = {
+    'delete': {
+        processType: ProcessTypes.DELETE_RESOURCE,
+        isControlled: true
+    },
+    'copy': {
+        processType: ProcessTypes.COPY_RESOURCE,
+        isControlled: true
+    }
+};

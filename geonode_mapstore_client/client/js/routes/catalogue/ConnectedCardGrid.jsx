@@ -13,7 +13,7 @@ import CardGrid from '@js/components/CardGrid';
 import { getSearchResults } from '@js/selectors/search';
 import { processResources } from '@js/actions/gnresource';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
-import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
+import { actionButtons } from '@js/utils/ResourceServiceUtils';
 
 const CardGridWithMessageId = ({ query, user, isFirstRequest, ...props }) => {
     const hasResources = props.resources?.length > 0;
@@ -38,16 +38,7 @@ const ConnectedCardGrid = connect(
         loading,
         isNextPageAvailable,
         isFirstRequest,
-        actions: {
-            'delete': {
-                processType: ProcessTypes.DELETE_RESOURCE,
-                isControlled: true
-            },
-            'copy': {
-                processType: ProcessTypes.COPY_RESOURCE,
-                isControlled: true
-            }
-        }
+        actions: actionButtons
     })),
     {
         onAction: processResources,
