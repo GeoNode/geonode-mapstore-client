@@ -84,11 +84,8 @@ function getGeoNodeStyles({ layer, styleService }) {
     const styles = layer?.availableStyles || [];
     if (styles.length === 0) {
         const defaultStyle = layer?.extendedParams?.mapLayer?.dataset?.default_style;
-        return getGnStyleQueryParams(defaultStyle, styleService).then((updatedStyles) => {
-            if (updatedStyles?.[0]?.metadata) {
-                ({ msEditorType, msStyleJSON } = updatedStyles[0].metadata);
-                ({ code } = updatedStyles[0]);
-            }
+        return getGnStyleQueryParams(defaultStyle, styleService).then((defaultStyleInfo) => {
+                const { msEditorType, msStyleJSON, code } = defaultStyleInfo || {};
             const layerParts = layer.name.split(':');
             const layerName = layerParts.length === 1 ? layerParts[0] : layerParts[layerParts.length - 1];
             const styleName = getStyleId({ name: layerName });
