@@ -92,7 +92,7 @@ const Cards = withResizeDetector(({
                     isProcessing,
                     isDeleted
                 } = getResourceStatuses(resource);
-                // enable allowedOptions (menu cards) only for list layout
+                // enable allowedOptions (menu cards)
                 const allowedOptions =  !isProcessing ? options
                     .filter((opt) => hasPermissionsTo(resource?.perms, opt?.perms, 'resource')) : [];
 
