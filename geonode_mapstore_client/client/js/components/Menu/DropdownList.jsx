@@ -26,7 +26,16 @@ const itemElement = ({ labelId, href, badge, target }) =>  (
         </NavLink>
     </>);
 
-const itemsList = (items) => ( items && items.map(({ labelId, href, badge, target }) => itemElement({ labelId, href, badge, target })));
+const itemsList = (items) => (items && items.map((item) => {
+
+    const { labelId, href, badge, target, type, Component, className } = item;
+
+    if (type === 'plugin' && Component) {
+        return (<li><Component variant="default" className={className} showMessage /></li>);
+    }
+
+    return itemElement({ labelId, href, badge, target });
+} ));
 
 /**
  * DropdownList component
