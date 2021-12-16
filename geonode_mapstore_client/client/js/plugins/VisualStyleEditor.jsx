@@ -383,22 +383,33 @@ function StyleEditorTocButton({
     status,
     onClick = () => {},
     enabled,
-    isNew
+    isNew,
+    btnProps = {},
+    hide,
+    selectedStyle
 }) {
 
-    if (!(status === 'LAYER' && layer?.extendedParams?.mapLayer && (enabled || isNew))) {
+    if (!(!hide && status === 'LAYER' && layer?.extendedParams?.mapLayer && (enabled || isNew))) {
         return null;
     }
 
-    function handleClick() {
-        onClick(layer);
+    function handleClick(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        onClick(layer, { style: selectedStyle });
+    }
+    function handleMouseDown(event) {
+        event.stopPropagation();
+        event.preventDefault();
     }
 
     return (
         <Button
             variant="primary"
             className="square-button-md"
+            {...btnProps}
             onClick={handleClick}
+            onMouseDown={handleMouseDown}
         >
             <Glyphicon glyph="dropper"/>
         </Button>
@@ -426,6 +437,10 @@ export default createPlugin('VisualStyleEditor', {
         },
         TOC: {
             target: 'toolbar',
+            Component: ConnectedStyleEditorTocButton
+        },
+        LayerSettings: {
+            target: 'style-button',
             Component: ConnectedStyleEditorTocButton
         }
     },

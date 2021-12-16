@@ -76,7 +76,7 @@ function getGnStyleQueryParams(style, styleService) {
     }).then(updatedStyles => {
         const { metadata = {}, code: updateStyleCode, format, languageVersion } = updatedStyles || {};
         const metadataObj = parseMetadata(metadata);
-        return { msEditorType, msStyleJSON, ...metadataObj, code: updateStyleCode, format, languageVersion };
+        return { msEditorType: metadataObj?.msEditorType, msStyleJSON: metadataObj?.msStyleJSON, code: updateStyleCode, format, languageVersion };
     }).catch(() => ({ msEditorType, msStyleJSON, code}));
 }
 
@@ -93,8 +93,8 @@ function getGeoNodeStyles({ layer, styleService }) {
             const metadata = {
                 title: layerName,
                 description: '',
-                msStyleJSON: msStyleJSON || null,
-                msEditorType: msEditorType || 'visual',
+                msStyleJSON: msStyleJSON,
+                msEditorType: msEditorType,
                 gnDatasetPk: layer?.extendedParams?.mapLayer?.dataset?.pk
             };
             return StylesAPI.createStyle({
@@ -121,7 +121,7 @@ export const gnRequestDatasetAvailableStyles = (action$, store) =>
             const styleService = action?.options?.styleService || styleServiceSelector(state);
             return Observable.defer(() => getGeoNodeStyles({ layer: action.layer, styleService }))
                 .switchMap(([styles, update]) => {
-                    const style = styles?.[0]?.name;
+                    const style = action?.options?.style || styles?.[0]?.name;
                     return Observable.concat(
                         Observable.of(setControlProperty('visualStyleEditor', 'enabled', true)),
                         Observable.defer(() => StylesAPI.getStylesInfo({

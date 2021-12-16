@@ -113,7 +113,7 @@ describe('Test Resource Utils', () => {
             pk: 10,
             extra_params: {
                 msId: '03',
-                styles: [{ name: 'custom:style', title: 'My Style', format: 'css', metadata: {} }]
+                styles: [{ name: 'custom:style', title: 'My Style', format: 'css' }]
             },
             current_style: 'geonode:style',
             name: 'geonode:layer'

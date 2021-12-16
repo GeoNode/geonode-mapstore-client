@@ -22,23 +22,6 @@ import GeneralSettings from '@js/plugins/layersettings/GeneralSettings';
 import VisibilitySettings from '@js/plugins/layersettings/VisibilitySettings';
 import SettingsSection from '@js/plugins/layersettings/SettingsSection';
 import useLocalStorage from '@js/hooks/useLocalStorage';
-import { cleanStyles } from '@js/utils/ResourceUtils';
-
-function getStyleOptions(layer) {
-    const mapLayerStyles = layer?.extendedParams?.mapLayer?.extra_params?.styles || [];
-    const datasetStyles = layer?.extendedParams?.mapLayer?.dataset?.styles || [];
-    const defaultStyle = layer?.extendedParams?.mapLayer?.dataset?.default_style;
-    const availableStyles = layer?.availableStyles || [];
-    return cleanStyles([
-        ...(defaultStyle ? [defaultStyle] : []),
-        ...datasetStyles,
-        ...mapLayerStyles,
-        ...availableStyles
-    ]).map(({ name, title }) => ({
-        value: name,
-        label: title
-    }));
-}
 
 function WMSLayerSettings({
     node = {},
@@ -50,7 +33,8 @@ function WMSLayerSettings({
     isLocalizedLayerStylesEnabled,
     currentLocaleLanguage,
     groups = [],
-    currentLocale
+    currentLocale,
+    styleSelectorComponent
 }) {
 
     const {
@@ -166,15 +150,7 @@ function WMSLayerSettings({
                 expanded={settingsSections?.style}
                 onChange={handleChangeSection.bind(null, 'style')}
             >
-                {node?.extendedParams?.mapLayer && <FormGroup>
-                    <ControlLabel><Message msgId="gnviewer.style" /></ControlLabel>
-                    <Select
-                        key="style-selector"
-                        clearable={false}
-                        options={getStyleOptions(node)}
-                        value={node.style}
-                        onChange={({ value }) => onChange({ style: value })}/>
-                </FormGroup>}
+                {styleSelectorComponent}
                 <FormGroup validationState={isLegendOptionValid('legendWidth')}>
                     <ControlLabel><Message msgId="gnviewer.legendWidth" /></ControlLabel>
                     <IntlNumberFormControl

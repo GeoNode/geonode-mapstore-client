@@ -22,12 +22,19 @@ import { getTitle } from '@mapstore/framework/utils/TOCUtils';
 import GroupSettings from '@js/plugins/layersettings/GroupSettings';
 import BaseLayerSettings from '@js/plugins/layersettings/BaseLayerSettings';
 import WMSLayerSettings from '@js/plugins/layersettings/WMSLayerSettings';
+import GeoNodeStyleSelector from '@js/plugins/layersettings/GeoNodeStyleSelector';
+import usePluginItems from '@js/hooks/usePluginItems';
 
 const settingsForms = {
     group: GroupSettings,
     baseLayer: BaseLayerSettings,
     wms: WMSLayerSettings
 };
+
+const ConnectedGeoNodeStyleSelector = connect(
+    createSelector([], () => ({})),
+    {}
+)(GeoNodeStyleSelector);
 
 /**
 * @module plugins/LayerSettings
@@ -47,8 +54,13 @@ function LayerSettings({
     style,
     selectedNodes,
     onClose,
+    items = [],
     ...props
-}) {
+}, context) {
+
+
+    const { loadedPlugins } = context;
+    const configuredItems = usePluginItems({ items, loadedPlugins });
 
     if (isEmpty(node)) {
         return null;
@@ -61,6 +73,11 @@ function LayerSettings({
         : settingsForms[node?.type] || settingsForms.baseLayer;
 
     const title = node?.title && getTitle(node.title, props.currentLocale) || node.name;
+
+    function handleChange(properties) {
+        onChange(node.id, isGroup ? 'groups' : 'layers', properties);
+    }
+
     return (
         <div
             className="gn-layer-settings"
@@ -76,7 +93,13 @@ function LayerSettings({
                 <Settings
                     {...props}
                     node={node}
-                    onChange={(properties) => onChange(node.id, isGroup ? 'groups' : 'layers', properties)}
+                    onChange={handleChange}
+                    styleSelectorComponent={<ConnectedGeoNodeStyleSelector
+                        {...props}
+                        node={node}
+                        onChange={handleChange}
+                        buttons={(configuredItems || []).filter(({ target }) => target === 'style-button')}
+                    />}
                 />
             </div>
         </div>

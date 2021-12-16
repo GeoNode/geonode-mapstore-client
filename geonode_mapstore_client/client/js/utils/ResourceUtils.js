@@ -381,11 +381,12 @@ export function parseStyleName({ workspace, name }) {
 
 export function cleanStyles(styles = [], excluded = []) {
     return uniqBy(styles
-        .map(({ name, sld_title: sldTitle, title, workspace, metadata, format }) => ({
+        .map(({ name, sld_title: sldTitle, title, workspace, metadata, format, canEdit }) => ({
             name: parseStyleName({ workspace, name }),
             title: sldTitle || title || name,
             metadata,
-            format
+            format,
+            canEdit
         })), 'name')
         .filter(({ name }) => !excluded.includes(name));
 }
@@ -401,6 +402,7 @@ export function getGeoNodeMapLayers(data) {
                 extra_params: {
                     msId: layer.id,
                     styles: cleanStyles(layer?.availableStyles)
+                        .map(({ canEdit, metadata, ...style }) => ({ ...style }))
                 },
                 current_style: layer.style || '',
                 name: layer.name
