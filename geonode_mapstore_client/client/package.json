@@ -38,8 +38,8 @@
   "geonode": {
     "devServer": {
       "host": "localhost",
-      "proxyTargetHost": "master.demo.geonode.org",
-      "protocol": "https"
+      "proxyTargetHost": "localhost:8000",
+      "protocol": "http"
     }
   },
   "mapstore": {

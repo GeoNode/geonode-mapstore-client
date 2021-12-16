@@ -30,7 +30,7 @@ import axios from '@mapstore/framework/libs/ajax';
 
 let actionListeners = {};
 // Add a taget url here to fix proxy issue
-const targetURL = 'https://master.demo.geonode.org';
+const targetURL = '';
 
 export function getVersion() {
     if (!__DEVTOOLS__) {
