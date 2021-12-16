@@ -27,7 +27,7 @@ import {
 import { saveDirectContent } from '@js/actions/gnsave';
 import tinycolor from 'tinycolor2';
 import { isNewResource } from '@js/selectors/resource';
-import { parseStyleName } from '@js/utils/ResourceUtils';
+import { parseStyleName, parseMetadata } from '@js/utils/ResourceUtils';
 
 function getBaseCSSStyle({ type, title }) {
     const color = tinycolor(`hsl(${Math.floor(Math.random() * 270)}, 90%, 70%)`).toHexString();
@@ -67,15 +67,16 @@ function getGnStyleQueryParams(style, styleService) {
     let msStyleJSON = null;
 
     if (!style) {
-        return new Promise(resolve => resolve([{ metadata: { msStyleJSON, msEditorType }, code}]));
+        return new Promise(resolve => resolve({ msStyleJSON, msEditorType, code }));
     }
 
-    return StylesAPI.getStylesInfo({
+    return StylesAPI.getStyleCodeByName({
         baseUrl: styleService?.baseUrl,
-        styles: [{ name: parseStyleName(style) }]
+        styleName: parseStyleName(style)
     }).then(updatedStyles => {
-        const { metadata = {}, code: updateStyleCode } = updatedStyles?.[0] || {};
-        return { msEditorType, msStyleJSON, ...metadata, code: updateStyleCode };
+        const { metadata = {}, code: updateStyleCode, format, languageVersion } = updatedStyles || {};
+        const metadataObj = parseMetadata(metadata);
+        return { msEditorType, msStyleJSON, ...metadataObj, code: updateStyleCode, format, languageVersion };
     }).catch(() => ({ msEditorType, msStyleJSON, code}));
 }
 
@@ -85,7 +86,7 @@ function getGeoNodeStyles({ layer, styleService }) {
     if (styles.length === 0) {
         const defaultStyle = layer?.extendedParams?.mapLayer?.dataset?.default_style;
         return getGnStyleQueryParams(defaultStyle, styleService).then((defaultStyleInfo) => {
-            const { msEditorType, msStyleJSON, code } = defaultStyleInfo || {};
+            const { msEditorType, msStyleJSON, code, format, languageVersion } = defaultStyleInfo || {};
             const layerParts = layer.name.split(':');
             const layerName = layerParts.length === 1 ? layerParts[0] : layerParts[layerParts.length - 1];
             const styleName = getStyleId({ name: layerName });
@@ -96,13 +97,13 @@ function getGeoNodeStyles({ layer, styleService }) {
                 msEditorType: msEditorType || 'visual',
                 gnDatasetPk: layer?.extendedParams?.mapLayer?.dataset?.pk
             };
-            const format = 'css';
             return StylesAPI.createStyle({
                 baseUrl: styleService?.baseUrl,
                 code: code || getBaseCSSStyle({ type: geometryType, title: layerName }),
-                format,
+                format: (code && format) ? format : 'css',
                 styleName,
-                metadata
+                metadata,
+                ...((code && format) && { languageVersion })
             })
                 .then(() => {
                     return [[{ name: styleName, title: layerName, metadata, format }], true];
