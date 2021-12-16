@@ -317,7 +317,7 @@
         "cardsMenu": {
             "items": [
                 {
-                    "labelId": "gnhome.createNew",
+                    "labelId": "gnhome.addResource",
                     "authenticated": true,
                     "type": "dropdown",
                     "variant": "primary",
