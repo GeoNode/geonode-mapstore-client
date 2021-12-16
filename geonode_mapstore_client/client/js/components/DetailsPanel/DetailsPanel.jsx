@@ -17,7 +17,7 @@ import Spinner from '@js/components/Spinner';
 import Message from '@mapstore/framework/components/I18N/Message';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import moment from 'moment';
-import { getResourceTypesInfo, getMetadataDetailUrl } from '@js/utils/ResourceUtils';
+import { getResourceTypesInfo, getMetadataDetailUrl, ResourceTypes } from '@js/utils/ResourceUtils';
 import debounce from 'lodash/debounce';
 import CopyToClipboardCmp from 'react-copy-to-clipboard';
 import { TextEditable, ThumbnailEditable } from '@js/components/ContentsEditable/';
@@ -540,27 +540,26 @@ function DetailsPanel({
                                 onEdit={editThumbnail}
                                 image={resource?.thumbnail_url}
                             />
-
-                            <MapThumbnailButtonToolTip
-                                variant="default"
-                                onClick={handleMapViewer}
-                                className={"map-thumbnail"}
-                                tooltip={<Message msgId="gnviewer.saveMapThumbnail" />}
-                                tooltipPosition={"top"}
-
-                            >
-                                <FaIcon name="map" />
-
-                            </MapThumbnailButtonToolTip></>
+                            {
+                                (resource.resource_type === ResourceTypes.MAP || resource.resource_type === ResourceTypes.DATASET) &&
+                                ( <MapThumbnailButtonToolTip
+                                    variant="default"
+                                    onClick={handleMapViewer}
+                                    className={"map-thumbnail"}
+                                    tooltip={<Message msgId="gnviewer.saveMapThumbnail" />}
+                                    tooltipPosition={"top"}
+                                >
+                                    <FaIcon name="map" />
+                                </MapThumbnailButtonToolTip>)
+                            }
+                            </>
                                 : <MapThumbnailView
                                     layers={layers}
                                     onMapThumbnail={onMapThumbnail}
                                     onClose={handleEnableMapViewer}
                                     savingThumbnailMap={savingThumbnailMap}
                                 />
-
                             }
-
                         </div>}
                     </div>
                     }
