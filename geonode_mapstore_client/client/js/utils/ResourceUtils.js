@@ -496,3 +496,19 @@ export function toMapStoreMapConfig(resource, baseConfig) {
         }
     };
 }
+
+/**
+ * Parse metadata information from getStyleCodeByName api response
+ * @param {Array} entry Array containing layer metadata information
+ * @returns {Object} metadata object
+ */
+export const parseMetadata = ({ entry }) => {
+    const metadata = {};
+    entry.forEach((entryObj) => {
+        const entryArray = Object.values(entryObj);
+        if (entryArray.length > 1) {
+            metadata[entryArray[0]] = entryArray[1];
+        }
+    });
+    return metadata;
+};
