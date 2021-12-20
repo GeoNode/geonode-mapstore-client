@@ -118,7 +118,10 @@ export const resourceToLayerConfig = (resource) => {
         ];
 
         const params = wmsUrl && url.parse(wmsUrl, true).query;
-        const format = getConfigProp('defaultLayerFormat') || 'image/png';
+        const {
+            defaultLayerFormat = 'image/png',
+            defaultTileSize = 512
+        } = getConfigProp('geoNodeSettings') || {};
         return {
             perms,
             id: uuid(),
@@ -126,7 +129,7 @@ export const resourceToLayerConfig = (resource) => {
             type: 'wms',
             name: alternate,
             url: wmsUrl || '',
-            format,
+            format: defaultLayerFormat,
             ...(wfsUrl && {
                 search: {
                     type: 'wfs',
@@ -142,6 +145,7 @@ export const resourceToLayerConfig = (resource) => {
             }),
             style: defaultStyleParams?.defaultStyle?.name || '',
             title,
+            tileSize: defaultTileSize,
             visibility: true,
             ...(params && { params }),
             ...(dimensions.length > 0 && ({ dimensions })),

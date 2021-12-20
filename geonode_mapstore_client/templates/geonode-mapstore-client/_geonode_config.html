@@ -6,18 +6,21 @@
 {% endcomment %}
 
 {% comment %} setting.py variables {% endcomment %}
-{{ MAP_BASELAYERS|json_script:"settings-MAP_BASELAYERS" }}
+{{ DEFAULT_MAP_CENTER_X|json_script:"settings-DEFAULT_MAP_CENTER_X" }}
+{{ DEFAULT_MAP_CENTER_Y|json_script:"settings-DEFAULT_MAP_CENTER_Y" }}
+{{ DEFAULT_MAP_CENTER_CRS|json_script:"settings-DEFAULT_MAP_CENTER_CRS" }}
+{{ DEFAULT_MAP_ZOOM|json_script:"settings-DEFAULT_MAP_ZOOM" }}
+{{ DEFAULT_MAP_CRS|json_script:"settings-DEFAULT_MAP_CRS" }}
+{{ DEFAULT_TILE_SIZE|json_script:"settings-DEFAULT_TILE_SIZE" }}
+{{ DEFAULT_LAYER_FORMAT|json_script:"settings-DEFAULT_LAYER_FORMAT" }}
+{{ MAPSTORE_BASELAYERS|json_script:"settings-MAPSTORE_BASELAYERS" }}
+{{ MAPSTORE_BASELAYERS_SOURCES|json_script:"settings-MAPSTORE_BASELAYERS_SOURCES" }}
+
 {{ CATALOGUE_SERVICES|json_script:"settings-CATALOGUE_SERVICES" }}
 {{ CATALOGUE_SELECTED_SERVICE|json_script:"settings-CATALOGUE_SELECTED_SERVICE" }}
 
 {% comment %} menu items {% endcomment %}
 
-{% get_menu_json 'TOPBAR_MENU' as TOPBAR_MENU %}
-{{ TOPBAR_MENU|json_script:"menu-TOPBAR_MENU" }}
-{% get_menu_json 'TOP_MENUBAR_LEFT' as TOP_MENUBAR_LEFT %}
-{{ TOP_MENUBAR_LEFT|json_script:"menu-TOP_MENUBAR_LEFT" }}
-{% get_menu_json 'TOP_MENUBAR_RIGHT' as TOP_MENUBAR_RIGHT %}
-{{ TOP_MENUBAR_RIGHT|json_script:"menu-TOP_MENUBAR_RIGHT" }}
 {% get_menu_json 'CARDS_MENU' as CARDS_MENU %}
 {{ CARDS_MENU|json_script:"menu-CARDS_MENU" }}
 
@@ -35,11 +38,16 @@
         const username = '{{ user|default:"" }}' || null;
         const token = '{{ access_token|default:"" }}' || '{{ ACCESS_TOKEN|default:"" }}' || null;
 
-        const topBarMenuItems = getJSONScriptVariable('menu-TOPBAR_MENU', []);
-        const topMenubarLeftItems = getJSONScriptVariable('menu-TOP_MENUBAR_LEFT', []);
-        const topMenubarRightItems = getJSONScriptVariable('menu-TOP_MENUBAR_RIGHT', []);
         const cardsMenuItems = getJSONScriptVariable('menu-CARDS_MENU', []);
-        const baseLayers = getJSONScriptVariable('settings-MAP_BASELAYERS', []);
+        const baseLayers = getJSONScriptVariable('settings-MAPSTORE_BASELAYERS', []);
+        const baseLayersSources = getJSONScriptVariable('settings-MAPSTORE_BASELAYERS_SOURCES', {});
+        const defaultMapCenterX = getJSONScriptVariable('settings-DEFAULT_MAP_CENTER_X', 0);
+        const defaultMapCenterY = getJSONScriptVariable('settings-DEFAULT_MAP_CENTER_Y', 0);
+        const defaultMapCenterCRS = getJSONScriptVariable('settings-DEFAULT_MAP_CENTER_CRS', 'EPSG:4326');
+        const defaultMapCRS = getJSONScriptVariable('settings-DEFAULT_MAP_CRS', 'EPSG:3857');
+        const defaultMapZoom = getJSONScriptVariable('settings-DEFAULT_MAP_ZOOM', 0);
+        const defaultTileSize = getJSONScriptVariable('settings-DEFAULT_TILE_SIZE', 512);
+        const defaultLayerFormat = getJSONScriptVariable('settings-DEFAULT_LAYER_FORMAT', 'image/png');
         const catalogueServices = getJSONScriptVariable('settings-CATALOGUE_SERVICES', {});
         const catalogueSelectedService = getJSONScriptVariable('settings-CATALOGUE_SELECTED_SERVICE', '');
 
@@ -47,11 +55,6 @@
             languageCode: '{{ LANGUAGE_CODE }}',
             resourceId: '{{ resource.pk|default:"" }}',
             resourceType: '{{ resource.resource_type|default:"" }}',
-            {% if is_app %}
-                resourceConfig: {{ config|default:'false'|safe }},
-            {% else %}
-                resourceConfig: {{ ms2_config|default:'false'|safe }},
-            {% endif %}
             isNewResource: {{ is_new_resource|default:'false'|safe }},
             isEmbed: {{ is_embed|default:'false'|safe }},
             perms: {{ perms_list|default:'[]' }},
@@ -80,13 +83,11 @@
                     catalogueServices: catalogueServices,
                     geonodeUrl: '{{ SITEURL }}',
                     geoserverUrl: '{{ OGC_SERVER.default.PUBLIC_LOCATION|default:"" }}',
-                    siteName: '{{ SITE_NAME|default:"Geonode" }}'
+                    siteName: '{{ SITE_NAME|default:"Geonode" }}',
+                    defaultTileSize: defaultTileSize,
+                    defaultLayerFormat: defaultLayerFormat
                 },
                 geoNodeConfiguration: {
-                    menu: {
-                        items: [...topBarMenuItems, ...topMenubarLeftItems],
-                        rightItems: topMenubarRightItems
-                    },
                     cardsMenu: {
                         items: cardsMenuItems
                     }
@@ -101,6 +102,15 @@
             if (config && config.map && config.map.layers) {
                 config.map.layers.push(...baseLayers);
             }
+            config.map.sources = baseLayersSources;
+            config.map.projection = defaultMapCRS;
+            config.map.center = {
+                x: defaultMapCenterX,
+                y: defaultMapCenterY,
+                crs: defaultMapCenterCRS
+            };
+            config.map.zoom = defaultMapZoom;
+
             config.catalogServices = config.catalogServices || { services: {} };
             if (catalogueServices) {
                 config.catalogServices.services = Object.assign(config.catalogServices.services || {}, catalogueServices);
