@@ -203,6 +203,7 @@ describe('Test Resource Utils', () => {
         expect(mapStoreMapConfig).toEqual(
             {
                 map: {
+                    sources: {},
                     layers: [
                         { type: 'osm', source: 'osm', group: 'background', visibility: true },
                         { id: '02', type: 'vector', features: [] },
@@ -278,6 +279,7 @@ describe('Test Resource Utils', () => {
         expect(mapStoreMapConfig).toEqual(
             {
                 map: {
+                    sources: {},
                     layers: [
                         { type: 'osm', source: 'osm', group: 'background', visibility: true },
                         { id: '02', type: 'vector', features: [] },
@@ -360,6 +362,7 @@ describe('Test Resource Utils', () => {
         expect(mapStoreMapConfig).toEqual(
             {
                 map: {
+                    sources: {},
                     layers: [
                         {
                             name: 'OpenTopoMap',

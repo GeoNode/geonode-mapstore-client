@@ -498,7 +498,11 @@ export function toMapStoreMapConfig(resource, baseConfig) {
                 ...backgroundLayers,
                 ...layers,
                 ...addMapLayers
-            ]
+            ],
+            sources: {
+                ...data?.map?.sources,
+                ...baseConfig?.map?.sources
+            }
         }
     };
 }

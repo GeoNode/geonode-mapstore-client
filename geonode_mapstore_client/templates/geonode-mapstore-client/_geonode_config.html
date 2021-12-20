@@ -6,18 +6,7 @@
 {% endcomment %}
 
 {% comment %} setting.py variables {% endcomment %}
-{{ DEFAULT_MAP_CENTER_X|json_script:"settings-DEFAULT_MAP_CENTER_X" }}
-{{ DEFAULT_MAP_CENTER_Y|json_script:"settings-DEFAULT_MAP_CENTER_Y" }}
-{{ DEFAULT_MAP_CENTER_CRS|json_script:"settings-DEFAULT_MAP_CENTER_CRS" }}
-{{ DEFAULT_MAP_ZOOM|json_script:"settings-DEFAULT_MAP_ZOOM" }}
-{{ DEFAULT_MAP_CRS|json_script:"settings-DEFAULT_MAP_CRS" }}
-{{ DEFAULT_TILE_SIZE|json_script:"settings-DEFAULT_TILE_SIZE" }}
-{{ DEFAULT_LAYER_FORMAT|json_script:"settings-DEFAULT_LAYER_FORMAT" }}
-{{ MAPSTORE_BASELAYERS|json_script:"settings-MAPSTORE_BASELAYERS" }}
-{{ MAPSTORE_BASELAYERS_SOURCES|json_script:"settings-MAPSTORE_BASELAYERS_SOURCES" }}
-
-{{ CATALOGUE_SERVICES|json_script:"settings-CATALOGUE_SERVICES" }}
-{{ CATALOGUE_SELECTED_SERVICE|json_script:"settings-CATALOGUE_SELECTED_SERVICE" }}
+{{GEONODE_SETTINGS|json_script:"GEONODE_SETTINGS" }}
 
 {% comment %} menu items {% endcomment %}
 
@@ -25,65 +14,69 @@
 {{ CARDS_MENU|json_script:"menu-CARDS_MENU" }}
 
 <script>
-    {% autoescape off %}
     (function(){
 
+        function checkBoolean(value) {
+            if (value === 'true') {
+                return true;
+            }
+            if (value === 'false') {
+                return false;
+            }
+            return value;
+        }
         function getJSONScriptVariable(id, fallback) {
             const node = document.getElementById(id);
-            return node && JSON.parse(node.textContent) || fallback;
+            return checkBoolean(node && JSON.parse(node.textContent) || fallback);
         }
 
         localStorage.setItem('showPopoverSync', false);
 
-        const username = '{{ user|default:"" }}' || null;
-        const token = '{{ access_token|default:"" }}' || '{{ ACCESS_TOKEN|default:"" }}' || null;
-
         const cardsMenuItems = getJSONScriptVariable('menu-CARDS_MENU', []);
-        const baseLayers = getJSONScriptVariable('settings-MAPSTORE_BASELAYERS', []);
-        const baseLayersSources = getJSONScriptVariable('settings-MAPSTORE_BASELAYERS_SOURCES', {});
-        const defaultMapCenterX = getJSONScriptVariable('settings-DEFAULT_MAP_CENTER_X', 0);
-        const defaultMapCenterY = getJSONScriptVariable('settings-DEFAULT_MAP_CENTER_Y', 0);
-        const defaultMapCenterCRS = getJSONScriptVariable('settings-DEFAULT_MAP_CENTER_CRS', 'EPSG:4326');
-        const defaultMapCRS = getJSONScriptVariable('settings-DEFAULT_MAP_CRS', 'EPSG:3857');
-        const defaultMapZoom = getJSONScriptVariable('settings-DEFAULT_MAP_ZOOM', 0);
-        const defaultTileSize = getJSONScriptVariable('settings-DEFAULT_TILE_SIZE', 512);
-        const defaultLayerFormat = getJSONScriptVariable('settings-DEFAULT_LAYER_FORMAT', 'image/png');
-        const catalogueServices = getJSONScriptVariable('settings-CATALOGUE_SERVICES', {});
-        const catalogueSelectedService = getJSONScriptVariable('settings-CATALOGUE_SELECTED_SERVICE', '');
+        const geoNodeSettings = getJSONScriptVariable('GEONODE_SETTINGS', {});
+
+        const baseLayers = geoNodeSettings.MAP_BASELAYERS || [];
+        const baseLayersSources = geoNodeSettings.MAP_BASELAYERS_SOURCES || {};
+        const defaultMapCRS = geoNodeSettings.DEFAULT_MAP_CRS || 'EPSG:3857';
+        const defaultMapCenterX = geoNodeSettings.DEFAULT_MAP_CENTER_X || 0;
+        const defaultMapCenterY = geoNodeSettings.DEFAULT_MAP_CENTER_Y || 0;
+        const defaultMapZoom = geoNodeSettings.DEFAULT_MAP_ZOOM || 0;
+        const defaultTileSize = geoNodeSettings.DEFAULT_TILE_SIZE || 512;
+        const defaultLayerFormat = geoNodeSettings.DEFAULT_LAYER_FORMAT || 'image/png';
+        const catalogueServices = geoNodeSettings.CATALOGUE_SERVICES || {};
+        const catalogueSelectedService = geoNodeSettings.CATALOGUE_SELECTED_SERVICE || '';
+
+        const isEmbed = checkBoolean('{{ is_embed }}') || false;
+        const pluginsConfigKey = '{{ plugins_config_key }}';
+        const siteUrl = '{{ SITEURL }}' || '';
+        const siteName = '{{ SITE_NAME }}' || 'Geonode';
+        const geoServerPublicLocation = '{{ GEOSERVER_PUBLIC_LOCATION }}' || '';
 
         window.__GEONODE_CONFIG__ = {
             languageCode: '{{ LANGUAGE_CODE }}',
             resourceId: '{{ resource.pk|default:"" }}',
             resourceType: '{{ resource.resource_type|default:"" }}',
-            isNewResource: {{ is_new_resource|default:'false'|safe }},
-            isEmbed: {{ is_embed|default:'false'|safe }},
-            perms: {{ perms_list|default:'[]' }},
-            pluginsConfigKey: '{{ plugins_config_key|default:"" }}',
-            userDetails: username && token && {
-                user: {
-                    name: username
-                },
-                token: token
-            },
+            isEmbed: isEmbed,
+            pluginsConfigKey: pluginsConfigKey,
             localConfig: {
                 proxyUrl: {
                     url: '{{ PROXY_URL|default:"/proxy/?url=" }}',
                     useCORS: []
                 },
-                printUrl: '{{ GEOSERVER_PUBLIC_LOCATION }}pdf/info.json',
+                printUrl: geoServerPublicLocation + 'pdf/info.json',
                 bingApiKey: '{% bing_api_key %}',
                 geoNodeApi: {
-                    endpointV1: '{{ SITEURL }}api',
-                    endpointV2: '{{ SITEURL }}api/v2'
+                    endpointV1: siteUrl + 'api',
+                    endpointV2: siteUrl + 'api/v2'
                 },
                 // the properties inside geoNodeSettings are stored in the state
                 // and accessible by the monitored state with state('settings')
                 geoNodeSettings: {
                     catalogueSelectedService: catalogueSelectedService,
                     catalogueServices: catalogueServices,
-                    geonodeUrl: '{{ SITEURL }}',
-                    geoserverUrl: '{{ OGC_SERVER.default.PUBLIC_LOCATION|default:"" }}',
-                    siteName: '{{ SITE_NAME|default:"Geonode" }}',
+                    geonodeUrl: siteUrl,
+                    geoserverUrl: geoServerPublicLocation,
+                    siteName: siteName,
                     defaultTileSize: defaultTileSize,
                     defaultLayerFormat: defaultLayerFormat
                 },
@@ -95,8 +88,6 @@
             }, 
         };
 
-        
-
         // override maps configuration with properties from setting.py
         window.overrideNewMapConfig = function(config) {
             if (config && config.map && config.map.layers) {
@@ -107,7 +98,7 @@
             config.map.center = {
                 x: defaultMapCenterX,
                 y: defaultMapCenterY,
-                crs: defaultMapCenterCRS
+                crs: defaultMapCRS
             };
             config.map.zoom = defaultMapZoom;
 
@@ -125,7 +116,6 @@
         // window.overrideNewGeoStoryConfig = function(config) { return config; };
 
     })();
-    {% endautoescape %}
 </script>
 {% block override_local_config %}
 {% comment %}
