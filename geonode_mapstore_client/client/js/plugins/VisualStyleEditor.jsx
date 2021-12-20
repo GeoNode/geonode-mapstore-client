@@ -57,7 +57,7 @@ import Spinner from '@js/components/Spinner';
 import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
-import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
+import { getSelectedLayer, layersSelector } from '@mapstore/framework/selectors/layers';
 const FormControl = localizedProps('placeholder')(FormControlRB);
 import useLocalStorage from '@js/hooks/useLocalStorage';
 
@@ -70,7 +70,8 @@ function SaveStyleButton({
     size,
     isStyleChanged,
     error,
-    loading
+    loading,
+    layerLoading
 }) {
     const isDisabled = !!(loading || error);
     return (
@@ -81,7 +82,7 @@ function SaveStyleButton({
             disabled={isDisabled}
             onClick={isDisabled ? () => {} : () => onClick()}
         >
-            <Message msgId="save"/>{' '}{loading && <Spinner />}
+            <Message msgId="save"/>{' '}{(loading || layerLoading) && <Spinner />}
         </Button>
     );
 }
@@ -91,11 +92,13 @@ const ConnectedSaveStyleButton = connect(
         initialCodeStyleSelector,
         codeStyleSelector,
         loadingStyleSelector,
-        errorStyleSelector
-    ], (initialCode, code, loading, error) => ({
+        errorStyleSelector,
+        layersSelector
+    ], (initialCode, code, loading, error, layers) => ({
         isStyleChanged: initialCode !== undefined && code !== undefined && initialCode !== code,
         loading,
-        error: !!error?.edit?.status
+        error: !!error?.edit?.status,
+        layerLoading: layers && layers.some((layer) => layer.loading)
     })),
     {
         onClick: updateStyleCode
