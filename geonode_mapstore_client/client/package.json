@@ -27,6 +27,7 @@
   "license": "BSD-2-Clause",
   "devDependencies": {
     "@mapstore/project": "1.0.20",
+    "dotenv": "10.0.0",
     "jsdoc": "3.6.7"
   },
   "dependencies": {
@@ -34,13 +35,6 @@
     "font-awesome": "4.7.0",
     "mapstore": "file:MapStore2",
     "react-helmet": "6.1.0"
-  },
-  "geonode": {
-    "devServer": {
-      "host": "localhost",
-      "proxyTargetHost": "localhost:8000",
-      "protocol": "http"
-    }
   },
   "mapstore": {
     "output": "dist",

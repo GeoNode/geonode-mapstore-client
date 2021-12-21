@@ -29,8 +29,23 @@ import url from 'url';
 import axios from '@mapstore/framework/libs/ajax';
 
 let actionListeners = {};
-// Add a taget url here to fix proxy issue
-const targetURL = '';
+// Target url here to fix proxy issue
+let targetURL = '';
+const getTargetUrl = () => {
+    if (!__DEVTOOLS__) {
+        return '';
+    }
+    if (targetURL) {
+        return targetURL;
+    }
+    const geonodeUrl = getConfigProp('geoNodeSettings')?.geonodeUrl || '';
+    if (!geonodeUrl) {
+        return '';
+    }
+    const { host, protocol } = url.parse(geonodeUrl);
+    targetURL = `${protocol}//${host}`;
+    return targetURL;
+};
 
 export function getVersion() {
     if (!__DEVTOOLS__) {
@@ -62,10 +77,11 @@ export function initializeApp() {
                     }
                 };
             }
-            if (__DEVTOOLS__ && targetURL && config.url?.match(targetURL)?.[0]) {
+            const tUrl = getTargetUrl();
+            if (tUrl && config.url?.match(tUrl)?.[0]) {
                 return {
                     ...config,
-                    url: config.url.replace(targetURL, '')
+                    url: config.url.replace(tUrl, '')
                 };
             }
             return config;
