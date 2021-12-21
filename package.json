@@ -8,6 +8,6 @@
   "devDependencies": {},
   "dependencies": {
     "js-cookie": "2.2.1",
-    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#f919fcaa45ddf1a035d978faf2752386a159c635"
+    "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#e3741b6ff93e4a04364c4ccb6abf0ff90bf6126d"
   }
 }
