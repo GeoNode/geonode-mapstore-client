@@ -30,6 +30,7 @@ function TemplateSelector({
 
     const isMounted = useRef();
     const [templates, setTemplates] = useState([]);
+    const [selectedTemplate, setSelectedTemplate] = useState();
 
     useEffect(() => {
         isMounted.current = true;
@@ -55,6 +56,7 @@ function TemplateSelector({
         if (isOpen) {
             onStoreTmpCode(code);
         } else {
+            setSelectedTemplate(undefined);
             if (tmpCode) {
                 onSelect(tmpCode);
             }
@@ -78,7 +80,8 @@ function TemplateSelector({
         onSelect(styleTemplate);
     }
 
-    function replaceTemplateMetadata(templateCode) {
+    function replaceTemplateMetadata({ code: templateCode }, idx) {
+        setSelectedTemplate(idx);
         const styleTitle = selectedStyle?.metadata?.title || selectedStyle?.label || selectedStyle?.title || selectedStyle?.name || '';
         getStyleParser(format)
             .writeStyle({
@@ -107,8 +110,8 @@ function TemplateSelector({
                             return (
                                 <li
                                     key={idx}
-                                    className="gn-visual-style-editor-template"
-                                    onClick={() => replaceTemplateMetadata(styleTemplate.code)}
+                                    className={`gn-visual-style-editor-template${selectedTemplate === idx ? ' selected' : ''}`}
+                                    onClick={() => replaceTemplateMetadata(styleTemplate, idx)}
                                 >
                                     <div className="gn-visual-style-editor-template-preview">
                                         {styleTemplate?.preview?.config
@@ -121,7 +124,7 @@ function TemplateSelector({
                         })}
                     </ul>
                     <div className="gn-visual-style-editor-templates-footer">
-                        <Button size="xs" variant="primary" onClick={handleApply}><Message msgId="gnviewer.applyStyle"/></Button>
+                        <Button size="xs" disabled={selectedTemplate === undefined} variant="primary" onClick={handleApply}><Message msgId="gnviewer.applyStyle"/></Button>
                     </div>
                 </div>
             }

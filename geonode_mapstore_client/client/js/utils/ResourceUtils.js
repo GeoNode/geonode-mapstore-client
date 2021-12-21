@@ -512,8 +512,11 @@ export function toMapStoreMapConfig(resource, baseConfig) {
  * @param {Array} entry Array containing layer metadata information
  * @returns {Object} metadata object
  */
-export const parseMetadata = ({ entry }) => {
+export const parseMetadata = ({ entry } = {}) => {
     const metadata = {};
+    if (!entry) {
+        return metadata;
+    }
     entry.forEach((entryObj) => {
         const entryArray = Object.values(entryObj);
         if (entryArray.length > 1) {

@@ -427,4 +427,8 @@ describe('Test Resource Utils', () => {
 
         expect(metadataObj).toEqual({key1: 'test', key2: 'test2'});
     });
+    it('should return empty object if entry is not defined', () => {
+        const metadataObj = parseMetadata();
+        expect(metadataObj).toEqual({});
+    });
 });

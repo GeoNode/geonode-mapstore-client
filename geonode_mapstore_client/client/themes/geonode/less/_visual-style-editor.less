@@ -13,6 +13,11 @@
     .gn-visual-style-editor-styles {
         .border-bottom-color-var(@theme-vars[main-border-color]);
     }
+    .gn-visual-style-editor-template {
+        &.selected {
+            .outline-color-var(@theme-vars[focus-color]);
+        }
+    }
 }
 
 // **************
@@ -133,6 +138,10 @@
             text-overflow: ellipsis;
             overflow: hidden;
             text-align: center;
+        }
+        &.selected {
+            outline-width: 2px;
+            outline-style: solid;
         }
     }
 }
