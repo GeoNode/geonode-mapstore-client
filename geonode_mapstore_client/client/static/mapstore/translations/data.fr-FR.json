@@ -228,7 +228,8 @@
             "deleteStyleTitle": "Supprimer le style",
             "deleteStyleMessage": "Voulez-vous vraiment supprimer ce style?",
             "deleteStyleCancel": "Non, ne le supprime pas",
-            "deleteStyleConfirm": "Oui, je suis sûr"
+            "deleteStyleConfirm": "Oui, je suis sûr",
+            "applyStyle": "Appliquer"
         }
     }
 }

@@ -36,7 +36,17 @@ export const getNewGeoStoryConfig = (newGeoStoryUrl = '/static/mapstore/configs/
             );
 };
 
+export const getStyleTemplates = (styleTemplatesUrl = '/static/mapstore/configs/styleTemplates.json') => {
+    return cache.styleTemplatesConfig
+        ? new Promise((resolve) => resolve(cache.styleTemplatesConfig))
+        : axios.get(styleTemplatesUrl).then(({ data }) => {
+            cache.styleTemplatesConfig = data?.templates;
+            return cache.styleTemplatesConfig;
+        });
+};
+
 export default {
     getNewMapConfiguration,
-    getNewGeoStoryConfig
+    getNewGeoStoryConfig,
+    getStyleTemplates
 };

@@ -1,0 +1,1316 @@
+{
+    "templates": [
+        {
+            "types": [
+                "linestring",
+                "vector"
+            ],
+            "title": "Line",
+            "preview": {
+                "config": {
+                    "type": "linestring",
+                    "paths": [
+                        {
+                            "stroke": "#999999"
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Line",
+                        "symbolizers": [
+                            {
+                                "kind": "Line",
+                                "color": "#999999"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "linestring",
+                "vector"
+            ],
+            "title": "Dashed line",
+            "preview": {
+                "config": {
+                    "type": "linestring",
+                    "paths": [
+                        {
+                            "stroke": "#333333",
+                            "strokeWidth": 4,
+                            "strokeDasharray": "20 4"
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Dashed line",
+                        "symbolizers": [
+                            {
+                                "kind": "Line",
+                                "color": "#333333",
+                                "width": 0.75,
+                                "dasharray": [
+                                    6,
+                                    2
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "linestring",
+                "vector"
+            ],
+            "title": "Section line",
+            "preview": {
+                "config": {
+                    "type": "linestring",
+                    "paths": [
+                        {
+                            "stroke": "#330033",
+                            "strokeWidth": 4,
+                            "strokeDasharray": "20 10 4 10"
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Section line",
+                        "symbolizers": [
+                            {
+                                "kind": "Line",
+                                "color": "#330033",
+                                "width": 1,
+                                "dasharray": [
+                                    10,
+                                    4,
+                                    1,
+                                    4
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "linestring",
+                "vector"
+            ],
+            "title": "Simple railway",
+            "preview": {
+                "config": {
+                    "type": "linestring",
+                    "paths": [
+                        {
+                            "stroke": "#333333",
+                            "strokeWidth": 2,
+                            "strokeLinejoin": "round"
+                        },
+                        {
+                            "stroke": "#333333",
+                            "strokeWidth": 16,
+                            "strokeDasharray": "2 20",
+                            "strokeLinejoin": "round"
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Simple railway",
+                        "symbolizers": [
+                            {
+                                "kind": "Line",
+                                "graphicStroke": {
+                                    "kind": "Mark",
+                                    "wellKnownName": "shape://vertline",
+                                    "radius": 4,
+                                    "strokeColor": "#000000"
+                                }
+                            },
+                            {
+                                "kind": "Line",
+                                "color": "#000000"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "linestring",
+                "vector"
+            ],
+            "title": "Railway",
+            "preview": {
+                "config": {
+                    "type": "linestring",
+                    "paths": [
+                        {
+                            "stroke": "#777777",
+                            "strokeWidth": 8,
+                            "strokeLinejoin": "round"
+                        },
+                        {
+                            "stroke": "#ffffff",
+                            "strokeWidth": 6,
+                            "strokeDasharray": "20 20",
+                            "strokeLinejoin": "round"
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Railway",
+                        "symbolizers": [
+                            {
+                                "kind": "Line",
+                                "color": "#777777",
+                                "width": 4,
+                                "dasharray": [
+                                    1,
+                                    0
+                                ]
+                            },
+                            {
+                                "kind": "Line",
+                                "color": "#ffffff",
+                                "width": 2,
+                                "dasharray": [
+                                    10,
+                                    10
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "linestring",
+                "vector"
+            ],
+            "title": "Waterway",
+            "preview": {
+                "config": {
+                    "type": "linestring",
+                    "paths": [
+                        {
+                            "stroke": "#8bbceb",
+                            "strokeWidth": 14,
+                            "strokeLinejoin": "round"
+                        },
+                        {
+                            "stroke": "#bbddff",
+                            "strokeWidth": 12,
+                            "strokeLinejoin": "round"
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Waterway",
+                        "symbolizers": [
+                            {
+                                "kind": "Line",
+                                "color": "#8bbceb",
+                                "width": 10,
+                                "join": "round"
+                            },
+                            {
+                                "kind": "Line",
+                                "color": "#bbddff",
+                                "width": 8,
+                                "join": "round"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "linestring",
+                "vector"
+            ],
+            "title": "Red road",
+            "preview": {
+                "config": {
+                    "type": "linestring",
+                    "paths": [
+                        {
+                            "stroke": "#ff5539",
+                            "strokeWidth": 14
+                        },
+                        {
+                            "stroke": "#ffffff",
+                            "strokeWidth": 7
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Red road",
+                        "symbolizers": [
+                            {
+                                "kind": "Line",
+                                "color": "#ff5539",
+                                "width": 8
+                            },
+                            {
+                                "kind": "Line",
+                                "color": "#ffffff",
+                                "width": 5
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "linestring",
+                "vector"
+            ],
+            "title": "Stroke Pattern",
+            "preview": {
+                "config": {
+                    "type": "linestring",
+                    "paths": [
+                        {
+                            "type": "point",
+                            "transform": "translate(-0, -55)",
+                            "d": "M 100, 100 m -10, 0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0",
+                            "stroke": "#777",
+                            "strokeWidth": 2,
+                            "fill": "#ddd"
+                        },
+                        {
+                            "type": "point",
+                            "transform": "translate(-65, 55)",
+                            "d": "M 100, 100 m -10, 0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0",
+                            "stroke": "#777",
+                            "strokeWidth": 2,
+                            "fill": "#ddd"
+                        },
+                        {
+                            "type": "point",
+                            "transform": "translate(-33, 0)",
+                            "d": "M 100, 100 m -10, 0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0",
+                            "stroke": "#777",
+                            "strokeWidth": 2,
+                            "fill": "#ddd"
+                        },
+                        {
+                            "type": "point",
+                            "transform": "translate(33, 0)",
+                            "d": "M 100, 100 m -10, 0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0",
+                            "stroke": "#777",
+                            "strokeWidth": 2,
+                            "fill": "#ddd"
+                        },
+                        {
+                            "type": "point",
+                            "transform": "translate(65, 55)",
+                            "d": "M 100, 100 m -10, 0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0",
+                            "stroke": "#777",
+                            "strokeWidth": 2,
+                            "fill": "#ddd"
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Stroke Pattern",
+                        "symbolizers": [
+                            {
+                                "kind": "Line",
+                                "graphicStroke": {
+                                    "kind": "Mark",
+                                    "wellKnownName": "Circle",
+                                    "color": "#ddd",
+                                    "radius": 4,
+                                    "strokeColor": "#777",
+                                    "strokeWidth": 0.5
+                                },
+                                "dasharray": [
+                                    8,
+                                    20
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "linestring",
+                "vector"
+            ],
+            "title": "Label",
+            "preview": {
+                "config": {
+                    "type": "linestring",
+                    "paths": [
+                        {
+                            "stroke": "#333",
+                            "strokeWidth": 4
+                        }
+                    ],
+                    "texts": [
+                        {
+                            "text": "Label",
+                            "transform": "translate(-40, 0)",
+                            "style": {
+                                "fontSize": 30,
+                                "fontWeight": "bold",
+                                "strokeWidth": 12,
+                                "stroke": "#ffffff"
+                            }
+                        },
+                        {
+                            "text": "Label",
+                            "fill": "#000000",
+                            "transform": "translate(-40, 0)",
+                            "style": {
+                                "fontSize": 30,
+                                "fontWeight": "bold",
+                                "strokeWidth": 1,
+                                "stroke": "#000000"
+                            }
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Label",
+                        "symbolizers": [
+                            {
+                                "kind": "Line",
+                                "color": "#333"
+                            },
+                            {
+                                "kind": "Text",
+                                "label": "Label",
+                                "color": "#000",
+                                "haloWidth": 4,
+                                "haloColor": "#fff",
+                                "font": [
+                                    "sans-serif"
+                                ],
+                                "size": 20
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "polygon",
+                "vector"
+            ],
+            "title": "Fill",
+            "preview": {
+                "config": {
+                    "type": "polygon",
+                    "paths": [
+                        {
+                            "fill": "#ddd"
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Fill",
+                        "symbolizers": [
+                            {
+                                "kind": "Fill",
+                                "color": "#ddd"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "polygon",
+                "vector"
+            ],
+            "title": "Border",
+            "preview": {
+                "config": {
+                    "type": "polygon",
+                    "paths": [
+                        {
+                            "fill": "transparent",
+                            "stroke": "#333",
+                            "strokeWidth": 4
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Border",
+                        "symbolizers": [
+                            {
+                                "kind": "Line",
+                                "color": "#333",
+                                "width": 1
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "polygon",
+                "vector"
+            ],
+            "title": "Dashed Border",
+            "preview": {
+                "config": {
+                    "type": "polygon",
+                    "paths": [
+                        {
+                            "fill": "transparent",
+                            "stroke": "#333",
+                            "strokeWidth": 4,
+                            "strokeDasharray": "20 10",
+                            "strokeOpacity": 0.5
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Dashed Border",
+                        "symbolizers": [
+                            {
+                                "kind": "Line",
+                                "color": "#333",
+                                "width": 2,
+                                "opacity": 0.5,
+                                "dasharray": [
+                                    10,
+                                    5
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "polygon",
+                "vector"
+            ],
+            "title": "Simple",
+            "preview": {
+                "config": {
+                    "type": "polygon",
+                    "paths": [
+                        {
+                            "fill": "#ddd",
+                            "stroke": "#333",
+                            "strokeWidth": 4
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Simple polygon",
+                        "symbolizers": [
+                            {
+                                "kind": "Fill",
+                                "color": "#ddd",
+                                "outlineColor": "#333",
+                                "outlineWidth": 1
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "polygon",
+                "vector"
+            ],
+            "title": "Line Pattern",
+            "preview": {
+                "config": {
+                    "type": "polygon",
+                    "paths": [
+                        {
+                            "fill": "url(#line)"
+                        }
+                    ],
+                    "patterns": [
+                        {
+                            "id": "line",
+                            "icon": {
+                                "d": "M0.0 1.0 L1.0 0.0",
+                                "stroke": "#000",
+                                "strokeWidth": 0.05
+                            }
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Line Pattern",
+                        "symbolizers": [
+                            {
+                                "kind": "Fill",
+                                "graphicFill": {
+                                    "kind": "Mark",
+                                    "wellKnownName": "shape://slash",
+                                    "radius": 4,
+                                    "strokeColor": "#000",
+                                    "strokeWidth": 1
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "polygon",
+                "vector"
+            ],
+            "title": "Dot Pattern",
+            "preview": {
+                "config": {
+                    "type": "polygon",
+                    "paths": [
+                        {
+                            "fill": "url(#poly_dot)"
+                        }
+                    ],
+                    "patterns": [
+                        {
+                            "id": "poly_dot",
+                            "icon": {
+                                "d": "M0.5 0.5 L0.5 0.52Z",
+                                "stroke": "#000",
+                                "strokeLinecap": "round",
+                                "strokeWidth": 0.2
+                            }
+                        }
+                    ]
+                }
+            },
+            "code": {
+                
+                "rules": [
+                    {
+                        "name": "Dot Pattern",
+                        "symbolizers": [
+                            {
+                                "kind": "Fill",
+                                "graphicFill": {
+                                    "kind": "Mark",
+                                    "wellKnownName": "shape://dot",
+                                    "radius": 4,
+                                    "strokeColor": "#000000",
+                                    "strokeWidth": 4
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "polygon",
+                "vector"
+            ],
+            "title": "Marker",
+            "preview": {
+                "config": {
+                    "type": "polygon",
+                    "paths": [
+                        {
+                            "fill": "transparent",
+                            "stroke": "#333"
+                        },
+                        {
+                            "type": "point",
+                            "d": "M 160,100 A 60,60 0 0 1 100,160 60,60 0 0 1 40,100 60,60 0 0 1 100,40 60,60 0 0 1 160,100 Z",
+                            "stroke": "#333",
+                            "fill": "#ddd",
+                            "strokeWidth": 4
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Marker",
+                        "symbolizers": [
+                            {
+                                "kind": "Mark",
+                                "wellKnownName": "Circle",
+                                "color": "#ddd",
+                                "radius": 8,
+                                "strokeColor": "#333",
+                                "strokeWidth": 2
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Border",
+                        "symbolizers": [
+                            {
+                                "kind": "Line",
+                                "color": "#333333",
+                                "width": 0.5
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "polygon",
+                "vector"
+            ],
+            "title": "Fill Pattern",
+            "preview": {
+                "config": {
+                    "type": "polygon",
+                    "paths": [
+                        {
+                            "fill": "#ddd"
+                        },
+                        {
+                            "fill": "url(#poly_square)"
+                        }
+                    ],
+                    "patterns": [
+                        {
+                            "id": "poly_square",
+                            "icon": {
+                                "d": "M0.1 0.1 L0.9 0.1 L0.9 0.9 L0.1 0.9Z",
+                                "stroke": "#333",
+                                "strokeLinecap": "round",
+                                "strokeWidth": 0.05,
+                                "fill": "#f2f2f2"
+                            }
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Fill Pattern",
+                        "symbolizers": [
+                            {
+                                "kind": "Fill",
+                                "color": "#ddd"
+                            },
+                            {
+                                "kind": "Fill",
+                                "graphicFill": {
+                                    "kind": "Mark",
+                                    "wellKnownName": "Cross",
+                                    "color": "#f2f2f2",
+                                    "radius": 10,
+                                    "strokeColor": "#333",
+                                    "strokeWidth": 1
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "polygon",
+                "vector"
+            ],
+            "title": "Label and Fill",
+            "preview": {
+                "config": {
+                    "type": "polygon",
+                    "paths": [
+                        {
+                            "fill": "transparent",
+                            "stroke": "#000",
+                            "strokeWidth": 2
+                        },
+                        {
+                            "fill": "url(#line)"
+                        }
+                    ],
+                    "texts": [
+                        {
+                            "text": "Label",
+                            "style": {
+                                "fontSize": 50,
+                                "fontWeight": "bold",
+                                "strokeWidth": 12,
+                                "stroke": "#ffffff"
+                            }
+                        },
+                        {
+                            "text": "Label",
+                            "fill": "#000000",
+                            "style": {
+                                "fontSize": 50,
+                                "fontWeight": "bold",
+                                "strokeWidth": 1,
+                                "stroke": "#000000"
+                            }
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Label and Fill",
+                        "symbolizers": [
+                            {
+                                "kind": "Fill",
+                                "graphicFill": {
+                                    "kind": "Mark",
+                                    "wellKnownName": "shape://slash",
+                                    "radius": 4,
+                                    "strokeColor": "#000",
+                                    "strokeWidth": 1
+                                },
+                                "outlineColor": "#474747"
+                            },
+                            {
+                                "kind": "Text",
+                                "label": "Label",
+                                "color": "#000",
+                                "haloWidth": 4,
+                                "haloColor": "#fff",
+                                "font": [
+                                    "sans-serif"
+                                ],
+                                "size": 20
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "point",
+                "vector"
+            ],
+            "title": "Square",
+            "preview": {
+                "config": {
+                    "type": "point",
+                    "paths": [
+                        {
+                            "d": "M40 40 L160 40 L160 160 L40 160Z",
+                            "stroke": "#ff338f",
+                            "fill": "#bcedff",
+                            "strokeWidth": 4
+                        }
+                    ]
+                }
+            },
+            "code": {
+                
+                "rules": [
+                    {
+                        "name": "Square",
+                        "symbolizers": [
+                            {
+                                "kind": "Mark",
+                                "wellKnownName": "Square",
+                                "color": "#bcedff",
+                                "strokeColor": "#ff338f"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "point",
+                "vector"
+            ],
+            "title": "Circle",
+            "preview": {
+                "config": {
+                    "type": "point",
+                    "paths": [
+                        {
+                            "d": "M 160,100 A 60,60 0 0 1 100,160 60,60 0 0 1 40,100 60,60 0 0 1 100,40 60,60 0 0 1 160,100 Z",
+                            "stroke": "#ff338f",
+                            "fill": "#bcedff",
+                            "strokeWidth": 4
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Circle",
+                        "symbolizers": [
+                            {
+                                "kind": "Mark",
+                                "wellKnownName": "Circle",
+                                "color": "#bcedff",
+                                "strokeColor": "#ff338f"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "point",
+                "vector"
+            ],
+            "title": "Triangle",
+            "preview": {
+                "config": {
+                    "type": "point",
+                    "paths": [
+                        {
+                            "d": "M 160,151.96151 H 40 L 99.999999,48.038488 Z",
+                            "stroke": "#ff338f",
+                            "fill": "#bcedff",
+                            "strokeWidth": 4
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Triangle",
+                        "symbolizers": [
+                            {
+                                "kind": "Mark",
+                                "wellKnownName": "Triangle",
+                                "color": "#bcedff",
+                                "strokeColor": "#ff338f"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "point",
+                "vector"
+            ],
+            "title": "Star",
+            "preview": {
+                "config": {
+                    "type": "point",
+                    "paths": [
+                        {
+                            "d": "M 165.07677,84.40286 131.87672,116.49613 139.49277,162.03972 98.710865,140.38195 57.749838,161.699 65.745291,116.22048 32.813927,83.851564 78.537289,77.40206 99.145626,36.079922 119.40876,77.572419 Z",
+                            "stroke": "#ff338f",
+                            "fill": "#bcedff",
+                            "strokeWidth": 4
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Star",
+                        "symbolizers": [
+                            {
+                                "kind": "Mark",
+                                "wellKnownName": "Star",
+                                "color": "#bcedff",
+                                "strokeColor": "#ff338f"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "point",
+                "vector"
+            ],
+            "title": "Cross",
+            "preview": {
+                "config": {
+                    "type": "point",
+                    "paths": [
+                        {
+                            "d": "M 84.99987,39.999998 V 84.999868 H 39.999999 V 115.00013 H 84.99987 V 160 H 115.00013 V 115.00013 H 160 V 84.999868 H 115.00013 V 39.999998 Z",
+                            "stroke": "#ff338f",
+                            "fill": "#bcedff",
+                            "strokeWidth": 4
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Cross",
+                        "symbolizers": [
+                            {
+                                "kind": "Mark",
+                                "wellKnownName": "Cross",
+                                "color": "#bcedff",
+                                "strokeColor": "#ff338f"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "point",
+                "vector"
+            ],
+            "title": "X",
+            "preview": {
+                "config": {
+                    "type": "point",
+                    "paths": [
+                        {
+                            "d": "M 131.81971,46.966899 100,78.786612 68.180288,46.966898 46.966899,68.180287 78.786613,100 46.9669,131.81971 68.180287,153.0331 100,121.21339 131.81971,153.0331 153.0331,131.81971 121.21339,99.999999 153.0331,68.180286 Z",
+                            "stroke": "#ff338f",
+                            "fill": "#bcedff",
+                            "strokeWidth": 4
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "X",
+                        "symbolizers": [
+                            {
+                                "kind": "Mark",
+                                "wellKnownName": "X",
+                                "color": "#bcedff",
+                                "strokeColor": "#ff338f"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "point",
+                "vector"
+            ],
+            "title": "Line",
+            "preview": {
+                "config": {
+                    "type": "point",
+                    "paths": [
+                        {
+                            "d": "M 100,40 V 160 Z",
+                            "stroke": "#ff338f",
+                            "strokeWidth": 4,
+                            "fill": "none"
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Line",
+                        "symbolizers": [
+                            {
+                                "kind": "Mark",
+                                "wellKnownName": "shape://vertline",
+                                "strokeColor": "#ff338f"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "point",
+                "vector"
+            ],
+            "title": "Plus",
+            "preview": {
+                "config": {
+                    "type": "point",
+                    "paths": [
+                        {
+                            "d": "M 100,40 V 160 Z",
+                            "stroke": "#ff338f",
+                            "strokeWidth": 4,
+                            "fill": "none"
+                        },
+                        {
+                            "d": "M 160,100 40.000002,100 Z",
+                            "stroke": "#ff338f",
+                            "strokeWidth": 4,
+                            "fill": "none"
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Plus",
+                        "symbolizers": [
+                            {
+                                "kind": "Mark",
+                                "wellKnownName": "shape://plus",
+                                "strokeColor": "#ff338f"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "point",
+                "vector"
+            ],
+            "title": "Times",
+            "preview": {
+                "config": {
+                    "type": "point",
+                    "paths": [
+                        {
+                            "d": "M 142.42641,57.573591 57.573595,142.4264 Z",
+                            "stroke": "#ff338f",
+                            "strokeWidth": 4,
+                            "fill": "none"
+                        },
+                        {
+                            "d": "M 142.42641,142.42641 57.573595,57.573594 Z",
+                            "stroke": "#ff338f",
+                            "strokeWidth": 4,
+                            "fill": "none"
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Times",
+                        "symbolizers": [
+                            {
+                                "kind": "Mark",
+                                "wellKnownName": "shape://times",
+                                "strokeColor": "#ff338f"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "point",
+                "vector"
+            ],
+            "title": "Open arrow",
+            "preview": {
+                "config": {
+                    "type": "point",
+                    "paths": [
+                        {
+                            "d": "M 40.027335,53.266123 159.77305,100 40.027335,146.73388",
+                            "stroke": "#ff338f",
+                            "strokeWidth": 4,
+                            "fill": "none"
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Open arrow",
+                        "symbolizers": [
+                            {
+                                "kind": "Mark",
+                                "wellKnownName": "shape://oarrow",
+                                "strokeColor": "#ff338f"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "point",
+                "vector"
+            ],
+            "title": "Closed arrow",
+            "preview": {
+                "config": {
+                    "type": "point",
+                    "paths": [
+                        {
+                            "d": "M 40.027335,53.266123 159.77305,100 40.027335,146.73388Z",
+                            "stroke": "#ff338f",
+                            "strokeWidth": 4,
+                            "fill": "none"
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Closed arrow",
+                        "symbolizers": [
+                            {
+                                "kind": "Mark",
+                                "wellKnownName": "shape://carrow",
+                                "strokeColor": "#ff338f"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "types": [
+                "polygon",
+                "point",
+                "vector"
+            ],
+            "title": "Label and Marker",
+            "preview": {
+                "config": {
+                    "type": "polygon",
+                    "paths": [
+                        {
+                            "type": "point",
+                            "d": "M 100, 100 m -10, 0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0",
+                            "stroke": "#0d0d0d",
+                            "fill": "transparent",
+                            "strokeWidth": 2
+                        }
+                    ],
+                    "texts": [
+                        {
+                            "text": "Label",
+                            "y": 150,
+                            "style": {
+                                "fontSize": 50,
+                                "fontWeight": "bold",
+                                "strokeWidth": 12,
+                                "stroke": "#ffffff"
+                            }
+                        },
+                        {
+                            "text": "Label",
+                            "fill": "#000000",
+                            "y": 150,
+                            "style": {
+                                "fontSize": 50,
+                                "fontWeight": "bold",
+                                "strokeWidth": 1,
+                                "stroke": "#000000"
+                            }
+                        }
+                    ]
+                }
+            },
+            "code": {
+                "rules": [
+                    {
+                        "name": "Label and Marker",
+                        "symbolizers": [
+                            {
+                                "kind": "Mark",
+                                "wellKnownName": "Circle",
+                                "radius": 3.5,
+                                "strokeColor": "#0d0d0d",
+                                "strokeWidth": 0.7
+                            },
+                            {
+                                "kind": "Text",
+                                "label": "Label",
+                                "color": "#000",
+                                "haloWidth": 4,
+                                "haloColor": "#fff",
+                                "font": [
+                                    "sans-serif"
+                                ],
+                                "size": 20
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -104,9 +104,6 @@ export function setupConfiguration({
         ...config
     } = localConfig;
     const geoNodePageConfig = window.__GEONODE_CONFIG__ || {};
-    const perms = geoNodePageConfig.perms || [];
-    const canEdit = geoNodePageConfig.isNewResource || perms.indexOf('change_resourcebase') !== -1;
-    const canView = geoNodePageConfig.isNewResource || perms.indexOf('view_resourcebase') !== -1;
     Object.keys(config).forEach((key) => {
         setConfigProp(key, config[key]);
     });
@@ -120,7 +117,6 @@ export function setupConfiguration({
     setConfigProp('locale', locale);
     const geoNodeResourcesInfo = getConfigProp('geoNodeResourcesInfo') || {};
     setConfigProp('geoNodeResourcesInfo', { ...geoNodeResourcesInfo, ...resourcesTotalCount });
-    const userDetails = geoNodePageConfig.userDetails;
     const securityState = user?.info?.access_token
         ? {
             security: {
@@ -128,9 +124,7 @@ export function setupConfiguration({
                 token: user.info.access_token
             }
         }
-        : userDetails
-            ? { security: userDetails }
-            : undefined;
+        : undefined;
 
     // globlal window interface to interact with the django page
     const actionTrigger = generateActionTrigger(LOCATION_CHANGE);
@@ -164,10 +158,6 @@ export function setupConfiguration({
         pluginsConfigKey: query.config || geoNodePageConfig.pluginsConfigKey,
         mapType: geoNodePageConfig.mapType,
         settings: localConfig.geoNodeSettings,
-        permissions: {
-            canEdit,
-            canView
-        },
         onStoreInit: (store) => {
             store.addActionListener((action) => {
                 const act = action.type === 'PERFORM_ACTION' && action.action || action; // Needed to works also in debug

@@ -34,8 +34,13 @@ def run_setup_hooks(*args, **kwargs):
     setattr(settings, "CLIENT_APP_LIST", ['geostory', "dashboard"])
     setattr(settings, "CLIENT_APP_ALLOWED_PERMS", [{'geostory': allowed_perms}, {"dashboard": allowed_perms}])
 
+    try:
+        settings.TEMPLATES[0]['OPTIONS']['context_processors'] += [
+            'geonode_mapstore_client.context_processors.resource_urls', ]
+    except Exception:
+        pass
+
     urlpatterns += [
-        url(r'^mapstore/', include('mapstore2_adapter.urls')),
         url(r'^catalogue/', TemplateView.as_view(template_name='geonode-mapstore-client/catalogue.html')),
         # required, otherwise will raise no-lookup errors to be analysed
         url(r'^api/v2/', include(router.urls)),

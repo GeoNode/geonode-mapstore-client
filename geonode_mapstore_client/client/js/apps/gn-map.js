@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const mapLayout = getConfigProp('mapLayout') || {};
             setConfigProp('mapLayout', mapLayout[query.theme] || mapLayout.viewer);
 
-            const resourceId = geoNodePageConfig.resourceId || geoNodePageConfig.resourceConfig?.map?.info?.id;
+            const resourceId = geoNodePageConfig.resourceId;
 
             // register custom arcgis layer
             import('@js/map/' + mapType + '/plugins/ArcGisMapServer')
