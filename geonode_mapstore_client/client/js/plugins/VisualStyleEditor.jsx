@@ -45,13 +45,10 @@ import {
     selectedStyleSelector
 } from '@mapstore/framework/selectors/styleeditor';
 import Message from '@mapstore/framework/components/I18N/Message';
-import SVGPreview from '@mapstore/framework/components/styleeditor/SVGPreview';
-import Popover from '@mapstore/framework/components/styleeditor/Popover';
 import GNButton from '@js/components/Button';
 import Portal from '@mapstore/framework/components/misc/Portal';
 import ResizableModal from '@mapstore/framework/components/misc/ResizableModal';
 import StylesAPI from '@mapstore/framework/api/geoserver/Styles';
-import { getStyleTemplates } from '@mapstore/framework/utils/StyleEditorUtils';
 import { getResourcePerms, isNewResource } from '@js/selectors/resource';
 import Spinner from '@js/components/Spinner';
 import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
@@ -60,8 +57,8 @@ import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
 const FormControl = localizedProps('placeholder')(FormControlRB);
 import useLocalStorage from '@js/hooks/useLocalStorage';
+import TemplateSelector from '@js/plugins/visualstyleeditor/TemplateSelector';
 
-const defaultStyleTemplates = getStyleTemplates().filter((styleTemplate) => !['Base CSS', 'Base SLD'].includes(styleTemplate.title));
 const Button = tooltip(GNButton);
 
 function SaveStyleButton({
@@ -70,7 +67,8 @@ function SaveStyleButton({
     size,
     isStyleChanged,
     error,
-    loading
+    loading,
+    msgId = 'save'
 }) {
     const isDisabled = !!(loading || error);
     return (
@@ -81,7 +79,7 @@ function SaveStyleButton({
             disabled={isDisabled}
             onClick={isDisabled ? () => {} : () => onClick()}
         >
-            <Message msgId="save"/>{' '}{loading && <Spinner />}
+            <Message msgId={msgId}/>{' '}{loading && <Spinner />}
         </Button>
     );
 }
@@ -102,6 +100,29 @@ const ConnectedSaveStyleButton = connect(
     }
 )((SaveStyleButton));
 
+const ConnectedTemplateSelector = connect(
+    createSelector([
+        getUpdatedLayer,
+        geometryTypeSelector,
+        selectedStyleFormatSelector,
+        codeStyleSelector,
+        selectedStyleSelector,
+        state => state?.controls?.visualStyleEditor?.tmpCode
+    ], (layer, geometryType, format, code, selectedStyleName, tmpCode) => ({
+        geometryType,
+        format,
+        selectedStyle: layer?.availableStyles?.find(({ name }) => name === selectedStyleName),
+        code,
+        tmpCode
+    })),
+    {
+        onSelect: editStyleCode,
+        onUpdateMetadata: updateEditorMetadata,
+        onUpdate: updateStyleCode,
+        onStoreTmpCode: setControlProperty.bind(null, 'visualStyleEditor', 'tmpCode')
+    }
+)((TemplateSelector));
+
 function VisualStyleEditor({
     layer,
     editorConfig,
@@ -110,17 +131,12 @@ function VisualStyleEditor({
     onReset,
     temporaryStyleId,
     showLayerProperties,
-    geometryType,
-    format,
-    onSelect,
-    onUpdateMetadata,
     initialCode,
     enabled,
     onClose,
     onZoomTo,
     onCreate,
     onDelete,
-    selectedStyle,
     style: styleProp
 }) {
 
@@ -155,11 +171,6 @@ function VisualStyleEditor({
         };
     }, []);
 
-    function handleSelect(styleTemplate) {
-        onSelect(styleTemplate);
-        onUpdateMetadata({ styleJSON: null });
-    }
-
     function handleClose() {
         onReset();
         onClose();
@@ -171,20 +182,8 @@ function VisualStyleEditor({
         onZoomTo(extent, layer.bbox.crs);
     }
 
-    const styleTemplates = defaultStyleTemplates.filter((styleTemplate) => styleTemplate.types.includes(geometryType) && format === styleTemplate.format);
-
     if (!enabled || !layer.id) {
         return null;
-    }
-
-    const hasTemplates = !!(styleTemplates?.length > 0);
-
-    function replaceTemplateMetadata(code) {
-        const styleTitle = selectedStyle?.metadata?.title || selectedStyle?.label || selectedStyle?.title || selectedStyle?.name || '';
-        const styleDescription = selectedStyle?.metadata?.description || selectedStyle?._abstract || '';
-        return code
-            .replace(/\$\{styleTitle\}/, styleTitle)
-            .replace(/\$\{styleAbstract\}/, styleDescription);
     }
 
     function closeNotification() {
@@ -207,35 +206,10 @@ function VisualStyleEditor({
                     <Glyphicon glyph="1-close"/>
                 </Button>
             </div>}
-            {(hasTemplates || showLayerProperties) &&
             <div className="gn-visual-style-editor-toolbar">
-                {showLayerProperties && <ConnectedSaveStyleButton variant="default" size="xs"/>}
-                {hasTemplates && <Popover
-                    placement="right"
-                    content={
-                        <ul className="gn-visual-style-editor-templates" >
-                            {styleTemplates.map((styleTemplate, idx) => {
-                                return (
-                                    <li
-                                        key={idx}
-                                        className="gn-visual-style-editor-template"
-                                        onClick={() => handleSelect(replaceTemplateMetadata(styleTemplate.code))}
-                                    >
-                                        <div className="gn-visual-style-editor-template-preview">
-                                            {styleTemplate?.preview?.config
-                                                ? <SVGPreview { ...styleTemplate.preview.config } />
-                                                : styleTemplate?.preview}
-                                        </div>
-                                        <div className="gn-visual-style-editor-template-title">{styleTemplate.title}</div>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    }
-                >
-                    <Button size="xs"><Message msgId="gnviewer.copyFrom"/></Button>
-                </Popover>}
-            </div>}
+                {showLayerProperties && <ConnectedSaveStyleButton variant="primary" size="xs" msgId="gnviewer.applyStyle"/>}
+                <ConnectedTemplateSelector />
+            </div>
             {(!notificationClose && !dismissStyleNotification) && <div className="gn-visual-style-editor-alert alert-info">
                 <div className="gn-visual-style-editor-alert-message">
                     <Message msgId="gnviewer.stylesFirstClone" />
@@ -328,22 +302,16 @@ const VisualStyleEditorPlugin = connect(
         getUpdatedLayer,
         temporaryIdSelector,
         styleServiceSelector,
-        selectedStyleFormatSelector,
-        geometryTypeSelector,
         initialCodeStyleSelector,
         state => state?.controls?.visualStyleEditor?.enabled,
-        selectedStyleSelector,
         state => mapLayoutValuesSelector(state, { height: true }),
         getSelectedLayer
-    ], (layer, temporaryStyleId, styleService, format, geometryType, initialCode, enabled, selectedStyleName, style, originalLayer) => ({
+    ], (layer, temporaryStyleId, styleService, initialCode, enabled, style, originalLayer) => ({
         layer,
         temporaryStyleId,
         styleService,
-        format,
-        geometryType,
         initialCode,
         enabled,
-        selectedStyle: layer?.availableStyles?.find(({ name }) => name === selectedStyleName),
         style,
         originalStyle: originalLayer?.style
     })),
@@ -352,8 +320,6 @@ const VisualStyleEditorPlugin = connect(
         onUpdateParams: updateSettingsParams,
         onInit: initStyleService,
         onReset: toggleStyleEditor.bind(null, undefined, false),
-        onSelect: editStyleCode,
-        onUpdateMetadata: updateEditorMetadata,
         onSave: updateStyleCode,
         onClose: setControlProperty.bind(null, 'visualStyleEditor', 'enabled', false),
         onZoomTo: zoomToExtent,
