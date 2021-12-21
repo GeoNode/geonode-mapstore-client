@@ -502,11 +502,7 @@ export const getResourcesTotalCount = () => {
 * @return {promise} it returns an object with the success map object response
 */
 export const createMap = (body = {}) => {
-    return axios.post(parseDevHostname(`${endpoints[MAPS]}`),
-        body,
-        {
-            timeout: 10000
-        })
+    return axios.post(parseDevHostname(`${endpoints[MAPS]}`), body)
         .then(({ data }) => data?.map);
 };
 
