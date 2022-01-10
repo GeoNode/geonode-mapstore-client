@@ -388,6 +388,10 @@ export const plugins = {
     LayerSettingsPlugin: toLazyPlugin(
         'LayerSettings',
         () => import(/* webpackChunkName: 'plugins/layer-settings' */ '@js/plugins/LayerSettings')
+    ),
+    SyncPlugin: toLazyPlugin(
+        'Sync',
+        () => import(/* webpackChunkName: 'plugins/sync-plugin' */ '@js/plugins/Sync')
     )
 };
 

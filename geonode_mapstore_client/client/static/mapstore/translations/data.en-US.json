@@ -148,6 +148,7 @@
             "goBackTo": "< Go back to { resourceName }",
             "uploadImage": "Click to upload an image",
             "save": "Save",
+            "sync": "Sync",
             "close": "Close",
             "share": "Share",
             "download": "Download",

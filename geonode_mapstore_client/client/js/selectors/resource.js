@@ -205,3 +205,10 @@ export const getResourceDirtyState = (state) => {
         }
         : null;
 };
+
+/**
+ * Get geonode resources from within a Geostory
+ * @param {Object} state App state
+ * @returns {Array} Array of geonode resources
+ */
+export const getGeonodeResourceDataFromGeostory = (state) => state.gnresource?.initialResource?.data?.resources?.filter(res => res.data.sourceId === 'geonode');

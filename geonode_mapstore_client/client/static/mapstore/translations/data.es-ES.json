@@ -147,6 +147,7 @@
             "goBackTo": "< Volver a { resourceName }",
             "uploadImage": "Haz clic para subir una imagen",
             "save": "Ahorrar",
+            "sync": "Sincronizar",
             "close": "Cerrar",
             "share": "Cuota",
             "download": "Descargar",
