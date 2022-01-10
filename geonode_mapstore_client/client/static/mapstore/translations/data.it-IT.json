@@ -231,7 +231,11 @@
             "deleteStyleTitle": "Elimina stile",
             "deleteStyleMessage": "Sei sicuro di voler eliminare questo stile?",
             "deleteStyleCancel": "No, non cancellarlo",
-            "deleteStyleConfirm": "Si, cancella stile"
+            "deleteStyleConfirm": "Si, cancella stile",
+            "syncErrorTitle": "Impossibile sincronizzare la geostoria attuale",
+            "syncErrorDefault": "Errore di rete",
+            "syncSuccessTitle": "Geostoria sincronizzata",
+            "syncSuccessDefault": "Sincronizzato con successo"
         }
     }
 }

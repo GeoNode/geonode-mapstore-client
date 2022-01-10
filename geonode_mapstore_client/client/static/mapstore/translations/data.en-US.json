@@ -230,7 +230,11 @@
             "deleteStyleTitle": "Delete style",
             "deleteStyleMessage": "Are you sure you want to delete this style?",
             "deleteStyleCancel": "No, don't delete it",
-            "deleteStyleConfirm": "Yes, I'm sure"
+            "deleteStyleConfirm": "Yes, I'm sure",
+            "syncErrorTitle": "Cannot sync the current geostory",
+            "syncErrorDefault": "Network error",
+            "syncSuccessTitle": "Geostory synced",
+            "syncSuccessDefault": "Synchronized successfully"
         }
     }
 }
