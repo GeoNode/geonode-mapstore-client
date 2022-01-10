@@ -157,11 +157,6 @@ store information of the resource in use</p>
 <dd><p>Actions for GeoNode resource featured items
 set new Featured Resources includes data, page, links</p>
 </dd>
-<dt><a href="#module_api/geonode/v2">api/geonode/v2</a></dt>
-<dd><p>Actions for GeoNode save workflow</p>
-</dd>
-<dt><a href="#module_components/Menu">components/Menu</a></dt>
-<dd></dd>
 <dt><a href="#module_epics/index">epics/index</a></dt>
 <dd></dd>
 <dt><a href="#module_epics/visualstyleeditor">epics/visualstyleeditor</a></dt>
@@ -441,40 +436,6 @@ loads new featured resources basing on the action, previous or next
 | action | <code>string</code> | can be either next or previous |
 | pageSize | <code>number</code> | page_size of items to load defaults to 4; |
 
-<a name="module_api/geonode/v2"></a>
-
-## api/geonode/v2
-Actions for GeoNode save workflow
-
-<a name="module_api/geonode/v2.getEndpoints"></a>
-
-### api/geonode/v2.getEndpoints
-get all thw endpoints available from API V2
-
-**Kind**: static constant of [<code>api/geonode/v2</code>](#module_api/geonode/v2)  
-<a name="module_components/Menu"></a>
-
-## components/Menu
-<a name="module_components/Menu..Menu"></a>
-
-### components/Menu~Menu
-Menu component
-
-**Kind**: inner property of [<code>components/Menu</code>](#module_components/Menu)  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| items | <code>array</code> | list of menu item |
-| containerClass | <code>string</code> | css class of list container |
-| childrenClass | <code>string</code> | css class of item in list |
-| query | <code>string</code> | string to build the query url in case of link item |
-| formatHref | <code>function</code> | function to format the href in case of link item |
-
-**Example**  
-```js
-<Menu items={items} />
-```
 <a name="module_epics/index"></a>
 
 ## epics/index
