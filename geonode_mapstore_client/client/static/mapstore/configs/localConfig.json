@@ -1935,6 +1935,7 @@
                         {
                             "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
+                            "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "type": "dropdown",
                             "items": [
                                 {
