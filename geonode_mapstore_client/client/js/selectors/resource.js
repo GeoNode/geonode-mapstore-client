@@ -22,6 +22,7 @@ import isObject from 'lodash/isObject';
 import isEqual from 'lodash/isEqual';
 import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
 
 export const getResourceId = (state) => {
     const resourceId = state?.gnresource?.id;
@@ -211,4 +212,4 @@ export const getResourceDirtyState = (state) => {
  * @param {Object} state App state
  * @returns {Array} Array of geonode resources
  */
-export const getGeonodeResourceDataFromGeostory = (state) => state.gnresource?.initialResource?.data?.resources?.filter(res => res.data.sourceId === 'geonode');
+export const getGeonodeResourceDataFromGeostory = (state) => get(currentStorySelector(state), 'resources', []).filter(res => res.data.sourceId === 'geonode');
