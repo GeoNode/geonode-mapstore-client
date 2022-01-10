@@ -28,6 +28,10 @@ import { saveDirectContent } from '@js/actions/gnsave';
 import tinycolor from 'tinycolor2';
 import { parseStyleName, parseMetadata } from '@js/utils/ResourceUtils';
 
+/**
+* @module epics/visualstyleeditor
+*/
+
 function getBaseCSSStyle({ type, title }) {
     const color = tinycolor(`hsl(${Math.floor(Math.random() * 270)}, 90%, 70%)`).toHexString();
     switch (type) {

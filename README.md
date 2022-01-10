@@ -8,6 +8,7 @@ Documentations:
 - [Development](docs/development.md)
 - [Update client applications bundles](docs/build.md)
 - [Customize the client in a GeoNode project](docs/customizations/index.md)
+- [Client modules documentation and configuration](docs/client.md)
 
 ## Tools supported versions
 
