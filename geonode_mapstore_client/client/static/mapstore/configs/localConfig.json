@@ -1950,7 +1950,8 @@
                         },
                         {
                             "name": "Sync",
-                            "type": "plugin"
+                            "type": "plugin",
+                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
                         },
                         {
                             "labelId": "gnviewer.edit",
@@ -2246,7 +2247,7 @@
                         {
                             "name": "Sync",
                             "type": "plugin",
-                            "disableIf": "!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
                         },
 
                         {
