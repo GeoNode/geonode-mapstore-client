@@ -43,32 +43,56 @@ const setResourceApi = {
     video: getDocumentByPk
 };
 
+/**
+ * Reformat responds object to match fields in resource object
+ * @param {*} dataObj response object
+ * @param  {...string} wantedFields fields in resource object
+ * @returns {Object}
+ */
+const filterObj = (dataObj, ...wantedFields) => {
+    const newResponseObj = {};
+    Object.keys(dataObj).forEach((element) => {
+        if (wantedFields.includes(element)) {
+            newResponseObj[element] = dataObj[element];
+        }
+    });
+
+    return newResponseObj;
+};
+
+/**
+ * Sync reources in current geostory or dashboard with their respective sources
+ * @param {*} action$ the actions
+ * @param {Object} store
+ * @returns {Observable}
+ */
 export const gnSyncComponentsWithResources = (action$, store) => action$.ofType(SYNC_RESOURCES)
     .switchMap(() => {
         const state = store.getState();
         const resourceType = getViewedResourceType(state);
         const resources = getRelevantResourceParams(resourceType, state);
+
         return Observable.defer(() =>
             axios.all(resources.map((resource) => setResourceApi[resource.type](resource.id)))
                 .then(data => data)
-                .catch((error) => error)
         ).switchMap(updatedResources => {
             let currentResource;
-            let newReourceData = {};
+            let newResourceData = {};
+
             resources.forEach((resource, index) => {
                 currentResource = updatedResources.filter(res => res.pk === resource.id);
-                const resourceData = resource.data;
-                newReourceData[index] = { ...resourceData, ...currentResource?.[0]?.data.map };
+                newResourceData[index] = { ...resource.data, ...(currentResource?.[0]?.data?.map || currentResource[0] || {}) };
+                newResourceData[index].description = currentResource[0].abstract?.replace(/<\/?[^>]+(>|$)/g, "");
                 return resource;
             });
-            return Observable.of(...resources.map((resource, index) => {
 
-                return editResource(resource.id, resource.type, newReourceData[index]);
+            return Observable.of(...resources.map((resource, index) => {
+                return editResource(resource.id, resource.type, filterObj(newResourceData[index], ...Object.keys(resource.data)));
             }), saveSuccess(), successNotification({ title: 'gnviewer.syncSuccessTitle', message: 'gnviewer.syncSuccessDefault' }));
         }).catch((error) => {
             return Observable.of(
                 saveError(error.data || error.message),
-                errorNotification({ title: "gnviewer.syncErrorTitle", message: error?.data?.detail || error?.message || "gnviewer.syncErrorDefault" })
+                errorNotification({ title: "gnviewer.syncErrorTitle", message: error?.data?.detail || error?.originalError?.message || error?.message || "gnviewer.syncErrorDefault" })
             );
         }).startWith(savingResource());
     });
