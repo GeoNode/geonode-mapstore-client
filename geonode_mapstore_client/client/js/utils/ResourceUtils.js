@@ -9,13 +9,14 @@
 import turfBbox from '@turf/bbox';
 import uuid from 'uuid';
 import url from 'url';
-import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
+import { getConfigProp, convertFromLegacy, normalizeConfig } from '@mapstore/framework/utils/ConfigUtils';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
 import { bboxToPolygon } from '@js/utils/CoordinatesUtils';
 import uniqBy from 'lodash/uniqBy';
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
+import { excludeGoogleBackground, extractTileMatrixFromSources } from '@mapstore/framework/utils/LayersUtils';
 
 /**
 * @module utils/ResourceUtils
@@ -514,3 +515,66 @@ export const parseMetadata = ({ entry }) => {
     });
     return metadata;
 };
+
+/**
+ * Parse map response object
+ * @param {Object} mapResponse api response object
+ * @param {Object} resource optional resource object
+ * @returns {Object} new mao config object
+ */
+export const parseMapConfig = (mapResponse, resource = {}, type = 'map') => {
+
+    if (type !== 'map') {
+        return {
+            thumbnail: mapResponse.thumbnail_url,
+            src: mapResponse.href,
+            title: mapResponse.title,
+            description: mapResponse.raw_abstract,
+            credits: mapResponse.attribution,
+            sourceId: mapResponse.sourceId || 'geonode',
+            ...((mapResponse.subtype || mapResponse.type) === 'image' &&
+                { alt: mapResponse.alternate, src: mapResponse.href, ...(resource?.imgHeight && {imgHeight: resource?.imgHeight, imgWidth: resource?.imgWidth})})
+        };
+    }
+
+    const { data, pk: id } = mapResponse;
+    const config = data;
+    const mapState = !config.version
+        ? convertFromLegacy(config)
+        : normalizeConfig(config.map);
+
+    const layers = excludeGoogleBackground(mapState.layers.map(layer => {
+        if (layer.group === 'background' && (layer.type === 'ol' || layer.type === 'OpenLayers.Layer')) {
+            layer.type = 'empty';
+        }
+        return layer;
+    }));
+
+    const map = {
+        ...(mapState && mapState.map || {}),
+        id,
+        sourceId: resource?.data?.sourceId || 'geonode',
+        groups: mapState && mapState.groups || [],
+        layers: mapState?.map?.sources
+            ? layers.map(layer => {
+                const tileMatrix = extractTileMatrixFromSources(mapState.map.sources, layer);
+                return { ...layer, ...tileMatrix };
+            })
+            : layers
+    };
+
+    return {
+        ...map,
+        id,
+        owner: mapResponse?.owner?.username,
+        canCopy: true,
+        canDelete: true,
+        canEdit: true,
+        name: resource?.data?.title || mapResponse?.title,
+        description: resource?.data?.description || mapResponse?.abstract,
+        thumbnail: resource?.data?.thumbnail || mapResponse?.thumbnail_url,
+        type: 'map'
+    };
+};
+
+
