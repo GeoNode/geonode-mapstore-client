@@ -1,17 +1,15 @@
 const path = require('path');
 const fs = require('fs');
+const envConfig = fs.existsSync(path.join(__dirname, '.env'))
+    ? require('dotenv').config().parsed
+    : {};
 
 module.exports = (devServerDefault, projectConfig) => {
 
     const appDirectory = projectConfig.appDirectory;
-    const envPath = path.resolve(appDirectory, 'env.json');
-    const envJson = fs.existsSync(envPath) ? require(envPath) : {};
-    const packageJSON = require(path.resolve(appDirectory, 'package.json')) || {};
-    const geoNodeProjectConfig = packageJSON.geonode || {};
-    const devServerOptions = geoNodeProjectConfig.devServer || {};
-    const devServerHost = devServerOptions.host || envJson.DEV_SERVER_HOST || 'localhost';
-    const proxyTargetHost = devServerOptions.proxyTargetHost || envJson.DEV_SERVER_PROXY_TARGET_HOST || 'localhost:8000';
-    const protocol = devServerOptions.protocol || envJson.DEV_SERVER_HOST_PROTOCOL || 'http';
+    const devServerHost = envConfig.DEV_SERVER_HOSTNAME || 'localhost';
+    const proxyTargetHost = envConfig.DEV_TARGET_GEONODE_HOST || 'localhost:8000';
+    const protocol = envConfig.DEV_SERVER_PROTOCOL || 'http';
 
     const proxyTargetURL = `${protocol}://${proxyTargetHost}`;
 

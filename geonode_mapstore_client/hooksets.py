@@ -15,11 +15,7 @@ except ImportError:
     from django.utils import simplejson as json
 
 from geonode.client.hooksets import BaseHookSet
-from mapstore2_adapter.plugins.geonode import GeoNodeMapStore2ConfigConverter
 from geonode.base.models import ResourceBase
-
-ms2_config_converter = GeoNodeMapStore2ConfigConverter()
-
 
 def resource_list_url(resource_type):
     return '/catalogue/#/search/?filter{resource_type.in}' + '={}'.format(resource_type)
@@ -33,24 +29,6 @@ class MapStoreHookSet(BaseHookSet):
     def get_request(self, context):
         if context and 'request' in context:
             return context['request']
-        return None
-
-    def get_user(self, request):
-        user = {}
-        if request and request.user:
-            _u = request.user
-            user["name"] = _u.username
-            user["id"] = _u.id
-            user["role"] = [group.name for group in _u.groups.all()]
-            if _u.is_superuser:
-                user["role"] = "ADMIN"
-            if _u.is_authenticated:
-                user["enabled"] = True
-        return json.dumps(user)
-
-    def get_access_token(self, request):
-        if request and 'access_token' in request.session:
-            return request.session['access_token']
         return None
 
     # return if we are editing a layer or creating a new map
@@ -68,84 +46,30 @@ class MapStoreHookSet(BaseHookSet):
                 return True
         return False
 
-    def initialize_context(self, context, callback):
-        if context:
-            request = self.get_request(context)
-            context['USER'] = self.get_user(request)
-            context['ACCESS_TOKEN'] = self.get_access_token(request)
-            config = context['viewer'] if 'viewer' in context else None
-            if not config:
-                if 'config' in context and context['config']:
-                    config = context['config']
-                else:
-                    try:
-                        if len(context.dicts) > 0:
-                            for ctx in context.dicts:
-                                if 'preview' in ctx and (
-                                    ctx['preview'] in (
-                                        'mapstore', 'mapstore2', 'ms2') and
-                                        'config' in ctx):
-                                    config = ctx['config']
-                    except Exception:
-                        pass
-            ms2_config = {}
-            if config:
-                try:
-                    ms2_config = callback(config, request)
-                except Exception:
-                    ms2_config = '{}'
-                    import traceback
-                    traceback.print_exc()
-            context['ms2_config'] = ms2_config
-
     # Layers
     def dataset_detail_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/dataset_detail.html'
 
     def dataset_new_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/dataset_detail.html'
 
     def dataset_view_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/dataset_detail.html'
 
     # -- Not implemented yet
     # def dataset_edit_template(self, context=None):
-    #    self.initialize_context(
-    #        context,
-    #        callback=ms2_config_converter.convert)
     #    return 'geonode-mapstore-client/legacy/map_new.html'
 
     def dataset_update_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/dataset_detail.html'
 
     def dataset_embed_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/dataset_embed.html'
 
     def dataset_download_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/dataset_detail.html'
 
     def dataset_style_edit_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/dataset_style_edit.html'
 
     def dataset_list_url(self):
@@ -156,15 +80,9 @@ class MapStoreHookSet(BaseHookSet):
 
     # Maps
     def map_detail_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/map_detail.html'
 
     def map_new_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         if self.isEditDataset(context):
             return 'geonode-mapstore-client/legacy/dataset_data_edit.html'
         elif self.isViewDataset(context):
@@ -173,21 +91,12 @@ class MapStoreHookSet(BaseHookSet):
             return 'geonode-mapstore-client/legacy/map_new.html'
 
     def map_view_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/map_view.html'
 
     def map_edit_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/map_edit.html'
 
     def map_embed_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/map_embed.html'
 
     def map_list_url(self):
@@ -197,9 +106,6 @@ class MapStoreHookSet(BaseHookSet):
         return resource_detail_url('map', resource.id)
 
     # def map_download_template(self, context=None):
-    #    self.initialize_context(
-    #        context,
-    #        callback=ms2_config_converter.convert)
     #    return 'geonode-mapstore-client/legacy/map_view.html'
 
     # Documents
@@ -211,39 +117,21 @@ class MapStoreHookSet(BaseHookSet):
 
     # GeoApps
     def geoapp_list_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/app_list.html'
 
     def geoapp_new_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/app_new.html'
 
     def geoapp_view_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/app_view.html'
 
     def geoapp_edit_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/app_edit.html'
 
     def geoapp_update_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/app_update.html'
 
     def geoapp_embed_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         if context['appType'] == 'dashboard':
             return 'geonode-mapstore-client/dashboard_embed.html'
         if context['appType'] == 'geostory':
@@ -251,9 +139,6 @@ class MapStoreHookSet(BaseHookSet):
         return 'geonode-mapstore-client/legacy/app_embed.html'
 
     def geoapp_download_template(self, context=None):
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.convert)
         return 'geonode-mapstore-client/legacy/app_download.html'
 
     def geoapp_list_url(self):
@@ -265,9 +150,6 @@ class MapStoreHookSet(BaseHookSet):
     # Map Persisting
     def viewer_json(self, conf, context=None):
         context['viewer'] = conf
-        self.initialize_context(
-            context,
-            callback=ms2_config_converter.viewer_json)
         return context['ms2_config']
 
     def update_from_viewer(self, conf, context=None):
@@ -278,18 +160,15 @@ class MapStoreHookSet(BaseHookSet):
     def metadata_update_redirect(self, url, request=None):
         url = url.replace('/metadata', '')
         resource_identifier = url.split('/')[-1]
-        if isinstance(resource_identifier, int):
-            try:
-                dataset = ResourceBase.objects.get(id=int(resource_identifier))
-            except ValueError:
-                dataset = ResourceBase.objects.get(alternate=resource_identifier)
-        else:
+        try:
+            resource = ResourceBase.objects.get(id=int(resource_identifier))
+        except ValueError:
             from geonode.layers.views import _resolve_dataset
-            dataset = _resolve_dataset(
+            resource = _resolve_dataset(
                 request,
                 resource_identifier,
                 'base.change_resourcebase',
                 'Not allowed')
-        resource_identifier = dataset.id
-        resource_type = dataset.resource_type
+        resource_identifier = resource.id
+        resource_type = resource.resource_type
         return resource_detail_url(resource_type, resource_identifier)

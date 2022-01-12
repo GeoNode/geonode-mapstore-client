@@ -119,7 +119,10 @@ export const resourceToLayerConfig = (resource) => {
         ];
 
         const params = wmsUrl && url.parse(wmsUrl, true).query;
-        const format = getConfigProp('defaultLayerFormat') || 'image/png';
+        const {
+            defaultLayerFormat = 'image/png',
+            defaultTileSize = 512
+        } = getConfigProp('geoNodeSettings') || {};
         return {
             perms,
             id: uuid(),
@@ -127,7 +130,7 @@ export const resourceToLayerConfig = (resource) => {
             type: 'wms',
             name: alternate,
             url: wmsUrl || '',
-            format,
+            format: defaultLayerFormat,
             ...(wfsUrl && {
                 search: {
                     type: 'wfs',
@@ -143,6 +146,7 @@ export const resourceToLayerConfig = (resource) => {
             }),
             style: defaultStyleParams?.defaultStyle?.name || '',
             title,
+            tileSize: defaultTileSize,
             visibility: true,
             ...(params && { params }),
             ...(dimensions.length > 0 && ({ dimensions })),
@@ -495,7 +499,11 @@ export function toMapStoreMapConfig(resource, baseConfig) {
                 ...backgroundLayers,
                 ...layers,
                 ...addMapLayers
-            ]
+            ],
+            sources: {
+                ...data?.map?.sources,
+                ...baseConfig?.map?.sources
+            }
         }
     };
 }
@@ -505,8 +513,11 @@ export function toMapStoreMapConfig(resource, baseConfig) {
  * @param {Array} entry Array containing layer metadata information
  * @returns {Object} metadata object
  */
-export const parseMetadata = ({ entry }) => {
+export const parseMetadata = ({ entry } = {}) => {
     const metadata = {};
+    if (!entry) {
+        return metadata;
+    }
     entry.forEach((entryObj) => {
         const entryArray = Object.values(entryObj);
         if (entryArray.length > 1) {

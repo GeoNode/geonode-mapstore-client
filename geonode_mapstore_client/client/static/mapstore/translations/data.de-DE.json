@@ -35,6 +35,7 @@
             "geostories": "GeoStories",
             "createGeostory": "Create geostory",
             "createNew": "Erstelle neu",
+            "addResource": "Ressource hinzufügen",
             "about": "Über",
             "people": "Benutzer",
             "groups": "Gruppen",
@@ -236,7 +237,8 @@
             "syncSuccessMessage": "Erfolgreich synchronisiert",
             "syncWarningTitle": "Einige Ressourcen konnten nicht synchronisiert werden",
             "syncErrorMessage": "Fehler beim Synchronisieren der Ressourcen",
-            "syncWarningMessage": "Der Synchronisierungsprozess hat die folgenden Ressourcen aktualisiert: {successTitles}. Die folgenden Ressourcen konnten nicht aktualisiert werden: {errorTitles}. Dies kann daran liegen, dass die Ressourcen aus der Datenbank gelöscht wurden"
+            "syncWarningMessage": "Der Synchronisierungsprozess hat die folgenden Ressourcen aktualisiert: {successTitles}. Die folgenden Ressourcen konnten nicht aktualisiert werden: {errorTitles}. Dies kann daran liegen, dass die Ressourcen aus der Datenbank gelöscht wurden",
+            "applyStyle": "Sich bewerben"
         }
     }
 }

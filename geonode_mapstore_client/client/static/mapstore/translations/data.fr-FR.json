@@ -35,6 +35,7 @@
             "geostories": "GeoStories",
             "createGeostory": "Créer une geostory",
             "createNew": "Créer un nouveau",
+            "addResource": "Ajouter une ressource",
             "about": "À propos",
             "people": "Personnes",
             "groups": "Groupe",
@@ -236,7 +237,8 @@
             "syncSuccessMessage": "Synchronisé avec succès",
             "syncWarningTitle": "Impossible de synchroniser certaines ressources",
             "syncErrorMessage": "Échec de la synchronisation des ressources",
-            "syncWarningMessage": "Le processus de synchronisation a mis à jour les ressources suivantes : {successTitles}. Impossible de mettre à jour les ressources suivantes : {errorTitles}. Cela peut être dû au fait que les ressources ont été supprimées de la base de données"
+            "syncWarningMessage": "Le processus de synchronisation a mis à jour les ressources suivantes : {successTitles}. Impossible de mettre à jour les ressources suivantes : {errorTitles}. Cela peut être dû au fait que les ressources ont été supprimées de la base de données",
+            "applyStyle": "Appliquer"
         }
     }
 }

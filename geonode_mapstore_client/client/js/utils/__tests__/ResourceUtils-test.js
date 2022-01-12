@@ -203,6 +203,7 @@ describe('Test Resource Utils', () => {
         expect(mapStoreMapConfig).toEqual(
             {
                 map: {
+                    sources: {},
                     layers: [
                         { type: 'osm', source: 'osm', group: 'background', visibility: true },
                         { id: '02', type: 'vector', features: [] },
@@ -278,6 +279,7 @@ describe('Test Resource Utils', () => {
         expect(mapStoreMapConfig).toEqual(
             {
                 map: {
+                    sources: {},
                     layers: [
                         { type: 'osm', source: 'osm', group: 'background', visibility: true },
                         { id: '02', type: 'vector', features: [] },
@@ -360,6 +362,7 @@ describe('Test Resource Utils', () => {
         expect(mapStoreMapConfig).toEqual(
             {
                 map: {
+                    sources: {},
                     layers: [
                         {
                             name: 'OpenTopoMap',
@@ -423,5 +426,9 @@ describe('Test Resource Utils', () => {
         const metadataObj = parseMetadata(metadata);
 
         expect(metadataObj).toEqual({key1: 'test', key2: 'test2'});
+    });
+    it('should return empty object if entry is not defined', () => {
+        const metadataObj = parseMetadata();
+        expect(metadataObj).toEqual({});
     });
 });

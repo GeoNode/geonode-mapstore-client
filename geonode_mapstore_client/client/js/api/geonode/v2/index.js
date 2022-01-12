@@ -8,9 +8,7 @@
 
 import axios from '@mapstore/framework/libs/ajax';
 import {
-    parseDevHostname,
-    setRequestOptions,
-    getRequestOptions
+    parseDevHostname
 } from '@js/utils/APIUtils';
 import merge from 'lodash/merge';
 import mergeWith from 'lodash/mergeWith';
@@ -61,23 +59,6 @@ const GROUPS = 'groups';
 function addCountToLabel(name, count) {
     return `${name} (${count || 0})`;
 }
-
-const requestOptions = (name, requestFunc) => {
-    const options = getRequestOptions(name);
-    if (!options) {
-        return axios.options(parseDevHostname(endpoints[name]))
-            .then(({ data }) => {
-                setRequestOptions(name, data);
-                return requestFunc(data);
-            })
-            .catch(() => {
-                const error = { error: true };
-                setRequestOptions(name, error);
-                return requestFunc(error);
-            });
-    }
-    return requestFunc(options);
-};
 
 // some fields such as search_fields does not support the array notation `key[]=value1&key[]=value2`
 // this function will parse all values included array in the `key=value1&key=value2` format
@@ -153,7 +134,7 @@ export const getResources = ({
         .filter(({ id }) => castArray(f || []).indexOf(id) !== -1)
         .reduce((acc, filter) => mergeCustomQuery(acc, filter.query || {}), {}) || {};
 
-    return requestOptions(RESOURCES, () => axios.get(parseDevHostname(
+    return axios.get(parseDevHostname(
         addQueryString(endpoints[RESOURCES], q && {
             search: q,
             search_fields: ['title', 'abstract']
@@ -176,7 +157,7 @@ export const getResources = ({
                         return resource;
                     })
             };
-        }));
+        });
 };
 
 export const getMaps = ({
@@ -186,7 +167,7 @@ export const getMaps = ({
     sort,
     ...params
 }) => {
-    return requestOptions(MAPS, () => axios
+    return axios
         .get(
             parseDevHostname(
                 addQueryString(endpoints[MAPS], q && {
@@ -211,7 +192,7 @@ export const getMaps = ({
                         return resource;
                     })
             };
-        }));
+        });
 };
 
 export const getDatasets = ({
@@ -221,7 +202,7 @@ export const getDatasets = ({
     sort,
     ...params
 }) => {
-    return requestOptions(DATASETS, () => axios
+    return axios
         .get(
             parseDevHostname(
                 addQueryString(endpoints[DATASETS], q && {
@@ -246,7 +227,7 @@ export const getDatasets = ({
                         return resource;
                     })
             };
-        }));
+        });
 };
 
 export const getDocumentsByDocType = (docType = 'image', {
@@ -257,7 +238,7 @@ export const getDocumentsByDocType = (docType = 'image', {
     ...params
 }) => {
 
-    return requestOptions(MAPS, () => axios
+    return axios
         .get(
             parseDevHostname(
                 addQueryString(endpoints[DOCUMENTS], q && {
@@ -283,7 +264,7 @@ export const getDocumentsByDocType = (docType = 'image', {
                         return resource;
                     })
             };
-        }));
+        });
 };
 
 export const setMapThumbnail = (pk, body) => {
@@ -521,11 +502,7 @@ export const getResourcesTotalCount = () => {
 * @return {promise} it returns an object with the success map object response
 */
 export const createMap = (body = {}) => {
-    return axios.post(parseDevHostname(`${endpoints[MAPS]}`),
-        body,
-        {
-            timeout: 10000
-        })
+    return axios.post(parseDevHostname(`${endpoints[MAPS]}`), body)
         .then(({ data }) => data?.map);
 };
 

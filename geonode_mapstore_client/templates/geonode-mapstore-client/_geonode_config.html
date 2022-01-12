@@ -6,87 +6,81 @@
 {% endcomment %}
 
 {% comment %} setting.py variables {% endcomment %}
-{{ MAP_BASELAYERS|json_script:"settings-MAP_BASELAYERS" }}
-{{ CATALOGUE_SERVICES|json_script:"settings-CATALOGUE_SERVICES" }}
-{{ CATALOGUE_SELECTED_SERVICE|json_script:"settings-CATALOGUE_SELECTED_SERVICE" }}
+{{GEONODE_SETTINGS|json_script:"GEONODE_SETTINGS" }}
 
 {% comment %} menu items {% endcomment %}
 
-{% get_menu_json 'TOPBAR_MENU' as TOPBAR_MENU %}
-{{ TOPBAR_MENU|json_script:"menu-TOPBAR_MENU" }}
-{% get_menu_json 'TOP_MENUBAR_LEFT' as TOP_MENUBAR_LEFT %}
-{{ TOP_MENUBAR_LEFT|json_script:"menu-TOP_MENUBAR_LEFT" }}
-{% get_menu_json 'TOP_MENUBAR_RIGHT' as TOP_MENUBAR_RIGHT %}
-{{ TOP_MENUBAR_RIGHT|json_script:"menu-TOP_MENUBAR_RIGHT" }}
 {% get_menu_json 'CARDS_MENU' as CARDS_MENU %}
 {{ CARDS_MENU|json_script:"menu-CARDS_MENU" }}
 
 <script>
-    {% autoescape off %}
     (function(){
 
+        function checkBoolean(value) {
+            if (value === 'true') {
+                return true;
+            }
+            if (value === 'false') {
+                return false;
+            }
+            return value;
+        }
         function getJSONScriptVariable(id, fallback) {
             const node = document.getElementById(id);
-            return node && JSON.parse(node.textContent) || fallback;
+            return checkBoolean(node && JSON.parse(node.textContent) || fallback);
         }
 
         localStorage.setItem('showPopoverSync', false);
 
-        const username = '{{ user|default:"" }}' || null;
-        const token = '{{ access_token|default:"" }}' || '{{ ACCESS_TOKEN|default:"" }}' || null;
-
-        const topBarMenuItems = getJSONScriptVariable('menu-TOPBAR_MENU', []);
-        const topMenubarLeftItems = getJSONScriptVariable('menu-TOP_MENUBAR_LEFT', []);
-        const topMenubarRightItems = getJSONScriptVariable('menu-TOP_MENUBAR_RIGHT', []);
         const cardsMenuItems = getJSONScriptVariable('menu-CARDS_MENU', []);
-        const baseLayers = getJSONScriptVariable('settings-MAP_BASELAYERS', []);
-        const catalogueServices = getJSONScriptVariable('settings-CATALOGUE_SERVICES', {});
-        const catalogueSelectedService = getJSONScriptVariable('settings-CATALOGUE_SELECTED_SERVICE', '');
+        const geoNodeSettings = getJSONScriptVariable('GEONODE_SETTINGS', {});
+
+        const baseLayers = geoNodeSettings.MAP_BASELAYERS || [];
+        const baseLayersSources = geoNodeSettings.MAP_BASELAYERS_SOURCES || {};
+        const defaultMapCRS = geoNodeSettings.DEFAULT_MAP_CRS || 'EPSG:3857';
+        const defaultMapCenterX = geoNodeSettings.DEFAULT_MAP_CENTER_X || 0;
+        const defaultMapCenterY = geoNodeSettings.DEFAULT_MAP_CENTER_Y || 0;
+        const defaultMapZoom = geoNodeSettings.DEFAULT_MAP_ZOOM || 0;
+        const defaultTileSize = geoNodeSettings.DEFAULT_TILE_SIZE || 512;
+        const defaultLayerFormat = geoNodeSettings.DEFAULT_LAYER_FORMAT || 'image/png';
+        const catalogueServices = geoNodeSettings.CATALOGUE_SERVICES || {};
+        const catalogueSelectedService = geoNodeSettings.CATALOGUE_SELECTED_SERVICE || '';
+
+        const isEmbed = checkBoolean('{{ is_embed }}') || false;
+        const pluginsConfigKey = '{{ plugins_config_key }}';
+        const siteUrl = '{{ SITEURL }}' || '';
+        const siteName = '{{ SITE_NAME }}' || 'Geonode';
+        const geoServerPublicLocation = '{{ GEOSERVER_PUBLIC_LOCATION }}' || '';
 
         window.__GEONODE_CONFIG__ = {
             languageCode: '{{ LANGUAGE_CODE }}',
             resourceId: '{{ resource.pk|default:"" }}',
             resourceType: '{{ resource.resource_type|default:"" }}',
-            {% if is_app %}
-                resourceConfig: {{ config|default:'false'|safe }},
-            {% else %}
-                resourceConfig: {{ ms2_config|default:'false'|safe }},
-            {% endif %}
-            isNewResource: {{ is_new_resource|default:'false'|safe }},
-            isEmbed: {{ is_embed|default:'false'|safe }},
-            perms: {{ perms_list|default:'[]' }},
-            pluginsConfigKey: '{{ plugins_config_key|default:"" }}',
-            userDetails: username && token && {
-                user: {
-                    name: username
-                },
-                token: token
-            },
+            isEmbed: isEmbed,
+            pluginsConfigKey: pluginsConfigKey,
             localConfig: {
                 proxyUrl: {
                     url: '{{ PROXY_URL|default:"/proxy/?url=" }}',
                     useCORS: []
                 },
-                printUrl: '{{ GEOSERVER_PUBLIC_LOCATION }}pdf/info.json',
+                printUrl: geoServerPublicLocation + 'pdf/info.json',
                 bingApiKey: '{% bing_api_key %}',
                 geoNodeApi: {
-                    endpointV1: '{{ SITEURL }}api',
-                    endpointV2: '{{ SITEURL }}api/v2'
+                    endpointV1: siteUrl + 'api',
+                    endpointV2: siteUrl + 'api/v2'
                 },
                 // the properties inside geoNodeSettings are stored in the state
                 // and accessible by the monitored state with state('settings')
                 geoNodeSettings: {
                     catalogueSelectedService: catalogueSelectedService,
                     catalogueServices: catalogueServices,
-                    geonodeUrl: '{{ SITEURL }}',
-                    geoserverUrl: '{{ OGC_SERVER.default.PUBLIC_LOCATION|default:"" }}',
-                    siteName: '{{ SITE_NAME|default:"Geonode" }}'
+                    geonodeUrl: siteUrl,
+                    geoserverUrl: geoServerPublicLocation,
+                    siteName: siteName,
+                    defaultTileSize: defaultTileSize,
+                    defaultLayerFormat: defaultLayerFormat
                 },
                 geoNodeConfiguration: {
-                    menu: {
-                        items: [...topBarMenuItems, ...topMenubarLeftItems],
-                        rightItems: topMenubarRightItems
-                    },
                     cardsMenu: {
                         items: cardsMenuItems
                     }
@@ -94,13 +88,20 @@
             }, 
         };
 
-        
-
         // override maps configuration with properties from setting.py
         window.overrideNewMapConfig = function(config) {
             if (config && config.map && config.map.layers) {
                 config.map.layers.push(...baseLayers);
             }
+            config.map.sources = baseLayersSources;
+            config.map.projection = defaultMapCRS;
+            config.map.center = {
+                x: defaultMapCenterX,
+                y: defaultMapCenterY,
+                crs: defaultMapCRS
+            };
+            config.map.zoom = defaultMapZoom;
+
             config.catalogServices = config.catalogServices || { services: {} };
             if (catalogueServices) {
                 config.catalogServices.services = Object.assign(config.catalogServices.services || {}, catalogueServices);
@@ -115,7 +116,6 @@
         // window.overrideNewGeoStoryConfig = function(config) { return config; };
 
     })();
-    {% endautoescape %}
 </script>
 {% block override_local_config %}
 {% comment %}

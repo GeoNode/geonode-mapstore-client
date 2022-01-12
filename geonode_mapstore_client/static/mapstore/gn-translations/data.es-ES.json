@@ -35,6 +35,7 @@
             "geostories": "GeoStories",
             "createGeostory": "Crear geostory",
             "createNew": "Crear nuevo",
+            "addResource": "Agregar recurso",
             "about": "Acerca de",
             "people": "Personas",
             "groups": "Grupos",
@@ -227,7 +228,8 @@
             "deleteStyleTitle": "Eliminar estilo",
             "deleteStyleMessage": "¿Está seguro de que desea eliminar este estilo?",
             "deleteStyleCancel": "No, no lo elimines",
-            "deleteStyleConfirm": "Sí, estoy seguro"
+            "deleteStyleConfirm": "Sí, estoy seguro",
+            "applyStyle": "Aplicar"
         }
     }
 }

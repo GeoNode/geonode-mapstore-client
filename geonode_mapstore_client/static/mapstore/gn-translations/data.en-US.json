@@ -35,6 +35,7 @@
             "createGeostory": "Create geostory",
             "createDashboard": "Create dashboard",
             "createNew": "Create new",
+            "addResource": "Add Resource",
             "maps": "Maps",
             "about": "About",
             "people": "People",
@@ -229,7 +230,8 @@
             "deleteStyleTitle": "Delete style",
             "deleteStyleMessage": "Are you sure you want to delete this style?",
             "deleteStyleCancel": "No, don't delete it",
-            "deleteStyleConfirm": "Yes, I'm sure"
+            "deleteStyleConfirm": "Yes, I'm sure",
+            "applyStyle": "Apply"
         }
     }
 }

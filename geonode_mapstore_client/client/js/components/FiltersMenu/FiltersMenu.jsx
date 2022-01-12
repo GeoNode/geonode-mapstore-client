@@ -71,7 +71,7 @@ const FiltersMenu = forwardRef(({
                     <Menu
                         items={cardsMenu}
                         containerClass={`gn-menu-list`}
-                        size="sm"
+                        size="md"
                         alignRight
                     />
                     <Button

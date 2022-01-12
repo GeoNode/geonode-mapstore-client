@@ -35,6 +35,7 @@
             "geostories": "GeoStories",
             "createGeostory": "Crear geostory",
             "createNew": "Crear nuevo",
+            "addResource": "Agregar recurso",
             "about": "Acerca de",
             "people": "Personas",
             "groups": "Grupos",
@@ -235,7 +236,8 @@
             "syncSuccessMessage": "Sincronizado correctamente",
             "syncWarningTitle": "No se pudieron sincronizar algunos recursos",
             "syncErrorMessage": "Error al sincronizar recursos",
-            "syncWarningMessage": "El proceso de sincronización actualizó los siguientes recursos: {successTitles}. No se pudieron actualizar los siguientes recursos: {errorTitles}. Esto puede deberse a que los recursos se han eliminado de la base de datos."
+            "syncWarningMessage": "El proceso de sincronización actualizó los siguientes recursos: {successTitles}. No se pudieron actualizar los siguientes recursos: {errorTitles}. Esto puede deberse a que los recursos se han eliminado de la base de datos.",
+            "applyStyle": "Aplicar"
         }
     }
 }

@@ -26,8 +26,11 @@ import {
 } from '@js/actions/visualstyleeditor';
 import { saveDirectContent } from '@js/actions/gnsave';
 import tinycolor from 'tinycolor2';
-import { isNewResource } from '@js/selectors/resource';
 import { parseStyleName, parseMetadata } from '@js/utils/ResourceUtils';
+
+/**
+* @module epics/visualstyleeditor
+*/
 
 function getBaseCSSStyle({ type, title }) {
     const color = tinycolor(`hsl(${Math.floor(Math.random() * 270)}, 90%, 70%)`).toHexString();
@@ -119,26 +122,27 @@ export const gnRequestDatasetAvailableStyles = (action$, store) =>
         .switchMap((action) => {
             const state = store.getState();
             const styleService = action?.options?.styleService || styleServiceSelector(state);
-            return Observable.defer(() => getGeoNodeStyles({ layer: action.layer, styleService }))
-                .switchMap(([styles, update]) => {
-                    const style = action?.options?.style || styles?.[0]?.name;
-                    return Observable.concat(
-                        Observable.of(setControlProperty('visualStyleEditor', 'enabled', true)),
-                        Observable.defer(() => StylesAPI.getStylesInfo({
-                            baseUrl: styleService?.baseUrl,
-                            styles
-                        }))
-                            .switchMap((availableStyles) => {
-                                return Observable.of(
-                                    updateNode(action.layer.id, 'layer', { availableStyles }),
-                                    updateSettingsParams({ style }, true),
-                                    updateAdditionalLayer(action.layer.id, STYLE_OWNER_NAME, 'override', {}),
-                                    updateStatus('edit'),
-                                    ...(update && !isNewResource(state)  ? [saveDirectContent()] : [])
-                                );
-                            })
-                    );
-                });
+            return Observable.concat(
+                Observable.of(setControlProperty('visualStyleEditor', 'enabled', true)),
+                Observable.defer(() => getGeoNodeStyles({ layer: action.layer, styleService }))
+                    .switchMap(([styles]) => {
+                        const style = action?.options?.style || styles?.[0]?.name;
+                        return Observable.concat(
+                            Observable.defer(() => StylesAPI.getStylesInfo({
+                                baseUrl: styleService?.baseUrl,
+                                styles
+                            }))
+                                .switchMap((availableStyles) => {
+                                    return Observable.of(
+                                        updateNode(action.layer.id, 'layer', { availableStyles }),
+                                        updateSettingsParams({ style }, true),
+                                        updateAdditionalLayer(action.layer.id, STYLE_OWNER_NAME, 'override', {}),
+                                        updateStatus('edit')
+                                    );
+                                })
+                        );
+                    })
+            );
         });
 
 export const gnCreateStyle = (action$, store) =>

@@ -29,8 +29,23 @@ import url from 'url';
 import axios from '@mapstore/framework/libs/ajax';
 
 let actionListeners = {};
-// Add a taget url here to fix proxy issue
-const targetURL = '';
+// Target url here to fix proxy issue
+let targetURL = '';
+const getTargetUrl = () => {
+    if (!__DEVTOOLS__) {
+        return '';
+    }
+    if (targetURL) {
+        return targetURL;
+    }
+    const geonodeUrl = getConfigProp('geoNodeSettings')?.geonodeUrl || '';
+    if (!geonodeUrl) {
+        return '';
+    }
+    const { host, protocol } = url.parse(geonodeUrl);
+    targetURL = `${protocol}//${host}`;
+    return targetURL;
+};
 
 export function getVersion() {
     if (!__DEVTOOLS__) {
@@ -62,10 +77,11 @@ export function initializeApp() {
                     }
                 };
             }
-            if (__DEVTOOLS__ && targetURL && config.url?.match(targetURL)?.[0]) {
+            const tUrl = getTargetUrl();
+            if (tUrl && config.url?.match(tUrl)?.[0]) {
                 return {
                     ...config,
-                    url: config.url.replace(targetURL, '')
+                    url: config.url.replace(tUrl, '')
                 };
             }
             return config;
@@ -104,9 +120,6 @@ export function setupConfiguration({
         ...config
     } = localConfig;
     const geoNodePageConfig = window.__GEONODE_CONFIG__ || {};
-    const perms = geoNodePageConfig.perms || [];
-    const canEdit = geoNodePageConfig.isNewResource || perms.indexOf('change_resourcebase') !== -1;
-    const canView = geoNodePageConfig.isNewResource || perms.indexOf('view_resourcebase') !== -1;
     Object.keys(config).forEach((key) => {
         setConfigProp(key, config[key]);
     });
@@ -120,7 +133,6 @@ export function setupConfiguration({
     setConfigProp('locale', locale);
     const geoNodeResourcesInfo = getConfigProp('geoNodeResourcesInfo') || {};
     setConfigProp('geoNodeResourcesInfo', { ...geoNodeResourcesInfo, ...resourcesTotalCount });
-    const userDetails = geoNodePageConfig.userDetails;
     const securityState = user?.info?.access_token
         ? {
             security: {
@@ -128,9 +140,7 @@ export function setupConfiguration({
                 token: user.info.access_token
             }
         }
-        : userDetails
-            ? { security: userDetails }
-            : undefined;
+        : undefined;
 
     // globlal window interface to interact with the django page
     const actionTrigger = generateActionTrigger(LOCATION_CHANGE);
@@ -164,10 +174,6 @@ export function setupConfiguration({
         pluginsConfigKey: query.config || geoNodePageConfig.pluginsConfigKey,
         mapType: geoNodePageConfig.mapType,
         settings: localConfig.geoNodeSettings,
-        permissions: {
-            canEdit,
-            canView
-        },
         onStoreInit: (store) => {
             store.addActionListener((action) => {
                 const act = action.type === 'PERFORM_ACTION' && action.action || action; // Needed to works also in debug

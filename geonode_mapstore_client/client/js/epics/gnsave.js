@@ -53,7 +53,8 @@ import {
     getResourceData,
     getResourceId,
     getDataPayload,
-    getCompactPermissions
+    getCompactPermissions,
+    getResourceThumbnail
 } from '@js/selectors/resource';
 
 import {
@@ -128,6 +129,7 @@ export const gnSaveContent = (action$, store) =>
             const data = getDataPayload(state, contentType);
             const body = {
                 'title': action.metadata.name,
+                ...(action.metadata.thumbnail && { 'thumbnail_url': action.metadata.thumbnail }),
                 ...(action.metadata.description && { 'abstract': action.metadata.description }),
                 ...(data && { 'data': JSON.parse(JSON.stringify(data)) })
             };
@@ -226,9 +228,11 @@ export const gnSaveDirectContent = (action$, store) =>
                     const geoLimitsErrors = geoLimitsResponses.filter(({ error }) => error);
                     const name = getResourceName(state);
                     const description = getResourceDescription(state);
+                    const thumbnail = getResourceThumbnail(state);
                     const metadata = {
                         name: (name) ? name : resource?.title,
                         description: (description) ? description : resource?.abstract,
+                        ...(thumbnail && { thumbnail }),
                         extension: resource?.extension,
                         href: resource?.href
                     };
