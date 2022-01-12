@@ -234,7 +234,10 @@
             "syncErrorTitle": "Cannot sync the current geostory",
             "syncErrorDefault": "Network error",
             "syncSuccessTitle": "Geostory synced",
-            "syncSuccessDefault": "Synchronized successfully"
+            "syncSuccessMessage": "Synchronized successfully",
+            "syncWarningTitle": "Could not sync some resources",
+            "syncErrorMessage": "Failed to sync resources",
+            "syncWarningMessage": "The sync process updated following resources: {successTitles}. Could not update the following resources: {errorTitles}. This may be because the resources have been deleted from the database"
         }
     }
 }

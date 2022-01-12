@@ -233,7 +233,10 @@
             "syncErrorTitle": "Die aktuelle Geostory kann nicht synchronisiert werden",
             "syncErrorDefault": "Netzwerkfehler",
             "syncSuccessTitle": "Geostory synchronisiert",
-            "syncSuccessDefault": "Erfolgreich synchronisiert"
+            "syncSuccessMessage": "Erfolgreich synchronisiert",
+            "syncWarningTitle": "Einige Ressourcen konnten nicht synchronisiert werden",
+            "syncErrorMessage": "Fehler beim Synchronisieren der Ressourcen",
+            "syncWarningMessage": "Der Synchronisierungsprozess hat die folgenden Ressourcen aktualisiert: {successTitles}. Die folgenden Ressourcen konnten nicht aktualisiert werden: {errorTitles}. Dies kann daran liegen, dass die Ressourcen aus der Datenbank gelöscht wurden"
         }
     }
 }

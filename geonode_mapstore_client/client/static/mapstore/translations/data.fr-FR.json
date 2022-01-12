@@ -233,7 +233,10 @@
             "syncErrorTitle": "Impossible de synchroniser la géohistoire actuelle",
             "syncErrorDefault": "Erreur réseau",
             "syncSuccessTitle": "Géohistoire synchronisée",
-            "syncSuccessDefault": "Synchronisé avec succès"
+            "syncSuccessMessage": "Synchronisé avec succès",
+            "syncWarningTitle": "Impossible de synchroniser certaines ressources",
+            "syncErrorMessage": "Échec de la synchronisation des ressources",
+            "syncWarningMessage": "Le processus de synchronisation a mis à jour les ressources suivantes : {successTitles}. Impossible de mettre à jour les ressources suivantes : {errorTitles}. Cela peut être dû au fait que les ressources ont été supprimées de la base de données"
         }
     }
 }

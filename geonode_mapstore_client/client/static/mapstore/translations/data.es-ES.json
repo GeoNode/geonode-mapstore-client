@@ -232,7 +232,10 @@
             "syncErrorTitle": "No se puede sincronizar la geohistoria actual",
             "syncErrorDefault": "Error de red",
             "syncSuccessTitle": "Geohistoria sincronizada",
-            "syncSuccessDefault": "Sincronizado correctamente"
+            "syncSuccessMessage": "Sincronizado correctamente",
+            "syncWarningTitle": "No se pudieron sincronizar algunos recursos",
+            "syncErrorMessage": "Error al sincronizar recursos",
+            "syncWarningMessage": "El proceso de sincronización actualizó los siguientes recursos: {successTitles}. No se pudieron actualizar los siguientes recursos: {errorTitles}. Esto puede deberse a que los recursos se han eliminado de la base de datos."
         }
     }
 }
