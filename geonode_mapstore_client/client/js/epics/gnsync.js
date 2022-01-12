@@ -8,18 +8,21 @@
 
 import { Observable } from 'rxjs';
 import axios from '@mapstore/framework/libs/ajax';
+import { merge } from 'lodash';
 import { SYNC_RESOURCES } from '@js/actions/gnsync';
 import {
-    savingResource, saveSuccess, saveError
+    savingResource, saveSuccess
 } from '@js/actions/gnsave';
-import { getViewedResourceType, getGeonodeResourceDataFromGeostory } from '@js/selectors/resource';
+import { getViewedResourceType, getGeonodeResourceDataFromGeostory, getGeonodeResourceFromDashboard } from '@js/selectors/resource';
 import { getMapByPk, getDocumentByPk } from '@js/api/geonode/v2';
 import { editResource } from '@mapstore/framework/actions/geostory';
 import {
-    error as errorNotification,
-    success as successNotification
-    // warning as warningNotification
+    show as showNotification,
+    error as errorNotification
 } from '@mapstore/framework/actions/notifications';
+import { parseMapConfig } from '@js/utils/ResourceUtils';
+import { dashboardResource, originalDataSelector } from '@mapstore/framework/selectors/dashboard';
+import { dashboardLoaded } from '@mapstore/framework/actions/dashboard';
 
 const getRelevantResourceParams = (resourceType, state) => {
     let resources = [];
@@ -29,7 +32,7 @@ const getRelevantResourceParams = (resourceType, state) => {
         return resources;
     }
     case 'dashboard': {
-        // resources = getGeonodeResourceDataFromGeostory(state);
+        resources = getGeonodeResourceFromDashboard(state);
         return resources;
     }
     default:
@@ -44,20 +47,49 @@ const setResourceApi = {
 };
 
 /**
- * Reformat responds object to match fields in resource object
- * @param {*} dataObj response object
- * @param  {...string} wantedFields fields in resource object
+ * Get resource type and data for state update in sync process
+ * @param {String} appType geostory or dashboard
+ * @param {Object} resourceData Resource Object
+ * @param {Optional: Array} successArr Array of success responses only used in case of dashboard
  * @returns {Object}
  */
-const filterObj = (dataObj, ...wantedFields) => {
-    const newResponseObj = {};
-    Object.keys(dataObj).forEach((element) => {
-        if (wantedFields.includes(element)) {
-            newResponseObj[element] = dataObj[element];
-        }
-    });
+const getSyncInfo = (appType, resourceData, successArr = []) => {
+    let type = '';
+    let updatedData = {};
 
-    return newResponseObj;
+
+    if (appType === 'geostory') {
+        type = resourceData.subtype || resourceData.resource_type;
+        updatedData = type === 'image' ? { ...parseMapConfig(resourceData, resourceData, type) } : parseMapConfig(resourceData, null, type);
+
+    } else if (appType === 'dashboard') {
+        const updatedWidgets = resourceData.widgets?.map((widget) => {
+            const currentWidget = successArr.find(res => !!(res.data.pk === widget.map?.extraParams?.pk));
+            if (currentWidget) {
+                return { ...widget, map: { ...widget.map, ...currentWidget.data.data.map } };
+            }
+
+            return { ...widget };
+        });
+        updatedData = merge(resourceData, { widgets: updatedWidgets });
+    }
+
+    return { type, data: updatedData };
+};
+
+/**
+ * Get notification title, leve, and message for showNotification
+ * @param {Number} errors length of errors array
+ * @param {Number} successes length of success arra
+ * @returns {Object}
+ */
+const getNotificationInfo = (errors, successes) => {
+    let verdict = 'Success';
+    if (errors > 0 && successes > 0) verdict = 'Warning';
+    else if (errors === 0 && successes > 0) verdict = 'Success';
+    else if (errors > 0 && successes === 0) verdict = 'Error';
+
+    return {level: verdict.toLowerCase(), title: `gnviewer.sync${verdict}Title`, message: `gnviewer.sync${verdict}Message`};
 };
 
 /**
@@ -73,28 +105,57 @@ export const gnSyncComponentsWithResources = (action$, store) => action$.ofType(
         const resources = getRelevantResourceParams(resourceType, state);
 
         return Observable.defer(() =>
-            axios.all(resources.map((resource) => setResourceApi[resource.type](resource.id)))
-                .then(data => data)
-        ).switchMap(updatedResources => {
-            let currentResource;
-            let newResourceData = {};
+            axios.all(resources.map((resource) => (resourceType === 'geostory' ?
+                setResourceApi[resource.type](resource.id)
+                : getMapByPk(resource.map.extraParams.pk)).then(data => ({ data, status: 'success', title: data.title }))
+                .catch(() => ({ data: resource, status: 'error', title: resource.data.title }))
+            )))
+            .switchMap(updatedResources => {
 
-            resources.forEach((resource, index) => {
-                currentResource = updatedResources.filter(res => res.pk === resource.id);
-                newResourceData[index] = { ...resource.data, ...(currentResource?.[0]?.data?.map || currentResource[0] || {}) };
-                newResourceData[index].description = currentResource[0].abstract?.replace(/<\/?[^>]+(>|$)/g, "");
-                return resource;
-            });
+                const errorsResponses = updatedResources.filter(({ status }) => status === 'error');
+                const successResponses = updatedResources.filter(({ status }) => status === 'success');
 
-            return Observable.of(...resources.map((resource, index) => {
-                return editResource(resource.id, resource.type, filterObj(newResourceData[index], ...Object.keys(resource.data)));
-            }), saveSuccess(), successNotification({ title: 'gnviewer.syncSuccessTitle', message: 'gnviewer.syncSuccessDefault' }));
-        }).catch((error) => {
-            return Observable.of(
-                saveError(error.data || error.message),
-                errorNotification({ title: "gnviewer.syncErrorTitle", message: error?.data?.detail || error?.originalError?.message || error?.message || "gnviewer.syncErrorDefault" })
-            );
-        }).startWith(savingResource());
+                const getUpdateActions = () => {
+                    if (successResponses.length === 0) {
+                        return [];
+                    }
+                    if (resourceType === 'geostory') {
+                        return successResponses.map(({ data }) => {
+                            const { type, data: updatedData } = getSyncInfo('geostory', data);
+                            return editResource(data.pk, type, updatedData);
+                        });
+                    }
+                    if (resourceType === 'dashboard') {
+                        const originalData = originalDataSelector(state);
+                        const { data: newResourceData } = getSyncInfo('dashboard', originalData, successResponses);
+                        return [dashboardLoaded(dashboardResource(state), newResourceData)];
+                    }
+                    return [];
+                };
+
+                const updateActions = getUpdateActions();
+
+                // notification action into
+                const {level, title, message} = getNotificationInfo(errorsResponses.length, successResponses.length);
+
+                return Observable.of(
+                    ...updateActions,
+                    saveSuccess(),
+                    showNotification({
+                        title,
+                        message,
+                        values: {
+                            successTitles: successResponses.map((response) => response.title)?.join(', '),
+                            errorTitles: errorsResponses.map((resource) => resource.title)?.join(', ')
+                        }
+                    }, level)
+                );
+            }).catch((error) => {
+                return Observable.of(
+                    saveSuccess(),
+                    errorNotification({ title: "gnviewer.syncErrorTitle", message: error?.data?.detail || error?.originalError?.message || error?.message || "gnviewer.syncErrorDefault" })
+                );
+            }).startWith(savingResource());
     });
 
 

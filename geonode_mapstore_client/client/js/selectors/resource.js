@@ -10,6 +10,7 @@ import { mapSelector } from '@mapstore/framework/selectors/map';
 import { mapSaveSelector } from '@mapstore/framework/selectors/mapsave';
 import { compareMapChanges } from '@mapstore/framework/utils/MapUtils';
 import { currentStorySelector } from '@mapstore/framework/selectors/geostory';
+import { originalDataSelector } from '@mapstore/framework/selectors/dashboard';
 import { widgetsConfig } from '@mapstore/framework/selectors/widgets';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 import {
@@ -212,4 +213,6 @@ export const getResourceDirtyState = (state) => {
  * @param {Object} state App state
  * @returns {Array} Array of geonode resources
  */
-export const getGeonodeResourceDataFromGeostory = (state) => get(currentStorySelector(state), 'resources', []).filter(res => res.data.sourceId === 'geonode');
+export const getGeonodeResourceDataFromGeostory = (state) => get(currentStorySelector(state), 'resources', []).filter(res => res?.data?.sourceId === 'geonode');
+
+export const getGeonodeResourceFromDashboard = (state) => get(originalDataSelector(state), 'widgets', []).filter(widget => !!(widget.widgetType === 'map' && widget.map?.hasOwnProperty('extraParams')));
