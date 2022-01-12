@@ -69,7 +69,7 @@ const getSyncInfo = (appType, resourceData, successArr = []) => {
                 return { ...widget, map: { ...widget.map, ...currentWidget.data.data.map } };
             }
 
-            return { ...widget };
+            return widget;
         });
         updatedData = merge(resourceData, { widgets: updatedWidgets });
     }
@@ -107,8 +107,8 @@ export const gnSyncComponentsWithResources = (action$, store) => action$.ofType(
         return Observable.defer(() =>
             axios.all(resources.map((resource) => (resourceType === 'geostory' ?
                 setResourceApi[resource.type](resource.id)
-                : getMapByPk(resource.map.extraParams.pk)).then(data => ({ data, status: 'success', title: data.title }))
-                .catch(() => ({ data: resource, status: 'error', title: resource.data.title }))
+                : getMapByPk(resource?.map?.extraParams?.pk)).then(data => ({ data, status: 'success', title: data.title }))
+                .catch(() => ({ data: resource, status: 'error', title: resource?.data?.title ||  resource?.map?.extraParams?.pk }))
             )))
             .switchMap(updatedResources => {
 
