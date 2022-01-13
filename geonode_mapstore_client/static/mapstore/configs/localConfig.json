@@ -836,10 +836,9 @@
                             "name": "Share"
                         },
                         {
-                            "type": "link",
-                            "href": "{'#/map/new?gn-dataset=' + (state('gnResourceData') || {}).pk}",
-                            "labelId": "gnviewer.createMap",
-                            "disableIf": "{!(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}"
+                            "type": "plugin",
+                            "name": "DeleteResource",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
                         },
                         {
                             "type": "divider",
@@ -858,9 +857,10 @@
                             "name": "Measure"
                         },
                         {
-                            "type": "plugin",
-                            "name": "DeleteResource",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                            "type": "link",
+                            "href": "{'#/map/new?gn-dataset=' + (state('gnResourceData') || {}).pk}",
+                            "labelId": "gnviewer.createMap",
+                            "disableIf": "{!(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}"
                         }
                     ],
                     "rightMenuItems": [
@@ -1522,12 +1522,13 @@
                             "name": "Share"
                         },
                         {
-                            "type": "divider",
-                            "authenticated": true
+                            "type": "plugin",
+                            "name": "DeleteResource",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
                         },
                         {
-                            "type": "plugin",
-                            "name": "DatasetsCatalog"
+                            "type": "divider",
+                            "authenticated": true
                         },
                         {
                             "type": "plugin",
@@ -1535,16 +1536,15 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "Annotations"
-                        },
-                        {
-                            "type": "plugin",
                             "name": "Measure"
                         },
                         {
                             "type": "plugin",
-                            "name": "DeleteResource",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                            "name": "Annotations"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "DatasetsCatalog"
                         }
                     ],
                     "rightMenuItems": [
