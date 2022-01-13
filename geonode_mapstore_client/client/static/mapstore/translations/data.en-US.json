@@ -231,7 +231,11 @@
             "deleteStyleMessage": "Are you sure you want to delete this style?",
             "deleteStyleCancel": "No, don't delete it",
             "deleteStyleConfirm": "Yes, I'm sure",
-            "applyStyle": "Apply"
+            "applyStyle": "Apply",
+            "resourceOrigin": {
+                "a": "a",
+                "from": "from"
+            }
         }
     }
 }

@@ -112,6 +112,11 @@
 
             }
         }
+
+        &:last-of-type {
+            padding-top: 0.3rem;
+            font-size: 0.9rem;
+        }
     }
 }
 
@@ -250,7 +255,7 @@
     h1 {
         display: flex;
         word-break: break-word;
-        font-size: 1.1rem;
+        font-size: 1.4rem;
         margin: 0;
         margin-bottom: 0.2rem;
         .fa {
@@ -274,7 +279,12 @@
         align-items: center;
         display: flex;
     }
-
+    .editContainer {
+        h1.gn-text-editable {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    }
 }
 
 .gn-details-panel-meta-text {
@@ -283,10 +293,12 @@
     div {
         display: flex;
         justify-content: space-between;
-        
-        span {
+        align-items: center;
+        * {
+            font-size: 0.8rem;
+        }
+        span.gn-details-panel-origin {
             margin-right: 0.3rem;
-            margin-left: 0.3rem;
         }
     }
 }
@@ -298,6 +310,7 @@
 
 .gn-details-panel-meta-date {
     margin-left: 0.25rem;
+    font-size: 0.8rem;
 }
 
 .gn-details-panel-description {

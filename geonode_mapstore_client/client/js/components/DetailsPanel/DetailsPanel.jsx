@@ -432,6 +432,16 @@ function DetailsPanel({
 
     ];
 
+    const ResourceMessage = ({ type }) => {
+        return (<span className="gn-details-panel-origin">
+            <Message msgId="gnviewer.resourceOrigin.a" />{' '}<a href={formatHref({
+                query: {
+                    'filter{resource_type.in}': type
+                }
+            })} title="Search all similar resources">{type || 'resource'}</a>{' '}<Message msgId="gnviewer.resourceOrigin.from" />{' '}
+        </span>);
+    };
+
     return (
         <div
             ref={detailsContainerNode}
@@ -590,11 +600,9 @@ function DetailsPanel({
                         {<p className="gn-details-panel-meta-text">
                             {resource?.owner &&  <div>{resource?.owner.avatar &&
                             <img src={resource?.owner.avatar} alt={getUserName(resource?.owner)} className="gn-card-author-image" />
-                            }<span>A <a href={formatHref({
-                                query: {
-                                    'filter{resource_type.in}': resource?.resource_type
-                                }
-                            })} title="Search all similar resources">{extractResourceString(resource?.resource_type)}</a> By </span><AuthorInfo resource={resource} formatHref={formatHref} style={{margin: 0}} detailsPanel /></div>}
+                            }
+                            <ResourceMessage type={resource?.resource_type} />
+                            <AuthorInfo resource={resource} formatHref={formatHref} style={{ margin: 0 }} detailsPanel /></div>}
                             {(resource?.date_type && resource?.date)
                             && <div className="gn-details-panel-meta-date">{' '}/{' '}{moment(resource.date).format('MMMM Do YYYY')}</div>}
                         </p>
