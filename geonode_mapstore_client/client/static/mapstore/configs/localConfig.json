@@ -1540,11 +1540,11 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "DatasetsCatalog"
+                            "name": "Annotations"
                         },
                         {
                             "type": "plugin",
-                            "name": "Annotations"
+                            "name": "DatasetsCatalog"
                         }
                     ],
                     "rightMenuItems": [
