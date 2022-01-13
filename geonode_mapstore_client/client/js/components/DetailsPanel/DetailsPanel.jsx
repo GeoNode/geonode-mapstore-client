@@ -12,7 +12,6 @@ import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
 import Tabs from '@js/components/Tabs';
 import DefinitionList from '@js/components/DefinitionList';
-import Table from '@js/components/Table';
 import Spinner from '@js/components/Spinner';
 import Message from '@mapstore/framework/components/I18N/Message';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
@@ -28,6 +27,7 @@ import mapTypeHOC from '@mapstore/framework/components/map/enhancers/mapType';
 import { boundsToExtentString, getFeatureFromExtent } from '@js/utils/CoordinatesUtils';
 import AuthorInfo from '@js/components/AuthorInfo/AuthorInfo';
 import Loader from '@mapstore/framework/components/misc/Loader';
+import { getUserName } from '@js/utils/SearchUtils';
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = 'Map';
@@ -107,20 +107,11 @@ function ThumbnailPreview({
 }
 
 
-const DefinitionListMoreItem = ({itemslist, extraItemsList}) => {
-
-    const [extraItems, setExtraItems] = useState(false);
-    const handleMoreInfo = () => {
-        setExtraItems(!extraItems);
-    };
+const DefinitionListContainer = ({itemslist}) => {
 
     return (
         <div className="DList-containner">
             <DefinitionList itemslist={itemslist} />
-
-            { extraItemsList.length > 0 && <a className={"moreinfo"} href="javascript:void(0);"  onClick={handleMoreInfo}><Message msgId={"gnviewer.moreinfo"} /></a> }
-
-            {extraItemsList.length > 0 && extraItems && <DefinitionList itemslist={extraItemsList} />}
         </div>
 
 
@@ -285,7 +276,6 @@ function DetailsPanel({
     const detailUrl = resource?.pk && formatDetailUrl(resource);
     const resourceCanPreviewed = resource?.pk && canPreviewed && canPreviewed(resource);
     const documentDownloadUrl = (resource?.href && resource?.href.includes('download')) ? resource?.href : undefined;
-    const attributeSet = resource?.attribute_set;
     const metadataDetailUrl = resource?.pk && getMetadataDetailUrl(resource);
 
     const [enableMapViewer, setEnableMapViewer] = useState(false);
@@ -437,28 +427,10 @@ function DetailsPanel({
     const itemsTab = [
         {
             title: <Message msgId={"gnviewer.info"} />,
-            data: <DefinitionListMoreItem itemslist={infoField} extraItemsList={extraItemsList} />
+            data: <DefinitionListContainer itemslist={[...infoField, ...extraItemsList]} />
         }
 
     ];
-
-    const tableHead = [{
-        key: "attribute",
-        value: <Message msgId={"gnviewer.attributeName"} />
-    },
-    {
-        key: "attribute_label",
-        value: <Message msgId={"gnviewer.label"} />
-    },
-    {
-        key: "description",
-        value: <Message msgId={"gnviewer.description"} />
-    }];
-
-    (attributeSet) ? itemsTab.push({
-        title: <Message msgId={"gnviewer.attributes"} />,
-        data: <Table head={tableHead} body={attributeSet} />
-    }) : undefined;
 
     return (
         <div
@@ -616,19 +588,19 @@ function DetailsPanel({
                         </div>
                         <ResourceStatus resource={resource} />
                         {<p className="gn-details-panel-meta-text">
-                            {resource?.owner &&  <AuthorInfo resource={resource} formatHref={formatHref} style={{margin: 0}} />}
+                            {resource?.owner &&  <div>{resource?.owner.avatar &&
+                            <img src={resource?.owner.avatar} alt={getUserName(resource?.owner)} className="gn-card-author-image" />
+                            }<span>A <a href={formatHref({
+                                query: {
+                                    'filter{resource_type.in}': resource?.resource_type
+                                }
+                            })} title="Search all similar resources">{extractResourceString(resource?.resource_type)}</a> By </span><AuthorInfo resource={resource} formatHref={formatHref} style={{margin: 0}} detailsPanel /></div>}
                             {(resource?.date_type && resource?.date)
                             && <div className="gn-details-panel-meta-date">{' '}/{' '}{moment(resource.date).format('MMMM Do YYYY')}</div>}
                         </p>
                         }
 
                         <EditAbstract disabled={!activeEditMode} tagName="span" abstract={resource?.abstract} onEdit={editAbstract} />
-                        <p className="gn-details-panel-type"><Message msgId="gnhome.reasourceType" />: <a href={formatHref({
-                            query: {
-                                'filter{resource_type.in}': resource.resource_type
-                            }
-                        })} title="Search all similar resources">{extractResourceString(resource.resource_type)}</a>
-                        </p>
                         <p>
                             {resource?.category?.identifier && <div>
                                 <Message msgId="gnhome.category" />:{' '}
