@@ -11,7 +11,7 @@ import {
     getDocumentsByDocType,
     getMapByPk
 } from '@js/api/geonode/v2';
-import { parseMapConfig } from '@js/utils/ResourceUtils';
+import { parseMapConfig, parseDocumentConfig } from '@js/utils/ResourceUtils';
 
 /**
  * Get promise of Image dimensions
@@ -53,7 +53,7 @@ const loadMediaList = {
                 return {
                     id: resource.pk,
                     type: 'image',
-                    data: parseMapConfig(newResource, null, 'image')
+                    data: parseDocumentConfig(newResource)
                 };
             });
             const selectedResource = resources.find((resource) => resource.id === selectedId);
@@ -98,7 +98,7 @@ const loadMediaList = {
                 return {
                     id: resource.pk,
                     type: 'video',
-                    data: parseMapConfig(newResource, null, 'video')
+                    data: parseDocumentConfig(newResource)
                 };
             });
 

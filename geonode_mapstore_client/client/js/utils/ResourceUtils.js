@@ -528,25 +528,32 @@ export const parseMetadata = ({ entry } = {}) => {
 };
 
 /**
+ * Parse document response object (for image and video)
+ * @param {Object} docResponse api response object
+ * @param {Object} resource optional resource object
+ * @returns {Object} new document config object
+ */
+export const parseDocumentConfig = (docResponse, resource = {}) => {
+
+    return {
+        thumbnail: docResponse.thumbnail_url,
+        src: docResponse.href,
+        title: docResponse.title,
+        description: docResponse.raw_abstract,
+        credits: docResponse.attribution,
+        sourceId: docResponse.sourceId || 'geonode',
+        ...((docResponse.subtype || docResponse.type) === 'image' &&
+            { alt: docResponse.alternate, src: docResponse.href, ...(resource?.imgHeight && { imgHeight: resource?.imgHeight, imgWidth: resource?.imgWidth }) })
+    };
+};
+
+/**
  * Parse map response object
  * @param {Object} mapResponse api response object
  * @param {Object} resource optional resource object
- * @returns {Object} new mao config object
+ * @returns {Object} new map config object
  */
-export const parseMapConfig = (mapResponse, resource = {}, type = 'map') => {
-
-    if (type !== 'map') {
-        return {
-            thumbnail: mapResponse.thumbnail_url,
-            src: mapResponse.href,
-            title: mapResponse.title,
-            description: mapResponse.raw_abstract,
-            credits: mapResponse.attribution,
-            sourceId: mapResponse.sourceId || 'geonode',
-            ...((mapResponse.subtype || mapResponse.type) === 'image' &&
-                { alt: mapResponse.alternate, src: mapResponse.href, ...(resource?.imgHeight && {imgHeight: resource?.imgHeight, imgWidth: resource?.imgWidth})})
-        };
-    }
+export const parseMapConfig = (mapResponse, resource = {}) => {
 
     const { data, pk: id } = mapResponse;
     const config = data;

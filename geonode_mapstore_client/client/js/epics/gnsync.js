@@ -20,7 +20,7 @@ import {
     show as showNotification,
     error as errorNotification
 } from '@mapstore/framework/actions/notifications';
-import { parseMapConfig } from '@js/utils/ResourceUtils';
+import { parseMapConfig, parseDocumentConfig } from '@js/utils/ResourceUtils';
 import { dashboardResource, originalDataSelector } from '@mapstore/framework/selectors/dashboard';
 import { dashboardLoaded } from '@mapstore/framework/actions/dashboard';
 
@@ -60,7 +60,7 @@ const getSyncInfo = (appType, resourceData, successArr = []) => {
 
     if (appType === 'geostory') {
         type = resourceData.subtype || resourceData.resource_type;
-        updatedData = type === 'image' ? { ...parseMapConfig(resourceData, resourceData, type) } : parseMapConfig(resourceData, null, type);
+        updatedData = type !== 'map' ? parseDocumentConfig(resourceData, resourceData) : parseMapConfig(resourceData);
 
     } else if (appType === 'dashboard') {
         const updatedWidgets = resourceData.widgets?.map((widget) => {
@@ -108,7 +108,7 @@ export const gnSyncComponentsWithResources = (action$, store) => action$.ofType(
             axios.all(resources.map((resource) => (resourceType === 'geostory' ?
                 setResourceApi[resource.type](resource.id)
                 : getMapByPk(resource?.map?.extraParams?.pk)).then(data => ({ data, status: 'success', title: data.title }))
-                .catch(() => ({ data: resource, status: 'error', title: resource?.data?.title ||  resource?.map?.extraParams?.pk }))
+                .catch(() => ({ data: resource, status: 'error', title: resource?.data?.title ||  resource?.map?.extraParams?.pk || resource?.data?.name }))
             )))
             .switchMap(updatedResources => {
 

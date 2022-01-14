@@ -84,7 +84,7 @@ function parseMapBody(body, map) {
     };
 }
 
-export const SaveAPI = {
+const SaveAPI = {
     [ResourceTypes.MAP]: (state, id, body) => {
         const map =  mapSelector(state) || {};
         return id
