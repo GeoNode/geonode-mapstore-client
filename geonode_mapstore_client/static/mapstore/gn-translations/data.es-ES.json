@@ -229,7 +229,11 @@
             "deleteStyleMessage": "¿Está seguro de que desea eliminar este estilo?",
             "deleteStyleCancel": "No, no lo elimines",
             "deleteStyleConfirm": "Sí, estoy seguro",
-            "applyStyle": "Aplicar"
+            "applyStyle": "Aplicar",
+            "resourceOrigin": {
+                "a": "una",
+                "from": "de"
+            }
         }
     }
 }

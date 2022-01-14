@@ -112,6 +112,11 @@
 
             }
         }
+
+        &:last-of-type {
+            padding-top: 0.3rem;
+            font-size: 0.9rem;
+        }
     }
 }
 
@@ -129,9 +134,16 @@
     }
 }
 .gn-details-panel-content-text {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     p{
         margin-left: 0.2rem;
+        margin-bottom: 0;
+    }
+
+    p:nth-of-type(2) {
+        margin-bottom: 0.3rem;
     }
 }
 .gn-details-panel-info{
@@ -239,13 +251,13 @@
 }
 .gn-details-panel-title {
     display: flex;
-    margin-bottom: 1rem;
     align-items: center;
     h1 {
         display: flex;
         word-break: break-word;
-        font-size: 1rem;
+        font-size: 1.4rem;
         margin: 0;
+        margin-bottom: 0.2rem;
         .fa {
             margin: 0;
             margin-right: 0.6rem;
@@ -267,19 +279,38 @@
         align-items: center;
         display: flex;
     }
-
+    .editContainer {
+        h1.gn-text-editable {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    }
 }
 
 .gn-details-panel-meta-text {
     display: flex;
+
+    div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        * {
+            font-size: 0.8rem;
+        }
+        span.gn-details-panel-origin {
+            margin-right: 0.3rem;
+        }
+    }
 }
 
 .gn-details-panel-type {
     margin-top: 0.25rem;
+    // margin-bottom: 0;
 }
 
 .gn-details-panel-meta-date {
     margin-left: 0.25rem;
+    font-size: 0.8rem;
 }
 
 .gn-details-panel-description {

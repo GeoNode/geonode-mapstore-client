@@ -46,7 +46,7 @@ const FiltersMenu = forwardRef(({
                 <div className="gn-menu-content">
                     <div className="gn-menu-fill">
                         <Button
-                            variant={filtersActive ? 'primary' : 'default'}
+                            variant="primary"
                             size="sm"
                             onClick={onClick}
                         >

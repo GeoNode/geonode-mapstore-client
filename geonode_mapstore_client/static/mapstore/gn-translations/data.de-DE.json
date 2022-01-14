@@ -230,7 +230,11 @@
             "deleteStyleMessage": "Möchten Sie diesen Stil wirklich löschen?",
             "deleteStyleCancel": "Nein, nicht löschen",
             "deleteStyleConfirm": "Ja, ich bin sicher",
-            "applyStyle": "Sich bewerben"
+            "applyStyle": "Sich bewerben",
+            "resourceOrigin": {
+                "a": "eine",
+                "from": "von"
+            }
         }
     }
 }
