@@ -239,7 +239,11 @@
             "syncWarningTitle": "Could not sync some resources",
             "syncErrorMessage": "Failed to sync resources",
             "syncWarningMessage": "The sync process updated following resources: {successTitles}. Could not update the following resources: {errorTitles}. This may be because the resources have been deleted from the database",
-            "applyStyle": "Apply"
+            "applyStyle": "Apply",
+            "resourceOrigin": {
+                "a": "a",
+                "from": "from"
+            }
         }
     }
 }

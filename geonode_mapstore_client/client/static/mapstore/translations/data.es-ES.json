@@ -237,7 +237,11 @@
             "syncWarningTitle": "No se pudieron sincronizar algunos recursos",
             "syncErrorMessage": "Error al sincronizar recursos",
             "syncWarningMessage": "El proceso de sincronización actualizó los siguientes recursos: {successTitles}. No se pudieron actualizar los siguientes recursos: {errorTitles}. Esto puede deberse a que los recursos se han eliminado de la base de datos.",
-            "applyStyle": "Aplicar"
+            "applyStyle": "Aplicar",
+            "resourceOrigin": {
+                "a": "una",
+                "from": "de"
+            }
         }
     }
 }

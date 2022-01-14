@@ -240,7 +240,11 @@
             "syncWarningTitle": "Impossibile sincronizzare alcune risorse",
             "syncErrorMessage": "Impossibile sincronizzare le risorse",
             "syncWarningMessage": "Il processo di sincronizzazione ha aggiornato le seguenti risorse: {successTitles}. Impossibile aggiornare le seguenti risorse: {errorTitles}. Ciò può essere dovuto al fatto che le risorse sono state eliminate dal database",
-            "applyStyle": "Applica"
+            "applyStyle": "Applica",
+            "resourceOrigin": {
+                "a": "una",
+                "from": "di"
+            }
         }
     }
 }
