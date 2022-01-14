@@ -140,6 +140,9 @@ class GeoNodeMapStore2ConfigConverter(BaseMapStore2ConfigConverter):
                     ms2_map_data = json.loads(ms2_map_data)
                 data = ms2_map_data
                 backgrounds = self.getBackgrounds(data, MAP_BASELAYERS)
+                viewerobj_layers = {}
+                for maplayer in viewer_obj['map']['layers']:
+                    viewerobj_layers[maplayer['name']] = maplayer
                 map_layers = []
                 if backgrounds:
                     map_layers.extend(backgrounds)
@@ -147,17 +150,21 @@ class GeoNodeMapStore2ConfigConverter(BaseMapStore2ConfigConverter):
                     if 'group' in layer and layer['group'] == "background":
                         continue
                     else:
-                        layer['featureInfo'] = self.get_layer_featureinfotemplate(layer)
-                        map_layers.append(layer)
+                        # we want to calculate the featuretemplate from updated getfeatureinfo config
+                        # and not from the blob stored in the MapStoreResource entry
+                        layer_ = viewerobj_layers.get(layer['name'])
+                        if layer_:
+                            layer['featureInfo'] = self.get_layer_featureinfotemplate(layer_)
+                            map_layers.append(layer)
                 # the dynamic layer has already been processed by GeoNode upstream views
                 # but we can't tell if it was the one from GET params or not, so we parse it again
                 layer_name = request.GET.get('layer_name')
                 if layer_name:
-                    for lyr in viewer_obj['map']['layers']:
-                        if lyr['name'] == layer_name:
-                            layer_from_request = self.get_overlay(viewer_obj, lyr, get_wfs_endpoint(request))
-                            if layer_from_request:
-                                map_layers.append(layer_from_request)
+                    lyr = viewerobj_layers.get(layer_name)
+                    if lyr:
+                        layer_from_request = self.get_overlay(viewer_obj, lyr, get_wfs_endpoint(request))
+                        if layer_from_request:
+                            map_layers.append(layer_from_request)
                 data['map']['layers'] = map_layers
             except Exception:
                 # traceback.print_exc()
