@@ -47,6 +47,14 @@ export const getResourceThumbnail = (state) => {
     return state?.gnresource?.data?.thumbnail_url || false;
 };
 
+export const updatingThumbnailResource = (state) => {
+    return state?.gnresource?.data?.updatingThumbnail || false;
+};
+
+export const isThumbnailChanged = (state) => {
+    return state?.gnresource?.data?.thumbnailChanged || false;
+};
+
 export const getViewedResourceType = (state) => {
     const viewedResourceType = state?.gnresource?.type || false;
     return viewedResourceType;
@@ -187,11 +195,13 @@ export const getResourceDirtyState = (state) => {
         return null;
     }
     const resourceType = state?.gnresource?.type;
-    const metadataKeys = ['title', 'abstract', 'thumbnail_url', 'data'];
+    const metadataKeys = ['title', 'abstract', 'data'];
     const { data: initialData = {}, ...resource } = pick(state?.gnresource?.initialResource || {}, metadataKeys);
     const { compactPermissions, geoLimits } = getPermissionsPayload(state);
     const currentData = JSON.parse(JSON.stringify(getDataPayload(state) || {})); // JSON stringify is needed to remove undefined values
-    const newMetadata = state?.gnresource?.data || {};
+    // omitting data on thumbnail
+    const thumbnailData = ['thumbnail_url', 'thumbnailChanged', 'updatingThumbnail'];
+    const newMetadata = omit(state?.gnresource?.data, thumbnailData) || {};
     const newResource = pick(newMetadata, metadataKeys);
     const isDataChanged = !isResourceDataEqual(state, initialData, currentData);
     const isMetadataChanged = !!(!isEmpty(newResource) && !isEmpty(resource) && !isEqual(newResource, resource));

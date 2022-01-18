@@ -53,8 +53,7 @@ import {
     getResourceData,
     getResourceId,
     getDataPayload,
-    getCompactPermissions,
-    getResourceThumbnail
+    getCompactPermissions
 } from '@js/selectors/resource';
 
 import {
@@ -129,7 +128,6 @@ export const gnSaveContent = (action$, store) =>
             const data = getDataPayload(state, contentType);
             const body = {
                 'title': action.metadata.name,
-                ...(action.metadata.thumbnail && { 'thumbnail_url': action.metadata.thumbnail }),
                 ...(action.metadata.description && { 'abstract': action.metadata.description }),
                 ...(data && { 'data': JSON.parse(JSON.stringify(data)) })
             };
@@ -189,19 +187,18 @@ export const gnSetMapThumbnail = (action$, store) =>
             return Observable.defer(() => setMapThumbnail(resourceIDThumbnail, body, contentType))
                 .switchMap((res) => {
                     return Observable.of(
-                        updateResourceProperties({...currentResource, thumbnail_url: `${res.thumbnail_url}?${Math.random()}`}),
+                        updateResourceProperties({ ...currentResource, thumbnail_url: `${res.thumbnail_url}?${Math.random()}` }),
                         clearSave(),
-                        ...([successNotification({title: "gnviewer.thumbnailsaved", message: "gnviewer.thumbnailsaved"})])
+                        ...([successNotification({ title: "gnviewer.thumbnailsaved", message: "gnviewer.thumbnailsaved" })])
 
                     );
                 })
                 .catch((error) => {
                     return Observable.of(
                         saveError(error.data),
-                        errorNotification({title: "gnviewer.thumbnailnotsaved", message: "gnviewer.thumbnailnotsaved"})
+                        errorNotification({ title: "gnviewer.thumbnailnotsaved", message: "gnviewer.thumbnailnotsaved" })
                     );
-                })
-                .startWith();
+                });
         });
 export const gnSaveDirectContent = (action$, store) =>
     action$.ofType(SAVE_DIRECT_CONTENT)
@@ -228,11 +225,9 @@ export const gnSaveDirectContent = (action$, store) =>
                     const geoLimitsErrors = geoLimitsResponses.filter(({ error }) => error);
                     const name = getResourceName(state);
                     const description = getResourceDescription(state);
-                    const thumbnail = getResourceThumbnail(state);
                     const metadata = {
                         name: (name) ? name : resource?.title,
                         description: (description) ? description : resource?.abstract,
-                        ...(thumbnail && { thumbnail }),
                         extension: resource?.extension,
                         href: resource?.href
                     };

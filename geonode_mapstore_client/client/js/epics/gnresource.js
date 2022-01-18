@@ -16,7 +16,8 @@ import {
     getGeoAppByPk,
     getDocumentByPk,
     getMapByPk,
-    getCompactPermissionsByPk
+    getCompactPermissionsByPk,
+    setResourceThumbnail
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
 import {
@@ -38,7 +39,8 @@ import {
     loadingResourceConfig,
     resourceConfigError,
     setResourceCompactPermissions,
-    updateResourceProperties
+    updateResourceProperties,
+    SET_RESOURCE_THUMBNAIL
 } from '@js/actions/gnresource';
 
 import {
@@ -63,7 +65,8 @@ import {
 } from '@js/utils/ResourceUtils';
 import {
     canAddResource,
-    getResourceData
+    getResourceData,
+    getResourceThumbnail
 } from '@js/selectors/resource';
 import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallayers';
 import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
@@ -71,6 +74,11 @@ import StylesAPI from '@mapstore/framework/api/geoserver/Styles';
 import { styleServiceSelector } from '@mapstore/framework/selectors/styleeditor';
 import { updateStyleService } from '@mapstore/framework/api/StyleEditor';
 import { resizeMap } from '@mapstore/framework/actions/map';
+import { saveError } from '@js/actions/gnsave';
+import {
+    error as errorNotification,
+    success as successNotification
+} from '@mapstore/framework/actions/notifications';
 
 const resourceTypes = {
     [ResourceTypes.DATASET]: {
@@ -392,7 +400,32 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                 });
         });
 
+export const gnViewerSetNewResourceThumbnail = (action$, store) =>
+    action$.ofType(SET_RESOURCE_THUMBNAIL)
+        .switchMap(() => {
+            const state = store.getState();
+            const newThumbnailData = getResourceThumbnail(state);
+            const resourceIDThumbnail = state?.gnresource?.id;
+            const currentResource = state.gnresource?.data || {};
+
+            const body = {
+                file: newThumbnailData
+            };
+
+            return Observable.defer(() => setResourceThumbnail(resourceIDThumbnail, body))
+                .switchMap((res) => {
+                    return Observable.of(updateResourceProperties({ ...currentResource, thumbnail_url: res.thumbnail_url, thumbnailChanged: false, updatingThumbnail: false }),
+                        successNotification({ title: "gnviewer.thumbnailsaved", message: "gnviewer.thumbnailsaved" }));
+                }).catch((error) => {
+                    return Observable.of(
+                        saveError(error.data || error.message),
+                        errorNotification({ title: "map.mapError.errorTitle", message: "map.mapError.errorDefault" })
+                    );
+                });
+        });
+
 export default {
     gnViewerRequestNewResourceConfig,
-    gnViewerRequestResourceConfig
+    gnViewerRequestResourceConfig,
+    gnViewerSetNewResourceThumbnail
 };

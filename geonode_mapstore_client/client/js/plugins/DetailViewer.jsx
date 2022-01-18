@@ -17,7 +17,8 @@ import {
     editAbstractResource,
     editThumbnailResource,
     setFavoriteResource,
-    setMapThumbnail
+    setMapThumbnail,
+    setResourceThumbnail
 } from '@js/actions/gnresource';
 import FaIcon from '@js/components/FaIcon/FaIcon';
 import controls from '@mapstore/framework/reducers/controls';
@@ -26,7 +27,9 @@ import gnresource from '@js/reducers/gnresource';
 import {
     canEditResource,
     isNewResource,
-    getResourceId
+    getResourceId,
+    isThumbnailChanged,
+    updatingThumbnailResource
 } from '@js/selectors/resource';
 import Button from '@js/components/Button';
 import PropTypes from 'prop-types';
@@ -43,18 +46,23 @@ const ConnectedDetailsPanel = connect(
         state => state?.gnresource?.loading || false,
         state => state?.gnresource?.data?.favorite || false,
         state => state?.gnsave?.savingThumbnailMap || false,
-        layersSelector
-    ], (resource, loading, favorite, savingThumbnailMap, layers) => ({
+        layersSelector,
+        isThumbnailChanged,
+        updatingThumbnailResource
+    ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating) => ({
         layers: layers,
         resource,
         loading,
         savingThumbnailMap,
-        favorite
+        favorite,
+        isThumbnailChanged: thumbnailChanged,
+        resourceThumbnailUpdating
     })),
     {
         closePanel: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),
         onFavorite: setFavoriteResource,
-        onMapThumbnail: setMapThumbnail
+        onMapThumbnail: setMapThumbnail,
+        onResourceThumbnail: setResourceThumbnail
     }
 )(DetailsPanel);
 
@@ -111,7 +119,7 @@ function DetailViewer({
         onEditAbstractResource(val);
     };
     const handleEditThumbnail = (val) => {
-        onEditThumbnail(val);
+        onEditThumbnail(val, true);
     };
 
     const node = useDetectClickOut({

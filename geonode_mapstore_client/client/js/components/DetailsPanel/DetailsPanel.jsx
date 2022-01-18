@@ -60,11 +60,14 @@ const EditAbstract = ({ abstract, onEdit, tagName, disabled }) => (
 );
 
 
-const EditThumbnail = ({ image, onEdit }) => (
+const EditThumbnail = ({ image, onEdit, thumbnailUpdating }) => (
     <div className="editContainer imagepreview">
         <ThumbnailEditable onEdit={onEdit} defaultImage={image} />
+        {thumbnailUpdating && <div className="gn-details-thumbnail-loader">
+            <Loader size={50} />
+        </div>
+        }
     </div>
-
 );
 
 
@@ -190,14 +193,7 @@ const MapThumbnailView = ({ layers, featuresProp = [], onMapThumbnail, onClose, 
                     ]}
                 >
                 </Map>
-                {savingThumbnailMap && <div
-                    style={{
-                        position: 'absolute', width: '100%',
-                        height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.75)',
-                        top: '0px', zIndex: 2000, display: 'flex',
-                        alignItems: 'center', justifyContent: 'center', right: '0px'
-                    }}>
-
+                {savingThumbnailMap && <div className="gn-details-thumbnail-loader">
                     <Loader size={150} />
                 </div>
                 }
@@ -235,7 +231,10 @@ function DetailsPanel({
     enableFavorite,
     onMapThumbnail,
     savingThumbnailMap,
-    layers
+    layers,
+    isThumbnailChanged,
+    onResourceThumbnail,
+    resourceThumbnailUpdating
 }) {
     const detailsContainerNode = useRef();
     const isMounted = useRef();
@@ -262,6 +261,10 @@ function DetailsPanel({
 
     const handleFavorite = () => {
         onFavorite(!favorite);
+    };
+
+    const handleResourceThumbnailUpdate = () => {
+        onResourceThumbnail();
     };
 
     const types = getTypesInfo();
@@ -521,19 +524,24 @@ function DetailsPanel({
                             {!enableMapViewer ? <> <EditThumbnail
                                 onEdit={editThumbnail}
                                 image={resource?.thumbnail_url}
+                                thumbnailUpdating={resourceThumbnailUpdating}
                             />
                             {
                                 (resource.resource_type === ResourceTypes.MAP || resource.resource_type === ResourceTypes.DATASET) &&
-                                ( <MapThumbnailButtonToolTip
+                                ( <><MapThumbnailButtonToolTip
                                     variant="default"
                                     onClick={handleMapViewer}
-                                    className={"map-thumbnail"}
+                                    className="map-thumbnail"
                                     tooltip={<Message msgId="gnviewer.saveMapThumbnail" />}
                                     tooltipPosition={"top"}
                                 >
                                     <FaIcon name="map" />
-                                </MapThumbnailButtonToolTip>)
+                                </MapThumbnailButtonToolTip>
+                                </>)
                             }
+                            {isThumbnailChanged && <Button style={{
+                                left: (resource.resource_type === ResourceTypes.MAP || resource.resource_type === ResourceTypes.DATASET) ? '85px' : '50px'
+                            }} variant="primary" className="map-thumbnail apply-button" onClick={handleResourceThumbnailUpdate}><Message msgId={"gnhome.apply"} /></Button>}
                             </>
                                 : <MapThumbnailView
                                     layers={layers}
@@ -632,8 +640,10 @@ DetailsPanel.defaultProps = {
     onClose: () => { },
     formatHref: () => '#',
     linkHref: () => '#',
+    onResourceThumbnail: () => '#',
     width: 696,
-    getTypesInfo: getResourceTypesInfo
+    getTypesInfo: getResourceTypesInfo,
+    isThumbnailChanged: false
 };
 
 export default DetailsPanel;

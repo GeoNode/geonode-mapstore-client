@@ -16,7 +16,9 @@ import {
     setResourceType,
     setNewResource,
     setResourceId,
-    setResourcePermissions
+    setResourcePermissions,
+    editThumbnailResource,
+    setResourceThumbnail
 } from '@js/actions/gnresource';
 
 describe('gnresource reducer', () => {
@@ -102,6 +104,27 @@ describe('gnresource reducer', () => {
         const state = gnresource({}, setResourcePermissions(permissions));
         expect(state).toEqual({
             permissions
+        });
+    });
+
+    it('should test editThumbnailResource', () => {
+        const state = gnresource({}, editThumbnailResource('test.url', true));
+
+        expect(state).toEqual({
+            data: {
+                thumbnail_url: 'test.url',
+                thumbnailChanged: true
+            }
+        });
+    });
+
+    it('should test setResourceThumbnail', () => {
+        const state = gnresource({}, setResourceThumbnail());
+
+        expect(state).toEqual({
+            data: {
+                updatingThumbnail: true
+            }
         });
     });
 });
