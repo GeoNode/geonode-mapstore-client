@@ -9,13 +9,21 @@
 import expect from 'expect';
 import {
     getViewedResourceType,
-    isNewResource
+    isNewResource,
+    getResourceThumbnail,
+    updatingThumbnailResource,
+    isThumbnailChanged
 } from '../resource';
 
 const testState = {
     gnresource: {
         type: 'testResource',
-        isNew: true
+        isNew: true,
+        data: {
+            thumbnailChanged: true,
+            thumbnail_url: 'thumbnail.jpeg',
+            updatingThumbnail: true
+        }
     }
 };
 
@@ -26,5 +34,17 @@ describe('resource selector', () => {
 
     it('is new resource', () => {
         expect(isNewResource(testState)).toBeTruthy();
+    });
+
+    it('should get thumbnail change status', () => {
+        expect(isThumbnailChanged(testState)).toBeTruthy();
+    });
+
+    it('should get resource thumbnail', () => {
+        expect(getResourceThumbnail(testState)).toBe('thumbnail.jpeg');
+    });
+
+    it('should get resource thumbnail updating status', () => {
+        expect(updatingThumbnailResource(testState)).toBeTruthy();
     });
 });

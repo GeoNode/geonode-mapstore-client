@@ -19,6 +19,7 @@ import {
     EDIT_TITLE_RESOURCE,
     EDIT_ABSTRACT_RESOURCE,
     EDIT_THUMBNAIL_RESOURCE,
+    SET_RESOURCE_THUMBNAIL,
     SET_SELECTED_DATASET_PERMISSIONS,
     RESET_RESOURCE_STATE,
     LOADING_RESOURCE_CONFIG,
@@ -144,7 +145,18 @@ function gnresource(state = defaultState, action) {
             ...state,
             data: {
                 ...state?.data,
-                thumbnail_url: action?.thumbnailUrl
+                thumbnail_url: action?.thumbnailUrl,
+                thumbnailChanged: action?.thumbnailChanged
+            }
+        };
+    }
+
+    case SET_RESOURCE_THUMBNAIL: {
+        return {
+            ...state,
+            data: {
+                ...state?.data,
+                updatingThumbnail: true
             }
         };
     }

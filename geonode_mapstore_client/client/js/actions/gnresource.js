@@ -29,6 +29,7 @@ export const SET_RESOURCE_COMPACT_PERMISSIONS = 'GEONODE:SET_RESOURCE_COMPACT_PE
 export const UPDATE_RESOURCE_COMPACT_PERMISSIONS = 'GEONODE:UPDATE_RESOURCE_COMPACT_PERMISSIONS';
 export const RESET_GEO_LIMITS = 'GEONODE:RESET_GEO_LIMITS';
 export const PROCESS_RESOURCES = 'GEONODE:PROCESS_RESOURCES';
+export const SET_RESOURCE_THUMBNAIL = 'GEONODE_SET_RESOURCE_THUMBNAIL';
 
 /**
 * Actions for GeoNode resource
@@ -85,11 +86,19 @@ export function editAbstractResource(abstract) {
 * @param {string} image resource
 */
 
-export function editThumbnailResource(thumbnailUrl) {
+export function editThumbnailResource(thumbnailUrl, thumbnailChanged = 'false') {
 
     return {
         type: EDIT_THUMBNAIL_RESOURCE,
-        thumbnailUrl
+        thumbnailUrl,
+        thumbnailChanged
+    };
+}
+
+export function setResourceThumbnail() {
+
+    return {
+        type: SET_RESOURCE_THUMBNAIL
     };
 }
 

@@ -272,6 +272,11 @@ export const setMapThumbnail = (pk, body) => {
         .then(({ data }) => (data));
 };
 
+export const setResourceThumbnail = (pk, body) => {
+    return axios.put(parseDevHostname(`${endpoints[RESOURCES]}/${pk}/set_thumbnail`), body)
+        .then(({ data }) => data);
+};
+
 export const setFavoriteResource = (pk, favorite) => {
     const request = favorite ? axios.post : axios.delete;
     return request(parseDevHostname(`${endpoints[RESOURCES]}/${pk}/favorite`))

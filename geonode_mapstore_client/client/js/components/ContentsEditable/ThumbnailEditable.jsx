@@ -38,6 +38,12 @@ const ThumbnailEditable = ({
                     setThumbnail(data);
                     onEdit(data);
                 }}
+                thumbnailOptions={{
+                    contain: false,
+                    width: 250,
+                    height: 184.8,
+                    type: 'image/png'
+                }}
             />
             <ButtonWithToolTip
                 variant="default"
