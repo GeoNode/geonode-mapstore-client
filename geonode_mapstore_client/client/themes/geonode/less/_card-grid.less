@@ -28,6 +28,9 @@
         .background-color-var(@theme-vars[danger]);
         .color-var(@theme-vars[danger-contrast]);
     }
+    .gn-resource-status-pending {
+        .color-var(@theme-vars[danger]);
+    }
     .gn-resource-status-primary {
         .background-color-var(@theme-vars[primary]);
         .color-var(@theme-vars[primary-contrast]);
@@ -108,11 +111,21 @@
     }
 }
 
+p.gn-resource-status-text {
+    margin-top: 0;
+    margin-bottom: 0.3rem;
+}
+
 .gn-resource-status {
     padding: 0.2em 0.5em;
     border-radius: 2px;
     font-size: @font-size-sm;
     margin-right: 0.25rem;
+}
+
+.gn-resource-status-pending {
+    padding: 0;
+    text-transform: uppercase;
 }
 
 .gn-fixed-card-grid {
