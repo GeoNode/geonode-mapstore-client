@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { findIndex } from 'lodash';
+import { Glyphicon } from 'react-bootstrap';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import Message from '@mapstore/framework/components/I18N/Message';
@@ -28,7 +29,6 @@ import {
     getViewedResourceType
 } from '@js/selectors/resource';
 import { updateResourceCompactPermissions } from '@js/actions/gnresource';
-import FaIcon from '@js/components/FaIcon/FaIcon';
 import Permissions from '@js/components/Permissions';
 import { getUsers, getGroups, getResourceTypes } from '@js/api/geonode/v2';
 import { resourceToPermissionEntry, availableResourceTypes, getResourcePermissions } from '@js/utils/ResourceUtils';
@@ -121,8 +121,8 @@ function Share({
             >
                 <div className="gn-share-panel-head">
                     <h2><Message msgId="gnviewer.shareThisResource" /></h2>
-                    <Button size="sm" onClick={() => onClose()}>
-                        <FaIcon name="times"/>
+                    <Button className="square-button" onClick={() => onClose()}>
+                        <Glyphicon glyph="1-close"/>
                     </Button>
                 </div>
                 <div className="gn-share-panel-body">

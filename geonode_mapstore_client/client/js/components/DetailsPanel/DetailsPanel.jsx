@@ -8,6 +8,7 @@
  */
 
 import React, { useRef, useState, useEffect } from 'react';
+import { Glyphicon } from 'react-bootstrap';
 import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
 import Tabs from '@js/components/Tabs';
@@ -457,8 +458,8 @@ function DetailsPanel({
                         variant="default"
                         href={linkHref()}
                         onClick={closePanel}
-                        size="sm">
-                        <FaIcon name="times" />
+                        className="square-button">
+                        <Glyphicon glyph="1-close" />
                     </Button>
                 </div>
                 }

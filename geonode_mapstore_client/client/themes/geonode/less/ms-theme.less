@@ -15,6 +15,33 @@
 @icon-size-md: 15px;
 @square-btn-medium-size: 30px;
 
+// **************
+// Theme
+// **************
+
+#gn-components-theme(@theme-vars) {
+    .ms-side-panel .ms-header.ms-primary .row:first-child {
+        .color-var(@theme-vars[main-color]);
+        .background-color-var(@theme-vars[main-bg]);
+        .square-button {
+            .color-var(@theme-vars[main-color], true);
+            .background-color-var(@theme-vars[main-bg], true);
+        }
+    }
+}
+
+// **************
+// Layout
+// **************
+
+.close {
+    font-size: 16px;
+    opacity: 1;
+}
+.modal-header .close {
+    margin-top: 0;
+}
+
 #drawer-menu-button {
     z-index: 5;
 }
@@ -77,8 +104,12 @@
 // in this specific context those value have different uom
 // we should override this to ensure to use rem and have the correct value for padding
 .ms-resizable-modal > .modal-content > .modal-header {
-    height: (@font-size-h4 * 3);
-    padding: @font-size-h4;
+    height: auto;
+    padding: 0.6rem;
+}
+.modal-header {
+    height: auto;
+    padding: 0.6rem;
 }
 // the input small size is not computed correctly due to rem value
 // this override will fix the attribute table filter inputs
@@ -159,4 +190,81 @@ div#mapstore-globalspinner {
 
 #mapstore-map-footer-container {
     z-index: 1100;
+}
+
+// review drawer menu and toc style
+
+#mapstore-drawermenu {
+    .nav-content {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        .navHeader {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            min-height: auto !important;
+            height: auto !important;
+        }
+        .nav-body {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        .panel,
+        .panel-body,
+        .panel-body > div {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        
+    }
+    .mapstore-toc-head {
+        height: auto !important;
+    }
+    .mapstore-toc-head-title-container {
+        display: none;
+    }
+    .mapstore-toc {
+        flex: 1;
+        width: 100%;
+        position: relative;
+        .mapstore-layers-container {
+            overflow: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
+.mapstore-query-builder .m-header {
+    box-shadow: none;
+}
+
+.widgets-builder-header > .row > .text-center {
+    display: flex;
+    flex-direction: row-reverse;
+    > span {
+        padding: 0 !important;
+        flex: 1;
+    }
+}
+
+.ms-side-panel .ms-header {
+    box-shadow: none;
 }
