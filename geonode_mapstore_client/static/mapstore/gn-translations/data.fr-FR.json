@@ -182,7 +182,7 @@
             "deleteResourceTitle": "{count, plural, =1 {Voulez-vous vraiment supprimer cette ressource?} other {Voulez-vous vraiment supprimer ces ressources?}}",
             "deleteResourceNo": "{count, plural, =1 {Non, ne le supprime pas} other {Non, ne les supprime pas}}",
             "deleteResourceYes": "Oui, je suis sûr",
-            "underApproval": "En cours d'approbation",
+            "notApproved": "Non approuvé",
             "unpublish": "Dépublier",
             "deleted": "Supprimé",
             "deleting": "Suppression...",
