@@ -26,6 +26,22 @@ def resource_urls(request):
         'DEFAULT_MAP_CRS': getattr(settings, "DEFAULT_MAP_CRS", 'EPSG:3857'),
         'DEFAULT_MAP_ZOOM': getattr(settings, "DEFAULT_MAP_ZOOM", 0),
         'DEFAULT_TILE_SIZE': getattr(settings, "DEFAULT_TILE_SIZE", 512),
-        'DEFAULT_LAYER_FORMAT': getattr(settings, "DEFAULT_LAYER_FORMAT", 'image/png')
+        'DEFAULT_LAYER_FORMAT': getattr(settings, "DEFAULT_LAYER_FORMAT", 'image/png'),
+        'TIME_ENABLED': getattr(
+                settings,
+                'UPLOADER',
+                dict()).get(
+                    'OPTIONS',
+                    dict()).get(
+                        'TIME_ENABLED',
+                        False),
+        'MOSAIC_ENABLED': getattr(
+                settings,
+                'UPLOADER',
+                dict()).get(
+                    'OPTIONS',
+                    dict()).get(
+                        'MOSAIC_ENABLED',
+                        False)
     }
     return defaults

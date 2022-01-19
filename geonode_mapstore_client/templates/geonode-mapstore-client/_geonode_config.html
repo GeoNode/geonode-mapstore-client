@@ -45,6 +45,7 @@
         const defaultLayerFormat = geoNodeSettings.DEFAULT_LAYER_FORMAT || 'image/png';
         const catalogueServices = geoNodeSettings.CATALOGUE_SERVICES || {};
         const catalogueSelectedService = geoNodeSettings.CATALOGUE_SELECTED_SERVICE || '';
+        const timeEnabled = geoNodeSettings.TIME_ENABLED || false;
 
         const isEmbed = checkBoolean('{{ is_embed }}') || false;
         const pluginsConfigKey = '{{ plugins_config_key }}';
@@ -78,7 +79,8 @@
                     geoserverUrl: geoServerPublicLocation,
                     siteName: siteName,
                     defaultTileSize: defaultTileSize,
-                    defaultLayerFormat: defaultLayerFormat
+                    defaultLayerFormat: defaultLayerFormat,
+                    timeEnabled: timeEnabled
                 },
                 geoNodeConfiguration: {
                     cardsMenu: {

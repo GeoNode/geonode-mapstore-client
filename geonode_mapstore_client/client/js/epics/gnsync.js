@@ -50,7 +50,7 @@ const setResourceApi = {
  * Get resource type and data for state update in sync process
  * @param {String} appType geostory or dashboard
  * @param {Object} resourceData Resource Object
- * @param {Optional: Array} successArr Array of success responses only used in case of dashboard
+ * @param {Array} successArr Array of success responses only used in case of dashboard
  * @returns {Object}
  */
 const getSyncInfo = (appType, resourceData, successArr = []) => {

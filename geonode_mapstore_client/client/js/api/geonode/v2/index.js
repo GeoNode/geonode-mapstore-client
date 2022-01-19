@@ -20,6 +20,7 @@ import get from 'lodash/get';
 import { getUserInfo } from '@js/api/geonode/user';
 import { setFilterById } from '@js/utils/SearchUtils';
 import { ResourceTypes, availableResourceTypes, setAvailableResourceTypes } from '@js/utils/ResourceUtils';
+import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 
 /**
  * Actions for GeoNode save workflow
@@ -39,7 +40,8 @@ let endpoints = {
     'owners': '/api/v2/owners',
     'keywords': '/api/v2/keywords',
     'regions': '/api/v2/regions',
-    'groups': '/api/v2/groups'
+    'groups': '/api/v2/groups',
+    'uploads': '/api/v2/uploads'
 };
 
 const RESOURCES = 'resources';
@@ -54,7 +56,7 @@ const REGIONS = 'regions';
 const CATEGORIES = 'categories';
 const KEYWORDS = 'keywords';
 const GROUPS = 'groups';
-
+const UPLOADS = 'uploads';
 
 function addCountToLabel(name, count) {
     return `${name} (${count || 0})`;
@@ -707,6 +709,64 @@ export const copyResource = (resource) => {
         .then(({ data }) => data);
 };
 
+export const getPendingUploads = () => {
+    return axios.get(parseDevHostname(endpoints[UPLOADS]), {
+        params: {
+            'filter{-state}': 'PROCESSED',
+            'page': 1,
+            'page_size': 99999
+        }
+    })
+        .then(({ data }) => data?.uploads);
+};
+
+export const getProcessedUploadsById = (ids) => {
+    return axios.get(parseDevHostname(endpoints[UPLOADS]), {
+        params: {
+            'filter{state}': 'PROCESSED',
+            'page': 1,
+            'page_size': ids.length,
+            'filter{id.in}': ids
+        }
+    })
+        .then(({ data }) => data?.uploads);
+};
+
+export const getProcessedUploadsByImportId = (importIds) => {
+    return axios.get(parseDevHostname(endpoints[UPLOADS]), {
+        params: {
+            'filter{state}': 'PROCESSED',
+            'page': 1,
+            'page_size': importIds.length,
+            'filter{import_id.in}': importIds
+        }
+    })
+        .then(({ data }) => data?.uploads);
+};
+
+export const uploadDataset = ({
+    file,
+    auxiliaryFiles,
+    ext,
+    charset = 'UTF-8',
+    permissions = { users: { AnonymousUser: [] }, groups: {}}
+}) => {
+    const formData = new FormData();
+    formData.append('base_file', file);
+    formData.append('permissions', JSON.stringify(permissions));
+    formData.append('charset', charset);
+    const { timeEnabled } = getConfigProp('geoNodeSettings') || {};
+    if (timeEnabled) {
+        formData.append('time', ['csv', 'shp'].includes(ext) ? true : false);
+    }
+    Object.keys(auxiliaryFiles)
+        .forEach((auxExt) => {
+            formData.append(auxExt + '_file', auxiliaryFiles[auxExt]);
+        });
+    return axios.post(`${parseDevHostname(endpoints[UPLOADS])}/upload`, formData)
+        .then(({ data }) => (data));
+};
+
 export default {
     getEndpoints,
     getResources,
@@ -737,5 +797,8 @@ export default {
     updateCompactPermissionsByPk,
     deleteResource,
     copyResource,
-    getDatasets
+    getDatasets,
+    getPendingUploads,
+    getProcessedUploadsById,
+    getProcessedUploadsByImportId
 };

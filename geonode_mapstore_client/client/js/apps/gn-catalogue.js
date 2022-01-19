@@ -40,6 +40,7 @@ import annotations from '@mapstore/framework/reducers/annotations';
 import SearchRoute from '@js/routes/Search';
 import DetailRoute from '@js/routes/Detail';
 import ViewerRoute from '@js/routes/Viewer';
+import UploadDatasetRoute from '@js/routes/UploadDataset';
 
 import gnsearch from '@js/reducers/gnsearch';
 import gnresource from '@js/reducers/gnresource';
@@ -182,6 +183,11 @@ const routes = [
             '/detail/:ctype/:pk'
         ],
         component: DetailRoute
+    },
+    {
+        name: 'upload_dataset',
+        path: ['/upload/dataset'],
+        component: UploadDatasetRoute
     }
 ];
 
