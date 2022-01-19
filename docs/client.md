@@ -167,6 +167,8 @@ set new Featured Resources includes data, page, links</p>
 <dd></dd>
 <dt><a href="#module_plugins/SaveAs">plugins/SaveAs</a></dt>
 <dd></dd>
+<dt><a href="#module_plugins/Sync">plugins/Sync</a></dt>
+<dd></dd>
 <dt><a href="#module_selectors/config">selectors/config</a></dt>
 <dd></dd>
 <dt><a href="#module_utils/APIUtils">utils/APIUtils</a></dt>
@@ -181,6 +183,31 @@ set new Featured Resources includes data, page, links</p>
 <dd></dd>
 <dt><a href="#module_utils/ResourceUtils">utils/ResourceUtils</a></dt>
 <dd></dd>
+</dl>
+
+## Constants
+
+<dl>
+<dt><a href="#SYNC_RESOURCES">SYNC_RESOURCES</a></dt>
+<dd><p>Sync geostory components with their live resources on geonode</p>
+</dd>
+<dt><a href="#gnSyncComponentsWithResources">gnSyncComponentsWithResources</a> ⇒ <code>Observable</code></dt>
+<dd><p>Sync reources in current geostory or dashboard with their respective sources</p>
+</dd>
+<dt><a href="#getGeonodeResourceDataFromGeostory">getGeonodeResourceDataFromGeostory</a> ⇒ <code>Array</code></dt>
+<dd><p>Get geonode resources from within a Geostory</p>
+</dd>
+</dl>
+
+## Functions
+
+<dl>
+<dt><a href="#getSyncInfo">getSyncInfo(appType, resourceData, successArr)</a> ⇒ <code>Object</code></dt>
+<dd><p>Get resource type and data for state update in sync process</p>
+</dd>
+<dt><a href="#getNotificationInfo">getNotificationInfo(errors, successes)</a> ⇒ <code>Object</code></dt>
+<dd><p>Get notification title, leve, and message for showNotification</p>
+</dd>
 </dl>
 
 <a name="module_actions/gnresource"></a>
@@ -557,6 +584,9 @@ Plugin for SaveAs modal
   }
 }
 ```
+<a name="module_plugins/Sync"></a>
+
+## plugins/Sync
 <a name="module_selectors/config"></a>
 
 ## selectors/config
@@ -676,6 +706,8 @@ check if the menu perms is allowed by user or resource
     * [.setAvailableResourceTypes](#module_utils/ResourceUtils.setAvailableResourceTypes)
     * [.getResourcePermissions](#module_utils/ResourceUtils.getResourcePermissions) ⇒
     * [.parseMetadata](#module_utils/ResourceUtils.parseMetadata) ⇒ <code>Object</code>
+    * [.parseDocumentConfig](#module_utils/ResourceUtils.parseDocumentConfig) ⇒ <code>Object</code>
+    * [.parseMapConfig](#module_utils/ResourceUtils.parseMapConfig) ⇒ <code>Object</code>
 
 <a name="module_utils/ResourceUtils.resourceToLayerConfig"></a>
 
@@ -722,4 +754,85 @@ Parse metadata information from getStyleCodeByName api response
 | Param | Type | Description |
 | --- | --- | --- |
 | entry | <code>Array</code> | Array containing layer metadata information |
+
+<a name="module_utils/ResourceUtils.parseDocumentConfig"></a>
+
+### utils/ResourceUtils.parseDocumentConfig ⇒ <code>Object</code>
+Parse document response object (for image and video)
+
+**Kind**: static constant of [<code>utils/ResourceUtils</code>](#module_utils/ResourceUtils)  
+**Returns**: <code>Object</code> - new document config object  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| docResponse | <code>Object</code> | api response object |
+| resource | <code>Object</code> | optional resource object |
+
+<a name="module_utils/ResourceUtils.parseMapConfig"></a>
+
+### utils/ResourceUtils.parseMapConfig ⇒ <code>Object</code>
+Parse map response object
+
+**Kind**: static constant of [<code>utils/ResourceUtils</code>](#module_utils/ResourceUtils)  
+**Returns**: <code>Object</code> - new map config object  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| mapResponse | <code>Object</code> | api response object |
+| resource | <code>Object</code> | optional resource object |
+
+<a name="SYNC_RESOURCES"></a>
+
+## SYNC\_RESOURCES
+Sync geostory components with their live resources on geonode
+
+**Kind**: global constant  
+<a name="gnSyncComponentsWithResources"></a>
+
+## gnSyncComponentsWithResources ⇒ <code>Observable</code>
+Sync reources in current geostory or dashboard with their respective sources
+
+**Kind**: global constant  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| action$ | <code>\*</code> | the actions |
+| store | <code>Object</code> |  |
+
+<a name="getGeonodeResourceDataFromGeostory"></a>
+
+## getGeonodeResourceDataFromGeostory ⇒ <code>Array</code>
+Get geonode resources from within a Geostory
+
+**Kind**: global constant  
+**Returns**: <code>Array</code> - Array of geonode resources  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| state | <code>Object</code> | App state |
+
+<a name="getSyncInfo"></a>
+
+## getSyncInfo(appType, resourceData, successArr) ⇒ <code>Object</code>
+Get resource type and data for state update in sync process
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| appType | <code>String</code> | geostory or dashboard |
+| resourceData | <code>Object</code> | Resource Object |
+| successArr | <code>Array</code> | Array of success responses only used in case of dashboard |
+
+<a name="getNotificationInfo"></a>
+
+## getNotificationInfo(errors, successes) ⇒ <code>Object</code>
+Get notification title, leve, and message for showNotification
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| errors | <code>Number</code> | length of errors array |
+| successes | <code>Number</code> | length of success arra |
 

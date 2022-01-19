@@ -1949,6 +1949,11 @@
                             ]
                         },
                         {
+                            "name": "Sync",
+                            "type": "plugin",
+                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                        },
+                        {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
@@ -2094,6 +2099,9 @@
                 "cfg": {
                     "containerPosition": "rightOverlay"
                 }
+            },
+            {
+                "name": "Sync"
             }
         ],
         "document_viewer": [
@@ -2237,6 +2245,12 @@
                             ]
                         },
                         {
+                            "name": "Sync",
+                            "type": "plugin",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                        },
+
+                        {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
@@ -2300,6 +2314,9 @@
             },
             {
                 "name": "SaveAs"
+            },
+            {
+                "name": "Sync"
             },
             {
                 "name": "Share",
