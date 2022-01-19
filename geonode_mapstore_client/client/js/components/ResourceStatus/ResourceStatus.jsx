@@ -26,6 +26,9 @@ const ResourceStatus = ({ resource = {} }) => {
                 {(!isProcessing && !isApproved) && <span className="gn-resource-status gn-resource-status-pending" >
                     <Message msgId="gnviewer.notApproved" />
                 </span>}
+                {(!isProcessing && !isApproved && !isPublished) && <span className="gn-resource-status gn-resource-status-pending" >
+                    {' '}-{' '}
+                </span>}
                 {(!isProcessing && !isPublished) && <span className="gn-resource-status gn-resource-status-pending" >
                     <Message msgId="gnhome.unpublished" />
                 </span>}
