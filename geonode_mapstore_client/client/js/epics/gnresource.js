@@ -137,6 +137,7 @@ const resourceTypes = {
                             ? [ setControlProperty('fitBounds', 'geometry', extent) ]
                             : []),
                         setControlProperty('toolbar', 'expanded', false),
+                        setControlProperty('rightOverlay', 'enabled', 'DetailViewer'),
                         selectNode(newLayer.id, 'layer', false),
                         setResource(gnLayer),
                         setResourceId(pk),
@@ -237,6 +238,7 @@ const resourceTypes = {
             Observable.defer(() => getDocumentByPk(pk))
                 .switchMap((gnDocument) => {
                     return Observable.of(
+                        setControlProperty('rightOverlay', 'enabled', 'DetailViewer'),
                         setResource(gnDocument),
                         setResourceId(pk)
                     );
