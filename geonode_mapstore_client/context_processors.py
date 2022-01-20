@@ -27,6 +27,7 @@ def resource_urls(request):
         'DEFAULT_MAP_ZOOM': getattr(settings, "DEFAULT_MAP_ZOOM", 0),
         'DEFAULT_TILE_SIZE': getattr(settings, "DEFAULT_TILE_SIZE", 512),
         'DEFAULT_LAYER_FORMAT': getattr(settings, "DEFAULT_LAYER_FORMAT", 'image/png'),
+        'LANGUAGES': getattr(settings, "LANGUAGES", []),
         'TIME_ENABLED': getattr(
                 settings,
                 'UPLOADER',

@@ -106,6 +106,19 @@ export function getPluginsConfiguration(pluginsConfig, key) {
     return [];
 }
 
+function languagesToSupportedLocales(languages) {
+    if (!languages || languages.length === 0) {
+        return null;
+    }
+    return languages.reduce((acc, [key, description]) => ({
+        ...acc,
+        [key]: {
+            code: `${key}-${key === 'en' ? 'US' : key.toUpperCase()}`,
+            description
+        }
+    }), {});
+}
+
 export function setupConfiguration({
     localConfig,
     user,
@@ -127,7 +140,7 @@ export function setupConfiguration({
         ? config.translationsPath
         : ['/static/mapstore/gn-translations', '/static/mapstore/ms-translations']
     );
-    const supportedLocales = defaultSupportedLocales || getSupportedLocales();
+    const supportedLocales = languagesToSupportedLocales(geoNodePageConfig.languages) || defaultSupportedLocales || getSupportedLocales();
     setSupportedLocales(supportedLocales);
     const locale = supportedLocales[geoNodePageConfig.languageCode]?.code || 'en';
     setConfigProp('locale', locale);

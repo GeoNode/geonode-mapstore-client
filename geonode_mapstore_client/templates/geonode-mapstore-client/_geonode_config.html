@@ -46,6 +46,7 @@
         const catalogueServices = geoNodeSettings.CATALOGUE_SERVICES || {};
         const catalogueSelectedService = geoNodeSettings.CATALOGUE_SELECTED_SERVICE || '';
         const timeEnabled = geoNodeSettings.TIME_ENABLED || false;
+        const languages = geoNodeSettings.LANGUAGES;
 
         const isEmbed = checkBoolean('{{ is_embed }}') || false;
         const pluginsConfigKey = '{{ plugins_config_key }}';
@@ -55,6 +56,7 @@
 
         window.__GEONODE_CONFIG__ = {
             languageCode: '{{ LANGUAGE_CODE }}',
+            languages,
             resourceId: '{{ resource.pk|default:"" }}',
             resourceType: '{{ resource.resource_type|default:"" }}',
             isEmbed: isEmbed,
