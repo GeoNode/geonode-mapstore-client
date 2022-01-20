@@ -796,8 +796,9 @@
                                 },
                                 {
                                     "type": "link",
-                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
-                                    "labelId": "gnviewer.editMetadata"
+                                    "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
+                                    "labelId": "gnviewer.editData",
+                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_data')}"
                                 },
                                 {
                                     "type": "link",
@@ -807,9 +808,18 @@
                                 },
                                 {
                                     "type": "link",
-                                    "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
-                                    "labelId": "gnviewer.editData",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_data')}"
+                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
+                                    "labelId": "gnviewer.editMetadata"
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "{'/datasets/' + (state('gnResourceData') || {}).alternate + '/style_upload'}",
+                                    "labelId": "gnviewer.styleUpload"
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "{'/datasets/' + (state('gnResourceData') || {}).alternate + '/metadata_upload'}",
+                                    "labelId": "gnviewer.metadataUpload"
                                 }
                             ]
                         },

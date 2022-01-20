@@ -247,7 +247,9 @@
             "styleEditorCloseTitle": "Ausstehende Änderungen",
             "styleEditorCloseMessage": "Möchten Sie den Stileditor wirklich schließen, ohne die Änderungen zu übernehmen?",
             "styleEditorCloseCancel": "Nein, zurück zum Stileditor",
-            "styleEditorCloseConfirm": "Ja, schließen"
+            "styleEditorCloseConfirm": "Ja, schließen",
+            "metadataUpload": "Metadaten Hochladen",
+            "styleUpload": "Stil Hochladen"
         }
     }
 }

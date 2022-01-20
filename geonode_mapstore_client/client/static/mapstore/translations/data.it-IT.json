@@ -249,7 +249,9 @@
             "styleEditorCloseTitle": "Modifiche non applicate",
             "styleEditorCloseMessage": "Sei sicuro di voler chiudere l'editor di stile senza applicare le modifiche?",
             "styleEditorCloseCancel": "No, torna all'editor di stile",
-            "styleEditorCloseConfirm": "Sì, chiudi"
+            "styleEditorCloseConfirm": "Sì, chiudi",
+            "metadataUpload": "Caricare Metadati",
+            "styleUpload": "Carica Stile"
         }
     }
 }
