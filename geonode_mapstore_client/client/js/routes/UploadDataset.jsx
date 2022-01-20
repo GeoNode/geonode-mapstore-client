@@ -80,13 +80,6 @@ const supportedDatasetTypes = [
         ext: ['kmz']
     },
     {
-        id: 'geojson',
-        label: 'GeoJSON',
-        format: 'vector',
-        ext: ['json', 'geojson'],
-        mimeType: ['application/json', 'application/geo+json']
-    },
-    {
         id: 'zip',
         label: 'Zip Archive',
         format: 'archive',
