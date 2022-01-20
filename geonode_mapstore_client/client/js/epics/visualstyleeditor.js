@@ -21,6 +21,7 @@ import {
 import { REQUEST_DATASET_AVAILABLE_STYLES } from '@js/actions/visualstyleeditor';
 import tinycolor from 'tinycolor2';
 import { parseStyleName } from '@js/utils/ResourceUtils';
+import { getStyleProperties } from '@js/api/geonode/style';
 
 /**
 * @module epics/visualstyleeditor
@@ -67,13 +68,21 @@ function getGnStyleQueryParams(style, styleService) {
         return new Promise(resolve => resolve({ msStyleJSON, msEditorType, code }));
     }
 
-    return StylesAPI.getStyleCodeByName({
+    return getStyleProperties({
         baseUrl: styleService?.baseUrl,
         styleName: parseStyleName(style)
-    }).then(updatedStyle => {
-        const { metadata = {}, code: updateStyleCode, format, languageVersion } = updatedStyle || {};
-        return { msEditorType: metadata?.msEditorType, msStyleJSON: metadata?.msStyleJSON, code: updateStyleCode, format, languageVersion };
-    }).catch(() => ({ msEditorType, msStyleJSON, code}));
+    })
+        .then(updatedStyle => {
+            const { metadata = {}, code: updateStyleCode, format, languageVersion } = updatedStyle || {};
+            return {
+                msEditorType: metadata?.msEditorType,
+                msStyleJSON: metadata?.msStyleJSON,
+                code: updateStyleCode,
+                format,
+                languageVersion
+            };
+        })
+        .catch(() => ({ msEditorType, msStyleJSON, code}));
 }
 
 function getGeoNodeStyles({ layer, styleService }) {

@@ -268,3 +268,13 @@ div#mapstore-globalspinner {
 .ms-side-panel .ms-header {
     box-shadow: none;
 }
+
+// missing close symbol in geocss code editor picker
+.ms-inline-widget-container {
+    .btn.close:before {
+        content: "X";
+    }
+    .btn.close:hover {
+        color: #ffffff;
+    }
+}

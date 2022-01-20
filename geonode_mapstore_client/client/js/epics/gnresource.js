@@ -61,7 +61,8 @@ import {
 import {
     resourceToLayerConfig,
     ResourceTypes,
-    toMapStoreMapConfig
+    toMapStoreMapConfig,
+    parseStyleName
 } from '@js/utils/ResourceUtils';
 import {
     canAddResource,
@@ -70,7 +71,6 @@ import {
 } from '@js/selectors/resource';
 import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallayers';
 import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
-import StylesAPI from '@mapstore/framework/api/geoserver/Styles';
 import { styleServiceSelector } from '@mapstore/framework/selectors/styleeditor';
 import { updateStyleService } from '@mapstore/framework/api/StyleEditor';
 import { resizeMap } from '@mapstore/framework/actions/map';
@@ -79,6 +79,7 @@ import {
     error as errorNotification,
     success as successNotification
 } from '@mapstore/framework/actions/notifications';
+import { getStyleProperties } from '@js/api/geonode/style';
 
 const resourceTypes = {
     [ResourceTypes.DATASET]: {
@@ -99,12 +100,30 @@ const resourceTypes = {
                             return [mapConfig, gnLayer, newLayer];
                         }
 
+                        return getStyleProperties({
+                            baseUrl: options?.styleService?.baseUrl,
+                            styleName: parseStyleName(newLayer.extendedParams.defaultStyle)
+                        }).then((updatedStyle) => {
+                            return [
+                                mapConfig,
+                                gnLayer,
+                                {
+                                    ...newLayer,
+                                    availableStyles: [{
+                                        ...updatedStyle,
+                                        ...newLayer.extendedParams.defaultStyle
+                                    }]
+                                }
+                            ];
+                        });
+
+                        /*
                         return StylesAPI.getStylesInfo({
                             baseUrl: options?.styleService?.baseUrl,
                             styles: [newLayer.extendedParams.defaultStyle]
                         }).then((availableStyles) => {
                             return [mapConfig, gnLayer, { ...newLayer, availableStyles }];
-                        });
+                        });*/
                     })
             )
                 .switchMap((response) => {
