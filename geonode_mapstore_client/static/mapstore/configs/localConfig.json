@@ -1335,10 +1335,6 @@
                             "type": "link",
                             "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk}",
                             "labelId": "gnviewer.goBackTo"
-                        },
-                        {
-                            "type": "plugin",
-                            "name": "SaveStyle"
                         }
                     ],
                     "rightMenuItems": [

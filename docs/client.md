@@ -705,7 +705,6 @@ check if the menu perms is allowed by user or resource
     * [.resourceToLayerConfig](#module_utils/ResourceUtils.resourceToLayerConfig) ⇒ <code>object</code>
     * [.setAvailableResourceTypes](#module_utils/ResourceUtils.setAvailableResourceTypes)
     * [.getResourcePermissions](#module_utils/ResourceUtils.getResourcePermissions) ⇒
-    * [.parseMetadata](#module_utils/ResourceUtils.parseMetadata) ⇒ <code>Object</code>
     * [.parseDocumentConfig](#module_utils/ResourceUtils.parseDocumentConfig) ⇒ <code>Object</code>
     * [.parseMapConfig](#module_utils/ResourceUtils.parseMapConfig) ⇒ <code>Object</code>
 
@@ -742,18 +741,6 @@ Extracts lists of permissions into an object for use in the Share plugin select 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | Permission Object to extract permissions from |
-
-<a name="module_utils/ResourceUtils.parseMetadata"></a>
-
-### utils/ResourceUtils.parseMetadata ⇒ <code>Object</code>
-Parse metadata information from getStyleCodeByName api response
-
-**Kind**: static constant of [<code>utils/ResourceUtils</code>](#module_utils/ResourceUtils)  
-**Returns**: <code>Object</code> - metadata object  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| entry | <code>Array</code> | Array containing layer metadata information |
 
 <a name="module_utils/ResourceUtils.parseDocumentConfig"></a>
 

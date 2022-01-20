@@ -202,6 +202,7 @@
             "dismissMessage": "No volver a mostrar este mensaje",
             "templates": "Plantillas",
             "copyFrom": "Copiado de",
+            "copy": "Copiado",
             "createMap": "Crear Mapa",
             "addLayer": "Agregar capa",
             "datasetsCatalogTitle": "Catálogo de capas",
@@ -241,7 +242,11 @@
             "resourceOrigin": {
                 "a": "una",
                 "from": "de"
-            }
+            },
+            "styleEditorCloseTitle": "Cambios pendientes",
+            "styleEditorCloseMessage": "¿Está seguro de que desea cerrar el editor de estilos sin aplicar los cambios?",
+            "styleEditorCloseCancel": "No, volver al editor de estilo",
+            "styleEditorCloseConfirm": "Sí, cerrar"
         }
     }
 }
