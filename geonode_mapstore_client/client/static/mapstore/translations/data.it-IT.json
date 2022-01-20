@@ -250,7 +250,7 @@
             "styleEditorCloseMessage": "Sei sicuro di voler chiudere l'editor di stile senza applicare le modifiche?",
             "styleEditorCloseCancel": "No, torna all'editor di stile",
             "styleEditorCloseConfirm": "Sì, chiudi",
-            "metadataUpload": "Caricare Metadati",
+            "metadataUpload": "Carica Metadati",
             "styleUpload": "Carica Stile"
         }
     }
