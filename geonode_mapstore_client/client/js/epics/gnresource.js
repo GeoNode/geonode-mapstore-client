@@ -116,14 +116,6 @@ const resourceTypes = {
                                 }
                             ];
                         });
-
-                        /*
-                        return StylesAPI.getStylesInfo({
-                            baseUrl: options?.styleService?.baseUrl,
-                            styles: [newLayer.extendedParams.defaultStyle]
-                        }).then((availableStyles) => {
-                            return [mapConfig, gnLayer, { ...newLayer, availableStyles }];
-                        });*/
                     })
             )
                 .switchMap((response) => {
