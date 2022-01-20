@@ -814,7 +814,8 @@
                                 {
                                     "type": "link",
                                     "href": "{'/datasets/' + (state('gnResourceData') || {}).alternate + '/style_upload'}",
-                                    "labelId": "gnviewer.styleUpload"
+                                    "labelId": "gnviewer.styleUpload",
+                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
                                 },
                                 {
                                     "type": "link",
