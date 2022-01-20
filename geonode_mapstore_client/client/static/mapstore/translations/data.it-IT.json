@@ -204,6 +204,7 @@
             "dismissMessage": "Non mostrare più questo messaggio",
             "templates": "Modelli",
             "copyFrom": "Copia da",
+            "copy": "Copia",
             "createMap": "Crea Mappa",
             "addLayer": "Aggiungi layer",
             "datasetsCatalogTitle": "Catalogo layers",
@@ -244,7 +245,11 @@
             "resourceOrigin": {
                 "a": "una",
                 "from": "di"
-            }
+            },
+            "styleEditorCloseTitle": "Modifiche non applicate",
+            "styleEditorCloseMessage": "Sei sicuro di voler chiudere l'editor di stile senza applicare le modifiche?",
+            "styleEditorCloseCancel": "No, torna all'editor di stile",
+            "styleEditorCloseConfirm": "Sì, chiudi"
         }
     }
 }

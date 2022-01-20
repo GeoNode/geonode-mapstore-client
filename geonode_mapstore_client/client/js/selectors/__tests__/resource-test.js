@@ -47,7 +47,6 @@ describe('resource selector', () => {
     it('is new resource', () => {
         expect(isNewResource(testState)).toBeTruthy();
     });
-  
     it('getGeonodeResourceDataFromGeostory', () => {
         expect(getGeonodeResourceDataFromGeostory(testState)).toEqual([{ data: { sourceId: 'geonode' }, name: 'test' }]);
     });

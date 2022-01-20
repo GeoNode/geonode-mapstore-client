@@ -509,25 +509,6 @@ export function toMapStoreMapConfig(resource, baseConfig) {
 }
 
 /**
- * Parse metadata information from getStyleCodeByName api response
- * @param {Array} entry Array containing layer metadata information
- * @returns {Object} metadata object
- */
-export const parseMetadata = ({ entry } = {}) => {
-    const metadata = {};
-    if (!entry) {
-        return metadata;
-    }
-    entry.forEach((entryObj) => {
-        const entryArray = Object.values(entryObj);
-        if (entryArray.length > 1) {
-            metadata[entryArray[0]] = entryArray[1];
-        }
-    });
-    return metadata;
-};
-
-/**
  * Parse document response object (for image and video)
  * @param {Object} docResponse api response object
  * @param {Object} resource optional resource object

@@ -9,7 +9,7 @@
     .ms-style-rules-editor-head {
         .background-color-var(@theme-vars[main-bg]);
     }
-    .gn-visual-style-editor-toolbar,
+    .gn-visual-style-editor-layer-info,
     .gn-visual-style-editor-styles {
         .border-bottom-color-var(@theme-vars[main-border-color]);
     }
@@ -41,15 +41,16 @@
 
 .gn-visual-style-editor-layer-info {
     display: flex;
-    padding: 4px;
+    padding: 0;
     align-items: center;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
     .gn-visual-style-editor-layer-title {
         flex: 1;
-        padding-left: 8px;
+        padding-left: 12px;
     }
 }
 
-.gn-visual-style-editor-toolbar,
 .gn-visual-style-editor-styles,
 .gn-visual-style-editor-alert {
     display: flex;
@@ -62,7 +63,7 @@
     }
 }
 
-.gn-visual-style-editor-toolbar, .gn-visual-style-editor-alert {
+.gn-visual-style-editor-alert {
     align-items: center;
 }
 
@@ -150,4 +151,8 @@
     position: sticky;
     top: 0;
     z-index: 10;
+}
+
+.ms-style-editor-toolbar-left > * + * {
+    margin-left: 4px;
 }

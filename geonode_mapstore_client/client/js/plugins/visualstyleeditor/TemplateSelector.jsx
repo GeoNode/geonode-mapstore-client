@@ -23,7 +23,6 @@ function TemplateSelector({
     onSelect,
     selectedStyle,
     onUpdateMetadata,
-    onUpdate,
     tmpCode,
     onStoreTmpCode
 }) {
@@ -31,6 +30,7 @@ function TemplateSelector({
     const isMounted = useRef();
     const [templates, setTemplates] = useState([]);
     const [selectedTemplate, setSelectedTemplate] = useState();
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         isMounted.current = true;
@@ -47,8 +47,11 @@ function TemplateSelector({
 
     function handleApply() {
         onStoreTmpCode(code);
-        onUpdateMetadata({ styleJSON: null });
-        onUpdate();
+        onUpdateMetadata({
+            styleJSON: null,
+            editorType: 'visual'
+        });
+        setOpen(false);
     }
 
     const storeTmpCode = useRef();
@@ -64,6 +67,7 @@ function TemplateSelector({
     };
 
     function handleOpen(isOpen) {
+        setOpen(isOpen);
         storeTmpCode.current(isOpen);
     }
 
@@ -84,14 +88,16 @@ function TemplateSelector({
         setSelectedTemplate(idx);
         const styleTitle = selectedStyle?.metadata?.title || selectedStyle?.label || selectedStyle?.title || selectedStyle?.name || '';
         getStyleParser(format)
-            .writeStyle({
-                ...templateCode,
-                name: styleTitle
-            })
-            .then((updateCode) => {
-                if (isMounted.current) {
-                    handleSelect(updateCode);
-                }
+            .then(parser => {
+                parser.writeStyle({
+                    ...templateCode,
+                    name: styleTitle
+                })
+                    .then((updateCode) => {
+                        if (isMounted.current) {
+                            handleSelect(updateCode);
+                        }
+                    });
             });
     }
 
@@ -101,7 +107,9 @@ function TemplateSelector({
 
     return (
         <Popover
+            key={open}
             placement="right"
+            open={open}
             onOpen={handleOpen}
             content={
                 <div className="gn-visual-style-editor-templates" >
@@ -124,7 +132,7 @@ function TemplateSelector({
                         })}
                     </ul>
                     <div className="gn-visual-style-editor-templates-footer">
-                        <Button size="xs" disabled={selectedTemplate === undefined} variant="primary" onClick={handleApply}><Message msgId="gnviewer.applyStyle"/></Button>
+                        <Button size="xs" disabled={selectedTemplate === undefined} variant="primary" onClick={handleApply}><Message msgId="gnviewer.copy"/></Button>
                     </div>
                 </div>
             }

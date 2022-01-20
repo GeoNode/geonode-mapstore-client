@@ -16,17 +16,11 @@ import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
 import StylesAPI from '@mapstore/framework/api/geoserver/Styles';
 import {
     styleServiceSelector,
-    getUpdatedLayer,
-    geometryTypeSelector
+    getUpdatedLayer
 } from '@mapstore/framework/selectors/styleeditor';
-import {
-    CREATE_GEONODE_STYLE,
-    DELETE_GEONODE_STYLE,
-    REQUEST_DATASET_AVAILABLE_STYLES
-} from '@js/actions/visualstyleeditor';
-import { saveDirectContent } from '@js/actions/gnsave';
+import { REQUEST_DATASET_AVAILABLE_STYLES } from '@js/actions/visualstyleeditor';
 import tinycolor from 'tinycolor2';
-import { parseStyleName, parseMetadata } from '@js/utils/ResourceUtils';
+import { parseStyleName } from '@js/utils/ResourceUtils';
 
 /**
 * @module epics/visualstyleeditor
@@ -76,10 +70,9 @@ function getGnStyleQueryParams(style, styleService) {
     return StylesAPI.getStyleCodeByName({
         baseUrl: styleService?.baseUrl,
         styleName: parseStyleName(style)
-    }).then(updatedStyles => {
-        const { metadata = {}, code: updateStyleCode, format, languageVersion } = updatedStyles || {};
-        const metadataObj = parseMetadata(metadata);
-        return { msEditorType: metadataObj?.msEditorType, msStyleJSON: metadataObj?.msStyleJSON, code: updateStyleCode, format, languageVersion };
+    }).then(updatedStyle => {
+        const { metadata = {}, code: updateStyleCode, format, languageVersion } = updatedStyle || {};
+        return { msEditorType: metadata?.msEditorType, msStyleJSON: metadata?.msStyleJSON, code: updateStyleCode, format, languageVersion };
     }).catch(() => ({ msEditorType, msStyleJSON, code}));
 }
 
@@ -106,6 +99,7 @@ function getGeoNodeStyles({ layer, styleService }) {
                 format: (code && format) ? format : 'css',
                 styleName,
                 metadata,
+                options: { params: { raw: true } },
                 ...((code && format) && { languageVersion })
             })
                 .then(() => {
@@ -145,76 +139,6 @@ export const gnRequestDatasetAvailableStyles = (action$, store) =>
             );
         });
 
-export const gnCreateStyle = (action$, store) =>
-    action$.ofType(CREATE_GEONODE_STYLE)
-        .switchMap((action) => {
-            const state = store.getState();
-            const styleService = action?.options?.styleService || styleServiceSelector(state);
-            const styleName = getStyleId({ name: action.title.toLowerCase().replace(/\W/g, '') });
-            const layer = action.layer || getUpdatedLayer(state);
-            const format = 'css';
-            const metadata = {
-                title: action.title,
-                description: '',
-                msStyleJSON: null,
-                msEditorType: 'visual',
-                gnLayerName: layer.name,
-                gnDatasetPk: layer?.extendedParams?.mapLayer?.dataset?.pk
-            };
-            const geometryType = geometryTypeSelector(state);
-            return Observable.defer(
-                () => StylesAPI.createStyle({
-                    baseUrl: styleService?.baseUrl,
-                    code: getBaseCSSStyle({ type: geometryType, title: action.title }),
-                    format,
-                    styleName,
-                    metadata
-                })
-            )
-                .switchMap(() => {
-                    return Observable.of(
-                        updateNode(layer.id, 'layer', { availableStyles: [...layer.availableStyles, { format, metadata, name: styleName, title: action.title }] }),
-                        updateAdditionalLayer(layer.id, STYLE_OWNER_NAME, 'override', {}),
-                        updateSettingsParams({ style: styleName }, true),
-                        updateStatus('edit'),
-                        saveDirectContent()
-                    );
-                });
-        });
-
-export const gnDeleteStyle = (action$, store) =>
-    action$.ofType(DELETE_GEONODE_STYLE)
-        .switchMap((action) => {
-            const state = store.getState();
-            const styleService = action?.options?.styleService || styleServiceSelector(state);
-            const layer = action.layer || getUpdatedLayer(state);
-
-            const completeDeleteProcess = () => {
-                const newAvailableStyles = (layer.availableStyles || []).filter(({ name }) => name !== action.styleName);
-                return Observable.of(
-                    updateNode(layer.id, 'layer', { availableStyles: newAvailableStyles }),
-                    updateAdditionalLayer(layer.id, STYLE_OWNER_NAME, 'override', {}),
-                    updateSettingsParams({ style: newAvailableStyles?.[0]?.name || '' }, true),
-                    updateStatus('edit'),
-                    saveDirectContent()
-                );
-            };
-
-            return Observable.defer(() =>
-                Observable.defer(() =>
-                    StylesAPI.deleteStyle({
-                        baseUrl: styleService?.baseUrl,
-                        styleName: action.styleName
-                    })
-                ))
-                .switchMap(() => {
-                    return completeDeleteProcess();
-                })
-                .catch(() => {
-                    return completeDeleteProcess();
-                });
-        });
-
 export const gnUpdateStyleInfoOnSave = (action$, store) =>
     action$.ofType(UPDATE_STYLE_CODE)
         .switchMap(() => {
@@ -224,8 +148,6 @@ export const gnUpdateStyleInfoOnSave = (action$, store) =>
         });
 
 export default {
-    gnCreateStyle,
-    gnDeleteStyle,
     gnRequestDatasetAvailableStyles,
     gnUpdateStyleInfoOnSave
 };

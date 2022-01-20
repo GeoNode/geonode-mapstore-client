@@ -203,6 +203,7 @@
             "dismissMessage": "Don't show this message again",
             "templates": "Templates",
             "copyFrom": "Copy from",
+            "copy": "Copy",
             "createMap": "Create Map",
             "addLayer": "Add layer",
             "datasetsCatalogTitle": "Layers catalog",
@@ -243,7 +244,11 @@
             "resourceOrigin": {
                 "a": "a",
                 "from": "from"
-            }
+            },
+            "styleEditorCloseTitle": "Pending changes",
+            "styleEditorCloseMessage": "Are you sure you want to close the style editor without apply the changes?",
+            "styleEditorCloseCancel": "No, back to the style editor",
+            "styleEditorCloseConfirm": "Yes, close"
         }
     }
 }

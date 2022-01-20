@@ -202,6 +202,7 @@
             "dismissMessage": "Diese Nachricht nicht mehr anzeigen",
             "templates": "Vorlagen",
             "copyFrom": "Kopie von",
+            "copy": "Kopie",
             "createMap": "Karte Erstellen",
             "addLayer": "Ebene hinzufügen",
             "datasetsCatalogTitle": "Ebenenkatalog",
@@ -242,7 +243,11 @@
             "resourceOrigin": {
                 "a": "eine",
                 "from": "von"
-            }
+            },
+            "styleEditorCloseTitle": "Ausstehende Änderungen",
+            "styleEditorCloseMessage": "Möchten Sie den Stileditor wirklich schließen, ohne die Änderungen zu übernehmen?",
+            "styleEditorCloseCancel": "Nein, zurück zum Stileditor",
+            "styleEditorCloseConfirm": "Ja, schließen"
         }
     }
 }

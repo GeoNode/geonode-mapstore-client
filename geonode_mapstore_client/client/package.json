@@ -34,6 +34,7 @@
     "dompurify": "2.2.6",
     "font-awesome": "4.7.0",
     "mapstore": "file:MapStore2",
+    "md5": "^2.3.0",
     "react-helmet": "6.1.0"
   },
   "mapstore": {
