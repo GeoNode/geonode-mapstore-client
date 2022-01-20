@@ -48,12 +48,6 @@ const supportedDatasetTypes = [
         requires: ['shp', 'prj', 'dbf', 'shx']
     },
     {
-        id: 'asc',
-        label: 'ASCII Text File',
-        format: 'raster',
-        ext: ['asc']
-    },
-    {
         id: 'tiff',
         label: 'GeoTIFF',
         format: 'raster',
@@ -62,29 +56,10 @@ const supportedDatasetTypes = [
     },
     {
         id: 'csv',
-        label: 'Comma Separated Value',
+        label: 'Comma Separated Value (CSV)',
         format: 'vector',
         ext: ['csv'],
         mimeType: ['text/csv']
-    },
-    {
-        id: 'kml',
-        label: 'Google Earth KML',
-        format: 'archive',
-        ext: ['kml']
-    },
-    {
-        id: 'kmz',
-        label: 'Google Earth KMZ',
-        format: 'archive',
-        ext: ['kmz']
-    },
-    {
-        id: 'geojson',
-        label: 'GeoJSON',
-        format: 'vector',
-        ext: ['json', 'geojson'],
-        mimeType: ['application/json', 'application/geo+json']
     },
     {
         id: 'zip',
