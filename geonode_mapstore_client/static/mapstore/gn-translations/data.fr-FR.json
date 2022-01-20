@@ -247,7 +247,9 @@
             "styleEditorCloseTitle": "Modifications en attente",
             "styleEditorCloseMessage": "Voulez-vous vraiment fermer l'éditeur de style sans appliquer les modifications ?",
             "styleEditorCloseCancel": "Non, retour à l'éditeur de style",
-            "styleEditorCloseConfirm": "Oui, fermer"
+            "styleEditorCloseConfirm": "Oui, fermer",
+            "metadataUpload": "Télécharger les Métadonnées",
+            "styleUpload": "Style de Déléchargement"
         }
     }
 }
