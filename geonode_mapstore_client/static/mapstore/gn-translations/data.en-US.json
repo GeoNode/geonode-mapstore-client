@@ -248,7 +248,9 @@
             "styleEditorCloseTitle": "Pending changes",
             "styleEditorCloseMessage": "Are you sure you want to close the style editor without apply the changes?",
             "styleEditorCloseCancel": "No, back to the style editor",
-            "styleEditorCloseConfirm": "Yes, close"
+            "styleEditorCloseConfirm": "Yes, close",
+            "metadataUpload": "Upload Metadata",
+            "styleUpload": "Upload Style"
         }
     }
 }

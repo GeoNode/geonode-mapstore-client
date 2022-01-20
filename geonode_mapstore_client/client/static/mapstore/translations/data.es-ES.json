@@ -246,7 +246,9 @@
             "styleEditorCloseTitle": "Cambios pendientes",
             "styleEditorCloseMessage": "¿Está seguro de que desea cerrar el editor de estilos sin aplicar los cambios?",
             "styleEditorCloseCancel": "No, volver al editor de estilo",
-            "styleEditorCloseConfirm": "Sí, cerrar"
+            "styleEditorCloseConfirm": "Sí, cerrar",
+            "metadataUpload": "Subir Metadatos",
+            "styleUpload": "Subir Estilo"
         }
     }
 }
