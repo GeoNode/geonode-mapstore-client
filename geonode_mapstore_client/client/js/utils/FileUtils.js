@@ -24,6 +24,8 @@ export const getFileFromDownload = (downloadURL, type = 'application/pdf') => {
 // Default Supported resources for MediaViewer
 export const imageExtensions = ['jpg', 'jpeg', 'png'];
 export const videoExtensions = ['mp4', 'mpg', 'avi', 'm4v', 'mp2', '3gp', 'flv', 'vdo', 'afl', 'mpga', 'webm'];
+export const gltfExtensions = ['glb', 'gltf'];
+export const pcdExtensions = ['pcd'];
 
 /**
 * check if a resource extension is supported for display in the media viewer
@@ -34,5 +36,7 @@ export const determineResourceType = extension => {
     if (extension === 'pdf') return 'pdf';
     if (imageExtensions.includes(extension)) return 'image';
     if (videoExtensions.includes(extension)) return 'video';
+    if (gltfExtensions.includes(extension)) return 'gltf';
+    if (pcdExtensions.includes(extension)) return 'pcd';
     return 'unsupported';
 };

@@ -6,20 +6,41 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React  from 'react';
+import React, { Suspense, lazy }  from 'react';
 import MediaComponent from '@mapstore/framework/components/geostory/media';
-import HTML from '@mapstore/framework/components/I18N/HTML';
 import PdfViewer from '@js/components/MediaViewer/PdfViewer';
 import { determineResourceType } from '@js/utils/FileUtils';
 import Loader from '@mapstore/framework/components/misc/Loader';
 import MainErrorView from '@js/components/MainErrorView';
 import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
 
+const Scene3DViewer = lazy(() => import('@js/components/MediaViewer/Scene3DViewer'));
+
+function UnsupportedViewer({ thumbnail }) {
+    return (
+        <div
+            className="gn-media-unsupported"
+            style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundImage: `url(${thumbnail})`,
+                backgroundSize: 'contain',
+                backgroundPosition: 'center'
+            }}>
+        </div>
+    );
+}
+
 const mediaMap = {
     image: MediaComponent,
     video: MediaComponent,
     pdf: PdfViewer,
-    unsupported: MediaComponent
+    gltf: Scene3DViewer,
+    pcd: Scene3DViewer,
+    unsupported: UnsupportedViewer
 };
 
 const loaderComponent = () => <div className="pdf-loader"><Loader size={70}/></div>;
@@ -36,11 +57,7 @@ const mediaDefaultProps = {
         loaderComponent
     },
     pdf: {},
-    unsupported: {
-        showCaption: true,
-        caption: <h3 className="unsupported-media-caption"><HTML msgId={'viewer.document.unSupportedMedia'}/></h3>,
-        enableFullscreen: false
-    }
+    unsupported: {}
 };
 
 const Media = ({resource}) => {
@@ -54,20 +71,18 @@ const Media = ({resource}) => {
     if (resource && viewResource) {
         const mediaType = determineResourceType(resource.extension);
         const MediaViewer =  mediaMap[mediaType];
-        return (<>
+        return (<Suspense fallback={null}>
             <MediaViewer
                 mediaType={mediaType}
                 {...mediaDefaultProps[mediaType]}
                 description={resource.abstract}
                 id={resource.pk}
                 thumbnail={resource.thumbnail_url}
-                src={mediaType === 'unsupported' ? resource.thumbnail_url : resource.href}
+                src={resource.href}
             />
-        </>);
+        </Suspense>);
     }
     return (<MainErrorView msgId={'gnhome.permissionsMissing'}/>);
-
-
 };
 
 export default Media;

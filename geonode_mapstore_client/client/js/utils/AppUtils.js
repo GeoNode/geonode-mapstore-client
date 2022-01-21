@@ -106,6 +106,29 @@ export function getPluginsConfiguration(pluginsConfig, key) {
     return [];
 }
 
+function getLanguageKey(languageCode) {
+    const parts = languageCode.split('-');
+    return parts[0];
+}
+
+function parseLanguageCode(languageCode) {
+    const parts = languageCode.split('-');
+    return `${parts[0].toLowerCase()}-${(parts[1] || parts[0]).toUpperCase()}`
+}
+
+function languagesToSupportedLocales(languages) {
+    if (!languages || languages.length === 0) {
+        return null;
+    }
+    return languages.reduce((acc, [code, description]) => ({
+        ...acc,
+        [getLanguageKey(code)]: {
+            code: parseLanguageCode(code),
+            description
+        }
+    }), {});
+}
+
 export function setupConfiguration({
     localConfig,
     user,
@@ -127,9 +150,9 @@ export function setupConfiguration({
         ? config.translationsPath
         : ['/static/mapstore/gn-translations', '/static/mapstore/ms-translations']
     );
-    const supportedLocales = defaultSupportedLocales || getSupportedLocales();
+    const supportedLocales = languagesToSupportedLocales(geoNodePageConfig.languages) || defaultSupportedLocales || getSupportedLocales();
     setSupportedLocales(supportedLocales);
-    const locale = supportedLocales[geoNodePageConfig.languageCode]?.code || 'en';
+    const locale = supportedLocales[getLanguageKey(geoNodePageConfig.languageCode)]?.code || 'en-US';
     setConfigProp('locale', locale);
     const geoNodeResourcesInfo = getConfigProp('geoNodeResourcesInfo') || {};
     setConfigProp('geoNodeResourcesInfo', { ...geoNodeResourcesInfo, ...resourcesTotalCount });

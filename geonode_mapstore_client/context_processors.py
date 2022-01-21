@@ -28,6 +28,7 @@ def resource_urls(request):
         'DEFAULT_TILE_SIZE': getattr(settings, "DEFAULT_TILE_SIZE", 512),
         'DEFAULT_LAYER_FORMAT': getattr(settings, "DEFAULT_LAYER_FORMAT", 'image/png'),
         'ALLOWED_DOCUMENT_TYPES': getattr(settings, "ALLOWED_DOCUMENT_TYPES", []),
+        'LANGUAGES': getattr(settings, "LANGUAGES", []),
         'TIME_ENABLED': getattr(
                 settings,
                 'UPLOADER',

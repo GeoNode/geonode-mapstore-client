@@ -18,10 +18,10 @@
         <link href="{% static 'mapstore/dist/themes/geonode.css' %}?{% client_version %}" rel="stylesheet" />
         <title>{{ SITE_NAME }}</title>
         <link rel="shortcut icon" href="{% static 'geonode/img/favicon.ico' %}" />
-        {% include './snippets/loader_style.html' %}
+        {% include 'geonode-mapstore-client/snippets/loader_style.html' %}
 
         {% block custom_theme %}
-            {% include './snippets/custom_theme.html' %}
+            {% include 'geonode-mapstore-client/snippets/custom_theme.html' %}
         {% endblock %}
 
         {% block extra_style %}
@@ -30,10 +30,20 @@
     </head>
     <body class="msgapi ms2" data-ms2-container="ms2" >
         {% block gn_config %}
-            {% include './_geonode_config.html' with plugins_config_key='dataset_embed' is_embed='true' %}
+            {% include 'geonode-mapstore-client/_geonode_config.html' with plugins_config_key='document_embed' is_embed='true' %}
         {% endblock %}
         <div class="gn-embed gn-theme gn-theme-{{ custom_theme.variant }}">
             {% block container %}
+                <style>
+                    .msgapi .gn-media-viewer {
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        position: absolute;
+                        margin:0;
+                    }
+                </style>
                 <div id="ms-container">
                     <div class="gn-main-event-container">
                         <div class="gn-main-event-content">
@@ -45,7 +55,7 @@
             {% endblock %}
 
             {% block ms_scripts %}
-                <script id="gn-script" src="{% static 'mapstore/dist/js/gn-map.js' %}?{% client_version %}"></script>
+                <script id="gn-script" src="{% static 'mapstore/dist/js/gn-document.js' %}?{% client_version %}"></script>
             {% endblock %}
         </div>
     </body>

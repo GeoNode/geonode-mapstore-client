@@ -37,14 +37,13 @@ describe('Test Media', () => {
         expect(mediaViewer).toExist();
     });
 
-    it('should render caption viewer if resource extension is unSupported', () => {
-        ReactDOM.render( <Media resource={{href: "http://example.com", resource_type: "document", extension: "docx", "abstract": "test", pk: 1, perms: [
+    it('should render thumbnail extension is unSupported', () => {
+        ReactDOM.render( <Media resource={{href: "http://example.com", thumbnail_url: 'image', resource_type: "document", extension: "docx", "abstract": "test", pk: 1, perms: [
             "download_resourcebase"
         ] }}/>, document.getElementById("container"));
-        const mediaViewer = document.querySelector('.ms-media'); // unSupported Media is shown in ImageViewer
-        expect(mediaViewer).toExist();
-        const unSupportedCaptions = document.querySelector('.unsupported-media-caption');
-        expect(unSupportedCaptions).toExist();
+        const mediaViewer = document.querySelector('.gn-media-unsupported');
+        expect(mediaViewer).toBeTruthy();
+        expect(mediaViewer.style.backgroundImage).toBe('url("image")');
     });
 
     it('should render error message if resource has not download perms', () => {

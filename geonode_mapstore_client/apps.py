@@ -9,8 +9,10 @@
 #
 #########################################################################
 import os
+
 from django.apps import apps, AppConfig as BaseAppConfig
 from django.views.generic import TemplateView
+
 
 def run_setup_hooks(*args, **kwargs):
     from geonode.urls import urlpatterns
@@ -46,6 +48,11 @@ def run_setup_hooks(*args, **kwargs):
         url(r'^api/v2/', include(router.urls)),
     ]
 
+def connect_geoserver_style_visual_mode_signal():
+    from geonode.geoserver.signals import geoserver_automatic_default_style_set
+    from geonode_mapstore_client.utils import set_default_style_to_open_in_visual_mode
+
+    geoserver_automatic_default_style_set.connect(set_default_style_to_open_in_visual_mode)
 
 class AppConfig(BaseAppConfig):
 
@@ -53,6 +60,8 @@ class AppConfig(BaseAppConfig):
     label = "geonode_mapstore_client"
 
     def ready(self):
+
         if not apps.ready:
             run_setup_hooks()
+            connect_geoserver_style_visual_mode_signal()
         super(AppConfig, self).ready()
