@@ -6,13 +6,10 @@
  * LICENSE file in the root directory of this source tree.
 */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import uniqBy from 'lodash/uniqBy';
-import orderBy from 'lodash/orderBy';
 import omit from 'lodash/omit';
-import pick from 'lodash/pick';
-import merge from 'lodash/merge';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import Dropzone from 'react-dropzone';
@@ -20,62 +17,26 @@ import ViewerLayout from '@js/components/ViewerLayout';
 import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
 import Spinner from '@js/components/Spinner';
-import {
-    getPendingUploads,
-    getProcessedUploadsById,
-    getProcessedUploadsByImportId,
-    uploadDataset
-} from '@js/api/geonode/v2';
+import { uploadDocument } from '@js/api/geonode/v2';
+import uuidv1 from 'uuid/v1';
 import axios from '@mapstore/framework/libs/ajax';
+import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { FormControl as FormControlRB } from 'react-bootstrap';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
-// import withDebounceOnCallback from '@mapstore/framework/components/misc/enhancers/withDebounceOnCallback';
 const FormControl = localizedProps('placeholder')(FormControlRB);
+import PendingUploadCard from '@js/routes/upload/PendingUploadCard';
+import UploadCard from '@js/routes/upload/UploadCard';
 
 function InputControl({ onChange, value, ...props }) {
     return <FormControl {...props} value={value} onChange={event => onChange(event.target.value)}/>;
 }
 const InputControlWithDebounce = InputControl;
-import PendingUploadCard from '@js/routes/upload/PendingUploadCard';
-import UploadCard from '@js/routes/upload/UploadCard';
 
 
-const supportedDatasetTypes = [
-    {
-        id: 'shp',
-        label: 'ESRI Shapefile',
-        format: 'vector',
-        ext: ['shp'],
-        requires: ['shp', 'prj', 'dbf', 'shx']
-    },
-    {
-        id: 'tiff',
-        label: 'GeoTIFF',
-        format: 'raster',
-        ext: ['tiff', 'tif'],
-        mimeType: ['image/tiff']
-    },
-    {
-        id: 'csv',
-        label: 'Comma Separated Value (CSV)',
-        format: 'vector',
-        ext: ['csv'],
-        mimeType: ['text/csv']
-    },
-    {
-        id: 'zip',
-        label: 'Zip Archive',
-        format: 'archive',
-        ext: ['zip'],
-        mimeType: ['application/zip']
-    }
-];
-
-
-const supportedExtensions = supportedDatasetTypes.map(({ ext }) => ext || []).flat();
-const supportedMimeTypes = supportedDatasetTypes.map(({ mimeType }) => mimeType || []).flat();
-const supportedRequiresExtensions = supportedDatasetTypes.map(({ requires }) => requires || []).flat();
-const supportedLabels = supportedDatasetTypes.map(({ label }) => label ).join(', ');
+function getAllowedDocumentTypes() {
+    const { allowedDocumentTypes } = getConfigProp('geoNodeSettings') || [];
+    return allowedDocumentTypes;
+}
 
 function getFileNameParts(file) {
     const { name } = file;
@@ -85,73 +46,24 @@ function getFileNameParts(file) {
     return { ext, baseName };
 }
 
-function getDatasetFileType(file) {
-    const { type } = file;
-    const { ext } = getFileNameParts(file);
-    const datasetFileType = supportedDatasetTypes.find((fileType) =>
-        (fileType.ext || []).includes(ext)
-        || (fileType.mimeType || []).includes(type)
-        || (fileType.requires || []).includes(ext)
-    );
-    return datasetFileType?.id;
-}
-
 function UploadList({
     children,
-    onSuccess
+    onChange
 }) {
 
     const [waitingUploads, setWaitingUploads] = useState({});
-    const [readyUploads, setReadyUploads] = useState({});
     const [loading, setLoading] = useState(false);
 
-    function parseUploadFiles(uploadFiles) {
-        return Object.keys(uploadFiles)
-            .reduce((acc, baseName) => {
-                const uploadFile = uploadFiles[baseName];
-                const { requires = [], ext = []} = supportedDatasetTypes.find(({ id }) => id === uploadFile.type) || {};
-                const cleanedFiles = pick(uploadFiles[baseName].files, [...requires, ...ext]);
-                const filesKeys = Object.keys(cleanedFiles);
-                const files = requires.length > 0
-                    ? cleanedFiles
-                    : filesKeys.length > 1
-                        ? pick(cleanedFiles, ext[0])
-                        : cleanedFiles;
-                const missingExt = requires.filter((fileExt) => !filesKeys.includes(fileExt));
-                return {
-                    ...acc,
-                    [baseName]: {
-                        ...uploadFile,
-                        mainExt: filesKeys.find(key => ext.includes(key)),
-                        files,
-                        missingExt
-                    }
-                };
-            }, {});
-    }
 
     function updateWaitingUploads(uploadFiles) {
-        const newWaitingUploads = parseUploadFiles(uploadFiles);
-        setWaitingUploads(newWaitingUploads);
-        const newReadyUploads = Object.keys(newWaitingUploads)
-            .reduce((acc, baseName) => {
-                if (newWaitingUploads[baseName]?.missingExt?.length > 0) {
-                    return acc;
-                }
-                return {
-                    ...acc,
-                    [baseName]: newWaitingUploads[baseName]
-                };
-            }, {});
-        setReadyUploads(newReadyUploads);
+        setWaitingUploads(uploadFiles);
     }
 
     function handleDrop(files) {
         const checkedFiles = files.map((file) => {
-            const { type } = file;
             const { ext } = getFileNameParts(file);
             return {
-                supported: !!(supportedMimeTypes.includes(type) || supportedExtensions.includes(ext) || supportedRequiresExtensions.includes(ext)),
+                supported: !!(getAllowedDocumentTypes().includes(ext)),
                 file
             };
         });
@@ -159,20 +71,17 @@ function UploadList({
             .filter(({ supported }) => supported)
             .reduce((acc, { file }) => {
                 const { ext, baseName } = getFileNameParts(file);
-                const type = getDatasetFileType(file);
                 return {
                     ...acc,
                     [baseName]: {
-                        type,
                         files: {
-                            ...acc[baseName]?.files,
                             [ext]: file
                         }
                     }
                 };
             }, {});
 
-        const newWaitingUploads = { ...merge(waitingUploads, uploadsGroupedByName) };
+        const newWaitingUploads = { ...waitingUploads, ...uploadsGroupedByName };
         updateWaitingUploads(newWaitingUploads);
     }
 
@@ -181,33 +90,32 @@ function UploadList({
     function handleUploadProcess() {
         if (!loading) {
             setLoading(true);
-            axios.all(Object.keys(readyUploads).map((baseName) => {
-                const readyUpload = readyUploads[baseName];
-                return uploadDataset({
-                    file: readyUpload.files[readyUpload.mainExt],
-                    ext: readyUpload.mainExt,
-                    auxiliaryFiles: readyUpload.files
+            axios.all(Object.keys(waitingUploads).map((baseName) => {
+                const readyUpload = waitingUploads[baseName];
+                const fileExt = Object.keys(readyUpload.files);
+                const file = readyUpload.files[fileExt[0]];
+                return uploadDocument({
+                    title: file?.name,
+                    file
                 })
-                    .then((data) => ({ status: 'success', data, baseName }))
-                    .catch(({ data: error }) => ({ status: 'error', error, baseName }));
+                    .then((data) => ({ status: 'SUCCESS', data, file, baseName }))
+                    .catch(({ data: error }) => ({ status: 'INVALID', error, file, baseName }));
             }))
                 .then((responses) => {
-                    const successfulUploads = responses.filter(({ status }) => status === 'success');
+                    const successfulUploads = responses.filter(({ status }) => status === 'SUCCESS');
                     if (successfulUploads.length > 0) {
-                        const successfulUploadsIds = successfulUploads.map(({ data }) => data?.id);
                         const successfulUploadsNames = successfulUploads.map(({ baseName }) => baseName);
                         updateWaitingUploads(omit(waitingUploads, successfulUploadsNames));
-                        getProcessedUploadsByImportId(successfulUploadsIds)
-                            .then((successfulUploadProcesses) => {
-                                onSuccess(successfulUploadProcesses);
-                                setLoading(false);
-                            })
-                            .catch(() => {
-                                setLoading(false);
-                            });
-                    } else {
-                        setLoading(false);
                     }
+                    onChange(responses.map(({ status, file, data }) => ({
+                        id: uuidv1(),
+                        name: file?.name,
+                        progress: 100,
+                        state: status,
+                        detail_url: data?.url,
+                        create_date: Date.now()
+                    })));
+                    setLoading(false);
                 })
                 .catch(() => {
                     setLoading(false);
@@ -266,13 +174,13 @@ function UploadList({
                                     textAlign: 'center'
                                 }}
                             >
-                                Supported files: {supportedLabels}
+                                Supported files: {getAllowedDocumentTypes().map((ext) => `.${ext}`).join(', ')}
                             </div>
                         )}
                         <div className="gn-upload-list-footer">
                             <Button
                                 variant="success"
-                                disabled={Object.keys(readyUploads).length === 0}
+                                disabled={Object.keys(waitingUploads).length === 0}
                                 onClick={handleUploadProcess}
                             >
                                 Upload
@@ -306,80 +214,10 @@ function UploadList({
 }
 
 function ProcessingUploadList({
-    uploads: pendingUploads,
-    onChange,
-    refreshTime = 3000
+    uploads: pendingUploads
 }) {
 
-    const [loading, setLoading] = useState(false);
     const [filterText, setFilterText] = useState('');
-    const isMounted = useRef(true);
-    const updatePending = useRef();
-    updatePending.current = () => {
-        if (!loading) {
-            setLoading(true);
-            getPendingUploads()
-                .then((newPendingUploads) => {
-                    if (isMounted.current) {
-                        const newIds = newPendingUploads.map(({ id }) => id);
-                        const missingIds = pendingUploads
-                            .filter(upload => upload.state !== 'PROCESSED' && !newIds.includes(upload.id))
-                            .map(({ id }) => id);
-                        const currentProcessed = pendingUploads.filter((upload) => upload.state === 'PROCESSED');
-                        if (missingIds.length > 0) {
-                            getProcessedUploadsById(missingIds)
-                                .then((processed) => {
-                                    onChange([
-                                        ...processed,
-                                        ...currentProcessed,
-                                        ...newPendingUploads
-                                    ]);
-                                    setLoading(false);
-                                })
-                                .catch(() => {
-                                    onChange([
-                                        ...currentProcessed,
-                                        ...newPendingUploads
-                                    ]);
-                                    setLoading(false);
-                                });
-                        } else {
-                            onChange([
-                                ...currentProcessed,
-                                ...newPendingUploads
-                            ]);
-                            setLoading(false);
-                        }
-                    }
-                })
-                .catch(() => {
-                    if (isMounted.current) {
-                        setLoading(false);
-                    }
-                });
-        }
-    };
-
-    function handleDelete({ id, deleteUrl }) {
-        axios.get(deleteUrl)
-            .then(() => {
-                if (isMounted.current) {
-                    onChange(pendingUploads.filter(upload => upload.id !== id));
-                }
-            });
-    }
-
-    useEffect(() => {
-        isMounted.current = true;
-        updatePending.current();
-        const interval = setInterval(() => {
-            updatePending.current();
-        }, refreshTime);
-        return () => {
-            clearInterval(interval);
-            isMounted.current = false;
-        };
-    }, []);
 
     const filteredPendingUploads = pendingUploads.filter(({ name }) => !filterText || name.includes(filterText));
 
@@ -391,10 +229,10 @@ function ProcessingUploadList({
                         <div className="gn-main-event-content">
                             <div className="gn-main-event-text">
                                 <div className="gn-main-icon">
-                                    <FaIcon name="database"/>
+                                    <FaIcon name="file"/>
                                 </div>
-                                <h1>Dataset Upload</h1>
-                                <div>drag and drop a dataset file</div>
+                                <h1>Document Upload</h1>
+                                <div>drag and drop a file</div>
                                 {/* <Message msgId={msgId} /> */}
                             </div>
                         </div>
@@ -420,8 +258,7 @@ function ProcessingUploadList({
                                             state,
                                             create_date: createDate,
                                             detail_url: detailUrl,
-                                            resume_url: resumeUrl,
-                                            delete_url: deleteUrl
+                                            resume_url: resumeUrl
                                         }) => {
                                             return (
                                                 <li
@@ -434,7 +271,6 @@ function ProcessingUploadList({
                                                         progress={progress}
                                                         createDate={createDate}
                                                         resumeUrl={resumeUrl}
-                                                        onRemove={deleteUrl ? () => handleDelete({ id, deleteUrl }) : null}
                                                     />
                                                 </li>
                                             );
@@ -460,24 +296,20 @@ function ProcessingUploadList({
     );
 }
 
-function UploadDataset({
-    refreshTime = 3000
-}) {
+function UploadDataset({}) {
 
     const [pendingUploads, setPendingUploads] = useState([]);
 
     function parseUploadResponse(response) {
-        return orderBy(uniqBy([...response], 'id'), 'create_date', 'desc');
+        return uniqBy([...response], 'id');
     }
 
     return (
         <UploadList
-            onSuccess={(successfulUploads) => setPendingUploads(parseUploadResponse([...successfulUploads, ...pendingUploads]))}
+            onChange={(successfulUploads) => setPendingUploads(parseUploadResponse([...successfulUploads, ...pendingUploads]))}
         >
             <ProcessingUploadList
                 uploads={pendingUploads}
-                onChange={(uploads) => setPendingUploads(parseUploadResponse(uploads))}
-                refreshTime={refreshTime}
             />
         </UploadList>
     );

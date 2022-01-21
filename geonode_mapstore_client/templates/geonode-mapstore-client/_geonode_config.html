@@ -46,6 +46,7 @@
         const catalogueServices = geoNodeSettings.CATALOGUE_SERVICES || {};
         const catalogueSelectedService = geoNodeSettings.CATALOGUE_SELECTED_SERVICE || '';
         const timeEnabled = geoNodeSettings.TIME_ENABLED || false;
+        const allowedDocumentTypes = geoNodeSettings.ALLOWED_DOCUMENT_TYPES || [];
 
         const isEmbed = checkBoolean('{{ is_embed }}') || false;
         const pluginsConfigKey = '{{ plugins_config_key }}';
@@ -80,7 +81,8 @@
                     siteName: siteName,
                     defaultTileSize: defaultTileSize,
                     defaultLayerFormat: defaultLayerFormat,
-                    timeEnabled: timeEnabled
+                    timeEnabled: timeEnabled,
+                    allowedDocumentTypes: allowedDocumentTypes
                 },
                 geoNodeConfiguration: {
                     cardsMenu: {

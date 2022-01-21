@@ -767,6 +767,19 @@ export const uploadDataset = ({
         .then(({ data }) => (data));
 };
 
+export const uploadDocument = ({
+    title,
+    file,
+    permissions = { users: { AnonymousUser: [] }, groups: {}}
+}) => {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('doc_file', file);
+    formData.append('permissions', JSON.stringify(permissions));
+    return axios.post(`/documents/upload?no__redirect=true`, formData)
+        .then(({ data }) => (data));
+};
+
 export default {
     getEndpoints,
     getResources,
@@ -800,5 +813,6 @@ export default {
     getDatasets,
     getPendingUploads,
     getProcessedUploadsById,
-    getProcessedUploadsByImportId
+    getProcessedUploadsByImportId,
+    uploadDocument
 };

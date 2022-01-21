@@ -41,6 +41,7 @@ import SearchRoute from '@js/routes/Search';
 import DetailRoute from '@js/routes/Detail';
 import ViewerRoute from '@js/routes/Viewer';
 import UploadDatasetRoute from '@js/routes/UploadDataset';
+import UploadDocumentRoute from '@js/routes/UploadDocument';
 
 import gnsearch from '@js/reducers/gnsearch';
 import gnresource from '@js/reducers/gnresource';
@@ -188,6 +189,11 @@ const routes = [
         name: 'upload_dataset',
         path: ['/upload/dataset'],
         component: UploadDatasetRoute
+    },
+    {
+        name: 'upload_document',
+        path: ['/upload/document'],
+        component: UploadDocumentRoute
     }
 ];
 
