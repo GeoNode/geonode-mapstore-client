@@ -9,7 +9,6 @@
 #
 #########################################################################
 import os
-import ast
 from django.apps import apps, AppConfig as BaseAppConfig
 from django.views.generic import TemplateView
 
