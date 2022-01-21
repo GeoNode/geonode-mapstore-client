@@ -106,14 +106,24 @@ export function getPluginsConfiguration(pluginsConfig, key) {
     return [];
 }
 
+function getLanguageKey(languageCode) {
+    const parts = languageCode.split('-');
+    return parts[0];
+}
+
+function parseLanguageCode(languageCode) {
+    const parts = languageCode.split('-');
+    return `${parts[0].toLowerCase()}-${(parts[1] || parts[0]).toUpperCase()}`
+}
+
 function languagesToSupportedLocales(languages) {
     if (!languages || languages.length === 0) {
         return null;
     }
-    return languages.reduce((acc, [key, description]) => ({
+    return languages.reduce((acc, [code, description]) => ({
         ...acc,
-        [key]: {
-            code: `${key}-${key === 'en' ? 'US' : key.toUpperCase()}`,
+        [getLanguageKey(code)]: {
+            code: parseLanguageCode(code),
             description
         }
     }), {});
@@ -142,7 +152,7 @@ export function setupConfiguration({
     );
     const supportedLocales = languagesToSupportedLocales(geoNodePageConfig.languages) || defaultSupportedLocales || getSupportedLocales();
     setSupportedLocales(supportedLocales);
-    const locale = supportedLocales[geoNodePageConfig.languageCode]?.code || 'en';
+    const locale = supportedLocales[getLanguageKey(geoNodePageConfig.languageCode)]?.code || 'en-US';
     setConfigProp('locale', locale);
     const geoNodeResourcesInfo = getConfigProp('geoNodeResourcesInfo') || {};
     setConfigProp('geoNodeResourcesInfo', { ...geoNodeResourcesInfo, ...resourcesTotalCount });

@@ -32,18 +32,8 @@ def run_setup_hooks(*args, **kwargs):
         "default": OWNER_PERMISSIONS,
         groups_settings.REGISTERED_MEMBERS_GROUP_NAME: OWNER_PERMISSIONS
     }
-    
     setattr(settings, "CLIENT_APP_LIST", ['geostory', "dashboard"])
     setattr(settings, "CLIENT_APP_ALLOWED_PERMS", [{'geostory': allowed_perms}, {"dashboard": allowed_perms}])
-
-    _MAPSTORE_DEFAULT_LANGUAGES = """(
-        ('de', 'Deutsch'),
-        ('en', 'English'),
-        ('es', 'Español'),
-        ('fr', 'Français'),
-        ('it', 'Italiano'),
-    )"""
-    setattr(settings, "LANGUAGES", ast.literal_eval(os.getenv('LANGUAGES', _MAPSTORE_DEFAULT_LANGUAGES)))
 
     try:
         settings.TEMPLATES[0]['OPTIONS']['context_processors'] += [
