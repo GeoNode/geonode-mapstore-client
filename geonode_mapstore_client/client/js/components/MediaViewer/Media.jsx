@@ -19,6 +19,7 @@ const Scene3DViewer = lazy(() => import('@js/components/MediaViewer/Scene3DViewe
 function UnsupportedViewer({ thumbnail }) {
     return (
         <div
+            className="gn-media-unsupported"
             style={{
                 position: 'absolute',
                 top: 0,
