@@ -15,26 +15,10 @@ import FitBounds from '@mapstore/framework/components/geostory/common/map/FitBou
 import Button from '@js/components/Button';
 import FaIcon from '@js/components/FaIcon';
 import Spinner from '@js/components/Spinner';
-import turfBbox from '@turf/bbox';
+import { getExtent } from '@js/utils/ResourceUtils';
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = 'Map';
-
-function getExtent({
-    features,
-    layers
-}) {
-    if (features && features.length > 0) {
-        return turfBbox({ type: 'FeatureCollection', features });
-    }
-    const { bbox } = layers.find(({ isDataset }) => isDataset) || {};
-    const { bounds, crs } = bbox || {};
-    if (bounds && crs === 'EPSG:4326') {
-        const { minx, miny, maxx, maxy } = bounds;
-        return [ minx, miny, maxx, maxy ];
-    }
-    return null;
-}
 
 function GeoLimits({
     projection,
