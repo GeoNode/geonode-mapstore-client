@@ -60,7 +60,7 @@ const mediaDefaultProps = {
     unsupported: {}
 };
 
-const Media = ({resource}) => {
+const Media = ({resource, ...props}) => {
 
     const mediaTypes = getResourceTypesInfo();
     const {
@@ -75,6 +75,7 @@ const Media = ({resource}) => {
             <MediaViewer
                 mediaType={mediaType}
                 {...mediaDefaultProps[mediaType]}
+                {...props[mediaType]}
                 description={resource.abstract}
                 id={resource.pk}
                 thumbnail={resource.thumbnail_url}

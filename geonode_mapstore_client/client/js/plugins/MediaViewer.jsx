@@ -24,12 +24,21 @@ const ConnectedMediaViewer = connect(
     }))
 )(MediaViewerComponent);
 
+/**
+* @module plugins/MediaViewer
+*/
 
-function MediaViewer() {
+/**
+ * Plugin for Media Viewer
+ * @name MediaViewer
+ * @prop {string} cfg.gltf.environmentFiles path to an hdr environment file for the 3d scene (format gltf)
+ * @prop {string} cfg.pcd.environmentFiles path to an hdr environment file for the 3d scene (format pcd)
+ */
+function MediaViewer(props) {
     return (
         <div
             className="gn-media-viewer">
-            <ConnectedMediaViewer />
+            <ConnectedMediaViewer {...props}/>
         </div>
     );
 }

@@ -70,7 +70,9 @@ const modelTypes = {
 
 function Scene3DViewer({
     src,
-    mediaType
+    mediaType,
+    // file from https://github.com/pmndrs/drei-assets
+    environmentFiles = '/static/mapstore/img/studio_small_03_1k.hdr'
 }) {
     const [boundingSphere, setBoundingSphere] = useState({
         radius: 10,
@@ -81,7 +83,7 @@ function Scene3DViewer({
         <div className="gn-media-scene-3d">
             <Suspense fallback={null}>
                 <Canvas>
-                    <Environment preset="studio" />
+                    <Environment files={environmentFiles} />
                     <Suspense fallback={<Loader />}>
                         <Model src={src} onChange={setBoundingSphere}/>
                     </Suspense>
