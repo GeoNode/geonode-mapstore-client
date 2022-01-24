@@ -72,6 +72,7 @@ function Scene3DViewer({
     src,
     mediaType,
     // file from https://github.com/pmndrs/drei-assets
+    // https://polyhaven.com/a/studio_small_03
     environmentFiles = '/static/mapstore/img/studio_small_03_1k.hdr'
 }) {
     const [boundingSphere, setBoundingSphere] = useState({
