@@ -17,18 +17,18 @@ import Spinner from '@js/components/Spinner';
 import Message from '@mapstore/framework/components/I18N/Message';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import moment from 'moment';
-import { getResourceTypesInfo, getMetadataDetailUrl, ResourceTypes } from '@js/utils/ResourceUtils';
+import { getResourceTypesInfo, getMetadataDetailUrl, ResourceTypes, getExtent } from '@js/utils/ResourceUtils';
 import debounce from 'lodash/debounce';
 import CopyToClipboardCmp from 'react-copy-to-clipboard';
 import { TextEditable, ThumbnailEditable } from '@js/components/ContentsEditable/';
 import ResourceStatus from '@js/components/ResourceStatus/';
-import turfBbox from '@turf/bbox';
 import BaseMap from '@mapstore/framework/components/map/BaseMap';
 import mapTypeHOC from '@mapstore/framework/components/map/enhancers/mapType';
-import { boundsToExtentString, getFeatureFromExtent } from '@js/utils/CoordinatesUtils';
+import { boundsToExtentString } from '@js/utils/CoordinatesUtils';
 import AuthorInfo from '@js/components/AuthorInfo/AuthorInfo';
 import Loader from '@mapstore/framework/components/misc/Loader';
 import { getUserName } from '@js/utils/SearchUtils';
+import FitBounds from '@mapstore/framework/components/geostory/common/map/FitBounds';
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = 'Map';
@@ -122,22 +122,6 @@ const DefinitionListContainer = ({itemslist}) => {
     );
 };
 
-function getExtent({
-    features,
-    layers
-}) {
-    if (features && features.length > 0) {
-        return turfBbox({ type: 'FeatureCollection', features });
-    }
-    const { bbox } = layers.find(({ isDataset }) => isDataset) || {};
-    const { bounds, crs } = bbox || {};
-    if (bounds && crs === 'EPSG:4326') {
-        const { minx, miny, maxx, maxy } = bounds;
-        return [ minx, miny, maxx, maxy ];
-    }
-    return null;
-}
-
 const MapThumbnailView = ({ layers, featuresProp = [], onMapThumbnail, onClose, savingThumbnailMap } ) => {
 
     const [currentExtent, setCurrentExtent] = useState();
@@ -151,8 +135,6 @@ const MapThumbnailView = ({ layers, featuresProp = [], onMapThumbnail, onClose, 
     }
 
     const [extent] = useState(getExtent({ layers, features: featuresProp }));
-
-    const featureFromExtent = currentExtent ? currentExtent : extent?.join();
 
     return (
         <div>
@@ -175,24 +157,15 @@ const MapThumbnailView = ({ layers, featuresProp = [], onMapThumbnail, onClose, 
                         onMapViewChanges: handleOnMapViewChanges
                     }}
                     layers={[
-                        ...(layers ? layers : []),
-                        ...(featureFromExtent
-                            ? [{
-                                id: 'highlight',
-                                type: 'vector',
-                                features: [getFeatureFromExtent(featureFromExtent)],
-                                style: {
-                                    color: '#397AAB',
-                                    opacity: 0.8,
-                                    fillColor: '#397AAB',
-                                    fillOpacity: 0.4,
-                                    weight: 0.001
-                                }
-                            }]
-                            : []
-                        )
+                        ...(layers ? layers : [])
                     ]}
                 >
+                    <FitBounds
+                        mapType="openlayers"
+                        active
+                        geometry={extent || currentExtent}
+                        duration={300}
+                    />
                 </Map>
                 {savingThumbnailMap && <div className="gn-details-thumbnail-loader">
                     <Loader size={150} />
@@ -200,7 +173,7 @@ const MapThumbnailView = ({ layers, featuresProp = [], onMapThumbnail, onClose, 
                 }
             </div>
             <div className="gn-detail-extent-action" >
-                <Button onClick={() => onMapThumbnail(currentBbox)} ><Message msgId={"gnviewer.save"} /></Button><Button onClick={() => onClose() }><Message msgId={"gnviewer.close"} /></Button></div>
+                <Button className="btn-primary" onClick={() => onMapThumbnail(currentBbox)} ><Message msgId={"gnhome.apply"} /></Button><Button onClick={() => onClose() }><i className="fa fa-close"/></Button></div>
         </div>
     );
 
