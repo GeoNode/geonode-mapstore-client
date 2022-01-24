@@ -163,6 +163,8 @@ set new Featured Resources includes data, page, links</p>
 <dd></dd>
 <dt><a href="#module_plugins/LayerSettings">plugins/LayerSettings</a></dt>
 <dd></dd>
+<dt><a href="#module_plugins/MediaViewer">plugins/MediaViewer</a></dt>
+<dd></dd>
 <dt><a href="#module_plugins/Save">plugins/Save</a></dt>
 <dd></dd>
 <dt><a href="#module_plugins/SaveAs">plugins/SaveAs</a></dt>
@@ -514,6 +516,22 @@ Plugin for layer and groups settings
   "name": "LayerSettings",
 }
 ```
+<a name="module_plugins/MediaViewer"></a>
+
+## plugins/MediaViewer
+<a name="module_plugins/MediaViewer..MediaViewer"></a>
+
+### plugins/MediaViewer~MediaViewer
+Plugin for Media Viewer
+
+**Kind**: inner property of [<code>plugins/MediaViewer</code>](#module_plugins/MediaViewer)  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| cfg.gltf.environmentFiles | <code>string</code> | path to an hdr environment file for the 3d scene (format gltf) |
+| cfg.pcd.environmentFiles | <code>string</code> | path to an hdr environment file for the 3d scene (format pcd) |
+
 <a name="module_plugins/Save"></a>
 
 ## plugins/Save
@@ -523,32 +541,6 @@ Plugin for layer and groups settings
 Plugin for Save modal
 
 **Kind**: inner property of [<code>plugins/Save</code>](#module_plugins/Save)  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| cfg.thumbnailOptions | <code>object</code> | the thumbnail is scaled based on the following configuration |
-| cfg.thumbnailOptions.width | <code>number</code> | final width of thumbnail |
-| cfg.thumbnailOptions.height | <code>number</code> | final height of thumbnail |
-| cfg.thumbnailOptions.type | <code>string</code> | type format of thumbnail 'image/jpeg' or 'image/png' |
-| cfg.thumbnailOptions.quality | <code>number</code> | image quality if type is 'image/jpeg', value between 0 and 1 |
-| cfg.thumbnailOptions.contain | <code>bool</code> | if contain is true the thumbnail is contained in the width and height provided, if contain is false the image will cover the provided width and height |
-
-**Example**  
-```js
-{
-  "name": "Save",
-  "cfg": {
-    "thumbnailOptions": {
-      "width": 300,
-      "height": 250,
-      "type": "image/jpeg",
-      "quality": 0.9,
-      "contain": false
-    }
-  }
-}
-```
 <a name="module_plugins/SaveAs"></a>
 
 ## plugins/SaveAs
@@ -558,32 +550,6 @@ Plugin for Save modal
 Plugin for SaveAs modal
 
 **Kind**: inner property of [<code>plugins/SaveAs</code>](#module_plugins/SaveAs)  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| cfg.thumbnailOptions | <code>object</code> | the thumbnail is scaled based on the following configuration |
-| cfg.thumbnailOptions.width | <code>number</code> | final width of thumbnail |
-| cfg.thumbnailOptions.height | <code>number</code> | final height of thumbnail |
-| cfg.thumbnailOptions.type | <code>string</code> | type format of thumbnail 'image/jpeg' or 'image/png' |
-| cfg.thumbnailOptions.quality | <code>number</code> | image quality if type is 'image/jpeg', value between 0 and 1 |
-| cfg.thumbnailOptions.contain | <code>bool</code> | if contain is true the thumbnail is contained in the width and height provided, if contain is false the image will cover the provided width and height |
-
-**Example**  
-```js
-{
-  "name": "SaveAs",
-  "cfg": {
-    "thumbnailOptions": {
-      "width": 300,
-      "height": 250,
-      "type": "image/jpeg",
-      "quality": 0.9,
-      "contain": false
-    }
-  }
-}
-```
 <a name="module_plugins/Sync"></a>
 
 ## plugins/Sync
