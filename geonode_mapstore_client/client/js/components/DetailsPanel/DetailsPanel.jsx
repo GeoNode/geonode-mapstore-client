@@ -24,7 +24,6 @@ import { TextEditable, ThumbnailEditable } from '@js/components/ContentsEditable
 import ResourceStatus from '@js/components/ResourceStatus/';
 import BaseMap from '@mapstore/framework/components/map/BaseMap';
 import mapTypeHOC from '@mapstore/framework/components/map/enhancers/mapType';
-import { boundsToExtentString } from '@js/utils/CoordinatesUtils';
 import AuthorInfo from '@js/components/AuthorInfo/AuthorInfo';
 import Loader from '@mapstore/framework/components/misc/Loader';
 import { getUserName } from '@js/utils/SearchUtils';
@@ -126,10 +125,13 @@ const MapThumbnailView = ({ layers, featuresProp = [], onMapThumbnail, onClose, 
 
     const [currentExtent, setCurrentExtent] = useState();
     const [currentBbox, setCurrentBbox] = useState();
+    const [projection, setProjection] = useState('EPSG:3857');
 
     function handleOnMapViewChanges(center, zoom, bbox) {
         const { bounds, crs } = bbox;
-        const newExtent = boundsToExtentString(bounds, crs);
+        setProjection(crs);
+        const { minx, miny, maxx, maxy } = bounds;
+        const newExtent = [minx, miny, maxx, maxy];
         setCurrentBbox(bbox);
         setCurrentExtent(newExtent);
     }
@@ -165,6 +167,7 @@ const MapThumbnailView = ({ layers, featuresProp = [], onMapThumbnail, onClose, 
                         active
                         geometry={extent || currentExtent}
                         duration={300}
+                        geometryProjection={projection}
                     />
                 </Map>
                 {savingThumbnailMap && <div className="gn-details-thumbnail-loader">
