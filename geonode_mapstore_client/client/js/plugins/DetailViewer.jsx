@@ -39,6 +39,7 @@ import { withRouter } from 'react-router';
 import { hashLocationToHref } from '@js/utils/SearchUtils';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { layersSelector } from '@mapstore/framework/selectors/layers';
+import { mapSelector } from '@mapstore/framework/selectors/map';
 
 const ConnectedDetailsPanel = connect(
     createSelector([
@@ -48,15 +49,17 @@ const ConnectedDetailsPanel = connect(
         state => state?.gnsave?.savingThumbnailMap || false,
         layersSelector,
         isThumbnailChanged,
-        updatingThumbnailResource
-    ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating) => ({
+        updatingThumbnailResource,
+        mapSelector
+    ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating, mapData) => ({
         layers: layers,
         resource,
         loading,
         savingThumbnailMap,
         favorite,
         isThumbnailChanged: thumbnailChanged,
-        resourceThumbnailUpdating
+        resourceThumbnailUpdating,
+        initialBbox: mapData?.bbox
     })),
     {
         closePanel: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),

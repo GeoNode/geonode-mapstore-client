@@ -17,7 +17,7 @@ import Spinner from '@js/components/Spinner';
 import Message from '@mapstore/framework/components/I18N/Message';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import moment from 'moment';
-import { getResourceTypesInfo, getMetadataDetailUrl, ResourceTypes, getExtent } from '@js/utils/ResourceUtils';
+import { getResourceTypesInfo, getMetadataDetailUrl, ResourceTypes } from '@js/utils/ResourceUtils';
 import debounce from 'lodash/debounce';
 import CopyToClipboardCmp from 'react-copy-to-clipboard';
 import { TextEditable, ThumbnailEditable } from '@js/components/ContentsEditable/';
@@ -121,22 +121,18 @@ const DefinitionListContainer = ({itemslist}) => {
     );
 };
 
-const MapThumbnailView = ({ layers, featuresProp = [], onMapThumbnail, onClose, savingThumbnailMap } ) => {
+const MapThumbnailView = ({ initialBbox, layers, onMapThumbnail, onClose, savingThumbnailMap } ) => {
 
-    const [currentExtent, setCurrentExtent] = useState();
     const [currentBbox, setCurrentBbox] = useState();
-    const [projection, setProjection] = useState('EPSG:3857');
 
     function handleOnMapViewChanges(center, zoom, bbox) {
-        const { bounds, crs } = bbox;
-        setProjection(crs);
-        const { minx, miny, maxx, maxy } = bounds;
-        const newExtent = [minx, miny, maxx, maxy];
         setCurrentBbox(bbox);
-        setCurrentExtent(newExtent);
     }
 
-    const [extent] = useState(getExtent({ layers, features: featuresProp }));
+    const { bounds, crs } = initialBbox;
+    const { minx, miny, maxx, maxy } = bounds;
+    const extent = [minx, miny, maxx, maxy];
+    const projection = crs;
 
     return (
         <div>
@@ -148,7 +144,7 @@ const MapThumbnailView = ({ layers, featuresProp = [], onMapThumbnail, onClose, 
                     mapType="openlayers"
                     map={{
                         registerHooks: false,
-                        projection: 'EPSG:3857' // da usare paramentro projection
+                        projection: 'EPSG:3857' // to use parameter projection
                     }}
                     styleMap={{
                         position: 'absolute',
@@ -165,13 +161,13 @@ const MapThumbnailView = ({ layers, featuresProp = [], onMapThumbnail, onClose, 
                     <FitBounds
                         mapType="openlayers"
                         active
-                        geometry={extent || currentExtent}
+                        geometry={extent}
                         duration={300}
                         geometryProjection={projection}
                     />
                 </Map>
                 {savingThumbnailMap && <div className="gn-details-thumbnail-loader">
-                    <Loader size={150} />
+                    <Loader size={50} />
                 </div>
                 }
             </div>
@@ -211,7 +207,8 @@ function DetailsPanel({
     layers,
     isThumbnailChanged,
     onResourceThumbnail,
-    resourceThumbnailUpdating
+    resourceThumbnailUpdating,
+    initialBbox
 }) {
     const detailsContainerNode = useRef();
     const isMounted = useRef();
@@ -525,6 +522,7 @@ function DetailsPanel({
                                     onMapThumbnail={onMapThumbnail}
                                     onClose={handleEnableMapViewer}
                                     savingThumbnailMap={savingThumbnailMap}
+                                    initialBbox={initialBbox}
                                 />
                             }
                         </div>}
