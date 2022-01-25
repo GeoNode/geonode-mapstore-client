@@ -9,7 +9,8 @@
 
 import expect from 'expect';
 import {
-    bboxToPolygon
+    bboxToPolygon,
+    getExtent
 } from '../CoordinatesUtils';
 
 describe('Test Coordinates Utils', () => {
@@ -27,5 +28,17 @@ describe('Test Coordinates Utils', () => {
             [-10, 10],
             [-10, -10]
         ]]);
+    });
+
+    it('should get extent from Bbox', () => {
+        const layers = [{
+            isDataset: true,
+            bbox: {
+                bounds: { minx: -10, miny: -10, maxx: 10, maxy: 10 },
+                crs: 'EPSG:4326'
+            }
+        }];
+
+        expect(getExtent({ layers, features: [] })).toEqual([-10, -10, 10, 10]);
     });
 });
