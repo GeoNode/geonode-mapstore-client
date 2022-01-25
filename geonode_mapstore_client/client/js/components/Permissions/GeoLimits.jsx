@@ -15,7 +15,7 @@ import FitBounds from '@mapstore/framework/components/geostory/common/map/FitBou
 import Button from '@js/components/Button';
 import FaIcon from '@js/components/FaIcon';
 import Spinner from '@js/components/Spinner';
-import { getExtent } from '@js/utils/ResourceUtils';
+import { getExtent } from '@js/utils/CoordinatesUtils';
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = 'Map';
