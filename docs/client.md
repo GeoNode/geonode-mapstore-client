@@ -607,6 +607,11 @@ if the request url contain localhost:8000
 ## utils/CoordinatesUtils
 Utilities for api requests
 
+
+* [utils/CoordinatesUtils](#module_utils/CoordinatesUtils)
+    * [.boundsToExtentString](#module_utils/CoordinatesUtils.boundsToExtentString) ⇒ <code>string</code>
+    * [.getExtent](#module_utils/CoordinatesUtils.getExtent) ⇒ <code>Array</code>
+
 <a name="module_utils/CoordinatesUtils.boundsToExtentString"></a>
 
 ### utils/CoordinatesUtils.boundsToExtentString ⇒ <code>string</code>
@@ -614,6 +619,21 @@ Given a bounds { minx, miny, maxx, maxy } and a crs return the extent param as s
 
 **Kind**: static constant of [<code>utils/CoordinatesUtils</code>](#module_utils/CoordinatesUtils)  
 **Returns**: <code>string</code> - extent param  
+<a name="module_utils/CoordinatesUtils.getExtent"></a>
+
+### utils/CoordinatesUtils.getExtent ⇒ <code>Array</code>
+Get the extent of area of interest from map bbox
+the values of the extent are expressed in the unit of the projection
+
+**Kind**: static constant of [<code>utils/CoordinatesUtils</code>](#module_utils/CoordinatesUtils)  
+**Returns**: <code>Array</code> - containng minx, miny, maxx, maxy
+minx, miny -> bottom-left corner of square
+maxx, maxy -> top-right corner of square  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| Options | <code>Object</code> | containing layers and features |
+
 <a name="module_utils/FileUtils"></a>
 
 ## utils/FileUtils
