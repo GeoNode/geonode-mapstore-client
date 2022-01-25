@@ -95,37 +95,41 @@ const ResourceCard = forwardRef(({
                 <div className="gn-resource-card-body-wrapper">
                     <div className="card-body">
                         <div className="card-title">
-                            {icon && !loading && (
-                                <>
-                                    <ALink
-                                        readOnly={readOnly}
-                                        href={formatHref({
-                                            query: {
-                                                'filter{resource_type.in}':
+                            <div>
+                                {icon && !loading && (
+                                    <>
+                                        <ALink
+                                            readOnly={readOnly}
+                                            href={formatHref({
+                                                query: {
+                                                    'filter{resource_type.in}':
                                                     res.resource_type
-                                            }
-                                        })}
-                                    >
-                                        <FaIcon name={icon} />
-                                    </ALink>
-                                </>
-                            )}
-                            {loading && <Spinner />}
-                            <ALink
-                                className={
-                                    featured
-                                        ? 'gn-featured-card-title'
-                                        : 'gn-card-title'
-                                }
-                                readOnly={readOnly}
-                                href={formatHref({
-                                    pathname: `/detail/${res.resource_type}/${res.pk}`
-                                })}
-                            >
-                                {res.title}
-                            </ALink>
+                                                }
+                                            })}
+                                        >
+                                            <FaIcon name={icon} />
+                                        </ALink>
+                                    </>
+                                )}
+                                {loading && <Spinner />}
+                                <ALink
+                                    className={
+                                        featured
+                                            ? 'gn-featured-card-title'
+                                            : 'gn-card-title'
+                                    }
+                                    readOnly={readOnly}
+                                    href={formatHref({
+                                        pathname: `/detail/${res.resource_type}/${res.pk}`
+                                    })}
+                                >
+                                    {res.title}
+                                </ALink>
+                            </div>
+                            <div>
+                                <ResourceStatus resource={res} />
+                            </div>
                         </div>
-                        <ResourceStatus resource={res} />
                         <p className="card-text gn-card-description">
                             {res.raw_abstract ? res.raw_abstract : '...'}
                         </p>

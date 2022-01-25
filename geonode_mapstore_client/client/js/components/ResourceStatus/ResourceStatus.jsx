@@ -8,8 +8,13 @@
 import React from 'react';
 import Message from '@mapstore/framework/components/I18N/Message';
 import PropTypes from 'prop-types';
+import FaIcon from '@js/components/FaIcon';
+import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import isEmpty from 'lodash/isEmpty';
 import { getResourceStatuses } from '@js/utils/ResourceUtils';
+import Button from '@js/components/Button';
+
+const ButtonWithTooltip = tooltip(Button);
 
 const ResourceStatus = ({ resource = {} }) => {
     const {
@@ -20,18 +25,26 @@ const ResourceStatus = ({ resource = {} }) => {
         isDeleting,
         isDeleted
     } = getResourceStatuses(resource);
+
+    const getTitle = (status) => {
+        const { isApproved: approved, isPublished: published } = status;
+
+        if (!approved && published) {return <Message msgId="gnhome.pendingApproval" />}
+        if (!approved && !published) {return <Message msgId="gnhome.unApprovedunPublished" />}
+        if (!published && !approved) {return <Message msgId="gnhome.unpublished" />}
+
+        return '';
+    };
+
     return !isEmpty(resource)
         ? (
             <p className="gn-resource-status-text">
-                {(!isProcessing && !isApproved) && <span className="gn-resource-status gn-resource-status-pending" >
-                    <Message msgId="gnviewer.notApproved" />
-                </span>}
-                {(!isProcessing && !isApproved && !isPublished) && <span className="gn-resource-status gn-resource-status-pending" >
-                    {' '}-{' '}
-                </span>}
-                {(!isProcessing && !isPublished) && <span className="gn-resource-status gn-resource-status-pending" >
-                    <Message msgId="gnhome.unpublished" />
-                </span>}
+                {
+                    (!isProcessing && (!isApproved || !isPublished)) && 
+                        <ButtonWithTooltip variant="default" className="gn-resource-status gn-status-button" tooltip={getTitle({ isApproved, isPublished })} style={{ marginRight: (isDeleting || isDeleted || isCopying) && '0.4rem' }} tooltipPosition="top">
+                            <FaIcon  name="info-circle" className="gn-resource-status-pending" />
+                        </ButtonWithTooltip>
+                }
                 {isDeleting && <span className="gn-resource-status gn-resource-status-danger" >
                     <Message msgId="gnviewer.deleting" />
                 </span>}

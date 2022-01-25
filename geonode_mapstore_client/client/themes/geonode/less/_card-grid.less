@@ -29,7 +29,7 @@
         .color-var(@theme-vars[danger-contrast]);
     }
     .gn-resource-status-pending {
-        .color-var(@theme-vars[danger]);
+        .color-var(@theme-vars[warning]);
     }
     .gn-resource-status-primary {
         .background-color-var(@theme-vars[primary]);
@@ -112,8 +112,7 @@
 }
 
 p.gn-resource-status-text {
-    margin-top: 0;
-    margin-bottom: 0.3rem;
+    margin: 0;
 }
 
 .gn-resource-status {
@@ -126,6 +125,7 @@ p.gn-resource-status-text {
 .gn-resource-status-pending {
     padding: 0;
     text-transform: uppercase;
+    font-size: 1rem;
 }
 
 .gn-fixed-card-grid {

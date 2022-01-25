@@ -64,6 +64,10 @@
     border-radius: .25rem;
 
     &:hover { 
+        .card-resource-list .gn-resource-status:last-child {
+            margin-right: 2rem;
+            transition: all 0.2s;
+        }
         .gn-resource-action-buttons {
             .gn-card-options:not(.open) {
                 opacity: 1;
@@ -187,10 +191,25 @@
     .card-title {
         font-size: 0.875rem;
         margin-bottom: .75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        div:first-of-type {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .fa {
             margin: 0;
             margin-right: 0.4rem;
         }
+
+        .fa-info-circle {
+            margin-right: 0;
+        }
+
         a {
             &:hover {
                 text-decoration: underline;
@@ -267,3 +286,12 @@
     }
 }
 
+button.btn.btn-default.gn-resource-status.gn-status-button {
+
+    &:hover, &:active, &:focus {
+        background-color: transparent;
+        border-color: transparent;
+        -webkit-box-shadow: unset;
+        box-shadow: unset;
+    }
+}

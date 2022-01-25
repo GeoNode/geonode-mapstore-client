@@ -558,9 +558,16 @@ function DetailsPanel({
 
                     <div className="gn-details-panel-content-text">
                         <div className="gn-details-panel-title" >
-                            <span className="gn-details-panel-title-icon" ><FaIcon name={icon} /> </span> <EditTitle disabled={!activeEditMode} tagName="h1"  title={resource?.title} onEdit={editTitle} >
+                            <div className="gn-details-panel-title-flex">
+                                <div>
+                                    <span className="gn-details-panel-title-icon" ><FaIcon name={icon} /> </span> <EditTitle disabled={!activeEditMode} tagName="h1"  title={resource?.title} onEdit={editTitle} >
 
-                            </EditTitle>
+                                    </EditTitle>
+                                </div>
+                                <div>
+                                    <ResourceStatus resource={resource} />
+                                </div>
+                            </div>
 
                             {
                                 <div className="gn-details-panel-tools">
@@ -605,7 +612,6 @@ function DetailsPanel({
 
 
                         </div>
-                        <ResourceStatus resource={resource} />
                         {<p className="gn-details-panel-meta-text">
                             {resource?.owner &&  <div>{resource?.owner.avatar &&
                             <img src={resource?.owner.avatar} alt={getUserName(resource?.owner)} className="gn-card-author-image" />
