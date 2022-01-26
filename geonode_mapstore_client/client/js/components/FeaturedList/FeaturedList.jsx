@@ -6,106 +6,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '@js/components/Button';
 import Spinner from '@js/components/Spinner';
 import HTML from '@mapstore/framework/components/I18N/HTML';
-import ResourceCard from '@js/components/ResourceCard';
 import FaIcon from '@js/components/FaIcon';
 import { withResizeDetector } from 'react-resize-detector';
-import { getResourceStatuses } from '@js/utils/ResourceUtils';
 import { actionButtons } from '@js/utils/ResourceServiceUtils';
-
-const Cards = withResizeDetector(({
-    resources,
-    formatHref,
-    isCardActive,
-    buildHrefByTemplate,
-    containerWidth,
-    width: detectedWidth,
-    options,
-    onResize,
-    actions,
-    onAction
-}) => {
-
-    const width = detectedWidth || containerWidth;
-    const margin = 24;
-    const size = 320;
-    const countNum = Math.floor(width / (size + margin));
-    const count = countNum > 4 ? 4 : countNum;
-    const cardWidth = width >= size + margin * 2
-        ? Math.floor((width - margin * count) / count)
-        : '100%';
-    useEffect(() => {
-        onResize(count);
-    }, [count]);
-    const ulPadding = Math.floor(margin / 2);
-    const isSingleCard = count === 0 || count === 1;
-
-    const gridLayoutSpace = (idx) => {
-
-        const gridSpace = isSingleCard
-            ? {
-                width: width - margin,
-                margin: ulPadding
-            }
-            : {
-                width: cardWidth,
-                marginRight: (idx + 1) % count === 0 ? 0 : margin,
-                marginTop: 8
-            };
-
-        return gridSpace;
-    };
-
-    const containerStyle = isSingleCard
-        ? {
-            paddingBottom: 0
-        }
-        : {
-            paddingLeft: ulPadding,
-            paddingBottom: 0
-        };
-    return (
-        <ul
-            style={containerStyle}
-        >
-            {resources.map((resource, idx) => {
-                const {
-                    isProcessing,
-                    isDeleted
-                } = getResourceStatuses(resource);
-
-                if (isDeleted) {
-                    return null;
-                }
-
-                return (
-                    <li
-                        key={resource?.pk}
-                        style={(gridLayoutSpace(idx))}
-                    >
-                        <ResourceCard
-                            active={isCardActive(resource)}
-                            className={`${isDeleted ? 'deleted' : ''}`}
-                            data={resource}
-                            formatHref={formatHref}
-                            options={options}
-                            buildHrefByTemplate={buildHrefByTemplate}
-                            layoutCardsStyle="grid"
-                            loading={isProcessing}
-                            readOnly={isDeleted || isProcessing}
-                            featured
-                            actions={actions}
-                            onAction={onAction}
-                        />
-                    </li>
-                );
-            })}
-        </ul>
-    );
-});
+import Cards from '@js/components/Card';
 
 const FeaturedList = withResizeDetector(({
     resources,
