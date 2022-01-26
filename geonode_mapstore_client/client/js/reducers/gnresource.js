@@ -165,10 +165,7 @@ function gnresource(state = defaultState, action) {
     case ENABLE_MAP_THUMBNAIL_VIEWER: {
         return {
             ...state,
-            data: {
-                ...state?.data,
-                enabled: action.enabled
-            }
+            showMapThumbnail: action.enabled
         };
     }
 

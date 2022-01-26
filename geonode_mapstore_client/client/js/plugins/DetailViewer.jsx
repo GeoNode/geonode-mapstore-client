@@ -52,7 +52,7 @@ const ConnectedDetailsPanel = connect(
         isThumbnailChanged,
         updatingThumbnailResource,
         mapSelector,
-        state => state?.gnresource?.data?.enabled || false
+        state => state?.gnresource?.showMapThumbnail || false
     ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating, mapData, showMapThumbnail) => ({
         layers: layers,
         resource,
