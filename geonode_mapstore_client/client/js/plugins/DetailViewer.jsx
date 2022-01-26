@@ -18,7 +18,8 @@ import {
     editThumbnailResource,
     setFavoriteResource,
     setMapThumbnail,
-    setResourceThumbnail
+    setResourceThumbnail,
+    enableMapThumbnailViewer
 } from '@js/actions/gnresource';
 import FaIcon from '@js/components/FaIcon/FaIcon';
 import controls from '@mapstore/framework/reducers/controls';
@@ -50,8 +51,9 @@ const ConnectedDetailsPanel = connect(
         layersSelector,
         isThumbnailChanged,
         updatingThumbnailResource,
-        mapSelector
-    ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating, mapData) => ({
+        mapSelector,
+        state => state?.gnresource?.data?.enabled || false
+    ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating, mapData, showMapThumbnail) => ({
         layers: layers,
         resource,
         loading,
@@ -59,13 +61,15 @@ const ConnectedDetailsPanel = connect(
         favorite,
         isThumbnailChanged: thumbnailChanged,
         resourceThumbnailUpdating,
-        initialBbox: mapData?.bbox
+        initialBbox: mapData?.bbox,
+        enableMapViewer: showMapThumbnail
     })),
     {
         closePanel: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),
         onFavorite: setFavoriteResource,
         onMapThumbnail: setMapThumbnail,
-        onResourceThumbnail: setResourceThumbnail
+        onResourceThumbnail: setResourceThumbnail,
+        onClose: enableMapThumbnailViewer
     }
 )(DetailsPanel);
 

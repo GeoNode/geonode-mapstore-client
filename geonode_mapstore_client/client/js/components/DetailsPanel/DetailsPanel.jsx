@@ -164,7 +164,7 @@ const MapThumbnailView = ({ initialBbox, layers, onMapThumbnail, onClose, saving
                 }
             </div>
             <div className="gn-detail-extent-action">
-                <Button className="btn-primary" onClick={() => onMapThumbnail(currentBbox, onClose)} ><Message msgId={"gnhome.apply"} /></Button><Button onClick={() => onClose() }><i className="fa fa-close"/></Button></div>
+                <Button className="btn-primary" onClick={() => onMapThumbnail(currentBbox)} ><Message msgId={"gnhome.apply"} /></Button><Button onClick={() => onClose(false) }><i className="fa fa-close"/></Button></div>
         </div>
     );
 
@@ -200,7 +200,9 @@ function DetailsPanel({
     isThumbnailChanged,
     onResourceThumbnail,
     resourceThumbnailUpdating,
-    initialBbox
+    initialBbox,
+    enableMapViewer,
+    onClose
 }) {
     const detailsContainerNode = useRef();
     const isMounted = useRef();
@@ -246,16 +248,6 @@ function DetailsPanel({
     const resourceCanPreviewed = resource?.pk && canPreviewed && canPreviewed(resource);
     const documentDownloadUrl = (resource?.href && resource?.href.includes('download')) ? resource?.href : undefined;
     const metadataDetailUrl = resource?.pk && getMetadataDetailUrl(resource);
-
-    const [enableMapViewer, setEnableMapViewer] = useState(false);
-
-    const handleEnableMapViewer = () => {
-        setEnableMapViewer(false);
-    };
-
-    const handleMapViewer = () => {
-        setEnableMapViewer(!enableMapViewer);
-    };
 
     const validateDataType = (data) => {
 
@@ -496,7 +488,7 @@ function DetailsPanel({
                                 (resource.resource_type === ResourceTypes.MAP || resource.resource_type === ResourceTypes.DATASET) &&
                                 ( <><MapThumbnailButtonToolTip
                                     variant="default"
-                                    onClick={handleMapViewer}
+                                    onClick={() => onClose(!enableMapViewer)}
                                     className="map-thumbnail"
                                     tooltip={<Message msgId="gnviewer.saveMapThumbnail" />}
                                     tooltipPosition={"top"}
@@ -512,7 +504,7 @@ function DetailsPanel({
                                 : <MapThumbnailView
                                     layers={layers}
                                     onMapThumbnail={onMapThumbnail}
-                                    onClose={handleEnableMapViewer}
+                                    onClose={onClose}
                                     savingThumbnailMap={savingThumbnailMap}
                                     initialBbox={initialBbox}
                                 />

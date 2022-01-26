@@ -30,6 +30,7 @@ export const UPDATE_RESOURCE_COMPACT_PERMISSIONS = 'GEONODE:UPDATE_RESOURCE_COMP
 export const RESET_GEO_LIMITS = 'GEONODE:RESET_GEO_LIMITS';
 export const PROCESS_RESOURCES = 'GEONODE:PROCESS_RESOURCES';
 export const SET_RESOURCE_THUMBNAIL = 'GEONODE_SET_RESOURCE_THUMBNAIL';
+export const ENABLE_MAP_THUMBNAIL_VIEWER = 'GEONODE_ENABLE_MAP_THUMBNAIL_VIEWER';
 
 /**
 * Actions for GeoNode resource
@@ -194,16 +195,25 @@ export function setFavoriteResource(favorite) {
     };
 }
 
+/**
+* Enable or disable map thumbnail viewer
+*/
+
+export function enableMapThumbnailViewer(enabled) {
+    return {
+        type: ENABLE_MAP_THUMBNAIL_VIEWER,
+        enabled
+    };
+}
 
 /**
 * Set map like thumbnail to map or layer (trigger epic gnSaveDirectContent)
 */
 
-export function setMapThumbnail(bbox, cb = () => {}) {
+export function setMapThumbnail(bbox) {
     return {
         type: SET_MAP_THUMBNAIL,
-        bbox: bbox,
-        callback: cb
+        bbox: bbox
     };
 }
 

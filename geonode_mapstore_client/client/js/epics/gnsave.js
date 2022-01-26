@@ -30,7 +30,8 @@ import {
     resetGeoLimits,
     setResourceCompactPermissions,
     updateResourceProperties,
-    loadingResourceConfig
+    loadingResourceConfig,
+    enableMapThumbnailViewer
 } from '@js/actions/gnresource';
 import {
     getResourceByPk,
@@ -185,13 +186,11 @@ export const gnSetMapThumbnail = (action$, store) =>
                 ]
             };
 
-            const callback = action.callback;
-
             return Observable.defer(() => setMapThumbnail(resourceIDThumbnail, body, contentType))
                 .switchMap((res) => {
-                    callback();
                     return Observable.of(
                         updateResourceProperties({ ...currentResource, thumbnail_url: `${res.thumbnail_url}?${Math.random()}` }),
+                        enableMapThumbnailViewer(false),
                         clearSave(),
                         ...([successNotification({ title: "gnviewer.thumbnailsaved", message: "gnviewer.thumbnailsaved" })])
 
