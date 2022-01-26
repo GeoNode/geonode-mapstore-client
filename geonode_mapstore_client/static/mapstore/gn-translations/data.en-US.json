@@ -251,7 +251,25 @@
             "styleEditorCloseCancel": "No, back to the style editor",
             "styleEditorCloseConfirm": "Yes, close",
             "metadataUpload": "Upload Metadata",
-            "styleUpload": "Upload Style"
+            "styleUpload": "Upload Style",
+
+            "missingFiles": "Missing files",
+            "invalidUploadMessageError": "Error",
+            "invalidUploadMessageErrorTooltip": "The upload process failed. Please check the validity of the file and try to upload it again",
+            "completeUpload": "Complete upload",
+            "selectFiles": "Select files...",
+            "supportedFiles": "Supported file extensions",
+            "unsupportedFiles": "Files not supported for the upload",
+            "upload": "Upload",
+
+            "uploadDataset": "Upload a dataset",
+            "dragAndDropFile": "Drag and drop a file to upload",
+            "filterPendingUploadDataset": "Filter pending uploads by name...",
+            "filterNoMatchUploadDataset": "Filter does not match a pending upload",
+
+            "filterPendingUploadDocument": "Filter uploads by name...",
+            "filterNoMatchUploadDocument": "Filter does not match an upload",
+            "uploadDocument": "Upload a document"
         }
     }
 }

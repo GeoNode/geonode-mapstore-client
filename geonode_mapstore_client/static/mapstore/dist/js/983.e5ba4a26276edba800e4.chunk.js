@@ -1,1 +1,0 @@
-(self.webpackChunkgeonode_mapstore_client=self.webpackChunkgeonode_mapstore_client||[]).push([[983],{56307:e=>{e.exports=window.L},70983:(e,r,a)=>{"use strict";a.r(r);var n=a(44712),s=a(56307),t=a.n(s);(0,n.registerType)("arcgis",(function(e){return t().esri.dynamicMapLayer({url:e.url,opacity:e.opacity||1,layers:[parseInt(e.name||0,10)]})}))}}]);

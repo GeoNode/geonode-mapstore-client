@@ -250,7 +250,25 @@
             "styleEditorCloseCancel": "Nein, zurück zum Stileditor",
             "styleEditorCloseConfirm": "Ja, schließen",
             "metadataUpload": "Metadaten Hochladen",
-            "styleUpload": "Stil Hochladen"
+            "styleUpload": "Stil Hochladen",
+
+            "missingFiles": "Fehlende Dateien",
+            "invalidUploadMessageError": "Fehler",
+            "invalidUploadMessageErrorTooltip": "Der Upload-Vorgang ist fehlgeschlagen. Bitte überprüfen Sie die Gültigkeit der Datei und versuchen Sie erneut, sie hochzuladen",
+            "completeUpload": "Hochladen abschließen",
+            "selectFiles": "Dateien auswählen...",
+            "supportedFiles": "Unterstützte Dateierweiterungen",
+            "unsupportedFiles": "Für den Upload nicht unterstützte Dateien",
+            "upload": "Hochladen",
+
+            "uploadDataset": "Einen Datensatz hochladen",
+            "dragAndDropFile": "Ziehen und Ablegen einer Datei zum Hochladen",
+            "filterPendingUploadDataset": "Ausstehende Uploads nach Name filtern...",
+            "filterNoMatchUploadDataset": "Filter stimmt nicht mit einem ausstehenden Upload überein",
+
+            "filterPendingUploadDocument": "Uploads nach Name filtern...",
+            "filterNoMatchUploadDocument": "Filter stimmt mit keinem Upload überein",
+            "uploadDocument": "Ein Dokument hochladen"
         }
     }
 }

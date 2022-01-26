@@ -233,6 +233,7 @@ store information of the resource in use
     * [.setResourcePermissions(permissions)](#module_actions/gnresource.setResourcePermissions)
     * [.setSelectedDatasetPermissions(permissions)](#module_actions/gnresource.setSelectedDatasetPermissions)
     * [.setFavoriteResource(favorite)](#module_actions/gnresource.setFavoriteResource)
+    * [.enableMapThumbnailViewer()](#module_actions/gnresource.enableMapThumbnailViewer)
     * [.setMapThumbnail()](#module_actions/gnresource.setMapThumbnail)
 
 <a name="module_actions/gnresource.resourceLoading"></a>
@@ -372,6 +373,12 @@ Set the resource favorite field (trigger epic gnSaveFavoriteContent)
 | --- | --- | --- |
 | favorite | <code>bool</code> | resource data field |
 
+<a name="module_actions/gnresource.enableMapThumbnailViewer"></a>
+
+### actions/gnresource.enableMapThumbnailViewer()
+Enable or disable map thumbnail viewer
+
+**Kind**: static method of [<code>actions/gnresource</code>](#module_actions/gnresource)  
 <a name="module_actions/gnresource.setMapThumbnail"></a>
 
 ### actions/gnresource.setMapThumbnail()

@@ -250,7 +250,25 @@
             "styleEditorCloseCancel": "Non, retour à l'éditeur de style",
             "styleEditorCloseConfirm": "Oui, fermer",
             "metadataUpload": "Télécharger les Métadonnées",
-            "styleUpload": "Style de Déléchargement"
+            "styleUpload": "Style de Déléchargement",
+
+            "missingFiles": "Fichiers manquants",
+            "invalidUploadMessageError": "Erreur",
+            "invalidUploadMessageErrorTooltip": "Le processus de téléchargement a échoué. Veuillez vérifier la validité du fichier et réessayez de le télécharger",
+            "completeUpload": "Terminer le téléchargement",
+            "selectFiles": "Sélectionner les fichiers...",
+            "supportedFiles": "Extensions de fichiers prises en charge",
+            "unsupportedFiles": "Fichiers non pris en charge pour le téléchargement",
+            "upload": "Télécharger",
+
+            "uploadDataset": "Télécharger un jeu de données",
+            "dragAndDropFile": "Glisser et déposer un fichier à télécharger",
+            "filterPendingUploadDataset": "Filtrer les téléchargements en attente par nom...",
+            "filterNoMatchUploadDataset": "Le filtre ne correspond pas à un téléchargement en attente",
+
+            "filterPendingUploadDocument": "Filtrer les téléchargements par nom...",
+            "filterNoMatchUploadDocument": "Le filtre ne correspond pas à un téléchargement",
+            "uploadDocument": "Télécharger un document"
         }
     }
 }
