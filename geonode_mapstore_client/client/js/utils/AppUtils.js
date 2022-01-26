@@ -113,7 +113,7 @@ function getLanguageKey(languageCode) {
 
 function parseLanguageCode(languageCode) {
     const parts = languageCode.split('-');
-    return `${parts[0].toLowerCase()}-${(parts[1] || parts[0]).toUpperCase()}`
+    return `${parts[0].toLowerCase()}-${(parts[1] || parts[0]).toUpperCase()}`;
 }
 
 function languagesToSupportedLocales(languages) {

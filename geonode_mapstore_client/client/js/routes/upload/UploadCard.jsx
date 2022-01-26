@@ -10,7 +10,20 @@ import React from 'react';
 import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
 import Spinner from '@js/components/Spinner';
+import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
+import Message from '@mapstore/framework/components/I18N/Message';
 import moment from 'moment';
+
+function ErrorMessage(props) {
+    return (
+        <div {...props} className="gn-upload-card-error-message">
+            <Message msgId="gnviewer.invalidUploadMessageError" /> <FaIcon name="info-circle"/>
+        </div>
+    );
+}
+
+const ErrorMessageWithTooltip = tooltip(ErrorMessage);
+
 
 function UploadCard({
     name,
@@ -43,30 +56,31 @@ function UploadCard({
                     </Button>
                     : null}
             </div>
-            <div className="gn-upload-card-body">
-                {createDate && <div>{moment(createDate).format('MMMM Do YYYY, h:mm:ss a')}</div>}
-            </div>
             <div className="gn-upload-card-footer">
+                <div className="gn-upload-card-date">
+                    {createDate && <div>{moment(createDate).format('MMMM Do YYYY, h:mm:ss a')}</div>}
+                </div>
                 <div className="gn-upload-card-tools">
                     {resumeUrl
                         ? <Button
-                            variant="primary"
-                            size="xs"
+                            variant="warning"
                             href={resumeUrl}
                         >
-                            Complete upload
+                            <Message msgId="gnviewer.completeUpload" />
                         </Button>
                         : null}
                     {detailUrl
                         ? <Button
                             variant="primary"
-                            size="xs"
                             href={detailUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            View
+                            <Message msgId="gnviewer.view" />
                         </Button>
+                        : null}
+                    {state === 'INVALID'
+                        ? <ErrorMessageWithTooltip tooltipId="gnviewer.invalidUploadMessageErrorTooltip"/>
                         : null}
                 </div>
             </div>

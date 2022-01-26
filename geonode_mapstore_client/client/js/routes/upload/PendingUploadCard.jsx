@@ -11,6 +11,7 @@ import React from 'react';
 import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
 import Badge from '@js/components/Badge';
+import Message from '@mapstore/framework/components/I18N/Message';
 
 function PendingUploadCard({
     missingExt,
@@ -30,7 +31,9 @@ function PendingUploadCard({
                     : null}
             </div>
             {missingExt.length > 0 && <div className="gn-upload-card-body">
-                Missing files: {missingExt.join(', ')}
+                <div className="text-danger">
+                    <Message msgId="gnviewer.missingFiles"/>: {missingExt.join(', ')}
+                </div>
             </div>}
             {<ul>
                 {filesExt.map(ext => {

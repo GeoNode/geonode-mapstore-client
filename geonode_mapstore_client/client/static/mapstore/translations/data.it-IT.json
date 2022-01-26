@@ -251,7 +251,25 @@
             "styleEditorCloseCancel": "No, torna all'editor di stile",
             "styleEditorCloseConfirm": "Sì, chiudi",
             "metadataUpload": "Carica Metadati",
-            "styleUpload": "Carica Stile"
+            "styleUpload": "Carica Stile",
+
+            "missingFiles": "File mancanti",
+            "invalidUploadMessageError": "Errore",
+            "invalidUploadMessageErrorTooltip": "Il processo di caricamento non è riuscito. Controlla la validità del file e prova a caricarlo di nuovo",
+            "completeUpload": "Completa il caricamento",
+            "selectFiles": "Seleziona file...",
+            "supportedFiles": "Estensioni di file supportate",
+            "unsupportedFiles": "File non supportati per il caricamento",
+            "upload": "Carica",
+
+            "uploadDataset": "Carica un dataset",
+            "dragAndDropFile": "Trascina e rilascia un file da caricare",
+            "filterPendingUploadDataset": "Filtra i file per nome...",
+            "filterNoMatchUploadDataset": "Il filtro non corrisponde a nessun file",
+
+            "filterPendingUploadDocument": "Filtra i caricamenti per nome...",
+            "filterNoMatchUploadDocument": "Il filtro non corrisponde a un caricamento",
+            "uploadDocument": "Carica un documento"
         }
     }
 }
