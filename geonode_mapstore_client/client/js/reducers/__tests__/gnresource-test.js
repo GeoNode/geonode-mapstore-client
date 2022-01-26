@@ -133,9 +133,7 @@ describe('gnresource reducer', () => {
         const state = gnresource({}, enableMapThumbnailViewer(true));
 
         expect(state).toEqual({
-            data: {
-                enabled: true
-            }
+            showMapThumbnail: true
         });
     });
 });
