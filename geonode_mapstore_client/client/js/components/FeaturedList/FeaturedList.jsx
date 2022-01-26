@@ -32,13 +32,14 @@ const Cards = withResizeDetector(({
     const width = detectedWidth || containerWidth;
     const margin = 24;
     const size = 320;
-    const count = Math.floor(width / (size + margin));
+    const countNum = Math.floor(width / (size + margin));
+    const count = countNum > 4 ? 4 : countNum;
     const cardWidth = width >= size + margin * 2
         ? Math.floor((width - margin * count) / count)
         : '100%';
     useEffect(() => {
         onResize(count);
-    }, [ count ]);
+    }, [count]);
     const ulPadding = Math.floor(margin / 2);
     const isSingleCard = count === 0 || count === 1;
 
