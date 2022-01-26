@@ -27,7 +27,7 @@ const Cards = ({
     const margin = 24;
     const size = 320;
     const countNum = Math.floor(width / (size + margin));
-    const count = countNum > 4 ? 4 : countNum;
+    const count = countNum > 4 ? 4 : countNum; // limit count in order not to request for more than 4 per page
     const cardWidth = width >= size + margin * 2
         ? Math.floor((width - margin * count) / count)
         : '100%';
