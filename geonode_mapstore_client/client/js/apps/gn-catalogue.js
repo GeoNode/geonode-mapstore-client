@@ -205,105 +205,107 @@ Promise.all([
     getEndpoints()
 ])
     .then(([localConfig, user]) => {
-        const {
-            securityState,
-            geoNodeConfiguration,
-            pluginsConfigKey,
-            query,
-            configEpics,
-            mapType = 'openlayers',
-            onStoreInit,
-            targetId = 'ms-container',
-            settings
-        } = setupConfiguration({
+        setupConfiguration({
             localConfig,
             user
-        });
+        })
+            .then(({
+                securityState,
+                geoNodeConfiguration,
+                pluginsConfigKey,
+                query,
+                configEpics,
+                mapType = 'openlayers',
+                onStoreInit,
+                targetId = 'ms-container',
+                settings
+            }) => {
+                // get the correct map layout
+                const mapLayout = getConfigProp('mapLayout') || {};
+                setConfigProp('mapLayout', mapLayout[query.theme] || mapLayout.viewer);
 
-        // get the correct map layout
-        const mapLayout = getConfigProp('mapLayout') || {};
-        setConfigProp('mapLayout', mapLayout[query.theme] || mapLayout.viewer);
-
-        // register custom arcgis layer
-        import('@js/map/' + mapType + '/plugins/ArcGisMapServer')
-            .then(() => {
-                main({
-                    targetId,
-                    enableExtensions: true,
-                    appComponent: withRoutes(routes)(ConnectedRouter),
-                    loaderComponent: MainLoader,
-                    initialState: {
-                        defaultState: {
-                            ...securityState,
-                            maptype: {
-                                mapType
+                // register custom arcgis layer
+                import('@js/map/' + mapType + '/plugins/ArcGisMapServer')
+                    .then(() => {
+                        main({
+                            targetId,
+                            enableExtensions: true,
+                            appComponent: withRoutes(routes)(ConnectedRouter),
+                            loaderComponent: MainLoader,
+                            initialState: {
+                                defaultState: {
+                                    ...securityState,
+                                    maptype: {
+                                        mapType
+                                    },
+                                    annotations: {
+                                        config: {
+                                            multiGeometry: true,
+                                            validationErrors: {}
+                                        },
+                                        defaultTextAnnotation: 'New'
+                                    }
+                                }
                             },
-                            annotations: {
-                                config: {
-                                    multiGeometry: true,
-                                    validationErrors: {}
+                            themeCfg: null,
+                            pluginsConfig: getPluginsConfiguration(localConfig.plugins, pluginsConfigKey),
+                            lazyPlugins: pluginsDefinition.lazyPlugins,
+                            pluginsDef: {
+                                plugins: {
+                                    ...pluginsDefinition.plugins
                                 },
-                                defaultTextAnnotation: 'New'
-                            }
-                        }
-                    },
-                    themeCfg: null,
-                    pluginsConfig: getPluginsConfiguration(localConfig.plugins, pluginsConfigKey),
-                    lazyPlugins: pluginsDefinition.lazyPlugins,
-                    pluginsDef: {
-                        plugins: {
-                            ...pluginsDefinition.plugins
+                                requires: {
+                                    ...requires,
+                                    ...pluginsDefinition.requires
+                                }
+                            },
+                            printEnabled: true,
+                            rootReducerFunc: standardRootReducerFunc,
+                            onStoreInit,
+                            appReducers: {
+                                ...standardReducers,
+                                gnresource,
+                                resourceservice,
+                                gnsettings,
+                                security,
+                                maptype,
+                                print,
+                                maplayout,
+                                controls,
+                                timeline,
+                                dimension,
+                                playback,
+                                mapPopups,
+                                catalog,
+                                searchconfig,
+                                widgets,
+                                geostory,
+                                gnsearch,
+                                annotations,
+                                ...pluginsDefinition.reducers
+                            },
+                            appEpics: {
+                                ...standardEpics,
+                                ...configEpics,
+                                gnCheckSelectedDatasetPermissions,
+                                gnSetDatasetsPermissions,
+                                ...pluginsDefinition.epics,
+                                ...gnresourceEpics,
+                                ...resourceServiceEpics,
+                                ...gnsearchEpics,
+                                ...favoriteEpics,
+                                updateMapLayoutEpic
+                            },
+                            geoNodeConfiguration,
+                            initialActions: [
+                                // add some settings in the global state to make them accessible in the monitor state
+                                // later we could use expression in localConfig
+                                updateGeoNodeSettings.bind(null, settings),
+                                loadPrintCapabilities.bind(null, getConfigProp('printUrl'))
+                            ]
                         },
-                        requires: {
-                            ...requires,
-                            ...pluginsDefinition.requires
-                        }
-                    },
-                    printEnabled: true,
-                    rootReducerFunc: standardRootReducerFunc,
-                    onStoreInit,
-                    appReducers: {
-                        ...standardReducers,
-                        gnresource,
-                        resourceservice,
-                        gnsettings,
-                        security,
-                        maptype,
-                        print,
-                        maplayout,
-                        controls,
-                        timeline,
-                        dimension,
-                        playback,
-                        mapPopups,
-                        catalog,
-                        searchconfig,
-                        widgets,
-                        geostory,
-                        gnsearch,
-                        annotations,
-                        ...pluginsDefinition.reducers
-                    },
-                    appEpics: {
-                        ...standardEpics,
-                        ...configEpics,
-                        gnCheckSelectedDatasetPermissions,
-                        gnSetDatasetsPermissions,
-                        ...pluginsDefinition.epics,
-                        ...gnresourceEpics,
-                        ...resourceServiceEpics,
-                        ...gnsearchEpics,
-                        ...favoriteEpics,
-                        updateMapLayoutEpic
-                    },
-                    geoNodeConfiguration,
-                    initialActions: [
-                        // add some settings in the global state to make them accessible in the monitor state
-                        // later we could use expression in localConfig
-                        updateGeoNodeSettings.bind(null, settings),
-                        loadPrintCapabilities.bind(null, getConfigProp('printUrl'))
-                    ]
-                },
-                withExtensions(StandardApp));
+                        withExtensions(StandardApp));
+                    });
             });
+
     });

@@ -29,6 +29,7 @@ def resource_urls(request):
         'DEFAULT_LAYER_FORMAT': getattr(settings, "DEFAULT_LAYER_FORMAT", 'image/png'),
         'ALLOWED_DOCUMENT_TYPES': getattr(settings, "ALLOWED_DOCUMENT_TYPES", []),
         'LANGUAGES': getattr(settings, "LANGUAGES", []),
+        'TRANSLATIONS_PATH': getattr(settings, "MAPSTORE_TRANSLATIONS_PATH", ['/static/mapstore/ms-translations', '/static/mapstore/gn-translations']),
         'TIME_ENABLED': getattr(
                 settings,
                 'UPLOADER',

@@ -67,70 +67,72 @@ document.addEventListener('DOMContentLoaded', function() {
         ])
             .then(([localConfig, user]) => {
 
-                const {
-                    securityState,
-                    geoNodeConfiguration,
-                    pluginsConfigKey,
-                    configEpics,
-                    mapType = 'openlayers',
-                    onStoreInit,
-                    geoNodePageConfig,
-                    targetId = 'ms-container',
-                    settings
-                } = setupConfiguration({ localConfig, user });
-
-                import('@js/map/' + mapType + '/plugins/ArcGisMapServer')
-                    .then(() => {
-                        main({
-                            targetId,
-                            appComponent: withRoutes(routes)(ConnectedRouter),
-                            pluginsConfig: getPluginsConfiguration(localConfig.plugins, pluginsConfigKey),
-                            loaderComponent: MainLoader,
-                            lazyPlugins: pluginsDefinition.lazyPlugins,
-                            pluginsDef: {
-                                plugins: {
-                                    ...pluginsDefinition.plugins
-                                },
-                                requires: {
-                                    ...requires,
-                                    ...pluginsDefinition.requires
-                                }
-                            },
-                            initialState: {
-                                defaultState: {
-                                    maptype: {
-                                        mapType: 'openlayers'
+                setupConfiguration({ localConfig, user })
+                    .then(({
+                        securityState,
+                        geoNodeConfiguration,
+                        pluginsConfigKey,
+                        configEpics,
+                        mapType = 'openlayers',
+                        onStoreInit,
+                        geoNodePageConfig,
+                        targetId = 'ms-container',
+                        settings
+                    }) => {
+                        import('@js/map/' + mapType + '/plugins/ArcGisMapServer')
+                            .then(() => {
+                                main({
+                                    targetId,
+                                    appComponent: withRoutes(routes)(ConnectedRouter),
+                                    pluginsConfig: getPluginsConfiguration(localConfig.plugins, pluginsConfigKey),
+                                    loaderComponent: MainLoader,
+                                    lazyPlugins: pluginsDefinition.lazyPlugins,
+                                    pluginsDef: {
+                                        plugins: {
+                                            ...pluginsDefinition.plugins
+                                        },
+                                        requires: {
+                                            ...requires,
+                                            ...pluginsDefinition.requires
+                                        }
                                     },
-                                    ...securityState
-                                }
-                            },
-                            themeCfg: null,
-                            appReducers: {
-                                dashboard,
-                                gnresource,
-                                gnsettings,
-                                security,
-                                maptype,
-                                widgets
-                            },
-                            appEpics: {
-                                ...configEpics,
-                                ...gnresourceEpics
-                            },
-                            onStoreInit,
-                            geoNodeConfiguration,
-                            initialActions: [
-                                // add some settings in the global state to make them accessible in the monitor state
-                                // later we could use expression in localConfig
-                                updateGeoNodeSettings.bind(null, settings),
-                                ...(geoNodePageConfig.resourceId !== undefined
-                                    ? [ requestResourceConfig.bind(null, ResourceTypes.DASHBOARD, geoNodePageConfig.resourceId, {
-                                        readOnly: geoNodePageConfig.isEmbed
-                                    }) ]
-                                    : [])
-                            ]
-                        });
+                                    initialState: {
+                                        defaultState: {
+                                            maptype: {
+                                                mapType: 'openlayers'
+                                            },
+                                            ...securityState
+                                        }
+                                    },
+                                    themeCfg: null,
+                                    appReducers: {
+                                        dashboard,
+                                        gnresource,
+                                        gnsettings,
+                                        security,
+                                        maptype,
+                                        widgets
+                                    },
+                                    appEpics: {
+                                        ...configEpics,
+                                        ...gnresourceEpics
+                                    },
+                                    onStoreInit,
+                                    geoNodeConfiguration,
+                                    initialActions: [
+                                        // add some settings in the global state to make them accessible in the monitor state
+                                        // later we could use expression in localConfig
+                                        updateGeoNodeSettings.bind(null, settings),
+                                        ...(geoNodePageConfig.resourceId !== undefined
+                                            ? [ requestResourceConfig.bind(null, ResourceTypes.DASHBOARD, geoNodePageConfig.resourceId, {
+                                                readOnly: geoNodePageConfig.isEmbed
+                                            }) ]
+                                            : [])
+                                    ]
+                                });
+                            });
                     });
+
             });
     });
 

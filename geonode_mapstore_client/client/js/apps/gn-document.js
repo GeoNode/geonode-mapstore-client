@@ -28,19 +28,20 @@ document.addEventListener('DOMContentLoaded', function() {
             getAccountInfo()
         ])
             .then(([localConfig, user]) => {
-                const {
-                    geoNodePageConfig,
-                    targetId = 'ms-container'
-                } = setupConfiguration({ localConfig, user });
-
-                getDocumentByPk(geoNodePageConfig.resourceId)
-                    .then((resource) => {
-                        ReactDOM.render(
-                            <div className="gn-media-viewer">
-                                <MediaViewer resource={resource}/>
-                            </div>,
-                            document.getElementById(targetId)
-                        );
+                setupConfiguration({ localConfig, user })
+                    .then(({
+                        geoNodePageConfig,
+                        targetId = 'ms-container'
+                    }) => {
+                        getDocumentByPk(geoNodePageConfig.resourceId)
+                            .then((resource) => {
+                                ReactDOM.render(
+                                    <div className="gn-media-viewer">
+                                        <MediaViewer resource={resource}/>
+                                    </div>,
+                                    document.getElementById(targetId)
+                                );
+                            });
                     });
             });
     });

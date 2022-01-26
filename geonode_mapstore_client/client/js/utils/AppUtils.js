@@ -27,6 +27,7 @@ import isString from 'lodash/isString';
 
 import url from 'url';
 import axios from '@mapstore/framework/libs/ajax';
+import { addLocaleData } from 'react-intl';
 
 let actionListeners = {};
 // Target url here to fix proxy issue
@@ -113,7 +114,10 @@ function getLanguageKey(languageCode) {
 
 function parseLanguageCode(languageCode) {
     const parts = languageCode.split('-');
-    return `${parts[0].toLowerCase()}-${(parts[1] || parts[0]).toUpperCase()}`;
+    if (parts.length === 1) {
+        return parts[0].toLowerCase();
+    }
+    return `${parts[0].toLowerCase()}-${parts[1].toUpperCase()}`;
 }
 
 function languagesToSupportedLocales(languages) {
@@ -127,6 +131,24 @@ function languagesToSupportedLocales(languages) {
             description
         }
     }), {});
+}
+
+function setupLocale(locale) {
+    return import(`react-intl/locale-data/${locale}`)
+        .then((localeDataMod) => {
+            const localeData = localeDataMod.default;
+            addLocaleData([...localeData]);
+            if (!global.Intl) {
+                return import('intl')
+                    .then((intlMod) => {
+                        global.Intl = intlMod.default;
+                        return import(`intl/locale-data/jsonp/${locale}.js`).then(() => {
+                            return locale;
+                        });
+                    });
+            }
+            return locale;
+        });
 }
 
 export function setupConfiguration({
@@ -146,9 +168,11 @@ export function setupConfiguration({
     Object.keys(config).forEach((key) => {
         setConfigProp(key, config[key]);
     });
-    setConfigProp('translationsPath', config.translationsPath
-        ? config.translationsPath
-        : ['/static/mapstore/gn-translations', '/static/mapstore/ms-translations']
+    setConfigProp('translationsPath', geoNodePageConfig.translationsPath
+        ? geoNodePageConfig.translationsPath
+        : config.translationsPath
+            ? config.translationsPath
+            : ['/static/mapstore/ms-translations', '/static/mapstore/gn-translations']
     );
     const supportedLocales = languagesToSupportedLocales(geoNodePageConfig.languages) || defaultSupportedLocales || getSupportedLocales();
     setSupportedLocales(supportedLocales);
@@ -189,28 +213,29 @@ export function setupConfiguration({
         window.onInitMapStoreAPI(window.MapStoreAPI, geoNodePageConfig);
     }
 
-    return {
-        query,
-        securityState,
-        geoNodeConfiguration: localConfig.geoNodeConfiguration,
-        geoNodePageConfig,
-        pluginsConfigKey: query.config || geoNodePageConfig.pluginsConfigKey,
-        mapType: geoNodePageConfig.mapType,
-        settings: localConfig.geoNodeSettings,
-        onStoreInit: (store) => {
-            store.addActionListener((action) => {
-                const act = action.type === 'PERFORM_ACTION' && action.action || action; // Needed to works also in debug
-                (actionListeners[act.type] || [])
-                    .concat(actionListeners['*'] || [])
-                    .forEach((listener) => {
-                        listener.call(null, act);
-                    });
-            });
-        },
-        configEpics: {
-            gnMapStoreApiEpic: actionTrigger.epic
-        }
-    };
+    return setupLocale(getLanguageKey(geoNodePageConfig.languageCode))
+        .then(() => ({
+            query,
+            securityState,
+            geoNodeConfiguration: localConfig.geoNodeConfiguration,
+            geoNodePageConfig,
+            pluginsConfigKey: query.config || geoNodePageConfig.pluginsConfigKey,
+            mapType: geoNodePageConfig.mapType,
+            settings: localConfig.geoNodeSettings,
+            onStoreInit: (store) => {
+                store.addActionListener((action) => {
+                    const act = action.type === 'PERFORM_ACTION' && action.action || action; // Needed to works also in debug
+                    (actionListeners[act.type] || [])
+                        .concat(actionListeners['*'] || [])
+                        .forEach((listener) => {
+                            listener.call(null, act);
+                        });
+                });
+            },
+            configEpics: {
+                gnMapStoreApiEpic: actionTrigger.epic
+            }
+        }));
 }
 
 export function getThemeLayoutSize(width) {

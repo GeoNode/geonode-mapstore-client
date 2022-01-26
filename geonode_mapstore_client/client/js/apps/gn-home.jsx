@@ -56,38 +56,39 @@ Promise.all([
     getEndpoints()
 ])
     .then(([localConfig, user, resourcesTotalCount]) => {
-        const {
-            securityState,
-            geoNodeConfiguration
-        } = setupConfiguration({
+        setupConfiguration({
             localConfig,
             user,
             resourcesTotalCount
-        });
-
-        // home app entry point
-        main({
-            appComponent: withRoutes(routes)(ConnectedRouter),
-            loaderComponent: MainLoader,
-            initialState: {
-                defaultState: {
-                    ...securityState
-                }
-            },
-            pluginsConfig: localConfig.plugins || [],
-            themeCfg: null,
-            appReducers: {
-                gnsearch,
-                gnresource,
-                resourceservice,
-                security,
-                controls
-            },
-            appEpics: {
-                ...gnsearchEpics,
-                ...gnsaveEpics,
-                ...resourceServiceEpics
-            },
-            geoNodeConfiguration
-        });
+        })
+            .then(({
+                securityState,
+                geoNodeConfiguration
+            }) => {
+                // home app entry point
+                main({
+                    appComponent: withRoutes(routes)(ConnectedRouter),
+                    loaderComponent: MainLoader,
+                    initialState: {
+                        defaultState: {
+                            ...securityState
+                        }
+                    },
+                    pluginsConfig: localConfig.plugins || [],
+                    themeCfg: null,
+                    appReducers: {
+                        gnsearch,
+                        gnresource,
+                        resourceservice,
+                        security,
+                        controls
+                    },
+                    appEpics: {
+                        ...gnsearchEpics,
+                        ...gnsaveEpics,
+                        ...resourceServiceEpics
+                    },
+                    geoNodeConfiguration
+                });
+            });
     });

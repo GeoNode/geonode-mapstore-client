@@ -48,6 +48,7 @@
         const timeEnabled = geoNodeSettings.TIME_ENABLED || false;
         const allowedDocumentTypes = geoNodeSettings.ALLOWED_DOCUMENT_TYPES || [];
         const languages = geoNodeSettings.LANGUAGES;
+        const translationsPath = geoNodeSettings.TRANSLATIONS_PATH;
 
         const isEmbed = checkBoolean('{{ is_embed }}') || false;
         const pluginsConfigKey = '{{ plugins_config_key }}';
@@ -57,7 +58,8 @@
 
         window.__GEONODE_CONFIG__ = {
             languageCode: '{{ LANGUAGE_CODE }}',
-            languages,
+            languages: languages,
+            translationsPath: translationsPath,
             resourceId: '{{ resource.pk|default:"" }}',
             resourceType: '{{ resource.resource_type|default:"" }}',
             isEmbed: isEmbed,
