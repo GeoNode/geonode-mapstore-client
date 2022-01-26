@@ -199,10 +199,11 @@ export function setFavoriteResource(favorite) {
 * Set map like thumbnail to map or layer (trigger epic gnSaveDirectContent)
 */
 
-export function setMapThumbnail(bbox) {
+export function setMapThumbnail(bbox, cb = () => {}) {
     return {
         type: SET_MAP_THUMBNAIL,
-        bbox: bbox
+        bbox: bbox,
+        callback: cb
     };
 }
 

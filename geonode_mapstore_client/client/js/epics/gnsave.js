@@ -184,8 +184,12 @@ export const gnSetMapThumbnail = (action$, store) =>
                     Object.values(action.bbox.bounds)[1]
                 ]
             };
+
+            const callback = action.callback;
+
             return Observable.defer(() => setMapThumbnail(resourceIDThumbnail, body, contentType))
                 .switchMap((res) => {
+                    callback();
                     return Observable.of(
                         updateResourceProperties({ ...currentResource, thumbnail_url: `${res.thumbnail_url}?${Math.random()}` }),
                         clearSave(),
