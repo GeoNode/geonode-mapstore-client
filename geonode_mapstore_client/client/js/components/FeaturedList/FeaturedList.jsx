@@ -13,7 +13,7 @@ import HTML from '@mapstore/framework/components/I18N/HTML';
 import FaIcon from '@js/components/FaIcon';
 import { withResizeDetector } from 'react-resize-detector';
 import { actionButtons } from '@js/utils/ResourceServiceUtils';
-import Cards from '@js/components/Card';
+import Cards from './Cards';
 
 const FeaturedList = withResizeDetector(({
     resources,
