@@ -28,7 +28,8 @@ import gnresourceEpics from '@js/epics/gnresource';
 import {
     setupConfiguration,
     initializeApp,
-    getPluginsConfiguration
+    getPluginsConfiguration,
+    storeEpicsCache
 } from '@js/utils/AppUtils';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 import pluginsDefinition from '@js/plugins/index';
@@ -79,6 +80,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     targetId = 'ms-container',
                     settings
                 }) => {
+
+                    const appEpics = {
+                        ...configEpics,
+                        ...gnresourceEpics
+                    };
+
+                    storeEpicsCache(appEpics);
+
                     // register custom arcgis layer
                     import('@js/map/' + mapType + '/plugins/ArcGisMapServer')
                         .then(() => {
@@ -113,10 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     security,
                                     maptype
                                 },
-                                appEpics: {
-                                    ...configEpics,
-                                    ...gnresourceEpics
-                                },
+                                appEpics,
                                 onStoreInit,
                                 geoNodeConfiguration,
                                 initialActions: [

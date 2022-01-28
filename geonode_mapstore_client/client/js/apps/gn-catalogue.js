@@ -57,7 +57,8 @@ import {
 import {
     setupConfiguration,
     initializeApp,
-    getPluginsConfiguration
+    getPluginsConfiguration,
+    storeEpicsCache
 } from '@js/utils/AppUtils';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 import { updateGeoNodeSettings } from '@js/actions/gnsettings';
@@ -69,6 +70,7 @@ import {
     updateMapLayoutEpic
 } from '@js/epics';
 
+import timelineEpics from '@mapstore/framework/epics/timeline';
 import gnresourceEpics from '@js/epics/gnresource';
 import resourceServiceEpics from '@js/epics/resourceservice';
 import gnsearchEpics from '@js/epics/gnsearch';
@@ -224,6 +226,23 @@ Promise.all([
                 const mapLayout = getConfigProp('mapLayout') || {};
                 setConfigProp('mapLayout', mapLayout[query.theme] || mapLayout.viewer);
 
+                const appEpics = {
+                    ...standardEpics,
+                    ...configEpics,
+                    gnCheckSelectedDatasetPermissions,
+                    gnSetDatasetsPermissions,
+                    ...pluginsDefinition.epics,
+                    ...gnresourceEpics,
+                    ...resourceServiceEpics,
+                    ...gnsearchEpics,
+                    ...favoriteEpics,
+                    updateMapLayoutEpic,
+                    // needed to initialize the correct time range
+                    ...timelineEpics
+                };
+
+                storeEpicsCache(appEpics);
+
                 // register custom arcgis layer
                 import('@js/map/' + mapType + '/plugins/ArcGisMapServer')
                     .then(() => {
@@ -284,18 +303,7 @@ Promise.all([
                                 annotations,
                                 ...pluginsDefinition.reducers
                             },
-                            appEpics: {
-                                ...standardEpics,
-                                ...configEpics,
-                                gnCheckSelectedDatasetPermissions,
-                                gnSetDatasetsPermissions,
-                                ...pluginsDefinition.epics,
-                                ...gnresourceEpics,
-                                ...resourceServiceEpics,
-                                ...gnsearchEpics,
-                                ...favoriteEpics,
-                                updateMapLayoutEpic
-                            },
+                            appEpics,
                             geoNodeConfiguration,
                             initialActions: [
                                 // add some settings in the global state to make them accessible in the monitor state

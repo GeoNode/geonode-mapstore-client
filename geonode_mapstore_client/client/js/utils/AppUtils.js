@@ -29,6 +29,7 @@ import url from 'url';
 import axios from '@mapstore/framework/libs/ajax';
 import { addLocaleData } from 'react-intl';
 
+let epicsCache = {};
 let actionListeners = {};
 // Target url here to fix proxy issue
 let targetURL = '';
@@ -47,6 +48,15 @@ const getTargetUrl = () => {
     targetURL = `${protocol}//${host}`;
     return targetURL;
 };
+
+export const storeEpicsCache = (epics) => {
+    Object.keys(epics).forEach((key) => {
+        epicsCache[key] = true;
+    });
+};
+
+export const getEpicCache = (name) => epicsCache[name];
+export const setEpicCache = (name) => { epicsCache[name] = true; };
 
 export function getVersion() {
     if (!__DEVTOOLS__) {

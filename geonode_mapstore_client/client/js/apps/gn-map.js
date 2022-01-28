@@ -46,7 +46,8 @@ import { getConfiguration, getAccountInfo } from '@js/api/geonode/v2';
 import {
     setupConfiguration,
     initializeApp,
-    getPluginsConfiguration
+    getPluginsConfiguration,
+    storeEpicsCache
 } from '@js/utils/AppUtils';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 import { requestResourceConfig } from '@js/actions/gnresource';
@@ -57,6 +58,8 @@ import {
     gnCheckSelectedDatasetPermissions,
     gnSetDatasetsPermissions
 } from '@js/epics';
+
+import timelineEpics from '@mapstore/framework/epics/timeline';
 import gnresourceEpics from '@js/epics/gnresource';
 import maplayout from '@mapstore/framework/reducers/maplayout';
 import 'react-widgets/dist/css/react-widgets.css';
@@ -116,6 +119,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     const resourceId = geoNodePageConfig.resourceId;
 
+                    const appEpics = {
+                        ...standardEpics,
+                        ...configEpics,
+                        updateMapLayoutEpic,
+                        gnCheckSelectedDatasetPermissions,
+                        gnSetDatasetsPermissions,
+                        ...gnresourceEpics,
+                        ...pluginsDefinition.epics,
+                        // needed to initialize the correct time range
+                        ...timelineEpics
+                    };
+
+                    storeEpicsCache(appEpics);
+
                     // register custom arcgis layer
                     import('@js/map/' + mapType + '/plugins/ArcGisMapServer')
                         .then(() => {
@@ -165,15 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     widgets,
                                     ...pluginsDefinition.reducers
                                 },
-                                appEpics: {
-                                    ...standardEpics,
-                                    ...configEpics,
-                                    updateMapLayoutEpic,
-                                    gnCheckSelectedDatasetPermissions,
-                                    gnSetDatasetsPermissions,
-                                    ...gnresourceEpics,
-                                    ...pluginsDefinition.epics
-                                },
+                                appEpics,
                                 geoNodeConfiguration,
                                 initialActions: [
                                     // add some settings in the global state to make them accessible in the monitor state

@@ -26,7 +26,8 @@ import {
 import {
     setupConfiguration,
     initializeApp,
-    getPluginsConfiguration
+    getPluginsConfiguration,
+    storeEpicsCache
 } from '@js/utils/AppUtils';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 import pluginsDefinition from '@js/plugins/index';
@@ -79,6 +80,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         targetId = 'ms-container',
                         settings
                     }) => {
+
+                        const appEpics = {
+                            ...configEpics,
+                            ...gnresourceEpics
+                        };
+
+                        storeEpicsCache(appEpics);
+
                         import('@js/map/' + mapType + '/plugins/ArcGisMapServer')
                             .then(() => {
                                 main({
@@ -113,10 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         maptype,
                                         widgets
                                     },
-                                    appEpics: {
-                                        ...configEpics,
-                                        ...gnresourceEpics
-                                    },
+                                    appEpics,
                                     onStoreInit,
                                     geoNodeConfiguration,
                                     initialActions: [

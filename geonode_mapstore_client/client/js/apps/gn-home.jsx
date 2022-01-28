@@ -31,7 +31,8 @@ import {
 
 import {
     setupConfiguration,
-    initializeApp
+    initializeApp,
+    storeEpicsCache
 } from '@js/utils/AppUtils';
 
 const DEFAULT_LOCALE = {};
@@ -65,6 +66,13 @@ Promise.all([
                 securityState,
                 geoNodeConfiguration
             }) => {
+                const appEpics = {
+                    ...gnsearchEpics,
+                    ...gnsaveEpics,
+                    ...resourceServiceEpics
+                };
+
+                storeEpicsCache(appEpics);
                 // home app entry point
                 main({
                     appComponent: withRoutes(routes)(ConnectedRouter),
@@ -83,11 +91,7 @@ Promise.all([
                         security,
                         controls
                     },
-                    appEpics: {
-                        ...gnsearchEpics,
-                        ...gnsaveEpics,
-                        ...resourceServiceEpics
-                    },
+                    appEpics,
                     geoNodeConfiguration
                 });
             });
