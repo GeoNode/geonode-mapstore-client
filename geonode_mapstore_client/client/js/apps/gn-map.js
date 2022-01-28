@@ -48,7 +48,8 @@ import {
     setupConfiguration,
     getVersion,
     initializeApp,
-    getPluginsConfiguration
+    getPluginsConfiguration,
+    storeEpicsCache
 } from '@js/utils/AppUtils';
 
 import {
@@ -62,6 +63,7 @@ import {
     gnCheckSelectedLayerPermissions,
     gnSetLayersPermissions
 } from '@js/epics';
+import timelineEpics from '@mapstore/framework/epics/timeline';
 import maplayout from '@mapstore/framework/reducers/maplayout';
 import 'react-widgets/dist/css/react-widgets.css';
 import 'react-select/dist/react-select.css';
@@ -115,6 +117,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const mapLayout = getConfigProp('mapLayout') || {};
             setConfigProp('mapLayout', mapLayout[query.theme] || mapLayout[pluginsConfigKey] || mapLayout.viewer);
 
+            const appEpics = {
+                ...standardEpics,
+                ...configEpics,
+                updateMapLayoutEpic,
+                gnCheckSelectedLayerPermissions,
+                gnSetLayersPermissions,
+                ...pluginsDefinition.epics,
+                // needed to initialize the correct time range
+                ...timelineEpics
+            };
+
+            storeEpicsCache(appEpics);
             // register custom arcgis layer
             import('@js/components/' + mapType + '/ArcGisMapServer')
                 .then(() => {
@@ -178,14 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             annotations,
                             ...pluginsDefinition.reducers
                         },
-                        appEpics: {
-                            ...standardEpics,
-                            ...configEpics,
-                            updateMapLayoutEpic,
-                            gnCheckSelectedLayerPermissions,
-                            gnSetLayersPermissions,
-                            ...pluginsDefinition.epics
-                        },
+                        appEpics,
                         initialActions: [
                             // add some settings in the global state to make them accessible in the monitor state
                             // later we could use expression in localConfig

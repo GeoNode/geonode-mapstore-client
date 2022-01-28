@@ -36,7 +36,8 @@ import {
     setupConfiguration,
     getVersion,
     initializeApp,
-    getPluginsConfiguration
+    getPluginsConfiguration,
+    storeEpicsCache
 } from '@js/utils/AppUtils';
 import pluginsDefinition from '@js/plugins/index';
 import ReactSwipe from 'react-swipeable-views';
@@ -147,6 +148,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 : geoNodePageConfig.resourceConfig;
 
+            const appEpics = {
+                ...configEpics
+            };
+            storeEpicsCache(appEpics);
             main({
                 targetId,
                 appComponent: withRoutes(routes)(ConnectedRouter),
@@ -197,9 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     security,
                     maptype
                 },
-                appEpics: {
-                    ...configEpics
-                },
+                appEpics,
                 onStoreInit,
                 initialActions: [
                     // add some settings in the global state to make them accessible in the monitor state

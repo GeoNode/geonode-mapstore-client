@@ -28,7 +28,17 @@ import isString from 'lodash/isString';
 import url from 'url';
 import axios from '@mapstore/framework/libs/ajax';
 
+let epicsCache = {};
 let actionListeners = {};
+
+export const storeEpicsCache = (epics) => {
+    Object.keys(epics).forEach((key) => {
+        epicsCache[key] = true;
+    });
+};
+
+export const getEpicCache = (name) => epicsCache[name];
+export const setEpicCache = (name) => { epicsCache[name] = true; };
 
 export function getVersion() {
     if (!__DEVTOOLS__) {

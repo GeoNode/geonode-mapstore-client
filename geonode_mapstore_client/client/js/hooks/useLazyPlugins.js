@@ -11,6 +11,7 @@ import isEmpty from 'lodash/isEmpty';
 import { getPlugins, createPlugin, isMapStorePlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { augmentStore } from '@mapstore/framework/utils/StateUtils';
 import join from 'lodash/join';
+import { getEpicCache, setEpicCache } from '@js/utils/AppUtils';
 
 function filterRemoved(registry, removed = []) {
     return Object.keys(registry).reduce((acc, p) => {
@@ -26,7 +27,6 @@ function filterRemoved(registry, removed = []) {
 
 let storedPlugins = {};
 const pluginsCache = {};
-const epicsCache = {};
 const reducersCache = {};
 
 function useLazyPlugins({
@@ -78,10 +78,10 @@ function useLazyPlugins({
                     // so we need to filter out the one previously added and include only new one
                     const filterOutExistingEpics = Object.keys(epics)
                         .reduce((acc, key) => {
-                            if (epicsCache[key]) {
+                            if (getEpicCache(key)) {
                                 return acc;
                             }
-                            epicsCache[key] = true;
+                            setEpicCache(key);
                             return {
                                 ...acc,
                                 [key]: epics[key]

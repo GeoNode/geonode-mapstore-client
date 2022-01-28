@@ -39,7 +39,8 @@ import {
     setupConfiguration,
     getVersion,
     initializeApp,
-    getPluginsConfiguration
+    getPluginsConfiguration,
+    storeEpicsCache
 } from '@js/utils/AppUtils';
 import pluginsDefinition from '@js/plugins/index';
 import ReactSwipe from 'react-swipeable-views';
@@ -87,6 +88,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     permissions
                 } = setupConfiguration({ localConfig, user });
 
+                const appEpics = {
+                    ...configEpics,
+                    // epics related to dashboard are imported at root levele
+                    // because of the use of initial action
+                    // in particular `dashboardLoaded`
+                    ...widgetsEpics,
+                    ...dashboardEpics
+                };
+                storeEpicsCache(appEpics);
+
                 main({
                     targetId,
                     appComponent: withRoutes(routes)(ConnectedRouter),
@@ -125,14 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         maptype,
                         widgets
                     },
-                    appEpics: {
-                        ...configEpics,
-                        // epics related to dashboard are imported at root levele
-                        // because of the use of initial action
-                        // in particular `dashboardLoaded`
-                        ...widgetsEpics,
-                        ...dashboardEpics
-                    },
+                    appEpics,
                     onStoreInit,
                     initialActions: [
                         // add some settings in the global state to make them accessible in the monitor state
