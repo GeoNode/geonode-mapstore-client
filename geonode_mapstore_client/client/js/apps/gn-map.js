@@ -61,6 +61,7 @@ import {
     gnCheckSelectedLayerPermissions,
     gnSetLayersPermissions
 } from '@js/epics';
+import timelineEpics from '@mapstore/framework/epics/timeline';
 import maplayout from '@mapstore/framework/reducers/maplayout';
 import 'react-widgets/dist/css/react-widgets.css';
 import 'react-select/dist/react-select.css';
@@ -176,7 +177,9 @@ Promise.all([
                         updateMapLayoutEpic,
                         gnCheckSelectedLayerPermissions,
                         gnSetLayersPermissions,
-                        ...pluginsDefinition.epics
+                        ...pluginsDefinition.epics,
+                        // needed to initialize the correct time range
+                        ...timelineEpics
                     },
                     geoNodeConfiguration,
                     initialActions: [

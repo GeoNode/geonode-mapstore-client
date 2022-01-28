@@ -8,6 +8,21 @@
 
 import isFunction from 'lodash/isFunction';
 import { extendPluginsDefinition } from '@extend/jsapi/plugins';
+import omit from 'lodash/omit';
+import timelineEpics from '@mapstore/framework/epics/timeline';
+
+const EXCLUDED_EPICS_NAMES = [
+    // this epics are included at app initialization
+    ...Object.keys(timelineEpics)
+];
+
+function cleanEpics(epics, excludedNames = EXCLUDED_EPICS_NAMES) {
+    const containsExcludedEpic = !!excludedNames.find((epicName) => epics[epicName]);
+    if (containsExcludedEpic) {
+        return omit(epics, excludedNames);
+    }
+    return epics;
+}
 
 function toLazyPlugin(name, imp) {
     const getLazyPlugin = () => {
@@ -26,7 +41,7 @@ function toLazyPlugin(name, imp) {
                         name,
                         component: impl[pluginName],
                         reducers: impl.reducers || {},
-                        epics: impl.epics || {},
+                        epics: cleanEpics(impl.epics || {}),
                         containers,
                         disablePluginIf,
                         enabler,
@@ -39,7 +54,7 @@ function toLazyPlugin(name, imp) {
                     name,
                     component: impl[pluginName],
                     reducers: impl.reducers || {},
-                    epics: impl.epics || {},
+                    epics: cleanEpics(impl.epics || {}),
                     containers: impl.containers || {}
                 }
             };
