@@ -50,6 +50,10 @@ export function buildHrefByTemplate(state, template, sep = '/') {
 
 export function filterMenuItems(state, item, parent) {
 
+    if (item.disableIf) {
+        return false;
+    }
+
     const isAuthenticated = !parent
         ? item.authenticated
         : parent.authenticated === undefined

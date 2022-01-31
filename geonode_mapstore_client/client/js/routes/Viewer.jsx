@@ -38,6 +38,21 @@ const ConnectedPluginsContainer = connect(
 )(PluginsContainer);
 
 const DEFAULT_PLUGINS_CONFIG = [];
+
+function getPluginsConfiguration(name, pluginsConfig) {
+    if (!pluginsConfig) {
+        return DEFAULT_PLUGINS_CONFIG;
+    }
+    if (isArray(pluginsConfig)) {
+        return pluginsConfig;
+    }
+    const { isMobile } = getConfigProp('geoNodeSettings') || {};
+    if (isMobile && pluginsConfig) {
+        return pluginsConfig[`${name}_mobile`] || pluginsConfig[name] || DEFAULT_PLUGINS_CONFIG;
+    }
+    return pluginsConfig[name] || DEFAULT_PLUGINS_CONFIG
+}
+
 function ViewerRoute({
     name,
     pluginsConfig: propPluginsConfig,
@@ -56,10 +71,7 @@ function ViewerRoute({
 }) {
 
     const { pk } = match.params || {};
-    const pluginsConfig = isArray(propPluginsConfig)
-        ? propPluginsConfig
-        : propPluginsConfig && propPluginsConfig[name] || DEFAULT_PLUGINS_CONFIG;
-
+    const pluginsConfig = getPluginsConfiguration(name, propPluginsConfig);
 
     const { plugins: loadedPlugins, pending } = useLazyPlugins({
         pluginsEntries: lazyPlugins,

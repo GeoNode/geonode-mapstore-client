@@ -24,41 +24,43 @@
     </head>
 
     <body class="msgapi ms2" data-ms2-container="ms2" >
-        {% block gn_config %}
-            {% include './_geonode_config.html' %}
-        {% endblock %}
-        <div class="gn-catalogue gn-theme gn-theme-{{ custom_theme.variant }}">
-            {% block header %}
-                {% include './snippets/header.html' %}
+        <div class="gn-page-wrapper {% if request.user_agent.is_mobile %}gn-mobile{% else %}gn-desktop{% endif %}">
+            {% block gn_config %}
+                {% include './_geonode_config.html' %}
             {% endblock %}
+            <div class="gn-catalogue gn-theme gn-theme-{{ custom_theme.variant }}">
+                {% block header %}
+                    {% include './snippets/header.html' %}
+                {% endblock %}
 
-            {% block container %}
-                <div id="ms-container">
-                    <div class="gn-main-event-container">
-                        <div class="gn-main-event-content">
-                            <div class="gn-main-loader"></div>
-                            <div class="gn-main-event-text"></div>
+                {% block container %}
+                    <div id="ms-container">
+                        <div class="gn-main-event-container">
+                            <div class="gn-main-event-content">
+                                <div class="gn-main-loader"></div>
+                                <div class="gn-main-event-text"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endblock %}
+                {% endblock %}
 
-            {% block ms_scripts %}
-                <script id="gn-script" src="{% static 'mapstore/dist/js/gn-catalogue.js' %}?{% client_version %}"></script>
-            {% endblock %}
+                {% block ms_scripts %}
+                    <script id="gn-script" src="{% static 'mapstore/dist/js/gn-catalogue.js' %}?{% client_version %}"></script>
+                {% endblock %}
 
-            {% block footer %}
-                {% include './snippets/footer.html' %}
-            {% endblock %}
+                {% block footer %}
+                    {% include './snippets/footer.html' %}
+                {% endblock %}
 
-            {% block scripts %}
-                <script src="{% static "lib/js/jquery.min.js" %}"></script>
-                <script src="{% static "lib/js/bootstrap.min.js" %}"></script>
-                <script type="text/javascript">
-                    // enable dropdown functionalities
-                    $('.dropdown-toggle').dropdown();
-                </script>
-            {% endblock %}
+                {% block scripts %}
+                    <script src="{% static "lib/js/jquery.min.js" %}"></script>
+                    <script src="{% static "lib/js/bootstrap.min.js" %}"></script>
+                    <script type="text/javascript">
+                        // enable dropdown functionalities
+                        $('.dropdown-toggle').dropdown();
+                    </script>
+                {% endblock %}
+            </div>
         </div>
     </body>
 </html>

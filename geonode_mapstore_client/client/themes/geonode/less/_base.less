@@ -87,6 +87,14 @@
     text-align: left;
 }
 
+.gn-page-wrapper:not(.gn-legacy) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+}
 .gn-embed,
 .gn-catalogue {
     display: flex;
@@ -95,7 +103,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 99999;
     flex-direction: column;
     .gn-footer {
         position: relative;

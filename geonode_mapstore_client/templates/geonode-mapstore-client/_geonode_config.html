@@ -55,6 +55,7 @@
         const siteUrl = '{{ SITEURL }}' || '';
         const siteName = '{{ SITE_NAME }}' || 'Geonode';
         const geoServerPublicLocation = '{{ GEOSERVER_PUBLIC_LOCATION }}' || '';
+        const isMobile = '{{ request.user_agent.is_mobile }}' === 'True' ? true : false;
 
         window.__GEONODE_CONFIG__ = {
             languageCode: '{{ LANGUAGE_CODE }}',
@@ -86,7 +87,8 @@
                     defaultTileSize: defaultTileSize,
                     defaultLayerFormat: defaultLayerFormat,
                     timeEnabled: timeEnabled,
-                    allowedDocumentTypes: allowedDocumentTypes
+                    allowedDocumentTypes: allowedDocumentTypes,
+                    isMobile: isMobile
                 },
                 geoNodeConfiguration: {
                     cardsMenu: {

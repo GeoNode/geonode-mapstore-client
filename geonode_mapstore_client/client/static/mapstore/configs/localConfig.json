@@ -319,6 +319,7 @@
                 {
                     "labelId": "gnhome.addResource",
                     "authenticated": true,
+                    "disableIf": "{(state('settings') && state('settings').isMobile ? true : false)}",
                     "type": "dropdown",
                     "variant": "primary",
                     "perms": [
@@ -512,7 +513,66 @@
                 "name": "FitBounds"
             }
         ],
-        "map_preview": "dataset_preview",
+        "map_preview": [
+            {
+                "name": "Map",
+                "cfg": {
+                    "shouldLoadFont": false,
+                    "tools": [
+                        "popup"
+                    ],
+                    "mapOptions": {
+                        "openlayers": {
+                            "attribution": {
+                                "container": "#footer-attribution-container"
+                            },
+                            "interactions": {
+                                "pinchRotate": false,
+                                "altShiftDragRotate": false
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Identify",
+                "cfg": {
+                    "showInMapPopup": true,
+                    "viewerOptions": {
+                        "container": "{context.ReactSwipe}"
+                    }
+                }
+            },
+            {
+                "name": "Toolbar",
+                "id": "NavigationBar",
+                "cfg": {
+                    "id": "navigationBar"
+                }
+            },
+            {
+                "name": "ZoomIn",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": true
+                    }
+                }
+            },
+            {
+                "name": "ZoomOut",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": true
+                    }
+                }
+            },
+            {
+                "name": "MapFooter"
+            },
+            {
+                "name": "FitBounds"
+            }
+        ],
         "dataset_embed": [
             {
                 "name": "Map",
@@ -2359,6 +2419,352 @@
             },
             {
                 "name": "Notifications"
+            }
+        ],
+        "map_viewer_mobile": [
+            {
+                "name": "ActionNavbar",
+                "cfg": {
+                    "containerPosition": "header"
+                }
+            },
+            {
+                "name": "Map",
+                "cfg": {
+                    "shouldLoadFont": false,
+                    "mapOptions": {
+                        "openlayers": {
+                            "attribution": {
+                                "container": "#footer-attribution-container"
+                            },
+                            "interactions": {
+                                "pinchRotate": false,
+                                "altShiftDragRotate": false
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Search",
+                "cfg": {
+                    "withToggle": [
+                        "max-width: 768px",
+                        "min-width: 768px"
+                    ]
+                }
+            },
+            {
+                "name": "OmniBar"
+            },
+            {
+                "name": "Identify",
+                "cfg": {
+                    "showInMapPopup": true,
+                    "viewerOptions": {
+                        "container": "{context.ReactSwipe}"
+                    }
+                }
+            },
+            {
+                "name": "Toolbar",
+                "id": "NavigationBar",
+                "cfg": {
+                    "id": "navigationBar",
+                    "layout": "horizontal"
+                }
+            },
+            {
+                "name": "MapLoading",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": true
+                    }
+                }
+            },
+            {
+                "name": "ZoomAll",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": false
+                    }
+                }
+            },
+            {
+                "name": "ZoomIn",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": true
+                    }
+                }
+            },
+            {
+                "name": "ZoomOut",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": true
+                    }
+                }
+            },
+            {
+                "name": "Expander"
+            },
+            {
+                "name": "MapFooter"
+            },
+            {
+                "name": "TOC",
+                "cfg": {
+                    "activateQueryTool": false,
+                    "activateAddLayerButton": false,
+                    "activateMetedataTool": false,
+                    "activateSettingsTool": false,
+                    "activateRemoveLayer": false,
+                    "activateRemoveGroup": false,
+                    "activateFilterLayer": false
+                }
+            },
+            {
+                "name": "DrawerMenu",
+                "cfg": {
+                    "menuOptions": {
+                        "width": 350
+                    }
+                }
+            },
+            {
+                "name": "FitBounds"
+            },
+            {
+                "name": "Locate"
+            },
+            {
+                "name": "BackgroundSelector",
+                "cfg": {
+                    "bottom": 25,
+                    "dimensions": {
+                        "side": 65,
+                        "sidePreview": 65,
+                        "frame": 3,
+                        "margin": 5,
+                        "label": false,
+                        "vertical": true
+                    }
+                }
+            }
+        ],
+        "dataset_viewer_mobile": [
+            {
+                "name": "ActionNavbar",
+                "cfg": {
+                    "containerPosition": "header"
+                }
+            },
+            {
+                "name": "Map",
+                "cfg": {
+                    "shouldLoadFont": false,
+                    "mapOptions": {
+                        "openlayers": {
+                            "attribution": {
+                                "container": "#footer-attribution-container"
+                            },
+                            "interactions": {
+                                "pinchRotate": false,
+                                "altShiftDragRotate": false
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Search",
+                "cfg": {
+                    "withToggle": [
+                        "max-width: 768px",
+                        "min-width: 768px"
+                    ]
+                }
+            },
+            {
+                "name": "OmniBar"
+            },
+            {
+                "name": "Identify",
+                "cfg": {
+                    "showInMapPopup": true,
+                    "viewerOptions": {
+                        "container": "{context.ReactSwipe}"
+                    }
+                }
+            },
+            {
+                "name": "Toolbar",
+                "id": "NavigationBar",
+                "cfg": {
+                    "id": "navigationBar",
+                    "layout": "horizontal"
+                }
+            },
+            {
+                "name": "MapLoading",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": true
+                    }
+                }
+            },
+            {
+                "name": "ZoomAll",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": false
+                    }
+                }
+            },
+            {
+                "name": "ZoomIn",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": true
+                    }
+                }
+            },
+            {
+                "name": "ZoomOut",
+                "override": {
+                    "Toolbar": {
+                        "alwaysVisible": true
+                    }
+                }
+            },
+            {
+                "name": "Expander"
+            },
+            {
+                "name": "MapFooter"
+            },
+            {
+                "name": "Legend",
+                "cfg": {
+                    "hideLayerTitle": true
+                }
+            },
+            {
+                "name": "FitBounds"
+            },
+            {
+                "name": "Locate"
+            },
+            {
+                "name": "BackgroundSelector",
+                "cfg": {
+                    "bottom": 25,
+                    "dimensions": {
+                        "side": 65,
+                        "sidePreview": 65,
+                        "frame": 3,
+                        "margin": 5,
+                        "label": false,
+                        "vertical": true
+                    }
+                }
+            }
+        ],
+        "geostory_viewer_mobile": [
+            {
+                "name": "ActionNavbar",
+                "cfg": {
+                    "containerPosition": "header"
+                }
+            },
+            {
+                "name": "GeoStory",
+                "cfg": {
+                    "mediaEditorSettings": {
+                        "sourceId": "geostory",
+                        "mediaTypes": {
+                            "image": {
+                                "defaultSource": "geostory",
+                                "sources": [
+                                    "geostory",
+                                    "geonode"
+                                ]
+                            },
+                            "video": {
+                                "defaultSource": "geostory",
+                                "sources": [
+                                    "geostory",
+                                    "geonode"
+                                ]
+                            },
+                            "map": {
+                                "defaultSource": "geostory",
+                                "sources": [
+                                    "geostory",
+                                    "geonode"
+                                ]
+                            }
+                        },
+                        "sources": {
+                            "geostory": {
+                                "name": "geostory.storyResources",
+                                "type": "geostory",
+                                "addMediaEnabled": {
+                                    "image": true,
+                                    "video": true
+                                },
+                                "editMediaEnabled": {
+                                    "image": true,
+                                    "video": true
+                                },
+                                "removeMediaEnabled": {
+                                    "image": true,
+                                    "video": true,
+                                    "map": true
+                                }
+                            },
+                            "geonode": {
+                                "name": "geostory.geoNode",
+                                "type": "geonode"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "name": "GeoStoryNavigation",
+                "cfg": {
+                    "containerPosition": "header"
+                }
+            },
+            {
+                "name": "Notifications"
+            }
+        ],
+        "dashboard_viewer_mobile": [
+            {
+                "name": "ActionNavbar",
+                "cfg": {
+                    "containerPosition": "header"
+                }
+            },
+            {
+                "name": "Dashboard",
+                "cfg": {
+                    "minLayoutWidth": 768
+                }
+            }
+        ],
+        "document_viewer_mobile": [
+            {
+                "name": "ActionNavbar",
+                "cfg": {
+                    "containerPosition": "header"
+                }
+            },
+            {
+                "name": "MediaViewer"
             }
         ]
     }

@@ -23,24 +23,26 @@
 
     </head>
     <body class="msgapi ms2" data-ms2-container="ms2" >
-        {% block gn_config %}
-            {% include './_geonode_config.html' with plugins_config_key='map_embed' is_embed='true' %}
-        {% endblock %}
-        <div class="gn-embed gn-theme gn-theme-{{ custom_theme.variant }}">
-            {% block container %}
-                <div id="ms-container">
-                    <div class="gn-main-event-container">
-                        <div class="gn-main-event-content">
-                            <div class="gn-main-loader"></div>
-                            <div class="gn-main-event-text"></div>
+        <div class="gn-page-wrapper {% if request.user_agent.is_mobile %}gn-mobile{% else %}gn-desktop{% endif %}">
+            {% block gn_config %}
+                {% include './_geonode_config.html' with plugins_config_key='map_embed' is_embed='true' %}
+            {% endblock %}
+            <div class="gn-embed gn-theme gn-theme-{{ custom_theme.variant }}">
+                {% block container %}
+                    <div id="ms-container">
+                        <div class="gn-main-event-container">
+                            <div class="gn-main-event-content">
+                                <div class="gn-main-loader"></div>
+                                <div class="gn-main-event-text"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endblock %}
+                {% endblock %}
 
-            {% block ms_scripts %}
-                <script id="gn-script" src="{% static 'mapstore/dist/js/gn-map.js' %}?{% client_version %}"></script>
-            {% endblock %}
+                {% block ms_scripts %}
+                    <script id="gn-script" src="{% static 'mapstore/dist/js/gn-map.js' %}?{% client_version %}"></script>
+                {% endblock %}
+            </div>
         </div>
     </body>
 </html>
