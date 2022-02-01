@@ -269,7 +269,9 @@
 
             "filterPendingUploadDocument": "Filter uploads by name...",
             "filterNoMatchUploadDocument": "Filter does not match an upload",
-            "uploadDocument": "Upload a document"
+            "uploadDocument": "Upload a document",
+            "transferInProgress": "Transfer in progress",
+            "fileExceeds": "File size size exceeds 100MB. Please try again with a smaller file."
         }
     }
 }

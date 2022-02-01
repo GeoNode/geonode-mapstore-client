@@ -268,7 +268,9 @@
 
             "filterPendingUploadDocument": "Filtrer les téléchargements par nom...",
             "filterNoMatchUploadDocument": "Le filtre ne correspond pas à un téléchargement",
-            "uploadDocument": "Télécharger un document"
+            "uploadDocument": "Télécharger un document",
+            "transferInProgress": "Transfert en cours",
+            "fileExceeds": "La taille du fichier dépasse 100 Mo. Veuillez réessayer avec un fichier plus petit."
         }
     }
 }
