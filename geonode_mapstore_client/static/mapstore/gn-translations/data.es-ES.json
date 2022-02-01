@@ -254,7 +254,7 @@
             "missingFiles": "Archivos perdidos",
             "invalidUploadMessageError": "Error",
             "invalidUploadMessageErrorTooltip": "El proceso de carga falló. Verifique la validez del archivo e intente cargarlo nuevamente",
-            "completeUpload": "Carga completa",
+            "completeUpload": "Completa la carga",
             "selectFiles": "Seleccionar archivos...",
             "supportedFiles": "Extensiones de archivo admitidas",
             "unsupportedFiles": "Archivos no admitidos para la carga",

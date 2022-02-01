@@ -256,7 +256,7 @@
             "missingFiles": "Missing files",
             "invalidUploadMessageError": "Error",
             "invalidUploadMessageErrorTooltip": "The upload process failed. Please check the validity of the file and try to upload it again",
-            "completeUpload": "Complete upload",
+            "completeUpload": "Complete the upload",
             "selectFiles": "Select files...",
             "supportedFiles": "Supported file extensions",
             "unsupportedFiles": "Files not supported for the upload",
