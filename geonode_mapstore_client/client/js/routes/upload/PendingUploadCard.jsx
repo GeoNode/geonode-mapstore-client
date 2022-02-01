@@ -12,12 +12,16 @@ import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
 import Badge from '@js/components/Badge';
 import Message from '@mapstore/framework/components/I18N/Message';
+import Spinner from '@js/components/Spinner';
+
 
 function PendingUploadCard({
     missingExt,
     baseName,
     onRemove,
-    filesExt
+    filesExt,
+    loading,
+    progress
 }) {
     return (
         <div className="gn-upload-card">
@@ -44,6 +48,25 @@ function PendingUploadCard({
                     );
                 })}
             </ul>}
+            {loading && progress && <div style={{position: 'relative'}}>
+                <div
+                    className="gn-upload-card-progress"
+                    style={{
+                        width: '100%',
+                        height: 2
+                    }}
+                >
+                    <div
+                        style={{
+                            width: `${progress?.[baseName]}%`,
+                            height: 2,
+                            transition: '0.3s all'
+                        }}
+                    >
+                    </div>
+                </div>
+                <div className="gn-upload-card-progress-read" style={{left: progress?.[baseName] < 88 ? `${progress?.[baseName]}%` : '88%'}}>{progress?.[baseName] ? `${progress?.[baseName]}%` : <Spinner />}</div>
+            </div>}
         </div>
     );
 }

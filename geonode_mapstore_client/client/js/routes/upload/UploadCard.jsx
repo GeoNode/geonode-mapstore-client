@@ -32,8 +32,18 @@ function UploadCard({
     progress,
     createDate,
     resumeUrl,
-    onRemove
+    onRemove,
+    error
 }) {
+    const exceedingSizeError = (err) => {
+        let message = err?.message?.match('File size') || '';
+        let fileExceeds = false;
+        if (message) {
+            fileExceeds = true;
+        }
+        return fileExceeds;
+    };
+
     return (
         <div className="gn-upload-card">
             <div className="gn-upload-card-header">
@@ -80,14 +90,14 @@ function UploadCard({
                         </Button>
                         : null}
                     {state === 'INVALID'
-                        ? <ErrorMessageWithTooltip tooltipId="gnviewer.invalidUploadMessageErrorTooltip"/>
+                        ? exceedingSizeError(error) ? <ErrorMessageWithTooltip tooltipId="gnviewer.fileExceeds" /> : <ErrorMessageWithTooltip tooltipId="gnviewer.invalidUploadMessageErrorTooltip" />
                         : null}
                 </div>
             </div>
             <div
                 className={`gn-upload-card-progress ${state && state.toLowerCase() || ''}`}
                 style={{
-                    width: `100%`,
+                    width: '100%',
                     height: 2
                 }}
             >

@@ -40,6 +40,7 @@ function UploadList({
     const [waitingUploads, setWaitingUploads] = useState({});
     const [unsupported, setUnsupported] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [uploadContainerProgress, setUploadContainerProgress] = useState({});
 
 
     function updateWaitingUploads(uploadFiles) {
@@ -74,6 +75,11 @@ function UploadList({
         setUnsupported(unsupportedFiles);
     }
 
+    const documentUploadProgress = (fileName) => (progress) => {
+        const percentCompleted = Math.floor((progress.loaded * 100) / progress.total);
+        setUploadContainerProgress((prevFiles) => ({ ...prevFiles, [fileName]: percentCompleted }));
+    };
+
     function handleUploadProcess() {
         if (!loading) {
             setLoading(true);
@@ -84,24 +90,29 @@ function UploadList({
                 const file = readyUpload.files[fileExt[0]];
                 return uploadDocument({
                     title: file?.name,
-                    file
+                    file,
+                    config: {
+                        onUploadProgress: documentUploadProgress(baseName)
+                    }
                 })
                     .then((data) => ({ status: 'SUCCESS', data, file, baseName }))
                     .catch(({ data: error }) => ({ status: 'INVALID', error, file, baseName }));
             }))
                 .then((responses) => {
                     const successfulUploads = responses.filter(({ status }) => status === 'SUCCESS');
+
                     if (successfulUploads.length > 0) {
                         const successfulUploadsNames = successfulUploads.map(({ baseName }) => baseName);
                         updateWaitingUploads(omit(waitingUploads, successfulUploadsNames));
                     }
-                    onChange(responses.map(({ status, file, data }) => ({
+                    onChange(responses.map(({ status, file, data, error }) => ({
                         id: uuidv1(),
                         name: file?.name,
                         progress: 100,
                         state: status,
                         detail_url: data?.url,
-                        create_date: Date.now()
+                        create_date: Date.now(),
+                        error
                     })));
                     setLoading(false);
                 })
@@ -121,6 +132,7 @@ function UploadList({
             disabledUpload={Object.keys(waitingUploads).length === 0}
             onUpload={handleUploadProcess}
             loading={loading}
+            progress={uploadContainerProgress}
         >
             {children}
         </UploadContainer>

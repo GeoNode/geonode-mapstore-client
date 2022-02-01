@@ -68,7 +68,8 @@ function UploadListContainer({
                                             create_date: createDate,
                                             detail_url: detailUrl,
                                             resume_url: resumeUrl,
-                                            delete_url: deleteUrl
+                                            delete_url: deleteUrl,
+                                            error
                                         }) => {
                                             return (
                                                 <li
@@ -82,6 +83,7 @@ function UploadListContainer({
                                                         createDate={createDate}
                                                         resumeUrl={resumeUrl}
                                                         onRemove={deleteUrl ? () => onDelete({ id, deleteUrl }) : null}
+                                                        error={error}
                                                     />
                                                 </li>
                                             );

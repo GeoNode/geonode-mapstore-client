@@ -96,6 +96,7 @@ function UploadList({
     const [readyUploads, setReadyUploads] = useState({});
     const [unsupported, setUnsupported] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [uploadContainerProgress, setUploadContainerProgress] = useState({});
 
     function parseUploadFiles(uploadFiles) {
         return Object.keys(uploadFiles)
@@ -170,6 +171,11 @@ function UploadList({
         setUnsupported(unsupportedFiles);
     }
 
+    const datasetUploadProgress = (fileName) => (progress) => {
+        const percentCompleted = Math.floor((progress.loaded * 100) / progress.total);
+        setUploadContainerProgress((prevFiles) => ({ ...prevFiles, [fileName]: percentCompleted }));
+    };
+
     function handleUploadProcess() {
         if (!loading) {
             setLoading(true);
@@ -179,7 +185,10 @@ function UploadList({
                 return uploadDataset({
                     file: readyUpload.files[readyUpload.mainExt],
                     ext: readyUpload.mainExt,
-                    auxiliaryFiles: readyUpload.files
+                    auxiliaryFiles: readyUpload.files,
+                    config: {
+                        onUploadProgress: datasetUploadProgress(baseName)
+                    }
                 })
                     .then((data) => ({ status: 'success', data, baseName }))
                     .catch(({ data: error }) => ({ status: 'error', error, baseName }));
@@ -215,9 +224,10 @@ function UploadList({
             supportedLabels={supportedLabels}
             onRemove={(baseName) => updateWaitingUploads(omit(waitingUploads, baseName))}
             unsupported={unsupported}
-            disabledUpload={Object.keys(waitingUploads).length === 0}
+            disabledUpload={Object.keys(readyUploads).length === 0}
             onUpload={handleUploadProcess}
             loading={loading}
+            progress={uploadContainerProgress}
         >
             {children}
         </UploadContainer>

@@ -749,7 +749,8 @@ export const uploadDataset = ({
     auxiliaryFiles,
     ext,
     charset = 'UTF-8',
-    permissions = { users: { AnonymousUser: [] }, groups: {}}
+    permissions = { users: { AnonymousUser: [] }, groups: {} },
+    config
 }) => {
     const formData = new FormData();
     formData.append('base_file', file);
@@ -763,20 +764,21 @@ export const uploadDataset = ({
         .forEach((auxExt) => {
             formData.append(auxExt + '_file', auxiliaryFiles[auxExt]);
         });
-    return axios.post(`${parseDevHostname(endpoints[UPLOADS])}/upload`, formData)
+    return axios.post(`${parseDevHostname(endpoints[UPLOADS])}/upload`, formData, config)
         .then(({ data }) => (data));
 };
 
 export const uploadDocument = ({
     title,
     file,
-    permissions = { users: { AnonymousUser: [] }, groups: {}}
+    permissions = { users: { AnonymousUser: [] }, groups: {} },
+    config
 }) => {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('doc_file', file);
     formData.append('permissions', JSON.stringify(permissions));
-    return axios.post(`/documents/upload?no__redirect=true`, formData)
+    return axios.post(`/documents/upload?no__redirect=true`, formData, config)
         .then(({ data }) => (data));
 };
 

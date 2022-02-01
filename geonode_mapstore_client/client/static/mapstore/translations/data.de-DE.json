@@ -268,7 +268,9 @@
 
             "filterPendingUploadDocument": "Uploads nach Name filtern...",
             "filterNoMatchUploadDocument": "Filter stimmt mit keinem Upload überein",
-            "uploadDocument": "Ein Dokument hochladen"
+            "uploadDocument": "Ein Dokument hochladen",
+            "transferInProgress": "Übertragung läuft",
+            "fileExceeds": "Die Dateigröße überschreitet 100 MB. Bitte versuchen Sie es erneut mit einer kleineren Datei."
         }
     }
 }

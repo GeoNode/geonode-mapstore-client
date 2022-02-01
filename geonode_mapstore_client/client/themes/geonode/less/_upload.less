@@ -14,10 +14,12 @@
         }
     }
     .gn-upload-card,
-    .gn-upload-list {
+    .gn-upload-list,
+    .gn-upload-card-progress-read {
         .background-color-var(@theme-vars[main-bg]);
     }
-    .gn-dropzone-active {
+    .gn-dropzone-active,
+    .gn-upload-card-progress-read {
         .border-color-var(@theme-vars[success]);
     }
     .gn-upload-card {
@@ -195,3 +197,20 @@
         }
     }
 }
+
+
+.gn-upload-card-progress-read {
+        position: absolute;
+        padding: 0.1rem;
+        display: flex;
+        align-items: center;
+        transition: 0.3s all;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        border-radius: 2px;
+        border-width: 1px;
+        border-style: solid;
+        top: -17.5px;
+        font-size: 11px;
+    }

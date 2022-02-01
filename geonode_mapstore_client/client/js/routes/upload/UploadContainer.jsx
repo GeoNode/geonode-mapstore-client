@@ -11,7 +11,6 @@ import Dropzone from 'react-dropzone';
 import ViewerLayout from '@js/components/ViewerLayout';
 import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
-import Spinner from '@js/components/Spinner';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { Alert } from 'react-bootstrap';
 import PendingUploadCard from '@js/routes/upload/PendingUploadCard';
@@ -25,7 +24,8 @@ function UploadContainer({
     unsupported,
     disabledUpload,
     onUpload,
-    loading
+    loading,
+    progress
 }) {
 
     const inputFile = useRef();
@@ -49,7 +49,7 @@ function UploadContainer({
                             </Button>
                         </div>
                         {waitingUploadNames.length > 0 ? (
-                            <ul>
+                            <ul style={{overflowX: 'hidden'}}>
                                 {waitingUploadNames.map((baseName) => {
                                     const { files, missingExt = [] } = waitingUploads[baseName];
                                     const filesExt = Object.keys(files);
@@ -62,6 +62,8 @@ function UploadContainer({
                                                 baseName={baseName}
                                                 onRemove={() => onRemove(baseName)}
                                                 filesExt={filesExt}
+                                                loading={loading}
+                                                progress={progress}
                                             />
                                         </li>
                                     );
@@ -102,15 +104,15 @@ function UploadContainer({
                                     width: '100%',
                                     height: '100%',
                                     display: 'flex',
-                                    alignItems: 'center',
+                                    alignItems: 'flex-end',
                                     justifyContent: 'center',
                                     padding: '1rem',
                                     textAlign: 'center',
                                     backgroundColor: 'rgba(0, 0, 0, 0.2)',
-                                    fontSize: '3rem'
+                                    paddingBottom: '3rem'
                                 }}
                             >
-                                <Spinner />
+                                <Message msgId="gnviewer.transferInProgress"/>
                             </div>
                         )}
                     </div>
