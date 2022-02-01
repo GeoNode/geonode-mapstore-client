@@ -21,6 +21,7 @@ import {
     getProcessedUploadsByImportId,
     uploadDataset
 } from '@js/api/geonode/v2';
+import uuidv1 from 'uuid/v1';
 import axios from '@mapstore/framework/libs/ajax';
 import UploadListContainer from '@js/routes/upload/UploadListContainer';
 import UploadContainer from '@js/routes/upload/UploadContainer';
@@ -195,6 +196,18 @@ function UploadList({
             }))
                 .then((responses) => {
                     const successfulUploads = responses.filter(({ status }) => status === 'success');
+                    const failedUploads = responses.filter(({ status }) => status === 'error');
+                    if (failedUploads.length > 0) {
+                        const failed = failedUploads.map(({ baseName: name, error }) => ({
+                            id: uuidv1(),
+                            name,
+                            progress: 100,
+                            state: 'INVALID',
+                            create_date: Date.now(),
+                            error
+                        }));
+                        onSuccess(failed);
+                    }
                     if (successfulUploads.length > 0) {
                         const successfulUploadsIds = successfulUploads.map(({ data }) => data?.id);
                         const successfulUploadsNames = successfulUploads.map(({ baseName }) => baseName);
@@ -242,6 +255,8 @@ function ProcessingUploadList({
 
     const [loading, setLoading] = useState(false);
     const [filterText, setFilterText] = useState('');
+    const [deletedIds, setDeletedIds] = useState([]);
+
     const isMounted = useRef(true);
     const updatePending = useRef();
     updatePending.current = () => {
@@ -250,15 +265,17 @@ function ProcessingUploadList({
             getPendingUploads()
                 .then((newPendingUploads) => {
                     if (isMounted.current) {
+                        const failedPendingUploads = pendingUploads.filter(({ state }) => state === 'INVALID');
                         const newIds = newPendingUploads.map(({ id }) => id);
                         const missingIds = pendingUploads
-                            .filter(upload => upload.state !== 'PROCESSED' && !newIds.includes(upload.id))
+                            .filter(upload => (upload.state !== 'PROCESSED' && upload.state !== 'INVALID') && !newIds.includes(upload.id) && !deletedIds.includes(upload.id))
                             .map(({ id }) => id);
                         const currentProcessed = pendingUploads.filter((upload) => upload.state === 'PROCESSED');
                         if (missingIds.length > 0) {
                             getProcessedUploadsById(missingIds)
                                 .then((processed) => {
                                     onChange([
+                                        ...failedPendingUploads,
                                         ...processed,
                                         ...currentProcessed,
                                         ...newPendingUploads
@@ -267,6 +284,7 @@ function ProcessingUploadList({
                                 })
                                 .catch(() => {
                                     onChange([
+                                        ...failedPendingUploads,
                                         ...currentProcessed,
                                         ...newPendingUploads
                                     ]);
@@ -274,6 +292,7 @@ function ProcessingUploadList({
                                 });
                         } else {
                             onChange([
+                                ...failedPendingUploads,
                                 ...currentProcessed,
                                 ...newPendingUploads
                             ]);
@@ -293,6 +312,7 @@ function ProcessingUploadList({
         axios.get(deleteUrl)
             .then(() => {
                 if (isMounted.current) {
+                    setDeletedIds((ids) => [...ids, id]);
                     onChange(pendingUploads.filter(upload => upload.id !== id));
                 }
             });
