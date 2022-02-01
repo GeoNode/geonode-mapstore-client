@@ -14,12 +14,10 @@
         }
     }
     .gn-upload-card,
-    .gn-upload-list,
-    .gn-upload-card-progress-read {
+    .gn-upload-list {
         .background-color-var(@theme-vars[main-bg]);
     }
-    .gn-dropzone-active,
-    .gn-upload-card-progress-read {
+    .gn-dropzone-active {
         .border-color-var(@theme-vars[success]);
     }
     .gn-upload-card {
@@ -161,6 +159,7 @@
         display: flex;
         padding: 0.5rem;
         padding-top: 0;
+        flex-wrap: wrap;
         li + li {
             margin-left: 0.25rem;
         }
@@ -198,19 +197,9 @@
     }
 }
 
-
-.gn-upload-card-progress-read {
-        position: absolute;
-        padding: 0.1rem;
-        display: flex;
-        align-items: center;
-        transition: 0.3s all;
-        justify-content: center;
-        width: 35px;
-        height: 35px;
-        border-radius: 2px;
-        border-width: 1px;
-        border-style: solid;
-        top: -17.5px;
-        font-size: 11px;
-    }
+.gn-upload-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 0.5rem;
+}

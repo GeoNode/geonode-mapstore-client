@@ -39,15 +39,18 @@ function PendingUploadCard({
                     <Message msgId="gnviewer.missingFiles"/>: {missingExt.join(', ')}
                 </div>
             </div>}
-            {<ul>
-                {filesExt.map(ext => {
-                    return (
-                        <li key={ext}>
-                            <Badge>.{ext}</Badge>
-                        </li>
-                    );
-                })}
-            </ul>}
+            <div className="gn-upload-card-bottom">
+                <ul>
+                    {filesExt.map(ext => {
+                        return (
+                            <li key={ext}>
+                                <Badge>.{ext}</Badge>
+                            </li>
+                        );
+                    })}
+                </ul>
+                {loading && progress && <div className="gn-upload-card-progress-read">{progress?.[baseName] ? `${progress?.[baseName]}%` : <Spinner />}</div>}
+            </div>
             {loading && progress && <div style={{position: 'relative'}}>
                 <div
                     className="gn-upload-card-progress"
@@ -65,7 +68,6 @@ function PendingUploadCard({
                     >
                     </div>
                 </div>
-                <div className="gn-upload-card-progress-read" style={{left: progress?.[baseName] < 88 ? `${progress?.[baseName]}%` : '88%'}}>{progress?.[baseName] ? `${progress?.[baseName]}%` : <Spinner />}</div>
             </div>}
         </div>
     );
