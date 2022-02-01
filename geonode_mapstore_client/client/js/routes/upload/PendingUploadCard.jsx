@@ -21,7 +21,8 @@ function PendingUploadCard({
     onRemove,
     filesExt,
     loading,
-    progress
+    progress,
+    size
 }) {
     return (
         <div className="gn-upload-card">
@@ -49,7 +50,13 @@ function PendingUploadCard({
                         );
                     })}
                 </ul>
-                {loading && progress && <div className="gn-upload-card-progress-read">{progress?.[baseName] ? `${progress?.[baseName]}%` : <Spinner />}</div>}
+                {
+                    (loading && progress) ?
+                        <div className="gn-upload-card-progress-read">
+                            {progress?.[baseName] ? `${progress?.[baseName]}%` : <Spinner />}
+                        </div> :
+                        <div>{size}{' '}MB</div>
+                }
             </div>
             {loading && progress && <div style={{position: 'relative'}}>
                 <div

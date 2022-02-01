@@ -42,7 +42,6 @@ function UploadList({
     const [loading, setLoading] = useState(false);
     const [uploadContainerProgress, setUploadContainerProgress] = useState({});
 
-
     function updateWaitingUploads(uploadFiles) {
         setWaitingUploads(uploadFiles);
     }
@@ -78,6 +77,11 @@ function UploadList({
     const documentUploadProgress = (fileName) => (progress) => {
         const percentCompleted = Math.floor((progress.loaded * 100) / progress.total);
         setUploadContainerProgress((prevFiles) => ({ ...prevFiles, [fileName]: percentCompleted }));
+    };
+
+    const removeFile = (waiting, name) => {
+        const uploadFiles = omit(waiting, name);
+        updateWaitingUploads(uploadFiles);
     };
 
     function handleUploadProcess() {
@@ -127,7 +131,7 @@ function UploadList({
             waitingUploads={waitingUploads}
             onDrop={handleDrop}
             supportedLabels={getAllowedDocumentTypes().map((ext) => `.${ext}`).join(', ')}
-            onRemove={(baseName) => updateWaitingUploads(omit(waitingUploads, baseName))}
+            onRemove={(baseName) => removeFile(waitingUploads, baseName)}
             unsupported={unsupported}
             disabledUpload={Object.keys(waitingUploads).length === 0}
             onUpload={handleUploadProcess}
@@ -154,6 +158,7 @@ function ProcessingUploadList({
             noFilterMatchMsgId="gnviewer.filterNoMatchUploadDocument"
             titleMsgId="gnviewer.uploadDocument"
             descriptionMsgId="gnviewer.dragAndDropFile"
+            resourceType="document"
         />
     );
 }

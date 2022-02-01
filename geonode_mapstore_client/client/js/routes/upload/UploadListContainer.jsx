@@ -26,7 +26,8 @@ function UploadListContainer({
     placeholderMsgId,
     noFilterMatchMsgId,
     titleMsgId,
-    descriptionMsgId
+    descriptionMsgId,
+    resourceType
 }) {
 
     const filteredPendingUploads = pendingUploads.filter(({ name }) => !filterText || name.includes(filterText));
@@ -39,7 +40,7 @@ function UploadListContainer({
                         <div className="gn-main-event-content">
                             <div className="gn-main-event-text">
                                 <div className="gn-main-icon">
-                                    <FaIcon name="database"/>
+                                    {resourceType !== 'dataset' ? <FaIcon name="file"/> : <FaIcon name="database"/>}
                                 </div>
                                 <h1><Message msgId={titleMsgId}/></h1>
                                 <div><Message msgId={descriptionMsgId}/></div>
@@ -107,5 +108,9 @@ function UploadListContainer({
         </div>
     );
 }
+
+UploadListContainer.defaultProps = {
+    resourceType: 'dataset'
+};
 
 export default UploadListContainer;

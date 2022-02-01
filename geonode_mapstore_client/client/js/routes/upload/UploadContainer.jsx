@@ -30,6 +30,21 @@ function UploadContainer({
 
     const inputFile = useRef();
     const waitingUploadNames = Object.keys(waitingUploads);
+
+    const handleFileDrop = (event) => {
+        const files = [...event?.target?.files];
+        return onDrop(files);
+    };
+
+    const getSize = (filesObj, extensions) => {
+        let bytes = 0;
+        extensions.forEach(ext => {
+            bytes += filesObj[ext].size;
+        });
+
+        return Math.ceil(bytes / (1024 * 1024));
+    };
+
     return (
         <Dropzone
             multiple
@@ -43,17 +58,18 @@ function UploadContainer({
                 leftColumn={
                     <div className="gn-upload-list">
                         <div className="gn-upload-list-header">
-                            <input ref={inputFile} value="" type="file" multiple onChange={(event) => onDrop([...event?.target?.files])} style={{ display: 'none' }}/>
+                            <input ref={inputFile} value="" type="file" multiple onChange={handleFileDrop} style={{ display: 'none' }}/>
                             <Button onClick={() => inputFile?.current?.click()}>
                                 <FaIcon name="plus"/>{' '}<Message msgId="gnviewer.selectFiles"/>
                             </Button>
                         </div>
                         {waitingUploadNames.length > 0 ? (
-                            <ul style={{overflowX: 'hidden'}}>
+                            <ul>
                                 {waitingUploadNames.map((baseName) => {
                                     const { files, missingExt = [] } = waitingUploads[baseName];
                                     const filesExt = Object.keys(files);
-                                    return (
+                                    const size = getSize(files, filesExt);
+;                                    return (
                                         <li
                                             key={baseName}
                                         >
@@ -64,6 +80,7 @@ function UploadContainer({
                                                 filesExt={filesExt}
                                                 loading={loading}
                                                 progress={progress}
+                                                size={size}
                                             />
                                         </li>
                                     );

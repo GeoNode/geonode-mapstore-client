@@ -73,7 +73,7 @@ function UploadCard({
                 <div className="gn-upload-card-tools">
                     {resumeUrl
                         ? <Button
-                            variant="warning"
+                            variant="primary"
                             href={resumeUrl}
                         >
                             <Message msgId="gnviewer.completeUpload" />

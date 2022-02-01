@@ -256,7 +256,7 @@
             "missingFiles": "Fehlende Dateien",
             "invalidUploadMessageError": "Fehler",
             "invalidUploadMessageErrorTooltip": "Der Upload-Vorgang ist fehlgeschlagen. Bitte überprüfen Sie die Gültigkeit der Datei und versuchen Sie erneut, sie hochzuladen",
-            "completeUpload": "Hochladen abschließen",
+            "completeUpload": "Schließen Sie den Upload ab",
             "selectFiles": "Dateien auswählen...",
             "supportedFiles": "Unterstützte Dateierweiterungen",
             "unsupportedFiles": "Für den Upload nicht unterstützte Dateien",
