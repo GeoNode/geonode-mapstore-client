@@ -196,9 +196,9 @@ function UploadList({
             }))
                 .then((responses) => {
                     const successfulUploads = responses.filter(({ status }) => status === 'success');
-                    const failedUploads = responses.filter(({ status }) => status === 'error');
-                    if (failedUploads.length > 0) {
-                        const failed = failedUploads.map(({ baseName: name, error }) => ({
+                    const errorUploads = responses.filter(({ status }) => status === 'error');
+                    if (errorUploads.length > 0) {
+                        const failedUploads = errorUploads.map(({ baseName: name, error }) => ({
                             id: uuidv1(),
                             name,
                             progress: 100,
@@ -206,7 +206,7 @@ function UploadList({
                             create_date: Date.now(),
                             error
                         }));
-                        onSuccess(failed);
+                        onSuccess(failedUploads);
                     }
                     if (successfulUploads.length > 0) {
                         const successfulUploadsIds = successfulUploads.map(({ data }) => data?.id);
@@ -356,7 +356,7 @@ function UploadDataset({
 
     return (
         <UploadList
-            onSuccess={(successfulUploads) => setPendingUploads(parseUploadResponse([...successfulUploads, ...pendingUploads]))}
+            onSuccess={(successfulUploads) => setPendingUploads((prevUploads) => parseUploadResponse([...successfulUploads, ...prevUploads]))}
         >
             <ProcessingUploadList
                 uploads={pendingUploads}
