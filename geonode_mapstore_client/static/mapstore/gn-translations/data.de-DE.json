@@ -271,7 +271,8 @@
             "filterNoMatchUploadDocument": "Filter stimmt mit keinem Upload überein",
             "uploadDocument": "Ein Dokument hochladen",
             "transferInProgress": "Übertragung läuft",
-            "fileExceeds": "Die Dateigröße überschreitet 100 MB. Bitte versuchen Sie es erneut mit einer kleineren Datei."
+            "fileExceeds": "Die Dateigröße überschreitet {limit} MB. Bitte versuchen Sie es erneut mit einer kleineren Datei.",
+            "exceedingFileMsg": "Algunos de sus archivos exceden el límite de carga de {limit} MB. Por favor, elimínelos de la lista."
         }
     }
 }

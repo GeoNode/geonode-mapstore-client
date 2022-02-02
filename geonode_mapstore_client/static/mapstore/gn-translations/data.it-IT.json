@@ -272,7 +272,8 @@
             "filterNoMatchUploadDocument": "Il filtro non corrisponde a un caricamento",
             "uploadDocument": "Carica un documento",
             "transferInProgress": "Trasferimento in corso",
-            "fileExceeds": "La dimensione del file supera i 100 MB. Riprova con un file più piccolo."
+            "fileExceeds": "La dimensione del file supera i {limit} MB. Riprova con un file più piccolo.",
+            "exceedingFileMsg": "Alcuni dei tuoi file superano il limite di caricamento di {limit} MB. Si prega di rimuoverli dall'elenco."
         }
     }
 }

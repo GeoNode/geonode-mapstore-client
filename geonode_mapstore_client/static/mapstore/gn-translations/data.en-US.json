@@ -271,7 +271,8 @@
             "filterNoMatchUploadDocument": "Filter does not match an upload",
             "uploadDocument": "Upload a document",
             "transferInProgress": "Transfer in progress",
-            "fileExceeds": "File size size exceeds 100MB. Please try again with a smaller file."
+            "fileExceeds": "File size size exceeds {limit} MB. Please try again with a smaller file.",
+            "exceedingFileMsg": "Some of your files exceed the upload limit of {limit} MB. Please remove them from the list."
         }
     }
 }
