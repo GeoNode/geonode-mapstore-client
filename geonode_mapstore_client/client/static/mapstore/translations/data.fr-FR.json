@@ -270,7 +270,8 @@
             "filterNoMatchUploadDocument": "Le filtre ne correspond pas à un téléchargement",
             "uploadDocument": "Télécharger un document",
             "transferInProgress": "Transfert en cours",
-            "fileExceeds": "La taille du fichier dépasse 100 Mo. Veuillez réessayer avec un fichier plus petit."
+            "fileExceeds": "La taille du fichier dépasse {Limit} Mo. Veuillez réessayer avec un fichier plus petit.",
+            "exceedingFileMsg": "Certains de vos fichiers dépassent la limite de téléchargement de {limit} Mo. Veuillez les supprimer de la liste."
         }
     }
 }

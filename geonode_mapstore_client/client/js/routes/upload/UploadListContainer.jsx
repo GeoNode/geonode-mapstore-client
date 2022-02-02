@@ -85,6 +85,7 @@ function UploadListContainer({
                                                         resumeUrl={resumeUrl}
                                                         onRemove={deleteUrl ? () => onDelete({ id, deleteUrl }) : null}
                                                         error={error}
+                                                        type={resourceType}
                                                     />
                                                 </li>
                                             );

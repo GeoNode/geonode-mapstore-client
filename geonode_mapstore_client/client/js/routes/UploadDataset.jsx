@@ -241,6 +241,7 @@ function UploadList({
             onUpload={handleUploadProcess}
             loading={loading}
             progress={uploadContainerProgress}
+            type="dataset"
         >
             {children}
         </UploadContainer>

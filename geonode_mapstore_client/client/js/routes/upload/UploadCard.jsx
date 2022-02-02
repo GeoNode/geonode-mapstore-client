@@ -13,6 +13,7 @@ import Spinner from '@js/components/Spinner';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import Message from '@mapstore/framework/components/I18N/Message';
 import moment from 'moment';
+import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 
 function ErrorMessage(props) {
     return (
@@ -33,8 +34,13 @@ function UploadCard({
     createDate,
     resumeUrl,
     onRemove,
-    error
+    error,
+    type
 }) {
+
+    const { datasetMaxUploadSize, documentMaxUploadSize } = getConfigProp('geoNodeSettings');
+    const maxAllowedBytes = type !== 'document' ? datasetMaxUploadSize : documentMaxUploadSize;
+    const maxAllowedSize = Math.floor(maxAllowedBytes / (1024 * 1024));
 
     const exceedingSizeError = (err) => {
         let message = err?.message?.match('File size') || err?.errors?.[0]?.match('smaller files') || '';
@@ -91,7 +97,7 @@ function UploadCard({
                         </Button>
                         : null}
                     {state === 'INVALID'
-                        ? exceedingSizeError(error) ? <ErrorMessageWithTooltip tooltip={error?.message || error?.errors?.[0]} /> : <ErrorMessageWithTooltip tooltipId="gnviewer.invalidUploadMessageErrorTooltip" />
+                        ? exceedingSizeError(error) ? <ErrorMessageWithTooltip tooltip={<Message msgId="gnviewer.fileExceeds" msgParams={{limit: maxAllowedSize }} />} /> : <ErrorMessageWithTooltip tooltipId="gnviewer.invalidUploadMessageErrorTooltip" />
                         : null}
                 </div>
             </div>

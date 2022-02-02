@@ -13,7 +13,19 @@ import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { Alert } from 'react-bootstrap';
+import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import PendingUploadCard from '@js/routes/upload/PendingUploadCard';
+import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
+
+function ErrorButton(props) {
+    return (
+        <div {...props} className="btn btn-success">
+            <Message msgId="gnviewer.upload" />
+        </div>
+    );
+}
+
+const ButtonWithTooltip = tooltip(ErrorButton);
 
 function UploadContainer({
     waitingUploads,
@@ -25,7 +37,8 @@ function UploadContainer({
     disabledUpload,
     onUpload,
     loading,
-    progress
+    progress,
+    type
 }) {
 
     const inputFile = useRef();
@@ -43,6 +56,27 @@ function UploadContainer({
         });
 
         return Math.ceil(bytes / (1024 * 1024));
+    };
+
+    const { datasetMaxUploadSize, documentMaxUploadSize } = getConfigProp('geoNodeSettings');
+    const maxAllowedBytes = type === 'dataset' ? datasetMaxUploadSize : documentMaxUploadSize;
+    const maxAllowedSize = Math.floor(maxAllowedBytes / (1024 * 1024));
+
+
+    const getExceedingFileSize = (waitingFiles, limit) => {
+        let aFileExceeds = false;
+        waitingFiles.every((baseName) => {
+            const { files } = waitingUploads[baseName];
+            const filesExt = Object.keys(files);
+            const size = getSize(files, filesExt);
+
+            if (size > limit) {
+                aFileExceeds = true;
+                return false;
+            } return true;
+        });
+
+        return aFileExceeds;
     };
 
     return (
@@ -106,13 +140,17 @@ function UploadContainer({
                             {unsupported.length > 0 ? <Alert bsStyle="danger">
                                 <Message msgId="gnviewer.unsupportedFiles"/>: {unsupported.map(({ file }) => file?.name).join(', ')}
                             </Alert> : null}
-                            <Button
-                                variant="success"
-                                disabled={disabledUpload}
-                                onClick={onUpload}
-                            >
-                                <Message msgId="gnviewer.upload"/>
-                            </Button>
+                            {(waitingUploadNames.length > 0 && getExceedingFileSize(waitingUploadNames, maxAllowedSize)) ?
+                                <ButtonWithTooltip tooltip={<Message msgId="gnviewer.exceedingFileMsg" msgParams={{limit: maxAllowedSize }} />} >
+                                    <Message msgId="gnviewer.upload" />
+                                </ButtonWithTooltip> :
+                                <Button
+                                    variant="success"
+                                    disabled={disabledUpload}
+                                    onClick={onUpload}
+                                >
+                                    <Message msgId="gnviewer.upload"/>
+                                </Button>}
                         </div>
                         {loading && (
                             <div

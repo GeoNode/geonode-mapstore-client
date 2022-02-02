@@ -137,6 +137,7 @@ function UploadList({
             onUpload={handleUploadProcess}
             loading={loading}
             progress={uploadContainerProgress}
+            type="document"
         >
             {children}
         </UploadContainer>
