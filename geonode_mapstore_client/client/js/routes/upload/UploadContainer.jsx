@@ -19,8 +19,10 @@ import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 
 function ErrorButton(props) {
     return (
-        <div {...props} className="btn btn-success">
-            <Message msgId="gnviewer.upload" />
+        <div {...props} style={{ width: 'fit-content', margin: 'auto' }} className="gn-disabled-upload">
+            <Button disabled variant="primary">
+                <Message msgId="gnviewer.upload" />
+            </Button>
         </div>
     );
 }
@@ -141,11 +143,11 @@ function UploadContainer({
                                 <Message msgId="gnviewer.unsupportedFiles"/>: {unsupported.map(({ file }) => file?.name).join(', ')}
                             </Alert> : null}
                             {(waitingUploadNames.length > 0 && getExceedingFileSize(waitingUploadNames, maxAllowedSize)) ?
-                                <ButtonWithTooltip tooltip={<Message msgId="gnviewer.exceedingFileMsg" msgParams={{limit: maxAllowedSize }} />} >
+                                <ButtonWithTooltip noTooltipWhenDisabled tooltip={<Message msgId="gnviewer.exceedingFileMsg" msgParams={{limit: maxAllowedSize }} />} >
                                     <Message msgId="gnviewer.upload" />
                                 </ButtonWithTooltip> :
                                 <Button
-                                    variant="success"
+                                    variant="primary"
                                     disabled={disabledUpload}
                                     onClick={onUpload}
                                 >
