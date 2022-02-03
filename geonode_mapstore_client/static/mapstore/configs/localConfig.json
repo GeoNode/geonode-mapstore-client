@@ -326,7 +326,7 @@
                 {
                     "labelId": "gnhome.addResource",
                     "authenticated": true,
-                    "disableIf": "{(state('settings') && state('settings').isMobile ? true : false)}",
+                    "disableIf": "{((state('settings') && state('settings').isMobile) ? true : false)}",
                     "type": "dropdown",
                     "variant": "primary",
                     "perms": [
@@ -340,7 +340,7 @@
                             "labelId": "gnhome.uploadDataset",
                             "value": "layer",
                             "type": "link",
-                            "href": "/datasets/upload",
+                            "href": "/catalogue/#/upload/dataset",
                             "authenticated": true,
                             "perms": [
                                 {
@@ -353,7 +353,7 @@
                             "labelId": "gnhome.uploadDocument",
                             "value": "document",
                             "type": "link",
-                            "href": "/documents/upload",
+                            "href": "/catalogue/#/upload/document",
                             "authenticated": true,
                             "perms": [
                                 {
