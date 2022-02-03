@@ -36,6 +36,15 @@ const FiltersMenu = forwardRef(({
     function handleToggleCardLayoutStyle() {
         setCardLayoutStyle(cardLayoutStyle === 'grid' ? 'list' : 'grid');
     }
+
+    const getFilterButtonContent = () => {
+        const desktop = document.getElementsByClassName('gn-desktop');
+        if (desktop.length > 0) {
+            return 'Filter';
+        }
+        return <FaIcon name="filter" />;
+    };
+
     return (
         <div
             className="gn-filters-menu gn-menu gn-default"
@@ -50,7 +59,7 @@ const FiltersMenu = forwardRef(({
                             size="sm"
                             onClick={onClick}
                         >
-                            <FaIcon name="filter" />
+                            {getFilterButtonContent()}
                         </Button>
                         {' '}
                         <Badge>

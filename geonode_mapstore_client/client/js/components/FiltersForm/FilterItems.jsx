@@ -100,6 +100,7 @@ function FilterItems({
                             const active = customFilters.find(value => value === item.id);
                             return (
                                 <Checkbox
+                                    className="gn-sub-filter-items"
                                     type="checkbox"
                                     checked={!!active}
                                     value={item.id}
@@ -137,7 +138,7 @@ function FilterItems({
                                     });
                                 }}>
                                 <Message msgId={field.labelId}/>
-                                {!!active && filterChild()}
+                                {filterChild()}
                             </Checkbox>
                         </FormGroup>
                     );
