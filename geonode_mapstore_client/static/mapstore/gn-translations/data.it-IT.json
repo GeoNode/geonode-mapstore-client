@@ -127,7 +127,8 @@
             "uploadDataset": "Carica dataset",
             "createDataset": "Crea dataset",
             "search": "Cerca...",
-            "permissionsMissing": "Non hai i permessi per visualizzare o scaricare la risorsa"
+            "permissionsMissing": "Non hai i permessi per visualizzare o scaricare la risorsa",
+            "filter": "Filtra"
         },
         "viewer": {
             "document": {
