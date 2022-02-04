@@ -98,8 +98,12 @@ function ViewerRoute({
         // hide the naviagtion bar is a recource is being viewed
         if (!loading) {
             document.getElementById('gn-topbar')?.classList.add('hide-navigation');
+            document.querySelector('.gn-menu-content-bottom')?.classList.add('hide-search-bar');
         }
-        return () => document.getElementById('gn-topbar')?.classList.remove('hide-navigation');
+        return () => {
+            document.getElementById('gn-topbar')?.classList.remove('hide-navigation');
+            document.querySelector('.gn-menu-content-bottom')?.classList.remove('hide-search-bar');
+        };
     }, [loading]);
 
     return (
