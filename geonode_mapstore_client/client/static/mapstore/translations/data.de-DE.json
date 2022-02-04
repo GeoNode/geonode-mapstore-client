@@ -126,7 +126,8 @@
             "uploadDataset": "Datensatz hochladen",
             "createDataset": "Datensatz erstellen",
             "search": "Suchen...",
-            "permissionsMissing": "Sie sind nicht berechtigt, diese Ressource anzuzeigen"
+            "permissionsMissing": "Sie sind nicht berechtigt, diese Ressource anzuzeigen",
+            "filter": "Filter"
         },
         "viewer": {
             "document": {

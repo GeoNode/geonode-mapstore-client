@@ -15,7 +15,8 @@ import {
     MeasureActionButton,
     LayerDownloadActionButton,
     AnnotationsActionButton,
-    FullScreenActionButton
+    FullScreenActionButton,
+    FilterLayerActionButton
 } from '@js/plugins/actionnavbar/buttons';
 import { getMetadataUrl,
     getMetadataDetailUrl,
@@ -174,7 +175,20 @@ export const plugins = {
     ),
     FilterLayerPlugin: toLazyPlugin(
         'FilterLayer',
-        () => import(/* webpackChunkName: 'plugins/filter-layer-plugin' */ '@mapstore/framework/plugins/FilterLayer')
+        () => import(/* webpackChunkName: 'plugins/filter-layer-plugin' */ '@mapstore/framework/plugins/FilterLayer'),
+        {
+            containers: {
+                ActionNavbar: {
+                    name: 'FilterLayer',
+                    Component: FilterLayerActionButton,
+                    priority: 1
+                },
+                TOC: {
+                    name: "FilterLayer",
+                    priority: 2
+                }
+            }
+        }
     ),
     MeasurePlugin: toLazyPlugin(
         'Measure',

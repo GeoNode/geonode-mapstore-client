@@ -53,7 +53,7 @@ const FiltersMenu = forwardRef(({
                             size="sm"
                             onClick={onClick}
                         >
-                            {isMobile ? <FaIcon name="filter" /> : 'Filter'}
+                            {isMobile ? <FaIcon name="filter" /> : <Message msgId="gnhome.filter"/>}
                         </Button>
                         {' '}
                         <Badge>

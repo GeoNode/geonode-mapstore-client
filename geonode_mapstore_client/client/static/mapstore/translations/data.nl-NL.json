@@ -125,7 +125,8 @@
             "uploadDataset": "Upload dataset",
             "createDataset": "Create dataset",
             "search": "Search...",
-            "permissionsMissing": "You don't have permission to view or download the resource"
+            "permissionsMissing": "You don't have permission to view or download the resource",
+            "filter": "Filter"
         },
         "viewer": {
             "document": {

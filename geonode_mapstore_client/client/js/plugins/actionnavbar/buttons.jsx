@@ -20,6 +20,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@js/components/Button';
 import FaIcon from '@js/components/FaIcon';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
+import { openQueryBuilder } from '@mapstore/framework/actions/layerFilter';
 
 // buttons override to use in ActionNavbar for plugin imported from mapstore
 
@@ -125,6 +126,25 @@ export const LayerDownloadActionButton = connect(
             onClick={() => onClick()}
         >
             <Message msgId="gnviewer.export" />
+        </Button>
+    );
+});
+
+export const FilterLayerActionButton = connect(
+    () => ({}),
+    { onClick: openQueryBuilder }
+)(({
+    onClick,
+    variant,
+    size
+}) => {
+    return (
+        <Button
+            variant={variant}
+            size={size}
+            onClick={() => onClick()}
+        >
+            <Message msgId="gnhome.filter" />
         </Button>
     );
 });

@@ -125,7 +125,8 @@
             "uploadDataset": "Subir conjunto de datos",
             "createDataset": "Crear conjunto de datos",
             "search": "Buscar...",
-            "permissionsMissing": "Sie sind nicht berechtigt, die Ressource anzuzeigen oder herunterzuladen"
+            "permissionsMissing": "Sie sind nicht berechtigt, die Ressource anzuzeigen oder herunterzuladen",
+            "filter": "Filtrar"
         },
         "viewer": {
             "document": {

@@ -929,6 +929,10 @@
                         },
                         {
                             "type": "plugin",
+                            "name": "FilterLayer"
+                        },
+                        {
+                            "type": "plugin",
                             "name": "LayerDownload"
                         },
                         {
