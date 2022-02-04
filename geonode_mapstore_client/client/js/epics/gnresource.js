@@ -20,6 +20,7 @@ import {
     setResourceThumbnail
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
+import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
 import {
     browseData,
     selectNode
@@ -84,7 +85,7 @@ import { getStyleProperties } from '@js/api/geonode/style';
 const resourceTypes = {
     [ResourceTypes.DATASET]: {
         resourceObservable: (pk, options) => {
-            const { page } = options || {};
+            const { page, selectedLayer } = options || {};
             return Observable.defer(() =>
                 axios.all([
                     getNewMapConfiguration(),
@@ -129,7 +130,12 @@ const resourceTypes = {
                                 ...mapConfig.map,
                                 layers: [
                                     ...mapConfig.map.layers,
-                                    { ...newLayer, isDataset: true, _v_: Date.now() }
+                                    {
+                                        ...selectedLayer, // keep configuration from other pages (eg: filters)
+                                        ...newLayer,
+                                        isDataset: true,
+                                        _v_: Date.now()
+                                    }
                                 ]
                             }
                         }),
@@ -397,7 +403,8 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     data: pendingChanges?.data,
                     styleService: styleServiceSelector(state),
                     isSamePreviousResource,
-                    resourceData
+                    resourceData,
+                    selectedLayer: isSamePreviousResource && getSelectedLayer(state)
                 }),
                 Observable.of(
                     ...(pendingChanges?.resource ? [updateResourceProperties(pendingChanges.resource)] : []),

@@ -71,6 +71,11 @@
             .background-color-var(@theme-vars[warning]);
         }
     }
+    .gn-success-changes-icon {
+        &::after {
+            .background-color-var(@theme-vars[success]);
+        }
+    }
     
 }
 
@@ -164,7 +169,8 @@ body {
     }
 }
 
-.gn-pending-changes-icon {
+.gn-pending-changes-icon,
+.gn-success-changes-icon {
     position: relative;
     &::after {
         content: '';
