@@ -36,7 +36,7 @@
     z-index: 20;
     border-width: 2px;
     border-style: solid;
-    min-width: 500px;
+    min-width: 100px;
     .input-group {
         display: flex;
     }
@@ -76,5 +76,12 @@
             max-height: 300px;
             margin-bottom: 0;
         }
+    }
+
+}
+
+@media screen and (min-width: 768px) {
+    .gn-search-bar {
+        min-width: 500px;
     }
 }

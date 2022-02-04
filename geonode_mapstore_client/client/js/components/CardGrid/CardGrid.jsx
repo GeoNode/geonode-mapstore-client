@@ -159,9 +159,10 @@ const CardGrid = ({
         <div className="gn-card-grid">
             {header}
             <div style={{
-                display: 'flex'
+                display: 'flex',
+                width: '100%'
             }}>
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1, width: '100%' }}>
                     <div className="gn-card-grid-container" style={containerStyle}>
                         {children}
                         {messageId && <div className="gn-card-grid-message">

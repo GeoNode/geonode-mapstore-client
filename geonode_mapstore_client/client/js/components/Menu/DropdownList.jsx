@@ -86,7 +86,8 @@ const DropdownList = ({
     containerNode,
     size,
     alignRight,
-    variant
+    variant,
+    responsive
 }) => {
 
     const dropdownItems = items
@@ -136,7 +137,17 @@ const DropdownList = ({
                 toogleIcon ? <FaIcon name={toogleIcon} />
                     : undefined
             }
-            {labelId && <Message msgId={labelId} /> || label}
+            {
+                (labelId && !responsive) &&
+                <Message msgId={labelId} /> || label
+            }
+            {
+                (labelId && responsive) &&
+                <div className="gn-content-responsive">
+                    <span><Message msgId={labelId} /></span>
+                    <span><FaIcon name="plus" /></span>
+                </div>
+            }
             {isValidBadgeValue(badgeValue) && <Badge>{badgeValue}</Badge>}
         </Dropdown.Toggle>
 

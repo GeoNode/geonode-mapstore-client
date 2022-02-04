@@ -61,6 +61,7 @@ const MenuItem = ({ item, menuItemsProps, containerNode, tabIndex, classItem = '
             size={size}
             alignRight={alignRight}
             variant={variant}
+            responsive={item.responsive}
         />);
     }
 

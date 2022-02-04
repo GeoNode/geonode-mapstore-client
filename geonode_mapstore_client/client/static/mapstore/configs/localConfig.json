@@ -329,6 +329,7 @@
                     "disableIf": "{((state('settings') && state('settings').isMobile) ? true : false)}",
                     "type": "dropdown",
                     "variant": "primary",
+                    "responsive": "true",
                     "perms": [
                         {
                             "type": "user",

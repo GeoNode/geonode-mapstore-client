@@ -284,3 +284,20 @@ a.gn-action-navbar-breadcrumb-link {
 .gn-language-selector {
     margin-left: 0.4rem;
 }
+
+.gn-content-responsive {
+    span:last-child:not(span:first-of-type) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 485px) {
+.gn-content-responsive {
+    span:first-of-type {
+        display: none;
+    }
+    span:last-child:not(span:first-of-type) {
+            display: unset;
+    }
+    }
+}
