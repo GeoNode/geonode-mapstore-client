@@ -5,6 +5,29 @@
 
 {% block extra_style %}
 {% endblock %}
+
+<style>
+    .gn-menu-content-bottom {
+        display: none;
+        margin: 10px;
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 748px) {
+        .gn-menu-content-center {
+            display: none;
+        }
+
+        .msgapi nav.gn-menu {
+            display: inline-block;
+        }
+
+        .gn-menu-content-bottom {
+            display: flex;
+        }
+    }
+</style>
+
 <nav id="{{ id|default:'' }}" class="gn-menu gn-menu-symmetric">
     <div class="gn-menu-container">
         <div class="gn-menu-content">
@@ -38,6 +61,11 @@
                 {% endblock %}
             </div>
         </div>
+    </div>
+    <div class="gn-menu-content-bottom">
+        {% block bottom_menu %}
+            {% include './search_bar.html' %}
+        {% endblock %}
     </div>
 </nav>
 {% block extra_script %}
