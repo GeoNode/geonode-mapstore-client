@@ -10,6 +10,9 @@
     .gn-menu-divider {
         .background-color-var(@theme-vars[primary-contrast]);
     }
+    .gn-main-header {
+        .background-color-var(@theme-vars[main-bg]);
+    }
     .gn-menu {
         .color-var(@theme-vars[main-color]);
         .background-color-var(@theme-vars[main-bg]);
@@ -303,8 +306,7 @@ a.gn-action-navbar-breadcrumb-link {
 }
 
 @media (max-width: 748px) {
-    nav#gn-brand-navbar div.gn-menu-content-bottom.hide-search-bar {
+    #gn-brand-navbar-bottom.hide-search-bar {
         display: none;
     }
-
-}    
+}

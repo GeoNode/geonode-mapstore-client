@@ -749,12 +749,10 @@ export const uploadDataset = ({
     auxiliaryFiles,
     ext,
     charset = 'UTF-8',
-    permissions = { users: { AnonymousUser: [] }, groups: {} },
     config
 }) => {
     const formData = new FormData();
     formData.append('base_file', file);
-    formData.append('permissions', JSON.stringify(permissions));
     formData.append('charset', charset);
     const { timeEnabled } = getConfigProp('geoNodeSettings') || {};
     if (timeEnabled) {
@@ -771,13 +769,11 @@ export const uploadDataset = ({
 export const uploadDocument = ({
     title,
     file,
-    permissions = { users: { AnonymousUser: [] }, groups: {} },
     config
 }) => {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('doc_file', file);
-    formData.append('permissions', JSON.stringify(permissions));
     return axios.post(`/documents/upload?no__redirect=true`, formData, config)
         .then(({ data }) => (data));
 };

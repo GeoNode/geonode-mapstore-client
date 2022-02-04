@@ -95,14 +95,28 @@ function ViewerRoute({
     const className = `page-${resourceType}-viewer`;
 
     useEffect(() => {
+        // set the correct height of navbar
+        const mainHeader = document.querySelector('.gn-main-header');
+        const mainHeaderPlaceholder = document.querySelector('.gn-main-header-placeholder');
+        const topbar = document.querySelector('#gn-topbar');
+        function resize() {
+            if (mainHeaderPlaceholder && mainHeader) {
+                mainHeaderPlaceholder.style.height = mainHeader.clientHeight + 'px';
+            }
+            if (topbar && mainHeader) {
+                topbar.style.top = mainHeader.clientHeight + 'px';
+            }
+        }
         // hide the naviagtion bar is a recource is being viewed
         if (!loading) {
             document.getElementById('gn-topbar')?.classList.add('hide-navigation');
-            document.querySelector('.gn-menu-content-bottom')?.classList.add('hide-search-bar');
+            document.getElementById('gn-brand-navbar-bottom')?.classList.add('hide-search-bar');
+            resize();
         }
         return () => {
             document.getElementById('gn-topbar')?.classList.remove('hide-navigation');
-            document.querySelector('.gn-menu-content-bottom')?.classList.remove('hide-search-bar');
+            document.getElementById('gn-brand-navbar-bottom')?.classList.remove('hide-search-bar');
+            resize();
         };
     }, [loading]);
 
