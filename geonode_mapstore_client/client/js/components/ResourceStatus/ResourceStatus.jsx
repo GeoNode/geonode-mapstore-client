@@ -29,9 +29,15 @@ const ResourceStatus = ({ resource = {} }) => {
     const getTitle = (status) => {
         const { isApproved: approved, isPublished: published } = status;
 
-        if (!approved && published) {return <Message msgId="gnhome.pendingApproval" />}
-        if (!approved && !published) {return <Message msgId="gnhome.unApprovedunPublished" />}
-        if (!published && !approved) {return <Message msgId="gnhome.unpublished" />}
+        if (!approved && published) {
+            return <Message msgId="gnhome.pendingApproval" />;
+        }
+        if (!approved && !published) {
+            return <Message msgId="gnhome.unApprovedunPublished" />;
+        }
+        if (!published && !approved) {
+            return <Message msgId="gnhome.unpublished" />;
+        }
 
         return '';
     };
@@ -40,7 +46,7 @@ const ResourceStatus = ({ resource = {} }) => {
         ? (
             <p className="gn-resource-status-text">
                 {
-                    (!isProcessing && (!isApproved || !isPublished)) && 
+                    (!isProcessing && (!isApproved || !isPublished)) &&
                         <ButtonWithTooltip variant="default" className="gn-resource-status gn-status-button" tooltip={getTitle({ isApproved, isPublished })} style={{ marginRight: (isDeleting || isDeleted || isCopying) && '0.4rem' }} tooltipPosition="top">
                             <FaIcon  name="info-circle" className="gn-resource-status-pending" />
                         </ButtonWithTooltip>

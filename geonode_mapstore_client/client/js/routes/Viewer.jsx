@@ -50,7 +50,7 @@ function getPluginsConfiguration(name, pluginsConfig) {
     if (isMobile && pluginsConfig) {
         return pluginsConfig[`${name}_mobile`] || pluginsConfig[name] || DEFAULT_PLUGINS_CONFIG;
     }
-    return pluginsConfig[name] || DEFAULT_PLUGINS_CONFIG
+    return pluginsConfig[name] || DEFAULT_PLUGINS_CONFIG;
 }
 
 function ViewerRoute({

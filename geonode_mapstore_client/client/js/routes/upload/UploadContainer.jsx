@@ -105,7 +105,7 @@ function UploadContainer({
                                     const { files, missingExt = [] } = waitingUploads[baseName];
                                     const filesExt = Object.keys(files);
                                     const size = getSize(files, filesExt);
-;                                    return (
+                                    return (
                                         <li
                                             key={baseName}
                                         >
