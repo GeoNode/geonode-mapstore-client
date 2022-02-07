@@ -153,6 +153,7 @@
 }
 .gn-details-panel-info{
     .tabs-info {
+        width: 100%;
         margin-top: 2em;
         .tab-content{
             padding: 2em;
@@ -410,6 +411,20 @@
 
     .gn-details-panel .editContainer.imagepreview {
         width: 100%;
+    }
+
+    .gn-details-panel-content,
+    .gn-details-panel-info {
+        .DList-containner {
+            .DList--2cols>.DList-cell,
+            .DList--2cols>.DList-cell--medium {
+                width: 100%;
+            }
+
+            .DList-cell {
+                text-overflow: ellipsis;
+            }
+        }
     }
 }
 
