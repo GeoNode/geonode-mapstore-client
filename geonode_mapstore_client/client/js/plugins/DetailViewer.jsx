@@ -33,7 +33,6 @@ import {
     updatingThumbnailResource
 } from '@js/selectors/resource';
 import Button from '@js/components/Button';
-import PropTypes from 'prop-types';
 import useDetectClickOut from '@js/hooks/useDetectClickOut';
 import OverlayContainer from '@js/components/OverlayContainer';
 import { withRouter } from 'react-router';
@@ -111,7 +110,6 @@ function DetailViewer({
     onEditAbstractResource,
     onEditThumbnail,
     canEdit,
-    width,
     hide,
     user,
     onClose
@@ -151,9 +149,7 @@ function DetailViewer({
         <OverlayContainer
             enabled={enabled}
             ref={node}
-            style={{
-                width
-            }}
+            className="gn-overlay-wrapper"
         >
             <ConnectedDetailsPanel
                 editTitle={handleTitleValue}
@@ -166,14 +162,6 @@ function DetailViewer({
         </OverlayContainer>
     );
 }
-
-DetailViewer.propTypes = {
-    width: PropTypes.number
-};
-
-DetailViewer.defaultProps = {
-    width: 800
-};
 
 const DetailViewerPlugin = connect(
     createSelector(

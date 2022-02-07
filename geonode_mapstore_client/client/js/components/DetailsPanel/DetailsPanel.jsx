@@ -565,13 +565,13 @@ function DetailsPanel({
                         </div>
                         <ResourceStatus resource={resource} />
                         {<p className="gn-details-panel-meta-text">
-                            {resource?.owner &&  <div>{resource?.owner.avatar &&
+                            {resource?.owner &&  <>{resource?.owner.avatar &&
                             <img src={resource?.owner.avatar} alt={getUserName(resource?.owner)} className="gn-card-author-image" />
                             }
                             <ResourceMessage type={resource?.resource_type} />
-                            <AuthorInfo resource={resource} formatHref={formatHref} style={{ margin: 0 }} detailsPanel /></div>}
+                            <AuthorInfo resource={resource} formatHref={formatHref} style={{ margin: 0 }} detailsPanel /></>}
                             {(resource?.date_type && resource?.date)
-                            && <div className="gn-details-panel-meta-date">{' '}/{' '}{moment(resource.date).format('MMMM Do YYYY')}</div>}
+                            && <>{' '}/{' '}{moment(resource.date).format('MMMM Do YYYY')}</>}
                         </p>
                         }
 

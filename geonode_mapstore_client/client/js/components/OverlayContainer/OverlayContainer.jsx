@@ -10,7 +10,7 @@ import React, { forwardRef } from 'react';
 
 const OverlayContainer = forwardRef(({
     enabled,
-    style,
+    className,
     children
 }, ref) => {
 
@@ -21,12 +21,10 @@ const OverlayContainer = forwardRef(({
     return (
         <div
             ref={ref}
-            className="gn-overlay-container"
+            className={className ? className : "gn-overlay-container"}
             style={{
                 position: 'relative',
-                width: '100%',
-                height: '100%',
-                ...style
+                height: '100%'
             }}
         >
             {children}

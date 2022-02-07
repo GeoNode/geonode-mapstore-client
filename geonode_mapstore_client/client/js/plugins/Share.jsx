@@ -85,7 +85,6 @@ const entriesTabs = [
 ];
 function Share({
     enabled,
-    width,
     resourceId,
     compactPermissions,
     layers,
@@ -114,7 +113,7 @@ function Share({
     return (
         <OverlayContainer
             enabled={enabled}
-            style={{ width }}
+            className="gn-overlay-wrapper"
         >
             <section
                 className="gn-share-panel"
@@ -147,15 +146,13 @@ function Share({
 Share.propTypes = {
     resourceId: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
     enabled: PropTypes.bool,
-    onClose: PropTypes.func,
-    width: PropTypes.number
+    onClose: PropTypes.func
 };
 
 Share.defaultProps = {
     resourceId: null,
     enabled: false,
-    onClose: () => {},
-    width: 800
+    onClose: () => {}
 };
 
 const SharePlugin = connect(

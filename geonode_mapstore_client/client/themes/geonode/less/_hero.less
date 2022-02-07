@@ -60,3 +60,17 @@
         }
     }
 }
+
+@media screen and (max-width: @screen-xs) {
+  .gn-hero .jumbotron .gn-hero-description {
+            word-break: break-word;
+            font-size: @font-size-base;
+            h1 { font-size: @font-size-base * 3.5; }
+            h2 { font-size: @font-size-base * 3; }
+            h3 { font-size: @font-size-base * 2.5; }
+            h4 { font-size: @font-size-base * 2; }
+            h5 { font-size: @font-size-base * 1.5; }
+            h6 { font-size: @font-size-base; }
+            p:not(.gn-hero-tools) { font-size: @font-size-base; }
+        }
+}

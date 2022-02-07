@@ -60,14 +60,7 @@ function ViewerLayout({
                 </div>
             </div>
             <div
-                className="gn-viewer-right-overlay shadow-far"
-                style={{
-                    position: 'absolute',
-                    right: 0,
-                    height: '100%',
-                    zIndex: 2000,
-                    transform: 'all 0.3s'
-                }}>
+                className="gn-viewer-right-overlay shadow-far">
                 {rightOverlay}
             </div>
             <footer>
