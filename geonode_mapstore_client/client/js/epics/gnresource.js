@@ -20,6 +20,7 @@ import {
     setResourceThumbnail
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
+import { mapSelector } from '@mapstore/framework/selectors/map';
 import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
 import {
     browseData,
@@ -85,7 +86,7 @@ import { getStyleProperties } from '@js/api/geonode/style';
 const resourceTypes = {
     [ResourceTypes.DATASET]: {
         resourceObservable: (pk, options) => {
-            const { page, selectedLayer } = options || {};
+            const { page, selectedLayer, map: currentMap } = options || {};
             return Observable.defer(() =>
                 axios.all([
                     getNewMapConfiguration(),
@@ -128,10 +129,11 @@ const resourceTypes = {
                             ...mapConfig,
                             map: {
                                 ...mapConfig.map,
+                                ...currentMap, // keep configuration for other pages when resource id is the same (eg: center, zoom)
                                 layers: [
                                     ...mapConfig.map.layers,
                                     {
-                                        ...selectedLayer, // keep configuration from other pages (eg: filters)
+                                        ...selectedLayer, // keep configuration for other pages when resource id is the same (eg: filters)
                                         ...newLayer,
                                         isDataset: true,
                                         _v_: Date.now()
@@ -139,7 +141,7 @@ const resourceTypes = {
                                 ]
                             }
                         }),
-                        ...(extent
+                        ...((extent && !currentMap)
                             ? [ setControlProperty('fitBounds', 'geometry', extent) ]
                             : []),
                         setControlProperty('toolbar', 'expanded', false),
@@ -404,7 +406,8 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     styleService: styleServiceSelector(state),
                     isSamePreviousResource,
                     resourceData,
-                    selectedLayer: isSamePreviousResource && getSelectedLayer(state)
+                    selectedLayer: isSamePreviousResource && getSelectedLayer(state),
+                    map: isSamePreviousResource && mapSelector(state)
                 }),
                 Observable.of(
                     ...(pendingChanges?.resource ? [updateResourceProperties(pendingChanges.resource)] : []),
