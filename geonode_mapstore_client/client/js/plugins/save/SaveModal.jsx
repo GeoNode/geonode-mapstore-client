@@ -81,100 +81,100 @@ function SaveModal({
                         true);
                 }
             });
-            return () => currentModal?.current?.removeEventListener('keyup', () => { });
         }
+        return () => currentModal?.current?.removeEventListener('keyup', () => {});
     }, []);
 
     return (
         <Portal>
             <div ref={currentModal}>
-            <ResizableModal
-                title={<Message msgId={labelId}/>}
-                show={enabled}
-                fitContent
-                clickOutEnabled={false}
-                buttons={isLoading
-                    ? []
-                    : [
-                        {
-                            text: <Message msgId="close"/>,
-                            onClick: () => onClose()
-                        },
-                        {
-                            text: <Message msgId={labelId}/>,
-                            disabled: !!nameValidation,
-                            bsStyle: 'primary',
-                            onClick: () => onSave(
-                                update ? contentId : undefined,
-                                {
-                                    thumbnail,
-                                    name,
-                                    description
-                                },
-                                true)
-                        }
-                    ]}
-                onClose={isLoading ? null : () => onClose()}
-            >
-                {error && <Alert bsStyle="danger" style={{ margin: 0 }}>
-                    <div><Message msgId="map.mapError.errorDefault" /></div>
-                </Alert>}
-                {success && <Alert bsStyle="success" style={{ margin: 0 }}>
-                    <div><Message msgId="saveDialog.saveSuccessMessage" /></div>
-                </Alert>}
-                <Form>
-                    <FormGroup
-                        validationState={nameValidation}
-                    >
-                        <ControlLabel>
-                            <Message msgId="gnviewer.title" />
-                        </ControlLabel>
-                            <FormControl
-                            autoFocus
-                            placeholder="gnviewer.titlePlaceholder"
-                            value={name}
-                            onChange={(event) => {
-                                setName(event.target.value);
-                                setNameValidation(!event.target.value
-                                    ? 'error'
-                                    : undefined);
-                            }}
-                            onBlur={(event) => {
-                                setNameValidation(!event.target.value
-                                    ? 'error'
-                                    : undefined
-                                );
-                            }}
-                        />
-                    </FormGroup>
-                    {!hideDescription && <FormGroup>
-                        <ControlLabel>
-                            <Message msgId="saveDialog.description" />
-                        </ControlLabel>
-                        <FormControl
-                            placeholder="saveDialog.descriptionPlaceholder"
-                            value={description}
-                            onChange={(event) => setDescription(event.target.value)}
-                        />
-                    </FormGroup>}
-                </Form>
-                {isLoading && <div
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                        zIndex: 2,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}
+                <ResizableModal
+                    title={<Message msgId={labelId}/>}
+                    show={enabled}
+                    fitContent
+                    clickOutEnabled={false}
+                    buttons={isLoading
+                        ? []
+                        : [
+                            {
+                                text: <Message msgId="close"/>,
+                                onClick: () => onClose()
+                            },
+                            {
+                                text: <Message msgId={labelId}/>,
+                                disabled: !!nameValidation,
+                                bsStyle: 'primary',
+                                onClick: () => onSave(
+                                    update ? contentId : undefined,
+                                    {
+                                        thumbnail,
+                                        name,
+                                        description
+                                    },
+                                    true)
+                            }
+                        ]}
+                    onClose={isLoading ? null : () => onClose()}
                 >
-                    <Loader size={70}/>
-                </div>}
-            </ResizableModal>
+                    {error && <Alert bsStyle="danger" style={{ margin: 0 }}>
+                        <div><Message msgId="map.mapError.errorDefault" /></div>
+                    </Alert>}
+                    {success && <Alert bsStyle="success" style={{ margin: 0 }}>
+                        <div><Message msgId="saveDialog.saveSuccessMessage" /></div>
+                    </Alert>}
+                    <Form>
+                        <FormGroup
+                            validationState={nameValidation}
+                        >
+                            <ControlLabel>
+                                <Message msgId="gnviewer.title" />
+                            </ControlLabel>
+                            <FormControl
+                                autoFocus
+                                placeholder="gnviewer.titlePlaceholder"
+                                value={name}
+                                onChange={(event) => {
+                                    setName(event.target.value);
+                                    setNameValidation(!event.target.value
+                                        ? 'error'
+                                        : undefined);
+                                }}
+                                onBlur={(event) => {
+                                    setNameValidation(!event.target.value
+                                        ? 'error'
+                                        : undefined
+                                    );
+                                }}
+                            />
+                        </FormGroup>
+                        {!hideDescription && <FormGroup>
+                            <ControlLabel>
+                                <Message msgId="saveDialog.description" />
+                            </ControlLabel>
+                            <FormControl
+                                placeholder="saveDialog.descriptionPlaceholder"
+                                value={description}
+                                onChange={(event) => setDescription(event.target.value)}
+                            />
+                        </FormGroup>}
+                    </Form>
+                    {isLoading && <div
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                            zIndex: 2,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <Loader size={70}/>
+                    </div>}
+                </ResizableModal>
             </div>
         </Portal>
     );
