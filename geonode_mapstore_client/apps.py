@@ -10,8 +10,9 @@
 #########################################################################
 import os
 
-from django.apps import apps, AppConfig as BaseAppConfig
 from django.views.generic import TemplateView
+from django.utils.translation import ugettext_lazy as _
+from django.apps import apps, AppConfig as BaseAppConfig
 
 
 def run_setup_hooks(*args, **kwargs):
@@ -33,8 +34,27 @@ def run_setup_hooks(*args, **kwargs):
         "default": OWNER_PERMISSIONS,
         groups_settings.REGISTERED_MEMBERS_GROUP_NAME: OWNER_PERMISSIONS
     }
-    setattr(settings, "CLIENT_APP_LIST", ['geostory', "dashboard"])
-    setattr(settings, "CLIENT_APP_ALLOWED_PERMS", [{'geostory': allowed_perms}, {"dashboard": allowed_perms}])
+    setattr(settings, "CLIENT_APP_LIST", ["geostory", "dashboard"])
+    setattr(settings, "CLIENT_APP_ALLOWED_PERMS_LIST", [{"geostory": allowed_perms}, {"dashboard": allowed_perms}])
+    setattr(settings, "CLIENT_APP_COMPACT_PERM_LABELS", {
+            "geostory": {
+                "none": _("None"),
+                "view": _("View"),
+                "download": _("Download"),
+                "edit": _("Edit"),
+                "manage": _("Manage"),
+                "owner": _("Owner")
+            },
+            "dashboard": {
+                "none": _("None"),
+                "view": _("View"),
+                "download": _("Download"),
+                "edit": _("Edit"),
+                "manage": _("Manage"),
+                "owner": _("Owner")
+            }
+        }
+    )
 
     try:
         settings.TEMPLATES[0]['OPTIONS']['context_processors'] += [
