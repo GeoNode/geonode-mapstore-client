@@ -29,7 +29,8 @@ function SaveModal({
     onClose,
     onSave,
     onClear,
-    hideDescription
+    hideDescription,
+    copy
 }) {
 
     const [thumbnail, setThumbnail] =  useState();
@@ -42,6 +43,8 @@ function SaveModal({
         contentId,
         resource
     };
+
+    const currentModal = useRef(null);
 
     useEffect(() => {
         onClear();
@@ -61,8 +64,30 @@ function SaveModal({
 
     const isLoading = loading || saving;
 
+
+    useEffect(() => {
+        // clone on enter key press
+        if (copy && currentModal?.current) {
+            currentModal?.current?.addEventListener('keyup', (event) => {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    onSave(
+                        update ? contentId : undefined,
+                        {
+                            thumbnail,
+                            name,
+                            description
+                        },
+                        true);
+                }
+            });
+            return () => currentModal?.current?.removeEventListener('keyup', () => { });
+        }
+    }, []);
+
     return (
         <Portal>
+            <div ref={currentModal}>
             <ResizableModal
                 title={<Message msgId={labelId}/>}
                 show={enabled}
@@ -104,7 +129,8 @@ function SaveModal({
                         <ControlLabel>
                             <Message msgId="gnviewer.title" />
                         </ControlLabel>
-                        <FormControl
+                            <FormControl
+                            autoFocus
                             placeholder="gnviewer.titlePlaceholder"
                             value={name}
                             onChange={(event) => {
@@ -149,6 +175,7 @@ function SaveModal({
                     <Loader size={70}/>
                 </div>}
             </ResizableModal>
+            </div>
         </Portal>
     );
 }
