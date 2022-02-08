@@ -15,7 +15,9 @@ import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import FaIcon from '@js/components/FaIcon';
 import useLocalStorage from '@js/hooks/useLocalStorage';
 import Menu from '@js/components/Menu';
-import Spinner from '@js/components/Spinner';
+import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
+
+const ButtonWithTooltip = tooltip(Button);
 
 const FiltersMenu = forwardRef(({
     formatHref,
@@ -25,11 +27,8 @@ const FiltersMenu = forwardRef(({
     style,
     onClick,
     defaultLabelId,
-    onClear,
     totalResources,
-    totalFilters,
-    filtersActive,
-    loading
+    totalFilters
 }, ref) => {
 
     const { isMobile } = getConfigProp('geoNodeSettings');
@@ -48,27 +47,24 @@ const FiltersMenu = forwardRef(({
             <div className="gn-menu-container">
                 <div className="gn-menu-content">
                     <div className="gn-menu-fill">
-                        <Button
+                        {totalFilters > 0 ? <ButtonWithTooltip
+                            variant="primary"
+                            size="sm"
+                            onClick={onClick}
+                            className="gn-success-changes-icon"
+                            tooltip={<Message msgId="gnhome.filterApplied" msgParams={{ count: totalFilters }}/>}
+                        >
+                            {isMobile ? <FaIcon name="filter" /> : <Message msgId="gnhome.filter"/>}
+                        </ButtonWithTooltip> : <Button
                             variant="primary"
                             size="sm"
                             onClick={onClick}
                         >
                             {isMobile ? <FaIcon name="filter" /> : <Message msgId="gnhome.filter"/>}
-                        </Button>
+                        </Button>}
                         {' '}
                         <Badge>
                             <span className="resources-count"> <Message msgId="gnhome.resourcesFound" msgParams={{ count: totalResources }}/> </span>
-                            { totalFilters > 0 &&  <> {' '}|{' '}<span onClick={onClick} className={"resources-count"}> <Message msgId="gnhome.filterApplied" msgParams={{ count: totalFilters }}/></span> </>}
-                            {' '}
-                            { filtersActive &&
-
-                                <span className={"clear-pointer"}
-                                    onClick={onClear}
-                                ><FaIcon name={"trash"} className={"fa-sm"} />
-                                </span>
-
-                            }
-                            {loading && <Spinner spinnerName="circle" style={{"float": "right", "paddingLeft": "0.7em"}}noFadeIn/> }
                         </Badge>
                     </div>
                     <Menu
