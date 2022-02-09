@@ -356,11 +356,13 @@ export const getResourcePermissions = (options) => {
         const permissions = options[key];
         let selectOptions = [];
         for (let indx = 0; indx < permissions.length; indx++) {
-            const permission = permissions[indx];
+            const permission = permissions[indx].name || permissions[indx];
+            const label = permissions[indx].label
             if (permission !== 'owner') {
                 selectOptions.push({
                     value: permission,
-                    labelId: `gnviewer.${permission}Permission`
+                    labelId: `gnviewer.${permission}Permission`,
+                    label
                 });
             }
         }
