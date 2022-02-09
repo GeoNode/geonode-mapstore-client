@@ -64,8 +64,14 @@ describe('Test Resource Utils', () => {
             allowed_perms: {
                 compact: {
                     test1: [
-                        "none",
-                        "view"
+                        {
+                            name: 'none',
+                            label: 'None'
+                        },
+                        {
+                            name: 'view',
+                            label: 'View'
+                        }
                     ]
                 }
             }
@@ -73,8 +79,8 @@ describe('Test Resource Utils', () => {
         const permissionOptions = getResourcePermissions(data[0].allowed_perms.compact);
         expect(permissionOptions).toEqual({
             test1: [
-                { value: 'none', labelId: `gnviewer.nonePermission` },
-                { value: 'view', labelId: `gnviewer.viewPermission` }
+                { value: 'none', labelId: `gnviewer.nonePermission`, label: 'None' },
+                { value: 'view', labelId: `gnviewer.viewPermission`, label: 'View' }
             ]
         });
     });
