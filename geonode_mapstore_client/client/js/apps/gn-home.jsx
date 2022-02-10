@@ -20,7 +20,10 @@ import gnresource from '@js/reducers/gnresource';
 import resourceservice from '@js/reducers/resourceservice';
 import gnsearchEpics from '@js/epics/gnsearch';
 import gnsaveEpics from '@js/epics/gnsave';
+import gnsettings from '@js/reducers/gnsettings';
 import resourceServiceEpics from '@js/epics/resourceservice';
+
+import { updateGeoNodeSettings } from '@js/actions/gnsettings';
 
 import {
     getConfiguration,
@@ -64,7 +67,8 @@ Promise.all([
         })
             .then(({
                 securityState,
-                geoNodeConfiguration
+                geoNodeConfiguration,
+                settings
             }) => {
                 const appEpics = {
                     ...gnsearchEpics,
@@ -89,10 +93,14 @@ Promise.all([
                         gnresource,
                         resourceservice,
                         security,
-                        controls
+                        controls,
+                        gnsettings
                     },
                     appEpics,
-                    geoNodeConfiguration
+                    geoNodeConfiguration,
+                    initialActions: [
+                        updateGeoNodeSettings.bind(null, settings),
+                    ]
                 });
             });
     });
