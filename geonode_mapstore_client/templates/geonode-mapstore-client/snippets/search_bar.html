@@ -1,10 +1,10 @@
-<div id="gn-search-bar" class="gn-search-bar">
+<div id="{{ search_bar_id }}" class="gn-search-bar">
     <div class="input-group">
         <div class="input-group-prepend">
-            <button id="gn-search-bar-clear" type="button" class="btn btn-default" style="display: none;">
+            <button id="{{ search_bar_clear }}" type="button" class="btn btn-default" style="display: none;">
                 <i class="fa fa-times"></i>
             </button>
-            <button id="gn-search-bar-apply" type="button" class="btn btn-default">
+            <button id="{{ search_bar_apply }}" type="button" class="btn btn-default">
                 <i class="fa fa-search"></i>
             </button>
         </div>
@@ -15,12 +15,12 @@
             style="outline: none; box-shadow: none;"
         >
         <div class="input-group-append">
-            <div id="gn-search-bar-loading" class="gn-spinner" style="visibility: hidden;"><div></div></div>
+            <div id="{{ search_bar_loading }}" class="gn-spinner" style="visibility: hidden;"><div></div></div>
         </div>
     </div>
     <div class="gn-suggestions" style="display: none;">
         <div class="gn-suggestions-header">
-            <button id="gn-search-bar-clear-suggestions" type="button" class="btn btn-default">
+            <button id="{{ search_bar_clear_suggestions }}" type="button" class="btn btn-default">
                 <i class="fa fa-times"></i>
             </button>
         </div>
@@ -36,14 +36,14 @@
             const debounceTime = 300;
             const scrollOffset = 200;
             const pageSize = 10;
-            const searchInput = document.querySelector('#gn-search-bar input');
-            const suggestionsPanel = document.querySelector('#gn-search-bar .gn-suggestions');
-            const suggestionsPanelList = document.querySelector('#gn-search-bar .gn-suggestions .list-group');
+            const searchInput = document.querySelector('#{{ search_bar_id }} input');
+            const suggestionsPanel = document.querySelector('#{{ search_bar_id }} .gn-suggestions');
+            const suggestionsPanelList = document.querySelector('#{{ search_bar_id }} .gn-suggestions .list-group');
 
-            const searchClear = document.querySelector('#gn-search-bar-clear');
-            const searchClearSuggestions = document.querySelector('#gn-search-bar-clear-suggestions');
-            const searchApply = document.querySelector('#gn-search-bar-apply');
-            const searchLoading = document.querySelector('#gn-search-bar-loading');
+            const searchClear = document.querySelector('#{{ search_bar_clear }}');
+            const searchClearSuggestions = document.querySelector('#{{ search_bar_clear_suggestions }}');
+            const searchApply = document.querySelector('#{{ search_bar_apply }}');
+            const searchLoading = document.querySelector('#{{ search_bar_loading }}');
 
             var request = null;
             var timeout = null;
@@ -236,4 +236,3 @@
         });
     })();
 </script>
-

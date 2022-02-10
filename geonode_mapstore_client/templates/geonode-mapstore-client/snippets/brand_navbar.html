@@ -43,7 +43,7 @@
             </div>
             <div class="gn-menu-content-center">
                 {% block center_menu %}
-                    {% include './search_bar.html' %}
+                    {% include './search_bar.html' with search_bar_id='gn-search-bar' search_bar_clear_suggestions='gn-search-bar-clear-suggestions' search_bar_clear='gn-search-bar-clear' search_bar_apply='gn-search-bar-apply' search_bar_loading='gn-search-bar-loading' %}
                 {% endblock %}
             </div>
             <div class="gn-menu-content-right">
@@ -60,7 +60,7 @@
 </nav>
 <div id="{{ id|default:'' }}-bottom">
     {% block bottom_menu %}
-        {% include './search_bar.html' %}
+        {% include './search_bar.html' with search_bar_id='gn-search-bar-bottom' search_bar_clear_suggestions='gn-search-bar-clear-suggestions-bottom' search_bar_clear='gn-search-bar-clear-bottom' search_bar_apply='gn-search-bar-apply-bottom' search_bar_loading='gn-search-bar-loading-bottom' %}
     {% endblock %}
 </div>
 {% block extra_script %}
