@@ -1,10 +1,10 @@
 <div id="{{ search_bar_id }}" class="gn-search-bar">
     <div class="input-group">
         <div class="input-group-prepend">
-            <button id="{{ search_bar_clear }}" type="button" class="btn btn-default" style="display: none;">
+            <button id="{{ search_bar_id }}-clear" type="button" class="btn btn-default" style="display: none;">
                 <i class="fa fa-times"></i>
             </button>
-            <button id="{{ search_bar_apply }}" type="button" class="btn btn-default">
+            <button id="{{ search_bar_id }}-apply" type="button" class="btn btn-default">
                 <i class="fa fa-search"></i>
             </button>
         </div>
@@ -15,12 +15,12 @@
             style="outline: none; box-shadow: none;"
         >
         <div class="input-group-append">
-            <div id="{{ search_bar_loading }}" class="gn-spinner" style="visibility: hidden;"><div></div></div>
+            <div id="{{ search_bar_id }}-loading" class="gn-spinner" style="visibility: hidden;"><div></div></div>
         </div>
     </div>
     <div class="gn-suggestions" style="display: none;">
         <div class="gn-suggestions-header">
-            <button id="{{ search_bar_clear_suggestions }}" type="button" class="btn btn-default">
+            <button id="{{ search_bar_id }}-clear-suggestions" type="button" class="btn btn-default">
                 <i class="fa fa-times"></i>
             </button>
         </div>
@@ -40,10 +40,10 @@
             const suggestionsPanel = document.querySelector('#{{ search_bar_id }} .gn-suggestions');
             const suggestionsPanelList = document.querySelector('#{{ search_bar_id }} .gn-suggestions .list-group');
 
-            const searchClear = document.querySelector('#{{ search_bar_clear }}');
-            const searchClearSuggestions = document.querySelector('#{{ search_bar_clear_suggestions }}');
-            const searchApply = document.querySelector('#{{ search_bar_apply }}');
-            const searchLoading = document.querySelector('#{{ search_bar_loading }}');
+            const searchClear = document.querySelector('#{{ search_bar_id }}-clear');
+            const searchClearSuggestions = document.querySelector('#{{ search_bar_id }}-clear-suggestions');
+            const searchApply = document.querySelector('#{{ search_bar_id }}-apply');
+            const searchLoading = document.querySelector('#{{ search_bar_id }}-loading');
 
             var request = null;
             var timeout = null;
