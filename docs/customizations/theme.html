@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html class="msgapi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GeoNode Theme</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.16"></script>
+    <script src="https://cdn.jsdelivr.net/npm/less@4"></script>
+    
+    <style id="gn-css-variables"></style>
+    <style>
+        .lil-gui.autoPlace {
+            z-index: 999999;
+        }
+        .msgapi .gn-card-grid .gn-card-grid-container {
+            height: auto;
+            min-height: auto;
+            padding-bottom: 40px;
+        }
+        #theme-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999999;
+            overflow: hidden;
+        }
+        #theme-loader img {
+            -webkit-animation:spin 4s linear infinite;
+            -moz-animation:spin 4s linear infinite;
+            animation:spin 4s linear infinite;
+        }
+        @-moz-keyframes spin { 
+            100% { -moz-transform: rotate(360deg); } 
+        }
+        @-webkit-keyframes spin { 
+            100% { -webkit-transform: rotate(360deg); } 
+        }
+        @keyframes spin { 
+            100% { 
+                -webkit-transform: rotate(360deg); 
+                transform:rotate(360deg); 
+            } 
+        }
+    </style>
+</head>
+
+<body class="msgapi ms2" data-ms2-container="ms2">
+    <div class="gn-page-wrapper gn-theme" style="display: none;">
+        <header class="gn-main-header">
+            <nav id="gn-brand-navbar" class="gn-menu gn-menu-symmetric">
+                <div class="gn-menu-container">
+                    <div class="gn-menu-content">
+                        <div class="gn-menu-content-left">
+                            <ul class="gn-menu-list">
+                                <li>
+                                    <a href="/">
+                                        <img src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg">
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="gn-menu-content-center">
+                            <div id="gn-search-bar" class="gn-search-bar">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button id="gn-search-bar-clear" type="button" class="btn btn-default"
+                                            style="display: none;">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                        <button id="gn-search-bar-apply" type="button" class="btn btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                    <input placeholder="Placeholder..." class="form-control" value=""
+                                        style="outline: none; box-shadow: none;">
+                                    <div class="input-group-append">
+                                        <div id="gn-search-bar-loading" class="gn-spinner" style="visibility: hidden;">
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="gn-suggestions">
+                                    <div class="gn-suggestions-header">
+                                        <button id="gn-search-bar-clear-suggestions" type="button"
+                                            class="btn btn-default">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <div class="list-group">
+                                        <button class="list-group-item list-group-item-action">Main hover (on mouse hover)</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gn-menu-content-right">
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="gn-main-header-placeholder" style="height: 56px;"></div>
+        <div id="gn-hero" class="gn-hero">
+            <div class="jumbotron">
+                <div class="gn-hero-description">
+                    <h1>GeoNode Theme</h1>
+                    <p>Jumbotron</p>
+                </div>
+                <p class="gn-hero-tools">
+                </p>
+            </div>
+        </div>
+        <nav id="gn-topbar" class="gn-menu gn-primary" data-gn-menu-resize="true" style="top: 56px;">
+            <div class="gn-menu-container">
+                <div class="gn-menu-content">
+                    <div class="gn-menu-content-side gn-menu-content-left">
+                        <ul class="gn-menu-list"
+                            style="position: absolute; top: 50%; transform: translateY(-50%); visibility: visible;">
+                            <li>
+                                <button type="button" class="btn btn-sm btn-primary gn-pending-changes-icon"><span>Primary</span></button>
+                            </li>
+                            <li>
+                                <button type="button" class="btn btn-sm btn-info"><span>Info</span></button>
+                            </li>
+                            <li>
+                                <button type="button" class="btn btn-sm btn-success"><span>Success</span></button>
+                            </li>
+
+                            <li>
+                                <button type="button" class="btn btn-sm btn-warning"><span>Warning</span></button>
+                            </li>
+                            <li>
+                                <button type="button" class="btn btn-sm btn-danger"><span>Danger</span></button>
+                            </li>
+                            <li>
+                                <button type="button" class="btn btn-sm btn-default" disabled><span>Disabled</span></button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="gn-menu-content-center"></div>
+                    <div class="gn-menu-content-right">
+                        <ul class="gn-menu-list">
+                            <li>
+                                <a id="home" href="#" target="" class="nav-link btn btn-primary">
+                                    Primary
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="gn-row gn-home-section">
+            <div class="gn-grid-container">
+                <div class="gn-card-grid">
+                    <div style="display: flex; width: 100%;">
+                        <div style="flex: 1 1 0%; width: 100%;">
+                            <div class="gn-card-grid-container" style="min-height: auto;">
+                                <ul style="padding-left: 12px; padding-bottom: 0px;">
+                                    <li style="width: 333px; margin-right: 24px; margin-top: 8px;">
+                                        <div class="gn-resource-card gn-card-type-grid ">
+                                            <div class="card-resource-grid"><div class="card-img-top card-img-placeholder"></div>
+                                                <div class="gn-resource-card-body-wrapper">
+                                                    <div class="card-body">
+                                                        <div class="card-title">
+                                                            <div><i class="fa fa-file"></i><a class="gn-featured-card-title">Main</a>
+                                                            </div>
+                                                            <div>
+                                                                <p class="gn-resource-status-text"></p>
+                                                            </div>
+                                                        </div>
+                                                        <p class="card-text gn-card-description">...</p>
+                                                    </div>
+                                                    <div class="gn-footer-wrapper">
+                                                        <div class="gn-card-footer" style="padding: 0px 0.25rem 0px 0.5rem;">
+                                                            <p class="card-text gn-card-user">
+                                                                <img
+                                                                    src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg"
+                                                                    alt="admin"
+                                                                    class="gn-card-author-image"
+                                                                >
+                                                                <a >Link</a>
+                                                            </p>
+                                                            <div class="gn-card-actions">
+                                                                <div class="gn-card-view-editor-right"><a class="btn btn-primary"><span>View</span></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li style="width: 333px; margin-right: 24px; margin-top: 8px;">
+                                        <div class="gn-resource-card gn-card-type-grid ">
+                                            <div class="card-resource-grid"><div class="card-img-top card-img-placeholder"></div>
+                                                <div class="gn-resource-card-body-wrapper">
+                                                    <div class="card-body">
+                                                        <div class="card-title">
+                                                            <div><i class="fa fa-database"></i><a class="gn-featured-card-title">Main</a>
+                                                            </div>
+                                                            <div>
+                                                                <p class="gn-resource-status-text"></p>
+                                                            </div>
+                                                        </div>
+                                                        <p class="card-text gn-card-description">...</p>
+                                                    </div>
+                                                    <div class="gn-footer-wrapper">
+                                                        <div class="gn-card-footer" style="padding: 0px 0.25rem 0px 0.5rem;">
+                                                            <p class="card-text gn-card-user">
+                                                                <img
+                                                                    src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg"
+                                                                    alt="admin"
+                                                                    class="gn-card-author-image"
+                                                                >
+                                                                <a >Link</a>
+                                                            </p>
+                                                            <div class="gn-card-actions">
+                                                                <div class="gn-card-view-editor-right"><a class="btn btn-primary"><span>View</span></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li style="width: 333px; margin-right: 24px; margin-top: 8px;">
+                                        <div class="gn-resource-card gn-card-type-grid ">
+                                            <div class="card-resource-grid"><div class="card-img-top card-img-placeholder"></div>
+                                                <div class="gn-resource-card-body-wrapper">
+                                                    <div class="card-body">
+                                                        <div class="card-title">
+                                                            <div><i class="fa fa-map"></i><a class="gn-featured-card-title">Main</a>
+                                                            </div>
+                                                            <div>
+                                                                <p class="gn-resource-status-text"></p>
+                                                            </div>
+                                                        </div>
+                                                        <p class="card-text gn-card-description">...</p>
+                                                    </div>
+                                                    <div class="gn-footer-wrapper">
+                                                        <div class="gn-card-footer" style="padding: 0px 0.25rem 0px 0.5rem;">
+                                                            <p class="card-text gn-card-user">
+                                                                <img
+                                                                    src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg"
+                                                                    alt="admin"
+                                                                    class="gn-card-author-image"
+                                                                >
+                                                                <a >Link</a>
+                                                            </p>
+                                                            <div class="gn-card-actions">
+                                                                <div class="gn-card-view-editor-right"><a class="btn btn-primary"><span>View</span></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li style="width: 333px; margin-right: 24px; margin-top: 8px;">
+                                        <div class="gn-resource-card gn-card-type-grid ">
+                                            <div class="card-resource-grid"><div class="card-img-top card-img-placeholder"></div>
+                                                <div class="gn-resource-card-body-wrapper">
+                                                    <div class="card-body">
+                                                        <div class="card-title">
+                                                            <div><i class="fa fa-dashboard"></i><a class="gn-featured-card-title">Main</a>
+                                                            </div>
+                                                            <div>
+                                                                <p class="gn-resource-status-text"></p>
+                                                            </div>
+                                                        </div>
+                                                        <p class="card-text gn-card-description">...</p>
+                                                    </div>
+                                                    <div class="gn-footer-wrapper">
+                                                        <div class="gn-card-footer" style="padding: 0px 0.25rem 0px 0.5rem;">
+                                                            <p class="card-text gn-card-user">
+                                                                <img
+                                                                    src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg"
+                                                                    alt="admin"
+                                                                    class="gn-card-author-image"
+                                                                >
+                                                                <a >Link</a>
+                                                            </p>
+                                                            <div class="gn-card-actions">
+                                                                <div class="gn-card-view-editor-right"><a class="btn btn-primary"><span>View</span></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="gn-row">
+            <div class="gn-grid-container">
+                <div class="gn-card-grid">
+                    <div style="display: flex; width: 100%;">
+                        <div style="flex: 1 1 0%; width: 100%;">
+                            <div class="gn-card-grid-container">
+                                <div class="gn-filters-menu gn-menu gn-default">
+                                    <div class="gn-menu-container">
+                                        <div class="gn-menu-content">
+                                            <div class="gn-menu-fill">
+                                                <button type="button"class="btn btn-sm btn-primary gn-success-changes-icon"><span>Primary</span></button>
+                                            </div>
+                                            <ul class="gn-menu-list"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul>
+                                    <li style="width: 100%; margin: 6px;">
+                                        <div class="gn-resource-card gn-card-type-list rounded-0">
+                                            <div class="card-resource-list">
+                                                <div class="card-img-left card-img-placeholder"></div>
+                                            
+                                            <div class="gn-resource-card-body-wrapper">
+                                                    <div class="card-body">
+                                                        <div class="card-title">
+                                                            <div><i class="fa fa-book"></i><a>Main</a></div>
+                                                            <div>
+                                                                <p class="gn-resource-status-text"></p>
+                                                            </div>
+                                                        </div>
+                                                        <p class="card-text gn-card-description"><div class="badge">Badge</div></p>
+                                                    </div>
+                                                    <div class="gn-footer-wrapper">
+                                                        <div class="gn-card-footer"
+                                                            style="padding: 0px 0.25rem 0px 0.5rem;">
+                                                            <p class="card-text gn-card-user"><img
+                                                                    src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg"
+                                                                    alt="admin" class="gn-card-author-image"><a>Link</a>
+                                                            </p>
+                                                            <div class="gn-card-actions">
+                                                                <div class="gn-card-view-editor-right">
+                                                                    <a class="btn btn-primary"><span>View</span></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="gn-footer">
+            <ul>
+                <li>
+                    <a class="nav-link">
+                        <span>Footer link</span>
+                    </a>
+                </li>
+                <li>
+                    <span>Footer color</span>
+                </li>
+            </ul>
+        </footer>
+    </div>
+
+    <div id="extra-less-functions" style="display: none;">
+        .extract-css-variables(@theme-vars) {
+            // exclude nested rule sets, eg: @button-default
+            @rules: {
+                @theme-vars();
+            };
+            each(@rules, {
+                @css-var-key: extract(@value, 1);
+                @css-var-value: extract(@value, 2);
+                @{css-var-key}: @css-var-value;
+            })
+            each(@theme-vars[@button-default], {
+                @css-var-key: extract(@value, 1);
+                @css-var-value: extract(@value, 2);
+                @{css-var-key}: @css-var-value;
+            })
+            each(@theme-vars[@button-primary], {
+                @css-var-key: extract(@value, 1);
+                @css-var-value: extract(@value, 2);
+                @{css-var-key}: @css-var-value;
+            })
+            each(@theme-vars[@button-info], {
+                @css-var-key: extract(@value, 1);
+                @css-var-value: extract(@value, 2);
+                @{css-var-key}: @css-var-value;
+            })
+            each(@theme-vars[@button-success], {
+                @css-var-key: extract(@value, 1);
+                @css-var-value: extract(@value, 2);
+                @{css-var-key}: @css-var-value;
+            })
+            each(@theme-vars[@button-warning], {
+                @css-var-key: extract(@value, 1);
+                @css-var-value: extract(@value, 2);
+                @{css-var-key}: @css-var-value;
+            })
+            each(@theme-vars[@button-danger], {
+                @css-var-key: extract(@value, 1);
+                @css-var-value: extract(@value, 2);
+                @{css-var-key}: @css-var-value;
+            })
+            each(@theme-vars[@button-tray], {
+                @css-var-key: extract(@value, 1);
+                @css-var-value: extract(@value, 2);
+                @{css-var-key}: @css-var-value;
+            })
+        }
+    </div>
+
+    <div id="snippet-overlay" style="display: none; align-items: center; justify-content:center;position: fixed;width: 100%;height: 100%;top: 0;left: 0;background: rgba(0, 0, 0, 0.5);z-index: 99999999;">
+        <textarea readonly style="resize: none; width: 95%; max-width: 800px; height: 90%;">
+
+        </textarea>
+    </div>
+    <div id="theme-loader">
+        <img src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg"/>
+    </div>
+    <script>
+        const GUI = lil.GUI;
+        const gui = new GUI({
+            title: 'Theme variables',
+            width: 320
+        });
+        const params = {
+            'gn-primary': '#397AAB',
+            'gn-primary-contrast': '#ffffff',
+
+            'gn-main-color': '#000000',
+            'gn-main-bg': '#ffffff',
+            'gn-main-border-color': '#dddddd',
+
+            'gn-main-variant-color': '#000000',
+            'gn-main-variant-bg': '#f2f0f0',
+
+            'gn-main-hover-color': '#000000',
+            'gn-main-hover-bg': '#eeeeee',
+
+            'gn-placeholder-color': '#aaaaaa',
+            'gn-placeholder-bg': '#dddddd',
+
+            'gn-disabled-color': '#acacac',
+            'gn-disabled-bg': '#fcfcfc',
+
+            'gn-info': '#275a7f',
+            'gn-info-contrast': '#ffffff',
+            'gn-success': '#58cf80',
+            'gn-success-contrast': '#ffffff',
+            'gn-warning': '#ebbc35',
+            'gn-warning-contrast': '#ffffff',
+            'gn-danger': '#bb4940',
+            'gn-danger-contrast': '#ffffff',
+
+            'gn-link-color': '#397AAB',
+            'gn-link-hover-color': '#1b4d74',
+
+            'gn-jumbotron-color': '#ffffff',
+            'gn-jumbotron-bg': '#0c3756',
+
+            'gn-footer-color': '#000000',
+            'gn-footer-bg': '#ffffff',
+            'gn-footer-link-color': '#397AAB',
+            'gn-footer-link-hover-color': '#1b4d74',
+
+            'gn-badge-color': '#000000',
+            'gn-badge-bg': '#D5D5D5'
+        };
+
+        const paramsKeys = Object.keys(params);
+        for (var i = 0; i < paramsKeys.length; i++) {
+            gui.addColor(params, paramsKeys[i]).name(paramsKeys[i].replace('gn-', '').replace(/\-/g, ' '));
+        }
+        const overlay = document.getElementById('snippet-overlay');
+        const textarea = overlay.querySelector('textarea');
+        overlay.addEventListener('click', function() {
+            overlay.style.display = 'none';
+        });
+        textarea.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+        const state = {
+            getSnippet: function() {
+                overlay.style.display = 'flex';
+            }
+        };
+
+        gui.add( state, 'getSnippet' ).name('Get theme variables snippet');
+
+        var loadCount = 0;
+
+        function loaded() {
+            if (loadCount === 2) {
+                const themeLoader = document.body.querySelector('#theme-loader');
+                themeLoader.style.display = 'none';
+                const wrapper = document.body.querySelector('.gn-page-wrapper');
+                wrapper.style.display = 'initial';
+            }
+        }
+
+        const branch = window.location.search ? window.location.search.replace('?', '') : 'master';
+
+        fetch('https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/' + branch + '/geonode_mapstore_client/static/mapstore/dist/themes/geonode.css')
+            .then(function (res) { return res.text(); })
+            .then(function (text) {
+                const style = document.createElement('style');
+                style.innerHTML = text;
+                document.head.insertBefore(style, document.head.firstChild);
+                loadCount++;
+                loaded();
+            });
+        fetch('https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/' + branch + '/geonode_mapstore_client/client/themes/geonode/less/_variables.less')
+            .then(function (res) { return res.text(); })
+            .then(function (text) {
+                const extraLess = document.getElementById('extra-less-functions').innerText;
+                function renderLessVariables(init) {
+                    less.render(text + extraLess + ' .gn-theme { .extract-css-variables(@gn-theme-vars); }', { modifyVars: params }, function (error, output) {
+                        document.getElementById('gn-css-variables').innerHTML = output.css;
+                        textarea.innerHTML = '<!-- copy this style in the custom_theme.html template to apply these new theme variables -->\n<style>\n' + output.css + '</style>';
+                        if (init) {
+                            loadCount++;
+                            loaded();
+                        }
+                    });
+                }
+                gui.onFinishChange(function() {
+                    renderLessVariables();
+                });
+                renderLessVariables(true);
+            });
+    </script>
+</body>
+
+</html>

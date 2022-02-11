@@ -5,6 +5,7 @@ The GeoNode MapStore Client application can be customized with the following app
 
 - [Change variables in settings.py](settings-variables.md)
 - [Edit localConfig.json via template override](override-local-config.md)
+- [Custom theme colors](theme-variables.md)
 
 Advanced customizations:
 - [Install a custom branch of the geonode-mapstore-client in the geonode-project](custom-branch.md)
