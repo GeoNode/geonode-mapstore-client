@@ -44,3 +44,8 @@ export const getCurrentResourceDeleteLoading = (state) => {
     const isLoading = permissionsProcess ? !permissionsProcess?.completed : false;
     return isLoading;
 };
+
+export const getCurrentProcesses = (state) => {
+    const processes = state?.resourceservice?.processes || [];
+    return processes;
+};

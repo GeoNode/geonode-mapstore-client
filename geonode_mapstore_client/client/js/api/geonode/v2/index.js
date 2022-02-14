@@ -147,7 +147,8 @@ export const getResources = ({
             ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
             page,
             page_size: pageSize,
-            'filter{metadata_only}': false // exclude resources such as services
+            'filter{metadata_only}': false, // exclude resources such as services
+            include: ['executions']
         }
     })
         .then(({ data }) => {

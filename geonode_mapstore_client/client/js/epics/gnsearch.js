@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2020, GeoSolutions Sas.
  * All rights reserved.
  *
@@ -28,7 +28,8 @@ import {
 import {
     resourceLoading,
     setResource,
-    resourceError
+    resourceError,
+    processResources
 } from '@js/actions/gnresource';
 import {
     LOCATION_CHANGE,
@@ -40,11 +41,13 @@ import {
 } from '@js/utils/SearchUtils';
 import url from 'url';
 import { getCustomMenuFilters } from '@js/selectors/config';
-import { STOP_ASYNC_PROCESS } from '@js/actions/resourceservice';
+import { STOP_ASYNC_PROCESS, stopAsyncProcess } from '@js/actions/resourceservice';
 import {
     ProcessTypes,
     ProcessStatus
 } from '@js/utils/ResourceServiceUtils';
+import { getCurrentProcesses } from '@js/selectors/resourceservice';
+import { userSelector } from '@mapstore/framework/selectors/security';
 
 const UPDATE_RESOURCES_REQUEST = 'GEONODE_SEARCH:UPDATE_RESOURCES_REQUEST';
 const updateResourcesRequest = (payload, reset) => ({
@@ -125,7 +128,8 @@ const requestResourcesObservable = ({
     reset,
     location
 }, store) => {
-    const customFilters = getCustomMenuFilters(store.getState());
+    const state = store.getState();
+    const customFilters = getCustomMenuFilters(state);
     return Observable
         .defer(() => getResources({
             ...params,
@@ -137,7 +141,13 @@ const requestResourcesObservable = ({
             total,
             isNextPageAvailable
         }) => {
+            const currentUser = userSelector(state);
+            const processingResources = resources.filter((resource) => (resource.executions?.length > 0 && resource.executions[0].status_url && resource.executions[0].user === currentUser?.info?.preferred_username) && { ...resource, executions: resource.executions[0] });
             return Observable.of(
+                ...processingResources.map((resource) => {
+                    const process = `${resource?.executions[0].func_name}Resource`;
+                    return processResources(process, [resource], false);
+                }),
                 updateResources(resources, reset),
                 updateResourcesMetadata({
                     isNextPageAvailable,
@@ -164,6 +174,10 @@ export const gnsSearchResourcesOnLocationChangeEpic = (action$, store) =>
             const PAGE_SIZE = getPageSize();
             const { isFirstRendering, location } = action.payload || {};
             const state = store.getState();
+            const ongoingProcesses = getCurrentProcesses(state);
+
+            // stop ongoing processes everytime there is a location change or new request is made
+            ongoingProcesses.length > 0 && ongoingProcesses.forEach((process) => stopAsyncProcess({ ...process, complete: true }));
 
             const nextParams = state.gnsearch.nextParams;
 
