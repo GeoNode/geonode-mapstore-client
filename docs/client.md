@@ -157,7 +157,11 @@ store information of the resource in use</p>
 <dd><p>Actions for GeoNode resource featured items
 set new Featured Resources includes data, page, links</p>
 </dd>
+<dt><a href="#module_epics/datasetcatalog">epics/datasetcatalog</a></dt>
+<dd></dd>
 <dt><a href="#module_epics/index">epics/index</a></dt>
+<dd></dd>
+<dt><a href="#module_epics/layersetting">epics/layersetting</a></dt>
 <dd></dd>
 <dt><a href="#module_epics/visualstyleeditor">epics/visualstyleeditor</a></dt>
 <dd></dd>
@@ -472,6 +476,15 @@ loads new featured resources basing on the action, previous or next
 | action | <code>string</code> | can be either next or previous |
 | pageSize | <code>number</code> | page_size of items to load defaults to 4; |
 
+<a name="module_epics/datasetcatalog"></a>
+
+## epics/datasetcatalog
+<a name="module_epics/datasetcatalog.gnUpdateDatasetsCatalogMapLayout"></a>
+
+### epics/datasetcatalog.gnUpdateDatasetsCatalogMapLayout
+Override the layout to get the correct right offset when the data catalog is open
+
+**Kind**: static constant of [<code>epics/datasetcatalog</code>](#module_epics/datasetcatalog)  
 <a name="module_epics/index"></a>
 
 ## epics/index
@@ -493,9 +506,31 @@ Checks the permissions for layers when a map is loaded and when a new layer is a
 to a map
 
 **Kind**: static constant of [<code>epics/index</code>](#module_epics/index)  
+<a name="module_epics/layersetting"></a>
+
+## epics/layersetting
+<a name="module_epics/layersetting.gnUpdateLayerSettingsMapLayout"></a>
+
+### epics/layersetting.gnUpdateLayerSettingsMapLayout
+Override the layout to get the correct left offset when the layer settings panel is open
+
+**Kind**: static constant of [<code>epics/layersetting</code>](#module_epics/layersetting)  
 <a name="module_epics/visualstyleeditor"></a>
 
 ## epics/visualstyleeditor
+
+* [epics/visualstyleeditor](#module_epics/visualstyleeditor)
+    * _static_
+        * [.gnUpdateVisualStyleEditorMapLayout](#module_epics/visualstyleeditor.gnUpdateVisualStyleEditorMapLayout)
+    * _inner_
+        * [~getGnStyleQueryParams(style, styleService)](#module_epics/visualstyleeditor..getGnStyleQueryParams) ⇒ <code>Promise</code>
+
+<a name="module_epics/visualstyleeditor.gnUpdateVisualStyleEditorMapLayout"></a>
+
+### epics/visualstyleeditor.gnUpdateVisualStyleEditorMapLayout
+Override the layout to get the correct left offset when the visual style editor is open
+
+**Kind**: static constant of [<code>epics/visualstyleeditor</code>](#module_epics/visualstyleeditor)  
 <a name="module_epics/visualstyleeditor..getGnStyleQueryParams"></a>
 
 ### epics/visualstyleeditor~getGnStyleQueryParams(style, styleService) ⇒ <code>Promise</code>
