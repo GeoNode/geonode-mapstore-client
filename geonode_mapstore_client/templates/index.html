@@ -21,7 +21,7 @@
     </head>
     <body class="msgapi ms2" data-ms2-container="ms2">
         <div class="gn-page-wrapper {% if request.user_agent.is_mobile %}gn-mobile{% else %}gn-desktop{% endif %}">
-            <div class="gn-theme gn-theme-{{ custom_theme.variant }} gn-homepage">
+            <div class="gn-theme gn-homepage">
                 {% include './geonode-mapstore-client/_geonode_config.html' %}
                 {% block header %}
                     {% include './geonode-mapstore-client/snippets/header.html' with show_hero=True %}

@@ -13,7 +13,7 @@
 {% endblock %}
 
 
-{% block body_extra_class %}gn-legacy gn-theme gn-theme-{{ custom_theme.variant }} {% if request.user_agent.is_mobile %}gn-mobile{% else %}gn-desktop{% endif %}{% endblock %}
+{% block body_extra_class %}gn-legacy gn-theme {% if request.user_agent.is_mobile %}gn-mobile{% else %}gn-desktop{% endif %}{% endblock %}
 
 {% block header %}
 {% include './geonode-mapstore-client/snippets/header.html' %}
