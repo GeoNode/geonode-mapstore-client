@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import uuidv1 from 'uuid/v1';
 import { updateNode, updateSettingsParams } from '@mapstore/framework/actions/layers';
 import { updateStatus, UPDATE_STYLE_CODE } from '@mapstore/framework/actions/styleeditor';
-import { setControlProperty } from '@mapstore/framework/actions/controls';
+import { setControlProperty, SET_CONTROL_PROPERTY } from '@mapstore/framework/actions/controls';
 import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallayers';
 import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
 import StylesAPI from '@mapstore/framework/api/geoserver/Styles';
@@ -22,6 +22,9 @@ import { REQUEST_DATASET_AVAILABLE_STYLES } from '@js/actions/visualstyleeditor'
 import tinycolor from 'tinycolor2';
 import { parseStyleName } from '@js/utils/ResourceUtils';
 import { getStyleProperties } from '@js/api/geonode/style';
+import { updateMapLayout, UPDATE_MAP_LAYOUT } from '@mapstore/framework/actions/maplayout';
+import { mapLayoutSelector } from '@mapstore/framework/selectors/maplayout';
+import { getConfigProp } from "@mapstore/framework/utils/ConfigUtils";
 
 /**
 * @module epics/visualstyleeditor
@@ -156,7 +159,31 @@ export const gnUpdateStyleInfoOnSave = (action$, store) =>
             return Observable.of(updateNode(updatedLayer.id, 'layers', { style: updatedLayer.style }));
         });
 
+/**
+ * Override the layout to get the correct left offset when the visual style editor is open
+ */
+export const gnUpdateVisualStyleEditorMapLayout = (action$, store) =>
+    action$.ofType(UPDATE_MAP_LAYOUT, SET_CONTROL_PROPERTY)
+        .filter(() => store.getState()?.controls?.visualStyleEditor?.enabled)
+        .filter(({ source }) => {
+            return source !== 'VisualStyleEditor';
+        })
+        .map(({ layout }) => {
+            const mapLayout = getConfigProp('mapLayout') || { left: { sm: 300, md: 500, lg: 600 }, right: { md: 658 }, bottom: { sm: 30 } };
+            const action = updateMapLayout({
+                ...mapLayoutSelector(store.getState()),
+                ...layout,
+                left: mapLayout.left.md,
+                boundingMapRect: {
+                    ...(layout?.boundingMapRect || {}),
+                    left: mapLayout.left.md
+                }
+            });
+            return { ...action, source: 'VisualStyleEditor' }; // add an argument to avoid infinite loop.
+        });
+
 export default {
     gnRequestDatasetAvailableStyles,
-    gnUpdateStyleInfoOnSave
+    gnUpdateStyleInfoOnSave,
+    gnUpdateVisualStyleEditorMapLayout
 };

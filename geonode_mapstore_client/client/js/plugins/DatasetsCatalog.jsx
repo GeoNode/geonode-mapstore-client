@@ -24,6 +24,7 @@ import { addLayer } from '@mapstore/framework/actions/layers';
 import { zoomToExtent } from '@mapstore/framework/actions/map';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import Loader from '@mapstore/framework/components/misc/Loader';
+import datasetscatalogEpics from '@js/epics/datasetscatalog';
 import withDebounceOnCallback from '@mapstore/framework/components/misc/enhancers/withDebounceOnCallback';
 import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
@@ -258,6 +259,6 @@ export default createPlugin('DatasetsCatalog', {
             Component: ConnectedDatasetsCatalogButton
         }
     },
-    epics: {},
+    epics: datasetscatalogEpics,
     reducers: {}
 });

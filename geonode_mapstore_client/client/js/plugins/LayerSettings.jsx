@@ -24,6 +24,7 @@ import BaseLayerSettings from '@js/plugins/layersettings/BaseLayerSettings';
 import WMSLayerSettings from '@js/plugins/layersettings/WMSLayerSettings';
 import GeoNodeStyleSelector from '@js/plugins/layersettings/GeoNodeStyleSelector';
 import usePluginItems from '@js/hooks/usePluginItems';
+import layersettingsEpics from '@js/epics/layersettings';
 
 const settingsForms = {
     group: GroupSettings,
@@ -172,6 +173,8 @@ export default createPlugin('LayerSettings', {
             Component: ConnectedLayerSettingsButton
         }
     },
-    epics: {},
+    epics: {
+        ...layersettingsEpics
+    },
     reducers: {}
 });
