@@ -48,6 +48,7 @@ import {
 } from '@js/utils/ResourceServiceUtils';
 import { getCurrentProcesses } from '@js/selectors/resourceservice';
 import { userSelector } from '@mapstore/framework/selectors/security';
+import uuid from 'uuid';
 
 const UPDATE_RESOURCES_REQUEST = 'GEONODE_SEARCH:UPDATE_RESOURCES_REQUEST';
 const updateResourcesRequest = (payload, reset) => ({
@@ -174,10 +175,9 @@ export const gnsSearchResourcesOnLocationChangeEpic = (action$, store) =>
             const PAGE_SIZE = getPageSize();
             const { isFirstRendering, location } = action.payload || {};
             const state = store.getState();
-            const ongoingProcesses = getCurrentProcesses(state);
 
             // stop ongoing processes everytime there is a location change or new request is made
-            ongoingProcesses.length > 0 && ongoingProcesses.forEach((process) => stopAsyncProcess({ ...process, complete: true }));
+            getCurrentProcesses(state) > 0 && getCurrentProcesses(state).map((process) => stopAsyncProcess({ ...process, completed: true }));
 
             const nextParams = state.gnsearch.nextParams;
 
@@ -280,8 +280,8 @@ export const gnWatchStopCopyProcessOnSearch = (action$, store) =>
                 .switchMap((resource) => {
                     const resources = store.getState().gnsearch?.resources || [];
                     const newResources = resources.reduce((acc, res) => {
-                        if (res.pk === (pk + '')) {
-                            return [...acc, { ...resource, '@temporary': true }, res];
+                        if (res.pk === `${pk}`) {
+                            return [...acc, { ...resource, '@temporary': true, pk2: uuid() }, res]; // pk2 is added to avoid duplicate pk in resources list
                         }
                         return [...acc, res];
                     }, []);

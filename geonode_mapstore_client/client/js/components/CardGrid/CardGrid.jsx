@@ -102,7 +102,7 @@ const Cards = withResizeDetector(({
 
                 return (
                     <li
-                        key={resource.pk}
+                        key={resource.pk2 || resource.pk} // pk2 exists on clones to avoid duplicate keys
                         style={(layoutSpace(idx))}
                     >
                         <ResourceCard
