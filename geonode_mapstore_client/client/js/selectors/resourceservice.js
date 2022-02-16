@@ -9,11 +9,14 @@
 import { getResourceData } from '@js/selectors/resource';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 
-export const isProcessCompleted = (state, payload) =>
-    (state?.resourceservice?.processes?.find(process =>
+export const isProcessCompleted = (state, payload) => {
+    const completedProcess = state?.resourceservice?.processes?.find(process =>
         process?.resource?.pk === payload?.resource?.pk
-            && process?.processType === payload?.processType
-    ) || {}).completed;
+        && process?.processType === payload?.processType
+    ) || {};
+
+    return completedProcess.completed;
+};
 
 export const getCurrentResourcePermissionsLoading = (state) => {
     const resource = getResourceData(state);

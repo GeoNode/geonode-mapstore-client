@@ -38,12 +38,9 @@ export const gnMonitorAsyncProcesses = (action$, store) => {
             }
             return Observable
                 .interval(ProcessInterval[action?.payload?.processType] || 1000)
-                .switchMap(() => {
-                    // avoid request after completion
-                    if (isProcessCompleted(store.getState(), action.payload)) {
-                        return Observable.empty();
-                    }
-                    return Observable.defer(() =>
+                .takeWhile(() => !isProcessCompleted(store.getState(), action.payload))
+                .exhaustMap(() => (!isProcessCompleted(store.getState(), action.payload)) ?
+                    Observable.defer(() =>
                         axios.get(statusUrl)
                             .then(({ data }) => data)
                             .catch((error) => ({ error: error?.data?.detail || error?.statusText || error?.message || true }))
@@ -53,9 +50,8 @@ export const gnMonitorAsyncProcesses = (action$, store) => {
                                 return Observable.of(stopAsyncProcess({ ...action.payload, output, completed: true }));
                             }
                             return Observable.of(updateAsyncProcess({ ...action.payload, output }));
-                        });
-                })
-                .takeWhile(() => !isProcessCompleted(store.getState(), action.payload));
+                        }) : Observable.empty()
+                );
         });
 };
 
