@@ -28,13 +28,17 @@ import {
 import { PROCESS_RESOURCES } from '@js/actions/gnresource';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import { push } from 'connected-react-router';
+import {
+    error as errorNotification
+} from '@mapstore/framework/actions/notifications';
 
 export const gnMonitorAsyncProcesses = (action$, store) => {
     return action$.ofType(START_ASYNC_PROCESS)
         .flatMap((action) => {
             const { status_url: statusUrl } = action?.payload?.output || {};
             if (!statusUrl || action?.payload?.error) {
-                return Observable.of(stopAsyncProcess({ ...action.payload, completed: true }));
+                return action?.payload?.error ? Observable.of(stopAsyncProcess({ ...action.payload, completed: true }), errorNotification({ title: 'gnviewer.invalidUploadMessageError', message: 'gnviewer.cannotCloneResource' }))
+                    : Observable.of(stopAsyncProcess({ ...action.payload, completed: true }));
             }
             return Observable
                 .interval(ProcessInterval[action?.payload?.processType] || 1000)
