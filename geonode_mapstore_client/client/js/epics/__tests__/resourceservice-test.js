@@ -15,6 +15,9 @@ import {
     startAsyncProcess
 } from '@js/actions/resourceservice';
 import { gnMonitorAsyncProcesses } from '../resourceservice';
+import {
+    SHOW_NOTIFICATION
+} from '@mapstore/framework/actions/notifications';
 
 let mockAxios;
 
@@ -45,6 +48,32 @@ describe('resourceservice epics', () => {
                     expect(actions.map(({ type }) => type))
                         .toEqual([
                             STOP_ASYNC_PROCESS
+                        ]);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            testState
+        );
+    });
+
+    it('shows error notification on error gnMonitorAsyncProcesses', (done) => {
+        const testState = {
+            resourceservice: {}
+        };
+        const actionsCount = 2;
+        mockAxios.onGet().reply(() => [400, { error: 'failed' }]);
+        testEpic(
+            gnMonitorAsyncProcesses,
+            actionsCount,
+            startAsyncProcess({ error: 'failed' }),
+            (actions) => {
+                try {
+                    expect(actions.map(({ type }) => type))
+                        .toEqual([
+                            STOP_ASYNC_PROCESS,
+                            SHOW_NOTIFICATION
                         ]);
                 } catch (e) {
                     done(e);
