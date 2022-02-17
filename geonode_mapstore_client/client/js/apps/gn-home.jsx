@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 
 import security from '@mapstore/framework/reducers/security';
 import controls from '@mapstore/framework/reducers/controls';
+import notifications from '@mapstore/framework/reducers/notifications';
 import Home from '@js/routes/Home';
 
 import gnsearch from '@js/reducers/gnsearch';
@@ -94,12 +95,13 @@ Promise.all([
                         resourceservice,
                         security,
                         controls,
-                        gnsettings
+                        gnsettings,
+                        notifications
                     },
                     appEpics,
                     geoNodeConfiguration,
                     initialActions: [
-                        updateGeoNodeSettings.bind(null, settings),
+                        updateGeoNodeSettings.bind(null, settings)
                     ]
                 });
             });

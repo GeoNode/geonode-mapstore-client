@@ -38,9 +38,11 @@ import {
 import { getTotalResources } from '@js/selectors/search';
 import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
 import DeleteResource from '@js/plugins/DeleteResource';
+import Notifications from '@mapstore/framework/plugins/Notifications';
 import SaveAs from '@js/plugins/SaveAs';
 const { DeleteResourcePlugin } = DeleteResource;
 const { SaveAsPlugin } = SaveAs;
+const { NotificationsPlugin } = Notifications;
 
 const ConnectedDetailsPanel = connect(
     createSelector([
@@ -176,7 +178,8 @@ function Detail({
                     pathname: '/search/'
                 }).replace('#', '')}
             />
-            <SaveAsPlugin closeOnSave labelId="gnviewer.clone"/>
+            <SaveAsPlugin closeOnSave labelId="gnviewer.clone" />
+            <NotificationsPlugin />
         </>
     );
 }

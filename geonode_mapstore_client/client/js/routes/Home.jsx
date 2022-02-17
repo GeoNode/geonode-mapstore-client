@@ -36,10 +36,12 @@ import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
 import { getFeaturedResults, getTotalResources } from '@js/selectors/search';
 import DeleteResource from '@js/plugins/DeleteResource';
 import SaveAs from '@js/plugins/SaveAs';
+import Notifications from '@mapstore/framework/plugins/Notifications';
 import { processResources } from '@js/actions/gnresource';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 const { DeleteResourcePlugin } = DeleteResource;
 const { SaveAsPlugin } = SaveAs;
+const { NotificationsPlugin } = Notifications;
 
 const ConnectedFeatureList = connect(
     createSelector([
@@ -155,7 +157,8 @@ function Home({
                 </div>
             </div>
             <DeleteResourcePlugin redirectTo={false} />
-            <SaveAsPlugin closeOnSave labelId="gnviewer.clone"/>
+            <SaveAsPlugin closeOnSave labelId="gnviewer.clone" />
+            <NotificationsPlugin />
         </div>
     );
 }

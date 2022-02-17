@@ -47,6 +47,7 @@ import gnsearch from '@js/reducers/gnsearch';
 import gnresource from '@js/reducers/gnresource';
 import resourceservice from '@js/reducers/resourceservice';
 import gnsettings from '@js/reducers/gnsettings';
+import notifications from '@mapstore/framework/reducers/notifications';
 
 import {
     getConfiguration,
@@ -301,6 +302,7 @@ Promise.all([
                                 geostory,
                                 gnsearch,
                                 annotations,
+                                notifications,
                                 ...pluginsDefinition.reducers
                             },
                             appEpics,
