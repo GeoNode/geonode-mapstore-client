@@ -273,7 +273,8 @@
             "uploadDocument": "Upload a document",
             "transferInProgress": "Transfer in progress",
             "fileExceeds": "File size size exceeds {limit} MB. Please try again with a smaller file.",
-            "exceedingFileMsg": "Some of your files exceed the upload limit of {limit} MB. Please remove them from the list."
+            "exceedingFileMsg": "Some of your files exceed the upload limit of {limit} MB. Please remove them from the list.",
+            "cannotCloneResource": "Resource cannot be cloned"
         }
     }
 }

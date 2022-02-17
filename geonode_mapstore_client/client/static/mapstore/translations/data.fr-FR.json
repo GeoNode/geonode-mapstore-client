@@ -272,7 +272,8 @@
             "uploadDocument": "Télécharger un document",
             "transferInProgress": "Transfert en cours",
             "fileExceeds": "La taille du fichier dépasse {Limit} Mo. Veuillez réessayer avec un fichier plus petit.",
-            "exceedingFileMsg": "Certains de vos fichiers dépassent la limite de téléchargement de {limit} Mo. Veuillez les supprimer de la liste."
+            "exceedingFileMsg": "Certains de vos fichiers dépassent la limite de téléchargement de {limit} Mo. Veuillez les supprimer de la liste.",
+            "cannotCloneResource": "La ressource ne peut pas être clonée."
         }
     }
 }
