@@ -575,7 +575,7 @@ function DetailsPanel({
                         </p>
                         }
 
-                        <EditAbstract disabled={!activeEditMode} tagName="span" abstract={resource?.abstract} onEdit={editAbstract} />
+                        <EditAbstract disabled tagName="span" abstract={resource?.abstract} onEdit={editAbstract} />
                         <p>
                             {resource?.category?.identifier && <div>
                                 <Message msgId="gnhome.category" />:{' '}
