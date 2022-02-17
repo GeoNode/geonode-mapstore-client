@@ -89,8 +89,16 @@
 
     .editContainer {
         flex: 1;
-        [contenteditable] {
-            padding: 0.5em 0.2em;
+        [contenteditable], h1, h2, h3, h4, h5, h6 {
+            padding: 0;
+        }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin-top: 0
         }
         [contenteditable]:focus-visible {
             outline-color: @gn-editable-border;
@@ -114,7 +122,7 @@
             }
         }
 
-        &:last-of-type:not(.imagepreview) {
+        &:last-of-type:not(.imagepreview):not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
             padding-top: 0.3rem;
             font-size: 0.9rem;
         }
@@ -315,6 +323,7 @@
     }
     .editContainer {
         h1.gn-text-editable {
+            line-height: 1.4;
             padding-top: 0;
             padding-bottom: 0;
         }
