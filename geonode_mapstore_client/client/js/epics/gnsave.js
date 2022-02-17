@@ -302,10 +302,7 @@ export const gnWatchStopCopyProcessOnSave = (action$, store) =>
             }
             const isError = action?.payload?.error || action?.payload?.output?.status === ProcessStatus.FAILED;
             if (isError) {
-                return Observable.of(errorNotification({
-                    title: "map.mapError.errorTitle",
-                    message: "map.mapError.errorDefault"
-                }));
+                return Observable.empty();
             }
             const newResourceUuid = action?.payload?.output?.output_params?.output?.uuid;
             if (newResourceUuid === undefined) {
