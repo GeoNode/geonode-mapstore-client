@@ -450,6 +450,7 @@
                     "labelId": "gnviewer.clone",
                     "icon": "copy",
                     "authenticated": true,
+                    "disableOnNoCopy": true,
                     "perms": [
                         {
                             "type": "resource",
@@ -849,7 +850,8 @@
                                 },
                                 {
                                     "type": "plugin",
-                                    "name": "SaveAs"
+                                    "name": "SaveAs",
+                                    "disableOnNoCopy": true
                                 }
                             ]
                         },
@@ -2210,7 +2212,8 @@
                                 },
                                 {
                                     "type": "plugin",
-                                    "name": "SaveAs"
+                                    "name": "SaveAs",
+                                    "disableOnNoCopy": true
                                 }
                             ]
                         },

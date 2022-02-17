@@ -22,7 +22,7 @@ function ActionButtons({
         <div className="gn-resource-action-buttons">
             <Dropdown className="gn-card-options" pullRight>
                 <Dropdown.Toggle
-                    id={`gn-card-options-${resource.pk}`}
+                    id={`gn-card-options-${resource.pk2 || resource.pk}`}
                     variant="default"
                     size="sm"
                     noCaret
@@ -33,7 +33,7 @@ function ActionButtons({
                     {options.map((opt) => {
                         if (opt.type === 'button' && actions[opt.action]) {
                             return (
-                                <Dropdown.Item
+                                (!opt.disableOnNoCopy || resource?.is_copyable) && <Dropdown.Item
                                     key={opt.action}
                                     onClick={() =>
                                         onAction(actions[opt.action], [

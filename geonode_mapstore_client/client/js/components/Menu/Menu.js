@@ -35,7 +35,8 @@ const Menu = forwardRef(({
     size,
     alignRight,
     variant,
-    resourceName
+    resourceName,
+    canCopy
 }, ref) => {
 
     return (
@@ -54,6 +55,7 @@ const Menu = forwardRef(({
                                     formatHref
                                 }}
                                 classItem={childrenClass}
+                                canCopyResource={canCopy}
                                 resourceName={resourceName}
                             />
                         </li>

@@ -39,7 +39,7 @@ import {
  *
  */
 
-const MenuItem = ({ item, menuItemsProps, containerNode, tabIndex, classItem = '', size, alignRight, variant, resourceName }) => {
+const MenuItem = ({ item, menuItemsProps, containerNode, tabIndex, classItem = '', size, alignRight, variant, resourceName, canCopyResource }) => {
 
     const { formatHref, query } = menuItemsProps;
     const { id, type, label, labelId = '', items = [], href, style, badge = '', image, Component, target, className } = item;
@@ -61,6 +61,7 @@ const MenuItem = ({ item, menuItemsProps, containerNode, tabIndex, classItem = '
             size={size}
             alignRight={alignRight}
             variant={variant}
+            canCopyResource={canCopyResource}
             responsive={item.responsive}
         />);
     }

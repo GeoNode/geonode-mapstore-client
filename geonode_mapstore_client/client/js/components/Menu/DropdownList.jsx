@@ -26,12 +26,12 @@ const itemElement = ({ labelId, href, badge, target }) =>  (
         </NavLink>
     </>);
 
-const itemsList = (items) => (items && items.map((item) => {
+const itemsList = (items, canCopyResource) => (items && items.map((item) => {
 
     const { labelId, href, badge, target, type, Component, className } = item;
 
     if (type === 'plugin' && Component) {
-        return (<li><Component variant="default" className={className} showMessage /></li>);
+        return ((!item.disableOnNoCopy || canCopyResource) && <li><Component variant="default" className={className} showMessage /></li>);
     }
 
     return itemElement({ labelId, href, badge, target });
@@ -87,14 +87,15 @@ const DropdownList = ({
     size,
     alignRight,
     variant,
-    responsive
+    responsive,
+    canCopyResource
 }) => {
 
     const dropdownItems = items
         .map((itm, idx) => {
 
             if (itm.type === 'plugin' && itm.Component) {
-                return (<li><itm.Component variant="default" className={itm.className} showMessage /></li>);
+                return ((!itm.disableOnNoCopy || canCopyResource) && <li><itm.Component variant="default" className={itm.className} showMessage /></li>);
             }
             if (itm.type === 'divider') {
                 return <Dropdown.Divider key={idx} />;
@@ -114,7 +115,7 @@ const DropdownList = ({
                     </Dropdown.Item>
 
                     {itm?.items && <div className={`gn-sub-flat-menu-block`}>
-                        {itemsList(itm?.items)}
+                        {itemsList(itm?.items, canCopyResource)}
                     </div>}
                 </>
             );
