@@ -849,7 +849,8 @@
                                 },
                                 {
                                     "type": "plugin",
-                                    "name": "SaveAs"
+                                    "name": "SaveAs",
+                                    "disableIf": "{state('gnResourceData') && state('gnResourceData').is_copyable ? false : true}"
                                 }
                             ]
                         },
@@ -2210,7 +2211,8 @@
                                 },
                                 {
                                     "type": "plugin",
-                                    "name": "SaveAs"
+                                    "name": "SaveAs",
+                                    "disableIf": "{state('gnResourceData') && state('gnResourceData').is_copyable ? false : true}"
                                 }
                             ]
                         },

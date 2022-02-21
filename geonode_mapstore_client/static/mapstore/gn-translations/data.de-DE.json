@@ -273,7 +273,8 @@
             "uploadDocument": "Ein Dokument hochladen",
             "transferInProgress": "Übertragung läuft",
             "fileExceeds": "Die Dateigröße überschreitet {limit} MB. Bitte versuchen Sie es erneut mit einer kleineren Datei.",
-            "exceedingFileMsg": "Algunos de sus archivos exceden el límite de carga de {limit} MB. Por favor, elimínelos de la lista."
+            "exceedingFileMsg": "Algunos de sus archivos exceden el límite de carga de {limit} MB. Por favor, elimínelos de la lista.",
+            "cannotCloneResource": "Ressource kann nicht geklont werden."
         }
     }
 }

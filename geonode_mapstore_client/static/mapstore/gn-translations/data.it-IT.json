@@ -274,7 +274,8 @@
             "uploadDocument": "Carica un documento",
             "transferInProgress": "Trasferimento in corso",
             "fileExceeds": "La dimensione del file supera i {limit} MB. Riprova con un file più piccolo.",
-            "exceedingFileMsg": "Alcuni dei tuoi file superano il limite di caricamento di {limit} MB. Si prega di rimuoverli dall'elenco."
+            "exceedingFileMsg": "Alcuni dei tuoi file superano il limite di caricamento di {limit} MB. Si prega di rimuoverli dall'elenco.",
+            "cannotCloneResource": "La risorsa non può essere clonata."
         }
     }
 }
