@@ -33,7 +33,7 @@ function ActionButtons({
                     {options.map((opt) => {
                         if (opt.type === 'button' && actions[opt.action]) {
                             return (
-                                (opt.action !== 'copy' || resource?.is_copyable) && <Dropdown.Item
+                                ((opt.action === 'download' && resource.download_url) || (opt.action !== 'copy' && opt.action !== 'download') || resource?.is_copyable) && <Dropdown.Item
                                     key={opt.action}
                                     onClick={() =>
                                         onAction(actions[opt.action], [

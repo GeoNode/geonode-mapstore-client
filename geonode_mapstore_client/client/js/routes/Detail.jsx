@@ -17,13 +17,14 @@ import { getParsedGeoNodeConfiguration } from "@js/selectors/config";
 import { userSelector } from '@mapstore/framework/selectors/security';
 import { buildHrefByTemplate } from '@js/utils/MenuUtils';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
+import { processingDownload } from '@js/selectors/resourceservice';
 import {
     searchResources,
     requestResource,
     loadFeaturedResources
 } from '@js/actions/gnsearch';
 
-import { setFavoriteResource } from '@js/actions/gnresource';
+import { processResources, setFavoriteResource } from '@js/actions/gnresource';
 import {
     hashLocationToHref,
     clearQueryParams,
@@ -35,6 +36,7 @@ import MetaTags from "@js/components/MetaTags";
 import {
     getThemeLayoutSize
 } from '@js/utils/AppUtils';
+import { resourceHasPermission } from '@js/utils/ResourceUtils';
 import { getTotalResources } from '@js/selectors/search';
 import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
 import DeleteResource from '@js/plugins/DeleteResource';
@@ -47,13 +49,18 @@ const { NotificationsPlugin } = Notifications;
 const ConnectedDetailsPanel = connect(
     createSelector([
         state => state?.gnresource?.loading || false,
-        state => state?.gnresource?.data?.favorite || false
-    ], (loading, favorite) => ({
+        state => state?.gnresource?.data?.favorite || false,
+        processingDownload,
+        state => state?.gnresource?.data || null
+    ], (loading, favorite, processing, resource) => ({
         loading,
-        favorite
+        favorite,
+        processing,
+        canDownload: resourceHasPermission(resource, 'download_resourcebase')
     })),
     {
-        onFavorite: setFavoriteResource
+        onFavorite: setFavoriteResource,
+        onAction: processResources
     }
 )(DetailsPanel);
 function Detail({

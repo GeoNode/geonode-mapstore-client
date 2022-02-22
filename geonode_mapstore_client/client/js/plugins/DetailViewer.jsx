@@ -19,8 +19,10 @@ import {
     setFavoriteResource,
     setMapThumbnail,
     setResourceThumbnail,
-    enableMapThumbnailViewer
+    enableMapThumbnailViewer,
+    processResources
 } from '@js/actions/gnresource';
+import { processingDownload } from '@js/selectors/resourceservice';
 import FaIcon from '@js/components/FaIcon/FaIcon';
 import controls from '@mapstore/framework/reducers/controls';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
@@ -40,6 +42,7 @@ import { hashLocationToHref } from '@js/utils/SearchUtils';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { layersSelector } from '@mapstore/framework/selectors/layers';
 import { mapSelector } from '@mapstore/framework/selectors/map';
+import { resourceHasPermission } from '@js/utils/ResourceUtils';
 
 const ConnectedDetailsPanel = connect(
     createSelector([
@@ -51,8 +54,9 @@ const ConnectedDetailsPanel = connect(
         isThumbnailChanged,
         updatingThumbnailResource,
         mapSelector,
-        state => state?.gnresource?.showMapThumbnail || false
-    ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating, mapData, showMapThumbnail) => ({
+        state => state?.gnresource?.showMapThumbnail || false,
+        processingDownload
+    ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating, mapData, showMapThumbnail, processing) => ({
         layers: layers,
         resource,
         loading,
@@ -61,14 +65,17 @@ const ConnectedDetailsPanel = connect(
         isThumbnailChanged: thumbnailChanged,
         resourceThumbnailUpdating,
         initialBbox: mapData?.bbox,
-        enableMapViewer: showMapThumbnail
+        enableMapViewer: showMapThumbnail,
+        processing,
+        canDownload: resourceHasPermission(resource, 'download_resourcebase')
     })),
     {
         closePanel: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),
         onFavorite: setFavoriteResource,
         onMapThumbnail: setMapThumbnail,
         onResourceThumbnail: setResourceThumbnail,
-        onClose: enableMapThumbnailViewer
+        onClose: enableMapThumbnailViewer,
+        onAction: processResources
     }
 )(DetailsPanel);
 

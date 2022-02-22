@@ -29,6 +29,7 @@ import Loader from '@mapstore/framework/components/misc/Loader';
 import { getUserName } from '@js/utils/SearchUtils';
 import ZoomTo from '@js/components/ZoomTo';
 import { boundsToExtentString } from '@js/utils/CoordinatesUtils';
+import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = 'Map';
@@ -185,6 +186,7 @@ function DetailsPanel({
     linkHref,
     sectionStyle,
     loading,
+    processing,
     getTypesInfo,
     editTitle,
     editAbstract,
@@ -202,7 +204,9 @@ function DetailsPanel({
     resourceThumbnailUpdating,
     initialBbox,
     enableMapViewer,
-    onClose
+    onClose,
+    onAction,
+    canDownload
 }) {
     const detailsContainerNode = useRef();
     const isMounted = useRef();
@@ -246,7 +250,8 @@ function DetailsPanel({
     const embedUrl = resource?.embed_url && formatEmbedUrl(resource);
     const detailUrl = resource?.pk && formatDetailUrl(resource);
     const resourceCanPreviewed = resource?.pk && canPreviewed && canPreviewed(resource);
-    const documentDownloadUrl = (resource?.href && resource?.href.includes('download')) ? resource?.href : undefined;
+    const downloadUrl = (resource?.href && resource?.href.includes('download')) ? resource?.href
+        : (resource?.download_url && canDownload) ? resource?.download_url : undefined;
     const metadataDetailUrl = resource?.pk && getMetadataDetailUrl(resource);
 
     const validateDataType = (data) => {
@@ -516,7 +521,7 @@ function DetailsPanel({
 
                     <div className="gn-details-panel-content-text">
                         <div className="gn-details-panel-title" >
-                            <span className="gn-details-panel-title-icon" ><FaIcon name={icon} /> </span> <EditTitle disabled={!activeEditMode} tagName="h1"  title={resource?.title} onEdit={editTitle} >
+                            <span className="gn-details-panel-title-icon" >{!processing ? <FaIcon name={icon} /> : <Spinner />} </span> <EditTitle disabled={!activeEditMode} tagName="h1"  title={resource?.title} onEdit={editTitle} >
 
                             </EditTitle>
 
@@ -530,9 +535,9 @@ function DetailsPanel({
                                         <FaIcon name={favorite ? 'star' : 'star-o'} />
                                     </Button>
                                     }
-                                    {documentDownloadUrl &&
+                                    {downloadUrl &&
                                     <Button variant="default"
-                                        href={documentDownloadUrl} >
+                                        onClick={() => onAction(ProcessTypes.DOWNLOAD_RESOURCE, [resource])} >
                                         <FaIcon name="download" />
                                     </Button>}
 
@@ -602,7 +607,8 @@ DetailsPanel.defaultProps = {
     onResourceThumbnail: () => '#',
     width: 696,
     getTypesInfo: getResourceTypesInfo,
-    isThumbnailChanged: false
+    isThumbnailChanged: false,
+    onAction: () => {}
 };
 
 export default DetailsPanel;

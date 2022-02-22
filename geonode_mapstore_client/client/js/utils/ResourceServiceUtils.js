@@ -9,7 +9,8 @@
 export const ProcessTypes = {
     DELETE_RESOURCE: 'deleteResource',
     COPY_RESOURCE: 'copyResource',
-    PERMISSIONS_RESOURCE: 'permissionsResource'
+    PERMISSIONS_RESOURCE: 'permissionsResource',
+    DOWNLOAD_RESOURCE: 'downloadResource'
 };
 
 export const ProcessStatus = {
@@ -33,5 +34,9 @@ export const actionButtons = {
     'copy': {
         processType: ProcessTypes.COPY_RESOURCE,
         isControlled: true
+    },
+    'download': {
+        processType: ProcessTypes.DOWNLOAD_RESOURCE,
+        isControlled: false
     }
 };

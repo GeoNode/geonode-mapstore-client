@@ -702,7 +702,7 @@ export const updateCompactPermissionsByPk = (pk, body) => {
 
 export const deleteResource = (resource) => {
     return axios.delete(parseDevHostname(`${endpoints[RESOURCES]}/${resource.pk}/delete`))
-        .then(({ data }) => data);
+        .then(({ data }) => ({output: data}));
 };
 
 export const copyResource = (resource) => {
@@ -711,7 +711,18 @@ export const copyResource = (resource) => {
         ...(resource.data && { data: resource.data })
     };
     return axios.put(parseDevHostname(`${endpoints[RESOURCES]}/${resource.pk}/copy`), 'defaults=' + JSON.stringify(defaults))
-        .then(({ data }) => data);
+        .then(({ data }) => ({output: data}));
+};
+
+export const downloadResource = (resource) => {
+    const url = resource.download_url || resource.href;
+    return axios.get(url, {
+        responseType: 'blob',
+        headers: {
+            'Content_type': 'application/jsson'
+        }
+    })
+        .then(({ data, headers }) => ({output: data, headers}));
 };
 
 export const getPendingUploads = () => {
@@ -813,6 +824,7 @@ export default {
     updateCompactPermissionsByPk,
     deleteResource,
     copyResource,
+    downloadResource,
     getDatasets,
     getPendingUploads,
     getProcessedUploadsById,

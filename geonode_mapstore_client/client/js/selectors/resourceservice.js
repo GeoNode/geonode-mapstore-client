@@ -18,6 +18,16 @@ export const isProcessCompleted = (state, payload) => {
     return completedProcess.completed;
 };
 
+export const processingDownload = (state) => {
+    const resource = getResourceData(state);
+    const isProcessingDownload = state?.resourceservice?.processes?.find((process) =>
+        process?.resource?.pk === resource?.pk
+        && process?.processType === ProcessTypes.DOWNLOAD_RESOURCE
+    );
+    const processing = isProcessingDownload ? !isProcessingDownload.completed : false;
+    return processing;
+};
+
 export const getCurrentResourcePermissionsLoading = (state) => {
     const resource = getResourceData(state);
     const permissionsProcess = resource && state?.resourceservice?.processes?.find(process =>
