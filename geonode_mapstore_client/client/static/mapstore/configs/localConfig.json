@@ -456,6 +456,19 @@
                             "value": "change_resourcebase"
                         }
                     ]
+                },
+                {
+                    "type": "button",
+                    "action": "download",
+                    "labelId": "gnviewer.download",
+                    "icon": "download",
+                    "authenticated": true,
+                    "perms": [
+                        {
+                            "type": "resource",
+                            "value": "download_resourcebase"
+                        }
+                    ]
                 }
             ]
         }
