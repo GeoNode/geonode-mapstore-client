@@ -54,6 +54,8 @@ object-assign
  * @license  MIT
  */
 
+/*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
+
 /*! http://mths.be/fromcodepoint v0.1.0 by @mathias */
 
 /*! https://mths.be/punycode v1.3.2 by @mathias */
