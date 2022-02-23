@@ -147,6 +147,7 @@ const ResourceCard = forwardRef(({
                                 options={options}
                                 readOnly={readOnly}
                                 onAction={onAction}
+                                onDownload={onDownload}
                             />
                         )}
                     </div>
