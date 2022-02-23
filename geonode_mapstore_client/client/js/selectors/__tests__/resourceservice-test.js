@@ -7,7 +7,7 @@
  */
 
 import expect from 'expect';
-import { getCurrentProcesses, processingDownload } from '../resourceservice';
+import { getCurrentProcesses, processingDownload, generalResourceDownload, featuredResourceDownload } from '../resourceservice';
 
 
 describe('resourceservice selector', () => {
@@ -29,10 +29,36 @@ describe('resourceservice selector', () => {
                 }
             },
             resourceservice: {
-                processes: [{ resource: { pk: 1 }, processType: 'downloadResource' }]
+                downloads: [{  pk: 1 }]
             }
         };
         expect(processingDownload(testState)).toEqual(true);
+    });
+
+    it('test featuredResourceDownload', () => {
+        const testState = {
+            resourceservice: {
+                downloads: [{  pk: 1 }]
+            },
+            gnsearch: {
+                featuredResources: {
+                    resources: [{  pk: 1 }]
+                }
+            }
+        };
+        expect(featuredResourceDownload(testState)).toEqual([{ pk: 1 }]);
+    });
+
+    it('test generalResourceDownload', () => {
+        const testState = {
+            resourceservice: {
+                downloads: [{  pk: 1 }]
+            },
+            gnsearch: {
+                resources: [{  pk: 1 }]
+            }
+        };
+        expect(generalResourceDownload(testState)).toEqual([{ pk: 1 }]);
     });
 
 });

@@ -14,10 +14,11 @@ import {
     STOP_ASYNC_PROCESS,
     startAsyncProcess
 } from '@js/actions/resourceservice';
-import { gnMonitorAsyncProcesses } from '../resourceservice';
+import { gnMonitorAsyncProcesses, gnDownloadResource } from '../resourceservice';
 import {
     SHOW_NOTIFICATION
 } from '@mapstore/framework/actions/notifications';
+import { DOWNLOAD_COMPLETE, downloadResource } from '@js/actions/gnresource';
 
 let mockAxios;
 
@@ -74,6 +75,31 @@ describe('resourceservice epics', () => {
                         .toEqual([
                             STOP_ASYNC_PROCESS,
                             SHOW_NOTIFICATION
+                        ]);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            testState
+        );
+    });
+
+    it('test gnDownloadResource', (done) => {
+        const testState = {
+            resourceservice: {}
+        };
+        const actionsCount = 1;
+        mockAxios.onGet().reply(() => [200, {output: {}, headers: { 'content-type': 'application/zip' } }]);
+        testEpic(
+            gnDownloadResource,
+            actionsCount,
+            downloadResource({ pk: 1, title: 'test resource' }),
+            (actions) => {
+                try {
+                    expect(actions.map(({ type }) => type))
+                        .toEqual([
+                            DOWNLOAD_COMPLETE
                         ]);
                 } catch (e) {
                     done(e);
