@@ -16,7 +16,8 @@ function ActionButtons({
     actions,
     onAction,
     resource,
-    buildHrefByTemplate
+    buildHrefByTemplate,
+    onDownload
 }) {
     return (
         <div className="gn-resource-action-buttons">
@@ -31,14 +32,14 @@ function ActionButtons({
                 </Dropdown.Toggle>
                 <Dropdown.Menu className={`gn-card-dropdown`}>
                     {options.map((opt) => {
-                        if (opt.type === 'button' && actions[opt.action]) {
+                        if ((opt.type === 'button' && actions[opt.action]) || opt.action === 'download') {
                             return (
                                 ((opt.action === 'download' && resource.download_url) || (opt.action !== 'copy' && opt.action !== 'download') || resource?.is_copyable) && <Dropdown.Item
                                     key={opt.action}
                                     onClick={() =>
-                                        onAction(actions[opt.action], [
+                                        opt.action !== 'download' ? onAction(actions[opt.action], [
                                             resource
-                                        ])
+                                        ]) : onDownload(resource)
                                     }
                                 >
                                     <FaIcon name={opt.icon} />{' '}

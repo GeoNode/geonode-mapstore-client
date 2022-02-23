@@ -11,9 +11,10 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import CardGrid from '@js/components/CardGrid';
 import { getSearchResults } from '@js/selectors/search';
-import { processResources } from '@js/actions/gnresource';
+import { downloadResource, processResources } from '@js/actions/gnresource';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import { actionButtons } from '@js/utils/ResourceServiceUtils';
+import { generalResourceDownload } from '@js/selectors/resourceservice';
 
 const CardGridWithMessageId = ({ query, user, isFirstRequest, ...props }) => {
     const hasResources = props.resources?.length > 0;
@@ -32,16 +33,19 @@ const ConnectedCardGrid = connect(
         getSearchResults,
         state => state?.gnsearch?.loading || false,
         state => state?.gnsearch?.isNextPageAvailable || false,
-        state => state?.gnsearch?.isFirstRequest
-    ], (resources, loading, isNextPageAvailable, isFirstRequest) => ({
+        state => state?.gnsearch?.isFirstRequest,
+        generalResourceDownload
+    ], (resources, loading, isNextPageAvailable, isFirstRequest, downloading) => ({
         resources,
         loading,
         isNextPageAvailable,
         isFirstRequest,
-        actions: actionButtons
+        actions: actionButtons,
+        downloading
     })),
     {
         onAction: processResources,
+        onDownload: downloadResource,
         onControl: setControlProperty
     }
 )(CardGridWithMessageId);

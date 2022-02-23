@@ -26,7 +26,9 @@ const Cards = withResizeDetector(({
     buildHrefByTemplate,
     options,
     actions,
-    onAction
+    onAction,
+    onDownload,
+    downloading
 }) => {
 
     const width = containerWidth || detectedWidth;
@@ -117,6 +119,8 @@ const Cards = withResizeDetector(({
                             onAction={onAction}
                             loading={isProcessing}
                             readOnly={isDeleted || isProcessing}
+                            onDownload={onDownload}
+                            downloading={downloading?.find((download) => download.pk === resource.pk) ? true : false}
                         />
                     </li>
                 );
@@ -142,7 +146,9 @@ const CardGrid = ({
     scrollContainer,
     actions,
     onAction,
-    onControl
+    onControl,
+    onDownload,
+    downloading
 }) => {
 
     useInfiniteScroll({
@@ -178,6 +184,8 @@ const CardGrid = ({
                             options={cardOptions}
                             buildHrefByTemplate={buildHrefByTemplate}
                             actions={actions}
+                            onDownload={onDownload}
+                            downloading={downloading}
                             onAction={(action, payload) => {
                                 if (action.isControlled) {
                                     onControl(action.processType, 'value', payload);

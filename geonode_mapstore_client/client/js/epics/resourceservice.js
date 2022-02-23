@@ -27,7 +27,7 @@ import {
     copyResource,
     downloadResource
 } from '@js/api/geonode/v2';
-import { PROCESS_RESOURCES } from '@js/actions/gnresource';
+import { PROCESS_RESOURCES, DOWNLOAD_RESOURCE, downloadComplete } from '@js/actions/gnresource';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import { push } from 'connected-react-router';
 import {
@@ -63,8 +63,7 @@ export const gnMonitorAsyncProcesses = (action$, store) => {
 
 const processAPI = {
     [ProcessTypes.DELETE_RESOURCE]: deleteResource,
-    [ProcessTypes.COPY_RESOURCE]: copyResource,
-    [ProcessTypes.DOWNLOAD_RESOURCE]: downloadResource
+    [ProcessTypes.COPY_RESOURCE]: copyResource
 };
 
 export const gnProcessResources = (action$) =>
@@ -73,12 +72,8 @@ export const gnProcessResources = (action$) =>
         .flatMap((action) => {
             return Observable.defer(() => axios.all(
                 action.resources.map((resource) => processAPI[action.processType](resource)
-                    .then(({ output, headers }) => {
-                        if (headers && headers['content-disposition']?.split(';')?.[0] === 'attachment') {
-                            saveAs(new Blob([output], { type: headers['content-type'] }), resource.title);
-                        }
-                        return { resource, output, processType: action.processType };
-                    })
+                    .then((output) => ({ resource, output, processType: action.processType })
+                    )
                     .catch((error) => ({ resource, error: error?.data?.detail || error?.statusText || error?.message || true, processType: action.processType }))
                 )
             ))
@@ -92,10 +87,33 @@ export const gnProcessResources = (action$) =>
                         ] : [])
                     );
                 })
-                .startWith(setControlProperty(action.processType, 'loading', true), updateAsyncProcess({ resource: action.resources?.[0], processType: action.processType }));
+                .startWith(setControlProperty(action.processType, 'loading', true));
+        });
+
+export const gnDownloadResource = (action$) =>
+    action$.ofType(DOWNLOAD_RESOURCE)
+        .switchMap((action) => {
+            const resource = action?.resource;
+            return Observable.defer(() => downloadResource(resource)
+                .then(({ output, headers }) => {
+                    saveAs(new Blob([output], { type: headers?.['content-type'] }), resource.title);
+                    return { resource };
+                })
+                .catch((error) => ({ resource, error: error?.data?.detail || error?.statusText || error?.message || true }))
+            )
+                .switchMap((downloaded) => {
+                    const { error } = downloaded || {};
+                    if (error) {
+                        return Observable.of(downloadComplete({ ...downloaded.resource }), errorNotification({ title: 'gnviewer.invalidUploadMessageError', message: 'gnviewer.cannotPerfomAction' }));
+                    }
+                    return Observable.of(
+                        downloadComplete({ ...downloaded.resource })
+                    );
+                });
         });
 
 export default {
     gnMonitorAsyncProcesses,
-    gnProcessResources
+    gnProcessResources,
+    gnDownloadResource
 };

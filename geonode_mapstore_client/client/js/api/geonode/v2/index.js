@@ -702,7 +702,7 @@ export const updateCompactPermissionsByPk = (pk, body) => {
 
 export const deleteResource = (resource) => {
     return axios.delete(parseDevHostname(`${endpoints[RESOURCES]}/${resource.pk}/delete`))
-        .then(({ data }) => ({output: data}));
+        .then(({ data }) => data);
 };
 
 export const copyResource = (resource) => {
@@ -711,7 +711,7 @@ export const copyResource = (resource) => {
         ...(resource.data && { data: resource.data })
     };
     return axios.put(parseDevHostname(`${endpoints[RESOURCES]}/${resource.pk}/copy`), 'defaults=' + JSON.stringify(defaults))
-        .then(({ data }) => ({output: data}));
+        .then(({ data }) => data);
 };
 
 export const downloadResource = (resource) => {

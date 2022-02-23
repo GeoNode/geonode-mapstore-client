@@ -32,7 +32,9 @@ const ResourceCard = forwardRef(({
     className,
     loading,
     featured,
-    onClick
+    onClick,
+    downloading,
+    onDownload
 }, ref) => {
     const res = data;
     const types = getTypesInfo();
@@ -80,6 +82,7 @@ const ResourceCard = forwardRef(({
                     options={options}
                     readOnly={readOnly}
                     onAction={onAction}
+                    onDownload={onDownload}
                 />
             )}
             <div className={`card-resource-${layoutCardsStyle}`}>
@@ -96,7 +99,7 @@ const ResourceCard = forwardRef(({
                     <div className="card-body">
                         <div className="card-title">
                             <div>
-                                {icon && !loading && (
+                                {(icon && !loading && !downloading) && (
                                     <>
                                         <ALink
                                             readOnly={readOnly}
@@ -111,7 +114,7 @@ const ResourceCard = forwardRef(({
                                         </ALink>
                                     </>
                                 )}
-                                {loading && <Spinner />}
+                                {(loading || downloading) && <Spinner />}
                                 <ALink
                                     className={
                                         featured

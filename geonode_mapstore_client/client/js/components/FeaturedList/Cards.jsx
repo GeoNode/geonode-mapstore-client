@@ -21,7 +21,9 @@ const Cards = ({
     options,
     onResize,
     actions,
-    onAction
+    onAction,
+    onDownload,
+    downloading
 }) => {
     const width = detectedWidth || containerWidth;
     const margin = 24;
@@ -93,6 +95,8 @@ const Cards = ({
                             featured
                             actions={actions}
                             onAction={onAction}
+                            onDownload={onDownload}
+                            downloading={downloading?.find((download) => download.pk === resource.pk) ? true : false}
                         />
                     </li>
                 );

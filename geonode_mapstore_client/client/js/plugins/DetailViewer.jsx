@@ -20,7 +20,7 @@ import {
     setMapThumbnail,
     setResourceThumbnail,
     enableMapThumbnailViewer,
-    processResources
+    downloadResource
 } from '@js/actions/gnresource';
 import { processingDownload } from '@js/selectors/resourceservice';
 import FaIcon from '@js/components/FaIcon/FaIcon';
@@ -56,7 +56,7 @@ const ConnectedDetailsPanel = connect(
         mapSelector,
         state => state?.gnresource?.showMapThumbnail || false,
         processingDownload
-    ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating, mapData, showMapThumbnail, processing) => ({
+    ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating, mapData, showMapThumbnail, downloading) => ({
         layers: layers,
         resource,
         loading,
@@ -66,7 +66,7 @@ const ConnectedDetailsPanel = connect(
         resourceThumbnailUpdating,
         initialBbox: mapData?.bbox,
         enableMapViewer: showMapThumbnail,
-        processing,
+        downloading,
         canDownload: resourceHasPermission(resource, 'download_resourcebase')
     })),
     {
@@ -75,7 +75,7 @@ const ConnectedDetailsPanel = connect(
         onMapThumbnail: setMapThumbnail,
         onResourceThumbnail: setResourceThumbnail,
         onClose: enableMapThumbnailViewer,
-        onAction: processResources
+        onAction: downloadResource
     }
 )(DetailsPanel);
 

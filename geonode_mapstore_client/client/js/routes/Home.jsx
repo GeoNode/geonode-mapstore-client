@@ -37,8 +37,10 @@ import { getFeaturedResults, getTotalResources } from '@js/selectors/search';
 import DeleteResource from '@js/plugins/DeleteResource';
 import SaveAs from '@js/plugins/SaveAs';
 import Notifications from '@mapstore/framework/plugins/Notifications';
-import { processResources } from '@js/actions/gnresource';
+import { processResources, downloadResource } from '@js/actions/gnresource';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
+import { featuredResourceDownload } from '@js/selectors/resourceservice';
+
 const { DeleteResourcePlugin } = DeleteResource;
 const { SaveAsPlugin } = SaveAs;
 const { NotificationsPlugin } = Notifications;
@@ -50,13 +52,15 @@ const ConnectedFeatureList = connect(
         state => state?.gnsearch?.featuredResources?.isNextPageAvailable || false,
         state => state?.gnsearch?.featuredResources?.isPreviousPageAvailable || false,
         state => state?.gnsearch?.featuredResources?.loading || false,
-        getParsedGeoNodeConfiguration
-    ], (resources, page, isNextPageAvailable, isPreviousPageAvailable, loading, { cardOptionsItemsAllowed }) => ({
-        resources, page, isNextPageAvailable, isPreviousPageAvailable, loading, cardOptions: cardOptionsItemsAllowed})
+        getParsedGeoNodeConfiguration,
+        featuredResourceDownload
+    ], (resources, page, isNextPageAvailable, isPreviousPageAvailable, loading, { cardOptionsItemsAllowed }, downloading) => ({
+        resources, page, isNextPageAvailable, isPreviousPageAvailable, loading, cardOptions: cardOptionsItemsAllowed, downloading})
     ), {
         loadFeaturedResources,
         onAction: processResources,
-        onControl: setControlProperty
+        onControl: setControlProperty,
+        onDownload: downloadResource
     }
 )(FeaturedList);
 

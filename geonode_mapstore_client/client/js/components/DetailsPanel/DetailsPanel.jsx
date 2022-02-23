@@ -29,7 +29,6 @@ import Loader from '@mapstore/framework/components/misc/Loader';
 import { getUserName } from '@js/utils/SearchUtils';
 import ZoomTo from '@js/components/ZoomTo';
 import { boundsToExtentString } from '@js/utils/CoordinatesUtils';
-import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = 'Map';
@@ -186,7 +185,7 @@ function DetailsPanel({
     linkHref,
     sectionStyle,
     loading,
-    processing,
+    downloading,
     getTypesInfo,
     editTitle,
     editAbstract,
@@ -521,7 +520,7 @@ function DetailsPanel({
 
                     <div className="gn-details-panel-content-text">
                         <div className="gn-details-panel-title" >
-                            <span className="gn-details-panel-title-icon" >{!processing ? <FaIcon name={icon} /> : <Spinner />} </span> <EditTitle disabled={!activeEditMode} tagName="h1"  title={resource?.title} onEdit={editTitle} >
+                            <span className="gn-details-panel-title-icon" >{!downloading ? <FaIcon name={icon} /> : <Spinner />} </span> <EditTitle disabled={!activeEditMode} tagName="h1"  title={resource?.title} onEdit={editTitle} >
 
                             </EditTitle>
 
@@ -537,7 +536,7 @@ function DetailsPanel({
                                     }
                                     {downloadUrl &&
                                     <Button variant="default"
-                                        onClick={() => onAction(ProcessTypes.DOWNLOAD_RESOURCE, [resource])} >
+                                        onClick={() => onAction(resource)} >
                                         <FaIcon name="download" />
                                     </Button>}
 

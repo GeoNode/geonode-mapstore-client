@@ -31,6 +31,9 @@ export const RESET_GEO_LIMITS = 'GEONODE:RESET_GEO_LIMITS';
 export const PROCESS_RESOURCES = 'GEONODE:PROCESS_RESOURCES';
 export const SET_RESOURCE_THUMBNAIL = 'GEONODE_SET_RESOURCE_THUMBNAIL';
 export const ENABLE_MAP_THUMBNAIL_VIEWER = 'GEONODE_ENABLE_MAP_THUMBNAIL_VIEWER';
+export const DOWNLOAD_RESOURCE = 'GEONODE_DOWNLOAD_RESOURCE';
+export const DOWNLOAD_COMPLETE = 'GEONODE_DOWNLOAD_COMPLETE';
+
 
 /**
 * Actions for GeoNode resource
@@ -278,5 +281,19 @@ export function processResources(processType, resources, redirectTo) {
         processType,
         resources,
         redirectTo
+    };
+}
+
+export function downloadResource(resource) {
+    return {
+        type: DOWNLOAD_RESOURCE,
+        resource
+    };
+}
+
+export function downloadComplete(resource) {
+    return {
+        type: DOWNLOAD_COMPLETE,
+        resource
     };
 }

@@ -13,11 +13,14 @@ import {
 } from '@js/actions/resourceservice';
 
 import {
-    PROCESS_RESOURCES
+    DOWNLOAD_RESOURCE,
+    PROCESS_RESOURCES,
+    DOWNLOAD_COMPLETE
 } from '@js/actions/gnresource';
 
 const defaultState = {
-    processes: []
+    processes: [],
+    downloads: []
 };
 
 function resourceservice(state = defaultState, action) {
@@ -55,9 +58,27 @@ function resourceservice(state = defaultState, action) {
             ...state,
             processes: state.processes.map((process) =>
                 process?.resource?.pk === action?.payload?.resource?.pk
-                && process?.processType === action?.payload?.processType
+                        && process?.processType === action?.payload?.processType
                     ? action.payload
                     : process)
+        };
+    }
+    case DOWNLOAD_RESOURCE: {
+        return {
+            ...state,
+            downloads: [
+                ...state.downloads,
+                action.resource
+            ]
+        };
+    }
+    case DOWNLOAD_COMPLETE: {
+        return {
+            ...state,
+            downloads: [
+                ...state.downloads.filter((download) =>
+                    (download?.resource?.pk === action?.resource?.pk))
+            ]
         };
     }
     default:
