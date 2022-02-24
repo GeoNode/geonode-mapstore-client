@@ -22,9 +22,9 @@ function FitBoundsPlugin({ mapProjection, ...props }) {
             const [eMinx, eMiny, eMaxx, eMaxy] = MAX_EXTENT_WEB_MERCATOR;
             return [
                 minx < eMinx ? eMinx : minx,
-                miny < eMiny ? eMiny : miny,
+                (miny < eMiny || miny > eMaxy) ? eMiny : miny,
                 maxx > eMaxx ? eMaxx : maxx,
-                maxy > eMaxy ? eMaxy : maxy
+                (maxy > eMaxy || maxy < eMiny) ? eMaxy : maxy
             ];
         }
         return geometry;
