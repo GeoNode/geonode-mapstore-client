@@ -39,7 +39,7 @@ function getExtentFromResource({ ll_bbox_polygon: llBboxPolygon }) {
     return bbox;
 }
 
-const GXP_PTYPES = {
+export const GXP_PTYPES = {
     'AUTO': 'gxp_wmscsource',
     'OWS': 'gxp_wmscsource',
     'WMS': 'gxp_wmscsource',

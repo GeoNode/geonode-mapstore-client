@@ -17,7 +17,7 @@ import Spinner from '@js/components/Spinner';
 import Message from '@mapstore/framework/components/I18N/Message';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import moment from 'moment';
-import { getResourceTypesInfo, getMetadataDetailUrl, ResourceTypes } from '@js/utils/ResourceUtils';
+import { getResourceTypesInfo, getMetadataDetailUrl, ResourceTypes, GXP_PTYPES } from '@js/utils/ResourceUtils';
 import debounce from 'lodash/debounce';
 import CopyToClipboardCmp from 'react-copy-to-clipboard';
 import { TextEditable, ThumbnailEditable } from '@js/components/ContentsEditable/';
@@ -489,7 +489,7 @@ function DetailsPanel({
                                 thumbnailUpdating={resourceThumbnailUpdating}
                             />
                             {
-                                (resource.resource_type === ResourceTypes.MAP || resource.resource_type === ResourceTypes.DATASET) &&
+                                ((resource.resource_type === ResourceTypes.MAP || resource.resource_type === ResourceTypes.DATASET) && (resource.ptype !== GXP_PTYPES.REST_IMG || resource.ptype !== GXP_PTYPES.REST_MAP)) &&
                                 ( <><MapThumbnailButtonToolTip
                                     variant="default"
                                     onClick={() => onClose(!enableMapViewer)}
