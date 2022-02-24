@@ -502,7 +502,7 @@ function DetailsPanel({
                                 </>)
                             }
                             {isThumbnailChanged && <Button style={{
-                                left: (resource.resource_type === ResourceTypes.MAP || resource.resource_type === ResourceTypes.DATASET) ? '85px' : '50px'
+                                left: ((resource.resource_type === ResourceTypes.MAP || resource.resource_type === ResourceTypes.DATASET) && (resource.ptype !== GXP_PTYPES.REST_IMG || resource.ptype !== GXP_PTYPES.REST_MAP)) ? '85px' : '50px'
                             }} variant="primary" className="map-thumbnail apply-button" onClick={handleResourceThumbnailUpdate}><Message msgId={"gnhome.apply"} /></Button>}
                             </>
                                 : <MapThumbnailView
