@@ -89,7 +89,7 @@ export const resourceToLayerConfig = (resource) => {
     switch (ptype) {
     case GXP_PTYPES.REST_MAP:
     case GXP_PTYPES.REST_IMG: {
-        const { url: arcgisUrl } = links.find(({ mime }) => mime === 'text/html') || {};
+        const { url: arcgisUrl } = links.find(({ mime, link_type: linkType }) => (mime === 'text/html' && linkType === 'image')) || {};
         return {
             perms,
             id: uuid(),
