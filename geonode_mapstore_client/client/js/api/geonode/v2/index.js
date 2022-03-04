@@ -719,7 +719,7 @@ export const downloadResource = (resource) => {
     return axios.get(url, {
         responseType: 'blob',
         headers: {
-            'Content_type': 'application/jsson'
+            'Content_type': 'application/json'
         }
     })
         .then(({ data, headers }) => ({output: data, headers}));

@@ -19,6 +19,12 @@ function ActionButtons({
     buildHrefByTemplate,
     onDownload
 }) {
+
+    if (options?.length === 1 && options?.[0].action === 'download' && !resource.download_url) {
+        return null;
+    }
+
+
     return (
         <div className="gn-resource-action-buttons">
             <Dropdown className="gn-card-options" pullRight>
@@ -34,7 +40,7 @@ function ActionButtons({
                     {options.map((opt) => {
                         if ((opt.type === 'button' && actions[opt.action]) || opt.action === 'download') {
                             return (
-                                ((opt.action === 'download' && resource.download_url) || (opt.action !== 'copy' && opt.action !== 'download') || resource?.is_copyable) && <Dropdown.Item
+                                ((opt.action === 'download' && resource.download_url) || (opt.action !== 'copy' && opt.action !== 'download') || (resource?.is_copyable && opt.action !== 'download')) && <Dropdown.Item
                                     key={opt.action}
                                     onClick={() =>
                                         opt.action !== 'download' ? onAction(actions[opt.action], [
