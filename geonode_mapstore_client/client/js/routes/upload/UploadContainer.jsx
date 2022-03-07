@@ -40,7 +40,9 @@ function UploadContainer({
     onUpload,
     loading,
     progress,
-    type
+    type,
+    abort,
+    abortAll
 }) {
 
     const inputFile = useRef();
@@ -94,7 +96,7 @@ function UploadContainer({
                 leftColumn={
                     <div className="gn-upload-list">
                         <div className="gn-upload-list-header">
-                            <input ref={inputFile} value="" type="file" multiple onChange={handleFileDrop} style={{ display: 'none' }}/>
+                            <input disabled={loading} ref={inputFile} value="" type="file" multiple onChange={handleFileDrop} style={{ display: 'none' }}/>
                             <Button onClick={() => inputFile?.current?.click()}>
                                 <FaIcon name="plus"/>{' '}<Message msgId="gnviewer.selectFiles"/>
                             </Button>
@@ -117,6 +119,7 @@ function UploadContainer({
                                                 loading={loading}
                                                 progress={progress}
                                                 size={size}
+                                                onAbort={abort}
                                             />
                                         </li>
                                     );
@@ -146,32 +149,19 @@ function UploadContainer({
                                 <ButtonWithTooltip noTooltipWhenDisabled tooltip={<Message msgId="gnviewer.exceedingFileMsg" msgParams={{limit: maxAllowedSize }} />} >
                                     <Message msgId="gnviewer.upload" />
                                 </ButtonWithTooltip> :
-                                <Button
+                                !loading ? <Button
                                     variant="primary"
                                     disabled={disabledUpload}
                                     onClick={onUpload}
                                 >
                                     <Message msgId="gnviewer.upload"/>
+                                </Button> : <Button
+                                    variant="primary"
+                                    onClick={() => abortAll(waitingUploadNames)}
+                                >
+                                    <Message msgId="gnviewer.cancelUpload"/>
                                 </Button>}
                         </div>
-                        {loading && (
-                            <div
-                                style={{
-                                    position: 'absolute',
-                                    width: '100%',
-                                    height: '100%',
-                                    display: 'flex',
-                                    alignItems: 'flex-end',
-                                    justifyContent: 'center',
-                                    padding: '1rem',
-                                    textAlign: 'center',
-                                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-                                    paddingBottom: '3rem'
-                                }}
-                            >
-                                <Message msgId="gnviewer.transferInProgress"/>
-                            </div>
-                        )}
                     </div>
                 }
             >

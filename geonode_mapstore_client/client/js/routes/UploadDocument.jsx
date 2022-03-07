@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
 */
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import uniqBy from 'lodash/uniqBy';
 import omit from 'lodash/omit';
@@ -31,6 +31,9 @@ function getFileNameParts(file) {
     const baseName = [...nameParts].splice(0, nameParts.length - 1).join('.');
     return { ext, baseName };
 }
+
+const cancelTokens = {};
+const sources = {};
 
 function UploadList({
     children,
@@ -90,17 +93,26 @@ function UploadList({
             setUnsupported([]);
             axios.all(Object.keys(waitingUploads).map((baseName) => {
                 const readyUpload = waitingUploads[baseName];
+                cancelTokens[baseName] = axios.CancelToken;
+                sources[baseName] = cancelTokens[baseName].source();
                 const fileExt = Object.keys(readyUpload.files);
                 const file = readyUpload.files[fileExt[0]];
                 return uploadDocument({
                     title: file?.name,
                     file,
                     config: {
-                        onUploadProgress: documentUploadProgress(baseName)
+                        onUploadProgress: documentUploadProgress(baseName),
+                        cancelToken: sources[baseName].token
                     }
                 })
                     .then((data) => ({ status: 'SUCCESS', data, file, baseName }))
-                    .catch(({ data: error }) => ({ status: 'INVALID', error, file, baseName }));
+                    .catch((error) => {
+                        if (axios.isCancel(error)) {
+                            return { status: 'INVALID', error: 'CANCELED', file, baseName };
+                        }
+                        const { data } = error;
+                        return { status: 'INVALID', error: data, file, baseName };
+                    });
             }))
                 .then((responses) => {
                     const successfulUploads = responses.filter(({ status }) => status === 'SUCCESS');
@@ -109,15 +121,17 @@ function UploadList({
                         const successfulUploadsNames = successfulUploads.map(({ baseName }) => baseName);
                         updateWaitingUploads(omit(waitingUploads, successfulUploadsNames));
                     }
-                    onChange(responses.map(({ status, file, data, error }) => ({
-                        id: uuidv1(),
-                        name: file?.name,
-                        progress: 100,
-                        state: status,
-                        detail_url: data?.url,
-                        create_date: Date.now(),
-                        error
-                    })));
+                    onChange(responses.map(({ status, file, data, error }) => {
+                        return {
+                            id: uuidv1(),
+                            name: file?.name,
+                            progress: 100,
+                            state: status,
+                            detail_url: data?.url,
+                            create_date: Date.now(),
+                            error
+                        };
+                    }));
                     setLoading(false);
                 })
                 .catch(() => {
@@ -125,6 +139,15 @@ function UploadList({
                 });
         }
     }
+
+    const handleCancelSingleUpload = useCallback((baseName) => {
+        setUploadContainerProgress((prevFiles) => ({ ...prevFiles, [baseName]: undefined }));
+        return sources[baseName].cancel();
+    }, []);
+
+    const handleCancelAllUploads = useCallback((files) => {
+        return files.forEach((file) => sources[file].cancel());
+    }, []);
 
     return (
         <UploadContainer
@@ -138,6 +161,8 @@ function UploadList({
             loading={loading}
             progress={uploadContainerProgress}
             type="document"
+            abort={handleCancelSingleUpload}
+            abortAll={handleCancelAllUploads}
         >
             {children}
         </UploadContainer>

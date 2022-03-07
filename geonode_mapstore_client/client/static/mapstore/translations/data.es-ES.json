@@ -272,7 +272,8 @@
             "transferInProgress": "Transferencia en progreso",
             "fileExceeds": "El tamaño del archivo supera los {limit} MB. Vuelva a intentarlo con un archivo más pequeño.",
             "exceedingFileMsg": "Algunos de sus archivos exceden el límite de carga de {limit} MB. Por favor, elimínelos de la lista.",
-            "cannotPerfomAction": "No se pudo realizar la acción en este recurso."
+            "cannotPerfomAction": "No se pudo realizar la acción en este recurso.",
+            "cancelUpload": "Cancelar carga"
         }
     }
 }
