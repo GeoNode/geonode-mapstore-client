@@ -34,7 +34,7 @@ function UploadListContainer({
 
     return (
         <div className="gn-upload-processing">
-            {pendingUploads.length === 0
+            {pendingUploads.length === 0 || (filteredPendingUploads.every(({error}) => error === 'CANCELED'))
                 ? (
                     <div className="gn-main-event-container">
                         <div className="gn-main-event-content">
@@ -72,7 +72,7 @@ function UploadListContainer({
                                             delete_url: deleteUrl,
                                             error
                                         }) => {
-                                            return (
+                                            return (error !== 'CANCELED' &&
                                                 <li
                                                     key={id}
                                                 >

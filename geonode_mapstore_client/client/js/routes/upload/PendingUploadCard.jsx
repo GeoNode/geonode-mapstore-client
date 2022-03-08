@@ -22,7 +22,8 @@ function PendingUploadCard({
     filesExt,
     loading,
     progress,
-    size
+    size,
+    onAbort
 }) {
     return (
         <div className="gn-upload-card">
@@ -30,8 +31,10 @@ function PendingUploadCard({
                 {missingExt.length > 0 ? <div className="gn-upload-card-error"><FaIcon name="exclamation"/></div> : null}
                 <div className="gn-upload-card-title">{baseName}</div>
                 {onRemove
-                    ? <Button size="xs" onClick={onRemove}>
+                    ? (!loading || !(progress?.[baseName])) ? <Button size="xs" onClick={onRemove}>
                         <FaIcon name="trash"/>
+                    </Button> : <Button size="xs" onClick={() => onAbort(baseName)}>
+                        <FaIcon name="stop"/>
                     </Button>
                     : null}
             </div>
@@ -51,14 +54,14 @@ function PendingUploadCard({
                     })}
                 </ul>
                 {
-                    (loading && progress) ?
+                    (loading && progress && progress?.[baseName]) ?
                         <div className="gn-upload-card-progress-read">
-                            {progress?.[baseName] ? `${progress?.[baseName]}%` : <Spinner />}
+                            {progress[baseName] ? `${progress[baseName]}%` : <Spinner />}
                         </div> :
                         <div>{size}{' '}MB</div>
                 }
             </div>
-            {loading && progress && <div style={{position: 'relative'}}>
+            {loading && progress && progress?.[baseName] && <div style={{position: 'relative'}}>
                 <div
                     className="gn-upload-card-progress"
                     style={{
@@ -68,7 +71,7 @@ function PendingUploadCard({
                 >
                     <div
                         style={{
-                            width: `${progress?.[baseName]}%`,
+                            width: `${progress[baseName]}%`,
                             height: 2,
                             transition: '0.3s all'
                         }}

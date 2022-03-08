@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
 */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import uniqBy from 'lodash/uniqBy';
 import orderBy from 'lodash/orderBy';
@@ -87,6 +87,9 @@ function getDatasetFileType(file) {
     );
     return datasetFileType?.id;
 }
+
+const cancelTokens = {};
+const sources = {};
 
 function UploadList({
     children,
@@ -183,16 +186,25 @@ function UploadList({
             setUnsupported([]);
             axios.all(Object.keys(readyUploads).map((baseName) => {
                 const readyUpload = readyUploads[baseName];
+                cancelTokens[baseName] = axios.CancelToken;
+                sources[baseName] = cancelTokens[baseName].source();
                 return uploadDataset({
                     file: readyUpload.files[readyUpload.mainExt],
                     ext: readyUpload.mainExt,
                     auxiliaryFiles: readyUpload.files,
                     config: {
-                        onUploadProgress: datasetUploadProgress(baseName)
+                        onUploadProgress: datasetUploadProgress(baseName),
+                        cancelToken: sources[baseName].token
                     }
                 })
                     .then((data) => ({ status: 'success', data, baseName }))
-                    .catch(({ data: error }) => ({ status: 'error', error, baseName }));
+                    .catch((error) => {
+                        if (axios.isCancel(error)) {
+                            return { status: 'error', error: 'CANCELED', baseName };
+                        }
+                        const { data } = error;
+                        return { status: 'error', error: data, baseName };
+                    });
             }))
                 .then((responses) => {
                     const successfulUploads = responses.filter(({ status }) => status === 'success');
@@ -230,6 +242,16 @@ function UploadList({
         }
     }
 
+
+    const handleCancelSingleUpload = useCallback((baseName) => {
+        setUploadContainerProgress((prevFiles) => ({ ...prevFiles, [baseName]: undefined }));
+        return sources[baseName].cancel();
+    }, []);
+
+    const handleCancelAllUploads = useCallback((files) => {
+        return files.forEach((file) => sources[file].cancel());
+    }, []);
+
     return (
         <UploadContainer
             waitingUploads={waitingUploads}
@@ -242,6 +264,8 @@ function UploadList({
             loading={loading}
             progress={uploadContainerProgress}
             type="dataset"
+            abort={handleCancelSingleUpload}
+            abortAll={handleCancelAllUploads}
         >
             {children}
         </UploadContainer>

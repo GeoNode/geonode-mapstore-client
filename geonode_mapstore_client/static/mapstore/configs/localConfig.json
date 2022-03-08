@@ -462,7 +462,6 @@
                     "action": "download",
                     "labelId": "gnviewer.download",
                     "icon": "download",
-                    "authenticated": true,
                     "perms": [
                         {
                             "type": "resource",
