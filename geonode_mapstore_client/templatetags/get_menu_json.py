@@ -21,6 +21,7 @@ def _is_mobile_device(context):
         return req.user_agent.is_mobile
     return False
 
+
 @register.simple_tag(takes_context=True)
 def get_base_left_topbar_menu(context):
 
@@ -136,12 +137,12 @@ def get_user_menu(context):
             {
                 "label": "Register",
                 "type": "link",
-                "href": "/account/signup/?next=/"
+                "href": "/login/auth0/?next=/"
             } if settings.ACCOUNT_OPEN_SIGNUP and not Configuration.load().read_only else None,
             {
                 "label": "Sign in",
                 "type": "link",
-                "href": "/account/login/?next=/"
+                "href": "/login/auth0/?next=/"
             },
         ]
 
