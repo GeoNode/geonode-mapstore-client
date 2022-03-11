@@ -6,6 +6,7 @@
 {% comment %} setting.py variables {% endcomment %}
 {{ CATALOGUE_SERVICES|json_script:"settings-CATALOGUE_SERVICES" }}
 {{ CATALOGUE_SELECTED_SERVICE|json_script:"settings-CATALOGUE_SELECTED_SERVICE" }}
+{{ PROJECTION_DEFS|json_script:"settings-PROJECTION_DEFS" }}
 
 <script>
     {% autoescape off %}
