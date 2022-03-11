@@ -275,7 +275,7 @@
             "Examples": "Voorbeelden",
             "LinkedinGroup": "Mapstore Linkedin groep",
             "scrollTop": "Terug naar boven",
-            "footerDescription": "<strong>GeoSolutions</strong> <a href=\"mailto:info@geosolutionsgroup.com\">info@geosolutionsgroup.com</a> <strong>US</strong> +1 (301) 337-7055 -  <strong>Italy</strong>: +39 0584 962313",
+            "footerDescription": "<strong>GeoSolutions</strong> <a href=\"mailto:sales@geosolutionsgroup.com\">sales@geosolutionsgroup.com</a>",
             "ml": {
                 "title": "Blijf op de hoogte van de laatste ontwikkelingen via mailinglijsten",
                 "subscribe_users": "Abonneer u op de gebruikers mailinglijsten",
@@ -666,7 +666,7 @@
             },
             "layoutWarning": "Lay-out niet toegelaten"
         },
-        "backgroundSwither":{
+        "backgroundSwitcher":{
             "tooltip": "Selectie van de achtergrond kaart"
         },
         "info":{
@@ -1188,7 +1188,7 @@
             "passwordInvalid": "Ongeldig wachtwoord",
             "username": "Gebruikersnaam",
             "password": "Wachtwoord",
-            "passwordMessage": "Wachtwoord moet minstens 6 karakters bevatten. Geldige waarden voor wachtwoorden zijn cijfers, kleine letters of hoofdletters en de volgende speciale tekens:! @ # $% & * _.",
+            "passwordMessage": "Wachtwoord moet minstens 6 karakters bevatten.",
             "passwordInvalidChar": "Het wachtwoord mag deze tekens niet bevatten: {data}",
             "passwordChanged": "Wachtwoord gewijzigd",
             "passwordError": "Fout bij wijzigen van wachtwoord",
@@ -1272,12 +1272,15 @@
             "msgToCopyUrl": "Klik om te kopiëren",
             "sharedTitle": "Bekijk mijn nieuwe kaart: ",
             "addCenterAndZoomParam": "Voeg centrum en zoom toe aan link voor delen",
-	    "addMarkerAndZoomParam": "Voeg plaatsmarkering toe en zoom in op link voor delen",
+	          "addMarkerAndZoomParam": "Voeg plaatsmarkering toe en zoom in op link voor delen",
             "zoom": "Zoom",
             "marker": "Voeg marker toe op geladen kaart",
             "coordinate": "Coordinaat",
             "coordTooltip": "Klik op de kaart om de coördinaten te pakken",
             "zoomToolTip": "Min: 1 en Max: 35",
+            "headingToolTip": "Min: 0° en Max: 360°",
+            "rollToolTip": "Min: -90° en Max: 90°",
+            "pitchToolTip": "Min: -90° en Max: 90°",
             "wrongCenterAndZoomParamTitle": "Ongeldige centrum- en zoomparameter",
             "wrongCenterAndZoomParamMessage": "Centrum en zoomparameters moeten centrum = lon, lat & zoom = waarde en (+ | - 90 ° lat, + | -180 ° lon, <= + 35 zoom) zijn",
             "wrongMarkerAndZoomParamTitle": "Ongeldige marker en zoomparameter",
@@ -1288,7 +1291,10 @@
             "wrongBboxParamMessage": "Bounding box params moeten in EPSG: 4326 staan en geschreven zijn als bbox = minx, miny, maxx, maxy",
             "showHomeButton": "Link naar MapStore-startpagina",
             "showSectionId": "Inclusief scroll-positie",
-	    "showConnections": "Show connections"
+	          "showConnections": "Show connections",
+            "heading": "Koershoek",
+            "roll": "Rolhoek",
+            "pitch": "Hellingshoek"
         },
         "snapshot": {
             "title": "momentopname-voorbeeld",
@@ -1589,6 +1595,7 @@
             "featureClose": "Weet u zeker dat u het objectengrid wilt sluiten?",
             "delete": "Bevestigt u dat u {count} objecten wilt verwijderen?",
             "missingGeometry": "Ontbrekende geometrie",
+            "zoomObject": "Zoom naar object",
             "filter": {
                 "placeholders": {
                     "default": "Zoeken...",

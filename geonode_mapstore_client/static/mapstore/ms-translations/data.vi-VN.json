@@ -103,7 +103,7 @@
         },
         "back": "Quay lại Trình nhập",
         "background": "Nền",
-        "backgroundSwither": {
+        "backgroundSwitcher": {
             "tooltip": "Chọn nền"
         },
         "bandselector": {
@@ -411,6 +411,7 @@
             },
             "header": "Danh sách kết quả tìm kiếm",
             "missingGeometry": "Thiếu hình",
+            "zoomObject": "Phóng to đối tượng",
             "noButton": "Không",
             "noFeaturesAvailable": "Không có tính năng có sẵn",
             "notSupportedGeometry": "Kiểu hình lớp này không được hỗ trợ bằng chỉnh sửa nhưng bạn vẫn có thể chỉnh sửa các thuộc tính",
@@ -559,7 +560,7 @@
                     "html": "<h3>Trình xem</h3><p>Trình xem đơn giản</p>"
                 }
             },
-            "footerDescription": "<strong>GeoSolutions</strong> <a href=\"mailto:info@geosolutionsgroup.com\">info@geosolutionsgroup.com</a> <strong>US</strong> +1 (301) 337-7055 -  <strong>Italy</strong>: +39 0584 962313",
+            "footerDescription": "<strong>GeoSolutions</strong> <a href=\"mailto:sales@geosolutionsgroup.com\">sales@geosolutionsgroup.com</a>",
             "forkMeOnGitHub": "Chia đôi tôi trên GitHub",
             "ml": {
                 "email": "E-mail:",
@@ -1312,7 +1313,15 @@
             "title": "Chia sẻ",
             "titlePanel": "Chia sẻ bản đồ",
             "wrongBboxParamMessage": "thông số bbox phải ở trong EPSG: 4326 và được viết dưới dạng bbox = minx, miny, maxx, maxy",
-            "wrongBboxParamTitle": "Thông số bbox không hợp lệ"
+            "wrongBboxParamTitle": "Thông số bbox không hợp lệ",
+            "heading": "Góc tiêu đề",
+            "zoom": "Phóng",
+            "roll": "Góc cuộn",
+            "pitch": "Góc sân",
+            "zoomToolTip": "Tối thiểu: 0 và Tối đa: 35",
+            "headingToolTip": "Tối thiểu: 0° và Tối: 360°",
+            "rollToolTip": "Tối thiểu: -90° và Tối: 90°",
+            "pitchToolTip": "Tối thiểu: -90° và Tối: 90°"
         },
         "showEmptyMessageGFI": "Hiển thị thông báo kết quả trống trong bảng GetFeatureInfo",
         "showMore": "Hiển thị nhiều hơn...",
