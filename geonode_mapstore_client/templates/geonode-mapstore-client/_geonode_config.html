@@ -20,6 +20,7 @@
 
         const catalogueServices = getJSONScriptVariable('settings-CATALOGUE_SERVICES', {});
         const catalogueSelectedService = getJSONScriptVariable('settings-CATALOGUE_SELECTED_SERVICE', '');
+        const projectionDefs = getJSONScriptVariable('settings-PROJECTION_DEFS', []);
 
         const username = '{{ user|default:"" }}' || null;
         const token = '{{ access_token|default:"" }}' || '{{ ACCESS_TOKEN|default:"" }}' || null;
@@ -54,6 +55,7 @@
                 },
                 printUrl: '{{ GEOSERVER_PUBLIC_LOCATION }}pdf/info.json',
                 bingApiKey: '{% bing_api_key %}',
+                projectionDefs: projectionDefs,
                 // the properties inside geoNodeSettings are stored in the state
                 // and accessible by the monitored state with state('settings')
                 geoNodeSettings: {
