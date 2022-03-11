@@ -335,7 +335,7 @@ function ProcessingUploadList({
 
     function handleDelete({ id, deleteUrl }) {
         axios.get(deleteUrl)
-            .then(() => {
+            .finally(() => {
                 if (isMounted.current) {
                     setDeletedIds((ids) => [...ids, id]);
                     onChange(pendingUploads.filter(upload => upload.id !== id));
