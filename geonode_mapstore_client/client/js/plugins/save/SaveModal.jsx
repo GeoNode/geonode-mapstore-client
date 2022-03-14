@@ -70,7 +70,7 @@ function SaveModal({
         if (copy && currentModal?.current) {
             currentModal?.current?.addEventListener('keyup', (event) => {
                 if (event.keyCode === 13) {
-                    event.preventDefault();
+                    event.stopPropagation();
                     onSave(
                         update ? contentId : undefined,
                         {
