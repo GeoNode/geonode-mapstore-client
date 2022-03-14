@@ -291,7 +291,7 @@
             "Examples": "Beispiele",
             "LinkedinGroup": "Mapstore Linkedin Gruppe",
             "scrollTop": "An den Anfang der Seite scrollen",
-            "footerDescription": "<strong>GeoSolutions</strong> <a href=\"mailto:info@geosolutionsgroup.com\">info@geosolutionsgroup.com</a> <strong>US</strong> +1 (301) 337-7055 -  <strong>Italy</strong>: +39 0584 962313",
+            "footerDescription": "<strong>GeoSolutions</strong> <a href=\"mailto:sales@geosolutionsgroup.com\">sales@geosolutionsgroup.com</a>",
             "ml": {
                 "title": "Bleibe in Verbindung und auf dem Laufenden mit der Mailing Liste",
                 "subscribe_users": "Abonniere die Benutzer Mailing Liste",
@@ -345,6 +345,7 @@
             "confirm": "Ich stimme zu"
         },
         "manager": {
+            "managerMenu": "Manager-Menü",
             "openInANewTab":"Karte öffnen",
             "deleteMap":"Karte löschen",
             "deleteMapMessage": "Möchten Sie diese Karte wirklich löschen?",
@@ -564,13 +565,13 @@
             "refreshMessage": "WMS-Layer-Konfiguration vom Server laden",
             "refreshError": "Fehler beim Aktualisieren der Ebenen: ",
             "epsgNotSupported": "KBS {epsg} wird für das Zoomen auf den Layer nicht unterstützt",
-            "compareTool": "Tool vergleichen",
+            "compareTool": "Vergleichswerkzeug",
             "configureTool": "Konfigurieren",
-            "spyconfiguration": "Spyglass Konfiguration",
-            "swipeconfiguration": "Swipe-Konfiguration",
-            "swipe": "Wischen Sie",
-            "spyGlass": "Spion Glas",
-            "direction": "Wischerichtung",
+            "spyconfiguration": "Lupe konfigurieren",
+            "swipeconfiguration": "Schieberegler konfigurieren",
+            "swipe": "Schieberegler",
+            "spyGlass": "Lupe",
+            "direction": "Schieberichtung",
             "radius": "Radius",
             "filterIconEnabled": "Ebenenfilter deaktivieren",
             "filterIconDisabled": "Ebenenfilter aktivieren",
@@ -671,7 +672,7 @@
             "description": "Beschreibung",
             "descriptionplaceholder": "Gib eine Beschreibung ein...",
             "resolution": "Auflösung:",
-            "defaultBackground": "Nutze OSM als Hintergrund",
+            "defaultBackground": "Verwenden Sie den Standardhintergrund",
             "printtooltip": "Drucken",
             "alternatives": {
                 "legend": "Legende einschließen",
@@ -686,9 +687,17 @@
                 "iconsSize": "Symbolgröße:",
                 "dpi": "dpi:"
             },
-            "layoutWarning": "Layout nicht erlaubt"
+            "layoutWarning": "Layout nicht erlaubt",
+            "scale": "Maßstab",
+            "includeScale": "in Druck einschließen",
+            "disabledpreview": "Die Vorschau ist mit diesen Druckparametern nicht verfügbar",
+            "outputFormat": "Format",
+            "previewFormatUnsupported": "Nicht unterstütztes Format für die Vorschau",
+            "projection": "Koordinatensystem",
+            "projectionmismatch": "Nichtübereinstimmung des Koordinatensystems zwischen gedruckter und Bildschirmkarte",
+            "graticule": "Raster mit Etiketten hinzufügen"
         },
-        "backgroundSwither":{
+        "backgroundSwitcher":{
             "tooltip": "Wähle Hintergrund"
         },
         "info":{
@@ -1010,7 +1019,7 @@
             "query": "Suche",
             "apply": "Anwenden",
             "reset": "Zurücksetzen",
-            "save": "Sparen",
+            "save": "Speichern",
             "discard": "Rückgängig machen",
             "query_request_exception": "Abfrage Fehler",
             "config": {
@@ -1035,7 +1044,8 @@
                 "combo_placeholder": "Attribut",
                 "text_placeholder": "Gib den zu filternden Text ein",
                 "attribute_filter_header": "Attributfilter",
-                "tooltipTextField": "Verwenden <b>*</b> für ein beliebiges Zeichen</br>Verwenden <b>.</b> für ein einzelnes Zeichen</br>Verwenden <b>!</b> für Sonderzeichen (* und .)</br>",
+                "tooltipTextField": "Verwenden <b>*</b> für ein beliebiges Zeichen</br>Verwenden . für ein einzelnes Zeichen</br>Verwenden <b>!</b> für Sonderzeichen (* und .)</br>",
+                "tooltipTextFieldCSS": "Verwenden <b>%</b> für ein beliebiges Zeichen</br>Verwenden <b>_</b> für ein einzelnes Zeichen</br>Verwenden <b>\\</b> für Sonderzeichen (% und _)</br>",
                 "groupField": {
                     "any": "einer",
                     "all": "aller",
@@ -1215,7 +1225,7 @@
             "passwordInvalid": "Ungültiges Passwort",
             "username": "Benutzername",
             "password": "Passwort",
-            "passwordMessage": "Das Passwort muss aus mindestens 6 Zeichen bestehen. Gültige Werte für Kennwörter sind Ziffern, Klein- oder Großbuchstaben und die folgenden Sonderzeichen: !,@,#,$,%,&,*,_",
+            "passwordMessage": "Das Passwort muss aus mindestens 6 Zeichen bestehen.",
             "passwordInvalidChar": "Das Passwort darf diese Zeichen nicht enthalten: {data}",
             "passwordChanged": "Passwort geändert",
             "passwordError": "Fehler beim Ändern des Passworts",
@@ -1230,7 +1240,10 @@
             "detailsGroups": "Gruppen",
             "detailsEmail": "E-mail",
             "detailsCompany": "Unternehmen",
-            "detailsNotes": "Anmerkungen"
+            "detailsNotes": "Anmerkungen",
+            "userMenu": "Benutzermenü",
+            "generalInformation": "Allgemein",
+            "attributes": "Attribute"
         },
         "users": {
             "title": "Accounts verwalten",
@@ -1281,7 +1294,9 @@
           "noUsers": "Keine Benutzer für diese Gruppe gefunden",
           "errorSaving": "Es gab einen Fehler beim Speichern dieser Gruppe",
           "errorDelete": "Es gab einen Fehler beim Löschen dieser Gruppe",
-          "confirmDeleteGroup": "Sind Sie sicher, das Sie diese Gruppe löschen möchten?"
+          "confirmDeleteGroup": "Sind Sie sicher, das Sie diese Gruppe löschen möchten?",
+          "generalInformation": "Allgemein",
+          "members": "Mitglied"
         },
         "share":{
             "title": "Teilen",
@@ -1315,8 +1330,14 @@
             "coordinate": "Koordinate",
             "coordTooltip": "Klicken Sie auf die Karte, um die Koordinaten zu ändern / festzulegen",
             "zoomToolTip": "Min: 1 und Max: 35",
+            "headingToolTip": "Min: 0° und Max: 360°",
+            "rollToolTip": "Min: -90° und Max: 90°",
+            "pitchToolTip": "Min: -90° und Max: 90°",
             "showSectionId": "Bildlaufposition einschließen",
             "showConnections": "Verbindungen anzeigen",
+            "heading": "Kurswinkel",
+            "roll": "Rollwinkel",
+            "pitch": "Steigungswinkel",
             "sizeOptions": {
                 "width": "Breite",
                 "height": "Höhe"
@@ -1821,9 +1842,32 @@
                     "addLayer": "Fügt der Karte eine Ebene hinzu",
                     "useTheSelectedLayer": "Verwende die ausgewählte Ebene",
                     "connectToAMap": "Stellen Sie eine Verbindung zu einem anderen Widget her",
-                    "connectToTheMap": "Stellen Sie eine Verbindung mit dem anderen Widget her",
+                    "connectToTheMap": "Verbinden Sie sich mit der Karte",
                     "selectMapToConnect": "Wählen Sie das zu verbindende Widget aus",
-                    "clearConnection": "Verbindung löschen"
+                    "clearConnection": "Verbindung löschen",
+                    "classAttributes": {
+                        "classColor": "Klasse Farbe",
+                        "classLabel": "Klassenbezeichnung",
+                        "classValue": "Klassenwert",
+                        "color": "Farbe",
+                        "confirmModalMessage": "Nicht klassifizierte Werte schließen und verwerfen?",
+                        "classificationAttribute": "Klassifizierungsattribut",
+                        "customLabels": "Benutzerdefinierte Etiketten",
+                        "barChartCustomLabelsExample": "<div><p><code>${legendValue}</code> kann als Platzhalter für das Y-Attribut verwendet werden.</p><p></p><h5>Beispiel</h5><dl><dt><b>Y-Attribut:</b></dt><dd>POPULATION</dd><dt><b>Klassenbezeichnung:</b></dt><dd><code>${legendValue}</code> California</dd><dt><b>Ergebnisse:</b></dt><dd>POPULATION California</dd></dl></div>",
+                        "pieChartCustomLabelsExample": "<div><p><code>${groupByValue}</code> kann als Platzhalter für das Attribut „Gruppieren nach“ verwendet werden.</p><p>Legendenelemente mit gleichem Textinhalt werden im Diagramm gruppiert.</p><h5>Beispiel</h5><dl><dt><b>Attribut „Gruppieren nach“:</b></dt><dd>POPULATION</dd><dt><b>Klassenbezeichnung:</b></dt><dd><code>${groupByValue}</code> California</dd><dt><b>Ergebnisse:</b></dt><dd>POPULATION California</dd></dl></div>",
+                        "pieRangeDefaultChartCustomLabelsExample": "<div><p><code>${groupByValue}</code> kann als Platzhalter für das Attribut „Gruppieren nach“ verwendet werden.</p><p>Legendenelemente mit gleichem Textinhalt werden im Diagramm gruppiert.</p><h5>Beispiel</h5><dl><dt><b>Attribut:</b></dt><dd>POPULATION</dd><dt><b>Klasse:</b></dt><dd><code>${groupByValue}</code> California</dd><dt><b>Ergebnisse:</b></dt><dd>POPULATION California</dd></dl></div>",
+                        "pieRangeClassChartCustomLabelsExample": "<div><p><code>${groupByValue}</code> kann als Platzhalter für das Attribut „Gruppieren nach“ verwendet werden.</p><p><code>${legendValue}</code> kann als Platzhalter für das Y-Attribut verwendet werden.</p><p><code>${minValue}</code> kann als Platzhalter für die Klasse Klassenminimalwert verwendet werden.</p><p><code>${maxValue}</code> kann als Platzhalter für die Klasse Klassenmaximalwert verwendet werden.</p><p>Legendenelemente mit gleichem Textinhalt werden im Diagramm gruppiert.</p><h5>Beispiel</h5><dl><dt><b>Attribut „Gruppieren nach“:</b></dt><dd>POPULATION</dd><dt><b>Y-Attribut:</b></dt><dd>LAND_KM</dd><dt><b>Klassenminimalwert </b></dt><dd>0</dd><dt><b>Klassenmaximalwert:</b></dt><dd>10000</dd><dt><b>Klasse:</b></dt><dd><code>${groupByValue}</code> California<code>${legendValue}</code>: <code>${minValue}</code> - <code>${maxValue}</code></dd><dt><b>Ergebnisse:</b></dt><dd>POPULATION California LAND_KM: 0 - 10000</dd></dl></div>",
+                        "barRangeDefaultChartCustomLabelsExample": "<div><p><code>${legendValue}</code> kann als Platzhalter für das Y-Attribut verwendet werden.</p><p></p><h5>Beispiel</h5><dl><dt><b>Y Attribut:</b></dt><dd>POPULATION</dd><dt><b>Klasse:</b></dt><dd><code>${legendValue}</code> California</dd><dt><b>Ergebnisse:</b></dt><dd>POPULATION California</dd></dl></div>",
+                        "barRangeClassChartCustomLabelsExample": "<div><p><code>${minValue}</code> kann als Platzhalter für die Klasse Klassenminimalwert verwendet werden.</p><p><code>${maxValue}</code> kann als Platzhalter für die Klasse Klassenmaximalwert verwendet werden.</p><p><code>${legendValue}</code> kann als Platzhalter für das Y-Attribut verwendet werden.</p><p>Legendenelemente mit gleichem Textinhalt werden im Diagramm gruppiert.</p><h5>Example</h5><dl><dt><b>Attribut:</b></dt><dd>POPULATION</dd><dt><b>Klasse:</b></dt><dd><code>${groupByValue}</code> California</dd><dt><b>Ergebnisse:</b></dt><dd>POPULATION California</dd></dl></div>",
+                        "defaultClassLabel": "Standardklassenbezeichnung",
+                        "defaultColorRamp": "Standard-Farbrampe",
+                        "defaultColor": "Standardfarbe",
+                        "defaultCustomLabel": "Standardlabel",
+                        "editCustomColors": "Benutzerdefinierte Farben bearbeiten",
+                        "maxValue": "Höchster Wert",
+                        "minValue": "Mindestwert",
+                        "title": "Benutzerdefinierte Farbeinstellungen"
+                    }
                 },
                 "errors": {
                     "noAttributesTitle": "Keine Attribute zum Anzeigen",
@@ -1958,6 +2002,9 @@
                 "yAxisLabel": "Legend Label",
                 "title": "Erweiterte Optionen",
                 "legend": "Legende",
+                "barChartType": "Balkendiagrammtyp",
+                "groupedBarChart": "Gruppiert",
+                "stackedBarChart": "Gestapelt",
                 "axisTypes": {
                   "auto": "Auto",
                   "linear": "linear",
@@ -2730,6 +2777,8 @@
         "defaultMapBackgroundsServiceTitle": "Standardhintergründe",
         "backgroundSelector": {
             "addTooltip": "Neuen Hintergrund hinzufügen",
+            "editTooltip": "Hintergrund bearbeiten",
+            "deleteTooltip": "Hintergrund löschen",
             "confirmDelete": "Möchten Sie den \"{title}\" - Hintergrund wirklich löschen?"
         },
         "stepper": {

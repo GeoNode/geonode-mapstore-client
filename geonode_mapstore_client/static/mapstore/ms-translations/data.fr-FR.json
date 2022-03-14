@@ -291,7 +291,7 @@
             "Examples": "Exemples",
             "LinkedinGroup": "Groupe Linkedin Mapstore",
             "scrollTop": "Retour en haut de la page",
-            "footerDescription": "<strong>GeoSolutions</strong> <a href=\"mailto:info@geosolutionsgroup.com\">info@geosolutionsgroup.com</a> <strong>US</strong> +1 (301) 337-7055 -  <strong>Italy</strong>: +39 0584 962313",
+            "footerDescription": "<strong>GeoSolutions</strong> <a href=\"mailto:sales@geosolutionsgroup.com\">sales@geosolutionsgroup.com</a>",
             "ml": {
                 "title": "Restez au courant des derniers développements via les mailing lists",
                 "subscribe_users": "Souscrire à la liste de diffusion utilisateurs",
@@ -307,6 +307,7 @@
             "confirm": "Je suis d'accord"
         },
         "manager": {
+            "managerMenu": "Menu du gestionnaire",
             "openInANewTab": "Ouvrir la carte",
             "deleteMap": "Supprimer la carte",
             "deleteMapMessage": "Voulez-vous supprimer cette carte ?",
@@ -512,7 +513,7 @@
             "grabLayerIcon": "Attraper et déplacer la couche",
             "grabGroupIcon": "Attraper et déplacer le groupe",
             "toggleLayerVisibilityWarning": "Inverser la visibilité de la couche. Attention : la couche ne s'est pas chargée correctement",
-            "createWidget": "Créer un widget pour le couche sélectionné",
+            "createWidget": "Créer un widget pour la couche sélectionnée",
             "editLayerProperties": "Modifier les propriétés de la couche",
             "browseData": "Ouvrir la table d'attribut",
             "removeLayer": "Supprimer la couche",
@@ -632,7 +633,7 @@
             "description": "Description",
             "descriptionplaceholder": "Entrer une description...",
             "resolution": "Résolution :",
-            "defaultBackground": "Utiliser OSM comme fond de plan",
+            "defaultBackground": "Utiliser l'arrière-plan par défaut",
             "printtooltip": "Impression",
             "alternatives": {
                 "legend": "Inclure la légende",
@@ -647,9 +648,17 @@
                 "iconsSize": "Taille d'icône :",
                 "dpi": "Ppp :"
             },
-            "layoutWarning": "Mise en page non permise"
+            "layoutWarning": "Mise en page non permise",
+            "scale": "échelle",
+            "includeScale": "inclure dans l'impression",
+            "disabledpreview": "L'aperçu n'est pas disponible avec ces paramètres d'impression",
+            "outputFormat": "Format",
+            "previewFormatUnsupported": "Format non pris en charge pour l'aperçu",
+            "projection": "Système de coordonnées",
+            "projectionmismatch": "Non-concordance du système de coordonnées entre la carte imprimée et la carte à l'écran",
+            "graticule": "ajouter une grille avec des étiquettes"
         },
-        "backgroundSwither": {
+        "backgroundSwitcher": {
             "tooltip": "Sélection du fond de plan"
         },
         "info": {
@@ -996,7 +1005,8 @@
                 "combo_placeholder": "Attribut",
                 "text_placeholder": "Entrer le texte à rechercher",
                 "attribute_filter_header": "Attribut filtre",
-                "tooltipTextField": "utilise <b>*</b> pour tout caractère</br>utilise <b>.</b> pour un seul caractère</br>utilise <b>!</b> pour les caractères spéciaux (* et .)</br>",
+                "tooltipTextField": "utilise <b>*</b> pour tout caractère</br>utilise . pour un seul caractère</br>utilise <b>!</b> pour les caractères spéciaux (* et .)</br>",
+                "tooltipTextFieldCSS": "utilise <b>%</b> pour tout caractère</br>utilise <b>_</b> pour un seul caractère</br>utilise <b>\\</b> pour les caractères spéciaux (% et _)</br>",
                 "groupField": {
                     "any": "certain",
                     "all": "tous",
@@ -1176,7 +1186,7 @@
             "passwordInvalid": "Mot de passe erroné",
             "username": "Nom d'utilisateur",
             "password": "Mot de passe",
-            "passwordMessage": "Le mot de passe doit contenir au moins 6 caractères. Les valeurs valides pour les mots de passe incluent des chiffres, des lettres minuscules ou majuscules et les caractères spéciaux suivants: !,@,#,$,%,&,*,_",
+            "passwordMessage": "Le mot de passe doit contenir au moins 6 caractères.",
             "passwordInvalidChar": "Le mot de passe ne doit pas contenir ces caractères: {data}",
             "passwordChanged": "Mot de passe changé",
             "passwordError": "Erreur lors du changement de mot de passe",
@@ -1191,7 +1201,10 @@
             "detailsGroups": "Groupes",
             "detailsEmail": "E-mail",
             "detailsCompany": "Compagnie",
-            "detailsNotes": "Remarques"
+            "detailsNotes": "Remarques",
+            "userMenu": "Menu utilisateur",
+            "generalInformation": "Général",
+            "attributes": "Les attributs"
         },
         "users": {
             "title": "Gérer les comptes",
@@ -1242,7 +1255,9 @@
             "noUsers": "Aucun utilisateur pour ce groupe",
             "errorSaving": "Une erreur s'est produite lors de l'enregistrement de ce groupe",
             "errorDelete": "Une erreur s'est produite lors de la suppression de ce groupe",
-            "confirmDeleteGroup": "Voulez-vous vraiment supprimer ce groupe?"
+            "confirmDeleteGroup": "Voulez-vous vraiment supprimer ce groupe?",
+            "generalInformation": "Général",
+            "members": "Membres"
         },
         "share": {
             "title": "Partager",
@@ -1274,11 +1289,17 @@
             "coordinate": "Coordonner",
             "coordTooltip": "Cliquez sur la carte pour saisir les coordonnées",
             "zoomToolTip": "Min: 1 et Max: 35",
+            "headingToolTip": "Min: 0° et Max: 360°",
+            "rollToolTip": "Min: -90° et Max: 90°",
+            "pitchToolTip": "Min: -90° et Max: 90°",
             "addBboxParam": "Ajouter un paramètre de rectangle englobant au lien de partage",
             "wrongBboxParamTitle": "Paramètre de rectangle englobant invalide",
             "wrongBboxParamMessage": "Les paramètres du rectangle englobant doivent être en EPSG:4326 et écrit de cette façon : bbox=minx,miny,maxx,maxy",
             "showSectionId": "Inclure la position de défilement",
             "showConnections": "Afficher les connexions",
+            "heading": "Angle de cap",
+            "roll": "Angle de roulis",
+            "pitch": "Angle d'inclinaison",
             "sizeOptions": {
                 "width": "largeur",
                 "height": "la taille"
@@ -1784,9 +1805,32 @@
                     "addLayer": "Ajouter une couche à la carte",
                     "useTheSelectedLayer": "Utiliser la couche sélectionnée",
                     "connectToAMap": "Se connecter à un autre widget",
-                    "connectToTheMap": "Connectez-vous à l'autre widget",
+                    "connectToTheMap": "Connectez-vous à la carte",
                     "selectMapToConnect": "Sélectionnez le widget pour vous connecter",
-                    "clearConnection": "Effacer la connexion"
+                    "clearConnection": "Effacer la connexion",
+                    "classAttributes": {
+                        "classColor": "Couleur de la Classe",
+                        "classLabel": "Étiquette de la Classe",
+                        "classValue": "Valeur de la Classe",
+                        "color": "Couleur",
+                        "confirmModalMessage": "Fermer et supprimer les valeurs non classées?",
+                        "classificationAttribute": "Attribut de Classification",
+                        "customLabels": "Étiquettes personnalisées",
+                        "barChartCustomLabelsExample": "<div><p><code>${legendValue}</code> peut être utilisé comme espace réservé pour l'attribut Y.</p><p></p><h5>Exemple</h5><dl><dt><b>Attribut Y:</b></dt><dd>POPULATION</dd><dt><b>Étiquette de classe:</b></dt><dd><code>${legendValue}</code> California</dd><dt><b>Résultat:</b></dt><dd>POPULATION California</dd></dl></div>",
+                        "pieChartCustomLabelsExample": "<div><p><code>${groupByValue}</code> peut être utilisé comme espace réservé pour l'attribut 'Grouper par'.</p><p>les éléments de légende avec le même contenu textuel seront regroupés dans le graphique.</p><h5>Exemple</h5><dl><dt><b>Attribut 'Grouper par':</b></dt><dd>POPULATION</dd><dt><b>Étiquette de classe:</b></dt><dd><code>${groupByValue}</code> California</dd><dt><b>Résultat:</b></dt><dd>POPULATION California</dd></dl></div>",
+                        "pieRangeDefaultChartCustomLabelsExample": "<div><p><code>${groupByValue}</code> peut être utilisé comme espace réservé pour l'attribut 'Grouper par'.</p><p>les éléments de légende avec le même contenu textuel seront regroupés dans le graphique.</p><h5>Exemple</h5><dl><dt><b>Attribut 'Grouper par':</b></dt><dd>POPULATION</dd><dt><b>Classe:</b></dt><dd><code>${groupByValue}</code> California</dd><dt><b>Résultat:</b></dt><dd>POPULATION California</dd></dl></div>",
+                        "pieRangeClassChartCustomLabelsExample": "<div><p><code>${groupByValue}</code> peut être utilisé comme espace réservé pour l'attribut 'Grouper par'.</p><p><code>${legendValue}</code> peut être utilisé comme espace réservé pour l'attribut Y.</p><p><code>${minValue}</code>peut être utilisé comme espace réservé pour la valeur minimale de la classe.</p><p><code>${maxValue}</code> peut être utilisé comme espace réservé pour la valeur maximale de la classe.</p><p>les éléments de légende avec le même contenu textuel seront regroupés dans le graphique.</p><h5>Exemple</h5><dl><dt><b>attribut 'Grouper par'.</b></dt><dd>POPULATION</dd><dt><b>attribut Y:</b></dt><dd>LAND_KM</dd><dt><b>Valeur maximale de la classe:</b></dt><dd>0</dd><dt><b>Valeur minimale de la classe:</b></dt><dd>10000</dd><dt><b>Classe:</b></dt><dd><code>${groupByValue}</code> California<code>${legendValue}</code>: <code>${minValue}</code> - <code>${maxValue}</code></dd><dt><b>Résultat:</b></dt><dd>POPULATION California LAND_KM: 0 - 10000</dd></dl></div>",
+                        "barRangeDefaultChartCustomLabelsExample": "<div><p><code>${legendValue}</code> peut être utilisé comme espace réservé pour l'attribut Y.</p><p></p><h5>Exemple</h5><dl><dt><b>Y Attribut:</b></dt><dd>POPULATION</dd><dt><b>Classe:</b></dt><dd><code>${legendValue}</code> California</dd><dt><b>Résultat:</b></dt><dd>POPULATION California</dd></dl></div>",
+                        "barRangeClassChartCustomLabelsExample": "<div><p><code>${minValue}</code>peut être utilisé comme espace réservé pour la valeur minimale de la classe.</p><p><code>${maxValue}</code> peut être utilisé comme espace réservé pour la valeur maximale de la classe.</p><p><code>${legendValue}</code> peut être utilisé comme espace réservé pour l'attribut Y.</p><p>les éléments de légende avec le même contenu textuel seront regroupés dans le graphique.</p><h5>Example</h5><dl><dt><b>Attribut:</b></dt><dd>POPULATION</dd><dt><b>Classe:</b></dt><dd><code>${groupByValue}</code> California</dd><dt><b>Résultat:</b></dt><dd>POPULATION California</dd></dl></div>",
+                        "defaultClassLabel": "Étiquette de Classe par Défaut",
+                        "defaultColorRamp": "Rampe de Couleur par Défaut",
+                        "defaultColor": "Couleur par Défaut",
+                        "defaultCustomLabel": "Étiquette par défaut",
+                        "editCustomColors": "Modifie Couleurs Personnalisées",
+                        "maxValue": "Valeur maximum",
+                        "minValue": "Valeur minimum",
+                        "title": "Paramètres de Couleurs Personnalisées"
+                    }
                 },
                 "errors": {
                     "noAttributesTitle": "Aucun attribut à afficher",
@@ -1921,6 +1965,9 @@
               "yAxisLabel": "Légende Libellé",
               "title": "Options avancées",
               "legend": "Legend",
+              "barChartType": "Type de Graphique à Barres",
+              "groupedBarChart": "Groupé",
+              "stackedBarChart": "Empilé",
               "axisTypes": {
                 "auto": "Auto",
                 "linear": "Linear",
@@ -2694,6 +2741,8 @@
         "defaultMapBackgroundsServiceTitle": "Fonds de plans par défaut",
         "backgroundSelector": {
             "addTooltip": "Ajouter un nouveau fond",
+            "editTooltip": "Modifier le fond",
+            "deleteTooltip": "Supprimer le fond",
             "confirmDelete": "Êtes-vous sûr de vouloir supprimer le fond \"{title}\"?"
         },
         "stepper": {

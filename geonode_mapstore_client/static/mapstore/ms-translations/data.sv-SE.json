@@ -292,7 +292,7 @@
             "Exempel": "Exempel",
             "LinkedinGroup": "Mapstore på Linkedin",
             "scrollTop": "Bläddra till toppen av sidan",
-            "footerDescription": "<strong> GeoSolutions </strong> <a href=\"mailto:info@geosolutionsgroup.com\"> info@geosolutionsgroup.com </a> <strong> US </strong> +1 (301 ) 337-7055 - <strong> Italien </strong>: +39 0584 962313 ",
+            "footerDescription": "<strong> GeoSolutions </strong> <a href=\"mailto:sales@geosolutionsgroup.com\"> sales@geosolutionsgroup.com </a> <strong> US </strong> +1 (301 ) 337-7055 - <strong> Italien </strong>: +39 0584 962313 ",
             "ml": {
                 "title": "Håll dig uppdaterad med våra E-postlistor",
                 "subscribe_users": "Prenumerera på E-postlista för användare",
@@ -646,7 +646,7 @@
             },
             "layoutWarning": "Otillåten layout"
         },
-        "backgroundSwither": {
+        "backgroundSwitcher": {
             "tooltip": "Välj bakgrund"
         },
         "info":{
@@ -1169,7 +1169,7 @@
             "passwordInvalid": "Ogiltigt lösenord",
             "username": "Användarnamn",
             "password": "Lösenord",
-            "passwordMessage": "Lösenordet måste innehålla minst 6 tecken. Giltiga värden för lösenord är siffror, små eller stora bokstäver och följande specialtecken:! @ # $ % & * _.",
+            "passwordMessage": "Lösenordet måste innehålla minst 6 tecken.",
             "passwordInvalidChar": "Lösenordet får inte innehålla dessa tecken: {data}",
             "passwordChanged": "Lösenord ändrat",
             "passwordError": "Fel vid ändring av lösenord",
@@ -1260,6 +1260,9 @@
             "coordinate": "Coordinate",
             "coordTooltip": "Klicka på kartan för att ta koordinaterna",
             "zoomToolTip": "Min: 1 och Max: 35",
+            "headingToolTip": "Min: 0° och Max: 360°",
+            "rollToolTip": "Min: -90° och Max: 90°",
+            "pitchToolTip": "Min: -90° och Max: 90°",
             "wrongCenterAndZoomParamTitle": "Ogiltig center- och zoomparameter",
             "wrongCenterAndZoomParamMessage": "Centrum och zoomparameter måste vara center = lon, lat & zoom = värde och (+|- 90 ° lat,+| -180 ° lon, <=+35 zoom)",
             "wrongMarkerAndZoomParamTitle": "Ogiltig markör och zoomparameter",
@@ -1271,6 +1274,9 @@
             "showHomeButton": "Länk till MapStores hem",
             "showSectionId": "Inkludera rullningsposition",
             "showConnections": "Visa anslutningar",
+            "heading": "Kursvinkel",
+            "roll": "Rullningsvinkel",
+            "pitch": "Stigningsvinkel",
             "sizeOptions": {
                 "width": "width",
                 "height": "höjd"
