@@ -577,3 +577,13 @@ export const parseMapConfig = (mapResponse, resource = {}) => {
         type: 'map'
     };
 };
+
+/**
+* Util to check if resosurce can be cloned (Save As)
+* Requirements for copying are 'add_resource' permission and is_copyable property on resource
+*/
+export const canCopyResource = (resource, user) => {
+    const canAdd = user?.perms?.includes('add_resource');
+    const canCopy = resource?.is_copyable;
+    return (canAdd && canCopy) ? true : false;
+};

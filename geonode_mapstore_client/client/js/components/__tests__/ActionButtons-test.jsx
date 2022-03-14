@@ -24,7 +24,7 @@ describe('ALink test', () => {
     });
 
     it('render Action Button with defaults', () => {
-        ReactDOM.render(<ActionButtons />, document.getElementById('container'));
+        ReactDOM.render(<ActionButtons options={[{action: 'delete'}]} />, document.getElementById('container'));
         const actionButton = document.querySelector(
             '.gn-resource-action-buttons'
         );

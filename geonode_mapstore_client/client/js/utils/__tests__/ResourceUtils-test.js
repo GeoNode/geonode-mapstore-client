@@ -17,7 +17,8 @@ import {
     toGeoNodeMapConfig,
     compareBackgroundLayers,
     toMapStoreMapConfig,
-    parseStyleName
+    parseStyleName,
+    canCopyResource
 } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
@@ -414,5 +415,12 @@ describe('Test Resource Utils', () => {
         const pasrsedStyleName = parseStyleName(styleObj);
 
         expect(pasrsedStyleName).toBe('test:testName');
+    });
+
+    it('should test canCopyResource', () => {
+        const resource = { is_copyable: true };
+        const user = { perms: ['add_resource'] };
+
+        expect(canCopyResource(resource, user)).toEqual(true);
     });
 });

@@ -449,13 +449,7 @@
                     "action": "copy",
                     "labelId": "gnviewer.clone",
                     "icon": "copy",
-                    "authenticated": true,
-                    "perms": [
-                        {
-                            "type": "resource",
-                            "value": "change_resourcebase"
-                        }
-                    ]
+                    "authenticated": true
                 },
                 {
                     "type": "button",
@@ -852,7 +846,7 @@
                         {
                             "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}",
                             "type": "dropdown",
                             "items": [
                                 {
@@ -861,8 +855,7 @@
                                 },
                                 {
                                     "type": "plugin",
-                                    "name": "SaveAs",
-                                    "disableIf": "{state('gnResourceData') && state('gnResourceData').is_copyable ? false : true}"
+                                    "name": "SaveAs"
                                 }
                             ]
                         },
@@ -1571,7 +1564,7 @@
                         {
                             "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
-                            "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}",
                             "type": "dropdown",
                             "items": [
                                 {
@@ -2030,7 +2023,7 @@
                         {
                             "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
-                            "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}",
                             "type": "dropdown",
                             "items": [
                                 {
@@ -2215,7 +2208,7 @@
                             "labelId": "gnviewer.save",
                             "type": "dropdown",
                             "showPendingChangesIcon": true,
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}",
                             "items": [
                                 {
                                     "type": "plugin",
@@ -2223,8 +2216,7 @@
                                 },
                                 {
                                     "type": "plugin",
-                                    "name": "SaveAs",
-                                    "disableIf": "{state('gnResourceData') && state('gnResourceData').is_copyable ? false : true}"
+                                    "name": "SaveAs"
                                 }
                             ]
                         },

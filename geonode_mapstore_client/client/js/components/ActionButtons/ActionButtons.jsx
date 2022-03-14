@@ -20,8 +20,11 @@ function ActionButtons({
     onDownload
 }) {
 
-    if (options?.length === 1 && options?.[0].action === 'download' && !resource.download_url) {
-        return null;
+    // do not render if the options only contain download or copy or both without meeting their requirements
+    if (options?.every(({action}) => action !== 'delete')) {
+        if (options?.every(({action}) => (action === 'download' && !resource.download_url) || (['copy'].includes(action) && !resource.is_copyable & !resource.download_url))) {
+            return null;
+        }
     }
 
 
