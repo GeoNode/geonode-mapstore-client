@@ -21,6 +21,7 @@ import castArray from 'lodash/castArray';
 import get from 'lodash/get';
 import { getUserInfo } from '@js/api/geonode/v1';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
+import { mergeConfigsPatch } from '@mapstore/patcher';
 
 let endpoints = {
     // default values
@@ -300,16 +301,31 @@ export const getAccountInfo = () => {
 export const getConfiguration = (configUrl = '/static/mapstore/configs/localConfig.json') => {
     return axios.get(configUrl)
         .then(({ data }) => {
+
             const geoNodePageConfig = window.__GEONODE_CONFIG__ || {};
-            const localConfig = mergeWith(
+            const geoNodePageLocalConfig = geoNodePageConfig.localConfig || {};
+            const pluginsConfigPatchRules = geoNodePageConfig.pluginsConfigPatchRules || [];
+
+            const mergedLocalConfig = mergeWith(
                 data,
-                geoNodePageConfig.localConfig || {},
+                geoNodePageLocalConfig,
                 (objValue, srcValue) => {
                     if (isArray(objValue)) {
                         return srcValue;
                     }
                     return undefined; // eslint-disable-line consistent-return
                 });
+
+            // change plugins config based on patches provided in settings.py
+            const plugins = pluginsConfigPatchRules.length > 0
+                ? mergeConfigsPatch(mergedLocalConfig.plugins, pluginsConfigPatchRules)
+                : mergedLocalConfig.plugins;
+
+            const localConfig = {
+                ...mergedLocalConfig,
+                plugins
+            };
+
             if (geoNodePageConfig.overrideLocalConfig) {
                 return geoNodePageConfig.overrideLocalConfig(localConfig, {
                     mergeWith,
