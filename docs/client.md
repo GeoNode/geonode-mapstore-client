@@ -735,6 +735,7 @@ check if the menu perms is allowed by user or resource
     * [.getResourcePermissions](#module_utils/ResourceUtils.getResourcePermissions) ⇒
     * [.parseDocumentConfig](#module_utils/ResourceUtils.parseDocumentConfig) ⇒ <code>Object</code>
     * [.parseMapConfig](#module_utils/ResourceUtils.parseMapConfig) ⇒ <code>Object</code>
+    * [.canCopyResource](#module_utils/ResourceUtils.canCopyResource)
 
 <a name="module_utils/ResourceUtils.resourceToLayerConfig"></a>
 
@@ -796,6 +797,13 @@ Parse map response object
 | mapResponse | <code>Object</code> | api response object |
 | resource | <code>Object</code> | optional resource object |
 
+<a name="module_utils/ResourceUtils.canCopyResource"></a>
+
+### utils/ResourceUtils.canCopyResource
+Util to check if resosurce can be cloned (Save As)
+Requirements for copying are 'add_resource' permission and is_copyable property on resource
+
+**Kind**: static constant of [<code>utils/ResourceUtils</code>](#module_utils/ResourceUtils)  
 <a name="SYNC_RESOURCES"></a>
 
 ## SYNC\_RESOURCES
