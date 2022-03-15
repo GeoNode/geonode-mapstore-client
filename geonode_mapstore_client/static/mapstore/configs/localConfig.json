@@ -470,6 +470,83 @@
                 }
             },
             {
+                "name": "PrintOutputFormat",
+                "cfg": {
+                    "allowedFormats": [
+                        {
+                            "value": "pdf",
+                            "name": "PDF"
+                        },
+                        {
+                            "value": "png",
+                            "name": "PNG"
+                        },
+                        {
+                            "value": "jpg",
+                            "name": "JPEG"
+                        }
+                    ]
+                },
+                "override": {
+                    "Print": {
+                        "target": "left-panel",
+                        "position": 3
+                    }
+                }
+            },
+            {
+                "name": "PrintScale",
+                "override": {
+                    "Print": {
+                        "position": 4
+                    }
+                }
+            },
+            {
+                "name": "PrintGraticule",
+                "override": {
+                    "Print": {
+                        "position": 5
+                    }
+                },
+                "cfg": {
+                    "frame": 0.07,
+                    "style": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "lineDash": [
+                            0.5,
+                            4
+                        ],
+                        "opacity": 0.5
+                    },
+                    "frameStyle": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "fillColor": "#FFFFFF"
+                    },
+                    "labelXStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2
+                    },
+                    "labelYStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2,
+                        "rotation": 90,
+                        "verticalAlign": "top",
+                        "textAlign": "center"
+                    }
+                }
+            },
+            {
                 "name": "BurgerMenu"
             },
             {
@@ -604,6 +681,83 @@
                 "cfg": {
                     "useFixedScales": true,
                     "mapWidth": 256
+                }
+            },
+            {
+                "name": "PrintOutputFormat",
+                "cfg": {
+                    "allowedFormats": [
+                        {
+                            "value": "pdf",
+                            "name": "PDF"
+                        },
+                        {
+                            "value": "png",
+                            "name": "PNG"
+                        },
+                        {
+                            "value": "jpg",
+                            "name": "JPEG"
+                        }
+                    ]
+                },
+                "override": {
+                    "Print": {
+                        "target": "left-panel",
+                        "position": 3
+                    }
+                }
+            },
+            {
+                "name": "PrintScale",
+                "override": {
+                    "Print": {
+                        "position": 4
+                    }
+                }
+            },
+            {
+                "name": "PrintGraticule",
+                "override": {
+                    "Print": {
+                        "position": 5
+                    }
+                },
+                "cfg": {
+                    "frame": 0.07,
+                    "style": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "lineDash": [
+                            0.5,
+                            4
+                        ],
+                        "opacity": 0.5
+                    },
+                    "frameStyle": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "fillColor": "#FFFFFF"
+                    },
+                    "labelXStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2
+                    },
+                    "labelYStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2,
+                        "rotation": 90,
+                        "verticalAlign": "top",
+                        "textAlign": "center"
+                    }
                 }
             },
             {
@@ -972,6 +1126,83 @@
                 }
             },
             {
+                "name": "PrintOutputFormat",
+                "cfg": {
+                    "allowedFormats": [
+                        {
+                            "value": "pdf",
+                            "name": "PDF"
+                        },
+                        {
+                            "value": "png",
+                            "name": "PNG"
+                        },
+                        {
+                            "value": "jpg",
+                            "name": "JPEG"
+                        }
+                    ]
+                },
+                "override": {
+                    "Print": {
+                        "target": "left-panel",
+                        "position": 3
+                    }
+                }
+            },
+            {
+                "name": "PrintScale",
+                "override": {
+                    "Print": {
+                        "position": 4
+                    }
+                }
+            },
+            {
+                "name": "PrintGraticule",
+                "override": {
+                    "Print": {
+                        "position": 5
+                    }
+                },
+                "cfg": {
+                    "frame": 0.07,
+                    "style": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "lineDash": [
+                            0.5,
+                            4
+                        ],
+                        "opacity": 0.5
+                    },
+                    "frameStyle": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "fillColor": "#FFFFFF"
+                    },
+                    "labelXStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2
+                    },
+                    "labelYStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2,
+                        "rotation": 90,
+                        "verticalAlign": "top",
+                        "textAlign": "center"
+                    }
+                }
+            },
+            {
                 "name": "ZoomAll",
                 "override": {
                     "Toolbar": {
@@ -1334,6 +1565,83 @@
                 }
             },
             {
+                "name": "PrintOutputFormat",
+                "cfg": {
+                    "allowedFormats": [
+                        {
+                            "value": "pdf",
+                            "name": "PDF"
+                        },
+                        {
+                            "value": "png",
+                            "name": "PNG"
+                        },
+                        {
+                            "value": "jpg",
+                            "name": "JPEG"
+                        }
+                    ]
+                },
+                "override": {
+                    "Print": {
+                        "target": "left-panel",
+                        "position": 3
+                    }
+                }
+            },
+            {
+                "name": "PrintScale",
+                "override": {
+                    "Print": {
+                        "position": 4
+                    }
+                }
+            },
+            {
+                "name": "PrintGraticule",
+                "override": {
+                    "Print": {
+                        "position": 5
+                    }
+                },
+                "cfg": {
+                    "frame": 0.07,
+                    "style": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "lineDash": [
+                            0.5,
+                            4
+                        ],
+                        "opacity": 0.5
+                    },
+                    "frameStyle": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "fillColor": "#FFFFFF"
+                    },
+                    "labelXStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2
+                    },
+                    "labelYStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2,
+                        "rotation": 90,
+                        "verticalAlign": "top",
+                        "textAlign": "center"
+                    }
+                }
+            },
+            {
                 "name": "ZoomAll",
                 "override": {
                     "Toolbar": {
@@ -1673,6 +1981,83 @@
                 "cfg": {
                     "useFixedScales": true,
                     "mapWidth": 256
+                }
+            },
+            {
+                "name": "PrintOutputFormat",
+                "cfg": {
+                    "allowedFormats": [
+                        {
+                            "value": "pdf",
+                            "name": "PDF"
+                        },
+                        {
+                            "value": "png",
+                            "name": "PNG"
+                        },
+                        {
+                            "value": "jpg",
+                            "name": "JPEG"
+                        }
+                    ]
+                },
+                "override": {
+                    "Print": {
+                        "target": "left-panel",
+                        "position": 3
+                    }
+                }
+            },
+            {
+                "name": "PrintScale",
+                "override": {
+                    "Print": {
+                        "position": 4
+                    }
+                }
+            },
+            {
+                "name": "PrintGraticule",
+                "override": {
+                    "Print": {
+                        "position": 5
+                    }
+                },
+                "cfg": {
+                    "frame": 0.07,
+                    "style": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "lineDash": [
+                            0.5,
+                            4
+                        ],
+                        "opacity": 0.5
+                    },
+                    "frameStyle": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "fillColor": "#FFFFFF"
+                    },
+                    "labelXStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2
+                    },
+                    "labelYStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2,
+                        "rotation": 90,
+                        "verticalAlign": "top",
+                        "textAlign": "center"
+                    }
                 }
             },
             {
@@ -2033,6 +2418,83 @@
                 "cfg": {
                     "useFixedScales": true,
                     "mapWidth": 256
+                }
+            },
+            {
+                "name": "PrintOutputFormat",
+                "cfg": {
+                    "allowedFormats": [
+                        {
+                            "value": "pdf",
+                            "name": "PDF"
+                        },
+                        {
+                            "value": "png",
+                            "name": "PNG"
+                        },
+                        {
+                            "value": "jpg",
+                            "name": "JPEG"
+                        }
+                    ]
+                },
+                "override": {
+                    "Print": {
+                        "target": "left-panel",
+                        "position": 3
+                    }
+                }
+            },
+            {
+                "name": "PrintScale",
+                "override": {
+                    "Print": {
+                        "position": 4
+                    }
+                }
+            },
+            {
+                "name": "PrintGraticule",
+                "override": {
+                    "Print": {
+                        "position": 5
+                    }
+                },
+                "cfg": {
+                    "frame": 0.07,
+                    "style": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "lineDash": [
+                            0.5,
+                            4
+                        ],
+                        "opacity": 0.5
+                    },
+                    "frameStyle": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "fillColor": "#FFFFFF"
+                    },
+                    "labelXStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2
+                    },
+                    "labelYStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2,
+                        "rotation": 90,
+                        "verticalAlign": "top",
+                        "textAlign": "center"
+                    }
                 }
             },
             {
@@ -2431,6 +2893,83 @@
                 "cfg": {
                     "useFixedScales": true,
                     "mapWidth": 256
+                }
+            },
+            {
+                "name": "PrintOutputFormat",
+                "cfg": {
+                    "allowedFormats": [
+                        {
+                            "value": "pdf",
+                            "name": "PDF"
+                        },
+                        {
+                            "value": "png",
+                            "name": "PNG"
+                        },
+                        {
+                            "value": "jpg",
+                            "name": "JPEG"
+                        }
+                    ]
+                },
+                "override": {
+                    "Print": {
+                        "target": "left-panel",
+                        "position": 3
+                    }
+                }
+            },
+            {
+                "name": "PrintScale",
+                "override": {
+                    "Print": {
+                        "position": 4
+                    }
+                }
+            },
+            {
+                "name": "PrintGraticule",
+                "override": {
+                    "Print": {
+                        "position": 5
+                    }
+                },
+                "cfg": {
+                    "frame": 0.07,
+                    "style": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "lineDash": [
+                            0.5,
+                            4
+                        ],
+                        "opacity": 0.5
+                    },
+                    "frameStyle": {
+                        "color": "#000000",
+                        "weight": 1,
+                        "fillColor": "#FFFFFF"
+                    },
+                    "labelXStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2
+                    },
+                    "labelYStyle": {
+                        "color": "#000000",
+                        "font": "sans-serif",
+                        "fontWeight": "bold",
+                        "fontSize": "20",
+                        "labelOutlineColor": "#FFFFFF",
+                        "labelOutlineWidth": 2,
+                        "rotation": 90,
+                        "verticalAlign": "top",
+                        "textAlign": "center"
+                    }
                 }
             },
             {
