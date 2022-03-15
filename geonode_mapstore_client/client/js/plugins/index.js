@@ -322,6 +322,26 @@ export const plugins = {
             }
         }
     ),
+    PrintTextInputPlugin: toLazyPlugin(
+        'PrintTextInput',
+        () => import(/* webpackChunkName: 'plugins/print-text-input-plugin' */ '@mapstore/framework/plugins/print/TextInput')
+    ),
+    PrintOutputFormatPlugin: toLazyPlugin(
+        'PrintOutputFormat',
+        () => import(/* webpackChunkName: 'plugins/print-output-format-plugin' */ '@mapstore/framework/plugins/print/OutputFormat')
+    ),
+    PrintScalePlugin: toLazyPlugin(
+        'PrintScale',
+        () => import(/* webpackChunkName: 'plugins/print-scale-plugin' */ '@mapstore/framework/plugins/print/Scale')
+    ),
+    PrintProjectionPlugin: toLazyPlugin(
+        'PrintProjection',
+        () => import(/* webpackChunkName: 'plugins/print-projection-plugin' */ '@mapstore/framework/plugins/print/Projection')
+    ),
+    PrintGraticulePlugin: toLazyPlugin(
+        'PrintGraticule',
+        () => import(/* webpackChunkName: 'plugins/print-graticule-plugin' */ '@mapstore/framework/plugins/print/Graticule')
+    ),
     TimelinePlugin: toLazyPlugin(
         'Timeline',
         () => import(/* webpackChunkName: 'plugins/timeline-plugin' */ '@mapstore/framework/plugins/Timeline')

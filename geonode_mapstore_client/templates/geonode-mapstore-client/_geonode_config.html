@@ -51,6 +51,8 @@
         const timeEnabled = geoNodeSettings.TIME_ENABLED || false;
         const allowedDocumentTypes = geoNodeSettings.ALLOWED_DOCUMENT_TYPES || [];
         const languages = geoNodeSettings.LANGUAGES;
+        const projectionDefs = geoNodeSettings.PROJECTION_DEFS || [];
+        const pluginsConfigPatchRules  = geoNodeSettings.PLUGINS_CONFIG_PATCH_RULES || [];
         const translationsPath = geoNodeSettings.TRANSLATIONS_PATH;
 
         const isEmbed = checkBoolean('{{ is_embed }}') || false;
@@ -68,6 +70,7 @@
             resourceType: '{{ resource.resource_type|default:"" }}',
             isEmbed: isEmbed,
             pluginsConfigKey: pluginsConfigKey,
+            pluginsConfigPatchRules: pluginsConfigPatchRules,
             localConfig: {
                 proxyUrl: {
                     url: '{{ PROXY_URL|default:"/proxy/?url=" }}',
@@ -79,6 +82,7 @@
                     endpointV1: siteUrl + 'api',
                     endpointV2: siteUrl + 'api/v2'
                 },
+                projectionDefs: projectionDefs,
                 // the properties inside geoNodeSettings are stored in the state
                 // and accessible by the monitored state with state('settings')
                 geoNodeSettings: {

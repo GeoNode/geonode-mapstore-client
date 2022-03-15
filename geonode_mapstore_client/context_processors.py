@@ -35,6 +35,8 @@ def resource_urls(request):
         'ALLOWED_DOCUMENT_TYPES': getattr(settings, "ALLOWED_DOCUMENT_TYPES", []),
         'LANGUAGES': getattr(settings, "LANGUAGES", []),
         'TRANSLATIONS_PATH': getattr(settings, "MAPSTORE_TRANSLATIONS_PATH", ['/static/mapstore/ms-translations', '/static/mapstore/gn-translations']),
+        'PROJECTION_DEFS': getattr(settings, "MAPSTORE_PROJECTION_DEFS", []),
+        'PLUGINS_CONFIG_PATCH_RULES': getattr(settings, "MAPSTORE_PLUGINS_CONFIG_PATCH_RULES", []),
         'TIME_ENABLED': getattr(
                 settings,
                 'UPLOADER',

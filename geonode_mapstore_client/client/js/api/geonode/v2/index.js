@@ -21,6 +21,7 @@ import { getUserInfo } from '@js/api/geonode/user';
 import { setFilterById } from '@js/utils/SearchUtils';
 import { ResourceTypes, availableResourceTypes, setAvailableResourceTypes } from '@js/utils/ResourceUtils';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
+import { mergeConfigsPatch } from '@mapstore/patcher';
 
 /**
  * Actions for GeoNode save workflow
@@ -436,15 +437,29 @@ export const getConfiguration = (configUrl = '/static/mapstore/configs/localConf
     return axios.get(configUrl)
         .then(({ data }) => {
             const geoNodePageConfig = window.__GEONODE_CONFIG__ || {};
-            const localConfig = mergeWith(
+            const geoNodePageLocalConfig = geoNodePageConfig.localConfig || {};
+            const pluginsConfigPatchRules = geoNodePageConfig.pluginsConfigPatchRules || [];
+
+            const mergedLocalConfig  = mergeWith(
                 data,
-                geoNodePageConfig.localConfig || {},
+                geoNodePageLocalConfig,
                 (objValue, srcValue) => {
                     if (isArray(objValue)) {
                         return [...objValue, ...srcValue];
                     }
                     return undefined; // eslint-disable-line consistent-return
                 });
+
+            // change plugins config based on patches provided in settings.py
+            const plugins = pluginsConfigPatchRules.length > 0
+                ? mergeConfigsPatch(mergedLocalConfig.plugins, pluginsConfigPatchRules)
+                : mergedLocalConfig.plugins;
+
+            const localConfig = {
+                ...mergedLocalConfig,
+                plugins
+            };
+
             if (geoNodePageConfig.overrideLocalConfig) {
                 return geoNodePageConfig.overrideLocalConfig(localConfig, {
                     mergeWith,
