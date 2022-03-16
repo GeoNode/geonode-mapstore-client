@@ -149,6 +149,8 @@ function UploadList({
         return files.forEach((file) => sources[file].cancel());
     }, []);
 
+    const { maxParallelUploads } = getConfigProp('geoNodeSettings');
+
     return (
         <UploadContainer
             waitingUploads={waitingUploads}
@@ -157,6 +159,7 @@ function UploadList({
             onRemove={(baseName) => removeFile(waitingUploads, baseName)}
             unsupported={unsupported}
             disabledUpload={Object.keys(waitingUploads).length === 0}
+            disableOnParallelLmit={Object.keys(waitingUploads).length > maxParallelUploads}
             onUpload={handleUploadProcess}
             loading={loading}
             progress={uploadContainerProgress}

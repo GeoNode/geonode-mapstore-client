@@ -38,7 +38,7 @@ function UploadCard({
     type
 }) {
 
-    const { datasetMaxUploadSize, documentMaxUploadSize } = getConfigProp('geoNodeSettings');
+    const { datasetMaxUploadSize, documentMaxUploadSize, maxParallelUploads } = getConfigProp('geoNodeSettings');
     const maxAllowedBytes = type !== 'document' ? datasetMaxUploadSize : documentMaxUploadSize;
     const maxAllowedSize = Math.floor(maxAllowedBytes / (1024 * 1024));
 
@@ -49,6 +49,16 @@ function UploadCard({
             fileExceeds = true;
         }
         return fileExceeds;
+    };
+
+    const errorToolTip = ({ code }) => {
+        switch (code) {
+        case "upload_parallelism_limit_exceeded": {
+            return "gnviewer.parallelLimitError";
+        }
+        default:
+            return "gnviewer.invalidUploadMessageErrorTooltip";
+        }
     };
 
     return (
@@ -97,7 +107,7 @@ function UploadCard({
                         </Button>
                         : null}
                     {state === 'INVALID'
-                        ? exceedingSizeError(error) ? <ErrorMessageWithTooltip tooltip={<Message msgId="gnviewer.fileExceeds" msgParams={{limit: maxAllowedSize }} />} /> : <ErrorMessageWithTooltip tooltipId="gnviewer.invalidUploadMessageErrorTooltip" />
+                        ? exceedingSizeError(error) ? <ErrorMessageWithTooltip tooltip={<Message msgId="gnviewer.fileExceeds" msgParams={{limit: maxAllowedSize }} />} /> : <ErrorMessageWithTooltip tooltipId={<Message msgId={errorToolTip(error)} msgParams={{ limit: maxParallelUploads }} />} />
                         : null}
                 </div>
             </div>

@@ -276,7 +276,9 @@
             "fileExceeds": "La dimensione del file supera i {limit} MB. Riprova con un file più piccolo.",
             "exceedingFileMsg": "Alcuni dei tuoi file superano il limite di caricamento di {limit} MB. Si prega di rimuoverli dall'elenco.",
             "cannotPerfomAction": "Impossibile eseguire l'azione su questa risorsa.",
-            "cancelUpload": "Annulla caricamento"
+            "cancelUpload": "Annulla caricamento",
+            "parallelUploadLimit": "Il numero selezionato di file supera il limite consentito di {limit} file. Si prega di rimuovere alcuni file dall'elenco.",
+            "parallelLimitError": "Il numero di caricamenti paralleli attivi supera {limit}. Aspetta che quelli in sospeso finiscano."
         }
     }
 }

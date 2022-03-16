@@ -37,6 +37,7 @@ function UploadContainer({
     onRemove,
     unsupported,
     disabledUpload,
+    disableOnParallelLmit,
     onUpload,
     loading,
     progress,
@@ -62,7 +63,7 @@ function UploadContainer({
         return Math.ceil(bytes / (1024 * 1024));
     };
 
-    const { datasetMaxUploadSize, documentMaxUploadSize } = getConfigProp('geoNodeSettings');
+    const { datasetMaxUploadSize, documentMaxUploadSize, maxParallelUploads } = getConfigProp('geoNodeSettings');
     const maxAllowedBytes = type === 'dataset' ? datasetMaxUploadSize : documentMaxUploadSize;
     const maxAllowedSize = Math.floor(maxAllowedBytes / (1024 * 1024));
 
@@ -91,14 +92,15 @@ function UploadContainer({
             activeClassName="gn-dropzone-active"
             rejectClassName="gn-dropzone-reject"
             disableClick
+            maxFiles={maxParallelUploads}
         >
             <ViewerLayout
                 leftColumn={
                     <div className="gn-upload-list">
                         <div className="gn-upload-list-header">
-                            <input disabled={loading} ref={inputFile} value="" type="file" multiple onChange={handleFileDrop} style={{ display: 'none' }}/>
+                            <input disabled={loading} ref={inputFile} value="" type="file" multiple onChange={handleFileDrop} style={{ display: 'none' }} />
                             <Button onClick={() => inputFile?.current?.click()}>
-                                <FaIcon name="plus"/>{' '}<Message msgId="gnviewer.selectFiles"/>
+                                <FaIcon name="plus" />{' '}<Message msgId="gnviewer.selectFiles" />
                             </Button>
                         </div>
                         {waitingUploadNames.length > 0 ? (
@@ -138,29 +140,34 @@ function UploadContainer({
                                     textAlign: 'center'
                                 }}
                             >
-                                <div><Message msgId="gnviewer.supportedFiles"/>: {supportedLabels}</div>
+                                <div><Message msgId="gnviewer.supportedFiles" />: {supportedLabels}</div>
                             </div>
                         )}
                         <div className="gn-upload-list-footer">
                             {unsupported.length > 0 ? <Alert bsStyle="danger">
-                                <Message msgId="gnviewer.unsupportedFiles"/>: {unsupported.map(({ file }) => file?.name).join(', ')}
+                                <Message msgId="gnviewer.unsupportedFiles" />: {unsupported.map(({ file }) => file?.name).join(', ')}
                             </Alert> : null}
                             {(waitingUploadNames.length > 0 && getExceedingFileSize(waitingUploadNames, maxAllowedSize)) ?
-                                <ButtonWithTooltip noTooltipWhenDisabled tooltip={<Message msgId="gnviewer.exceedingFileMsg" msgParams={{limit: maxAllowedSize }} />} >
+                                <ButtonWithTooltip noTooltipWhenDisabled tooltip={<Message msgId="gnviewer.exceedingFileMsg" msgParams={{ limit: maxAllowedSize }} />} >
                                     <Message msgId="gnviewer.upload" />
-                                </ButtonWithTooltip> :
-                                !loading ? <Button
-                                    variant="primary"
-                                    disabled={disabledUpload}
-                                    onClick={onUpload}
-                                >
-                                    <Message msgId="gnviewer.upload"/>
-                                </Button> : <Button
-                                    variant="primary"
-                                    onClick={() => abortAll(waitingUploadNames)}
-                                >
-                                    <Message msgId="gnviewer.cancelUpload"/>
-                                </Button>}
+                                </ButtonWithTooltip>
+                                : disableOnParallelLmit ?
+                                    <ButtonWithTooltip noTooltipWhenDisabled tooltip={<Message msgId="gnviewer.parallelUploadLimit" msgParams={{ limit: maxParallelUploads }} />} >
+                                        <Message msgId="gnviewer.upload" />
+                                    </ButtonWithTooltip>
+                                    :
+                                    !loading ? <Button
+                                        variant="primary"
+                                        disabled={disabledUpload}
+                                        onClick={onUpload}
+                                    >
+                                        <Message msgId="gnviewer.upload" />
+                                    </Button> : <Button
+                                        variant="primary"
+                                        onClick={() => abortAll(waitingUploadNames)}
+                                    >
+                                        <Message msgId="gnviewer.cancelUpload" />
+                                    </Button>}
                         </div>
                     </div>
                 }

@@ -25,6 +25,7 @@ import uuidv1 from 'uuid/v1';
 import axios from '@mapstore/framework/libs/ajax';
 import UploadListContainer from '@js/routes/upload/UploadListContainer';
 import UploadContainer from '@js/routes/upload/UploadContainer';
+import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 
 const supportedDatasetTypes = [
     {
@@ -209,17 +210,6 @@ function UploadList({
                 .then((responses) => {
                     const successfulUploads = responses.filter(({ status }) => status === 'success');
                     const errorUploads = responses.filter(({ status }) => status === 'error');
-                    if (errorUploads.length > 0) {
-                        const failedUploads = errorUploads.map(({ baseName: name, error }) => ({
-                            id: uuidv1(),
-                            name,
-                            progress: 100,
-                            state: 'INVALID',
-                            create_date: Date.now(),
-                            error
-                        }));
-                        onSuccess(failedUploads);
-                    }
                     if (successfulUploads.length > 0) {
                         const successfulUploadsIds = successfulUploads.map(({ data }) => data?.id);
                         const successfulUploadsNames = successfulUploads.map(({ baseName }) => baseName);
@@ -234,6 +224,17 @@ function UploadList({
                             });
                     } else {
                         setLoading(false);
+                    }
+                    if (errorUploads.length > 0) {
+                        const failedUploads = errorUploads.map(({ baseName: name, error }) => ({
+                            id: uuidv1(),
+                            name,
+                            progress: 100,
+                            state: 'INVALID',
+                            create_date: Date.now(),
+                            error
+                        }));
+                        onSuccess(failedUploads);
                     }
                 })
                 .catch(() => {
@@ -252,6 +253,8 @@ function UploadList({
         return files.forEach((file) => sources[file].cancel());
     }, []);
 
+    const { maxParallelUploads } = getConfigProp('geoNodeSettings');
+
     return (
         <UploadContainer
             waitingUploads={waitingUploads}
@@ -260,6 +263,7 @@ function UploadList({
             onRemove={(baseName) => updateWaitingUploads(omit(waitingUploads, baseName))}
             unsupported={unsupported}
             disabledUpload={Object.keys(readyUploads).length === 0}
+            disableOnParallelLmit={Object.keys(readyUploads).length > maxParallelUploads}
             onUpload={handleUploadProcess}
             loading={loading}
             progress={uploadContainerProgress}
