@@ -275,7 +275,9 @@
             "fileExceeds": "File size size exceeds {limit} MB. Please try again with a smaller file.",
             "exceedingFileMsg": "Some of your files exceed the upload limit of {limit} MB. Please remove them from the list.",
             "cannotPerfomAction": "Failed to perform action on this resource.",
-            "cancelUpload": "Cancel upload"
+            "cancelUpload": "Cancel upload",
+            "parallelUploadLimit": "The selected number of files exceeds the allowed limit of {limit} files. Please remove some files from the list.",
+            "parallelLimitError": "The number of active parallel uploads exceeds {limit}. Wait for the pending ones to finish."
         }
     }
 }
