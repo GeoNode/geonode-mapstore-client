@@ -139,8 +139,9 @@ const ConnectedSaveAsButton = connect(
         canAddResource,
         getResourceData,
         getResourceDirtyState,
-        (loggedIn, userCanAddResource, resource, dirtyState) => ({
-            enabled: loggedIn && userCanAddResource && resource?.is_copyable,
+        isNewResource,
+        (loggedIn, userCanAddResource, resource, dirtyState, isResourceNew) => ({
+            enabled: loggedIn && userCanAddResource && (resource?.is_copyable || isResourceNew),
             resource,
             disabled: !!dirtyState
         })
