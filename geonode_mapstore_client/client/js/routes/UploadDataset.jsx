@@ -380,7 +380,12 @@ function UploadDataset({
 
     const [pendingUploads, setPendingUploads] = useState([]);
 
-    function parseUploadResponse(response) {
+
+    function parseUploadResponse(upload) {
+        return orderBy(uniqBy([...upload], 'id'), 'create_date', 'desc');
+    }
+
+    function processUploadResponse(response) {
         const newResponse = response.reduce((acc, currentResponse) => {
             const duplicate = acc.find((upload) => upload.id === currentResponse.id);
             if (duplicate) {
@@ -390,11 +395,7 @@ function UploadDataset({
             }
             return [...acc, currentResponse];
         }, []);
-        return orderBy(uniqBy([...newResponse], 'id'), 'create_date', 'desc');
-    }
-
-    function deleteUpload(upload) {
-        return orderBy(uniqBy([...upload], 'id'), 'create_date', 'desc');
+        return parseUploadResponse(newResponse);
     }
 
     return (
@@ -403,8 +404,8 @@ function UploadDataset({
         >
             <ProcessingUploadList
                 uploads={pendingUploads}
-                onChange={(uploads) => setPendingUploads((prevUploads) => parseUploadResponse([...uploads, ...prevUploads]))}
-                onDelete={(uploads) => setPendingUploads(deleteUpload(uploads))}
+                onChange={(uploads) => setPendingUploads((prevUploads) => processUploadResponse([...uploads, ...prevUploads]))}
+                onDelete={(uploads) => setPendingUploads(parseUploadResponse(uploads))}
                 refreshTime={refreshTime}
             />
         </UploadList>
