@@ -763,24 +763,21 @@
                 "name": "GeoStory",
                 "cfg": {
                     "mediaEditorSettings": {
-                        "sourceId": "geostory",
+                        "sourceId": "geonode",
                         "mediaTypes": {
                             "image": {
-                                "defaultSource": "geostory",
                                 "sources": [
                                     "geostory",
                                     "geonode"
                                 ]
                             },
                             "video": {
-                                "defaultSource": "geostory",
                                 "sources": [
                                     "geostory",
                                     "geonode"
                                 ]
                             },
                             "map": {
-                                "defaultSource": "geostory",
                                 "sources": [
                                     "geostory",
                                     "geonode"
@@ -846,7 +843,7 @@
                         {
                             "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}",
+                            "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}",
                             "type": "dropdown",
                             "items": [
                                 {
@@ -1641,7 +1638,7 @@
                         {
                             "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}",
+                            "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}",
                             "type": "dropdown",
                             "items": [
                                 {
@@ -2177,7 +2174,7 @@
                         {
                             "labelId": "gnviewer.save",
                             "showPendingChangesIcon": true,
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}",
+                            "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}",
                             "type": "dropdown",
                             "items": [
                                 {
@@ -2193,7 +2190,7 @@
                         {
                             "name": "Sync",
                             "type": "plugin",
-                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
                         },
                         {
                             "labelId": "gnviewer.edit",
@@ -2258,24 +2255,21 @@
                 "name": "GeoStory",
                 "cfg": {
                     "mediaEditorSettings": {
-                        "sourceId": "geostory",
+                        "sourceId": "geonode",
                         "mediaTypes": {
                             "image": {
-                                "defaultSource": "geostory",
                                 "sources": [
                                     "geostory",
                                     "geonode"
                                 ]
                             },
                             "video": {
-                                "defaultSource": "geostory",
                                 "sources": [
                                     "geostory",
                                     "geonode"
                                 ]
                             },
                             "map": {
-                                "defaultSource": "geostory",
                                 "sources": [
                                     "geostory",
                                     "geonode"
@@ -2474,7 +2468,7 @@
                             "labelId": "gnviewer.save",
                             "type": "dropdown",
                             "showPendingChangesIcon": true,
-                            "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}",
                             "items": [
                                 {
                                     "type": "plugin",
@@ -2857,24 +2851,21 @@
                 "name": "GeoStory",
                 "cfg": {
                     "mediaEditorSettings": {
-                        "sourceId": "geostory",
+                        "sourceId": "geonode",
                         "mediaTypes": {
                             "image": {
-                                "defaultSource": "geostory",
                                 "sources": [
                                     "geostory",
                                     "geonode"
                                 ]
                             },
                             "video": {
-                                "defaultSource": "geostory",
                                 "sources": [
                                     "geostory",
                                     "geonode"
                                 ]
                             },
                             "map": {
-                                "defaultSource": "geostory",
                                 "sources": [
                                     "geostory",
                                     "geonode"
