@@ -14,6 +14,7 @@ import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import Message from '@mapstore/framework/components/I18N/Message';
 import moment from 'moment';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
+import { getUploadErrorMessageFromCode } from '@js/utils/ErrorUtils';
 
 function ErrorMessage(props) {
     return (
@@ -41,25 +42,6 @@ function UploadCard({
     const { datasetMaxUploadSize, documentMaxUploadSize, maxParallelUploads } = getConfigProp('geoNodeSettings');
     const maxAllowedBytes = type !== 'document' ? datasetMaxUploadSize : documentMaxUploadSize;
     const maxAllowedSize = Math.floor(maxAllowedBytes / (1024 * 1024));
-
-    const exceedingSizeError = (err) => {
-        let message = err?.message?.match('File size') || err?.errors?.[0]?.match('smaller files') || '';
-        let fileExceeds = false;
-        if (message) {
-            fileExceeds = true;
-        }
-        return fileExceeds;
-    };
-
-    const errorToolTip = ({ code }) => {
-        switch (code) {
-        case "upload_parallelism_limit_exceeded": {
-            return "gnviewer.parallelLimitError";
-        }
-        default:
-            return "gnviewer.invalidUploadMessageErrorTooltip";
-        }
-    };
 
     return (
         <div className="gn-upload-card">
@@ -107,7 +89,7 @@ function UploadCard({
                         </Button>
                         : null}
                     {state === 'INVALID'
-                        ? exceedingSizeError(error) ? <ErrorMessageWithTooltip tooltip={<Message msgId="gnviewer.fileExceeds" msgParams={{limit: maxAllowedSize }} />} /> : <ErrorMessageWithTooltip tooltipId={<Message msgId={errorToolTip(error)} msgParams={{ limit: maxParallelUploads }} />} />
+                        ? <ErrorMessageWithTooltip tooltipId={<Message msgId={`gnviewer.${getUploadErrorMessageFromCode(error?.code)}`} msgParams={{ limit: getUploadErrorMessageFromCode(error) === 'fileExceeds' ? maxAllowedSize : maxParallelUploads }} />} />
                         : null}
                 </div>
             </div>
