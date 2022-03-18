@@ -279,7 +279,8 @@ function UploadList({
 function ProcessingUploadList({
     uploads: pendingUploads,
     onChange,
-    refreshTime = 3000
+    refreshTime = 3000,
+    onDelete
 }) {
 
     const [loading, setLoading] = useState(false);
@@ -342,7 +343,7 @@ function ProcessingUploadList({
             .finally(() => {
                 if (isMounted.current) {
                     setDeletedIds((ids) => [...ids, id]);
-                    onChange(pendingUploads.filter(upload => upload.id !== id));
+                    onDelete(pendingUploads.filter(upload => upload.id !== id));
                 }
             });
     }
@@ -380,7 +381,20 @@ function UploadDataset({
     const [pendingUploads, setPendingUploads] = useState([]);
 
     function parseUploadResponse(response) {
-        return orderBy(uniqBy([...response], 'id'), 'create_date', 'desc');
+        const newResponse = response.reduce((acc, currentResponse) => {
+            const duplicate = acc.find((upload) => upload.id === currentResponse.id);
+            if (duplicate) {
+                const merger = merge(duplicate, currentResponse);
+                const newAcc = acc.filter((upload) => upload.id !== duplicate.id);
+                return [...newAcc, merger];
+            }
+            return [...acc, currentResponse];
+        }, []);
+        return orderBy(uniqBy([...newResponse], 'id'), 'create_date', 'desc');
+    }
+
+    function deleteUpload(upload) {
+        return orderBy(uniqBy([...upload], 'id'), 'create_date', 'desc');
     }
 
     return (
@@ -389,7 +403,8 @@ function UploadDataset({
         >
             <ProcessingUploadList
                 uploads={pendingUploads}
-                onChange={(uploads) => setPendingUploads(parseUploadResponse(uploads))}
+                onChange={(uploads) => setPendingUploads((prevUploads) => parseUploadResponse([...uploads, ...prevUploads]))}
+                onDelete={(uploads) => setPendingUploads(deleteUpload(uploads))}
                 refreshTime={refreshTime}
             />
         </UploadList>
