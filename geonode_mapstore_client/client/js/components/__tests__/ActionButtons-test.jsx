@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom';
 import expect from 'expect';
 import ActionButtons from '../ActionButtons';
 
-describe('ALink test', () => {
+describe('ActionButtons test', () => {
     beforeEach((done) => {
         document.body.innerHTML = '<div id="container"></div>';
         setTimeout(done);
