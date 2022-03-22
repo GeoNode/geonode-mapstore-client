@@ -68,14 +68,7 @@ const Cards = ({
             style={containerStyle}
         >
             {resources.map((resource, idx) => {
-                const {
-                    isProcessing,
-                    isDeleted
-                } = getResourceStatuses(resource);
-
-                if (isDeleted) {
-                    return null;
-                }
+                const { isProcessing } = getResourceStatuses(resource);
 
                 return (
                     <li
@@ -84,14 +77,13 @@ const Cards = ({
                     >
                         <ResourceCard
                             active={isCardActive(resource)}
-                            className={`${isDeleted ? 'deleted' : ''}`}
                             data={resource}
                             formatHref={formatHref}
                             options={options}
                             buildHrefByTemplate={buildHrefByTemplate}
                             layoutCardsStyle="grid"
                             loading={isProcessing}
-                            readOnly={isDeleted || isProcessing}
+                            readOnly={isProcessing}
                             featured
                             actions={actions}
                             onAction={onAction}

@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Spinner from '@js/components/Spinner';
 import HTML from '@mapstore/framework/components/I18N/HTML';
 import FaIcon from '@js/components/FaIcon';
@@ -15,7 +15,7 @@ import { withResizeDetector } from 'react-resize-detector';
 import useLocalStorage from '@js/hooks/useLocalStorage';
 import { hasPermissionsTo } from '@js/utils/MenuUtils';
 import useInfiniteScroll from '@js/hooks/useInfiniteScroll';
-import { getResourceStatuses } from '@js/utils/ResourceUtils';
+import { getResourceStatuses, excludeDeletedResources } from '@js/utils/ResourceUtils';
 
 const Cards = withResizeDetector(({
     resources,
@@ -90,17 +90,10 @@ const Cards = withResizeDetector(({
             style={cardLayoutStyle === 'list' ? {} : containerStyle}
         >
             {resources.map((resource, idx) => {
-                const {
-                    isProcessing,
-                    isDeleted
-                } = getResourceStatuses(resource);
+                const { isProcessing } = getResourceStatuses(resource);
                 // enable allowedOptions (menu cards)
                 const allowedOptions =  !isProcessing ? options
                     .filter((opt) => hasPermissionsTo(resource?.perms, opt?.perms, 'resource')) : [];
-
-                if (isDeleted) {
-                    return null;
-                }
 
                 return (
                     <li
@@ -108,7 +101,6 @@ const Cards = withResizeDetector(({
                         style={(layoutSpace(idx))}
                     >
                         <ResourceCard
-                            className={`${isDeleted ? 'deleted' : ''}`}
                             active={isCardActive(resource)}
                             data={resource}
                             formatHref={formatHref}
@@ -118,7 +110,7 @@ const Cards = withResizeDetector(({
                             actions={actions}
                             onAction={onAction}
                             loading={isProcessing}
-                            readOnly={isDeleted || isProcessing}
+                            readOnly={isProcessing}
                             onDownload={onDownload}
                             downloading={downloading?.find((download) => download.pk === resource.pk) ? true : false}
                         />
@@ -151,6 +143,12 @@ const CardGrid = ({
     downloading
 }) => {
 
+    const [avaialableResources, setAvailableResources] = useState(resources);
+
+    useEffect(() => {
+        setAvailableResources(excludeDeletedResources(resources));
+    }, [resources]);
+
     useInfiniteScroll({
         scrollContainer: scrollContainer,
         shouldScroll: () => !loading && isNextPageAvailable,
@@ -178,7 +176,7 @@ const CardGrid = ({
                             </p>
                         </div>}
                         <Cards
-                            resources={resources}
+                            resources={avaialableResources}
                             formatHref={formatHref}
                             isCardActive={isCardActive}
                             options={cardOptions}

@@ -6,12 +6,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@js/components/Button';
 import Spinner from '@js/components/Spinner';
 import HTML from '@mapstore/framework/components/I18N/HTML';
 import FaIcon from '@js/components/FaIcon';
 import { withResizeDetector } from 'react-resize-detector';
+import { excludeDeletedResources } from '@js/utils/ResourceUtils';
 import { actionButtons } from '@js/utils/ResourceServiceUtils';
 import Cards from './Cards';
 
@@ -36,6 +37,8 @@ const FeaturedList = withResizeDetector(({
 }) => {
 
     const [count, setCount] = useState();
+    const [avaialableResources, setAvailableResources] = useState(resources);
+
     const nextIconStyles = {
         fontSize: '1rem',
         ...(!isNextPageAvailable || loading ? {color: 'grey', cursor: 'not-allowed'} : {cursor: 'pointer'})
@@ -45,6 +48,10 @@ const FeaturedList = withResizeDetector(({
         fontSize: '1rem',
         ...(!isPreviousPageAvailable || loading ? { color: 'grey', cursor: 'not-allowed' } : { cursor: 'pointer' })
     };
+
+    useEffect(() => {
+        setAvailableResources(excludeDeletedResources(resources));
+    }, [resources]);
 
     return (
         <div className="gn-card-grid" style={resources.length === 0 ? { display: 'none' } : {}}>
@@ -57,7 +64,7 @@ const FeaturedList = withResizeDetector(({
                         <h3><HTML msgId={`gnhome.featuredList`}/></h3>
                         <Cards
                             featured
-                            resources={resources}
+                            resources={avaialableResources}
                             formatHref={formatHref}
                             isCardActive={isCardActive}
                             options={cardOptions}

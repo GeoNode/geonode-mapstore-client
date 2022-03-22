@@ -587,3 +587,10 @@ export const canCopyResource = (resource, user) => {
     const canCopy = resource?.is_copyable;
     return (canAdd && canCopy) ? true : false;
 };
+
+export const excludeDeletedResources = (suppliedResources) => {
+    return suppliedResources.filter((resource) => {
+        const { isDeleted } = getResourceStatuses(resource);
+        return !isDeleted && resource;
+    });
+};

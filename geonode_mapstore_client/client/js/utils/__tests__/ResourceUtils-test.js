@@ -18,7 +18,8 @@ import {
     compareBackgroundLayers,
     toMapStoreMapConfig,
     parseStyleName,
-    canCopyResource
+    canCopyResource,
+    excludeDeletedResources
 } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
@@ -422,5 +423,12 @@ describe('Test Resource Utils', () => {
         const user = { perms: ['add_resource'] };
 
         expect(canCopyResource(resource, user)).toEqual(true);
+    });
+
+    it('should test excludeDeletedResources', () => {
+        const resources = [{ name: 'test-1', processes: [{ processType: 'deleteResource', output: { status: 'finished' } }] },
+            { name: 'test-2' }];
+
+        expect(excludeDeletedResources(resources)).toEqual([{ name: 'test-2' }]);
     });
 });
