@@ -39,7 +39,7 @@ function UploadCard({
     type
 }) {
 
-    const { datasetMaxUploadSize, documentMaxUploadSize, maxParallelUploads } = getConfigProp('geoNodeSettings');
+    const { datasetMaxUploadSize, documentMaxUploadSize, maxParallelUploads } = getConfigProp('geoNodeSettings') || {};
     const maxAllowedBytes = type !== 'document' ? datasetMaxUploadSize : documentMaxUploadSize;
     const maxAllowedSize = Math.floor(maxAllowedBytes / (1024 * 1024));
 
@@ -89,7 +89,7 @@ function UploadCard({
                         </Button>
                         : null}
                     {state === 'INVALID'
-                        ? <ErrorMessageWithTooltip tooltipId={<Message msgId={`gnviewer.${getUploadErrorMessageFromCode(error?.code)}`} msgParams={{ limit: getUploadErrorMessageFromCode(error) === 'fileExceeds' ? maxAllowedSize : maxParallelUploads }} />} />
+                        ? <ErrorMessageWithTooltip tooltipId={<Message msgId={`gnviewer.${getUploadErrorMessageFromCode(error?.code)}`} msgParams={{ limit: getUploadErrorMessageFromCode(error?.code) === 'fileExceeds' ? maxAllowedSize : maxParallelUploads }} />} />
                         : null}
                 </div>
             </div>
@@ -112,5 +112,12 @@ function UploadCard({
         </div>
     );
 }
+
+UploadCard.defaultProps = {
+    name: '',
+    state: '',
+    progress: 0,
+    type: 'document'
+};
 
 export default UploadCard;
