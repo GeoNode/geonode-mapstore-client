@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Spinner from '@js/components/Spinner';
 import HTML from '@mapstore/framework/components/I18N/HTML';
 import FaIcon from '@js/components/FaIcon';
@@ -15,7 +15,7 @@ import { withResizeDetector } from 'react-resize-detector';
 import useLocalStorage from '@js/hooks/useLocalStorage';
 import { hasPermissionsTo } from '@js/utils/MenuUtils';
 import useInfiniteScroll from '@js/hooks/useInfiniteScroll';
-import { getResourceStatuses, excludeDeletedResources } from '@js/utils/ResourceUtils';
+import { getResourceStatuses } from '@js/utils/ResourceUtils';
 
 const Cards = withResizeDetector(({
     resources,
@@ -143,12 +143,6 @@ const CardGrid = ({
     downloading
 }) => {
 
-    const [avaialableResources, setAvailableResources] = useState(resources);
-
-    useEffect(() => {
-        setAvailableResources(excludeDeletedResources(resources));
-    }, [resources]);
-
     useInfiniteScroll({
         scrollContainer: scrollContainer,
         shouldScroll: () => !loading && isNextPageAvailable,
@@ -176,7 +170,7 @@ const CardGrid = ({
                             </p>
                         </div>}
                         <Cards
-                            resources={avaialableResources}
+                            resources={resources}
                             formatHref={formatHref}
                             isCardActive={isCardActive}
                             options={cardOptions}
