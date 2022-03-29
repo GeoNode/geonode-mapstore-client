@@ -41,7 +41,7 @@
             "people": "Personas",
             "groups": "Grupos",
             "groupsCategories": "Categorías de grupo",
-            "view": "View",
+            "view": "Ver",
             "viewDataset": "Ver dataset",
             "viewMap": "Ver mapa",
             "viewGeoStory": "Ver GeoStory",
@@ -126,7 +126,7 @@
             "uploadDataset": "Subir conjunto de datos",
             "createDataset": "Crear conjunto de datos",
             "search": "Buscar...",
-            "permissionsMissing": "No tienes permiso para ver o descargar el recurso",
+            "permissionsMissing": "No tienes permiso para ver o descargar el recurso.",
             "filter": "Filtrar"
         },
         "viewer": {
