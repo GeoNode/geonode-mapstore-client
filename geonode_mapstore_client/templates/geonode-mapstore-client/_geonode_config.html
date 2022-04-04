@@ -54,6 +54,7 @@
         const projectionDefs = geoNodeSettings.PROJECTION_DEFS || [];
         const pluginsConfigPatchRules  = geoNodeSettings.PLUGINS_CONFIG_PATCH_RULES || [];
         const translationsPath = geoNodeSettings.TRANSLATIONS_PATH;
+        const extensionsFolder = geoNodeSettings.EXTENSIONS_FOLDER_PATH;
 
         const isEmbed = checkBoolean('{{ is_embed }}') || false;
         const pluginsConfigKey = '{{ plugins_config_key }}';
@@ -76,6 +77,7 @@
                     url: '{{ PROXY_URL|default:"/proxy/?url=" }}',
                     useCORS: []
                 },
+                extensionsFolder: extensionsFolder,
                 printUrl: geoServerPublicLocation + 'pdf/info.json',
                 bingApiKey: '{% bing_api_key %}',
                 geoNodeApi: {
