@@ -785,6 +785,7 @@ export const uploadDataset = ({
     const formData = new FormData();
     formData.append('base_file', file);
     formData.append('charset', charset);
+    formData.append('store_spatial_files', true);
     const { timeEnabled } = getConfigProp('geoNodeSettings') || {};
     if (timeEnabled) {
         formData.append('time', ['csv', 'shp'].includes(ext) ? true : false);
