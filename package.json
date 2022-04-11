@@ -5,7 +5,9 @@
   "scripts": {},
   "author": "GeoSolutions",
   "license": "BSD-2-Clause",
-  "devDependencies": {},
+  "devDependencies": {
+    "@mapstore/project": "1.0.21"
+  },
   "dependencies": {
     "js-cookie": "2.2.1",
     "mapstore": "git+https://github.com/geosolutions-it/MapStore2.git#faee07b04ca5b475f2241b58fe48e59ab246de0b"
