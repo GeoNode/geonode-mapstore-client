@@ -20,6 +20,7 @@ def resource_urls(request):
         CATALOGUE_SELECTED_SERVICE=getattr(settings, "MAPSTORE_CATALOGUE_SELECTED_SERVICE", None),
         PROJECTION_DEFS=getattr(settings, "MAPSTORE_PROJECTION_DEFS", []),
         PLUGINS_CONFIG_PATCH_RULES=getattr(settings, "MAPSTORE_PLUGINS_CONFIG_PATCH_RULES", []),
+        EXTENSIONS_FOLDER_PATH=getattr(settings, "MAPSTORE_EXTENSIONS_FOLDER_PATH", '/static/mapstore/extensions/'),
     )
 
     return defaults

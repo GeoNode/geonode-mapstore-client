@@ -8,6 +8,7 @@
 {{ CATALOGUE_SELECTED_SERVICE|json_script:"settings-CATALOGUE_SELECTED_SERVICE" }}
 {{ PROJECTION_DEFS|json_script:"settings-PROJECTION_DEFS" }}
 {{ PLUGINS_CONFIG_PATCH_RULES|json_script:"settings-PLUGINS_CONFIG_PATCH_RULES" }}
+{{ EXTENSIONS_FOLDER_PATH|json_script:"settings-EXTENSIONS_FOLDER_PATH" }}
 
 <script>
     {% autoescape off %}
@@ -24,6 +25,7 @@
         const catalogueSelectedService = getJSONScriptVariable('settings-CATALOGUE_SELECTED_SERVICE', '');
         const projectionDefs = getJSONScriptVariable('settings-PROJECTION_DEFS', []);
         const pluginsConfigPatchRules = getJSONScriptVariable('settings-PLUGINS_CONFIG_PATCH_RULES', []);
+        const extensionsFolder = getJSONScriptVariable('settings-EXTENSIONS_FOLDER_PATH', '/static/mapstore/extensions/')
 
         const username = '{{ user|default:"" }}' || null;
         const token = '{{ access_token|default:"" }}' || '{{ ACCESS_TOKEN|default:"" }}' || null;
@@ -46,6 +48,7 @@
                 token: token
             },
             pluginsConfigPatchRules: pluginsConfigPatchRules,
+            extensionsFolder: extensionsFolder,
             localConfig: {
                 proxyUrl: {
                     url: '{{ PROXY_URL|default:"/proxy/?url=" }}',
