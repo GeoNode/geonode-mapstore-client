@@ -16,7 +16,7 @@ const SelectSync = localizedProps('placeholder')(ReactSelect);
 function SelectInfiniteScroll({
     loadOptions,
     pageSize = 20,
-    debounceTime,
+    debounceTime = 500,
     ...props
 }) {
 
@@ -30,10 +30,12 @@ function SelectInfiniteScroll({
     const handleUpdateOptions = useRef();
     handleUpdateOptions.current = (args = {}) => {
         if (!loading) {
+            const { q } = args;
+            const query = q || text;
             setLoading(true);
             const newPage = args.page || page;
             loadOptions({
-                q: args.q || text,
+                q: query,
                 page: newPage,
                 pageSize
             })
@@ -51,13 +53,13 @@ function SelectInfiniteScroll({
         }
     };
 
-    function handleInputChange(q) {
-        if (q !== text) {
-            setText(q);
-            setPage(1);
-            setOptions([]);
-            handleUpdateOptions.current({ q, page: 1 });
+    function handleInputChange(value) {
+        if (loading) {
+            setLoading(false);
         }
+        setPage(1);
+        setOptions([]);
+        handleUpdateOptions.current({ q: value, page: 1 });
     }
 
     const initOpen = useRef();
@@ -84,7 +86,7 @@ function SelectInfiniteScroll({
             filterOptions={(currentOptions) => {
                 return currentOptions;
             }}
-            onInputChange={debounce(q => handleInputChange(q), debounceTime)}
+            onInputChange={debounce(q => { setText(q); return handleInputChange(text); }, debounceTime )}
             onMenuScrollToBottom={() => {
                 if (!loading && isNextPageAvailable) {
                     setPage(page + 1);
