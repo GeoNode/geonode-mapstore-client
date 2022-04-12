@@ -23,6 +23,7 @@
     min-width: 120px;
     border-radius: 2px;
     max-height: 50%;
+    max-width: 400px;
 
     .gn-legend-head {
         padding: 0.5rem;
@@ -40,10 +41,24 @@
 
     .gn-legend-list-item {
             margin: 0;
+        
+        &:not(span) {
+            padding-right: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        span.glyphicon {
+            margin-right: 10px;
+            top: 0;
+        }
       
         p {
             margin: 0;
             font-weight: normal;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 
@@ -59,6 +74,10 @@
 
     .identify-icon {
         font-size: small;
+    }
+
+    .gn-legend-bottom:not(:last-of-type) {
+        margin-bottom: 20px;
     }
 }
 
