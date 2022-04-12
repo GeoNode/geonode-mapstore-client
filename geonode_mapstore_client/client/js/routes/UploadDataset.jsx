@@ -8,8 +8,6 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import uniqBy from 'lodash/uniqBy';
-import orderBy from 'lodash/orderBy';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import merge from 'lodash/merge';
@@ -26,6 +24,7 @@ import axios from '@mapstore/framework/libs/ajax';
 import UploadListContainer from '@js/routes/upload/UploadListContainer';
 import UploadContainer from '@js/routes/upload/UploadContainer';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
+import { parseUploadResponse, processUploadResponse } from '@js/utils/ResourceUtils';
 
 const supportedDatasetTypes = [
     {
@@ -380,31 +379,13 @@ function UploadDataset({
 
     const [pendingUploads, setPendingUploads] = useState([]);
 
-
-    function parseUploadResponse(upload) {
-        return orderBy(uniqBy([...upload], 'id'), 'create_date', 'desc');
-    }
-
-    function processUploadResponse(response) {
-        const newResponse = response.reduce((acc, currentResponse) => {
-            const duplicate = acc.find((upload) => upload.id === currentResponse.id);
-            if (duplicate) {
-                const merger = merge(duplicate, currentResponse);
-                const newAcc = acc.filter((upload) => upload.id !== duplicate.id);
-                return [...newAcc, merger];
-            }
-            return [...acc, currentResponse];
-        }, []);
-        return parseUploadResponse(newResponse);
-    }
-
     return (
         <UploadList
             onSuccess={(successfulUploads) => setPendingUploads((prevUploads) => parseUploadResponse([...successfulUploads, ...prevUploads]))}
         >
             <ProcessingUploadList
                 uploads={pendingUploads}
-                onChange={(uploads) => setPendingUploads((prevUploads) => processUploadResponse([...uploads, ...prevUploads]))}
+                onChange={(uploads) => setPendingUploads((prevUploads) => processUploadResponse([...prevUploads, ...uploads]))}
                 onDelete={(uploads) => setPendingUploads(parseUploadResponse(uploads))}
                 refreshTime={refreshTime}
             />
