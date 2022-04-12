@@ -389,11 +389,10 @@ function UploadDataset({
         const newResponse = response.reduce((acc, currentResponse) => {
             const duplicate = acc.find((upload) => upload.id === currentResponse.id);
             if (duplicate) {
-                const merger = merge(duplicate, currentResponse);
                 const newAcc = acc.filter((upload) => upload.id !== duplicate.id);
-                return [...newAcc, merger];
+                return [currentResponse, ...newAcc];
             }
-            return [...acc, currentResponse];
+            return [currentResponse, ...acc];
         }, []);
         return parseUploadResponse(newResponse);
     }
@@ -404,7 +403,7 @@ function UploadDataset({
         >
             <ProcessingUploadList
                 uploads={pendingUploads}
-                onChange={(uploads) => setPendingUploads((prevUploads) => processUploadResponse([...uploads, ...prevUploads]))}
+                onChange={(uploads) => setPendingUploads((prevUploads) => processUploadResponse([...prevUploads, ...uploads]))}
                 onDelete={(uploads) => setPendingUploads(parseUploadResponse(uploads))}
                 refreshTime={refreshTime}
             />
