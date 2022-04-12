@@ -12,10 +12,14 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import LegendImage from '@mapstore/framework/components/TOC/fragments/legend/Legend';
 import { layersSelector } from '@mapstore/framework/selectors/layers';
+import OpacitySlider from '@mapstore/framework/components/TOC/fragments/OpacitySlider';
+import { updateNode, changeLayerProperties } from '@mapstore/framework/actions/layers';
+import VisibilityCheck from '@mapstore/framework/components/TOC/fragments/VisibilityCheck';
 
 function Legend({
     layers,
-    hideLayerTitle
+    onUpdateNode,
+    propertiesChangeHandler
 }) {
 
     const [expandLegend, setExpandLegend] = useState(false);
@@ -31,10 +35,16 @@ function Legend({
         </div>
         <ul className="gn-legend-list" style={{display: expandLegend ? 'inline-block' : 'none'}}>
             {layers.map((layer, ind) => <Fragment key={ind}>
-                {!hideLayerTitle &&
-                    <li className="gn-legend-list-item"><p>{layer.title}</p></li>
-                }
-                <li>
+                <li className="gn-legend-list-item"><VisibilityCheck key="visibilitycheck"
+                    tooltip={layer.loadingError === 'Warning' ? 'toc.toggleLayerVisibilityWarning' : 'toc.toggleLayerVisibility'}
+                    node={layer}
+                    propertiesChangeHandler={propertiesChangeHandler} /><p>{layer.name || layer.title}</p></li>
+                <li className="gn-legend-bottom">
+                    <OpacitySlider
+                        opacity={layer.opacity}
+                        disabled={!layer.visibility}
+                        onChange={opacity => onUpdateNode(layer.id, 'layers', { opacity })}
+                    />
                     <LegendImage layer={layer} />
                 </li>
             </Fragment>
@@ -44,8 +54,14 @@ function Legend({
 }
 
 const ConnectedLegend = connect(
-    createSelector([layersSelector], (layers) => ({layers: layers.filter(layer => layer.group !== 'background' && layer.type === 'wms')})),
-    {}
+    createSelector([
+        layersSelector
+    ], (layers) => ({ layers: layers.filter(layer => layer.group !== 'background' && layer.type === 'wms') })),
+    {
+        onUpdateNode: updateNode,
+        propertiesChangeHandler: changeLayerProperties
+
+    }
 )(Legend);
 
 export default createPlugin('Legend', {
