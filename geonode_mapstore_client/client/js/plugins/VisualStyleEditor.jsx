@@ -46,7 +46,7 @@ import GNButton from '@js/components/Button';
 import Portal from '@mapstore/framework/components/misc/Portal';
 import ResizableModal from '@mapstore/framework/components/misc/ResizableModal';
 import StylesAPI from '@mapstore/framework/api/geoserver/Styles';
-import { getResourcePerms, isNewResource } from '@js/selectors/resource';
+import { getResourcePerms, isNewResource, getViewedResourceType } from '@js/selectors/resource';
 import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import { getSelectedLayer, layersSelector } from '@mapstore/framework/selectors/layers';
@@ -131,7 +131,8 @@ function VisualStyleEditor({
     enabled,
     onClose,
     style: styleProp,
-    isStyleChanged
+    isStyleChanged,
+    resourceType
 }) {
 
     const [closing, setClosing] = useState(false);
@@ -193,7 +194,7 @@ function VisualStyleEditor({
                     <Glyphicon glyph="1-close"/>
                 </Button>
             </div>}
-            {(!notificationClose && !dismissStyleNotification) && <div className="gn-visual-style-editor-alert alert-info">
+            {(!notificationClose && !dismissStyleNotification) && resourceType === 'map' && <div className="gn-visual-style-editor-alert alert-info">
                 <div className="gn-visual-style-editor-alert-message">
                     <Message msgId="gnviewer.stylesFirstClone" />
                     <Button size="xs" variant="transparent" onClick={dismissNotification}>
@@ -262,8 +263,9 @@ const VisualStyleEditorPlugin = connect(
         state => state?.controls?.visualStyleEditor?.enabled,
         state => mapLayoutValuesSelector(state, { height: true }),
         getSelectedLayer,
-        codeStyleSelector
-    ], (layer, temporaryStyleId, styleService, initialCode, enabled, style, originalLayer, code) => ({
+        codeStyleSelector,
+        getViewedResourceType
+    ], (layer, temporaryStyleId, styleService, initialCode, enabled, style, originalLayer, code, resourceType) => ({
         layer,
         temporaryStyleId,
         styleService,
@@ -271,7 +273,8 @@ const VisualStyleEditorPlugin = connect(
         enabled,
         style,
         originalStyle: originalLayer?.style,
-        isStyleChanged: initialCode !== undefined && code !== undefined && initialCode !== code
+        isStyleChanged: initialCode !== undefined && code !== undefined && initialCode !== code,
+        resourceType
     })),
     {
         onUpdateStatus: updateStatus,
