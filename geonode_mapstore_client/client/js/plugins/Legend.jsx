@@ -13,13 +13,12 @@ import { createSelector } from 'reselect';
 import LegendImage from '@mapstore/framework/components/TOC/fragments/legend/Legend';
 import { layersSelector } from '@mapstore/framework/selectors/layers';
 import OpacitySlider from '@mapstore/framework/components/TOC/fragments/OpacitySlider';
-import { updateNode, changeLayerProperties } from '@mapstore/framework/actions/layers';
+import { updateNode } from '@mapstore/framework/actions/layers';
 import VisibilityCheck from '@mapstore/framework/components/TOC/fragments/VisibilityCheck';
 
 function Legend({
     layers,
-    onUpdateNode,
-    propertiesChangeHandler
+    onUpdateNode
 }) {
 
     const [expandLegend, setExpandLegend] = useState(false);
@@ -38,12 +37,12 @@ function Legend({
                 <li className="gn-legend-list-item"><VisibilityCheck key="visibilitycheck"
                     tooltip={layer.loadingError === 'Warning' ? 'toc.toggleLayerVisibilityWarning' : 'toc.toggleLayerVisibility'}
                     node={layer}
-                    propertiesChangeHandler={propertiesChangeHandler} /><p>{layer.name || layer.title}</p></li>
+                    propertiesChangeHandler={(id, options) => onUpdateNode(id, 'layers', options)} /><p>{layer.name || layer.title}</p></li>
                 <li className="gn-legend-bottom">
                     <OpacitySlider
                         opacity={layer.opacity}
                         disabled={!layer.visibility}
-                        onChange={opacity => onUpdateNode(layer.id, 'layers', { opacity })}
+                        onChange={(opacity) => onUpdateNode(layer.id, 'layers', { opacity })}
                     />
                     <LegendImage layer={layer} />
                 </li>
@@ -58,8 +57,7 @@ const ConnectedLegend = connect(
         layersSelector
     ], (layers) => ({ layers: layers.filter(layer => layer.group !== 'background' && layer.type === 'wms') })),
     {
-        onUpdateNode: updateNode,
-        propertiesChangeHandler: changeLayerProperties
+        onUpdateNode: updateNode
 
     }
 )(Legend);
