@@ -19,7 +19,9 @@ import {
     toMapStoreMapConfig,
     parseStyleName,
     canCopyResource,
-    excludeDeletedResources
+    excludeDeletedResources,
+    processUploadResponse,
+    parseUploadResponse
 } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
@@ -430,5 +432,142 @@ describe('Test Resource Utils', () => {
             { name: 'test-2' }];
 
         expect(excludeDeletedResources(resources)).toEqual([{ name: 'test-2' }]);
+    });
+
+    it('should test processUploadResponse', () => {
+        const prev = [{
+            id: 1,
+            name: 'test1',
+            create_date: '2022-04-13T11:24:55.444578Z',
+            state: 'PENDING',
+            progress: 0,
+            complete: false
+        },
+        {
+            id: 2,
+            name: 'test2',
+            create_date: '2022-04-13T11:24:54.042291Z',
+            state: 'PENDING',
+            progress: 0,
+            complete: false
+        },
+        {
+            id: 3,
+            name: 'test3',
+            create_date: '2022-04-13T11:24:54.042291Z',
+            state: 'PENDING',
+            progress: 20,
+            complete: false
+        }];
+        const current = [{
+            id: 1,
+            name: 'test1',
+            create_date: '2022-04-13T11:24:55.444578Z',
+            state: 'RUNNING',
+            progress: 100,
+            complete: true
+        },
+        {
+            id: 2,
+            name: 'test2',
+            create_date: '2022-04-13T11:24:54.042291Z',
+            state: 'PENDING',
+            progress: 40,
+            complete: false,
+            resume_url: 'test/upload/delete/439'
+        },
+        {
+            id: 3,
+            name: 'test3',
+            create_date: '2022-04-13T11:24:54.042291Z',
+            state: 'COMPLETE',
+            progress: 100,
+            complete: true
+        },
+        {
+            id: 4,
+            name: 'test4',
+            create_date: '2022-04-13T11:24:54.042291Z',
+            state: 'COMPLETE',
+            progress: 100,
+            complete: true
+        }];
+
+        expect(processUploadResponse([...prev, ...current])).toEqual([
+            {
+                id: 1,
+                name: 'test1',
+                create_date: '2022-04-13T11:24:55.444578Z',
+                state: 'RUNNING',
+                progress: 100,
+                complete: true
+            },
+            {
+                id: 4,
+                name: 'test4',
+                create_date: '2022-04-13T11:24:54.042291Z',
+                state: 'COMPLETE',
+                progress: 100,
+                complete: true
+            },
+            {
+                id: 3,
+                name: 'test3',
+                create_date: '2022-04-13T11:24:54.042291Z',
+                state: 'COMPLETE',
+                progress: 100,
+                complete: true
+            },
+            {
+                id: 2,
+                name: 'test2',
+                create_date: '2022-04-13T11:24:54.042291Z',
+                state: 'PENDING',
+                progress: 40,
+                complete: false,
+                resume_url: 'test/upload/delete/439'
+            }
+        ]);
+    });
+
+    it('should test parseUploadResponse', () => {
+        const uploads = [
+            {
+                id: 3,
+                name: 'test3',
+                create_date: '2022-04-13T11:24:54.042291Z',
+                state: 'COMPLETE',
+                progress: 100,
+                complete: true
+            },
+            {
+                id: 2,
+                name: 'test2',
+                create_date: '2022-04-13T12:24:54.042291Z',
+                state: 'PENDING',
+                progress: 40,
+                complete: false,
+                resume_url: 'test/upload/delete/439'
+            }];
+
+        expect(parseUploadResponse(uploads)).toEqual([
+            {
+                id: 2,
+                name: 'test2',
+                create_date: '2022-04-13T12:24:54.042291Z',
+                state: 'PENDING',
+                progress: 40,
+                complete: false,
+                resume_url: 'test/upload/delete/439'
+            },
+            {
+                id: 3,
+                name: 'test3',
+                create_date: '2022-04-13T11:24:54.042291Z',
+                state: 'COMPLETE',
+                progress: 100,
+                complete: true
+            }
+        ]);
     });
 });

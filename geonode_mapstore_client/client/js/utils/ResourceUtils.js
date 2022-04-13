@@ -14,6 +14,7 @@ import { parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
 import { bboxToPolygon } from '@js/utils/CoordinatesUtils';
 import uniqBy from 'lodash/uniqBy';
+import orderBy from 'lodash/orderBy';
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
 import { excludeGoogleBackground, extractTileMatrixFromSources } from '@mapstore/framework/utils/LayersUtils';
@@ -593,4 +594,23 @@ export const excludeDeletedResources = (suppliedResources) => {
         const { isDeleted } = getResourceStatuses(resource);
         return !isDeleted && resource;
     });
+};
+
+export const parseUploadResponse = (upload) => {
+    return orderBy(uniqBy([...upload], 'id'), 'create_date', 'desc');
+};
+
+export const processUploadResponse = (response) => {
+    const newResponse = response.reduce((acc, currentResponse) => {
+        const duplicate = acc.find((upload) => upload.id === currentResponse.id);
+        if (duplicate) {
+            const newAcc = acc.filter((upload) => upload.id !== duplicate.id);
+            return [currentResponse, ...newAcc];
+        }
+        return [currentResponse, ...acc];
+    }, []);
+
+    const uploads = parseUploadResponse(newResponse);
+
+    return uploads;
 };
