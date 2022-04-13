@@ -48,12 +48,12 @@
                 token: token
             },
             pluginsConfigPatchRules: pluginsConfigPatchRules,
-            extensionsFolder: extensionsFolder,
             localConfig: {
                 proxyUrl: {
                     url: '{{ PROXY_URL|default:"/proxy/?url=" }}',
                     useCORS: []
                 },
+                extensionsFolder: extensionsFolder,
                 geoNodeApi: {
                     endpointAdapter: '{{ SITEURL }}mapstore/rest',
                     endpointAutocomplete: '{{ SITEURL }}base/autocomplete_response',
