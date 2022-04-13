@@ -882,14 +882,6 @@
                             "validServices": [
                                 "wps"
                             ]
-                        },
-                        {
-                            "name": "application/vnd.google-earth.kml+xml",
-                            "label": "KML",
-                            "type": "vector",
-                            "validServices": [
-                                "wps"
-                            ]
                         }
                     ]
                 }
@@ -1332,14 +1324,6 @@
                             "validServices": [
                                 "wps"
                             ]
-                        },
-                        {
-                            "name": "application/vnd.google-earth.kml+xml",
-                            "label": "KML",
-                            "type": "vector",
-                            "validServices": [
-                                "wps"
-                            ]
                         }
                     ]
                 }
@@ -1779,14 +1763,6 @@
                             "validServices": [
                                 "wps"
                             ]
-                        },
-                        {
-                            "name": "application/vnd.google-earth.kml+xml",
-                            "label": "KML",
-                            "type": "vector",
-                            "validServices": [
-                                "wps"
-                            ]
                         }
                     ]
                 }
@@ -2203,14 +2179,6 @@
                             "name": "application/geopackage+sqlite3",
                             "label": "GeoPackage",
                             "type": "raster",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "application/vnd.google-earth.kml+xml",
-                            "label": "KML",
-                            "type": "vector",
                             "validServices": [
                                 "wps"
                             ]
@@ -2648,14 +2616,6 @@
                             "name": "application/geopackage+sqlite3",
                             "label": "GeoPackage",
                             "type": "raster",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "application/vnd.google-earth.kml+xml",
-                            "label": "KML",
-                            "type": "vector",
                             "validServices": [
                                 "wps"
                             ]
@@ -3131,14 +3091,6 @@
                             "name": "application/geopackage+sqlite3",
                             "label": "GeoPackage",
                             "type": "raster",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "application/vnd.google-earth.kml+xml",
-                            "label": "KML",
-                            "type": "vector",
                             "validServices": [
                                 "wps"
                             ]
