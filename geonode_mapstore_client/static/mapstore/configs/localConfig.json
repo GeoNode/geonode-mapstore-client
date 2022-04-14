@@ -1251,6 +1251,14 @@
                             "validServices": [
                                 "wps"
                             ]
+                        },
+                        {
+                            "name": "application/vnd.google-earth.kml+xml",
+                            "label": "KML",
+                            "type": "vector",
+                            "validServices": [
+                                "wps"
+                            ]
                         }
                     ]
                 }
@@ -1349,10 +1357,7 @@
                 "name": "FitBounds"
             },
             {
-                "name": "Legend",
-                "cfg": {
-                    "hideLayerTitle": true
-                }
+                "name": "Legend"
             }
         ],
         "dataset_edit_data_viewer": [
@@ -1985,6 +1990,14 @@
                             "name": "application/geopackage+sqlite3",
                             "label": "GeoPackage",
                             "type": "raster",
+                            "validServices": [
+                                "wps"
+                            ]
+                        },
+                        {
+                            "name": "application/vnd.google-earth.kml+xml",
+                            "label": "KML",
+                            "type": "vector",
                             "validServices": [
                                 "wps"
                             ]
@@ -2814,10 +2827,7 @@
                 "name": "MapFooter"
             },
             {
-                "name": "Legend",
-                "cfg": {
-                    "hideLayerTitle": true
-                }
+                "name": "Legend"
             },
             {
                 "name": "FitBounds"
