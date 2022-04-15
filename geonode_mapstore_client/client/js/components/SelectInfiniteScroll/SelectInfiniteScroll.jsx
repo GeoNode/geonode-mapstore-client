@@ -29,11 +29,12 @@ function SelectInfiniteScroll({
     const [options, setOptions] = useState([]);
 
     const source = useRef();
-
+    const debounced = useRef();
 
     const createToken = () => {
         if (source.current) {
             source.current?.cancel();
+            source.current = undefined;
         }
         const cancelToken = axios.CancelToken;
         source.current = cancelToken.source();
@@ -43,7 +44,7 @@ function SelectInfiniteScroll({
     handleUpdateOptions.current = (args = {}) => {
         createToken();
         const { q } = args;
-        const query = q || text;
+        const query = q ?? text;
         setLoading(true);
         const newPage = args.page || page;
         loadOptions({
@@ -70,15 +71,33 @@ function SelectInfiniteScroll({
     };
 
     function handleInputChange(value) {
-        setPage(1);
-        setOptions([]);
-        handleUpdateOptions.current({ q: value, page: 1 });
+        if (source.current) {
+            source.current?.cancel();
+            source.current = undefined;
+        }
+
+        debounced.current.cancel();
+        debounced.current(value);
     }
+
+    useEffect(() => {
+        debounced.current = debounce((value) => {
+            if (value !== text) {
+                setText(value);
+                setPage(1);
+                setOptions([]);
+                handleUpdateOptions.current({ q: value, page: 1 });
+            }
+        }, debounceTime);
+    }, []);
 
     const initOpen = useRef();
     useEffect(() => {
-        if (!initOpen.current && open) {
-            handleUpdateOptions.current();
+        if (open) {
+            setText('');
+            setPage(1);
+            setOptions([]);
+            handleUpdateOptions.current({q: '', page: 1});
             initOpen.current = true;
         }
     }, [open]);
@@ -92,7 +111,6 @@ function SelectInfiniteScroll({
     return (
         <SelectSync
             {...props}
-            inputValue={text}
             isLoading={loading}
             options={options}
             onOpen={() => setOpen(true)}
@@ -100,7 +118,7 @@ function SelectInfiniteScroll({
             filterOptions={(currentOptions) => {
                 return currentOptions;
             }}
-            onInputChange={debounce(q => { setText(q); return handleInputChange(text); }, debounceTime )}
+            onInputChange={(q) => handleInputChange(q)}
             onMenuScrollToBottom={() => {
                 if (!loading && isNextPageAvailable) {
                     setPage(page + 1);
