@@ -98,7 +98,6 @@ function SelectInfiniteScroll({
             setPage(1);
             setOptions([]);
             handleUpdateOptions.current({q: '', page: 1});
-            initOpen.current = true;
         }
     }, [open]);
 
