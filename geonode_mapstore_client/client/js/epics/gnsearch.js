@@ -28,8 +28,7 @@ import {
 import {
     resourceLoading,
     setResource,
-    resourceError,
-    processResources
+    resourceError
 } from '@js/actions/gnresource';
 import {
     LOCATION_CHANGE,
@@ -41,10 +40,15 @@ import {
 } from '@js/utils/SearchUtils';
 import url from 'url';
 import { getCustomMenuFilters } from '@js/selectors/config';
-import { STOP_ASYNC_PROCESS, stopAsyncProcess } from '@js/actions/resourceservice';
+import {
+    STOP_ASYNC_PROCESS,
+    stopAsyncProcess,
+    startAsyncProcess
+} from '@js/actions/resourceservice';
 import {
     ProcessTypes,
-    ProcessStatus
+    ProcessStatus,
+    extractExecutionsFromResources
 } from '@js/utils/ResourceServiceUtils';
 import { getCurrentProcesses } from '@js/selectors/resourceservice';
 import { userSelector } from '@mapstore/framework/selectors/security';
@@ -143,12 +147,10 @@ const requestResourcesObservable = ({
             isNextPageAvailable
         }) => {
             const currentUser = userSelector(state);
-            const processingResources = resources.filter((resource) => (resource.executions?.length > 0 && resource.executions[0].status_url && resource.executions[0].user === currentUser?.info?.preferred_username) && { ...resource, executions: resource.executions[0] });
+            const preferredUsername = currentUser?.info?.preferred_username;
+            const pendingExecutions = extractExecutionsFromResources(resources, preferredUsername);
             return Observable.of(
-                ...processingResources.map((resource) => {
-                    const process = `${resource?.executions[0].func_name}Resource`;
-                    return processResources(process, [resource], false);
-                }),
+                ...pendingExecutions.map((payload) => startAsyncProcess(payload)),
                 updateResources(resources, reset),
                 updateResourcesMetadata({
                     isNextPageAvailable,

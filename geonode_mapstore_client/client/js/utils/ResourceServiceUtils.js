@@ -6,6 +6,8 @@
  * LICENSE file in the root directory of this source tree.
 */
 
+import flatten from 'lodash/flatten';
+
 export const ProcessTypes = {
     DELETE_RESOURCE: 'deleteResource',
     COPY_RESOURCE: 'copyResource',
@@ -34,4 +36,31 @@ export const actionButtons = {
         processType: ProcessTypes.COPY_RESOURCE,
         isControlled: true
     }
+};
+
+export const extractExecutionsFromResources = (resources, username) => {
+    const processingResources = resources
+        .filter((resource) => (
+            resource.executions?.length > 0
+            && resource.executions.find(({ status_url: statusUrl, user }) =>
+                statusUrl && user && user === username
+            )
+        ));
+    return flatten(processingResources.map((resource) => {
+        return resource.executions
+            .filter(({
+                func_name: funcName,
+                status_url: statusUrl,
+                user
+            }) =>
+                funcName === 'copy'
+                && statusUrl && user && user === username
+            ).map((output) => {
+                return {
+                    resource,
+                    output,
+                    processType: ProcessTypes.COPY_RESOURCE
+                };
+            });
+    }));
 };
