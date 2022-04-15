@@ -91,7 +91,6 @@ function SelectInfiniteScroll({
         }, debounceTime);
     }, []);
 
-    const initOpen = useRef();
     useEffect(() => {
         if (open) {
             setText('');
