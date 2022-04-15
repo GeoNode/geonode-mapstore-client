@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import isEqual from 'lodash/isEqual';
 import isArray from 'lodash/isArray';
 import isNil from 'lodash/isNil';
+import flatten from 'lodash/flatten';
 import {
     getResources,
     getResourceByPk,
@@ -28,8 +29,7 @@ import {
 import {
     resourceLoading,
     setResource,
-    resourceError,
-    processResources
+    resourceError
 } from '@js/actions/gnresource';
 import {
     LOCATION_CHANGE,
@@ -41,7 +41,11 @@ import {
 } from '@js/utils/SearchUtils';
 import url from 'url';
 import { getCustomMenuFilters } from '@js/selectors/config';
-import { STOP_ASYNC_PROCESS, stopAsyncProcess } from '@js/actions/resourceservice';
+import {
+    STOP_ASYNC_PROCESS,
+    stopAsyncProcess,
+    startAsyncProcess
+} from '@js/actions/resourceservice';
 import {
     ProcessTypes,
     ProcessStatus
@@ -143,12 +147,32 @@ const requestResourcesObservable = ({
             isNextPageAvailable
         }) => {
             const currentUser = userSelector(state);
-            const processingResources = resources.filter((resource) => (resource.executions?.length > 0 && resource.executions[0].status_url && resource.executions[0].user === currentUser?.info?.preferred_username) && { ...resource, executions: resource.executions[0] });
+            const preferredUsername = currentUser?.info?.preferred_username;
+            const processingResources = resources
+                .filter((resource) => (
+                    resource.executions?.length > 0
+                    && resource.executions.find(({ status_url: statusUrl, user }) =>
+                        statusUrl && user && user === preferredUsername
+                    )
+                ));
             return Observable.of(
-                ...processingResources.map((resource) => {
-                    const process = `${resource?.executions[0].func_name}Resource`;
-                    return processResources(process, [resource], false);
-                }),
+                ...flatten(processingResources.map((resource) => {
+                    return resource.executions
+                        .filter(({
+                            func_name: funcName,
+                            status_url: statusUrl,
+                            user
+                        }) =>
+                            funcName === 'copy'
+                            && statusUrl && user && user === preferredUsername
+                        ).map((output) => {
+                            return startAsyncProcess({
+                                resource,
+                                output,
+                                processType: ProcessTypes.COPY_RESOURCE
+                            });
+                        });
+                })),
                 updateResources(resources, reset),
                 updateResourcesMetadata({
                     isNextPageAvailable,
