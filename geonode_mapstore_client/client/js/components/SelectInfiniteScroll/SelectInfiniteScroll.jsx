@@ -7,6 +7,7 @@
  */
 
 import React, { useRef, useState, useEffect } from 'react';
+import axios from '@mapstore/framework/libs/ajax';
 import debounce from 'lodash/debounce';
 import ReactSelect from 'react-select';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
@@ -16,7 +17,7 @@ const SelectSync = localizedProps('placeholder')(ReactSelect);
 function SelectInfiniteScroll({
     loadOptions,
     pageSize = 20,
-    debounceTime,
+    debounceTime = 500,
     ...props
 }) {
 
@@ -27,44 +28,75 @@ function SelectInfiniteScroll({
     const [page, setPage] = useState(1);
     const [options, setOptions] = useState([]);
 
-    const handleUpdateOptions = useRef();
-    handleUpdateOptions.current = (args = {}) => {
-        if (!loading) {
-            setLoading(true);
-            const newPage = args.page || page;
-            loadOptions({
-                q: args.q || text,
-                page: newPage,
-                pageSize
-            })
-                .then((response) => {
-                    const newOptions = response.results.map(({ selectOption }) => selectOption);
-                    setOptions(newPage === 1 ? newOptions : [...options, ...newOptions]);
-                    setIsNextPageAvailable(response.isNextPageAvailable);
-                    setLoading(false);
-                })
-                .catch(() => {
-                    setOptions([]);
-                    setIsNextPageAvailable(false);
-                    setLoading(false);
-                });
+    const source = useRef();
+    const debounced = useRef();
+
+    const createToken = () => {
+        if (source.current) {
+            source.current?.cancel();
+            source.current = undefined;
         }
+        const cancelToken = axios.CancelToken;
+        source.current = cancelToken.source();
     };
 
-    function handleInputChange(q) {
-        if (q !== text) {
-            setText(q);
-            setPage(1);
-            setOptions([]);
-            handleUpdateOptions.current({ q, page: 1 });
+    const handleUpdateOptions = useRef();
+    handleUpdateOptions.current = (args = {}) => {
+        createToken();
+        const { q } = args;
+        const query = q ?? text;
+        setLoading(true);
+        const newPage = args.page || page;
+        loadOptions({
+            q: query,
+            page: newPage,
+            pageSize,
+            config: {
+                cancelToken: source.current.token
+            }
+        })
+            .then((response) => {
+                const newOptions = response.results.map(({ selectOption }) => selectOption);
+                setOptions(newPage === 1 ? newOptions : [...options, ...newOptions]);
+                setIsNextPageAvailable(response.isNextPageAvailable);
+                setLoading(false);
+                source.current = undefined;
+            })
+            .catch(() => {
+                setOptions([]);
+                setIsNextPageAvailable(false);
+                setLoading(false);
+                source.current = undefined;
+            });
+    };
+
+    function handleInputChange(value) {
+        if (source.current) {
+            source.current?.cancel();
+            source.current = undefined;
         }
+
+        debounced.current.cancel();
+        debounced.current(value);
     }
 
-    const initOpen = useRef();
     useEffect(() => {
-        if (!initOpen.current && open) {
-            handleUpdateOptions.current();
-            initOpen.current = true;
+        debounced.current = debounce((value) => {
+            if (value !== text) {
+                setText(value);
+                setPage(1);
+                setOptions([]);
+                handleUpdateOptions.current({ q: value, page: 1 });
+            }
+        }, debounceTime);
+    }, []);
+
+    useEffect(() => {
+        if (open) {
+            setText('');
+            setPage(1);
+            setOptions([]);
+            handleUpdateOptions.current({q: '', page: 1});
         }
     }, [open]);
 
@@ -84,7 +116,7 @@ function SelectInfiniteScroll({
             filterOptions={(currentOptions) => {
                 return currentOptions;
             }}
-            onInputChange={debounce(q => handleInputChange(q), debounceTime)}
+            onInputChange={(q) => handleInputChange(q)}
             onMenuScrollToBottom={() => {
                 if (!loading && isNextPageAvailable) {
                     setPage(page + 1);
