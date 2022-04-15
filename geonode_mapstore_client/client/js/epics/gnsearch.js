@@ -10,7 +10,6 @@ import { Observable } from 'rxjs';
 import isEqual from 'lodash/isEqual';
 import isArray from 'lodash/isArray';
 import isNil from 'lodash/isNil';
-import flatten from 'lodash/flatten';
 import {
     getResources,
     getResourceByPk,
@@ -48,7 +47,8 @@ import {
 } from '@js/actions/resourceservice';
 import {
     ProcessTypes,
-    ProcessStatus
+    ProcessStatus,
+    extractExecutionsFromResources
 } from '@js/utils/ResourceServiceUtils';
 import { getCurrentProcesses } from '@js/selectors/resourceservice';
 import { userSelector } from '@mapstore/framework/selectors/security';
@@ -148,31 +148,9 @@ const requestResourcesObservable = ({
         }) => {
             const currentUser = userSelector(state);
             const preferredUsername = currentUser?.info?.preferred_username;
-            const processingResources = resources
-                .filter((resource) => (
-                    resource.executions?.length > 0
-                    && resource.executions.find(({ status_url: statusUrl, user }) =>
-                        statusUrl && user && user === preferredUsername
-                    )
-                ));
+            const pendingExecutions = extractExecutionsFromResources(resources, preferredUsername);
             return Observable.of(
-                ...flatten(processingResources.map((resource) => {
-                    return resource.executions
-                        .filter(({
-                            func_name: funcName,
-                            status_url: statusUrl,
-                            user
-                        }) =>
-                            funcName === 'copy'
-                            && statusUrl && user && user === preferredUsername
-                        ).map((output) => {
-                            return startAsyncProcess({
-                                resource,
-                                output,
-                                processType: ProcessTypes.COPY_RESOURCE
-                            });
-                        });
-                })),
+                ...pendingExecutions.map((payload) => startAsyncProcess(payload)),
                 updateResources(resources, reset),
                 updateResourcesMetadata({
                     isNextPageAvailable,
