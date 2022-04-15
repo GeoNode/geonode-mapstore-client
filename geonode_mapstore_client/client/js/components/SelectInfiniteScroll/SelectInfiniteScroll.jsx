@@ -7,6 +7,7 @@
  */
 
 import React, { useRef, useState, useEffect } from 'react';
+import axios from '@mapstore/framework/libs/ajax';
 import debounce from 'lodash/debounce';
 import ReactSelect from 'react-select';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
@@ -27,36 +28,48 @@ function SelectInfiniteScroll({
     const [page, setPage] = useState(1);
     const [options, setOptions] = useState([]);
 
+    const source = useRef();
+
+
+    const createToken = () => {
+        if (source.current) {
+            source.current?.cancel();
+        }
+        const cancelToken = axios.CancelToken;
+        source.current = cancelToken.source();
+    };
+
     const handleUpdateOptions = useRef();
     handleUpdateOptions.current = (args = {}) => {
-        if (!loading) {
-            const { q } = args;
-            const query = q || text;
-            setLoading(true);
-            const newPage = args.page || page;
-            loadOptions({
-                q: query,
-                page: newPage,
-                pageSize
+        createToken();
+        const { q } = args;
+        const query = q || text;
+        setLoading(true);
+        const newPage = args.page || page;
+        loadOptions({
+            q: query,
+            page: newPage,
+            pageSize,
+            config: {
+                cancelToken: source.current.token
+            }
+        })
+            .then((response) => {
+                const newOptions = response.results.map(({ selectOption }) => selectOption);
+                setOptions(newPage === 1 ? newOptions : [...options, ...newOptions]);
+                setIsNextPageAvailable(response.isNextPageAvailable);
+                setLoading(false);
+                source.current = undefined;
             })
-                .then((response) => {
-                    const newOptions = response.results.map(({ selectOption }) => selectOption);
-                    setOptions(newPage === 1 ? newOptions : [...options, ...newOptions]);
-                    setIsNextPageAvailable(response.isNextPageAvailable);
-                    setLoading(false);
-                })
-                .catch(() => {
-                    setOptions([]);
-                    setIsNextPageAvailable(false);
-                    setLoading(false);
-                });
-        }
+            .catch(() => {
+                setOptions([]);
+                setIsNextPageAvailable(false);
+                setLoading(false);
+                source.current = undefined;
+            });
     };
 
     function handleInputChange(value) {
-        if (loading) {
-            setLoading(false);
-        }
         setPage(1);
         setOptions([]);
         handleUpdateOptions.current({ q: value, page: 1 });
@@ -79,6 +92,7 @@ function SelectInfiniteScroll({
     return (
         <SelectSync
             {...props}
+            inputValue={text}
             isLoading={loading}
             options={options}
             onOpen={() => setOpen(true)}

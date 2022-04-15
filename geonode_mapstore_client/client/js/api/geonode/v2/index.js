@@ -577,8 +577,9 @@ export const getFeaturedResources = (page = 1, page_size =  4) => {
     }).then(({data}) => data);
 };
 
-export const getCategories = ({ q, includes, page, pageSize, ...params }, filterKey = 'categories') => {
+export const getCategories = ({ q, includes, page, pageSize, config, ...params }, filterKey = 'categories') => {
     return axios.get(parseDevHostname(`${endpoints[CATEGORIES]}`), {
+        ...config,
         params: {
             page_size: pageSize || 9999,
             page,
@@ -609,8 +610,9 @@ export const getCategories = ({ q, includes, page, pageSize, ...params }, filter
         });
 };
 
-export const getRegions = ({ q, includes, page, pageSize, ...params }, filterKey = 'regions') => {
+export const getRegions = ({ q, includes, page, pageSize, config, ...params }, filterKey = 'regions') => {
     return axios.get(parseDevHostname(`${endpoints[REGIONS]}`), {
+        ...config,
         params: {
             page_size: pageSize || 9999,
             page,
@@ -641,8 +643,9 @@ export const getRegions = ({ q, includes, page, pageSize, ...params }, filterKey
         });
 };
 
-export const getOwners = ({ q, includes, page, pageSize, ...params }, filterKey = 'owners') => {
+export const getOwners = ({ q, includes, page, pageSize, config, ...params }, filterKey = 'owners') => {
     return axios.get(parseDevHostname(`${endpoints[OWNERS]}`), {
+        ...config,
         params: {
             page_size: pageSize || 9999,
             page,
@@ -673,8 +676,9 @@ export const getOwners = ({ q, includes, page, pageSize, ...params }, filterKey 
         });
 };
 
-export const getKeywords = ({ q, includes, page, pageSize, ...params }, filterKey =  'keywords') => {
+export const getKeywords = ({ q, includes, page, pageSize, config, ...params }, filterKey =  'keywords') => {
     return axios.get(parseDevHostname(`${endpoints[KEYWORDS]}`), {
+        ...config,
         params: {
             page_size: pageSize || 9999,
             page,
