@@ -39,7 +39,7 @@
     .gn-upload-card-progress.invalid > div {
         .background-color-var(@theme-vars[danger]);
     }
-    .gn-upload-card-error {
+    .gn-upload-card-error, .gn-failed-upload .fa-exclamation {
         .color-var(@theme-vars[danger]);
     }
     .gn-upload-card-error-message {
@@ -208,4 +208,8 @@
     .btn {
         pointer-events: none;
     }
+}
+
+.gn-failed-upload {
+    display: inline-block;
 }

@@ -13,7 +13,13 @@ import Button from '@js/components/Button';
 import Badge from '@js/components/Badge';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Spinner from '@js/components/Spinner';
+import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 
+function ErrorMessage(props) {
+    return (<div {...props} className="gn-failed-upload"><FaIcon name="exclamation" /></div> );
+}
+
+const ErrorMessageWithTooltip = tooltip(ErrorMessage);
 
 function PendingUploadCard({
     missingExt,
@@ -23,24 +29,28 @@ function PendingUploadCard({
     loading,
     progress,
     size,
-    onAbort
+    onAbort,
+    error
 }) {
     return (
         <div className="gn-upload-card">
             <div className="gn-upload-card-header">
-                {missingExt.length > 0 ? <div className="gn-upload-card-error"><FaIcon name="exclamation"/></div> : null}
+                {missingExt.length > 0 ? <div className="gn-upload-card-error"><FaIcon name="exclamation" /></div> : null}
                 <div className="gn-upload-card-title">{baseName}</div>
-                {onRemove
-                    ? (!loading || !(progress?.[baseName])) ? <Button size="xs" onClick={onRemove}>
-                        <FaIcon name="trash"/>
-                    </Button> : <Button size="xs" onClick={() => onAbort(baseName)}>
-                        <FaIcon name="stop"/>
-                    </Button>
-                    : null}
+                <div>
+                    {error ? <ErrorMessageWithTooltip tooltipId={<Message msgId="gnviewer.invalidUploadMessageErrorTooltip" />} /> : null}
+                    {onRemove
+                        ? (!loading || !(progress?.[baseName])) ? <Button size="xs" onClick={onRemove}>
+                            <FaIcon name="trash" />
+                        </Button> : <Button size="xs" onClick={() => onAbort(baseName)}>
+                            <FaIcon name="stop" />
+                        </Button>
+                        : null}
+                </div>
             </div>
             {missingExt.length > 0 && <div className="gn-upload-card-body">
                 <div className="text-danger">
-                    <Message msgId="gnviewer.missingFiles"/>: {missingExt.join(', ')}
+                    <Message msgId="gnviewer.missingFiles" />: {missingExt.join(', ')}
                 </div>
             </div>}
             <div className="gn-upload-card-bottom">
@@ -61,7 +71,7 @@ function PendingUploadCard({
                         <div>{size}{' '}MB</div>
                 }
             </div>
-            {loading && progress && progress?.[baseName] && <div style={{position: 'relative'}}>
+            {loading && progress && progress?.[baseName] && <div style={{ position: 'relative' }}>
                 <div
                     className="gn-upload-card-progress"
                     style={{

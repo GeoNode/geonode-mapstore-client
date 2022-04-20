@@ -19,7 +19,6 @@ import {
     getProcessedUploadsByImportId,
     uploadDataset
 } from '@js/api/geonode/v2';
-import uuidv1 from 'uuid/v1';
 import axios from '@mapstore/framework/libs/ajax';
 import UploadListContainer from '@js/routes/upload/UploadListContainer';
 import UploadContainer from '@js/routes/upload/UploadContainer';
@@ -209,6 +208,12 @@ function UploadList({
                 .then((responses) => {
                     const successfulUploads = responses.filter(({ status }) => status === 'success');
                     const errorUploads = responses.filter(({ status }) => status === 'error');
+                    if (errorUploads.length > 0) {
+                        errorUploads.forEach((upload) => {
+                            const { baseName } = upload;
+                            waitingUploads[baseName].error = true;
+                        });
+                    }
                     if (successfulUploads.length > 0) {
                         const successfulUploadsIds = successfulUploads.map(({ data }) => data?.id);
                         const successfulUploadsNames = successfulUploads.map(({ baseName }) => baseName);
@@ -223,17 +228,6 @@ function UploadList({
                             });
                     } else {
                         setLoading(false);
-                    }
-                    if (errorUploads.length > 0) {
-                        const failedUploads = errorUploads.map(({ baseName: name, error }) => ({
-                            id: uuidv1(),
-                            name,
-                            progress: 100,
-                            state: 'INVALID',
-                            create_date: Date.now(),
-                            error
-                        }));
-                        onSuccess(failedUploads);
                     }
                 })
                 .catch(() => {
