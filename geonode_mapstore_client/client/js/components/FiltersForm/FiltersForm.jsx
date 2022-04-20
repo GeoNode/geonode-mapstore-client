@@ -57,7 +57,15 @@ function FilterForm({
         <div className="gn-filter-form" style={styleContainerForm} >
             <div className="gn-filter-form-header">
                 <div className="gn-filter-form-title">
-                    <FaIcon name="filter"/> <strong><Message msgId="gnhome.filters"/></strong>
+                    <div><FaIcon name="filter" /> <strong><Message msgId="gnhome.filters" /></strong></div>
+                    <Button
+                        size="sm"
+                        variant="default"
+                        onClick={onClear}
+                        disabled={isEmpty(query)}
+                    >
+                        <Message msgId="gnhome.clearFilters"/>
+                    </Button>
                 </div>
                 <Button
                     variant="default"
@@ -98,16 +106,6 @@ function FilterForm({
                         />
                     </form>
                 </div>
-            </div>
-            <div className="gn-filter-form-footer">
-                <Button
-                    size="sm"
-                    variant="default"
-                    onClick={onClear}
-                    disabled={isEmpty(query)}
-                >
-                    <Message msgId="gnhome.clearFilters"/>
-                </Button>
             </div>
         </div>
     );

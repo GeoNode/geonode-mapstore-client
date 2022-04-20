@@ -39,7 +39,7 @@ describe('FiltersForm component', () => {
         ReactDOM.render( <FiltersForm show onClear={onClear} query={{ q: 'A' }} submitOnChangeField={false} />, document.getElementById("container"));
         const filterFormNode = document.querySelector('.gn-filter-form');
         expect(filterFormNode).toBeTruthy();
-        const footerButtons = filterFormNode.querySelectorAll('.gn-filter-form-footer > button');
+        const footerButtons = filterFormNode.querySelectorAll('.gn-filter-form-title > button');
         expect(footerButtons.length).toBe(1);
         const clearButton = footerButtons[0];
         Simulate.click(clearButton);
@@ -65,7 +65,7 @@ describe('FiltersForm component', () => {
         ReactDOM.render( <FiltersForm show  submitOnChangeField />, document.getElementById("container"));
         const filterFormNode = document.querySelector('.gn-filter-form');
         expect(filterFormNode).toBeTruthy();
-        const footerButtons = filterFormNode.querySelectorAll('.gn-filter-form-footer > button');
+        const footerButtons = filterFormNode.querySelectorAll('.gn-filter-form-title > button');
         expect(footerButtons.length).toBe(1);
 
     });
