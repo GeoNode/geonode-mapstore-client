@@ -210,6 +210,8 @@ function DetailsPanel({
     const detailsContainerNode = useRef();
     const isMounted = useRef();
     const [copiedResourceLink, setCopiedResourceLink] = useState(false);
+    const [readMore, setReadMore] = useState(false);
+
     useEffect(() => {
         isMounted.current = true;
         return () => {
@@ -269,6 +271,13 @@ function DetailsPanel({
         return dataType;
     };
 
+    // To be used when user clicks 'Read more' for long abstracts
+    const extraContent = readMore && (<span className="extra-content">
+        {validateDataType(resource?.raw_abstract)?.substring(100, resource?.raw_abstract?.length - 1)}
+    </span>);
+
+    const linkName = readMore ? 'Read Less' : 'Read More';
+
     const infoField = [
         {
             "label": "Title",
@@ -276,7 +285,7 @@ function DetailsPanel({
         },
         {
             "label": "Abstract",
-            "value": validateDataType(resource?.raw_abstract)
+            "value": validateDataType(resource?.raw_abstract)?.length > 100 ? <div>{validateDataType(resource?.raw_abstract)?.substring(0, 100)}{extraContent}{' '}<a className="read-more-link" onClick={() => setReadMore(!readMore) }>{linkName}</a></div> : validateDataType(resource?.raw_abstract)
         },
         {
             "label": "Owner",
