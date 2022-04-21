@@ -279,7 +279,8 @@
             "cannotPerfomAction": "Impossibile eseguire l'azione su questa risorsa.",
             "cancelUpload": "Annulla caricamento",
             "parallelUploadLimit": "Il numero selezionato di file supera il limite consentito di {limit} file. Si prega di rimuovere alcuni file dall'elenco.",
-            "parallelLimitError": "Il numero di caricamenti paralleli attivi supera {limit}. Aspetta che quelli in sospeso finiscano."
+            "parallelLimitError": "Il numero di caricamenti paralleli attivi supera {limit}. Aspetta che quelli in sospeso finiscano.",
+            "thisPage": "Questa pagina"
         }
     }
 }

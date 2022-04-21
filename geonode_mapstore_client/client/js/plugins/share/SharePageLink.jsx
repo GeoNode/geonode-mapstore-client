@@ -10,22 +10,9 @@ import React, { useState, useEffect } from 'react';
 import Button from '@js/components/Button';
 import FaIcon from '@js/components/FaIcon/FaIcon';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import url from 'url';
 
-function cleanUrl(targetUrl) {
-    const {
-        search,
-        ...params
-    } = url.parse(targetUrl);
-    const hash = params.hash && `#${cleanUrl(params.hash.replace('#', ''))}`;
-    return url.format({
-        ...params,
-        ...(hash && { hash })
-    });
-}
 
-function SharePageLink() {
-    const pageUrl = cleanUrl(window.location.href);
+function SharePageLink({label, url}) {
     const [copied, setCopied] = useState(false);
     useEffect(() => {
         if (copied) {
@@ -35,24 +22,30 @@ function SharePageLink() {
         }
     }, [copied]);
     return (
-        <div className="gn-share-link">
-            <input
-                readOnly
-                rel="noopener noreferrer"
-                target="_blank"
-                value={pageUrl}
-            />
-            { !copied && <CopyToClipboard
-                text={pageUrl}
-            >
-                <Button
-                    size="sm"
-                    onClick={() => setCopied(true)}
-                >
-                    <FaIcon name="copy"/>
-                </Button>
-            </CopyToClipboard>}
-            {copied && <Button size="sm"><FaIcon name="check"/></Button>}
+        <div className="gn-share-link-pad">
+            <div className="gn-share-link-wrapper">
+                <div className="gn-share-page-link">
+                    <label className="gn-share-title">{label}</label>
+                    <div className="gn-share-link">
+                        <input
+                            readOnly
+                            rel="noopener noreferrer"
+                            target="_blank"
+                            value={url}
+                        />
+                        {!copied && <CopyToClipboard
+                            text={url}
+                        >
+                            <Button
+                                size="sm"
+                                onClick={() => setCopied(true)}
+                            >
+                                <FaIcon name="copy" />
+                            </Button>
+                        </CopyToClipboard>}
+                        {copied && <Button size="sm"><FaIcon name="check" /></Button>}</div>
+                </div>
+            </div>
         </div>
     );
 }

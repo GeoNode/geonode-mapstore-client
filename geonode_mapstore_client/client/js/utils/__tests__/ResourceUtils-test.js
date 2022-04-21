@@ -21,7 +21,8 @@ import {
     canCopyResource,
     excludeDeletedResources,
     processUploadResponse,
-    parseUploadResponse
+    parseUploadResponse,
+    cleanUrl
 } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
@@ -569,5 +570,13 @@ describe('Test Resource Utils', () => {
                 complete: true
             }
         ]);
+    });
+
+    it('should clean url', () => {
+        const testUrl = 'https://test.com/dataset/808?filter=time';
+
+        const url = cleanUrl(testUrl);
+
+        expect(url).toEqual('https://test.com/dataset/808');
     });
 });

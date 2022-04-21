@@ -277,7 +277,8 @@
             "cannotPerfomAction": "Échec de l'exécution de l'action sur cette ressource.",
             "cancelUpload": "Annuler le téléchargement",
             "parallelUploadLimit": "Le nombre de fichiers sélectionné dépasse la limite autorisée de {limit} fichiers. Veuillez supprimer certains fichiers de la liste.",
-            "parallelLimitError": "Le nombre de téléchargements parallèles actifs dépasse {limit}. Attendez que ceux en attente se terminent."
+            "parallelLimitError": "Le nombre de téléchargements parallèles actifs dépasse {limit}. Attendez que ceux en attente se terminent.",
+            "thisPage": "Cette page"
         }
     }
 }
