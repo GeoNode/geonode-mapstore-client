@@ -93,7 +93,8 @@ function Share({
     onClose,
     canEdit,
     permissionsLoading,
-    resourceType
+    resourceType,
+    embedUrl
 }) {
 
     const [permissionsObject, setPermissionsObject] = useState({});
@@ -125,7 +126,7 @@ function Share({
                     </Button>
                 </div>
                 <div className="gn-share-panel-body">
-                    <SharePageLink />
+                    <SharePageLink resourceType={resourceType} embedUrl={embedUrl} />
                     {canEdit && <>
                         <Permissions
                             compactPermissions={compactPermissions}
