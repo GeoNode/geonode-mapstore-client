@@ -614,3 +614,15 @@ export const processUploadResponse = (response) => {
 
     return uploads;
 };
+
+export const cleanUrl = (targetUrl) => {
+    const {
+        search,
+        ...params
+    } = url.parse(targetUrl);
+    const hash = params.hash && `#${cleanUrl(params.hash.replace('#', ''))}`;
+    return url.format({
+        ...params,
+        ...(hash && { hash })
+    });
+};

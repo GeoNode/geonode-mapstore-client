@@ -31,7 +31,7 @@ import {
 import { updateResourceCompactPermissions } from '@js/actions/gnresource';
 import Permissions from '@js/components/Permissions';
 import { getUsers, getGroups, getResourceTypes } from '@js/api/geonode/v2';
-import { resourceToPermissionEntry, availableResourceTypes, getResourcePermissions } from '@js/utils/ResourceUtils';
+import { resourceToPermissionEntry, availableResourceTypes, getResourcePermissions, cleanUrl } from '@js/utils/ResourceUtils';
 import SharePageLink from '@js/plugins/share/SharePageLink';
 import { getCurrentResourcePermissionsLoading } from '@js/selectors/resourceservice';
 
@@ -111,6 +111,9 @@ function Share({
         });
     }, [availableResourceTypes]);
 
+    const pageUrl = cleanUrl(window.location.href);
+
+
     return (
         <OverlayContainer
             enabled={enabled}
@@ -122,11 +125,12 @@ function Share({
                 <div className="gn-share-panel-head">
                     <h2><Message msgId="gnviewer.shareThisResource" /></h2>
                     <Button className="square-button" onClick={() => onClose()}>
-                        <Glyphicon glyph="1-close"/>
+                        <Glyphicon glyph="1-close" />
                     </Button>
                 </div>
                 <div className="gn-share-panel-body">
-                    <SharePageLink resourceType={resourceType} embedUrl={embedUrl} />
+                    <SharePageLink url={pageUrl} label={<Message msgId="gnviewer.thisPage" />} />
+                    <SharePageLink url={embedUrl} label={<Message msgId={`gnhome.${resourceType}`} />} />s
                     {canEdit && <>
                         <Permissions
                             compactPermissions={compactPermissions}
