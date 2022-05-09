@@ -130,7 +130,7 @@ function Share({
                 </div>
                 <div className="gn-share-panel-body">
                     <SharePageLink url={pageUrl} label={<Message msgId="gnviewer.thisPage" />} />
-                    <SharePageLink url={embedUrl} label={<Message msgId={`gnhome.${resourceType}`} />} />s
+                    <SharePageLink url={embedUrl} label={<Message msgId={`gnhome.${resourceType}`} />} />
                     {canEdit && <>
                         <Permissions
                             compactPermissions={compactPermissions}

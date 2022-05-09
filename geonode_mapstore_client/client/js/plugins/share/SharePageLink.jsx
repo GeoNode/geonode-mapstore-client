@@ -22,7 +22,7 @@ function SharePageLink({label, url}) {
         }
     }, [copied]);
     return (
-        <div style={{ padding: '10px' }}>
+        <div className="gn-share-link-pad">
             <div className="gn-share-link-wrapper">
                 <div className="gn-share-page-link">
                     <label className="gn-share-title">{label}</label>
