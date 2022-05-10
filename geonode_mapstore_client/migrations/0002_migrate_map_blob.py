@@ -93,5 +93,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RunPython(migrate_map_forward, migrate_map_reverse),
         migrations.RunSQL(drop_mapstore2_adapter_mapstoreattribute),
-        migrations.RunSQL(drop_mapstore2_adapter_mapstoredata)
+        migrations.RunSQL(drop_mapstore2_adapter_mapstoredata),
+        migrations.RunSQL(drop_mapstore2_adapter_mapstoreresource),
+        migrations.RunSQL(drop_mapstore2_adapter_mapstoreresource_attributes)
     ]
