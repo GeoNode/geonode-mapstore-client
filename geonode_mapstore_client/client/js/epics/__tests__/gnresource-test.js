@@ -10,8 +10,10 @@ import expect from 'expect';
 import MockAdapter from 'axios-mock-adapter';
 import axios from '@mapstore/framework/libs/ajax';
 import { testEpic } from '@mapstore/framework/epics/__tests__/epicTestUtils';
-import { gnViewerSetNewResourceThumbnail } from '@js/epics/gnresource';
+import { gnViewerSetNewResourceThumbnail, closeInfoPanelOnMapClick } from '@js/epics/gnresource';
 import { setResourceThumbnail, UPDATE_RESOURCE_PROPERTIES } from '@js/actions/gnresource';
+import { clickOnMap } from '@mapstore/framework/actions/map';
+import { SET_CONTROL_PROPERTY } from '@mapstore/framework/actions/controls';
 import {
     SHOW_NOTIFICATION
 } from '@mapstore/framework/actions/notifications';
@@ -63,5 +65,63 @@ describe('gnsave epics', () => {
             },
             testState
         );
+    });
+
+    it('should close share panels on map click', (done) => {
+        const NUM_ACTIONS = 1;
+        const testState = {
+            controls: {
+                rightOverlay: {
+                    enabled: 'Share'
+                }
+            }
+        };
+
+        testEpic(closeInfoPanelOnMapClick,
+            NUM_ACTIONS,
+            clickOnMap(),
+            (actions) => {
+                try {
+                    expect(actions.map(({ type }) => type))
+                        .toEqual([
+                            SET_CONTROL_PROPERTY
+                        ]);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            testState
+        );
+
+    });
+
+    it('should close info panel on map click', (done) => {
+        const NUM_ACTIONS = 1;
+        const testState = {
+            controls: {
+                rightOverlay: {
+                    enabled: 'DetailViewer'
+                }
+            }
+        };
+
+        testEpic(closeInfoPanelOnMapClick,
+            NUM_ACTIONS,
+            clickOnMap(),
+            (actions) => {
+                try {
+                    expect(actions.map(({ type }) => type))
+                        .toEqual([
+                            SET_CONTROL_PROPERTY
+                        ]);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            testState
+        );
+
     });
 });

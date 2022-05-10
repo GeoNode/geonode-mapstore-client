@@ -75,7 +75,7 @@ import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallay
 import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
 import { styleServiceSelector } from '@mapstore/framework/selectors/styleeditor';
 import { updateStyleService } from '@mapstore/framework/api/StyleEditor';
-import { resizeMap } from '@mapstore/framework/actions/map';
+import { CLICK_ON_MAP, resizeMap } from '@mapstore/framework/actions/map';
 import { saveError } from '@js/actions/gnsave';
 import {
     error as errorNotification,
@@ -447,8 +447,13 @@ export const gnViewerSetNewResourceThumbnail = (action$, store) =>
                 });
         });
 
+export const closeInfoPanelOnMapClick = (action$, store) => action$.ofType(CLICK_ON_MAP)
+    .filter(() => store.getState().controls?.rightOverlay?.enabled === 'DetailViewer' || store.getState().controls?.rightOverlay?.enabled === 'Share')
+    .switchMap(() => Observable.of(setControlProperty('rightOverlay', 'enabled', false)));
+
 export default {
     gnViewerRequestNewResourceConfig,
     gnViewerRequestResourceConfig,
-    gnViewerSetNewResourceThumbnail
+    gnViewerSetNewResourceThumbnail,
+    closeInfoPanelOnMapClick
 };
