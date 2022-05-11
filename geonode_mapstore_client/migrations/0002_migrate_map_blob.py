@@ -27,46 +27,41 @@ def migrate_map_forward(apps, schema_editor):
             to_update = {}
             # We can't use map.resourcebase_ptr, we need to explicitly retrieve the resourcebase
             # mapstore2_adapter does not exist anymore as an app. So we need raw sql to get the blob from the old table.
-            try:
-                sql_string = f'SELECT blob from mapstore2_adapter_mapstoredata where resource_id={_resource.id};'
-                '''
-                Getting the Data Blob
-                '''
-                with connections['default'].cursor() as cursor:
-                    cursor.execute(sql_string)
-                    result = cursor.fetchall()
-                    if result:
-                        to_update['blob'] = result[0][0]
+            sql_string = f'SELECT blob from mapstore2_adapter_mapstoredata where resource_id={_resource.id};'
+            '''
+            Getting the Data Blob
+            '''
+            with connections['default'].cursor() as cursor:
+                cursor.execute(sql_string)
+                result = cursor.fetchall()
+                if result:
+                    to_update['blob'] = result[0][0]
 
-                sql_string = f'SELECT name, value from mapstore2_adapter_mapstoreattribute where resource_id={_resource.id};'
-                '''
-                Getting the attributes
-                '''
-                with connections['default'].cursor() as cursor:
-                    cursor.execute(sql_string)
-                    result = cursor.fetchall()
-                    if result:
-                        for x in result:
-                            try:
-                                '''
-                                If is a byte we have to decode it
-                                '''
-                                to_update[x[0]] = base64.b64decode(ast.literal_eval(x[1])).decode()
-                            except:
-                                to_update[x[0]] = x[1]
+            sql_string = f'SELECT name, value from mapstore2_adapter_mapstoreattribute where resource_id={_resource.id};'
+            '''
+            Getting the attributes
+            '''
+            with connections['default'].cursor() as cursor:
+                cursor.execute(sql_string)
+                result = cursor.fetchall()
+                if result:
+                    for x in result:
+                        try:
+                            '''
+                            If is a byte we have to decode it
+                            '''
+                            to_update[x[0]] = base64.b64decode(ast.literal_eval(x[1])).decode()
+                        except:
+                            to_update[x[0]] = x[1]
 
-                    thumb = to_update.pop('thumbnail', None)
-                    if thumb and 'data:image/' not in thumb:
-                        to_update['thumbnail_url'] = to_update.pop('thumbnail')
-                '''
-                Updating the resource
-                '''
-                if to_update:
-                    ResourceBase.objects.filter(id=_resource.id).update(**to_update)
-
-            except Exception as e:
-                # the table may not exists if is a new-branch master installation
-                continue
+                thumb = to_update.pop('thumbnail', None)
+                if thumb and 'data:image/' not in thumb:
+                    to_update['thumbnail_url'] = to_update.pop('thumbnail')
+            '''
+            Updating the resource
+            '''
+            if to_update:
+                ResourceBase.objects.filter(id=_resource.id).update(**to_update)
 
 
 
