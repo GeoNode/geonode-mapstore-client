@@ -1,6 +1,7 @@
 {% load client_lib_tags %}
 {% load base_tags %}
 {% load get_menu_json %}
+{% load apikey %}
 {% comment %}
     app and map configuration need to be normalized
 {% endcomment %}
@@ -12,6 +13,8 @@
 
 {% get_menu_json 'CARDS_MENU' as CARDS_MENU %}
 {{ CARDS_MENU|json_script:"menu-CARDS_MENU" }}
+{% generate_proxyurl PROXY_URL|default:"/proxy/?url=" request as UPDATED_PROXY_URL %}
+{% retrieve_apikey request as user_apikey %}
 
 <script>
     (function(){
@@ -62,7 +65,7 @@
         const siteName = '{{ SITE_NAME }}' || 'Geonode';
         const geoServerPublicLocation = '{{ GEOSERVER_PUBLIC_LOCATION }}' || '';
         const isMobile = '{{ request.user_agent.is_mobile }}' === 'True' ? true : false;
-
+        
         window.__GEONODE_CONFIG__ = {
             languageCode: '{{ LANGUAGE_CODE }}',
             languages: languages,
@@ -71,10 +74,11 @@
             resourceType: '{{ resource.resource_type|default:"" }}',
             isEmbed: isEmbed,
             pluginsConfigKey: pluginsConfigKey,
+            apikey: "{%if user_apikey %}{{user_apikey}}{% endif %}",
             pluginsConfigPatchRules: pluginsConfigPatchRules,
             localConfig: {
                 proxyUrl: {
-                    url: '{{ PROXY_URL|default:"/proxy/?url=" }}',
+                    url: '{{UPDATED_PROXY_URL|safe }}',
                     useCORS: []
                 },
                 extensionsFolder: extensionsFolder,
