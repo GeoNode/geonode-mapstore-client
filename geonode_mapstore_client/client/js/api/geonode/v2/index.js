@@ -66,13 +66,22 @@ function addCountToLabel(name, count) {
 // some fields such as search_fields does not support the array notation `key[]=value1&key[]=value2`
 // this function will parse all values included array in the `key=value1&key=value2` format
 function addQueryString(requestUrl, params) {
-    if (!params) {
+
+    const geoNodePageConfig = window.__GEONODE_CONFIG__ || {};
+    const geonodeApiKey = geoNodePageConfig.apikey || null;
+
+    var _params = params;
+
+    if (geonodeApiKey) {
+        _params.search_fields = geonodeApiKey;
+    }
+    if (!_params) {
         return requestUrl;
     }
-    const queryString = Object.keys(params)
+    const queryString = Object.keys(_params)
         .reduce((str, key, idx) => {
             const start = idx === 0 ? '?' : '&';
-            const values = castArray(params[key]);
+            const values = castArray(_params[key]);
             if (values.length > 1) {
                 return str + values.reduce((valStr, value, jdx) => {
                     return valStr + (jdx === 0 ? start : '&') + key + '=' + value;

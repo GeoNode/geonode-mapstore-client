@@ -14,13 +14,6 @@ import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 * @name api.geonode.user
 */
 
-export const getUserInfo = () => {
-    const { endpointV1 = '/api' } = getConfigProp('geoNodeApi') || {};
-    var url = `${endpointV1}/o/v4/userinfo`
-    return axios.get(addApiTokenIfNeeded(url))
-        .then(({ data }) => data);
-};
-
 
 export const addApiTokenIfNeeded = (url) => {
     const geoNodePageConfig = window.__GEONODE_CONFIG__ || {};
@@ -32,10 +25,17 @@ export const addApiTokenIfNeeded = (url) => {
     will always raise an error due the missing auth. In this way if the
     main call provide an apikey, we can proceed with the login
     */
-
-    if (geoNodePageConfig.apikey) {
-        url += '?apikey=' + geoNodePageConfig.apikey
+    var _url = url;
+    if (apikey) {
+        _url += '?apikey=' + apikey;
     }
 
-    return url
-}
+    return _url;
+};
+
+export const getUserInfo = () => {
+    const { endpointV1 = '/api' } = getConfigProp('geoNodeApi') || {};
+    var url = `${endpointV1}/o/v4/userinfo`;
+    return axios.get(addApiTokenIfNeeded(url))
+        .then(({ data }) => data);
+};

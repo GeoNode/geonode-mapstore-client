@@ -23,6 +23,5 @@ def generate_proxyurl(_url, request):
 
 @register.simple_tag()
 def retrieve_apikey(request):
-    if settings.LOCKDOWN_GEONODE:
-        request = extract_user_from_headers(request)
+    if settings.ENABLE_APIKEY_LOGIN:
         return get_auth_token(request.user) or None

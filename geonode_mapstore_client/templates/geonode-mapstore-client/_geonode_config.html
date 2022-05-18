@@ -74,7 +74,7 @@
             resourceType: '{{ resource.resource_type|default:"" }}',
             isEmbed: isEmbed,
             pluginsConfigKey: pluginsConfigKey,
-            apikey: "{%if user_apikey %}{{user_apikey}}{% endif %}",
+            apikey: "{%if user_apikey %}{{user_apikey}}{% else %}{% endif %}",
             pluginsConfigPatchRules: pluginsConfigPatchRules,
             localConfig: {
                 proxyUrl: {
