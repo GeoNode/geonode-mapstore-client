@@ -74,13 +74,30 @@
             resourceType: '{{ resource.resource_type|default:"" }}',
             isEmbed: isEmbed,
             pluginsConfigKey: pluginsConfigKey,
-            apikey: "{%if user_apikey %}{{user_apikey}}{% else %}{% endif %}",
             pluginsConfigPatchRules: pluginsConfigPatchRules,
+            apikey: '{%if user_apikey %}{{user_apikey}}{% else %}{% endif %}',
             localConfig: {
                 proxyUrl: {
                     url: '{{UPDATED_PROXY_URL|safe }}',
                     useCORS: []
                 },
+                useAuthenticationRules: true,
+                authenticationRules: [
+                    {
+                        urlPattern: '.*geoserver.*',
+                        authkeyParamName: 'access_token',
+                        method: 'authkey'
+                    },
+                    {
+                        urlPattern: '.*gs.*',
+                        authkeyParamName: 'access_token',
+                        method: 'authkey'
+                    },
+                    {
+                        urlPattern: '.*api/v2.*',
+                        method: 'bearer'
+                    }
+                ],
                 extensionsFolder: extensionsFolder,
                 printUrl: geoServerPublicLocation + 'pdf/info.json',
                 bingApiKey: '{% bing_api_key %}',
@@ -104,7 +121,7 @@
                     isMobile: isMobile,
                     datasetMaxUploadSize: datasetMaxUploadSize,
                     documentMaxUploadSize: documentMaxUploadSize,
-                    maxParallelUploads: maxParallelUploads,
+                    maxParallelUploads: maxParallelUploads
                 },
                 geoNodeConfiguration: {
                     cardsMenu: {

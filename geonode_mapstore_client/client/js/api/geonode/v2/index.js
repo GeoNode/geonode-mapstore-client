@@ -8,7 +8,8 @@
 
 import axios from '@mapstore/framework/libs/ajax';
 import {
-    parseDevHostname
+    parseDevHostname,
+    getApiToken
 } from '@js/utils/APIUtils';
 import merge from 'lodash/merge';
 import mergeWith from 'lodash/mergeWith';
@@ -100,7 +101,12 @@ export const setEndpoints = (data) => {
  * get all thw endpoints available from API V2
  */
 export const getEndpoints = () => {
-    return axios.get('/api/v2/')
+    const apikey = getApiToken();
+    return axios.get('/api/v2/', {
+        params: {
+            ...(apikey && { apikey })
+        }
+    })
         .then(({ data }) => {
             setEndpoints(data);
             return data;
@@ -422,15 +428,20 @@ export const getGroups = ({
         });
 };
 
-export const getUserByPk = (pk) => {
-    return axios.get(parseDevHostname(`${endpoints[USERS]}/${pk}`))
+export const getUserByPk = (pk, apikey) => {
+    return axios.get(parseDevHostname(`${endpoints[USERS]}/${pk}`), {
+        params: {
+            ...(apikey && { apikey })
+        }
+    })
         .then(({ data }) => data.user);
 };
 
 export const getAccountInfo = () => {
-    return getUserInfo()
+    const apikey = getApiToken();
+    return getUserInfo(apikey)
         .then((info) => {
-            return getUserByPk(info.sub)
+            return getUserByPk(info.sub, apikey)
                 .then((user) => ({
                     ...user,
                     info,

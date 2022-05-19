@@ -14,28 +14,12 @@ import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 * @name api.geonode.user
 */
 
-
-export const addApiTokenIfNeeded = (url) => {
-    const geoNodePageConfig = window.__GEONODE_CONFIG__ || {};
-    const apikey = geoNodePageConfig.apikey || null;
-
-    /*
-    In case of LOCKDOWN_MODE in geonode, we need to check if the search page
-    contains an APIKEY. This is required because otherwise the endpoint
-    will always raise an error due the missing auth. In this way if the
-    main call provide an apikey, we can proceed with the login
-    */
-    var _url = url;
-    if (apikey) {
-        _url += '?apikey=' + apikey;
-    }
-
-    return _url;
-};
-
-export const getUserInfo = () => {
+export const getUserInfo = (apikey) => {
     const { endpointV1 = '/api' } = getConfigProp('geoNodeApi') || {};
-    var url = `${endpointV1}/o/v4/userinfo`;
-    return axios.get(addApiTokenIfNeeded(url))
+    return axios.get(`${endpointV1}/o/v4/userinfo`, {
+        params: {
+            ...(apikey && { apikey })
+        }
+    })
         .then(({ data }) => data);
 };
