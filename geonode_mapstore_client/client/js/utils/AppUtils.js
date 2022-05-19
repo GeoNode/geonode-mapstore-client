@@ -27,6 +27,7 @@ import isString from 'lodash/isString';
 
 import url from 'url';
 import axios from '@mapstore/framework/libs/ajax';
+import { setViewer } from '@mapstore/framework/utils/MapInfoUtils';
 
 let epicsCache = {};
 let actionListeners = {};
@@ -154,7 +155,8 @@ export function setupConfiguration({
             const listeners = (actionListeners[type] || [])
                 .filter((l) => l !== listener);
             actionListeners[type] = listeners;
-        }
+        },
+        setGetFeatureInfoViewer: setViewer
     };
     if (window.onInitMapStoreAPI) {
         window.onInitMapStoreAPI(window.MapStoreAPI, geoNodePageConfig);
