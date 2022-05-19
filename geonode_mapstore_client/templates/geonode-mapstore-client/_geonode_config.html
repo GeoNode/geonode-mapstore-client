@@ -1,6 +1,7 @@
 {% load client_lib_tags %}
 {% load base_tags %}
 {% load get_menu_json %}
+{% load apikey %}
 {% comment %}
     app and map configuration need to be normalized
 {% endcomment %}
@@ -12,6 +13,8 @@
 
 {% get_menu_json 'CARDS_MENU' as CARDS_MENU %}
 {{ CARDS_MENU|json_script:"menu-CARDS_MENU" }}
+{% generate_proxyurl PROXY_URL|default:"/proxy/?url=" request as UPDATED_PROXY_URL %}
+{% retrieve_apikey request as user_apikey %}
 
 <script>
     (function(){
@@ -72,11 +75,29 @@
             isEmbed: isEmbed,
             pluginsConfigKey: pluginsConfigKey,
             pluginsConfigPatchRules: pluginsConfigPatchRules,
+            apikey: '{%if user_apikey %}{{user_apikey}}{% else %}{% endif %}',
             localConfig: {
                 proxyUrl: {
-                    url: '{{ PROXY_URL|default:"/proxy/?url=" }}',
+                    url: '{{UPDATED_PROXY_URL|safe }}',
                     useCORS: []
                 },
+                useAuthenticationRules: true,
+                authenticationRules: [
+                    {
+                        urlPattern: '.*geoserver.*',
+                        authkeyParamName: 'access_token',
+                        method: 'authkey'
+                    },
+                    {
+                        urlPattern: '.*gs.*',
+                        authkeyParamName: 'access_token',
+                        method: 'authkey'
+                    },
+                    {
+                        urlPattern: '.*api/v2.*',
+                        method: 'bearer'
+                    }
+                ],
                 extensionsFolder: extensionsFolder,
                 printUrl: geoServerPublicLocation + 'pdf/info.json',
                 bingApiKey: '{% bing_api_key %}',
@@ -100,7 +121,7 @@
                     isMobile: isMobile,
                     datasetMaxUploadSize: datasetMaxUploadSize,
                     documentMaxUploadSize: documentMaxUploadSize,
-                    maxParallelUploads: maxParallelUploads,
+                    maxParallelUploads: maxParallelUploads
                 },
                 geoNodeConfiguration: {
                     cardsMenu: {

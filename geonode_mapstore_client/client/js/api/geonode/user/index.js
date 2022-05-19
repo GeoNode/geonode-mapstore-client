@@ -14,8 +14,12 @@ import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 * @name api.geonode.user
 */
 
-export const getUserInfo = () => {
+export const getUserInfo = (apikey) => {
     const { endpointV1 = '/api' } = getConfigProp('geoNodeApi') || {};
-    return axios.get(`${endpointV1}/o/v4/userinfo`)
+    return axios.get(`${endpointV1}/o/v4/userinfo`, {
+        params: {
+            ...(apikey && { apikey })
+        }
+    })
         .then(({ data }) => data);
 };

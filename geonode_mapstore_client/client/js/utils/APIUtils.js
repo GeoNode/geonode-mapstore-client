@@ -35,6 +35,17 @@ export const parseDevHostname = (requestUrl) => {
     return requestUrl;
 };
 
+export const getApiToken = () => {
+    /*
+    In case of LOCKDOWN_MODE in geonode, we need to check if the search page
+    contains an APIKEY. This is required because otherwise the endpoint
+    will always raise an error due the missing auth. In this way if the
+    main call provide an apikey, we can proceed with the login
+    */
+    const geoNodePageConfig = window.__GEONODE_CONFIG__ || {};
+    return geoNodePageConfig.apikey || null;
+};
+
 export default {
     parseDevHostname
 };

@@ -3,24 +3,6 @@
         "url": "proxy/?url=",
         "useCORS": []
     },
-    "useAuthenticationRules": true,
-    "authenticationRules": [
-        {
-            "urlPattern": ".*geoserver.*",
-            "authkeyParamName": "access_token",
-            "method": "authkey"
-        },
-        {
-            "urlPattern": ".*gs.*",
-            "authkeyParamName": "access_token",
-            "method": "authkey"
-        },
-        {
-            "urlPattern": ".*api/v2.*",
-            "method": "bearer"
-        }
-    ],
-    "defaultLayerFormat": "image/png",
     "geoNodeApi": {
         "endpointV1": "/api",
         "endpointV2": "/api/v2"
