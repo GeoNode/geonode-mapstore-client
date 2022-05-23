@@ -56,7 +56,7 @@ def migrate_map_forward(apps, schema_editor):
 
                 thumb = to_update.pop('thumbnail', None)
                 if thumb and 'data:image/' not in thumb:
-                    to_update['thumbnail_url'] = to_update.pop('thumbnail')
+                    to_update['thumbnail_url'] = thumb
             '''
             Updating the resource
             '''
