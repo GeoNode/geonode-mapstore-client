@@ -23,6 +23,7 @@ def resource_urls(request):
         'MAP_BASELAYERS_SOURCES': getattr(settings, "MAPSTORE_BASELAYERS_SOURCES", {}),
         'CATALOGUE_SERVICES': getattr(settings, "MAPSTORE_CATALOGUE_SERVICES", {}),
         'CATALOGUE_SELECTED_SERVICE': getattr(settings, "MAPSTORE_CATALOGUE_SELECTED_SERVICE", None),
+        'CREATE_LAYER': getattr(settings, "CREATE_LAYER", False),
         'DEFAULT_MAP_CENTER_X': getattr(settings, "DEFAULT_MAP_CENTER_X", 0),
         'DEFAULT_MAP_CENTER_Y': getattr(settings, "DEFAULT_MAP_CENTER_Y", 0),
         'DEFAULT_MAP_CRS': getattr(settings, "DEFAULT_MAP_CRS", 'EPSG:3857'),
