@@ -535,6 +535,7 @@ function DetailsPanel({
 
                             {
                                 <div className="gn-details-panel-tools">
+                                    <ResourceStatus resource={resource} />
                                     {
                                         enableFavorite &&
                                     <Button
@@ -576,7 +577,6 @@ function DetailsPanel({
 
 
                         </div>
-                        <ResourceStatus resource={resource} />
                         {<p className="gn-details-panel-meta-text">
                             {resource?.owner &&  <>{resource?.owner.avatar &&
                             <img src={resource?.owner.avatar} alt={getUserName(resource?.owner)} className="gn-card-author-image" />
