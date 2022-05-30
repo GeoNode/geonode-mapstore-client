@@ -350,6 +350,7 @@
                             "value": "layer",
                             "type": "link",
                             "href": "/createlayer/",
+                            "config": "createLayer",
                             "authenticated": true,
                             "perms": [
                                 {
