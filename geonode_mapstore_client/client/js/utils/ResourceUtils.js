@@ -33,6 +33,12 @@ function getExtentFromResource({ ll_bbox_polygon: llBboxPolygon }) {
         geometry: llBboxPolygon
     });
     const [minx, miny, maxx, maxy] = extent;
+
+    // if the extent is greater than the max extent of the WGS84 return null
+    const WGS84_MAX_EXTENT = [-180, -90, 180, 90];
+    if (minx < WGS84_MAX_EXTENT[0] || miny < WGS84_MAX_EXTENT[1] || maxx > WGS84_MAX_EXTENT[2] || maxy > WGS84_MAX_EXTENT[3]) {
+        return null;
+    }
     const bbox = {
         crs: 'EPSG:4326',
         bounds: { minx, miny, maxx, maxy }
@@ -138,7 +144,7 @@ export const resourceToLayerConfig = (resource) => {
                     url: wfsUrl
                 }
             }),
-            ...(bbox && { bbox }),
+            ...(bbox ? { bbox } : { bboxError: true }),
             ...(template && {
                 featureInfo: {
                     format: 'TEMPLATE',

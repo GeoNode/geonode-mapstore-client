@@ -278,7 +278,9 @@
             "cancelUpload": "Cancel upload",
             "parallelUploadLimit": "The selected number of files exceeds the allowed limit of {limit} files. Please remove some files from the list.",
             "parallelLimitError": "The number of active parallel uploads exceeds {limit}. Wait for the pending ones to finish.",
-            "thisPage": "This page"
+            "thisPage": "This page",
+            "invalidBbox": "Invalid BBox",
+            "invalidBboxMsg": "The provided BBox is invalid"
         }
     }
 }
