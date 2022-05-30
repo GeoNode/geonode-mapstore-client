@@ -79,7 +79,8 @@ import { CLICK_ON_MAP, resizeMap } from '@mapstore/framework/actions/map';
 import { saveError } from '@js/actions/gnsave';
 import {
     error as errorNotification,
-    success as successNotification
+    success as successNotification,
+    warning as warningNotification
 } from '@mapstore/framework/actions/notifications';
 import { getStyleProperties } from '@js/api/geonode/style';
 
@@ -161,7 +162,8 @@ const resourceTypes = {
                                 updateStatus('edit'),
                                 resizeMap()
                             ]
-                            : [])
+                            : []),
+                        newLayer?.bboxError && warningNotification({ title: "gnviewer.invalidBbox", message: "gnviewer.invalidBboxMsg" })
                     );
                 });
         }

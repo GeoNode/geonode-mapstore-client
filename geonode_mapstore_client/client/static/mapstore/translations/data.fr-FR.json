@@ -278,7 +278,9 @@
             "cancelUpload": "Annuler le téléchargement",
             "parallelUploadLimit": "Le nombre de fichiers sélectionné dépasse la limite autorisée de {limit} fichiers. Veuillez supprimer certains fichiers de la liste.",
             "parallelLimitError": "Le nombre de téléchargements parallèles actifs dépasse {limit}. Attendez que ceux en attente se terminent.",
-            "thisPage": "Cette page"
+            "thisPage": "Cette page",
+            "invalidBbox": "Extension d'ensemble de données non valide",
+            "invalidBboxMsg": "L'extension du jeu de données dépasse l'étendue maximale du WGS84 [-180, -90, 180, 90]"
         }
     }
 }
