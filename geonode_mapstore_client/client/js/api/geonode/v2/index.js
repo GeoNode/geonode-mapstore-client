@@ -596,7 +596,8 @@ export const getCategories = ({ q, includes, page, pageSize, config, ...params }
             page,
             ...params,
             ...(includes && {'filter{identifier.in}': includes}),
-            ...(q && { 'filter{identifier.icontains}': q })
+            ...(q && { 'filter{identifier.icontains}': q }),
+            with_resources: "True"
         }
     })
         .then(({ data }) => {
@@ -629,7 +630,8 @@ export const getRegions = ({ q, includes, page, pageSize, config, ...params }, f
             page,
             ...params,
             ...(includes && {'filter{name.in}': includes}),
-            ...(q && { 'filter{name.icontains}': q })
+            ...(q && { 'filter{name.icontains}': q }),
+            with_resources: "True"
         }
     })
         .then(({ data }) => {
