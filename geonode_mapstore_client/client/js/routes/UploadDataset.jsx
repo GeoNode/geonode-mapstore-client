@@ -48,12 +48,6 @@ const supportedDatasetTypes = [
         mimeType: ['text/csv']
     },
     {
-        id: 'geojson',
-        label: 'GeoJSON',
-        format: 'vector',
-        ext: ['geojson']
-    },
-    {
         id: 'zip',
         label: 'Zip Archive',
         format: 'archive',
