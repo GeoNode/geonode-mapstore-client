@@ -279,8 +279,8 @@
             "parallelUploadLimit": "Die ausgewählte Anzahl von Dateien überschreitet das zulässige Limit von {limit} Dateien. Bitte entfernen Sie einige Dateien aus der Liste.",
             "parallelLimitError": "Die Anzahl aktiver paralleler Uploads überschreitet {limit}. Warten Sie, bis die ausstehenden abgeschlossen sind.",
             "thisPage": "Diese Seite",
-            "invalidBbox": "Ungültige BBox",
-            "invalidBboxMsg": "Die bereitgestellte BBox ist ungültig"
+            "invalidBbox": "Ungültige Datensatzerweiterung",
+            "invalidBboxMsg": "Die Datensatzerweiterung überschreitet die maximale WGS84-Ausdehnung [-180, -90, 180, 90]"
         }
     }
 }
