@@ -278,7 +278,8 @@
             "cancelUpload": "Annuler le téléchargement",
             "parallelUploadLimit": "Le nombre de fichiers sélectionné dépasse la limite autorisée de {limit} fichiers. Veuillez supprimer certains fichiers de la liste.",
             "parallelLimitError": "Le nombre de téléchargements parallèles actifs dépasse {limit}. Attendez que ceux en attente se terminent.",
-            "thisPage": "Cette page"
+            "thisPage": "Cette page",
+            "addMainFiles": "Ajouter le fichier principal"
         }
     }
 }

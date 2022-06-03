@@ -56,8 +56,7 @@ function PendingUploadCard({
             </div>}
             {addMissingFiles && <div className="gn-upload-card-body">
                 <div className="text-danger">
-                    {/* <Message msgId="gnviewer.missingFiles" /> */}
-                    Add main file
+                    <Message msgId="gnviewer.addMainFiles" />
                 </div>
             </div>}
             <div className="gn-upload-card-bottom">
