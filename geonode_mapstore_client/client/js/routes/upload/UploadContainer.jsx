@@ -106,7 +106,7 @@ function UploadContainer({
                         {waitingUploadNames.length > 0 ? (
                             <ul>
                                 {waitingUploadNames.map((baseName) => {
-                                    const { files, missingExt = [], error } = waitingUploads[baseName];
+                                    const { files, missingExt = [], error, addMissingFiles = false } = waitingUploads[baseName];
                                     const filesExt = Object.keys(files);
                                     const size = getSize(files, filesExt);
                                     return (
@@ -123,6 +123,7 @@ function UploadContainer({
                                                 size={size}
                                                 onAbort={abort}
                                                 error={error}
+                                                addMissingFiles={addMissingFiles}
                                             />
                                         </li>
                                     );
