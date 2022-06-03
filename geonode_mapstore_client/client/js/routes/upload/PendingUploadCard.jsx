@@ -30,12 +30,13 @@ function PendingUploadCard({
     progress,
     size,
     onAbort,
-    error
+    error,
+    addMissingFiles
 }) {
     return (
         <div className="gn-upload-card">
             <div className="gn-upload-card-header">
-                {missingExt.length > 0 ? <div className="gn-upload-card-error"><FaIcon name="exclamation" /></div> : null}
+                {(missingExt.length > 0 || addMissingFiles) ? <div className="gn-upload-card-error"><FaIcon name="exclamation" /></div> : null}
                 <div className="gn-upload-card-title">{baseName}</div>
                 <div>
                     {error ? <ErrorMessageWithTooltip tooltipId={<Message msgId="gnviewer.invalidUploadMessageErrorTooltip" />} /> : null}
@@ -51,6 +52,12 @@ function PendingUploadCard({
             {missingExt.length > 0 && <div className="gn-upload-card-body">
                 <div className="text-danger">
                     <Message msgId="gnviewer.missingFiles" />: {missingExt.join(', ')}
+                </div>
+            </div>}
+            {addMissingFiles && <div className="gn-upload-card-body">
+                <div className="text-danger">
+                    {/* <Message msgId="gnviewer.missingFiles" /> */}
+                    Add main file
                 </div>
             </div>}
             <div className="gn-upload-card-bottom">

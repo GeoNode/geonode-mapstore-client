@@ -22,7 +22,8 @@ import {
     excludeDeletedResources,
     processUploadResponse,
     parseUploadResponse,
-    cleanUrl
+    cleanUrl,
+    parseUploadFiles
 } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
@@ -578,5 +579,217 @@ describe('Test Resource Utils', () => {
         const url = cleanUrl(testUrl);
 
         expect(url).toEqual('https://test.com/dataset/808');
+    });
+
+    it('should parse upload files', () => {
+        const data = {
+            uploadFiles: {
+                TestFile: {
+                    type: 'shp',
+                    files: {
+                        dbf: { name: "TestFile.dbf" },
+                        prj: { name: "TestFile.prj" },
+                        shp: { name: "TestFile.shp" },
+                        shx: { name: "TestFile.shx" },
+                        sld: { name: "TestFile.sld" },
+                        xml: { name: "TestFile.xml" }
+                    }
+                }
+            },
+            supportedDatasetTypes: [
+                {
+                    id: 'shp',
+                    label: 'ESRI Shapefile',
+                    format: 'vector',
+                    ext: ['shp'],
+                    requires: ['shp', 'prj', 'dbf', 'shx'],
+                    optional: ['xml', 'sld']
+                },
+                {
+                    id: 'tiff',
+                    label: 'GeoTIFF',
+                    format: 'raster',
+                    ext: ['tiff', 'tif'],
+                    mimeType: ['image/tiff'],
+                    optional: ['xml', 'sld']
+                },
+                {
+                    id: 'csv',
+                    label: 'Comma Separated Value (CSV)',
+                    format: 'vector',
+                    ext: ['csv'],
+                    mimeType: ['text/csv'],
+                    optional: ['xml', 'sld']
+                },
+                {
+                    id: 'zip',
+                    label: 'Zip Archive',
+                    format: 'archive',
+                    ext: ['zip'],
+                    mimeType: ['application/zip'],
+                    optional: ['xml', 'sld']
+                },
+                {
+                    id: 'xml',
+                    label: 'XML Metadata File',
+                    format: 'metadata',
+                    ext: ['xml'],
+                    mimeType: ['application/json'],
+                    needsFiles: [
+                        'shp',
+                        'prj',
+                        'dbf',
+                        'shx',
+                        'csv',
+                        'tiff',
+                        'zip',
+                        'sld'
+                    ]
+                },
+                {
+                    id: 'sld',
+                    label: 'Styled Layer Descriptor (SLD)',
+                    format: 'metadata',
+                    ext: ['sld'],
+                    mimeType: ['application/json'],
+                    needsFiles: [
+                        'shp',
+                        'prj',
+                        'dbf',
+                        'shx',
+                        'csv',
+                        'tiff',
+                        'zip',
+                        'xml'
+                    ]
+                }
+            ],
+            supportedOptionalExtensions: [
+                'xml',
+                'sld',
+                'xml',
+                'sld',
+                'xml',
+                'sld',
+                'xml',
+                'sld'
+            ],
+            supportedRequiresExtensions: ['shp', 'prj', 'dbf', 'shx']
+        };
+
+        expect(parseUploadFiles(data)).toEqual({
+            TestFile: {
+                type: "shp",
+                files: {
+                    dbf: { name: "TestFile.dbf" },
+                    prj: { name: "TestFile.prj" },
+                    shp: { name: "TestFile.shp" },
+                    shx: { name: "TestFile.shx" },
+                    sld: { name: "TestFile.sld" },
+                    xml: { name: "TestFile.xml" }
+                },
+                mainExt: "shp",
+                missingExt: [],
+                addMissingFiles: false
+            }
+        });
+    });
+
+    it('request for missing files', () => {
+        const data = {
+            uploadFiles: {
+                TestFile: {
+                    type: 'xml',
+                    files: {
+                        sld: { name: "TestFile.sld" },
+                        xml: { name: "TestFile.xml" }
+                    }
+                }
+            },
+            supportedDatasetTypes: [
+                {
+                    id: 'shp',
+                    label: 'ESRI Shapefile',
+                    format: 'vector',
+                    ext: ['shp'],
+                    requires: ['shp', 'prj', 'dbf', 'shx'],
+                    optional: ['xml', 'sld']
+                },
+                {
+                    id: 'tiff',
+                    label: 'GeoTIFF',
+                    format: 'raster',
+                    ext: ['tiff', 'tif'],
+                    mimeType: ['image/tiff'],
+                    optional: ['xml', 'sld']
+                },
+                {
+                    id: 'csv',
+                    label: 'Comma Separated Value (CSV)',
+                    format: 'vector',
+                    ext: ['csv'],
+                    mimeType: ['text/csv'],
+                    optional: ['xml', 'sld']
+                },
+                {
+                    id: 'zip',
+                    label: 'Zip Archive',
+                    format: 'archive',
+                    ext: ['zip'],
+                    mimeType: ['application/zip'],
+                    optional: ['xml', 'sld']
+                },
+                {
+                    id: 'xml',
+                    label: 'XML Metadata File',
+                    format: 'metadata',
+                    ext: ['xml'],
+                    mimeType: ['application/json'],
+                    needsFiles: [
+                        'shp',
+                        'prj',
+                        'dbf',
+                        'shx',
+                        'csv',
+                        'tiff',
+                        'zip',
+                        'sld'
+                    ]
+                },
+                {
+                    id: 'sld',
+                    label: 'Styled Layer Descriptor (SLD)',
+                    format: 'metadata',
+                    ext: ['sld'],
+                    mimeType: ['application/json'],
+                    needsFiles: [
+                        'shp',
+                        'prj',
+                        'dbf',
+                        'shx',
+                        'csv',
+                        'tiff',
+                        'zip',
+                        'xml'
+                    ]
+                }
+            ],
+            supportedOptionalExtensions: [
+                'xml',
+                'sld',
+                'xml',
+                'sld',
+                'xml',
+                'sld',
+                'xml',
+                'sld'
+            ],
+            supportedRequiresExtensions: ['shp', 'prj', 'dbf', 'shx']
+        };
+
+        const parsedFiles = parseUploadFiles(data);
+        const baseName = 'TestFile';
+
+        expect(parsedFiles[baseName].addMissingFiles).toEqual(true);
     });
 });

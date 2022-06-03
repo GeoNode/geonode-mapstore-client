@@ -9,7 +9,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
-import pick from 'lodash/pick';
 import merge from 'lodash/merge';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -23,7 +22,7 @@ import axios from '@mapstore/framework/libs/ajax';
 import UploadListContainer from '@js/routes/upload/UploadListContainer';
 import UploadContainer from '@js/routes/upload/UploadContainer';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
-import { parseUploadResponse, processUploadResponse } from '@js/utils/ResourceUtils';
+import { parseUploadResponse, processUploadResponse, parseUploadFiles } from '@js/utils/ResourceUtils';
 
 const supportedDatasetTypes = [
     {
@@ -31,36 +30,56 @@ const supportedDatasetTypes = [
         label: 'ESRI Shapefile',
         format: 'vector',
         ext: ['shp'],
-        requires: ['shp', 'prj', 'dbf', 'shx']
+        requires: ['shp', 'prj', 'dbf', 'shx'],
+        optional: ['xml', 'sld']
     },
     {
         id: 'tiff',
         label: 'GeoTIFF',
         format: 'raster',
         ext: ['tiff', 'tif'],
-        mimeType: ['image/tiff']
+        mimeType: ['image/tiff'],
+        optional: ['xml', 'sld']
     },
     {
         id: 'csv',
         label: 'Comma Separated Value (CSV)',
         format: 'vector',
         ext: ['csv'],
-        mimeType: ['text/csv']
+        mimeType: ['text/csv'],
+        optional: ['xml', 'sld']
     },
     {
         id: 'zip',
         label: 'Zip Archive',
         format: 'archive',
         ext: ['zip'],
-        mimeType: ['application/zip']
+        mimeType: ['application/zip'],
+        optional: ['xml', 'sld']
+    },
+    {
+        id: 'xml',
+        label: 'XML Metadata File',
+        format: 'metadata',
+        ext: ['xml'],
+        mimeType: ['application/json'],
+        needsFiles: ['shp', 'prj', 'dbf', 'shx', 'csv', 'tiff', 'zip', 'sld']
+    },
+    {
+        id: 'sld',
+        label: 'Styled Layer Descriptor (SLD)',
+        format: 'metadata',
+        ext: ['sld'],
+        mimeType: ['application/json'],
+        needsFiles: ['shp', 'prj', 'dbf', 'shx', 'csv', 'tiff', 'zip', 'xml']
     }
 ];
-
 
 const supportedExtensions = supportedDatasetTypes.map(({ ext }) => ext || []).flat();
 const supportedMimeTypes = supportedDatasetTypes.map(({ mimeType }) => mimeType || []).flat();
 const supportedRequiresExtensions = supportedDatasetTypes.map(({ requires }) => requires || []).flat();
-const supportedLabels = supportedDatasetTypes.map(({ label }) => label ).join(', ');
+const supportedLabels = supportedDatasetTypes.map(({ label }) => label).join(', ');
+const supportedOptionalExtensions = supportedDatasetTypes.map(({ optional }) => optional || []).flat();
 
 function getFileNameParts(file) {
     const { name } = file;
@@ -95,37 +114,14 @@ function UploadList({
     const [loading, setLoading] = useState(false);
     const [uploadContainerProgress, setUploadContainerProgress] = useState({});
 
-    function parseUploadFiles(uploadFiles) {
-        return Object.keys(uploadFiles)
-            .reduce((acc, baseName) => {
-                const uploadFile = uploadFiles[baseName];
-                const { requires = [], ext = []} = supportedDatasetTypes.find(({ id }) => id === uploadFile.type) || {};
-                const cleanedFiles = pick(uploadFiles[baseName].files, [...requires, ...ext]);
-                const filesKeys = Object.keys(cleanedFiles);
-                const files = requires.length > 0
-                    ? cleanedFiles
-                    : filesKeys.length > 1
-                        ? pick(cleanedFiles, ext[0])
-                        : cleanedFiles;
-                const missingExt = requires.filter((fileExt) => !filesKeys.includes(fileExt));
-                return {
-                    ...acc,
-                    [baseName]: {
-                        ...uploadFile,
-                        mainExt: filesKeys.find(key => ext.includes(key)),
-                        files,
-                        missingExt
-                    }
-                };
-            }, {});
-    }
-
     function updateWaitingUploads(uploadFiles) {
-        const newWaitingUploads = parseUploadFiles(uploadFiles);
+        // prepare params for parseUploadFiles
+        const params = { uploadFiles, supportedDatasetTypes, supportedOptionalExtensions, supportedRequiresExtensions };
+        const newWaitingUploads = parseUploadFiles(params);
         setWaitingUploads(newWaitingUploads);
         const newReadyUploads = Object.keys(newWaitingUploads)
             .reduce((acc, baseName) => {
-                if (newWaitingUploads[baseName]?.missingExt?.length > 0) {
+                if (newWaitingUploads[baseName]?.missingExt?.length > 0 || newWaitingUploads[baseName]?.addMissingFiles) {
                     return acc;
                 }
                 return {
@@ -141,7 +137,7 @@ function UploadList({
             const { type } = file;
             const { ext } = getFileNameParts(file);
             return {
-                supported: !!(supportedMimeTypes.includes(type) || supportedExtensions.includes(ext) || supportedRequiresExtensions.includes(ext)),
+                supported: !!(supportedMimeTypes.includes(type) || supportedExtensions.includes(ext) || supportedRequiresExtensions.includes(ext) || supportedOptionalExtensions.includes(ext)),
                 file
             };
         });
@@ -150,11 +146,14 @@ function UploadList({
             .filter(({ supported }) => supported)
             .reduce((acc, { file }) => {
                 const { ext, baseName } = getFileNameParts(file);
-                const type = getDatasetFileType(file);
+                let type = getDatasetFileType(file);
+                if (!type && supportedOptionalExtensions.includes(ext)) {
+                    type = checkedFiles.length > 1 ? acc[baseName]?.type : ext;
+                }
                 return {
                     ...acc,
                     [baseName]: {
-                        type,
+                        type: type,
                         files: {
                             ...acc[baseName]?.files,
                             [ext]: file
