@@ -18,7 +18,6 @@ import FaIcon from '@js/components/FaIcon';
 import {
     isValidBadgeValue
 } from '@js/utils/MenuUtils';
-import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 
 const itemElement = ({ labelId, href, badge, target }) =>  (
     <>
@@ -91,8 +90,6 @@ const DropdownList = ({
     responsive
 }) => {
 
-    const { createLayer } = getConfigProp('geoNodeSettings') || {};
-
     const dropdownItems = items
         .map((itm, idx) => {
 
@@ -103,7 +100,7 @@ const DropdownList = ({
                 return <Dropdown.Divider key={idx} />;
             }
             return (
-                (!itm.config || (createLayer && itm.config === 'createLayer')) && <>
+                <>
                     <Dropdown.Item
                         key={idx}
                         href={itm.href}
