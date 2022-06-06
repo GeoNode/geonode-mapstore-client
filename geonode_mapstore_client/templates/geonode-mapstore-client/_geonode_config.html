@@ -16,6 +16,8 @@
 {% generate_proxyurl PROXY_URL|default:"/proxy/?url=" request as UPDATED_PROXY_URL %}
 {% retrieve_apikey request as user_apikey %}
 
+{% mapbox_access_token as MAPBOX_ACCESS_TOKEN %}
+
 <script>
     (function(){
 
@@ -102,6 +104,7 @@
                 extensionsFolder: extensionsFolder,
                 printUrl: geoServerPublicLocation + 'pdf/info.json',
                 bingApiKey: '{% bing_api_key %}',
+                mapboxAccessToken: '{{ MAPBOX_ACCESS_TOKEN }}',
                 geoNodeApi: {
                     endpointV1: siteUrl + 'api',
                     endpointV2: siteUrl + 'api/v2'
