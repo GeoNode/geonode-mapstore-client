@@ -1689,11 +1689,13 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "Annotations"
+                            "name": "Annotations",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
                         },
                         {
                             "type": "plugin",
-                            "name": "DatasetsCatalog"
+                            "name": "DatasetsCatalog",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
                         }
                     ],
                     "rightMenuItems": [
