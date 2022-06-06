@@ -279,7 +279,9 @@
             "parallelUploadLimit": "The selected number of files exceeds the allowed limit of {limit} files. Please remove some files from the list.",
             "parallelLimitError": "The number of active parallel uploads exceeds {limit}. Wait for the pending ones to finish.",
             "thisPage": "This page",
-            "addMainFiles": "Add main file"
+            "addMainFiles": "Add main file",
+            "invalidBbox": "Invalid dataset extension",
+            "invalidBboxMsg": "The dataset extension exceed the WGS84 maximum extent [-180, -90, 180, 90]"
         }
     }
 }
