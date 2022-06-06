@@ -163,7 +163,9 @@ const resourceTypes = {
                                 resizeMap()
                             ]
                             : []),
-                        newLayer?.bboxError && warningNotification({ title: "gnviewer.invalidBbox", message: "gnviewer.invalidBboxMsg" })
+                        ...(newLayer?.bboxError
+                            ? [warningNotification({ title: "gnviewer.invalidBbox", message: "gnviewer.invalidBboxMsg" })]
+                            : [])
                     );
                 });
         }
