@@ -2120,7 +2120,8 @@
                 "name": "Annotations",
                 "cfg": {
                     "measurementAnnotationEdit": false,
-                    "geodesic": false
+                    "geodesic": false,
+                    "symbolsPath": "/static/mapstore/symbols/"
                 }
             },
             {
