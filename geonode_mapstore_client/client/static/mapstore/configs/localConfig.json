@@ -508,6 +508,9 @@
             },
             {
                 "name": "FitBounds"
+            },
+            {
+                "name": "Notifications"
             }
         ],
         "map_preview": [
