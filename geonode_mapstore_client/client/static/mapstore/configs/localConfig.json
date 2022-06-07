@@ -507,6 +507,9 @@
             },
             {
                 "name": "FitBounds"
+            },
+            {
+                "name": "Notifications"
             }
         ],
         "map_preview": [
@@ -644,6 +647,9 @@
             },
             {
                 "name": "FitBounds"
+            },
+            {
+                "name": "Notifications"
             }
         ],
         "map_embed": [
@@ -2832,6 +2838,9 @@
                         "vertical": true
                     }
                 }
+            },
+            {
+                "name": "Notifications"
             }
         ],
         "geostory_viewer_mobile": [
