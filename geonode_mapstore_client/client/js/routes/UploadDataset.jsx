@@ -172,6 +172,12 @@ function UploadList({
         setUploadContainerProgress((prevFiles) => ({ ...prevFiles, [fileName]: percentCompleted }));
     };
 
+    function getValidFileExt({ files }) {
+        const validFile = Object.keys(files).find(key => key !== 'sld' && key !== 'xml');
+
+        return validFile;
+    }
+
     function handleUploadProcess() {
         if (!loading) {
             setLoading(true);
@@ -180,6 +186,11 @@ function UploadList({
                 const readyUpload = readyUploads[baseName];
                 cancelTokens[baseName] = axios.CancelToken;
                 sources[baseName] = cancelTokens[baseName].source();
+
+                const mainExt = (readyUpload.mainExt !== 'sld' && readyUpload.mainExt !== 'xml') ? readyUpload.mainExt : getValidFileExt(readyUpload);
+
+                readyUpload.mainExt = mainExt;
+
                 return uploadDataset({
                     file: readyUpload.files[readyUpload.mainExt],
                     ext: readyUpload.mainExt,
