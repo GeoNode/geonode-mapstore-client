@@ -281,7 +281,13 @@
             "thisPage": "This page",
             "addMainFiles": "Add main file",
             "invalidBbox": "Invalid dataset extension",
-            "invalidBboxMsg": "The dataset extension exceed the WGS84 maximum extent [-180, -90, 180, 90]"
+            "invalidBboxMsg": "The dataset extension exceed the WGS84 maximum extent [-180, -90, 180, 90]",
+            "embedmap": "Embed this Map",
+            "embeddataset": "Embed this Dataset",
+            "embedgeostory": "Embed this Geostory",
+            "embeddocument": "Embed this Document",
+            "embeddashboard": "Embed this Dashboard",
+            "directLink": "Direct Link"
         }
     }
 }
