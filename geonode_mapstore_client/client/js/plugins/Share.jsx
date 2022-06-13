@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -97,6 +97,14 @@ function Share({
     embedUrl
 }) {
 
+    const isMounted = useRef(false);
+    useEffect(() => {
+        isMounted.current = true;
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
+
     const [permissionsObject, setPermissionsObject] = useState({});
     useEffect(() => {
         getResourceTypes().then((data) => {
@@ -107,7 +115,9 @@ function Share({
             } else { // set a default permission object
                 responseOptions = getResourcePermissions(data[0].allowed_perms.compact);
             }
-            setPermissionsObject(responseOptions);
+            if (isMounted.current) {
+                setPermissionsObject(responseOptions);
+            }
         });
     }, [availableResourceTypes]);
 
