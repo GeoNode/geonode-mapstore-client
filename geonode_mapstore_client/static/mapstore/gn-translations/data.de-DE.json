@@ -281,7 +281,13 @@
             "thisPage": "Diese Seite",
             "addMainFiles": "Hauptdatei hinzufügen",
             "invalidBbox": "Ungültige Datensatzerweiterung",
-            "invalidBboxMsg": "Die Datensatzerweiterung überschreitet die maximale WGS84-Ausdehnung [-180, -90, 180, 90]"
+            "invalidBboxMsg": "Die Datensatzerweiterung überschreitet die maximale WGS84-Ausdehnung [-180, -90, 180, 90]",
+            "embedmap": "Diese Karte einbetten",
+            "embeddataset": "Betten Sie diesen Datensatz ein",
+            "embedgeostory": "Betten Sie diese Geostory ein",
+            "embeddocument": "Betten Sie dieses Dokument ein",
+            "embeddashboard": "Betten Sie dieses Dashboard ein",
+            "directLink": "Direkte Verbindung"
         }
     }
 }

@@ -283,7 +283,13 @@
             "thisPage": "Questa pagina",
             "addMainFiles": "Aggiungi file principale",
             "invalidBbox": "Estensione del dataset non valida",
-            "invalidBboxMsg": "L'estensione del dataset è maggiore del'estensione massima supportata della proiezione WGS84 [-180, -90, 180, 90]"
+            "invalidBboxMsg": "L'estensione del dataset è maggiore del'estensione massima supportata della proiezione WGS84 [-180, -90, 180, 90]",
+            "embedmap": "Incorpora questa Mappa",
+            "embeddataset": "Incorpora questo Set di dati",
+            "embedgeostory": "Incorpora questa Geostoria",
+            "embeddocument": "Incorpora questo Documento",
+            "embeddashboard": "Incorpora questo Dashboard",
+            "directLink": "Collegamento Diretto"
         }
     }
 }
