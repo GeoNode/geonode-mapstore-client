@@ -94,7 +94,8 @@ function Share({
     canEdit,
     permissionsLoading,
     resourceType,
-    embedUrl
+    embedUrl,
+    downloadUrl
 }) {
 
     const [permissionsObject, setPermissionsObject] = useState({});
@@ -130,7 +131,8 @@ function Share({
                 </div>
                 <div className="gn-share-panel-body">
                     <SharePageLink url={pageUrl} label={<Message msgId="gnviewer.thisPage" />} />
-                    <SharePageLink url={embedUrl} label={<Message msgId={`gnhome.${resourceType}`} />} />
+                    <SharePageLink url={embedUrl} label={<Message msgId={`gnviewer.embed${resourceType}`} />} />
+                    {(resourceType === 'document' && !!downloadUrl) && <SharePageLink url={downloadUrl} label={<Message msgId={`gnviewer.directLink`} />} />}
                     {canEdit && <>
                         <Permissions
                             compactPermissions={compactPermissions}
@@ -179,7 +181,8 @@ const SharePlugin = connect(
         canEdit,
         permissionsLoading,
         embedUrl: resource?.embed_url,
-        resourceType: type
+        resourceType: type,
+        downloadUrl: resource?.download_url
     })),
     {
         onClose: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),
