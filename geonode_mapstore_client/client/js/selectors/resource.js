@@ -102,9 +102,13 @@ export const getPermissionsPayload = (state) => {
 export const canEditPermissions = (state) => {
     const compactPermissions = getCompactPermissions(state);
     const users = compactPermissions.users || [];
+    const groups = compactPermissions.groups || [];
+    const organizations = compactPermissions.organizations || [];
     const user = state?.security?.user;
     const { permissions } = user && users.find(({ id }) => id === user.pk) || {};
-    return ['owner', 'manage'].includes(permissions);
+    const { permissions: allowedGroups } = user && groups.find((group) => user.info.groups.includes(group.name)) || {};
+    const { permissions: allowedOrganizations } = user && organizations.find((organization) => user.info.groups.includes(organization.name)) || {};
+    return ['owner', 'manage'].includes(permissions) || ['manage'].includes(allowedGroups) || ['manage'].includes(allowedOrganizations);
 };
 
 export const getSelectedLayerPermissions = (state) => {
