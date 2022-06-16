@@ -14,7 +14,8 @@ import {
     getGeonodeResourceFromDashboard,
     getResourceThumbnail,
     updatingThumbnailResource,
-    isThumbnailChanged
+    isThumbnailChanged,
+    canEditPermissions
 } from '../resource';
 
 const testState = {
@@ -25,6 +26,9 @@ const testState = {
             thumbnailChanged: true,
             thumbnail_url: 'thumbnail.jpeg',
             updatingThumbnail: true
+        },
+        compactPermissions: {
+            groups: [{name: 'test-group', permissions: 'manage'}]
         }
     },
     geostory: {
@@ -35,6 +39,13 @@ const testState = {
     dashboard: {
         originalData: {
             widgets: [{widgetType: 'map', name: 'test widget', map: {extraParams: {pk: 1}}}, {widgetType: 'map', name: 'test widget 2', map: {pk: 1}}]
+        }
+    },
+    security: {
+        user: {
+            info: {
+                groups: ['test-group']
+            }
         }
     }
 };
@@ -64,5 +75,9 @@ describe('resource selector', () => {
 
     it('should get resource thumbnail updating status', () => {
         expect(updatingThumbnailResource(testState)).toBeTruthy();
+    });
+
+    it('should get permissions from users in groups with manage rights', () => {
+        expect(canEditPermissions(testState)).toBeTruthy();
     });
 });
