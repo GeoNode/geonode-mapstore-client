@@ -279,8 +279,15 @@
             "parallelUploadLimit": "Le nombre de fichiers sélectionné dépasse la limite autorisée de {limit} fichiers. Veuillez supprimer certains fichiers de la liste.",
             "parallelLimitError": "Le nombre de téléchargements parallèles actifs dépasse {limit}. Attendez que ceux en attente se terminent.",
             "thisPage": "Cette page",
+            "addMainFiles": "Ajouter le fichier principal",
             "invalidBbox": "Extension d'ensemble de données non valide",
-            "invalidBboxMsg": "L'extension du jeu de données dépasse l'étendue maximale du WGS84 [-180, -90, 180, 90]"
+            "invalidBboxMsg": "L'extension du jeu de données dépasse l'étendue maximale du WGS84 [-180, -90, 180, 90]",
+            "embedmap": "Intégrer cette carte",
+            "embeddataset": "Intégrer cet ensemble de données",
+            "embedgeostory": "Intégrer cette Geostory",
+            "embeddocument": "Intégrer ce document",
+            "embeddashboard": "Intégrer ce Tableau de bord",
+            "directLink": "BLien direct"
         }
     }
 }

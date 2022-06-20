@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -94,8 +94,17 @@ function Share({
     canEdit,
     permissionsLoading,
     resourceType,
-    embedUrl
+    embedUrl,
+    downloadUrl
 }) {
+
+    const isMounted = useRef(false);
+    useEffect(() => {
+        isMounted.current = true;
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
 
     const [permissionsObject, setPermissionsObject] = useState({});
     useEffect(() => {
@@ -107,7 +116,9 @@ function Share({
             } else { // set a default permission object
                 responseOptions = getResourcePermissions(data[0].allowed_perms.compact);
             }
-            setPermissionsObject(responseOptions);
+            if (isMounted.current) {
+                setPermissionsObject(responseOptions);
+            }
         });
     }, [availableResourceTypes]);
 
@@ -130,7 +141,8 @@ function Share({
                 </div>
                 <div className="gn-share-panel-body">
                     <SharePageLink url={pageUrl} label={<Message msgId="gnviewer.thisPage" />} />
-                    <SharePageLink url={embedUrl} label={<Message msgId={`gnhome.${resourceType}`} />} />
+                    <SharePageLink url={embedUrl} label={<Message msgId={`gnviewer.embed${resourceType}`} />} />
+                    {(resourceType === 'document' && !!downloadUrl) && <SharePageLink url={downloadUrl} label={<Message msgId={`gnviewer.directLink`} />} />}
                     {canEdit && <>
                         <Permissions
                             compactPermissions={compactPermissions}
@@ -179,7 +191,8 @@ const SharePlugin = connect(
         canEdit,
         permissionsLoading,
         embedUrl: resource?.embed_url,
-        resourceType: type
+        resourceType: type,
+        downloadUrl: resource?.download_url
     })),
     {
         onClose: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),

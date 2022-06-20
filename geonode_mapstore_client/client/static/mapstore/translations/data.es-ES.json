@@ -278,8 +278,15 @@
             "parallelUploadLimit": "El número de archivos seleccionado supera el límite permitido de {limit} archivos. Elimine algunos archivos de la lista.",
             "parallelLimitError": "El número de subidas paralelas activas supera {limit}. Espera a que terminen las pendientes.",
             "thisPage": "Esta página",
+            "addMainFiles": "Agregar archivo principal",
             "invalidBbox": "Extensión de conjunto de datos no válida",
-            "invalidBboxMsg": "La extensión del conjunto de datos supera la extensión máxima de WGS84 [-180, -90, 180, 90]"
+            "invalidBboxMsg": "La extensión del conjunto de datos supera la extensión máxima de WGS84 [-180, -90, 180, 90]",
+            "embedmap": "Insertar este mapa",
+            "embeddataset": "Incrustar este conjunto de datos",
+            "embedgeostory": "Insertar esta Geohistoria",
+            "embeddocument": "Inserta éste Documento",
+            "embeddashboard": "Insertar este Panel",
+            "directLink": "Enlace Directo"
         }
     }
 }
