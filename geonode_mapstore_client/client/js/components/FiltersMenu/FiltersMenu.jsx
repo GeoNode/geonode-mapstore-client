@@ -16,6 +16,7 @@ import FaIcon from '@js/components/FaIcon';
 import useLocalStorage from '@js/hooks/useLocalStorage';
 import Menu from '@js/components/Menu';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
+import Spinner from '@js/components/Spinner/Spinner';
 
 const ButtonWithTooltip = tooltip(Button);
 
@@ -28,7 +29,8 @@ const FiltersMenu = forwardRef(({
     onClick,
     defaultLabelId,
     totalResources,
-    totalFilters
+    totalFilters,
+    loading
 }, ref) => {
 
     const { isMobile } = getConfigProp('geoNodeSettings');
@@ -63,9 +65,9 @@ const FiltersMenu = forwardRef(({
                             {isMobile ? <FaIcon name="filter" /> : <Message msgId="gnhome.filter"/>}
                         </Button>}
                         {' '}
-                        <Badge>
+                        {loading ? <span className="resources-count-loading"><Spinner /></span> : <Badge>
                             <span className="resources-count"> <Message msgId="gnhome.resourcesFound" msgParams={{ count: totalResources }}/> </span>
-                        </Badge>
+                        </Badge>}
                     </div>
                     <Menu
                         items={cardsMenu}

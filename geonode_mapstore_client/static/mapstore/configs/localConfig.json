@@ -350,6 +350,7 @@
                             "value": "layer",
                             "type": "link",
                             "href": "/createlayer/",
+                            "disableIf": "{((state('settings') && state('settings').createLayer) ? false : true)}",
                             "authenticated": true,
                             "perms": [
                                 {
@@ -2119,7 +2120,8 @@
                 "name": "Annotations",
                 "cfg": {
                     "measurementAnnotationEdit": false,
-                    "geodesic": false
+                    "geodesic": false,
+                    "symbolsPath": "/static/mapstore/symbols/"
                 }
             },
             {

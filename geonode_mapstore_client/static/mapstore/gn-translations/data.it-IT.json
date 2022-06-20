@@ -280,7 +280,16 @@
             "cancelUpload": "Annulla caricamento",
             "parallelUploadLimit": "Il numero selezionato di file supera il limite consentito di {limit} file. Si prega di rimuovere alcuni file dall'elenco.",
             "parallelLimitError": "Il numero di caricamenti paralleli attivi supera {limit}. Aspetta che quelli in sospeso finiscano.",
-            "thisPage": "Questa pagina"
+            "thisPage": "Questa pagina",
+            "addMainFiles": "Aggiungi file principale",
+            "invalidBbox": "Estensione del dataset non valida",
+            "invalidBboxMsg": "L'estensione del dataset è maggiore del'estensione massima supportata della proiezione WGS84 [-180, -90, 180, 90]",
+            "embedmap": "Incorpora questa Mappa",
+            "embeddataset": "Incorpora questo Set di dati",
+            "embedgeostory": "Incorpora questa Geostoria",
+            "embeddocument": "Incorpora questo Documento",
+            "embeddashboard": "Incorpora questo Dashboard",
+            "directLink": "Collegamento Diretto"
         }
     }
 }

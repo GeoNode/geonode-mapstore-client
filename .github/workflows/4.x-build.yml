@@ -3,7 +3,7 @@
 name: GeoNode Client 4.x CI (build)
 
 concurrency: 
-  group: "client_build"
+  group: "client_build_4.x"
   cancel-in-progress: true
 # Controls when the workflow will run
 on:
