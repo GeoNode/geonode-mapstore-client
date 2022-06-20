@@ -1195,7 +1195,7 @@
                         },
                         {
                             "name": "application/wfs-collection-1.0",
-                            "label": "wfs-collection-1.0",
+                            "label": "GML (FeatureCollection)",
                             "type": "vector",
                             "validServices": [
                                 "wps"
@@ -1203,7 +1203,7 @@
                         },
                         {
                             "name": "application/wfs-collection-1.1",
-                            "label": "wfs-collection-1.1",
+                            "label": "GML (WFS 1.1.0 FeatureCollection)",
                             "type": "vector",
                             "validServices": [
                                 "wps"
@@ -1697,12 +1697,12 @@
                         {
                             "type": "plugin",
                             "name": "Annotations",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource')}"
                         },
                         {
                             "type": "plugin",
                             "name": "DatasetsCatalog",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource')}"
                         }
                     ],
                     "rightMenuItems": [
@@ -1939,7 +1939,7 @@
                         },
                         {
                             "name": "application/wfs-collection-1.0",
-                            "label": "wfs-collection-1.0",
+                            "label": "GML (FeatureCollection)",
                             "type": "vector",
                             "validServices": [
                                 "wps"
@@ -1947,7 +1947,7 @@
                         },
                         {
                             "name": "application/wfs-collection-1.1",
-                            "label": "wfs-collection-1.1",
+                            "label": "GML (WFS 1.1.0 FeatureCollection)",
                             "type": "vector",
                             "validServices": [
                                 "wps"
