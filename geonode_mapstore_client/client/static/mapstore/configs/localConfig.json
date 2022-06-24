@@ -817,6 +817,11 @@
                 }
             }
         ],
+        "document_embed": [
+            {
+                "name": "MediaViewer"
+            }
+        ],
         "dataset_viewer": [
             {
                 "name": "ActionNavbar",
