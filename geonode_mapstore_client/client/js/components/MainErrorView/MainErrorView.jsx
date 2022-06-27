@@ -11,14 +11,15 @@ import FaIcon from '@js/components/FaIcon';
 import Message from '@mapstore/framework/components/I18N/Message';
 
 function MainErrorView({
-    msgId
+    msgId,
+    icon
 }) {
     return (
         <div className="gn-main-event-container">
             <div className="gn-main-event-content">
                 <div className="gn-main-event-text">
                     <div className="gn-main-icon">
-                        <FaIcon name="exclamation"/>
+                        <FaIcon name={icon} />
                     </div>
                     {msgId && <Message msgId={msgId} />}
                 </div>
@@ -28,7 +29,8 @@ function MainErrorView({
 }
 
 MainErrorView.defaultProps = {
-    msgId: ''
+    msgId: '',
+    icon: 'exclamation'
 };
 
 export default MainErrorView;

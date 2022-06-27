@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { Suspense, lazy }  from 'react';
+import React, { Suspense, lazy, useEffect }  from 'react';
 import MediaComponent from '@mapstore/framework/components/geostory/media';
 import PdfViewer from '@js/components/MediaViewer/PdfViewer';
 import { determineResourceType } from '@js/utils/FileUtils';
@@ -16,21 +16,9 @@ import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
 
 const Scene3DViewer = lazy(() => import('@js/components/MediaViewer/Scene3DViewer'));
 
-function UnsupportedViewer({ thumbnail }) {
+function UnsupportedViewer() {
     return (
-        <div
-            className="gn-media-unsupported"
-            style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                backgroundImage: `url(${thumbnail})`,
-                backgroundSize: 'contain',
-                backgroundPosition: 'center'
-            }}>
-        </div>
+        <MainErrorView msgId={'gnhome.noPreview'} icon="file" />
     );
 }
 
@@ -60,7 +48,28 @@ const mediaDefaultProps = {
     unsupported: {}
 };
 
-const Media = ({resource, ...props}) => {
+const Media = ({ resource, ...props }) => {
+    useEffect(() => {
+        const image = document.querySelector('.ms-media img');
+        // if an image is being viewed avoid stretching small images to fit viewer dimensions
+        if (image) {
+            let newimageWidth = 0;
+            let newimageHeight = 0;
+            let newimage = new Image();
+            newimage.src = resource.href;
+            newimage.onload = function() {
+                newimageWidth = this.naturalWidth;
+                newimageHeight = this.naturalHeight;
+                const container = document.getElementById('ms-container');
+                const containerStyles = window.getComputedStyle(container);
+                if (newimageWidth < parseInt(containerStyles.width, 10) && newimageHeight < parseInt(containerStyles.height, 10)) {
+                    return image.classList.add('natural-image');
+                }
+                return false;
+            };
+        }
+    }, []);
+
 
     const mediaTypes = getResourceTypesInfo();
     const {

@@ -127,7 +127,8 @@
             "createDataset": "Datensatz erstellen",
             "search": "Suchen...",
             "permissionsMissing": "Sie sind nicht berechtigt, diese Ressource anzuzeigen",
-            "filter": "Filter"
+            "filter": "Filter",
+            "noPreview": "Für diese Ressource ist keine Vorschau verfügbar"
         },
         "viewer": {
             "document": {
