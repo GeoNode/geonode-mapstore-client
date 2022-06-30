@@ -10,7 +10,7 @@ import React from 'react';
 import FaIcon from '@js/components/FaIcon';
 import Message from '@mapstore/framework/components/I18N/Message';
 
-function MainErrorView({
+function MainEventView({
     msgId,
     icon
 }) {
@@ -28,9 +28,9 @@ function MainErrorView({
     );
 }
 
-MainErrorView.defaultProps = {
+MainEventView.defaultProps = {
     msgId: '',
     icon: 'exclamation'
 };
 
-export default MainErrorView;
+export default MainEventView;

@@ -18,7 +18,7 @@ import PluginsContainer from '@mapstore/framework/components/plugins/PluginsCont
 import useLazyPlugins from '@js/hooks/useLazyPlugins';
 import { requestResourceConfig, requestNewResourceConfig } from '@js/actions/gnresource';
 import MetaTags from '@js/components/MetaTags';
-import MainErrorView from '@js/components/MainErrorView';
+import MainEventView from '@js/components/MainEventView';
 import ViewerLayout from '@js/components/ViewerLayout';
 import { createShallowSelector } from '@mapstore/framework/utils/ReselectUtils';
 
@@ -139,7 +139,7 @@ function ViewerRoute({
                 params={params}
             />}
             {loading && Loader && <Loader />}
-            {configError && <MainErrorView msgId={configError}/>}
+            {configError && <MainEventView msgId={configError}/>}
         </>
     );
 }
