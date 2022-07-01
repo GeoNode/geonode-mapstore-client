@@ -31,7 +31,8 @@ import {
     setResourceCompactPermissions,
     updateResourceProperties,
     loadingResourceConfig,
-    enableMapThumbnailViewer
+    enableMapThumbnailViewer,
+    updateResource
 } from '@js/actions/gnresource';
 import {
     getResourceByPk,
@@ -148,6 +149,7 @@ export const gnSaveContent = (action$, store) =>
                             ...currentResource,
                             ...body
                         }),
+                        updateResource(resource),
                         ...(action.showNotifications
                             ? [
                                 action.showNotifications === true
@@ -188,9 +190,10 @@ export const gnSetMapThumbnail = (action$, store) =>
 
             return Observable.defer(() => setMapThumbnail(resourceIDThumbnail, body, contentType))
                 .switchMap((res) => {
+                    const randomNumber = Math.random();
                     return Observable.of(
-                        updateResourceProperties({ ...currentResource, thumbnail_url: `${res.thumbnail_url}?${Math.random()}` }),
-                        enableMapThumbnailViewer(false),
+                        updateResourceProperties({ ...currentResource, thumbnail_url: `${res.thumbnail_url}?${randomNumber}` }),
+                        enableMapThumbnailViewer(false), updateResource({ ...currentResource, thumbnail_url: `${res.thumbnail_url}?${randomNumber}` }),
                         clearSave(),
                         ...([successNotification({ title: "gnviewer.thumbnailsaved", message: "gnviewer.thumbnailsaved" })])
 

@@ -42,7 +42,8 @@ import {
     resourceConfigError,
     setResourceCompactPermissions,
     updateResourceProperties,
-    SET_RESOURCE_THUMBNAIL
+    SET_RESOURCE_THUMBNAIL,
+    updateResource
 } from '@js/actions/gnresource';
 
 import {
@@ -441,7 +442,7 @@ export const gnViewerSetNewResourceThumbnail = (action$, store) =>
 
             return Observable.defer(() => setResourceThumbnail(resourceIDThumbnail, body))
                 .switchMap((res) => {
-                    return Observable.of(updateResourceProperties({ ...currentResource, thumbnail_url: res.thumbnail_url, thumbnailChanged: false, updatingThumbnail: false }),
+                    return Observable.of(updateResourceProperties({ ...currentResource, thumbnail_url: res.thumbnail_url, thumbnailChanged: false, updatingThumbnail: false }), updateResource({ ...currentResource, thumbnail_url: res.thumbnail_url }),
                         successNotification({ title: "gnviewer.thumbnailsaved", message: "gnviewer.thumbnailsaved" }));
                 }).catch((error) => {
                     return Observable.of(
