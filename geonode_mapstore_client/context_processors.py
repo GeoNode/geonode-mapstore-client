@@ -12,6 +12,7 @@
 from django.conf import settings
 
 from geonode.upload.utils import get_max_upload_size, get_max_upload_parallelism_limit
+from geonode.utils import get_supported_file_types
 
 def resource_urls(request):
     """Global values to pass to templates"""
@@ -55,56 +56,6 @@ def resource_urls(request):
                     dict()).get(
                         'MOSAIC_ENABLED',
                         False),
-        'SUPPORTED_DATASET_FILE_TYPES': getattr(settings, "MAPSTORE_SUPPORTED_DATASET_FILE_TYPES", [
-                {
-                    "id": "shp",
-                    "label": "ESRI Shapefile",
-                    "format": "vector",
-                    "ext": ["shp"],
-                    "requires": ["shp", "prj", "dbf", "shx"],
-                    "optional": ["xml", "sld"]
-                },
-                {
-                    "id": "tiff",
-                    "label": "GeoTIFF",
-                    "format": "raster",
-                    "ext": ["tiff", "tif"],
-                    "mimeType": ["image/tiff"],
-                    "optional": ["xml", "sld"]
-                },
-                {
-                    "id": "csv",
-                    "label": "Comma Separated Value (CSV)",
-                    "format": "vector",
-                    "ext": ["csv"],
-                    "mimeType": ["text/csv"],
-                    "optional": ["xml", "sld"]
-                },
-                {
-                    "id": "zip",
-                    "label": "Zip Archive",
-                    "format": "archive",
-                    "ext": ["zip"],
-                    "mimeType": ["application/zip"],
-                    "optional": ["xml", "sld"]
-                },
-                {
-                    "id": "xml",
-                    "label": "XML Metadata File",
-                    "format": "metadata",
-                    "ext": ["xml"],
-                    "mimeType": ["application/json"],
-                    "needsFiles": ["shp", "prj", "dbf", "shx", "csv", "tiff", "zip", "sld"]
-                },
-                {
-                    "id": "sld",
-                    "label": "Styled Layer Descriptor (SLD)",
-                    "format": "metadata",
-                    "ext": ["sld"],
-                    "mimeType": ["application/json"],
-                    "needsFiles": ["shp", "prj", "dbf", "shx", "csv", "tiff", "zip", "xml"]
-                }
-            ]
-        )
+        'SUPPORTED_DATASET_FILE_TYPES': get_supported_file_types()
     }
     return defaults
