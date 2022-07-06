@@ -61,6 +61,7 @@
         const pluginsConfigPatchRules  = geoNodeSettings.PLUGINS_CONFIG_PATCH_RULES || [];
         const translationsPath = geoNodeSettings.TRANSLATIONS_PATH;
         const extensionsFolder = geoNodeSettings.EXTENSIONS_FOLDER_PATH;
+        const supportedDatasetFileTypes = geoNodeSettings.SUPPORTED_DATASET_FILE_TYPES;
 
         const isEmbed = checkBoolean('{{ is_embed }}') || false;
         const pluginsConfigKey = '{{ plugins_config_key }}';
@@ -126,7 +127,10 @@
                     isMobile: isMobile,
                     datasetMaxUploadSize: datasetMaxUploadSize,
                     documentMaxUploadSize: documentMaxUploadSize,
-                    maxParallelUploads: maxParallelUploads
+                    maxParallelUploads: maxParallelUploads,
+                    upload: { 
+                        supportedDatasetFileTypes: supportedDatasetFileTypes
+                        }
                 },
                 geoNodeConfiguration: {
                     cardsMenu: {
