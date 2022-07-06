@@ -24,63 +24,6 @@ import UploadContainer from '@js/routes/upload/UploadContainer';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { parseUploadResponse, processUploadResponse, parseUploadFiles } from '@js/utils/ResourceUtils';
 
-const supportedDatasetTypes = [
-    {
-        id: 'shp',
-        label: 'ESRI Shapefile',
-        format: 'vector',
-        ext: ['shp'],
-        requires: ['shp', 'prj', 'dbf', 'shx'],
-        optional: ['xml', 'sld']
-    },
-    {
-        id: 'tiff',
-        label: 'GeoTIFF',
-        format: 'raster',
-        ext: ['tiff', 'tif'],
-        mimeType: ['image/tiff'],
-        optional: ['xml', 'sld']
-    },
-    {
-        id: 'csv',
-        label: 'Comma Separated Value (CSV)',
-        format: 'vector',
-        ext: ['csv'],
-        mimeType: ['text/csv'],
-        optional: ['xml', 'sld']
-    },
-    {
-        id: 'zip',
-        label: 'Zip Archive',
-        format: 'archive',
-        ext: ['zip'],
-        mimeType: ['application/zip'],
-        optional: ['xml', 'sld']
-    },
-    {
-        id: 'xml',
-        label: 'XML Metadata File',
-        format: 'metadata',
-        ext: ['xml'],
-        mimeType: ['application/json'],
-        needsFiles: ['shp', 'prj', 'dbf', 'shx', 'csv', 'tiff', 'zip', 'sld']
-    },
-    {
-        id: 'sld',
-        label: 'Styled Layer Descriptor (SLD)',
-        format: 'metadata',
-        ext: ['sld'],
-        mimeType: ['application/json'],
-        needsFiles: ['shp', 'prj', 'dbf', 'shx', 'csv', 'tiff', 'zip', 'xml']
-    }
-];
-
-const supportedExtensions = supportedDatasetTypes.map(({ ext }) => ext || []).flat();
-const supportedMimeTypes = supportedDatasetTypes.map(({ mimeType }) => mimeType || []).flat();
-const supportedRequiresExtensions = supportedDatasetTypes.map(({ requires }) => requires || []).flat();
-const supportedLabels = supportedDatasetTypes.map(({ label }) => label).join(', ');
-const supportedOptionalExtensions = supportedDatasetTypes.map(({ optional }) => optional || []).flat();
-
 function getFileNameParts(file) {
     const { name } = file;
     const nameParts = name.split('.');
@@ -89,10 +32,10 @@ function getFileNameParts(file) {
     return { ext, baseName };
 }
 
-function getDatasetFileType(file) {
+function getDatasetFileType(file, supportedTypes) {
     const { type } = file;
     const { ext } = getFileNameParts(file);
-    const datasetFileType = supportedDatasetTypes.find((fileType) =>
+    const datasetFileType = supportedTypes.find((fileType) =>
         (fileType.ext || []).includes(ext)
         || (fileType.mimeType || []).includes(type)
         || (fileType.requires || []).includes(ext)
@@ -107,6 +50,15 @@ function UploadList({
     children,
     onSuccess
 }) {
+    const { maxParallelUploads, upload: uploadSettings = {} } = getConfigProp('geoNodeSettings') || {};
+
+    const { supportedDatasetFileTypes: supportedDatasetTypes } = uploadSettings;
+
+    const supportedExtensions = supportedDatasetTypes.map(({ ext }) => ext || []).flat();
+    const supportedMimeTypes = supportedDatasetTypes.map(({ mimeType }) => mimeType || []).flat();
+    const supportedRequiresExtensions = supportedDatasetTypes.map(({ requires }) => requires || []).flat();
+    const supportedLabels = supportedDatasetTypes.map(({ label }) => label).join(', ');
+    const supportedOptionalExtensions = supportedDatasetTypes.map(({ optional }) => optional || []).flat();
 
     const [waitingUploads, setWaitingUploads] = useState({});
     const [readyUploads, setReadyUploads] = useState({});
@@ -146,7 +98,7 @@ function UploadList({
             .filter(({ supported }) => supported)
             .reduce((acc, { file }) => {
                 const { ext, baseName } = getFileNameParts(file);
-                let type = getDatasetFileType(file);
+                let type = getDatasetFileType(file, supportedDatasetTypes);
                 if (!type && supportedOptionalExtensions.includes(ext)) {
                     type = checkedFiles.length > 1 ? acc[baseName]?.type : ext;
                 }
@@ -249,8 +201,6 @@ function UploadList({
     const handleCancelAllUploads = useCallback((files) => {
         return files.forEach((file) => sources[file].cancel());
     }, []);
-
-    const { maxParallelUploads } = getConfigProp('geoNodeSettings');
 
     return (
         <UploadContainer
