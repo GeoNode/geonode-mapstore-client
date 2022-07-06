@@ -21,6 +21,7 @@ def resource_urls(request):
         PROJECTION_DEFS=getattr(settings, "MAPSTORE_PROJECTION_DEFS", []),
         PLUGINS_CONFIG_PATCH_RULES=getattr(settings, "MAPSTORE_PLUGINS_CONFIG_PATCH_RULES", []),
         EXTENSIONS_FOLDER_PATH=getattr(settings, "MAPSTORE_EXTENSIONS_FOLDER_PATH", '/static/mapstore/extensions/'),
+        TIMELINE_EXPANDED=getattr(settings, "MAPSTORE_TIMELINE_EXPANDED", False)
     )
 
     return defaults
