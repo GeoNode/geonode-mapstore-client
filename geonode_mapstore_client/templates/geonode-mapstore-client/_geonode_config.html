@@ -26,7 +26,7 @@
         const projectionDefs = getJSONScriptVariable('settings-PROJECTION_DEFS', []);
         const pluginsConfigPatchRules = getJSONScriptVariable('settings-PLUGINS_CONFIG_PATCH_RULES', []);
         const extensionsFolder = getJSONScriptVariable('settings-EXTENSIONS_FOLDER_PATH', '/static/mapstore/extensions/')
-        const expandedPanel = getJSONScriptVariable('settings-TIMELINE_EXPANDED', False)
+        const timelineExpandedPanel = getJSONScriptVariable('settings-TIMELINE_EXPANDED', false)
 
         const username = '{{ user|default:"" }}' || null;
         const token = '{{ access_token|default:"" }}' || '{{ ACCESS_TOKEN|default:"" }}' || null;
@@ -72,7 +72,7 @@
                     initialCatalog: catalogueServices[catalogueSelectedService] || {},
                     geonodeUrl: '{{ SITEURL }}',
                     geoserverUrl: '{{ OGC_SERVER.default.PUBLIC_LOCATION|default:"" }}',
-                    expandedPanel: expandedPanel
+                    timelineExpandedPanel: timelineExpandedPanel
                 }
             }
         };

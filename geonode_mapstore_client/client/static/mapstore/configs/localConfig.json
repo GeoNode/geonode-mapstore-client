@@ -577,7 +577,8 @@
                         "marginLeft": 80,
                         "marginRight": 45
                     },
-                    "compact": true
+                    "compact": true,
+                    "expandedPanel": "{state('settings') && state('settings').timelineExpandedPanel ? true : false}"
                 }
             },
             {
@@ -785,7 +786,10 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                    "expandedPanel": "{state('settings') && state('settings').timelineExpandedPanel ? true : false}"
+                }
             },
             {
                 "name": "Playback"
@@ -1235,7 +1239,10 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                    "expandedPanel": "{state('settings') && state('settings').timelineExpandedPanel ? true : false}"
+                }
             },
             {
                 "name": "Playback"
@@ -1682,7 +1689,10 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                    "expandedPanel": "{state('settings') && state('settings').timelineExpandedPanel ? true : false}"
+                }
             },
             {
                 "name": "Playback"
@@ -2109,7 +2119,10 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                    "expandedPanel": "{state('settings') && state('settings').timelineExpandedPanel ? true : false}"
+                }
             },
             {
                 "name": "Playback"
@@ -2554,7 +2567,10 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                    "expandedPanel": "{state('settings') && state('settings').timelineExpandedPanel ? true : false}"
+                }
             },
             {
                 "name": "Playback"
@@ -3037,7 +3053,10 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                    "expandedPanel": "{state('settings') && state('settings').timelineExpandedPanel ? true : false}"
+                }
             },
             {
                 "name": "Playback"

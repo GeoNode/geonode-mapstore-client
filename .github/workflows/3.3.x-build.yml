@@ -1,0 +1,85 @@
+# This is a basic workflow to help you get started with Actions
+
+name: GeoNode Client 3.3.x CI (build)
+
+concurrency: 
+  group: "client_build_3.3.x"
+  cancel-in-progress: true
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push events but only for the 3.3.x branch
+  push:
+    branches: [ 3.3.x ]
+    paths: 
+      - "geonode_mapstore_client/client/**"
+      - "!geonode_mapstore_client/client/version.txt"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build_and_commit:
+    env:
+      working-directory: ./geonode_mapstore_client/client
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checking out"
+        uses: actions/checkout@v2
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+
+      ###########
+      # SET UP 
+      #########
+      - name: "Setting up npm"
+        uses: actions/setup-node@v2
+        with:
+            node-version: '12.x'
+
+      ############
+      # CACHING
+      ##########
+      - name: "Cache node modules"
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      ###############
+      # NPM BUILD
+      #############
+      - name: "Run npm install"
+        run: npm install
+        working-directory: ${{env.working-directory}}
+
+      - name: "Run npm compile"
+        run: npm run compile
+        working-directory: ${{env.working-directory}}
+
+      ###############
+      # COMMIT
+      #############
+      - name: "Stage files"
+        run: git add --all
+        
+      - name: "Generate temp GitHub token"
+        uses: tibdex/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.TOKEN_APP_ID }}
+          private_key: ${{ secrets.TOKEN_APP_PRIVATE_KEY }}
+        
+      - name: "Create Pull Request"
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          base: "3.3.x"
+          title: "[3.3.x] new client build"
+          body: "Automated client build from GeoNode Client 3.3.x CI"
+          branch: "3.3.x-create-pull-request/patch"
