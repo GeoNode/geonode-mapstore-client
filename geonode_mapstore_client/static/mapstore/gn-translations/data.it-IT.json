@@ -129,7 +129,8 @@
             "createDataset": "Crea dataset",
             "search": "Cerca...",
             "permissionsMissing": "Non hai i permessi per visualizzare o scaricare la risorsa",
-            "filter": "Filtra"
+            "filter": "Filtra",
+            "noPreview": "Un'anteprima non è disponibile per questa risorsa"
         },
         "viewer": {
             "document": {

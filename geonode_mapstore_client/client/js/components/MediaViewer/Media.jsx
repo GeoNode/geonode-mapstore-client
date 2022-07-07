@@ -11,26 +11,14 @@ import MediaComponent from '@mapstore/framework/components/geostory/media';
 import PdfViewer from '@js/components/MediaViewer/PdfViewer';
 import { determineResourceType } from '@js/utils/FileUtils';
 import Loader from '@mapstore/framework/components/misc/Loader';
-import MainErrorView from '@js/components/MainErrorView';
+import MainEventView from '@js/components/MainEventView';
 import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
 
 const Scene3DViewer = lazy(() => import('@js/components/MediaViewer/Scene3DViewer'));
 
-function UnsupportedViewer({ thumbnail }) {
+function UnsupportedViewer() {
     return (
-        <div
-            className="gn-media-unsupported"
-            style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                backgroundImage: `url(${thumbnail})`,
-                backgroundSize: 'contain',
-                backgroundPosition: 'center'
-            }}>
-        </div>
+        <MainEventView msgId={'gnhome.noPreview'} icon="file" />
     );
 }
 
@@ -60,7 +48,7 @@ const mediaDefaultProps = {
     unsupported: {}
 };
 
-const Media = ({resource, ...props}) => {
+const Media = ({ resource, ...props }) => {
 
     const mediaTypes = getResourceTypesInfo();
     const {
@@ -83,7 +71,7 @@ const Media = ({resource, ...props}) => {
             />
         </Suspense>);
     }
-    return (<MainErrorView msgId={'gnhome.permissionsMissing'}/>);
+    return (<MainEventView msgId={'gnhome.permissionsMissing'}/>);
 };
 
 export default Media;

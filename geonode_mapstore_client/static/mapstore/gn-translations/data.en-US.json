@@ -127,7 +127,8 @@
             "createDataset": "Create dataset",
             "search": "Search...",
             "permissionsMissing": "You don't have permission to view or download the resource",
-            "filter": "Filter"
+            "filter": "Filter",
+            "noPreview": "A preview is not available for this resource"
         },
         "viewer": {
             "document": {
