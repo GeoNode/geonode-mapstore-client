@@ -220,6 +220,7 @@
             "legendWidth": "Largeur du symbole de la légende",
             "legendHeight": "Hauteur du symbole de la légende",
             "legendPreview": "Aperçu de la légende",
+            "legend": "Légende",
             "nodeTooltipContent": "Contenu de l'info-bulle",
             "nodeTooltipPlacement": "Placement de l'info-bulle",
 

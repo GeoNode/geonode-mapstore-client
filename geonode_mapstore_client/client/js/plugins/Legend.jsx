@@ -15,6 +15,7 @@ import { layersSelector } from '@mapstore/framework/selectors/layers';
 import OpacitySlider from '@mapstore/framework/components/TOC/fragments/OpacitySlider';
 import { updateNode } from '@mapstore/framework/actions/layers';
 import VisibilityCheck from '@mapstore/framework/components/TOC/fragments/VisibilityCheck';
+import Message from '@mapstore/framework/components/I18N/HTML';
 
 function Legend({
     layers,
@@ -30,14 +31,14 @@ function Legend({
     return layers.length > 0 && <div className="shadow gn-legend-wrapper" style={{width: expandLegend ? 'auto' : '80px'}}>
         <div onClick={expand} className="gn-legend-head">
             <span role="button" className={`identify-icon glyphicon glyphicon-chevron-${expandLegend ? 'down' : 'right'}`} title="Expand layer legend" />
-            <span className="gn-legend-list-item">Legend</span>
+            <span className="gn-legend-list-item"><Message msgId="gnviewer.legend" /></span>
         </div>
         <ul className="gn-legend-list" style={{display: expandLegend ? 'inline-block' : 'none'}}>
             {layers.map((layer, ind) => <Fragment key={ind}>
                 <li className="gn-legend-list-item"><VisibilityCheck key="visibilitycheck"
                     tooltip={layer.loadingError === 'Warning' ? 'toc.toggleLayerVisibilityWarning' : 'toc.toggleLayerVisibility'}
                     node={layer}
-                    propertiesChangeHandler={(id, options) => onUpdateNode(id, 'layers', options)} /><p>{layer.name || layer.title}</p></li>
+                    propertiesChangeHandler={(id, options) => onUpdateNode(id, 'layers', options)} /><p>{layer.title}</p></li>
                 <li className="gn-legend-bottom">
                     <OpacitySlider
                         opacity={layer.opacity}

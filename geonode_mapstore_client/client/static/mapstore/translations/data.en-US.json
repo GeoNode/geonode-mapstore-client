@@ -220,6 +220,7 @@
             "legendWidth": "Legend symbol width",
             "legendHeight": "Legend symbol height",
             "legendPreview": "Legend preview",
+            "legend": "Legend",
             "nodeTooltipContent": "Tooltip content",
             "nodeTooltipPlacement": "Tooltip placement",
 
