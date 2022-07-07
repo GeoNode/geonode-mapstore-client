@@ -127,7 +127,8 @@
             "createDataset": "Crear conjunto de datos",
             "search": "Buscar...",
             "permissionsMissing": "No tienes permiso para ver o descargar el recurso.",
-            "filter": "Filtrar"
+            "filter": "Filtrar",
+            "noPreview": "Una vista previa no está disponible para este recurso"
         },
         "viewer": {
             "document": {

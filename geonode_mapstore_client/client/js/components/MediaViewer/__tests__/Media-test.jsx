@@ -41,9 +41,8 @@ describe('Test Media', () => {
         ReactDOM.render( <Media resource={{href: "http://example.com", thumbnail_url: 'image', resource_type: "document", extension: "docx", "abstract": "test", pk: 1, perms: [
             "download_resourcebase"
         ] }}/>, document.getElementById("container"));
-        const mediaViewer = document.querySelector('.gn-media-unsupported');
+        const mediaViewer = document.querySelector('.gn-main-event-container');
         expect(mediaViewer).toBeTruthy();
-        expect(mediaViewer.style.backgroundImage).toBe('url("image")');
     });
 
     it('should render error message if resource has not download perms', () => {

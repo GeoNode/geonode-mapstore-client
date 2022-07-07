@@ -127,7 +127,8 @@
             "createDataset": "Créer un ensemble de données",
             "search": "Chercher...",
             "permissionsMissing": "Vous n'êtes pas autorisé à afficher ou télécharger la ressource",
-            "filter": "Filtre"
+            "filter": "Filtre",
+            "noPreview": "Un aperçu n'est pas disponible pour cette ressource"
         },
         "viewer": {
             "document": {
