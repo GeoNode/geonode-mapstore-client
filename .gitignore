@@ -10,6 +10,7 @@ pip-log.txt
 .vscode/
 .pytest_cache/
 #dist/
+
 build/
 _build/
 reports/
