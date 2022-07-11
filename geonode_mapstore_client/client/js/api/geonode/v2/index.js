@@ -728,7 +728,14 @@ export const getCompactPermissionsByPk = (pk) => {
 };
 
 export const updateCompactPermissionsByPk = (pk, body) => {
-    return axios.put(parseDevHostname(`${endpoints[RESOURCES]}/${pk}/permissions`), 'permissions=' + JSON.stringify(body))
+    return axios({
+        url: parseDevHostname(`${endpoints[RESOURCES]}/${pk}/permissions`),
+        data: JSON.stringify(body),
+        method: 'put',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
         .then(({ data }) => data);
 };
 
@@ -751,7 +758,7 @@ export const downloadResource = (resource) => {
     return axios.get(url, {
         responseType: 'blob',
         headers: {
-            'Content_type': 'application/json'
+            'Content-Type': 'application/json'
         }
     })
         .then(({ data, headers }) => ({output: data, headers}));
