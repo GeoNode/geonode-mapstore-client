@@ -11,7 +11,7 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from '@mapstore/framework/libs/ajax';
 import { testEpic } from '@mapstore/framework/epics/__tests__/epicTestUtils';
 import { gnViewerSetNewResourceThumbnail, closeInfoPanelOnMapClick } from '@js/epics/gnresource';
-import { setResourceThumbnail, UPDATE_RESOURCE_PROPERTIES } from '@js/actions/gnresource';
+import { setResourceThumbnail, UPDATE_RESOURCE_PROPERTIES, UPDATE_SINGLE_RESOURCE } from '@js/actions/gnresource';
 import { clickOnMap } from '@mapstore/framework/actions/map';
 import { SET_CONTROL_PROPERTY } from '@mapstore/framework/actions/controls';
 import {
@@ -33,7 +33,7 @@ describe('gnsave epics', () => {
     });
 
     it('should apply new resource thumbnail', (done) => {
-        const NUM_ACTIONS = 2;
+        const NUM_ACTIONS = 3;
         const pk = 1;
         const testState = {
             gnresource: {
@@ -56,6 +56,7 @@ describe('gnsave epics', () => {
                     expect(actions.map(({ type }) => type))
                         .toEqual([
                             UPDATE_RESOURCE_PROPERTIES,
+                            UPDATE_SINGLE_RESOURCE,
                             SHOW_NOTIFICATION
                         ]);
                 } catch (e) {

@@ -33,6 +33,7 @@ export const SET_RESOURCE_THUMBNAIL = 'GEONODE_SET_RESOURCE_THUMBNAIL';
 export const ENABLE_MAP_THUMBNAIL_VIEWER = 'GEONODE_ENABLE_MAP_THUMBNAIL_VIEWER';
 export const DOWNLOAD_RESOURCE = 'GEONODE_DOWNLOAD_RESOURCE';
 export const DOWNLOAD_COMPLETE = 'GEONODE_DOWNLOAD_COMPLETE';
+export const UPDATE_SINGLE_RESOURCE = 'GEONODE_UPDATE_SINGLE_RESOURCE';
 
 
 /**
@@ -58,6 +59,17 @@ export function setResource(data) {
     return {
         type: SET_RESOURCE,
         data
+    };
+}
+
+/**
+* Set the resource in the state
+* @param {object} data resource data object
+*/
+export function updateResource(resource) {
+    return {
+        type: UPDATE_SINGLE_RESOURCE,
+        data: resource
     };
 }
 
