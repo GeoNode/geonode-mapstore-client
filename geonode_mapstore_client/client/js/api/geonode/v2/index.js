@@ -730,11 +730,8 @@ export const getCompactPermissionsByPk = (pk) => {
 export const updateCompactPermissionsByPk = (pk, body) => {
     return axios({
         url: parseDevHostname(`${endpoints[RESOURCES]}/${pk}/permissions`),
-        data: JSON.stringify(body),
-        method: 'put',
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        data: body,
+        method: 'put'
     })
         .then(({ data }) => data);
 };
