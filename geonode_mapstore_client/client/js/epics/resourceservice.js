@@ -28,6 +28,7 @@ import {
     downloadResource
 } from '@js/api/geonode/v2';
 import { PROCESS_RESOURCES, DOWNLOAD_RESOURCE, downloadComplete } from '@js/actions/gnresource';
+import { reduceTotalCount } from '@js/actions/gnsearch';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import { push } from 'connected-react-router';
 import {
@@ -53,7 +54,14 @@ export const gnMonitorAsyncProcesses = (action$, store) => {
                     )
                         .switchMap((output) => {
                             if (output.error || output.status === ProcessStatus.FINISHED || output.status === ProcessStatus.FAILED) {
-                                return Observable.of(stopAsyncProcess({ ...action.payload, output, completed: true }));
+                                return Observable.of(
+                                    stopAsyncProcess({ ...action.payload, output, completed: true }),
+                                    // reduce total count of resource if an original resource is deleted
+                                    // when cloned resources are removed, the getTotalResources selector already adjusts total count
+                                    ...(action?.payload?.processType === ProcessTypes.DELETE_RESOURCE && !action?.payload?.resource['@temporary']
+                                        ? [reduceTotalCount()]
+                                        : [])
+                                );
                             }
                             return Observable.of(updateAsyncProcess({ ...action.payload, output }));
                         }) : Observable.empty()

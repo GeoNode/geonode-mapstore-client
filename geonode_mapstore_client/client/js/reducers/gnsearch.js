@@ -13,7 +13,8 @@ import {
     UPDATE_RESOURCES,
     LOADING_RESOURCES,
     UPDATE_RESOURCES_METADATA,
-    SET_FEATURED_RESOURCES
+    SET_FEATURED_RESOURCES,
+    REDUCE_TOTAL_COUNT
 } from '@js/actions/gnsearch';
 
 const defaultState = {
@@ -81,6 +82,12 @@ function gnsearch(state = defaultState, action) {
                 ...action.data
             }
         };
+    case REDUCE_TOTAL_COUNT: {
+        return {
+            ...state,
+            total: state.total - 1
+        };
+    }
     default:
         return state;
     }
