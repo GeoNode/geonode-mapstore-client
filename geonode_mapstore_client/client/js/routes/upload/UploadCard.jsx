@@ -58,7 +58,7 @@ function UploadCard({
                         </a>
                         : name}
                 </div>
-                {progress < 100 ? <Spinner /> : null}
+                {(progress < 100 && progress > 0) ? <Spinner /> : null}
                 {onRemove
                     ? <Button size="xs" onClick={onRemove}>
                         <FaIcon name="trash"/>
