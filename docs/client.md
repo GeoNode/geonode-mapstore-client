@@ -226,6 +226,7 @@ store information of the resource in use
 * [actions/gnresource](#module_actions/gnresource)
     * [.resourceLoading()](#module_actions/gnresource.resourceLoading)
     * [.setResource(data)](#module_actions/gnresource.setResource)
+    * [.updateResource(data)](#module_actions/gnresource.updateResource)
     * [.editTitleResource(title)](#module_actions/gnresource.editTitleResource)
     * [.editAbstractResource(abstract)](#module_actions/gnresource.editAbstractResource)
     * [.editThumbnailResource(image)](#module_actions/gnresource.editThumbnailResource)
@@ -249,6 +250,17 @@ Initialize loading state
 <a name="module_actions/gnresource.setResource"></a>
 
 ### actions/gnresource.setResource(data)
+Set the resource in the state
+
+**Kind**: static method of [<code>actions/gnresource</code>](#module_actions/gnresource)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>object</code> | resource data object |
+
+<a name="module_actions/gnresource.updateResource"></a>
+
+### actions/gnresource.updateResource(data)
 Set the resource in the state
 
 **Kind**: static method of [<code>actions/gnresource</code>](#module_actions/gnresource)  
@@ -463,6 +475,11 @@ Save or updates a resource (trigger epic actions.gnsaveDirectContent)
 Actions for GeoNode resource featured items
 set new Featured Resources includes data, page, links
 
+
+* [actions/gnsearch](#module_actions/gnsearch)
+    * [.loadFeaturedResources(action, pageSize)](#module_actions/gnsearch.loadFeaturedResources)
+    * [.reduceTotalCount()](#module_actions/gnsearch.reduceTotalCount)
+
 <a name="module_actions/gnsearch.loadFeaturedResources"></a>
 
 ### actions/gnsearch.loadFeaturedResources(action, pageSize)
@@ -476,6 +493,12 @@ loads new featured resources basing on the action, previous or next
 | action | <code>string</code> | can be either next or previous |
 | pageSize | <code>number</code> | page_size of items to load defaults to 4; |
 
+<a name="module_actions/gnsearch.reduceTotalCount"></a>
+
+### actions/gnsearch.reduceTotalCount()
+Reduce total count of resouces after deletion
+
+**Kind**: static method of [<code>actions/gnsearch</code>](#module_actions/gnsearch)  
 <a name="module_epics/datasetcatalog"></a>
 
 ## epics/datasetcatalog

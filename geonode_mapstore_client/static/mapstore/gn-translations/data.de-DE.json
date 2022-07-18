@@ -220,6 +220,7 @@
             "legendWidth": "Legendensymbolbreite",
             "legendHeight": "Höhe des Legendensymbols",
             "legendPreview": "Legendenvorschau",
+            "legend": "Legende",
             "nodeTooltipContent": "Tooltip-Inhalt",
             "nodeTooltipPlacement": "Tooltip-Platzierung",
 

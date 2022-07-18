@@ -220,6 +220,7 @@
             "legendWidth": "Ancho del símbolo de leyenda",
             "legendHeight": "Altura del símbolo de leyenda",
             "legendPreview": "Vista previa de la leyenda",
+            "legend": "Leyenda",
             "nodeTooltipContent": "Contenido de la información sobre herramientas",
             "nodeTooltipPlacement": "Ubicación de información sobre herramientas",
             "zoomToLayer": "Zoom a la extensión de la capa",
