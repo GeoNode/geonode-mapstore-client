@@ -46,7 +46,7 @@ function UploadCard({
     return (
         <div className="gn-upload-card">
             <div className="gn-upload-card-header">
-                {state === 'INVALID' ? <div className="gn-upload-card-error"><FaIcon name="exclamation"/></div> : null}
+                {state === 'INVALID' ? <div className="gn-upload-card-error"><FaIcon name="exclamation" /></div> : null}
                 <div className="gn-upload-card-title">
                     {detailUrl
                         ? <a
@@ -61,7 +61,7 @@ function UploadCard({
                 {(progress < 100 && progress > 0) ? <Spinner /> : null}
                 {onRemove
                     ? <Button size="xs" onClick={onRemove}>
-                        <FaIcon name="trash"/>
+                        <FaIcon name="trash" />
                     </Button>
                     : null}
             </div>
@@ -78,14 +78,14 @@ function UploadCard({
                             <Message msgId="gnviewer.completeUpload" />
                         </Button>
                         : null}
-                    {detailUrl
+                    {(detailUrl || progress === 100)
                         ? <Button
                             variant="primary"
-                            href={detailUrl}
+                            href={detailUrl || '/catalogue/#/search/?f=dataset'}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <Message msgId="gnviewer.view" />
+                            <Message msgId={`${detailUrl ? 'gnviewer.view' : 'gnhome.viewDatasets'}`} />
                         </Button>
                         : null}
                     {state === 'INVALID'
