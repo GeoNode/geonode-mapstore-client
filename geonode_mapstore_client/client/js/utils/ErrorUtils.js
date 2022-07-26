@@ -6,7 +6,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export const getUploadErrorMessageFromCode = (code) => {
+export const getUploadErrorMessageFromCode = (code, log) => {
+    if (log) {
+        return log;
+    }
     switch (code) {
     case 'upload_parallelism_limit_exceeded': {
         return 'parallelLimitError';

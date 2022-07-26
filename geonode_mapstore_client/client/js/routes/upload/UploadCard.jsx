@@ -36,7 +36,9 @@ function UploadCard({
     resumeUrl,
     onRemove,
     error,
-    type
+    type,
+    status,
+    errorLog
 }) {
 
     const { datasetMaxUploadSize, documentMaxUploadSize, maxParallelUploads } = getConfigProp('geoNodeSettings') || {};
@@ -46,7 +48,7 @@ function UploadCard({
     return (
         <div className="gn-upload-card">
             <div className="gn-upload-card-header">
-                {state === 'INVALID' ? <div className="gn-upload-card-error"><FaIcon name="exclamation" /></div> : null}
+                {(state === 'INVALID' || status === 'failed') ? <div className="gn-upload-card-error"><FaIcon name="exclamation" /></div> : null}
                 <div className="gn-upload-card-title">
                     {detailUrl
                         ? <a
@@ -58,7 +60,7 @@ function UploadCard({
                         </a>
                         : name}
                 </div>
-                {(progress < 100 && progress > 0) ? <Spinner /> : null}
+                {((progress < 100 && progress > 0) || status === 'finished') ? <Spinner /> : null}
                 {onRemove
                     ? <Button size="xs" onClick={onRemove}>
                         <FaIcon name="trash" />
@@ -78,7 +80,7 @@ function UploadCard({
                             <Message msgId="gnviewer.completeUpload" />
                         </Button>
                         : null}
-                    {(detailUrl || progress === 100)
+                    {(detailUrl || status === 'finished')
                         ? <Button
                             variant="primary"
                             href={detailUrl || '/catalogue/#/search/?f=dataset'}
@@ -88,8 +90,12 @@ function UploadCard({
                             <Message msgId={`${detailUrl ? 'gnviewer.view' : 'gnhome.viewDatasets'}`} />
                         </Button>
                         : null}
-                    {state === 'INVALID'
-                        ? <ErrorMessageWithTooltip tooltipId={<Message msgId={`gnviewer.${getUploadErrorMessageFromCode(error?.code)}`} msgParams={{ limit: getUploadErrorMessageFromCode(error?.code) === 'fileExceeds' ? maxAllowedSize : maxParallelUploads }} />} />
+                    {(state === 'INVALID' || status === 'failed')
+                        ? <>
+                            {!errorLog ? <ErrorMessageWithTooltip tooltipId={<Message msgId={`gnviewer.${getUploadErrorMessageFromCode(error?.code)}`} msgParams={{ limit: getUploadErrorMessageFromCode(error?.code) === 'fileExceeds' ? maxAllowedSize : maxParallelUploads }} />} />
+                                : <ErrorMessageWithTooltip tooltip={getUploadErrorMessageFromCode(null, errorLog)} />
+                            }
+                        </>
                         : null}
                 </div>
             </div>
@@ -117,7 +123,8 @@ UploadCard.defaultProps = {
     name: '',
     state: '',
     progress: 0,
-    type: 'document'
+    type: 'document',
+    status: ''
 };
 
 export default UploadCard;

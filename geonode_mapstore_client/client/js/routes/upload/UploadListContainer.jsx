@@ -66,15 +66,18 @@ function UploadListContainer({
                                             name,
                                             progress = 0,
                                             state,
+                                            status,
                                             create_date: createDate,
                                             detail_url: detailUrl,
                                             resume_url: resumeUrl,
                                             delete_url: deleteUrl,
-                                            error
+                                            error,
+                                            log,
+                                            exec_id: execId
                                         }) => {
                                             return (error !== 'CANCELED' &&
                                                 <li
-                                                    key={id}
+                                                    key={id || execId}
                                                 >
                                                     <UploadCard
                                                         name={name}
@@ -86,6 +89,8 @@ function UploadListContainer({
                                                         onRemove={deleteUrl ? () => onDelete({ id, deleteUrl }) : null}
                                                         error={error}
                                                         type={resourceType}
+                                                        status={status}
+                                                        errorLog={log}
                                                     />
                                                 </li>
                                             );
