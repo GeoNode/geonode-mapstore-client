@@ -73,7 +73,8 @@ function UploadListContainer({
                                             delete_url: deleteUrl,
                                             error,
                                             log,
-                                            exec_id: execId
+                                            exec_id: execId,
+                                            created
                                         }) => {
                                             return (error !== 'CANCELED' &&
                                                 <li
@@ -84,9 +85,9 @@ function UploadListContainer({
                                                         state={state}
                                                         detailUrl={detailUrl}
                                                         progress={progress}
-                                                        createDate={createDate}
+                                                        createDate={createDate || created}
                                                         resumeUrl={resumeUrl}
-                                                        onRemove={deleteUrl ? () => onDelete({ id, deleteUrl }) : null}
+                                                        onRemove={deleteUrl ? () => onDelete({ id, deleteUrl }) : execId ? () => onDelete({ id: execId }) : null}
                                                         error={error}
                                                         type={resourceType}
                                                         status={status}

@@ -852,6 +852,10 @@ export const getExecutionStatus = (executionId) => {
         .then(({ data }) => ({...data, id: executionId, create_date: data.created }));
 };
 
+export const deleteExecutionRequest = (executionId) => {
+    return axios.delete(`${parseDevHostname(endpoints[EXECUTIONREQUEST])}/${executionId}`);
+};
+
 export default {
     getEndpoints,
     getResources,
@@ -889,5 +893,6 @@ export default {
     getProcessedUploadsById,
     getProcessedUploadsByImportId,
     uploadDocument,
-    getExecutionStatus
+    getExecutionStatus,
+    deleteExecutionRequest
 };
