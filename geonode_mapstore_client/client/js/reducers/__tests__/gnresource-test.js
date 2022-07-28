@@ -87,6 +87,7 @@ describe('gnresource reducer', () => {
             selectedLayerPermissions: [],
             data: {},
             permissions: [],
+            favoriteResources: [],
             isNew: true
         });
     });
