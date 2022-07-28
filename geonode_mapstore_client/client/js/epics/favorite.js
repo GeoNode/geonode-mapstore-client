@@ -8,9 +8,10 @@
 
 import { Observable } from 'rxjs';
 import {
-    resourceError,
     updateResourceProperties,
-    SET_FAVORITE_RESOURCE
+    SET_FAVORITE_RESOURCE,
+    removeFavoriteResource,
+    setFavoriteResources
 } from '@js/actions/gnresource';
 import {
     updateResources
@@ -18,6 +19,9 @@ import {
 import {
     setFavoriteResource
 } from '@js/api/geonode/v2';
+import {
+    error as errorNotification
+} from '@mapstore/framework/actions/notifications';
 
 export const gnSaveFavoriteContent = (action$, store) =>
     action$.ofType(SET_FAVORITE_RESOURCE)
@@ -44,7 +48,9 @@ export const gnSaveFavoriteContent = (action$, store) =>
                     );
                 })
                 .catch((error) => {
-                    return Observable.of(resourceError(error.data || error.message));
+                    return Observable.of(
+                        action.favorite ? removeFavoriteResource(pk) : setFavoriteResources(pk),
+                        errorNotification({ title: "gnviewer.cannotPerfomAction", message: error?.data?.message || error?.data?.detail || error?.originalError?.message || "gnviewer.syncErrorDefault" }));
                 });
 
         });

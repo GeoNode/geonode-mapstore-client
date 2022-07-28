@@ -20,7 +20,9 @@ import {
     setMapThumbnail,
     setResourceThumbnail,
     enableMapThumbnailViewer,
-    downloadResource
+    downloadResource,
+    setFavoriteResources,
+    removeFavoriteResource
 } from '@js/actions/gnresource';
 import { processingDownload } from '@js/selectors/resourceservice';
 import FaIcon from '@js/components/FaIcon/FaIcon';
@@ -55,19 +57,21 @@ const ConnectedDetailsPanel = connect(
         updatingThumbnailResource,
         mapSelector,
         state => state?.gnresource?.showMapThumbnail || false,
-        processingDownload
-    ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating, mapData, showMapThumbnail, downloading) => ({
+        processingDownload,
+        state => state?.gnresource?.favoriteResources || []
+    ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating, mapData, showMapThumbnail, downloading, favorites) => ({
         layers: layers,
         resource,
         loading,
         savingThumbnailMap,
-        favorite,
+        favorite: favorite || favorites.includes(resource?.pk),
         isThumbnailChanged: thumbnailChanged,
         resourceThumbnailUpdating,
         initialBbox: mapData?.bbox,
         enableMapViewer: showMapThumbnail,
         downloading,
-        canDownload: resourceHasPermission(resource, 'download_resourcebase')
+        canDownload: resourceHasPermission(resource, 'download_resourcebase'),
+        resourceId: resource.pk
     })),
     {
         closePanel: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),
@@ -75,7 +79,9 @@ const ConnectedDetailsPanel = connect(
         onMapThumbnail: setMapThumbnail,
         onResourceThumbnail: setResourceThumbnail,
         onClose: enableMapThumbnailViewer,
-        onAction: downloadResource
+        onAction: downloadResource,
+        setFavorites: setFavoriteResources,
+        removeFavorite: removeFavoriteResource
     }
 )(DetailsPanel);
 

@@ -29,6 +29,7 @@ import Loader from '@mapstore/framework/components/misc/Loader';
 import { getUserName } from '@js/utils/SearchUtils';
 import ZoomTo from '@js/components/ZoomTo';
 import { boundsToExtentString } from '@js/utils/CoordinatesUtils';
+import { getUserFavoriteResources } from '@js/api/geonode/v2';
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = 'Map';
@@ -205,7 +206,10 @@ function DetailsPanel({
     enableMapViewer,
     onClose,
     onAction,
-    canDownload
+    canDownload,
+    setFavorites,
+    removeFavorite,
+    resourceId
 }) {
     const detailsContainerNode = useRef();
     const isMounted = useRef();
@@ -218,6 +222,10 @@ function DetailsPanel({
             isMounted.current = false;
         };
     }, []);
+
+    useEffect(() => {
+        getUserFavoriteResources().then(favorites => setFavorites(favorites));
+    }, [resourceId]);
 
     if (!resource && !loading) {
         return null;
@@ -233,6 +241,7 @@ function DetailsPanel({
     };
 
     const handleFavorite = () => {
+        favorite ? removeFavorite(resourceId) : setFavorites(resourceId);
         onFavorite(!favorite);
     };
 
