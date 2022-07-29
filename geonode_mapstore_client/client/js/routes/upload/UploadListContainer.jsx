@@ -66,26 +66,32 @@ function UploadListContainer({
                                             name,
                                             progress = 0,
                                             state,
+                                            status,
                                             create_date: createDate,
                                             detail_url: detailUrl,
                                             resume_url: resumeUrl,
                                             delete_url: deleteUrl,
-                                            error
+                                            error,
+                                            log,
+                                            exec_id: execId,
+                                            created
                                         }) => {
                                             return (error !== 'CANCELED' &&
                                                 <li
-                                                    key={id}
+                                                    key={id || execId}
                                                 >
                                                     <UploadCard
                                                         name={name}
                                                         state={state}
                                                         detailUrl={detailUrl}
                                                         progress={progress}
-                                                        createDate={createDate}
+                                                        createDate={createDate || created}
                                                         resumeUrl={resumeUrl}
-                                                        onRemove={deleteUrl ? () => onDelete({ id, deleteUrl }) : null}
+                                                        onRemove={deleteUrl ? () => onDelete({ id, deleteUrl }) : execId ? () => onDelete({ id: execId }) : null}
                                                         error={error}
                                                         type={resourceType}
+                                                        status={status}
+                                                        errorLog={log}
                                                     />
                                                 </li>
                                             );

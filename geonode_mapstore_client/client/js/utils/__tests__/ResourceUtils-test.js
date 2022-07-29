@@ -493,9 +493,25 @@ describe('Test Resource Utils', () => {
             state: 'COMPLETE',
             progress: 100,
             complete: true
+        },
+        {
+            exec_id: 23,
+            name: 'test3',
+            created: '2022-05-13T12:24:54.042291Z',
+            status: 'running',
+            complete: false
         }];
 
         expect(processUploadResponse([...prev, ...current])).toEqual([
+            {
+                exec_id: 23,
+                name: 'test3',
+                created: '2022-05-13T12:24:54.042291Z',
+                status: 'running',
+                complete: false,
+                create_date: '2022-05-13T12:24:54.042291Z',
+                id: 23
+            },
             {
                 id: 1,
                 name: 'test1',
@@ -550,7 +566,8 @@ describe('Test Resource Utils', () => {
                 progress: 40,
                 complete: false,
                 resume_url: 'test/upload/delete/439'
-            }];
+            }
+        ];
 
         expect(parseUploadResponse(uploads)).toEqual([
             {

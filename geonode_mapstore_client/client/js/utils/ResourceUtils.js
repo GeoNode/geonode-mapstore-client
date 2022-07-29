@@ -605,12 +605,30 @@ export const parseUploadResponse = (upload) => {
 
 export const processUploadResponse = (response) => {
     const newResponse = response.reduce((acc, currentResponse) => {
-        const duplicate = acc.find((upload) => upload.id === currentResponse.id);
+        const duplicate = acc.find((upload) => {
+            if (upload.id && currentResponse.id) {
+                return upload.id === currentResponse.id;
+            } else if (upload.id && currentResponse.exec_id) {
+                return upload.id === currentResponse.exec_id;
+            } else if (upload.exec_id && currentResponse.id) {
+                return upload.exec_id === currentResponse.id;
+            }
+            return upload.exec_id === currentResponse.exec_id;
+        });
         if (duplicate) {
-            const newAcc = acc.filter((upload) => upload.id !== duplicate.id);
-            return [currentResponse, ...newAcc];
+            const newAcc = acc.filter((upload) => {
+                if (upload.id && currentResponse.id) {
+                    return upload.id !== currentResponse.id;
+                } else if (upload.id && currentResponse.exec_id) {
+                    return upload.id !== currentResponse.exec_id;
+                } else if (upload.exec_id && currentResponse.id) {
+                    return upload.exec_id !== currentResponse.id;
+                }
+                return upload.exec_id !== currentResponse.exec_id;
+            });
+            return [{...currentResponse, ...(!currentResponse.id && {create_date: currentResponse.created, id: currentResponse.exec_id})}, ...newAcc];
         }
-        return [currentResponse, ...acc];
+        return [{...currentResponse, ...(!currentResponse.id && {create_date: currentResponse.created, id: currentResponse.exec_id})}, ...acc];
     }, []);
 
     const uploads = parseUploadResponse(newResponse);
