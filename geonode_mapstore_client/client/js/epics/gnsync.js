@@ -83,13 +83,13 @@ const getSyncInfo = (appType, resourceData, successArr = []) => {
  * @param {Number} successes length of success arra
  * @returns {Object}
  */
-const getNotificationInfo = (errors, successes) => {
+const getNotificationInfo = (errors, successes, resourceType) => {
     let verdict = 'Success';
     if (errors > 0 && successes > 0) verdict = 'Warning';
     else if (errors === 0 && successes > 0) verdict = 'Success';
     else if (errors > 0 && successes === 0) verdict = 'Error';
 
-    return {level: verdict.toLowerCase(), title: `gnviewer.sync${verdict}Title`, message: `gnviewer.sync${verdict}Message`};
+    return {level: verdict.toLowerCase(), title: `gnviewer.sync${verdict}${verdict !== 'Warning' ? resourceType : ''}Title`, message: `gnviewer.sync${verdict}Message`};
 };
 
 /**
@@ -136,7 +136,7 @@ export const gnSyncComponentsWithResources = (action$, store) => action$.ofType(
                 const updateActions = getUpdateActions();
 
                 // notification action into
-                const {level, title, message} = getNotificationInfo(errorsResponses.length, successResponses.length);
+                const {level, title, message} = getNotificationInfo(errorsResponses.length, successResponses.length, resourceType);
 
                 return Observable.of(
                     ...updateActions,
