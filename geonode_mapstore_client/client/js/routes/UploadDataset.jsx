@@ -16,7 +16,9 @@ import {
     getPendingUploads,
     getProcessedUploadsById,
     getProcessedUploadsByImportId,
-    uploadDataset
+    uploadDataset,
+    getPendingExecutionRequests,
+    deleteExecutionRequest
 } from '@js/api/geonode/v2';
 import axios from '@mapstore/framework/libs/ajax';
 import UploadListContainer from '@js/routes/upload/UploadListContainer';
@@ -171,20 +173,19 @@ function UploadList({
                         });
                     }
                     if (successfulUploads.length > 0) {
-                        const successfulUploadsIds = successfulUploads.map(({ data }) => data?.id);
+                        const successfulUploadsIds = successfulUploads.filter(({ data }) => !!data?.id).map(({data}) => data?.id);
                         const successfulUploadsNames = successfulUploads.map(({ baseName }) => baseName);
                         updateWaitingUploads(omit(waitingUploads, successfulUploadsNames));
-                        getProcessedUploadsByImportId(successfulUploadsIds)
+
+                        successfulUploadsIds.length > 0 && getProcessedUploadsByImportId(successfulUploadsIds)
                             .then((successfulUploadProcesses) => {
                                 onSuccess(successfulUploadProcesses);
-                                setLoading(false);
                             })
                             .catch(() => {
                                 setLoading(false);
                             });
-                    } else {
-                        setLoading(false);
                     }
+                    setLoading(false);
                 })
                 .catch(() => {
                     setLoading(false);
@@ -239,13 +240,15 @@ function ProcessingUploadList({
     updatePending.current = () => {
         if (!loading) {
             setLoading(true);
-            getPendingUploads()
+            axios.all([getPendingUploads(), getPendingExecutionRequests()])
+                .then(incomingUploads => [...incomingUploads[0], ...incomingUploads[1]])
                 .then((newPendingUploads) => {
                     if (isMounted.current) {
                         const failedPendingUploads = pendingUploads.filter(({ state }) => state === 'INVALID');
                         const newIds = newPendingUploads.map(({ id }) => id);
+                        const pendingImports = newPendingUploads.filter(({ action, exec_id: execitionId }) => !!action && action === 'import' && !deletedIds.includes(execitionId)).map(pendingImport => ({ ...pendingImport, create_date: pendingImport.created, id: pendingImport.exec_id }));
                         const missingIds = pendingUploads
-                            .filter(upload => (upload.state !== 'PROCESSED' && upload.state !== 'INVALID') && !newIds.includes(upload.id) && !deletedIds.includes(upload.id))
+                            .filter(upload => (!!upload.state && upload.state !== 'PROCESSED' && upload.state !== 'INVALID') && !newIds.includes(upload.id) && !deletedIds.includes(upload.id))
                             .map(({ id }) => id);
                         const currentProcessed = pendingUploads.filter((upload) => upload.state === 'PROCESSED');
                         if (missingIds.length > 0) {
@@ -253,6 +256,7 @@ function ProcessingUploadList({
                                 .then((processed) => {
                                     onChange([
                                         ...failedPendingUploads,
+                                        ...pendingImports,
                                         ...processed,
                                         ...currentProcessed,
                                         ...newPendingUploads
@@ -262,6 +266,7 @@ function ProcessingUploadList({
                                 .catch(() => {
                                     onChange([
                                         ...failedPendingUploads,
+                                        ...pendingImports,
                                         ...currentProcessed,
                                         ...newPendingUploads
                                     ]);
@@ -270,6 +275,7 @@ function ProcessingUploadList({
                         } else {
                             onChange([
                                 ...failedPendingUploads,
+                                ...pendingImports,
                                 ...currentProcessed,
                                 ...newPendingUploads
                             ]);
@@ -285,8 +291,9 @@ function ProcessingUploadList({
         }
     };
 
-    function handleDelete({ id, deleteUrl }) {
-        axios.get(deleteUrl)
+    function handleDelete({ id, deleteUrl = null }) {
+        const deleteRequest = deleteUrl ? () => axios.get(deleteUrl) : () => deleteExecutionRequest(id);
+        deleteRequest()
             .finally(() => {
                 if (isMounted.current) {
                     setDeletedIds((ids) => [...ids, id]);

@@ -43,7 +43,9 @@ let endpoints = {
     'keywords': '/api/v2/keywords',
     'regions': '/api/v2/regions',
     'groups': '/api/v2/groups',
-    'uploads': '/api/v2/uploads'
+    'uploads': '/api/v2/uploads',
+    'status': '/api/v2/resource-service/execution-status',
+    'exectionRequest': '/api/v2/executionrequest'
 };
 
 const RESOURCES = 'resources';
@@ -59,6 +61,8 @@ const CATEGORIES = 'categories';
 const KEYWORDS = 'keywords';
 const GROUPS = 'groups';
 const UPLOADS = 'uploads';
+const STATUS = 'status';
+const EXECUTIONREQUEST = 'exectionRequest';
 
 function addCountToLabel(name, count) {
     return `${name} (${count || 0})`;
@@ -772,6 +776,18 @@ export const getPendingUploads = () => {
         .then(({ data }) => data?.uploads);
 };
 
+export const getPendingExecutionRequests = () => {
+    return axios.get(parseDevHostname(endpoints[EXECUTIONREQUEST]), {
+        params: {
+            'filter{action}': 'import',
+            'page': 1,
+            'page_size': 99999
+        }
+    })
+        .then(({ data }) => data?.requests)
+        .catch(() => null);
+};
+
 export const getProcessedUploadsById = (ids) => {
     return axios.get(parseDevHostname(endpoints[UPLOADS]), {
         params: {
@@ -831,6 +847,15 @@ export const uploadDocument = ({
         .then(({ data }) => (data));
 };
 
+export const getExecutionStatus = (executionId) => {
+    return axios.get(`${parseDevHostname(endpoints[STATUS])}/${executionId}`)
+        .then(({ data }) => ({...data, id: executionId, create_date: data.created }));
+};
+
+export const deleteExecutionRequest = (executionId) => {
+    return axios.delete(`${parseDevHostname(endpoints[EXECUTIONREQUEST])}/${executionId}`);
+};
+
 export default {
     getEndpoints,
     getResources,
@@ -864,7 +889,10 @@ export default {
     downloadResource,
     getDatasets,
     getPendingUploads,
+    getPendingExecutionRequests,
     getProcessedUploadsById,
     getProcessedUploadsByImportId,
-    uploadDocument
+    uploadDocument,
+    getExecutionStatus,
+    deleteExecutionRequest
 };
