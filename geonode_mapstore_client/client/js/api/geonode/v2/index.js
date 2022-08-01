@@ -297,6 +297,11 @@ export const setFavoriteResource = (pk, favorite) => {
         .then(({ data }) => data );
 };
 
+export const getUserFavoriteResources = () => {
+    return axios.get(parseDevHostname(`${endpoints[RESOURCES]}/favorites`))
+        .then(({ data }) => data.favorites.map(({ pk }) => pk));
+};
+
 export const getResourceByPk = (pk) => {
     return axios.get(parseDevHostname(`${endpoints[RESOURCES]}/${pk}`), {
         params: {

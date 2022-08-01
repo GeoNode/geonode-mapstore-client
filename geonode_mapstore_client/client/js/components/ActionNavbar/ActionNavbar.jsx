@@ -100,7 +100,7 @@ const ActionNavbar = forwardRef(
                                 query={query}
                                 variant={variant}
                                 size={size}
-                                resourceName={resource.title}
+                                resourceName={resource?.title}
                             />
                         )}
                         {rightItems.length > 0 && (
