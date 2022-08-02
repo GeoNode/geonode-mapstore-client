@@ -64,30 +64,25 @@ function SaveModal({
 
     const isLoading = loading || saving;
 
-
-    useEffect(() => {
-        // clone on enter key press
-        if (copy && currentModal?.current) {
-            currentModal?.current?.addEventListener('keyup', (event) => {
-                if (event.keyCode === 13) {
-                    event.stopPropagation();
-                    onSave(
-                        update ? contentId : undefined,
-                        {
-                            thumbnail,
-                            name,
-                            description
-                        },
-                        true);
-                }
-            });
-        }
-        return () => currentModal?.current?.removeEventListener('keyup', () => {});
-    }, []);
+    const handleEnterOnClone = options => {
+        const {title, isUpdate, content, image, text} = options;
+        return onSave(
+            isUpdate ? content : undefined,
+            {
+                thumbnail: image,
+                name: title,
+                description: text
+            },
+            false);
+    };
 
     return (
         <Portal>
-            <div ref={currentModal}>
+            <div ref={currentModal} onKeyUp={(e) => {
+                e.stopPropagation();
+                return (e.keyCode === 13 || e.code === 'Enter') && copy && handleEnterOnClone({title: name, isUpdate: update, content: contentId, image: thumbnail, text: description});
+            }
+            }>
                 <ResizableModal
                     title={<Message msgId={labelId}/>}
                     show={enabled}
@@ -122,7 +117,8 @@ function SaveModal({
                     {success && <Alert bsStyle="success" style={{ margin: 0 }}>
                         <div><Message msgId="saveDialog.saveSuccessMessage" /></div>
                     </Alert>}
-                    <Form>
+                    {/* prevent reload on enter key press from implicit submission */}
+                    <Form onSubmit={(e) => e.preventDefault()}>
                         <FormGroup
                             validationState={nameValidation}
                         >
