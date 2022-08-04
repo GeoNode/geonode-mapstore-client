@@ -64,8 +64,8 @@ function SaveModal({
 
     const isLoading = loading || saving;
 
-    const handleEnterOnClone = options => {
-        const {title, isUpdate, content, image, text} = options;
+    const handleEnterPress = options => {
+        const {title, isUpdate, content, image, text, reload} = options;
         return onSave(
             isUpdate ? content : undefined,
             {
@@ -73,14 +73,14 @@ function SaveModal({
                 name: title,
                 description: text
             },
-            false);
+            reload);
     };
 
     return (
         <Portal>
             <div ref={currentModal} onKeyUp={(e) => {
                 e.stopPropagation();
-                return (e.keyCode === 13 || e.code === 'Enter') && copy && handleEnterOnClone({title: name, isUpdate: update, content: contentId, image: thumbnail, text: description});
+                return (e.keyCode === 13 || e.code === 'Enter') && (copy ? handleEnterPress({title: name, isUpdate: update, content: contentId, image: thumbnail, text: description, reload: false}) : handleEnterPress({title: name, isUpdate: update, content: contentId, image: thumbnail, text: description, reload: true}));
             }
             }>
                 <ResizableModal
