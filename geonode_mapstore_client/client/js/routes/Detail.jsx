@@ -36,7 +36,7 @@ import MetaTags from "@js/components/MetaTags";
 import {
     getThemeLayoutSize
 } from '@js/utils/AppUtils';
-import { resourceHasPermission } from '@js/utils/ResourceUtils';
+import { resourceHasPermission, getResourceImageSource } from '@js/utils/ResourceUtils';
 import { getTotalResources } from '@js/selectors/search';
 import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
 import DeleteResource from '@js/plugins/DeleteResource';
@@ -136,7 +136,7 @@ function Detail({
     return (
         <>
             <MetaTags
-                logo={resource ? (resource.thumbnail_url || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAADICAIAAABZHvsFAAAACXBIWXMAAC4jAAAuIwF4pT92AAABiklEQVR42u3SAQ0AAAjDMMC/5+MAAaSVsKyTFHwxEmBoMDQYGgyNocHQYGgwNBgaQ4OhwdBgaDA0hgZDg6HB0GBoDA2GBkODocHQGBoMDYYGQ4OhMTQYGgwNhgZDY2gwNBgaDI2hwdBgaDA0GBpDg6HB0GBoMDSGBkODocHQYGgMDYYGQ4OhwdAYGgwNhgZDg6ExNBgaDA2GBkNjaDA0GBoMDYbG0GBoMDQYGkODocHQYGgwNIYGQ4OhwdBgaAwNhgZDg6HB0BgaDA2GBkODoTE0GBoMDYYGQ2NoMDQYGgwNhsbQYGgwNBgaQ4OhwdBgaDA0hgZDg6HB0GBoDA2GBkODocHQGBoMDYYGQ4OhMTQYGgwNhgZDY2gwNBgaDA2GxtBgaDA0GBoMjaHB0GBoMDSGBkODocHQYGgMDYYGQ4OhwdAYGgwNhgZDg6ExNBgaDA2GBkNjaDA0GBoMDYbG0GBoMDQYGgyNocHQYGgwNIYGQ4OhwdBgaAwNhgZDg6HB0BgaDA2GBkPDbQH4OQSN0W8qegAAAABJRU5ErkJggg==') : window.location.origin + config?.navbar?.logo[0]?.src}
+                logo={resource ? () => getResourceImageSource(resource?.thumbnail_url) : window.location.origin + config?.navbar?.logo[0]?.src}
                 title={(resource?.title) ? resource?.title + " - " + siteName : siteName }
                 siteName={siteName}
                 contentURL={resource?.detail_url}
