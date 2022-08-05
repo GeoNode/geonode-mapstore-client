@@ -100,7 +100,8 @@ function ThumbnailPreview({
             {!src ? <div className="card-img-placeholder" style={{
                 ...style,
                 width: 250,
-                height: 184
+                height: 184,
+                outline: '1px solid #eee'
             }}>
                 <FaIcon name={icon} />
             </div>
@@ -512,11 +513,11 @@ function DetailsPanel({
                     {editThumbnail && <div className="gn-details-panel-content-img">
                         {!activeEditMode && <ThumbnailPreview src={resource?.thumbnail_url} icon={icon} />}
                         {activeEditMode && <div className="gn-details-panel-preview inediting">
-                            {!enableMapViewer ? <> <EditThumbnail
+                            {!enableMapViewer ? <> <div {...(!resource?.thumbnail_url && {style: {outline: '1px solid #eee'}})}><EditThumbnail
                                 onEdit={editThumbnail}
                                 image={() => getResourceImageSource(resource?.thumbnail_url)}
                                 thumbnailUpdating={resourceThumbnailUpdating}
-                            />
+                            /></div>
                             {
                                 ((resource.resource_type === ResourceTypes.MAP || resource.resource_type === ResourceTypes.DATASET) && (resource.ptype !== GXP_PTYPES.REST_IMG || resource.ptype !== GXP_PTYPES.REST_MAP)) &&
                                 ( <><MapThumbnailButtonToolTip
