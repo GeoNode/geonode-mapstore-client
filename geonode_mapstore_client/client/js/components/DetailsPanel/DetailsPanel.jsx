@@ -83,6 +83,7 @@ function formatResourceLinkUrl(resourceUrl = '') {
 function ThumbnailPreview({
     src,
     style,
+    icon,
     ...props
 }) {
 
@@ -95,19 +96,28 @@ function ThumbnailPreview({
     }, [src]);
 
     return (
-        <img
-            {...props}
-            src={src}
-            onLoad={() => setLoading(false)}
-            onError={() => setLoading(false)}
-            style={{
+        <>
+            {!src ? <div className="card-img-placeholder" style={{
                 ...style,
-                ...(loading && {
-                    backgroundColor: 'transparent'
-                }),
-                objectFit: 'contain'
-            }}
-        />
+                width: 250,
+                height: 184
+            }}>
+                <FaIcon name={icon} />
+            </div>
+                : <img
+                    {...props}
+                    src={src}
+                    onLoad={() => setLoading(false)}
+                    onError={() => setLoading(false)}
+                    style={{
+                        ...style,
+                        ...(loading && {
+                            backgroundColor: 'transparent'
+                        }),
+                        objectFit: 'contain'
+                    }}
+                />}
+        </>
     );
 }
 
@@ -469,6 +479,7 @@ function DetailsPanel({
                         />
                         : (!embedUrl && !editThumbnail ? (<ThumbnailPreview
                             src={resource?.thumbnail_url}
+                            icon={icon}
                             style={{
                                 position: 'absolute',
                                 width: '100%',
@@ -499,11 +510,11 @@ function DetailsPanel({
 
                 <div className="gn-details-panel-content">
                     {editThumbnail && <div className="gn-details-panel-content-img">
-                        {!activeEditMode && <ThumbnailPreview src={resource?.thumbnail_url} />}
+                        {!activeEditMode && <ThumbnailPreview src={resource?.thumbnail_url} icon={icon} />}
                         {activeEditMode && <div className="gn-details-panel-preview inediting">
                             {!enableMapViewer ? <> <EditThumbnail
                                 onEdit={editThumbnail}
-                                image={resource?.thumbnail_url}
+                                image={resource?.thumbnail_url || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAADICAIAAABZHvsFAAAACXBIWXMAAC4jAAAuIwF4pT92AAABiklEQVR42u3SAQ0AAAjDMMC/5+MAAaSVsKyTFHwxEmBoMDQYGgyNocHQYGgwNBgaQ4OhwdBgaDA0hgZDg6HB0GBoDA2GBkODocHQGBoMDYYGQ4OhMTQYGgwNhgZDY2gwNBgaDI2hwdBgaDA0GBpDg6HB0GBoMDSGBkODocHQYGgMDYYGQ4OhwdAYGgwNhgZDg6ExNBgaDA2GBkNjaDA0GBoMDYbG0GBoMDQYGkODocHQYGgwNIYGQ4OhwdBgaAwNhgZDg6HB0BgaDA2GBkODoTE0GBoMDYYGQ2NoMDQYGgwNhsbQYGgwNBgaQ4OhwdBgaDA0hgZDg6HB0GBoDA2GBkODocHQGBoMDYYGQ4OhMTQYGgwNhgZDY2gwNBgaDA2GxtBgaDA0GBoMjaHB0GBoMDSGBkODocHQYGgMDYYGQ4OhwdAYGgwNhgZDg6ExNBgaDA2GBkNjaDA0GBoMDYbG0GBoMDQYGgyNocHQYGgwNIYGQ4OhwdBgaAwNhgZDg6HB0BgaDA2GBkPDbQH4OQSN0W8qegAAAABJRU5ErkJggg=='}
                                 thumbnailUpdating={resourceThumbnailUpdating}
                             />
                             {
