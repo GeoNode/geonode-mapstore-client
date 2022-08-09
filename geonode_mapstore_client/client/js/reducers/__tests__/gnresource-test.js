@@ -14,7 +14,6 @@ import {
     resourceError,
     updateResourceProperties,
     setResourceType,
-    setNewResource,
     setResourceId,
     setResourcePermissions,
     editThumbnailResource,
@@ -79,16 +78,6 @@ describe('gnresource reducer', () => {
         const state = gnresource({}, setResourceType(resourceType));
         expect(state).toEqual({
             type: resourceType
-        });
-    });
-    it('should test setNewResource', () => {
-        const state = gnresource({}, setNewResource());
-        expect(state).toEqual({
-            selectedLayerPermissions: [],
-            data: {},
-            permissions: [],
-            favoriteResources: [],
-            isNew: true
         });
     });
     it('should test setResourceId', () => {

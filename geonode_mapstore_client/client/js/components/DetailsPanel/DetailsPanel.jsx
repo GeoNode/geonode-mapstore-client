@@ -29,7 +29,6 @@ import Loader from '@mapstore/framework/components/misc/Loader';
 import { getUserName } from '@js/utils/SearchUtils';
 import ZoomTo from '@js/components/ZoomTo';
 import { boundsToExtentString } from '@js/utils/CoordinatesUtils';
-import { getUserFavoriteResources } from '@js/api/geonode/v2';
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = 'Map';
@@ -207,9 +206,7 @@ function DetailsPanel({
     onClose,
     onAction,
     canDownload,
-    setFavorites,
-    removeFavorite,
-    resourceId
+    onUpdateFavorite
 }) {
     const detailsContainerNode = useRef();
     const isMounted = useRef();
@@ -222,10 +219,6 @@ function DetailsPanel({
             isMounted.current = false;
         };
     }, []);
-
-    useEffect(() => {
-        getUserFavoriteResources().then(favorites => setFavorites(favorites));
-    }, [resourceId]);
 
     if (!resource && !loading) {
         return null;
@@ -240,9 +233,14 @@ function DetailsPanel({
         }, 700);
     };
 
-    const handleFavorite = () => {
-        favorite ? removeFavorite(resourceId) : setFavorites(resourceId);
-        onFavorite(!favorite);
+    const handleFavorite = (fav) => {
+        fav ? onUpdateFavorite({
+            'favorite': false
+        })
+            : onUpdateFavorite({
+                'favorite': true
+            });
+        onFavorite(!fav);
     };
 
     const handleResourceThumbnailUpdate = () => {
@@ -549,7 +547,7 @@ function DetailsPanel({
                                         enableFavorite &&
                                     <Button
                                         variant="default"
-                                        onClick={debounce(handleFavorite, 500)}>
+                                        onClick={debounce(() => handleFavorite(favorite), 500)}>
                                         <FaIcon name={favorite ? 'star' : 'star-o'} />
                                     </Button>
                                     }

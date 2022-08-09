@@ -21,8 +21,7 @@ import {
     setResourceThumbnail,
     enableMapThumbnailViewer,
     downloadResource,
-    setFavoriteResources,
-    removeFavoriteResource
+    updateResourceProperties
 } from '@js/actions/gnresource';
 import { processingDownload } from '@js/selectors/resourceservice';
 import FaIcon from '@js/components/FaIcon/FaIcon';
@@ -57,14 +56,13 @@ const ConnectedDetailsPanel = connect(
         updatingThumbnailResource,
         mapSelector,
         state => state?.gnresource?.showMapThumbnail || false,
-        processingDownload,
-        state => state?.gnresource?.favoriteResources || []
-    ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating, mapData, showMapThumbnail, downloading, favorites) => ({
+        processingDownload
+    ], (resource, loading, favorite, savingThumbnailMap, layers, thumbnailChanged, resourceThumbnailUpdating, mapData, showMapThumbnail, downloading) => ({
         layers: layers,
         resource,
         loading,
         savingThumbnailMap,
-        favorite: favorite || favorites.includes(resource?.pk),
+        favorite: favorite,
         isThumbnailChanged: thumbnailChanged,
         resourceThumbnailUpdating,
         initialBbox: mapData?.bbox,
@@ -80,8 +78,7 @@ const ConnectedDetailsPanel = connect(
         onResourceThumbnail: setResourceThumbnail,
         onClose: enableMapThumbnailViewer,
         onAction: downloadResource,
-        setFavorites: setFavoriteResources,
-        removeFavorite: removeFavoriteResource
+        onUpdateFavorite: updateResourceProperties
     }
 )(DetailsPanel);
 

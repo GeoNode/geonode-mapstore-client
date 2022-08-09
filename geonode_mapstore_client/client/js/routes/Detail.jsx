@@ -24,7 +24,7 @@ import {
     loadFeaturedResources
 } from '@js/actions/gnsearch';
 
-import { downloadResource, setFavoriteResource, setFavoriteResources, removeFavoriteResource } from '@js/actions/gnresource';
+import { downloadResource, setFavoriteResource, updateResourceProperties } from '@js/actions/gnresource';
 import {
     hashLocationToHref,
     clearQueryParams,
@@ -51,11 +51,10 @@ const ConnectedDetailsPanel = connect(
         state => state?.gnresource?.loading || false,
         state => state?.gnresource?.data?.favorite || false,
         processingDownload,
-        state => state?.gnresource?.data || null,
-        state => state?.gnresource?.favoriteResources || []
-    ], (loading, favorite, downloading, resource, favorites) => ({
+        state => state?.gnresource?.data || null
+    ], (loading, favorite, downloading, resource) => ({
         loading,
-        favorite: favorite || favorites.includes(resource?.pk),
+        favorite: favorite,
         downloading,
         canDownload: resourceHasPermission(resource, 'download_resourcebase'),
         resourceId: resource.pk
@@ -63,8 +62,7 @@ const ConnectedDetailsPanel = connect(
     {
         onFavorite: setFavoriteResource,
         onAction: downloadResource,
-        setFavorites: setFavoriteResources,
-        removeFavorite: removeFavoriteResource
+        onUpdateFavorite: updateResourceProperties
     }
 )(DetailsPanel);
 function Detail({
