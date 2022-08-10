@@ -35,22 +35,24 @@ export const gnSaveFavoriteContent = (action$, store) =>
                 : [...resources, resource]) : resources;
 
 
-            return Observable
-                .defer(() => setFavoriteResource(pk, favorite))
-                .switchMap(() => {
-                    return Observable.of(
-                        updateResources(newResources, true)
-                    );
-                })
-                .catch((error) => {
-                    return Observable.of(
-                        action.favorite ? updateResourceProperties({
-                            'favorite': false
-                        }) : updateResourceProperties({
-                            'favorite': true
-                        }),
-                        errorNotification({ title: "gnviewer.cannotPerfomAction", message: error?.data?.message || error?.data?.detail || error?.originalError?.message || "gnviewer.syncErrorDefault" }));
-                });
+            return Observable.concat(
+                Observable.of(updateResourceProperties({'favorite': favorite})),
+                Observable.defer(() => setFavoriteResource(pk, favorite))
+                    .switchMap(() => {
+                        return Observable.of(
+                            updateResources(newResources, true)
+                        );
+                    })
+                    .catch((error) => {
+                        return Observable.of(
+                            action.favorite ? updateResourceProperties({
+                                'favorite': false
+                            }) : updateResourceProperties({
+                                'favorite': true
+                            }),
+                            errorNotification({ title: "gnviewer.cannotPerfomAction", message: error?.data?.message || error?.data?.detail || error?.originalError?.message || "gnviewer.syncErrorDefault" }));
+                    })
+            );
 
         });
 

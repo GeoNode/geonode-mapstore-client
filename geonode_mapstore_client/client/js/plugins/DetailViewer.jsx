@@ -20,8 +20,7 @@ import {
     setMapThumbnail,
     setResourceThumbnail,
     enableMapThumbnailViewer,
-    downloadResource,
-    updateResourceProperties
+    downloadResource
 } from '@js/actions/gnresource';
 import { processingDownload } from '@js/selectors/resourceservice';
 import FaIcon from '@js/components/FaIcon/FaIcon';
@@ -77,8 +76,7 @@ const ConnectedDetailsPanel = connect(
         onMapThumbnail: setMapThumbnail,
         onResourceThumbnail: setResourceThumbnail,
         onClose: enableMapThumbnailViewer,
-        onAction: downloadResource,
-        onUpdateFavorite: updateResourceProperties
+        onAction: downloadResource
     }
 )(DetailsPanel);
 

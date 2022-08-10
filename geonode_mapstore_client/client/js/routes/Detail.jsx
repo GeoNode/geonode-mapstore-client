@@ -24,7 +24,7 @@ import {
     loadFeaturedResources
 } from '@js/actions/gnsearch';
 
-import { downloadResource, setFavoriteResource, updateResourceProperties } from '@js/actions/gnresource';
+import { downloadResource, setFavoriteResource } from '@js/actions/gnresource';
 import {
     hashLocationToHref,
     clearQueryParams,
@@ -61,8 +61,7 @@ const ConnectedDetailsPanel = connect(
     })),
     {
         onFavorite: setFavoriteResource,
-        onAction: downloadResource,
-        onUpdateFavorite: updateResourceProperties
+        onAction: downloadResource
     }
 )(DetailsPanel);
 function Detail({

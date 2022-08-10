@@ -205,8 +205,7 @@ function DetailsPanel({
     enableMapViewer,
     onClose,
     onAction,
-    canDownload,
-    onUpdateFavorite
+    canDownload
 }) {
     const detailsContainerNode = useRef();
     const isMounted = useRef();
@@ -234,12 +233,6 @@ function DetailsPanel({
     };
 
     const handleFavorite = (fav) => {
-        fav ? onUpdateFavorite({
-            'favorite': false
-        })
-            : onUpdateFavorite({
-                'favorite': true
-            });
         onFavorite(!fav);
     };
 
