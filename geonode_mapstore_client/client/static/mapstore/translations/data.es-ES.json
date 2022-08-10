@@ -291,7 +291,9 @@
             "embedgeostory": "Insertar esta Geohistoria",
             "embeddocument": "Inserta éste Documento",
             "embeddashboard": "Insertar este Panel",
-            "directLink": "Enlace Directo"
+            "directLink": "Enlace Directo",
+            "iso": "Metadatos iso",
+            "dublinCore": "Metadatos de Dublin Core"
         }
     }
 }

@@ -427,6 +427,14 @@ export const plugins = {
     SyncPlugin: toLazyPlugin(
         'Sync',
         () => import(/* webpackChunkName: 'plugins/sync-plugin' */ '@js/plugins/Sync')
+    ),
+    IsoDownloadPlugin: toLazyPlugin(
+        'IsoDownload',
+        () => import(/* webpackChunkName: 'plugins/iso-download-plugin' */ '@js/plugins/downloads/IsoDownload')
+    ),
+    DublinCoreDownloadPlugin: toLazyPlugin(
+        'DublinCoreDownload',
+        () => import(/* webpackChunkName: 'plugins/iso-download-plugin' */ '@js/plugins/downloads/DublinCoreDownload')
     )
 };
 
