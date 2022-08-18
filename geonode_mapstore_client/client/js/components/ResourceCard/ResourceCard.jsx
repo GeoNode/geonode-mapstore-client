@@ -86,8 +86,10 @@ const ResourceCard = forwardRef(({
                 />
             )}
             <div className={`card-resource-${layoutCardsStyle}`}>
-                {imgError ? (
-                    <div className={`${imgClassName} card-img-placeholder`} />
+                {(imgError || !res.thumbnail_url) ? (
+                    <div className={`${imgClassName} card-img-placeholder`}>
+                        <FaIcon name={icon} />
+                    </div>
                 ) : (
                     <img
                         className={imgClassName}

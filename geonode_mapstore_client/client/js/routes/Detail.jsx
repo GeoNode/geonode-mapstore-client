@@ -36,7 +36,7 @@ import MetaTags from "@js/components/MetaTags";
 import {
     getThemeLayoutSize
 } from '@js/utils/AppUtils';
-import { resourceHasPermission } from '@js/utils/ResourceUtils';
+import { resourceHasPermission, getResourceImageSource } from '@js/utils/ResourceUtils';
 import { getTotalResources } from '@js/selectors/search';
 import ConnectedCardGrid from '@js/routes/catalogue/ConnectedCardGrid';
 import DeleteResource from '@js/plugins/DeleteResource';
@@ -136,7 +136,7 @@ function Detail({
     return (
         <>
             <MetaTags
-                logo={resource ? resource.thumbnail_url : window.location.origin + config?.navbar?.logo[0]?.src}
+                logo={resource ? () => getResourceImageSource(resource?.thumbnail_url) : window.location.origin + config?.navbar?.logo[0]?.src}
                 title={(resource?.title) ? resource?.title + " - " + siteName : siteName }
                 siteName={siteName}
                 contentURL={resource?.detail_url}

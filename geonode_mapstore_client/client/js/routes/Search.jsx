@@ -34,6 +34,7 @@ import { withResizeDetector } from 'react-resize-detector';
 
 import { getCategories, getRegions, getOwners, getKeywords } from '@js/api/geonode/v2';
 import MetaTags from "@js/components/MetaTags";
+import { getResourceImageSource } from '@js/utils/ResourceUtils';
 
 import {
     getThemeLayoutSize
@@ -174,7 +175,7 @@ function Search({
     return (
         <>
             <MetaTags
-                logo={resource ? resource.thumbnail_url : window.location.origin + config?.navbar?.logo[0]?.src}
+                logo={resource ? () => getResourceImageSource(resource?.thumbnail_url) : window.location.origin + config?.navbar?.logo[0]?.src}
                 title={(resource?.title) ? resource?.title + " - " + siteName : siteName }
                 siteName={siteName}
                 contentURL={resource?.detail_url}

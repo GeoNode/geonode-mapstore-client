@@ -21,6 +21,7 @@ import MetaTags from '@js/components/MetaTags';
 import MainEventView from '@js/components/MainEventView';
 import ViewerLayout from '@js/components/ViewerLayout';
 import { createShallowSelector } from '@mapstore/framework/utils/ReselectUtils';
+import { getResourceImageSource } from '@js/utils/ResourceUtils';
 
 const urlQuery = url.parse(window.location.href, true).query;
 
@@ -123,7 +124,7 @@ function ViewerRoute({
     return (
         <>
             {resource && <MetaTags
-                logo={resource.thumbnail_url}
+                logo={() => getResourceImageSource(resource?.thumbnail_url)}
                 title={(resource?.title) ? `${resource?.title} - ${siteName}` : siteName }
                 siteName={siteName}
                 contentURL={resource?.detail_url}

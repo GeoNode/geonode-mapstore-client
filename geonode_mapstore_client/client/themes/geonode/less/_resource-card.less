@@ -38,11 +38,12 @@
             .color-var(@theme-vars[main-color]);
             .background-color-var(@theme-vars[main-bg]);
         }
-        .card-img-placeholder {
-            .background-color-var(@theme-vars[main-variant-bg]);
-        }
         .gn-card-options {
             .border-color-var(@theme-vars[main-border-color]);
+        }
+        .card-img-placeholder {
+            .background-color-var(@theme-vars[main-bg]);
+            .color-var(@theme-vars[primary]);
         }
     }
 }
@@ -295,6 +296,13 @@ button.btn.btn-default.gn-resource-status.gn-status-button {
         -webkit-box-shadow: unset;
         box-shadow: unset;
     }
+}
+
+.card-img-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
 }
 
 @media screen and (min-width: 1649px) {

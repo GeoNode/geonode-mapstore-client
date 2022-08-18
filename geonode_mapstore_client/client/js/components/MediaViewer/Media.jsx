@@ -12,7 +12,7 @@ import PdfViewer from '@js/components/MediaViewer/PdfViewer';
 import { determineResourceType } from '@js/utils/FileUtils';
 import Loader from '@mapstore/framework/components/misc/Loader';
 import MainEventView from '@js/components/MainEventView';
-import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
+import { getResourceTypesInfo, getResourceImageSource } from '@js/utils/ResourceUtils';
 
 const Scene3DViewer = lazy(() => import('@js/components/MediaViewer/Scene3DViewer'));
 
@@ -66,7 +66,7 @@ const Media = ({ resource, ...props }) => {
                 {...props[mediaType]}
                 description={resource.abstract}
                 id={resource.pk}
-                thumbnail={resource.thumbnail_url}
+                thumbnail={() => getResourceImageSource(resource?.thumbnail_url)}
                 src={resource.href}
             />
         </Suspense>);
