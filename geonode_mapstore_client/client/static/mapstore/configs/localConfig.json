@@ -929,8 +929,22 @@
                             "name": "FilterLayer"
                         },
                         {
-                            "type": "plugin",
-                            "name": "LayerDownload"
+                            "labelId": "gnviewer.download",
+                            "type": "dropdown",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "IsoDownload"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "DublinCoreDownload"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "LayerDownload"
+                                }
+                            ]
                         },
                         {
                             "type": "plugin",
@@ -1152,6 +1166,12 @@
             },
             {
                 "name": "Playback"
+            },
+            {
+                "name": "IsoDownload"
+            },
+            {
+                "name": "DublinCoreDownload"
             },
             {
                 "name": "LayerDownload",

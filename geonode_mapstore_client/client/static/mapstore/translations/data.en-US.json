@@ -292,7 +292,9 @@
             "embedgeostory": "Embed this Geostory",
             "embeddocument": "Embed this Document",
             "embeddashboard": "Embed this Dashboard",
-            "directLink": "Direct Link"
+            "directLink": "Direct Link",
+            "iso": "ISO Metadata",
+            "dublinCore": "Dublin Core Metadata"
         }
     }
 }
