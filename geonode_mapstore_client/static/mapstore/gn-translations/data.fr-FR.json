@@ -292,7 +292,9 @@
             "embedgeostory": "Intégrer cette Geostory",
             "embeddocument": "Intégrer ce document",
             "embeddashboard": "Intégrer ce Tableau de bord",
-            "directLink": "BLien direct"
+            "directLink": "BLien direct",
+            "iso": "Métadonnées ISO",
+            "dublinCore": "Métadonnées de Dublin Core"
         }
     }
 }
