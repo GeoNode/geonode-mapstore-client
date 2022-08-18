@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
 */
 
-import {isEqual, uniq} from 'lodash';
+import {isEqual } from 'lodash';
 import {
     RESOURCE_LOADING,
     SET_RESOURCE,
@@ -27,9 +27,7 @@ import {
     SET_RESOURCE_COMPACT_PERMISSIONS,
     UPDATE_RESOURCE_COMPACT_PERMISSIONS,
     RESET_GEO_LIMITS,
-    ENABLE_MAP_THUMBNAIL_VIEWER,
-    SET_FAVORITE_RESOURCES,
-    REMOVE_FAVORITE_RESOURCE
+    ENABLE_MAP_THUMBNAIL_VIEWER
 } from '@js/actions/gnresource';
 
 import {
@@ -40,8 +38,7 @@ import {
 const defaultState = {
     selectedLayerPermissions: [],
     data: {},
-    permissions: [],
-    favoriteResources: []
+    permissions: []
 };
 
 function gnresource(state = defaultState, action) {
@@ -211,20 +208,6 @@ function gnresource(state = defaultState, action) {
             };
         }
         return state;
-    case SET_FAVORITE_RESOURCES: {
-        const favoriteResources = Array.isArray(action.favorites) ? action.favorites : uniq([...state.favoriteResources, action.favorites]);
-        return {
-            ...state,
-            favoriteResources: [...favoriteResources]
-        };
-    }
-    case REMOVE_FAVORITE_RESOURCE: {
-        const newFavorites = state.favoriteResources?.filter(fav => fav !== action.pk);
-        return {
-            ...state,
-            favoriteResources: [...newFavorites]
-        };
-    }
     default:
         return state;
     }
