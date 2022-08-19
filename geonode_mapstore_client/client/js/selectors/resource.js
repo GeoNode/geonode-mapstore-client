@@ -177,14 +177,25 @@ function isResourceDataEqual(state, initialData = {}, currentData = {}) {
             .find((widget) => {
                 if (widget.widgetType === 'map') {
                     const initialWidget = initialWidgets.find(({ id }) => id === widget.id);
-                    return initialWidget ? !isMapCenterEqual(initialWidget?.map?.center, widget?.map?.center) : true;
+                    const currentWidget = widget.maps[0];
+                    return initialWidget ? !isMapCenterEqual(initialWidget?.map?.center, currentWidget?.center) : true;
                 }
                 return false;
             });
+        const newCurrentData = {
+            ...currentData,
+            widgets: currentData.widgets.map(widget => {
+                if (!!widget.maps) {
+                    const mapList = widget.maps;
+                    delete widget.maps;
+                    widget.map = mapList[0];
+                }
+                return widget;
+            })
+        };
         return isEqual(
-            removeProperty(initialData, ['bbox', 'size', 'center', 'layouts']),
-            removeProperty(currentData, ['bbox', 'size', 'center', 'layouts'])
-        ) && !isWidgetMapCenterChanged;
+            removeProperty(initialData, ['bbox', 'size', 'center', 'layouts', 'dependenciesMap', 'selectedMapId']),
+            removeProperty(newCurrentData, ['bbox', 'size', 'center', 'layouts', 'mapId', 'dependenciesMap', 'selectedMapId'])) && !isWidgetMapCenterChanged;
     }
     default:
         return true;
