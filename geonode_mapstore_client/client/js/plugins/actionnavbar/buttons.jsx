@@ -112,6 +112,25 @@ export const FullScreenActionButton = connect(createSelector([
     );
 });
 
+export const DataDownloadActionButton = connect(
+    () => ({}),
+    { onClick: setControlProperty.bind(null, 'layerdownload', 'enabled', true, true) }
+)(({
+    onClick,
+    variant,
+    size
+}) => {
+    return (
+        <Button
+            variant={variant}
+            size={size}
+            onClick={() => onClick()}
+        >
+            <Message msgId="gnhome.data" />
+        </Button>
+    );
+});
+
 export const LayerDownloadActionButton = connect(
     () => ({}),
     { onClick: setControlProperty.bind(null, 'layerdownload', 'enabled', true, true) }
