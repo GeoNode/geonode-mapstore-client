@@ -126,7 +126,7 @@ export const DataDownloadActionButton = connect(
             size={size}
             onClick={() => onClick()}
         >
-            <Message msgId="gnhome.data" />
+            <Message msgId="gnhome.dataset" />
         </Button>
     );
 });
