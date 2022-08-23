@@ -14,7 +14,6 @@ import {
     CatalogActionButton,
     MeasureActionButton,
     LayerDownloadActionButton,
-    DataDownloadActionButton,
     AnnotationsActionButton,
     FullScreenActionButton,
     FilterLayerActionButton
@@ -113,18 +112,6 @@ export const plugins = {
                 ActionNavbar: {
                     name: 'LayerDownload',
                     Component: LayerDownloadActionButton
-                }
-            }
-        }
-    ),
-    DataDownloadPlugin: toLazyPlugin(
-        'LayerDownload',
-        () => import(/* webpackChunkName: 'plugins/data-download' */ '@mapstore/framework/plugins/LayerDownload'),
-        {
-            containers: {
-                ActionNavbar: {
-                    name: 'DataDownload',
-                    Component: DataDownloadActionButton
                 }
             }
         }

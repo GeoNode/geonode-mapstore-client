@@ -935,7 +935,7 @@
                             "items": [
                                 {
                                     "type": "plugin",
-                                    "name": "DataDownload"
+                                    "name": "LayerDownload"
                                 },
                                 {
                                     "type": "plugin",
@@ -1280,109 +1280,6 @@
             },
             {
                 "name": "AddLayer"
-            },
-            {
-                "name": "DataDownload",
-                "cfg": {
-                    "formats": [
-                        {
-                            "name": "application/json",
-                            "label": "GeoJSON",
-                            "type": "vector",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "application/arcgrid",
-                            "label": "ArcGrid",
-                            "type": "raster",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "image/tiff",
-                            "label": "TIFF",
-                            "type": "raster",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "image/png",
-                            "label": "PNG",
-                            "type": "raster",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "image/jpeg",
-                            "label": "JPEG",
-                            "type": "raster",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "application/wfs-collection-1.0",
-                            "label": "GML (FeatureCollection)",
-                            "type": "vector",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "application/wfs-collection-1.1",
-                            "label": "GML (WFS 1.1.0 FeatureCollection)",
-                            "type": "vector",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "application/zip",
-                            "label": "Shapefile",
-                            "type": "vector",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "text/csv",
-                            "label": "CSV",
-                            "type": "vector",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "application/geopackage+sqlite3",
-                            "label": "GeoPackage",
-                            "type": "vector",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "application/geopackage+sqlite3",
-                            "label": "GeoPackage",
-                            "type": "raster",
-                            "validServices": [
-                                "wps"
-                            ]
-                        },
-                        {
-                            "name": "application/vnd.google-earth.kml+xml",
-                            "label": "KML",
-                            "type": "vector",
-                            "validServices": [
-                                "wps"
-                            ]
-                        }
-                    ]
-                }
             },
             {
                 "name": "FilterLayer"
