@@ -929,8 +929,23 @@
                             "name": "FilterLayer"
                         },
                         {
-                            "type": "plugin",
-                            "name": "LayerDownload"
+                            "labelId": "gnviewer.download",
+                            "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                            "type": "dropdown",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "LayerDownload"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "IsoDownload"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "DublinCoreDownload"
+                                }
+                            ]
                         },
                         {
                             "type": "plugin",
@@ -1152,6 +1167,12 @@
             },
             {
                 "name": "Playback"
+            },
+            {
+                "name": "IsoDownload"
+            },
+            {
+                "name": "DublinCoreDownload"
             },
             {
                 "name": "LayerDownload",

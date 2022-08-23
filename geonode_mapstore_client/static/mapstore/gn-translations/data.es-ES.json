@@ -24,8 +24,8 @@
             "zA": "Z A",
             "mostPopular": "Más popular",
             "data": "Datos",
-            "dataset": "Dataset",
-            "datasets": "Datasets",
+            "dataset": "Conjunto de datos",
+            "datasets": "Conjuntos de datos",
             "document": "Documento",
             "documents": "Documentos",
             "remoteServices": "Servicios remotos",
@@ -291,7 +291,9 @@
             "embedgeostory": "Insertar esta Geohistoria",
             "embeddocument": "Inserta éste Documento",
             "embeddashboard": "Insertar este Panel",
-            "directLink": "Enlace Directo"
+            "directLink": "Enlace Directo",
+            "iso": "Metadatos iso",
+            "dublinCore": "Metadatos de Dublin Core"
         }
     }
 }

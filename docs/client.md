@@ -194,6 +194,9 @@ set new Featured Resources includes data, page, links</p>
 ## Constants
 
 <dl>
+<dt><a href="#DOWNLOAD_METADATA">DOWNLOAD_METADATA</a></dt>
+<dd><p>Sync geostory components with their live resources on geonode</p>
+</dd>
 <dt><a href="#SYNC_RESOURCES">SYNC_RESOURCES</a></dt>
 <dd><p>Sync geostory components with their live resources on geonode</p>
 </dd>
@@ -827,6 +830,12 @@ Util to check if resosurce can be cloned (Save As)
 Requirements for copying are 'add_resource' permission and is_copyable property on resource
 
 **Kind**: static constant of [<code>utils/ResourceUtils</code>](#module_utils/ResourceUtils)  
+<a name="DOWNLOAD_METADATA"></a>
+
+## DOWNLOAD\_METADATA
+Sync geostory components with their live resources on geonode
+
+**Kind**: global constant  
 <a name="SYNC_RESOURCES"></a>
 
 ## SYNC\_RESOURCES

@@ -23,7 +23,7 @@
             "aZ": "A Z",
             "zA": "Z A",
             "mostPopular": "Most popular",
-            "data": "Dati",
+            "data": "Data",
             "dataset": "Dataset",
             "datasets": "Datasets",
             "document": "Document",
@@ -292,7 +292,9 @@
             "embedgeostory": "Embed this Geostory",
             "embeddocument": "Embed this Document",
             "embeddashboard": "Embed this Dashboard",
-            "directLink": "Direct Link"
+            "directLink": "Direct Link",
+            "iso": "ISO Metadata",
+            "dublinCore": "Dublin Core Metadata"
         }
     }
 }
