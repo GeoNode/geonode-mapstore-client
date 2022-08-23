@@ -17,6 +17,12 @@ import { updateNode } from '@mapstore/framework/actions/layers';
 import VisibilityCheck from '@mapstore/framework/components/TOC/fragments/VisibilityCheck';
 import Message from '@mapstore/framework/components/I18N/HTML';
 
+function applyVersionParamToLegend(layer) {
+    // we need to pass a parameter that invalidate the cache for GetLegendGraphic
+    // all layer inside the dataset viewer apply a new _v_ param each time we switch page
+    return { ...layer, legendParams: { ...layer?.legendParams, _v_: layer?._v_ } };
+}
+
 function Legend({
     layers,
     onUpdateNode
@@ -45,7 +51,7 @@ function Legend({
                         disabled={!layer.visibility}
                         onChange={(opacity) => onUpdateNode(layer.id, 'layers', { opacity })}
                     />
-                    <LegendImage layer={layer} />
+                    <LegendImage layer={applyVersionParamToLegend(layer)} />
                 </li>
             </Fragment>
             )}
