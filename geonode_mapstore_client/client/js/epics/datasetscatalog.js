@@ -10,6 +10,7 @@ import { SET_CONTROL_PROPERTY } from '@mapstore/framework/actions/controls';
 import { updateMapLayout, UPDATE_MAP_LAYOUT } from '@mapstore/framework/actions/maplayout';
 import { mapLayoutSelector } from '@mapstore/framework/selectors/maplayout';
 import { getConfigProp } from "@mapstore/framework/utils/ConfigUtils";
+import { LayoutSections } from "@js/utils/LayoutUtils";
 
 /**
 * @module epics/datasetcatalog
@@ -22,7 +23,7 @@ export const gnUpdateDatasetsCatalogMapLayout = (action$, store) =>
     action$.ofType(UPDATE_MAP_LAYOUT, SET_CONTROL_PROPERTY)
         .filter(() => store.getState()?.controls?.datasetsCatalog?.enabled)
         .filter(({ source }) => {
-            return source !== 'DatasetsCatalog';
+            return source !== LayoutSections.PANEL;
         })
         .map(({ layout }) => {
             const mapLayout = getConfigProp('mapLayout') || { left: { sm: 300, md: 500, lg: 600 }, right: { md: 658 }, bottom: { sm: 30 } };
@@ -35,7 +36,7 @@ export const gnUpdateDatasetsCatalogMapLayout = (action$, store) =>
                     right: mapLayout.right.md
                 }
             });
-            return { ...action, source: 'DatasetsCatalog' }; // add an argument to avoid infinite loop.
+            return { ...action, source: LayoutSections.PANEL }; // add an argument to avoid infinite loop.
         });
 
 export default {
