@@ -10,6 +10,7 @@ import { updateMapLayout, UPDATE_MAP_LAYOUT } from '@mapstore/framework/actions/
 import { mapLayoutSelector } from '@mapstore/framework/selectors/maplayout';
 import { getConfigProp } from "@mapstore/framework/utils/ConfigUtils";
 import { SHOW_SETTINGS } from '@mapstore/framework/actions/layers';
+import { LayoutSections } from "@js/utils/LayoutUtils";
 /**
 * @module epics/layersetting
 */
@@ -21,7 +22,7 @@ export const gnUpdateLayerSettingsMapLayout = (action$, store) =>
     action$.ofType(UPDATE_MAP_LAYOUT, SHOW_SETTINGS)
         .filter(() => store.getState()?.layers?.settings?.expanded)
         .filter(({ source }) => {
-            return source !== 'LayerSettings';
+            return source !== LayoutSections.PANEL;
         })
         .map(({ layout }) => {
             const mapLayout = getConfigProp('mapLayout') || { left: { sm: 300, md: 500, lg: 600 }, right: { md: 658 }, bottom: { sm: 30 } };
@@ -34,7 +35,7 @@ export const gnUpdateLayerSettingsMapLayout = (action$, store) =>
                     left: mapLayout.left.sm
                 }
             });
-            return { ...action, source: 'LayerSettings' }; // add an argument to avoid infinite loop.
+            return { ...action, source: LayoutSections.PANEL }; // add an argument to avoid infinite loop.
         });
 
 export default {

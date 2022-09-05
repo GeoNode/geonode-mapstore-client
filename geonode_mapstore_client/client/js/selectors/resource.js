@@ -7,7 +7,7 @@
  */
 
 import { mapSelector } from '@mapstore/framework/selectors/map';
-import { mapSaveSelector } from '@mapstore/framework/selectors/mapsave';
+import { mapSaveSelector } from '@js/selectors/mapsave';
 import { compareMapChanges } from '@mapstore/framework/utils/MapUtils';
 import { currentStorySelector } from '@mapstore/framework/selectors/geostory';
 import { originalDataSelector } from '@mapstore/framework/selectors/dashboard';
