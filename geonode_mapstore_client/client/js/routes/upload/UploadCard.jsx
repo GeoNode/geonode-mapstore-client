@@ -92,8 +92,8 @@ function UploadCard({
                         : null}
                     {(state === 'INVALID' || status === 'failed')
                         ? <>
-                            {!errorLog ? <ErrorMessageWithTooltip tooltipId={<Message msgId={`gnviewer.${getUploadErrorMessageFromCode(error?.code)}`} msgParams={{ limit: getUploadErrorMessageFromCode(error?.code) === 'fileExceeds' ? maxAllowedSize : maxParallelUploads }} />} />
-                                : <ErrorMessageWithTooltip tooltip={getUploadErrorMessageFromCode(null, errorLog)} />
+                            {!errorLog ? <ErrorMessageWithTooltip tooltipPosition="left" tooltipId={<Message msgId={`gnviewer.${getUploadErrorMessageFromCode(error?.code)}`} msgParams={{ limit: getUploadErrorMessageFromCode(error?.code) === 'fileExceeds' ? maxAllowedSize : maxParallelUploads }} />} />
+                                : <ErrorMessageWithTooltip tooltipPosition="left" tooltip={getUploadErrorMessageFromCode(null, errorLog)} />
                             }
                         </>
                         : null}
