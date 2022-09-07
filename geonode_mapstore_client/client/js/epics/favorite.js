@@ -12,7 +12,9 @@ import {
     SET_FAVORITE_RESOURCE
 } from '@js/actions/gnresource';
 import {
-    updateResources
+    updateResources,
+    reduceTotalCount,
+    increaseTotalCount
 } from '@js/actions/gnsearch';
 import {
     setFavoriteResource
@@ -40,7 +42,9 @@ export const gnSaveFavoriteContent = (action$, store) =>
                 Observable.defer(() => setFavoriteResource(pk, favorite))
                     .switchMap(() => {
                         return Observable.of(
-                            updateResources(newResources, true)
+                            updateResources(newResources, true),
+                            // if on favorites filter page, we must adjust total count appropriately
+                            ...((state?.gnsearch?.params?.f?.includes('favorite') && !action.favorite) ? [reduceTotalCount()] : [increaseTotalCount()])
                         );
                     })
                     .catch((error) => {

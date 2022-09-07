@@ -14,7 +14,8 @@ import {
     LOADING_RESOURCES,
     UPDATE_RESOURCES_METADATA,
     SET_FEATURED_RESOURCES,
-    REDUCE_TOTAL_COUNT
+    REDUCE_TOTAL_COUNT,
+    INCREASE_TOTAL_COUNT
 } from '@js/actions/gnsearch';
 
 import { UPDATE_SINGLE_RESOURCE } from '@js/actions/gnresource';
@@ -102,6 +103,12 @@ function gnsearch(state = defaultState, action) {
         return {
             ...state,
             total: state.total - 1
+        };
+    }
+    case INCREASE_TOTAL_COUNT: {
+        return {
+            ...state,
+            total: state.total + 1
         };
     }
     default:

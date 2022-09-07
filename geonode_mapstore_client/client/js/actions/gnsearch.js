@@ -15,6 +15,7 @@ export const UPDATE_RESOURCES_METADATA = 'GEONODE_SEARCH:UPDATE_RESOURCES_METADA
 export const SET_FEATURED_RESOURCES = 'GEONODE:SET_FEATURED_RESOURCES';
 export const UPDATE_FEATURED_RESOURCES = 'GEONODE_SEARCH:UPDATE_FEATURED_RESOURCES';
 export const REDUCE_TOTAL_COUNT = 'GEONODE_REDUCE_TOTAL_COUNT';
+export const INCREASE_TOTAL_COUNT = 'GEONODE_INCREASE_TOTAL_COUNT';
 
 /**
 * Actions for GeoNode resource featured items
@@ -87,6 +88,15 @@ export function loadFeaturedResources(action, pageSize = 4) {
 export function reduceTotalCount() {
     return {
         type: REDUCE_TOTAL_COUNT
+    };
+}
+
+/**
+ * Increase total count of resouces after deletion
+ */
+export function increaseTotalCount() {
+    return {
+        type: INCREASE_TOTAL_COUNT
     };
 }
 
