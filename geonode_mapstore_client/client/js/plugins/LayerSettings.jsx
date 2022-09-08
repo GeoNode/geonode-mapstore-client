@@ -12,11 +12,12 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import { Glyphicon } from 'react-bootstrap';
-import Button from '@js/components/Button';
+import GNButton from '@js/components/Button';
 import { updateNode, hideSettings } from '@mapstore/framework/actions/layers';
 import { groupsSelector, elementSelector } from '@mapstore/framework/selectors/layers';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import { currentLocaleSelector, currentLocaleLanguageSelector } from '@mapstore/framework/selectors/locale';
+import Message from '@mapstore/framework/components/I18N/Message';
 import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
 import { getTitle } from '@mapstore/framework/utils/TOCUtils';
 import GroupSettings from '@js/plugins/layersettings/GroupSettings';
@@ -25,6 +26,9 @@ import WMSLayerSettings from '@js/plugins/layersettings/WMSLayerSettings';
 import GeoNodeStyleSelector from '@js/plugins/layersettings/GeoNodeStyleSelector';
 import usePluginItems from '@js/hooks/usePluginItems';
 import layersettingsEpics from '@js/epics/layersettings';
+import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
+
+const Button = tooltip(GNButton);
 
 const settingsForms = {
     group: GroupSettings,
@@ -154,6 +158,7 @@ function LayerSettingsButton({
             variant="primary"
             className="square-button-md"
             onClick={handleClick}
+            tooltipId={<Message msgId={`toc.toolLayerSettingsTooltip`} />}
         >
             <Glyphicon glyph="wrench"/>
         </Button>
