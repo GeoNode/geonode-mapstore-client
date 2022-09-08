@@ -8,7 +8,9 @@
 
 export const getUploadErrorMessageFromCode = (code, log) => {
     if (log) {
-        return log;
+        // Make the error log more human readable
+        const errorMsg = log.replace(/[()]/g, '')?.replace(/[\[\]']+/g, '')?.split('ErrorDetailstring=')?.join(' ');
+        return errorMsg;
     }
     switch (code) {
     case 'upload_parallelism_limit_exceeded': {
