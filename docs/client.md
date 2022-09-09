@@ -482,6 +482,7 @@ set new Featured Resources includes data, page, links
 * [actions/gnsearch](#module_actions/gnsearch)
     * [.loadFeaturedResources(action, pageSize)](#module_actions/gnsearch.loadFeaturedResources)
     * [.reduceTotalCount()](#module_actions/gnsearch.reduceTotalCount)
+    * [.increaseTotalCount()](#module_actions/gnsearch.increaseTotalCount)
 
 <a name="module_actions/gnsearch.loadFeaturedResources"></a>
 
@@ -500,6 +501,12 @@ loads new featured resources basing on the action, previous or next
 
 ### actions/gnsearch.reduceTotalCount()
 Reduce total count of resouces after deletion
+
+**Kind**: static method of [<code>actions/gnsearch</code>](#module_actions/gnsearch)  
+<a name="module_actions/gnsearch.increaseTotalCount"></a>
+
+### actions/gnsearch.increaseTotalCount()
+Increase total count of resouces after deletion
 
 **Kind**: static method of [<code>actions/gnsearch</code>](#module_actions/gnsearch)  
 <a name="module_epics/datasetcatalog"></a>
