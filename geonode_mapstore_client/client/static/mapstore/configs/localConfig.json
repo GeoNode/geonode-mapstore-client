@@ -2137,7 +2137,10 @@
                 "name": "Locate"
             },
             {
-                "name": "WidgetsBuilder"
+                "name": "WidgetsBuilder",
+                "cfg": {
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                }
             },
             {
                 "name": "Save",
