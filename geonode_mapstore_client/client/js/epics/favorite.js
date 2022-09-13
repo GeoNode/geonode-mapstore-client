@@ -44,7 +44,7 @@ export const gnSaveFavoriteContent = (action$, store) =>
                         return Observable.of(
                             updateResources(newResources, true),
                             // if on favorites filter page, we must adjust total count appropriately
-                            ...((state?.gnsearch?.params?.f?.includes('favorite') && !action.favorite) ? [reduceTotalCount()] : [increaseTotalCount()])
+                            ...(state?.gnsearch?.params?.f?.includes('favorite') ? (!action.favorite ? [reduceTotalCount()] : [increaseTotalCount()]) : [])
                         );
                     })
                     .catch((error) => {
