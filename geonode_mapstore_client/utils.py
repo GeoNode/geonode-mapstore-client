@@ -9,7 +9,7 @@ from geonode.layers.models import Dataset
 def set_default_style_to_open_in_visual_mode(instance, **kwargs):
     if isinstance(instance, Dataset):
         style = gs_catalog.get_style(instance.name, workspace=instance.workspace) or \
-            gs_catalog.get_style(isinstance.name)
+            gs_catalog.get_style(instance.name)
         if style:
             headers = {
                 "Content-type": "application/json",
