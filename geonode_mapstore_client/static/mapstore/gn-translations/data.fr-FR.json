@@ -147,7 +147,7 @@
             "viewMetadata": "Afficher les métadonnées",
             "viewData":  "Afficher les données",
             "editInfo": "Modifier les informations",
-            "editStyle": "Modifier le Style",
+            "editStyle": "Modifier le style de couche",
             "editData": "Modifier les Données",
             "backToDataset": "< Retourner au jeu de données",
             "goBackTo": "< Retourner a { resourceName }",
