@@ -384,7 +384,7 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     loadingResourceConfig(true),
                     setResourceType(action.resourceType)
                 ),
-                ...(!isSamePreviousResource
+                ...((!isSamePreviousResource && !!state.security.user)
                     ? [
                         Observable.defer(() => getCompactPermissionsByPk(action.pk))
                             .switchMap((compactPermissions) => {
