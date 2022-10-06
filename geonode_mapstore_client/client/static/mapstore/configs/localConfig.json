@@ -521,6 +521,9 @@
             },
             {
                 "name": "Notifications"
+            },
+            {
+                "name": "Timeline"
             }
         ],
         "map_preview": [
@@ -581,6 +584,9 @@
             },
             {
                 "name": "FitBounds"
+            },
+            {
+                "name": "Timeline"
             }
         ],
         "dataset_embed": [
@@ -661,6 +667,9 @@
             },
             {
                 "name": "Notifications"
+            },
+            {
+                "name": "Timeline"
             }
         ],
         "map_embed": [
@@ -755,7 +764,11 @@
                         "width": 350
                     }
                 }
+            },
+            {
+                "name": "Timeline"
             }
+            
         ],
         "geostory_embed": [
             {
