@@ -22,6 +22,7 @@ import {
 import { configureMap } from '@mapstore/framework/actions/config';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
+import { isLoggedIn } from '@mapstore/framework/selectors/security';
 import {
     browseData,
     selectNode
@@ -384,7 +385,7 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     loadingResourceConfig(true),
                     setResourceType(action.resourceType)
                 ),
-                ...(!isSamePreviousResource
+                ...((!isSamePreviousResource && !!isLoggedIn(state))
                     ? [
                         Observable.defer(() => getCompactPermissionsByPk(action.pk))
                             .switchMap((compactPermissions) => {
