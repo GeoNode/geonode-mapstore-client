@@ -524,6 +524,9 @@
             },
             {
                 "name": "Timeline"
+            },
+            {
+                "name": "Playback"
             }
         ],
         "map_preview": [
@@ -587,6 +590,9 @@
             },
             {
                 "name": "Timeline"
+            },
+            {
+                "name": "Playback"
             }
         ],
         "dataset_embed": [
@@ -670,6 +676,9 @@
             },
             {
                 "name": "Timeline"
+            },
+            {
+                "name": "Playback"
             }
         ],
         "map_embed": [
@@ -767,6 +776,9 @@
             },
             {
                 "name": "Timeline"
+            },
+            {
+                "name": "Playback"
             }
             
         ],
