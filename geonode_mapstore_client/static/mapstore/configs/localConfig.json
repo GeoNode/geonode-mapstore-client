@@ -521,6 +521,12 @@
             },
             {
                 "name": "Notifications"
+            },
+            {
+                "name": "Timeline"
+            },
+            {
+                "name": "Playback"
             }
         ],
         "map_preview": [
@@ -581,6 +587,12 @@
             },
             {
                 "name": "FitBounds"
+            },
+            {
+                "name": "Timeline"
+            },
+            {
+                "name": "Playback"
             }
         ],
         "dataset_embed": [
@@ -661,6 +673,12 @@
             },
             {
                 "name": "Notifications"
+            },
+            {
+                "name": "Timeline"
+            },
+            {
+                "name": "Playback"
             }
         ],
         "map_embed": [
@@ -755,7 +773,14 @@
                         "width": 350
                     }
                 }
+            },
+            {
+                "name": "Timeline"
+            },
+            {
+                "name": "Playback"
             }
+            
         ],
         "geostory_embed": [
             {
