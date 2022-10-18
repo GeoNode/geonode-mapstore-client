@@ -40,11 +40,6 @@ def get_base_left_topbar_menu(context):
                     "type": "link",
                     "href": "/catalogue/#/search/?f=document",
                     "label": "Documents"
-                },
-                {
-                    "type": "link",
-                    "href": "/services/?limit=5",
-                    "label": "Remote Services"
                 } if not is_mobile else None
             ]
         },
