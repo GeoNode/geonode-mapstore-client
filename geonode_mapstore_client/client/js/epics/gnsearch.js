@@ -13,6 +13,7 @@ import isNil from 'lodash/isNil';
 import {
     getResources,
     getResourceByPk,
+    getDocumentByPk,
     getFeaturedResources,
     getResourceByUuid
 } from '@js/api/geonode/v2';
@@ -228,7 +229,7 @@ export const gnsSelectResourceEpic = (action$, store) =>
             const resources = state.gnsearch?.resources || [];
             const selectedResource = resources.find(({ pk, resource_type: resourceType}) =>
                 pk === action.pk && action.ctype === resourceType);
-            return Observable.defer(() => getResourceByPk(action.pk))
+            return Observable.defer(() => action.ctype !== 'document' ? getResourceByPk(action.pk) : getDocumentByPk(action.pk))
                 .switchMap((resource) => {
                     return Observable.of(setResource({
                         ...resource,

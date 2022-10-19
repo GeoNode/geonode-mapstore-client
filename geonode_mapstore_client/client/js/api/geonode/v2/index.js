@@ -321,7 +321,11 @@ export const getDatasetByPk = (pk) => {
 };
 
 export const getDocumentByPk = (pk) => {
-    return axios.get(parseDevHostname(`${endpoints[DOCUMENTS]}/${pk}`))
+    return axios.get(parseDevHostname(`${endpoints[DOCUMENTS]}/${pk}`), {
+        params: {
+            include: ['executions']
+        }
+    })
         .then(({ data }) => data.document);
 };
 

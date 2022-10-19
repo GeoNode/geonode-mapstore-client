@@ -15,6 +15,7 @@ import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
 import { bboxToPolygon } from '@js/utils/CoordinatesUtils';
 import { uniqBy, orderBy, isString, isObject, pick, difference } from 'lodash';
 import { excludeGoogleBackground, extractTileMatrixFromSources } from '@mapstore/framework/utils/LayersUtils';
+import { determineResourceType } from '@js/utils/FileUtils';
 
 /**
 * @module utils/ResourceUtils
@@ -280,10 +281,12 @@ export const getResourceTypesInfo = () => ({
     [ResourceTypes.DOCUMENT]: {
         icon: 'file',
         name: 'Document',
-        canPreviewed: (resource) => resourceHasPermission(resource, 'download_resourcebase'),
+        canPreviewed: (resource) => resourceHasPermission(resource, 'download_resourcebase') && !!(determineResourceType(resource.extension) !== 'unsupported'),
+        hasPermission: (resource) => resourceHasPermission(resource, 'download_resourcebase'),
         formatEmbedUrl: (resource) => resource?.embed_url && parseDevHostname(resource.embed_url),
         formatDetailUrl: (resource) => resource?.detail_url && parseDevHostname(resource.detail_url),
-        formatMetadataUrl: (resource) => (`/documents/${resource.pk}/metadata`)
+        formatMetadataUrl: (resource) => (`/documents/${resource.pk}/metadata`),
+        metadataPreviewUrl: (resource) => (`/documents/${resource.pk}/metadata_detail?preview`)
     },
     [ResourceTypes.GEOSTORY]: {
         icon: 'book',
