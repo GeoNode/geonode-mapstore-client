@@ -37,7 +37,7 @@ def migrate_map_forward(apps, schema_editor):
                 result = cursor.fetchall()
                 if result:
                     try:
-                        to_update['blob'] = json.loads(result[0][0] )
+                        to_update['blob'] = json.loads(result[0][0])
                     except Exception as e:
                         to_update['blob'] = result[0][0] 
 
