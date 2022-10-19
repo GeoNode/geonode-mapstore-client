@@ -25,14 +25,7 @@ import UploadListContainer from '@js/routes/upload/UploadListContainer';
 import UploadContainer from '@js/routes/upload/UploadContainer';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { parseUploadResponse, processUploadResponse, parseUploadFiles } from '@js/utils/ResourceUtils';
-
-function getFileNameParts(file) {
-    const { name } = file;
-    const nameParts = name.split('.');
-    const ext = nameParts[nameParts.length - 1];
-    const baseName = [...nameParts].splice(0, nameParts.length - 1).join('.');
-    return { ext, baseName };
-}
+import { getFileNameParts } from '@js/utils/FileUtils';
 
 function getDatasetFileType(file, supportedTypes) {
     const { type } = file;

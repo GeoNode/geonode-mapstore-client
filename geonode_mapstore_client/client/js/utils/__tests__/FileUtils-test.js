@@ -1,5 +1,5 @@
 import expect from 'expect';
-import { determineResourceType } from '@js/utils/FileUtils';
+import { determineResourceType, getFileNameParts } from '@js/utils/FileUtils';
 
 describe('FileUtils', () => {
     it('should return image if extension is a supported image format', () => {
@@ -20,6 +20,13 @@ describe('FileUtils', () => {
     it('should return unsupported if extension is not supported', () => {
         const mediaType = determineResourceType('docx');
         expect(mediaType).toEqual('unsupported');
+    });
+
+    it('should always return file extension in lowercase', () => {
+        const file = {
+            name: 'test file.ZIP'
+        };
+        expect(getFileNameParts(file).ext).toBe('zip');
     });
 });
 
