@@ -334,7 +334,7 @@ function StyleEditorTocButton({
             {...btnProps}
             onClick={handleClick}
             onMouseDown={handleMouseDown}
-            tooltipId={<Message msgId={`gnviewer.editStyle`} />}
+            tooltipId={<Message msgId={`gnviewer.editLayerStyle`} />}
         >
             <Glyphicon glyph="dropper"/>
         </Button>
