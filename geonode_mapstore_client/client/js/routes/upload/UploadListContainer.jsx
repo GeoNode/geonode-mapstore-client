@@ -74,7 +74,8 @@ function UploadListContainer({
                                             error,
                                             log,
                                             exec_id: execId,
-                                            created
+                                            created,
+                                            output_params: outputParams = {}
                                         }) => {
                                             return (error !== 'CANCELED' &&
                                                 <li
@@ -84,6 +85,7 @@ function UploadListContainer({
                                                         name={name}
                                                         state={state}
                                                         detailUrl={detailUrl}
+                                                        importUrl={outputParams.detail_url}
                                                         progress={progress}
                                                         createDate={createDate || created}
                                                         resumeUrl={resumeUrl}

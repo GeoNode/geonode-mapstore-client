@@ -38,7 +38,8 @@ function UploadCard({
     error,
     type,
     status,
-    errorLog
+    errorLog,
+    importUrl
 }) {
 
     const { datasetMaxUploadSize, documentMaxUploadSize, maxParallelUploads } = getConfigProp('geoNodeSettings') || {};
@@ -50,9 +51,9 @@ function UploadCard({
             <div className="gn-upload-card-header">
                 {(state === 'INVALID' || status === 'failed') ? <div className="gn-upload-card-error"><FaIcon name="exclamation" /></div> : null}
                 <div className="gn-upload-card-title">
-                    {detailUrl
+                    {(detailUrl || importUrl.length === 1)
                         ? <a
-                            href={detailUrl}
+                            href={detailUrl || importUrl?.[0]}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
@@ -86,11 +87,11 @@ function UploadCard({
                             {...(!detailUrl && {onClick: () => {
                                 onRemove();
                             }})}
-                            href={detailUrl || '/catalogue/#/search/?f=dataset'}
+                            href={detailUrl || (importUrl.length === 1 ? importUrl[0] : '/catalogue/#/search/?f=dataset')}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <Message msgId={`${detailUrl ? 'gnviewer.view' : 'gnhome.viewDatasets'}`} />
+                            <Message msgId={`${(detailUrl || importUrl.length === 1) ? 'gnviewer.view' : 'gnhome.viewDatasets'}`} />
                         </Button>
                         : null}
                     {(state === 'INVALID' || status === 'failed')
@@ -127,7 +128,8 @@ UploadCard.defaultProps = {
     state: '',
     progress: 0,
     type: 'document',
-    status: ''
+    status: '',
+    importUrl: []
 };
 
 export default UploadCard;
