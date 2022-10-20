@@ -145,6 +145,7 @@
             "editInfo": "Edit Info",
             "editMetadata": "Edit Metadata",
             "editStyle": "Edit Style",
+            "editLayerStyle": "Edit Dataset style",
             "editData": "Edit Data",
             "view": "View",
             "viewMetadata": "View Metadata",
