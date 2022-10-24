@@ -168,6 +168,15 @@ const requestResourcesObservable = ({
         );
 };
 
+// checks if location change is made to a viewer page
+const isViewerPage = (currentPath) => {
+    if (currentPath === '/') return false;
+    const resourcePath = currentPath.split('/')[1];
+    const resourceStrings = ['dataset', 'map', 'dashboard', 'geostory'];
+    const pathMatchResource = resourceStrings.some(res => res.match(resourcePath));
+    return pathMatchResource;
+};
+
 export const gnsSearchResourcesOnLocationChangeEpic = (action$, store) =>
     action$.ofType(LOCATION_CHANGE, UPDATE_RESOURCES_REQUEST)
         .filter(({ payload }) => {
@@ -187,13 +196,16 @@ export const gnsSearchResourcesOnLocationChangeEpic = (action$, store) =>
             const [previousParams, previousPage] = getParams(state.gnsearch.locationSearch, state.gnsearch.params);
             const [currentParams, currentPage] = getParams(location.search, nextParams || {});
 
+            const { pathname } = action.payload.location;
+
             // history action performed while navigating the browser history
-            if (!nextParams || action.reset) {
+            if (!nextParams || action.reset || isViewerPage(pathname)) {
                 const page = 1;
                 const params = { ...currentParams, page };
                 // avoid new request while browsing through history
                 // if the latest saved request is equal to the new request
-                if (!isFirstRendering && isEqual(previousParams, currentParams) && !action.reset) {
+                // also avoid request if location change is made to a viewer page
+                if (isViewerPage(pathname) || (!isFirstRendering && isEqual(previousParams, currentParams) && !action.reset)) {
                     return Observable.empty();
                 }
                 return requestResourcesObservable({

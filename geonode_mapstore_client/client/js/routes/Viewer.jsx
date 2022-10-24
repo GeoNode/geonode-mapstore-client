@@ -108,7 +108,7 @@ function ViewerRoute({
                 topbar.style.top = mainHeader.clientHeight + 'px';
             }
         }
-        // hide the naviagtion bar is a recource is being viewed
+        // hide the navigation bar if a resource is being viewed
         if (!loading) {
             document.getElementById('gn-topbar')?.classList.add('hide-navigation');
             document.getElementById('gn-brand-navbar-bottom')?.classList.add('hide-search-bar');
