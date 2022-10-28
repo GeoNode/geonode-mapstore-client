@@ -397,6 +397,19 @@
                                     "value": "add_resource"
                                 }
                             ]
+                        },
+                        {
+                            "labelId": "gnhome.remoteServices",
+                            "value": "remote",
+                            "type": "link",
+                            "href": "/services/?limit=5",
+                            "authenticated": true,
+                            "perms": [
+                                {
+                                    "type": "user",
+                                    "value": "add_resource"
+                                }
+                            ]
                         }
                     ]
                 },
