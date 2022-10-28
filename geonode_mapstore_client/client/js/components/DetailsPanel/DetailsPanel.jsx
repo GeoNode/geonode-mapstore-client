@@ -256,12 +256,14 @@ function DetailsPanel({
         formatEmbedUrl = res => res?.embed_url,
         formatDetailUrl = res => res?.detail_url,
         canPreviewed,
+        hasPermission,
         icon,
         name
     } = resource && (types[resource.subtype] || types[resource.resource_type]) || {};
     const embedUrl = resource?.embed_url && formatEmbedUrl(resource);
     const detailUrl = resource?.pk && formatDetailUrl(resource);
     const resourceCanPreviewed = resource?.pk && canPreviewed && canPreviewed(resource);
+    const canView = resource?.pk && hasPermission && hasPermission(resource);
     const downloadUrl = (resource?.href && resource?.href.includes('download')) ? resource?.href
         : (resource?.download_url && canDownload) ? resource?.download_url : undefined;
     const metadataDetailUrl = resource?.pk && getMetadataDetailUrl(resource);
@@ -580,7 +582,7 @@ function DetailsPanel({
                                     }
                                     {detailUrl && !editThumbnail && <Button
                                         variant="primary"
-                                        href={(resourceCanPreviewed) ? detailUrl : metadataDetailUrl}
+                                        href={(resourceCanPreviewed || canView) ? detailUrl : metadataDetailUrl}
                                         rel="noopener noreferrer">
                                         <Message msgId={`gnhome.view${((resourceCanPreviewed) ? name : 'Metadata')}`} />
                                     </Button>}
