@@ -41,10 +41,12 @@ const ResourceCard = forwardRef(({
     const { icon } = types[res.subtype] || types[res.resource_type] || {};
     const {
         formatDetailUrl = resource => resource?.detail_url,
-        canPreviewed
+        canPreviewed, hasPermission
     } = res && (types[res.subtype] || types[res.resource_type]) || {};
     const detailUrl = res?.pk && formatDetailUrl(res);
     const resourceCanPreviewed = res?.pk && canPreviewed && canPreviewed(res);
+    const canView = res?.pk && hasPermission && hasPermission(res);
+
     const metadataDetailUrl = res?.pk && getMetadataDetailUrl(res);
 
     const [imgError, setImgError] = useState(false);
@@ -179,11 +181,7 @@ const ResourceCard = forwardRef(({
                                     >
                                         <Button
                                             variant="primary"
-                                            href={
-                                                resourceCanPreviewed
-                                                    ? detailUrl
-                                                    : metadataDetailUrl
-                                            }
+                                            href={(resourceCanPreviewed || canView) ? detailUrl : metadataDetailUrl}
                                             rel="noopener noreferrer"
                                         >
                                             <Message msgId={`gnhome.view`} />
