@@ -784,6 +784,7 @@ export const getPendingExecutionRequests = () => {
     return axios.get(parseDevHostname(endpoints[EXECUTIONREQUEST]), {
         params: {
             'filter{action}': 'import',
+            'filter{source}': 'upload',
             'page': 1,
             'page_size': 99999
         }
