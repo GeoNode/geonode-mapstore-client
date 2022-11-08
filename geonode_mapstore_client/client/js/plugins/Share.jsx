@@ -74,7 +74,7 @@ const entriesTabs = [
         },
         responseToEntries: ({ response, entries }) => {
             return response?.groups.map(group => {
-                const { permissions } = entries.find(entry => entry.id === group.pk) || {};
+                const { permissions } = entries.find(entry => entry.id === group.group.pk) || {};
                 return {
                     ...resourceToPermissionEntry('group', group),
                     permissions
