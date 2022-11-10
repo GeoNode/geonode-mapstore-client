@@ -126,7 +126,8 @@
                     '?page=' + options.page +
                     '&search=' + options.value +
                     '&search_fields=title' +
-                    '&search_fields=abstract';
+                    '&search_fields=abstract' +
+                    '&filter{metadata_only}=false';
                     request = $.ajax({
                         url: url,
                         type: 'GET',
