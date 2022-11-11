@@ -43,7 +43,6 @@ import url from 'url';
 import { getCustomMenuFilters } from '@js/selectors/config';
 import {
     STOP_ASYNC_PROCESS,
-    stopAsyncProcess,
     startAsyncProcess
 } from '@js/actions/resourceservice';
 import {
@@ -51,7 +50,6 @@ import {
     ProcessStatus,
     extractExecutionsFromResources
 } from '@js/utils/ResourceServiceUtils';
-import { getCurrentProcesses } from '@js/selectors/resourceservice';
 import { userSelector } from '@mapstore/framework/selectors/security';
 import uuid from 'uuid';
 
@@ -187,9 +185,6 @@ export const gnsSearchResourcesOnLocationChangeEpic = (action$, store) =>
             const PAGE_SIZE = getPageSize();
             const { isFirstRendering, location } = action.payload || {};
             const state = store.getState();
-
-            // stop ongoing processes everytime there is a location change or new request is made
-            getCurrentProcesses(state) > 0 && getCurrentProcesses(state).map((process) => stopAsyncProcess({ ...process, completed: true }));
 
             const nextParams = state.gnsearch.nextParams;
 
