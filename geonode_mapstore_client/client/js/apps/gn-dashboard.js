@@ -39,6 +39,7 @@ const requires = {
     ReactSwipe,
     SwipeHeader
 };
+import { DASHBOARD_ROUTES, appRouteComponentTypes } from '@js/utils/AppRoutesUtils';
 import '@js/observables/persistence';
 
 const DEFAULT_LOCALE = {};
@@ -46,17 +47,11 @@ const ConnectedRouter = connect((state) => ({
     locale: state?.locale || DEFAULT_LOCALE
 }))(Router);
 
-const routes = [{
-    name: 'dashboard_embed',
-    path: [
-        '/'
-    ],
-    pageConfig: {
-        resourceType: ResourceTypes.DASHBOARD
-    },
-    component: ViewerRoute
-}];
+const viewer = {
+    [appRouteComponentTypes.resourceViewer]: ViewerRoute
+};
 
+const routes = DASHBOARD_ROUTES.map(({component, ...config}) => ({...config, component: viewer[component]}));
 
 initializeApp();
 

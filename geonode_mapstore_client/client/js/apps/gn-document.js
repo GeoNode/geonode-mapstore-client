@@ -35,6 +35,7 @@ const requires = {
     ReactSwipe,
     SwipeHeader
 };
+import { DOCUMENT_ROUTES, appRouteComponentTypes } from '@js/utils/AppRoutesUtils';
 import '@js/observables/persistence';
 
 initializeApp();
@@ -44,17 +45,11 @@ const ConnectedRouter = connect((state) => ({
     locale: state?.locale || DEFAULT_LOCALE
 }))(Router);
 
+const viewer = {
+    [appRouteComponentTypes.resourceViewer]: ViewerRoute
+};
 
-const routes = [{
-    name: 'document_embed',
-    path: [
-        '/'
-    ],
-    pageConfig: {
-        resourceType: ResourceTypes.DOCUMENT
-    },
-    component: ViewerRoute
-}];
+const routes = DOCUMENT_ROUTES.map(({component, ...config}) => ({...config, component: viewer[component]}));
 
 document.addEventListener('DOMContentLoaded', function() {
     getEndpoints().then(() => {

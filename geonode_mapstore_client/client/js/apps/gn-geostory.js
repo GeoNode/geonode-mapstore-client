@@ -39,6 +39,7 @@ const requires = {
     ReactSwipe,
     SwipeHeader
 };
+import { GEOSTORY_ROUTES, appRouteComponentTypes } from '@js/utils/AppRoutesUtils';
 
 registerMediaAPI('geonode', geoNodeMediaApi);
 
@@ -50,14 +51,11 @@ const ConnectedRouter = connect((state) => ({
     locale: state?.locale || DEFAULT_LOCALE
 }))(Router);
 
-const routes = [{
-    name: 'geostory',
-    path: '/',
-    pageConfig: {
-        resourceType: ResourceTypes.GEOSTORY
-    },
-    component: ViewerRoute
-}];
+const viewer = {
+    [appRouteComponentTypes.resourceViewer]: ViewerRoute
+};
+
+const routes = GEOSTORY_ROUTES.map(({component, ...config}) => ({...config, component: viewer[component]}));
 
 initializeApp();
 

@@ -61,7 +61,7 @@ import {
     getPluginsConfiguration,
     storeEpicsCache
 } from '@js/utils/AppUtils';
-import { ResourceTypes } from '@js/utils/ResourceUtils';
+import { CATALOGUE_ROUTES, appRouteComponentTypes } from '@js/utils/AppRoutesUtils';
 import { updateGeoNodeSettings } from '@js/actions/gnsettings';
 import {
     gnCheckSelectedDatasetPermissions,
@@ -100,105 +100,15 @@ const ConnectedRouter = connect(
     })
 )(Router);
 
-const routes = [
-    {
-        name: 'dataset_viewer',
-        path: [
-            '/dataset/:pk'
-        ],
-        pageConfig: {
-            resourceType: ResourceTypes.DATASET
-        },
-        component: ViewerRoute
-    },
-    {
-        name: 'dataset_edit_data_viewer',
-        path: [
-            '/dataset/:pk/edit/data'
-        ],
-        pageConfig: {
-            resourceType: ResourceTypes.DATASET
-        },
-        component: ViewerRoute
-    },
-    {
-        name: 'dataset_edit_style_viewer',
-        path: [
-            '/dataset/:pk/edit/style'
-        ],
-        pageConfig: {
-            resourceType: ResourceTypes.DATASET
-        },
-        component: ViewerRoute
-    },
-    {
-        name: 'map_viewer',
-        path: [
-            '/map/:pk'
-        ],
-        pageConfig: {
-            resourceType: ResourceTypes.MAP
-        },
-        component: ViewerRoute
-    },
-    {
-        name: 'geostory_viewer',
-        path: [
-            '/geostory/:pk'
-        ],
-        pageConfig: {
-            resourceType: ResourceTypes.GEOSTORY
-        },
-        component: ViewerRoute
-    },
-    {
-        name: 'document_viewer',
-        path: [
-            '/document/:pk'
-        ],
-        pageConfig: {
-            resourceType: ResourceTypes.DOCUMENT
-        },
-        component: ViewerRoute
-    },
-    {
-        name: 'dashboard_viewer',
-        path: [
-            '/dashboard/:pk'
-        ],
-        pageConfig: {
-            resourceType: ResourceTypes.DASHBOARD
-        },
-        component: ViewerRoute
-    },
-    {
-        name: 'resources',
-        path: [
-            '/',
-            '/search/',
-            '/search/filter'
-        ],
-        component: SearchRoute
-    },
-    {
-        name: 'detail',
-        path: [
-            '/detail/:pk',
-            '/detail/:ctype/:pk'
-        ],
-        component: DetailRoute
-    },
-    {
-        name: 'upload_dataset',
-        path: ['/upload/dataset'],
-        component: UploadDatasetRoute
-    },
-    {
-        name: 'upload_document',
-        path: ['/upload/document'],
-        component: UploadDocumentRoute
-    }
-];
+const viewers = {
+    [appRouteComponentTypes.resourceViewer]: ViewerRoute,
+    [appRouteComponentTypes.detailComponent]: DetailRoute,
+    [appRouteComponentTypes.searchComponent]: SearchRoute,
+    [appRouteComponentTypes.datasetUploadComponent]: UploadDatasetRoute,
+    [appRouteComponentTypes.documentUploadComponent]: UploadDocumentRoute
+};
+
+const routes = CATALOGUE_ROUTES.map(({ component, ...config }) => ({ ...config, component: viewers[component] }));
 
 initializeApp();
 

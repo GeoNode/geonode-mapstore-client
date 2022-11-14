@@ -52,6 +52,8 @@ import {
 } from '@js/utils/ResourceServiceUtils';
 import { userSelector } from '@mapstore/framework/selectors/security';
 import uuid from 'uuid';
+import { matchPath } from 'react-router-dom';
+import { CATALOGUE_ROUTES, appRouteComponentTypes } from '@js/utils/AppRoutesUtils';
 
 const UPDATE_RESOURCES_REQUEST = 'GEONODE_SEARCH:UPDATE_RESOURCES_REQUEST';
 const updateResourcesRequest = (payload, reset) => ({
@@ -169,10 +171,10 @@ const requestResourcesObservable = ({
 // checks if location change is made to a viewer page
 const isViewerPage = (currentPath) => {
     if (currentPath === '/') return false;
-    const resourcePath = currentPath.split('/')[1];
-    const resourceStrings = ['dataset', 'map', 'dashboard', 'geostory'];
-    const pathMatchResource = resourceStrings.some(res => res.match(resourcePath));
-    return pathMatchResource;
+    const match = CATALOGUE_ROUTES.filter(route => route.component === appRouteComponentTypes.resourceViewer).some(route => {
+        return route.path.some(path => matchPath(currentPath, path)?.isExact);
+    });
+    return match;
 };
 
 export const gnsSearchResourcesOnLocationChangeEpic = (action$, store) =>
@@ -200,7 +202,9 @@ export const gnsSearchResourcesOnLocationChangeEpic = (action$, store) =>
                 // avoid new request while browsing through history
                 // if the latest saved request is equal to the new request
                 // also avoid request if location change is made to a viewer page
-                if (isViewerPage(pathname) || (!isFirstRendering && isEqual(previousParams, currentParams) && !action.reset)) {
+                const shouldNotRequest = isViewerPage(pathname) || (!state?.gnsearch?.isFirstRequest && !isFirstRendering && isEqual(previousParams, currentParams) && !action.reset);
+
+                if (shouldNotRequest) {
                     return Observable.empty();
                 }
                 return requestResourcesObservable({

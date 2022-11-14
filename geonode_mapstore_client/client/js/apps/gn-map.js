@@ -72,22 +72,18 @@ const requires = {
     ReactSwipe,
     SwipeHeader
 };
+import { MAP_ROUTES, appRouteComponentTypes } from '@js/utils/AppRoutesUtils';
 
 const DEFAULT_LOCALE = {};
 const ConnectedRouter = connect((state) => ({
     locale: state?.locale || DEFAULT_LOCALE
 }))(Router);
 
-const routes = [
-    {
-        name: 'map-viewer',
-        path: '/',
-        pageConfig: {
-            resourceType: ResourceTypes.MAP
-        },
-        component: ViewerRoute
-    }
-];
+const viewer = {
+    [appRouteComponentTypes.resourceViewer]: ViewerRoute
+};
+
+const routes = MAP_ROUTES.map(({component, ...config}) => ({...config, component: viewer[component]}));
 
 initializeApp();
 

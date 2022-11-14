@@ -32,6 +32,7 @@ import {
     getAccountInfo,
     getResourcesTotalCount
 } from '@js/api/geonode/v2';
+import { HOME_ROUTES, appRouteComponentTypes } from '@js/utils/AppRoutesUtils';
 
 import {
     setupConfiguration,
@@ -44,13 +45,11 @@ const ConnectedRouter = connect((state) => ({
     locale: state?.locale || DEFAULT_LOCALE
 }))(Router);
 
-const routes = [
-    {
-        name: 'homepage',
-        path: '/',
-        component: Home
-    }
-];
+const viewer = {
+    [appRouteComponentTypes.homeComponent]: Home
+};
+
+const routes = HOME_ROUTES.map(({component, ...config}) => ({...config, component: viewer[component]}));
 
 initializeApp();
 

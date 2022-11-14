@@ -15,7 +15,7 @@ function BreadCrumb({ resource, titleItems }) {
     return (
         <div className="gn-action-navbar-title">
             <div>
-                <NavLink href={`/catalogue/#/search/?f=${resource?.resource_type}`} className="gn-action-navbar-breadcrumb-link">
+                <NavLink href="#" className="gn-action-navbar-breadcrumb-link">
                     <FaIcon name="home" />
                 </NavLink>
                 <FaIcon
