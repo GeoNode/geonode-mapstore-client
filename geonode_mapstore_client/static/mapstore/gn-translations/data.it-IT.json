@@ -150,6 +150,7 @@
             "viewData": "Visualizza i dati",
             "editInfo": "Modifica informazioni",
             "editStyle": "Modifica Stile",
+            "editLayerStyle": "Modifica lo stile del dataset",
             "editData": "Modifica Dati",
             "backToDataset": "< Torna al dataset",
             "goBackTo": "< Torna a { resourceName }",
