@@ -169,11 +169,13 @@ export const CATALOGUE_ROUTES = [
     {
         name: 'upload_dataset',
         path: ['/upload/dataset'],
-        component: appRouteComponentTypes.DATASET_UPLOAD
+        component: appRouteComponentTypes.DATASET_UPLOAD,
+        shouldNotRequestResources: true
     },
     {
         name: 'upload_document',
         path: ['/upload/document'],
-        component: appRouteComponentTypes.DOCUMENT_UPLOAD
+        component: appRouteComponentTypes.DOCUMENT_UPLOAD,
+        shouldNotRequestResources: true
     }
 ];
