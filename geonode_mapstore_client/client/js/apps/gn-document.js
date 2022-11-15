@@ -46,7 +46,7 @@ const ConnectedRouter = connect((state) => ({
 }))(Router);
 
 const viewer = {
-    [appRouteComponentTypes.resourceViewer]: ViewerRoute
+    [appRouteComponentTypes.VIEWER]: ViewerRoute
 };
 
 const routes = DOCUMENT_ROUTES.map(({component, ...config}) => ({...config, component: viewer[component]}));

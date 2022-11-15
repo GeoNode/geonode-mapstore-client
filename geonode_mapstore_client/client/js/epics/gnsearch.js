@@ -53,7 +53,7 @@ import {
 import { userSelector } from '@mapstore/framework/selectors/security';
 import uuid from 'uuid';
 import { matchPath } from 'react-router-dom';
-import { CATALOGUE_ROUTES, appRouteComponentTypes } from '@js/utils/AppRoutesUtils';
+import { CATALOGUE_ROUTES } from '@js/utils/AppRoutesUtils';
 
 const UPDATE_RESOURCES_REQUEST = 'GEONODE_SEARCH:UPDATE_RESOURCES_REQUEST';
 const updateResourcesRequest = (payload, reset) => ({
@@ -171,7 +171,7 @@ const requestResourcesObservable = ({
 // checks if location change is made to a viewer page
 const isViewerPage = (currentPath) => {
     if (currentPath === '/') return false;
-    const match = CATALOGUE_ROUTES.filter(route => route.component === appRouteComponentTypes.resourceViewer).some(route => {
+    const match = CATALOGUE_ROUTES.filter(route => route.shouldNotRequestResources).some(route => {
         return route.path.some(path => matchPath(currentPath, path)?.isExact);
     });
     return match;

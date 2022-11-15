@@ -20,7 +20,7 @@ import url from 'url';
 * @return {string} correct url for localhost
 */
 export const parseDevHostname = (requestUrl) => {
-    if (__DEVTOOLS__ && requestUrl.indexOf('localhost') !== -1) {
+    if (__DEVTOOLS__) {
         const parsedUrl = url.parse(requestUrl);
         return url.format({
             ...parsedUrl,

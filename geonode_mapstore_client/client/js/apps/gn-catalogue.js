@@ -101,11 +101,11 @@ const ConnectedRouter = connect(
 )(Router);
 
 const viewers = {
-    [appRouteComponentTypes.resourceViewer]: ViewerRoute,
-    [appRouteComponentTypes.detailComponent]: DetailRoute,
-    [appRouteComponentTypes.searchComponent]: SearchRoute,
-    [appRouteComponentTypes.datasetUploadComponent]: UploadDatasetRoute,
-    [appRouteComponentTypes.documentUploadComponent]: UploadDocumentRoute
+    [appRouteComponentTypes.VIEWER]: ViewerRoute,
+    [appRouteComponentTypes.DETAIL]: DetailRoute,
+    [appRouteComponentTypes.SEARCH]: SearchRoute,
+    [appRouteComponentTypes.DATASET_UPLOAD]: UploadDatasetRoute,
+    [appRouteComponentTypes.DOCUMENT_UPLOAD]: UploadDocumentRoute
 };
 
 const routes = CATALOGUE_ROUTES.map(({ component, ...config }) => ({ ...config, component: viewers[component] }));

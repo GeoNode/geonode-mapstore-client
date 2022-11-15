@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import security from '@mapstore/framework/reducers/security';
 import controls from '@mapstore/framework/reducers/controls';
 import notifications from '@mapstore/framework/reducers/notifications';
-import Home from '@js/routes/Home';
+import HomeRoute from '@js/routes/Home';
 
 import gnsearch from '@js/reducers/gnsearch';
 import gnresource from '@js/reducers/gnresource';
@@ -46,7 +46,7 @@ const ConnectedRouter = connect((state) => ({
 }))(Router);
 
 const viewer = {
-    [appRouteComponentTypes.homeComponent]: Home
+    [appRouteComponentTypes.HOME]: HomeRoute
 };
 
 const routes = HOME_ROUTES.map(({component, ...config}) => ({...config, component: viewer[component]}));

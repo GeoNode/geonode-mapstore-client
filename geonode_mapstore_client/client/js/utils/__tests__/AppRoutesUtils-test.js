@@ -16,12 +16,12 @@ describe('Test App Routes Utils', () => {
         const componentTypes = routeUtils.appRouteComponentTypes;
 
         expect(componentTypes).toEqual({
-            resourceViewer: 'ViewerRoute',
-            searchComponent: 'SearchRoute',
-            detailComponent: 'DetailRoute',
-            datasetUploadComponent: 'UploadDatasetRoute',
-            documentUploadComponent: 'UploadDocumentRoute',
-            homeComponent: 'Home'
+            VIEWER: 'ViewerRoute',
+            SEARCH: 'SearchRoute',
+            DETAIL: 'DetailRoute',
+            DATASET_UPLOAD: 'UploadDatasetRoute',
+            DOCUMENT_UPLOAD: 'UploadDocumentRoute',
+            HOME: 'HomeRoute'
         });
     });
 

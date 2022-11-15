@@ -9,19 +9,19 @@
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 
 export const appRouteComponentTypes = {
-    resourceViewer: 'ViewerRoute',
-    searchComponent: 'SearchRoute',
-    detailComponent: 'DetailRoute',
-    datasetUploadComponent: 'UploadDatasetRoute',
-    documentUploadComponent: 'UploadDocumentRoute',
-    homeComponent: 'Home'
+    VIEWER: 'ViewerRoute',
+    SEARCH: 'SearchRoute',
+    DETAIL: 'DetailRoute',
+    DATASET_UPLOAD: 'UploadDatasetRoute',
+    DOCUMENT_UPLOAD: 'UploadDocumentRoute',
+    HOME: 'HomeRoute'
 };
 
 export const HOME_ROUTES = [
     {
         name: 'homepage',
         path: '/',
-        component: appRouteComponentTypes.homeComponent
+        component: appRouteComponentTypes.HOME
     }
 ];
 
@@ -32,7 +32,8 @@ export const MAP_ROUTES = [
         pageConfig: {
             resourceType: ResourceTypes.MAP
         },
-        component: appRouteComponentTypes.resourceViewer
+        component: appRouteComponentTypes.VIEWER,
+        shouldNotRequestResources: true
     }
 ];
 
@@ -44,7 +45,8 @@ export const DASHBOARD_ROUTES = [{
     pageConfig: {
         resourceType: ResourceTypes.DASHBOARD
     },
-    component: appRouteComponentTypes.resourceViewer
+    component: appRouteComponentTypes.VIEWER,
+    shouldNotRequestResources: true
 }];
 
 export const DOCUMENT_ROUTES = [{
@@ -55,7 +57,8 @@ export const DOCUMENT_ROUTES = [{
     pageConfig: {
         resourceType: ResourceTypes.DOCUMENT
     },
-    component: appRouteComponentTypes.resourceViewer
+    component: appRouteComponentTypes.VIEWER,
+    shouldNotRequestResources: true
 }];
 
 export const GEOSTORY_ROUTES = [{
@@ -64,7 +67,8 @@ export const GEOSTORY_ROUTES = [{
     pageConfig: {
         resourceType: ResourceTypes.GEOSTORY
     },
-    component: appRouteComponentTypes.resourceViewer
+    component: appRouteComponentTypes.VIEWER,
+    shouldNotRequestResources: true
 }];
 
 export const CATALOGUE_ROUTES = [
@@ -76,7 +80,8 @@ export const CATALOGUE_ROUTES = [
         pageConfig: {
             resourceType: ResourceTypes.DATASET
         },
-        component: appRouteComponentTypes.resourceViewer
+        component: appRouteComponentTypes.VIEWER,
+        shouldNotRequestResources: true
     },
     {
         name: 'dataset_edit_data_viewer',
@@ -86,7 +91,8 @@ export const CATALOGUE_ROUTES = [
         pageConfig: {
             resourceType: ResourceTypes.DATASET
         },
-        component: appRouteComponentTypes.resourceViewer
+        component: appRouteComponentTypes.VIEWER,
+        shouldNotRequestResources: true
     },
     {
         name: 'dataset_edit_style_viewer',
@@ -96,7 +102,8 @@ export const CATALOGUE_ROUTES = [
         pageConfig: {
             resourceType: ResourceTypes.DATASET
         },
-        component: appRouteComponentTypes.resourceViewer
+        component: appRouteComponentTypes.VIEWER,
+        shouldNotRequestResources: true
     },
     {
         name: 'map_viewer',
@@ -106,7 +113,8 @@ export const CATALOGUE_ROUTES = [
         pageConfig: {
             resourceType: ResourceTypes.MAP
         },
-        component: appRouteComponentTypes.resourceViewer
+        component: appRouteComponentTypes.VIEWER,
+        shouldNotRequestResources: true
     },
     {
         name: 'geostory_viewer',
@@ -116,7 +124,8 @@ export const CATALOGUE_ROUTES = [
         pageConfig: {
             resourceType: ResourceTypes.GEOSTORY
         },
-        component: appRouteComponentTypes.resourceViewer
+        component: appRouteComponentTypes.VIEWER,
+        shouldNotRequestResources: true
     },
     {
         name: 'document_viewer',
@@ -126,7 +135,8 @@ export const CATALOGUE_ROUTES = [
         pageConfig: {
             resourceType: ResourceTypes.DOCUMENT
         },
-        component: appRouteComponentTypes.resourceViewer
+        component: appRouteComponentTypes.VIEWER,
+        shouldNotRequestResources: true
     },
     {
         name: 'dashboard_viewer',
@@ -136,7 +146,8 @@ export const CATALOGUE_ROUTES = [
         pageConfig: {
             resourceType: ResourceTypes.DASHBOARD
         },
-        component: appRouteComponentTypes.resourceViewer
+        component: appRouteComponentTypes.VIEWER,
+        shouldNotRequestResources: true
     },
     {
         name: 'resources',
@@ -145,7 +156,7 @@ export const CATALOGUE_ROUTES = [
             '/search/',
             '/search/filter'
         ],
-        component: appRouteComponentTypes.searchComponent
+        component: appRouteComponentTypes.SEARCH
     },
     {
         name: 'detail',
@@ -153,16 +164,16 @@ export const CATALOGUE_ROUTES = [
             '/detail/:pk',
             '/detail/:ctype/:pk'
         ],
-        component: appRouteComponentTypes.detailComponent
+        component: appRouteComponentTypes.DETAIL
     },
     {
         name: 'upload_dataset',
         path: ['/upload/dataset'],
-        component: appRouteComponentTypes.datasetUploadComponent
+        component: appRouteComponentTypes.DATASET_UPLOAD
     },
     {
         name: 'upload_document',
         path: ['/upload/document'],
-        component: appRouteComponentTypes.documentUploadComponent
+        component: appRouteComponentTypes.DOCUMENT_UPLOAD
     }
 ];
