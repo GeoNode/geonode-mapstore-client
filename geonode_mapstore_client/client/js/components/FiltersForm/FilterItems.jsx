@@ -13,7 +13,13 @@ import { FormGroup, Checkbox } from 'react-bootstrap';
 import ReactSelect from 'react-select';
 import Message from '@mapstore/framework/components/I18N/Message';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
-import { getFilterLabelById } from '@js/utils/SearchUtils';
+import {
+    getFilterLabelById,
+    setChildFilters,
+    setActiveChildFilters,
+    parentFilters,
+    setCustomParentFilters
+} from '@js/utils/SearchUtils';
 import SelectInfiniteScroll from '@js/components/SelectInfiniteScroll';
 const SelectSync = localizedProps('placeholder')(ReactSelect);
 function FilterItems({
@@ -88,10 +94,10 @@ function FilterItems({
                     </>);
                 }
                 if (field.type === 'divider') {
-                    return <div className="gn-filter-form-divider"></div>;
+                    return <div key={field.id} className="gn-filter-form-divider"></div>;
                 }
                 if (field.type === 'link') {
-                    return <div className="gn-filter-form-link"><a href={field.href}>{field.labelId && <Message msgId={field.labelId} /> || field.label}</a></div>;
+                    return <div key={field.id} className="gn-filter-form-link"><a href={field.href}>{field.labelId && <Message msgId={field.labelId} /> || field.label}</a></div>;
                 }
                 if (field.type === 'filter') {
                     const customFilters = castArray(values.f || []);
@@ -100,15 +106,16 @@ function FilterItems({
                             const active = customFilters.find(value => value === item.id);
                             return (
                                 <Checkbox
+                                    key={item.id}
                                     className="gn-sub-filter-items"
                                     type="checkbox"
                                     checked={!!active}
                                     value={item.id}
                                     onChange={() => {
                                         onChange({
-                                            f: active
-                                                ? customFilters.filter(value => value !== item.id)
-                                                : [...customFilters, item.id]
+                                            f: !!active
+                                                ? setActiveChildFilters(customFilters, item)
+                                                : setChildFilters(customFilters, item)
                                         });
                                     }}
                                 >
@@ -117,7 +124,7 @@ function FilterItems({
                             );
                         } );
                     };
-                    const active = customFilters.find(value => value === field.id);
+                    const active = [...customFilters, ...parentFilters].find(value => value === field.id);
                     const parentFilterIds = [
                         field.id,
                         ...(field.items
@@ -125,15 +132,17 @@ function FilterItems({
                             : [])
                     ];
                     return (
-                        <FormGroup controlId={'gn-radio-filter-' + field.id}>
+                        <FormGroup key={field.id} controlId={'gn-radio-filter-' + field.id}>
                             <Checkbox
                                 type="checkbox"
                                 checked={!!active}
                                 value={field.id}
                                 onChange={() => {
+                                    parentFilters.includes(field.id) ? setCustomParentFilters(parentFilters.filter(parent => parent !== field.id)) : setCustomParentFilters(parentFilters);
+                                    const filterArr = customFilters.filter(value => !parentFilterIds.includes(value));
                                     onChange({
-                                        f: active
-                                            ? customFilters.filter(value => !parentFilterIds.includes(value))
+                                        f: !!active
+                                            ? filterArr
                                             : [...customFilters, field.id]
                                     });
                                 }}>

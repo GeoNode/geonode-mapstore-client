@@ -158,6 +158,7 @@
                                     "id": "store-vector",
                                     "labelId": "gnhome.vector",
                                     "type": "filter",
+                                    "parentId": "dataset",
                                     "query": {
                                         "filter{subtype.in}": "vector"
                                     }
@@ -166,6 +167,7 @@
                                     "id": "store-raster",
                                     "labelId": "gnhome.raster",
                                     "type": "filter",
+                                    "parentId": "dataset",
                                     "query": {
                                         "filter{subtype.in}": "raster"
                                     }
@@ -174,6 +176,7 @@
                                     "id": "store-remote",
                                     "labelId": "gnhome.remote",
                                     "type": "filter",
+                                    "parentId": "dataset",
                                     "query": {
                                         "filter{subtype.in}": "remote"
                                     }
@@ -182,6 +185,7 @@
                                     "id": "store-time-series",
                                     "labelId": "gnhome.timeSeries",
                                     "type": "filter",
+                                    "parentId": "dataset",
                                     "query": {
                                         "filter{subtype.in}": "vector_time"
                                     }

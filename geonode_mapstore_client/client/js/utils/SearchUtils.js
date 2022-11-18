@@ -87,11 +87,38 @@ export function getQueryFilters(query) {
     return queryFilters;
 }
 
+export let parentFilters = []; // parent filters to be imported into FilterItems.jsx
+/**
+ * A setter funtion to assign a value to parentFilters
+ * @param {*} customFilters filters to be assigned to parentFilters
+ */
+export const setCustomParentFilters = (customFilters) => {
+    parentFilters = customFilters;
+};
+
+// sets sub-filters and includes parent to allow OR operation on bakend
+export function setChildFilters(customFilters, item) {
+    const updatedFilters = [...customFilters, item.id, ...(!customFilters.includes(item.parentId) ? [item.parentId] : [])];
+    const newParentFilters = parentFilters.includes(item.parentId) ? parentFilters : [...parentFilters, item.parentId];
+    setCustomParentFilters(newParentFilters);
+    return updatedFilters;
+}
+
+export function setActiveChildFilters(customFilters, item) {
+    const updatedFilters = customFilters.filter(value => value !== item.id);
+    const newParentFilters = parentFilters.includes(item.parentId) ? parentFilters : [...parentFilters, item.parentId];
+    setCustomParentFilters(newParentFilters);
+    return updatedFilters;
+}
+
+
 export default {
     getQueryKeys,
     getPageSize,
     hashLocationToHref,
     getUserName,
     clearQueryParams,
-    getQueryFilters
+    getQueryFilters,
+    setChildFilters,
+    setCustomParentFilters
 };
