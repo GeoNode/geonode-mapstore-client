@@ -88,10 +88,10 @@ function FilterItems({
                     </>);
                 }
                 if (field.type === 'divider') {
-                    return <div className="gn-filter-form-divider"></div>;
+                    return <div key={field.id} className="gn-filter-form-divider"></div>;
                 }
                 if (field.type === 'link') {
-                    return <div className="gn-filter-form-link"><a href={field.href}>{field.labelId && <Message msgId={field.labelId} /> || field.label}</a></div>;
+                    return <div key={field.id} className="gn-filter-form-link"><a href={field.href}>{field.labelId && <Message msgId={field.labelId} /> || field.label}</a></div>;
                 }
                 if (field.type === 'filter') {
                     const customFilters = castArray(values.f || []);
@@ -100,6 +100,7 @@ function FilterItems({
                             const active = customFilters.find(value => value === item.id);
                             return (
                                 <Checkbox
+                                    key={item.id}
                                     className="gn-sub-filter-items"
                                     type="checkbox"
                                     checked={!!active}
@@ -108,7 +109,7 @@ function FilterItems({
                                         onChange({
                                             f: active
                                                 ? customFilters.filter(value => value !== item.id)
-                                                : [...customFilters, item.id]
+                                                : [...customFilters.filter(value => field.id !== value), item.id, field.id]
                                         });
                                     }}
                                 >
@@ -125,7 +126,7 @@ function FilterItems({
                             : [])
                     ];
                     return (
-                        <FormGroup controlId={'gn-radio-filter-' + field.id}>
+                        <FormGroup key={field.id} controlId={'gn-radio-filter-' + field.id}>
                             <Checkbox
                                 type="checkbox"
                                 checked={!!active}
