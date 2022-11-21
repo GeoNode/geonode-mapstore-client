@@ -105,9 +105,10 @@ export const canEditPermissions = (state) => {
     const groups = compactPermissions.groups || [];
     const organizations = compactPermissions.organizations || [];
     const user = state?.security?.user;
+    const userGroups = user?.info.groups.filter(group => group !== 'anonymous') || [];
     const { permissions } = user && users.find(({ id }) => id === user.pk) || {};
-    const { permissions: allowedGroups } = user && groups.find((group) => user.info.groups.includes(group.name)) || {};
-    const { permissions: allowedOrganizations } = user && organizations.find((organization) => user.info.groups.includes(organization.name)) || {};
+    const { permissions: allowedGroups } = user && groups.find((group) => userGroups.includes(group.name)) || {};
+    const { permissions: allowedOrganizations } = user && organizations.find((organization) => userGroups.includes(organization.name)) || {};
     return ['owner', 'manage'].includes(permissions) || ['manage'].includes(allowedGroups) || ['manage'].includes(allowedOrganizations);
 };
 
