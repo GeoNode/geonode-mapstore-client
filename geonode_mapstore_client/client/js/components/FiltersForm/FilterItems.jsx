@@ -13,13 +13,7 @@ import { FormGroup, Checkbox } from 'react-bootstrap';
 import ReactSelect from 'react-select';
 import Message from '@mapstore/framework/components/I18N/Message';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
-import {
-    getFilterLabelById,
-    setChildFilters,
-    setActiveChildFilters,
-    parentFilters,
-    setCustomParentFilters
-} from '@js/utils/SearchUtils';
+import { getFilterLabelById } from '@js/utils/SearchUtils';
 import SelectInfiniteScroll from '@js/components/SelectInfiniteScroll';
 const SelectSync = localizedProps('placeholder')(ReactSelect);
 function FilterItems({
@@ -113,9 +107,9 @@ function FilterItems({
                                     value={item.id}
                                     onChange={() => {
                                         onChange({
-                                            f: !!active
-                                                ? setActiveChildFilters(customFilters, item)
-                                                : setChildFilters(customFilters, item)
+                                            f: active
+                                                ? customFilters.filter(value => value !== item.id)
+                                                : [...customFilters.filter(value => field.id !== value), item.id, field.id]
                                         });
                                     }}
                                 >
@@ -124,7 +118,7 @@ function FilterItems({
                             );
                         } );
                     };
-                    const active = [...customFilters, ...parentFilters].find(value => value === field.id);
+                    const active = customFilters.find(value => value === field.id);
                     const parentFilterIds = [
                         field.id,
                         ...(field.items
@@ -138,11 +132,9 @@ function FilterItems({
                                 checked={!!active}
                                 value={field.id}
                                 onChange={() => {
-                                    parentFilters.includes(field.id) ? setCustomParentFilters(parentFilters.filter(parent => parent !== field.id)) : setCustomParentFilters(parentFilters);
-                                    const filterArr = customFilters.filter(value => !parentFilterIds.includes(value));
                                     onChange({
-                                        f: !!active
-                                            ? filterArr
+                                        f: active
+                                            ? customFilters.filter(value => !parentFilterIds.includes(value))
                                             : [...customFilters, field.id]
                                     });
                                 }}>
