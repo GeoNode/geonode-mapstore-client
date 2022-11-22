@@ -99,17 +99,18 @@ export const getPermissionsPayload = (state) => {
     };
 };
 
+const inheritsPerms = (user = null, groups = []) => {
+    return user && groups.some(group => user.info.groups.some(userGroup => userGroup === group.name) && group.permissions === 'manage') || false;
+};
+
 export const canEditPermissions = (state) => {
     const compactPermissions = getCompactPermissions(state);
     const users = compactPermissions.users || [];
     const groups = compactPermissions.groups || [];
     const organizations = compactPermissions.organizations || [];
     const user = state?.security?.user;
-    const userGroups = user?.info.groups.filter(group => group !== 'anonymous') || [];
     const { permissions } = user && users.find(({ id }) => id === user.pk) || {};
-    const { permissions: allowedGroups } = user && groups.find((group) => userGroups.includes(group.name)) || {};
-    const { permissions: allowedOrganizations } = user && organizations.find((organization) => userGroups.includes(organization.name)) || {};
-    return ['owner', 'manage'].includes(permissions) || ['manage'].includes(allowedGroups) || ['manage'].includes(allowedOrganizations);
+    return ['owner', 'manage'].includes(permissions) || inheritsPerms(user, groups) || inheritsPerms(user, organizations);
 };
 
 export const getSelectedLayerPermissions = (state) => {
