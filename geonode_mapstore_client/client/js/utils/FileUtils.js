@@ -48,3 +48,16 @@ export const getFileNameParts = (file) => {
     const baseName = [...nameParts].splice(0, nameParts.length - 1).join('.');
     return { ext: ext.toLowerCase(), baseName };
 };
+
+/**
+ * Get file type from file.
+ * In cases where the file type is application/json (which happens when file was originally .geojson converted to .json)
+ * We return json as file type
+ */
+export const getFileType = (file) => {
+    const { type } = file;
+    if (type === 'application/json') {
+        return 'json';
+    }
+    return type;
+};
