@@ -42,7 +42,8 @@ initializeApp();
 
 const DEFAULT_LOCALE = {};
 const ConnectedRouter = connect((state) => ({
-    locale: state?.locale || DEFAULT_LOCALE
+    locale: state?.locale || DEFAULT_LOCALE,
+    user: state?.security?.user || null
 }))(Router);
 
 const viewer = {

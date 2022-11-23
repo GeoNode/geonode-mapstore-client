@@ -170,12 +170,18 @@ export const CATALOGUE_ROUTES = [
         name: 'upload_dataset',
         path: ['/upload/dataset'],
         component: appRouteComponentTypes.DATASET_UPLOAD,
-        shouldNotRequestResources: true
+        shouldNotRequestResources: true,
+        protectedRoute: true,
+        hash: "#/upload/dataset",
+        encodedNextPath: encodeURIComponent('/catalogue/#/upload/dataset')
     },
     {
         name: 'upload_document',
         path: ['/upload/document'],
         component: appRouteComponentTypes.DOCUMENT_UPLOAD,
-        shouldNotRequestResources: true
+        shouldNotRequestResources: true,
+        protectedRoute: true,
+        hash: "#/upload/document",
+        encodedNextPath: encodeURIComponent('/catalogue/#/upload/document')
     }
 ];
