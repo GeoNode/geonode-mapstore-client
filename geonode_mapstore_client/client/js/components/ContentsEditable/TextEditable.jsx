@@ -27,7 +27,8 @@ const TextEditable = forwardRef(({
             evt.stopPropagation();
         }}
         onChange={(evt) => {
-            onEdit(evt.target.value);
+            const value = evt.target.value.replaceAll(/(<([^>]+)>)/ig, "");
+            onEdit(value);
         }}
 
     />);
