@@ -85,6 +85,7 @@ import {
     warning as warningNotification
 } from '@mapstore/framework/actions/notifications';
 import { getStyleProperties } from '@js/api/geonode/style';
+import { convertDependenciesMappingForCompatibility } from '@mapstore/framework/utils/WidgetsUtils';
 
 const resourceTypes = {
     [ResourceTypes.DATASET]: {
@@ -276,7 +277,7 @@ const resourceTypes = {
                                 lastUpdate: resource.last_updated,
                                 name: resource.title
                             },
-                            options.data || resource.data
+                            options.data ? convertDependenciesMappingForCompatibility(options.data) : convertDependenciesMappingForCompatibility(resource.data)
                         ),
                         setResource(resource),
                         setResourceId(pk)
@@ -292,7 +293,7 @@ const resourceTypes = {
                             canDelete: true,
                             canEdit: true
                         },
-                        options.data
+                        convertDependenciesMappingForCompatibility(options.data)
                     )
                 ] : []),
                 dashboardLoading(false)
