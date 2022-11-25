@@ -23,7 +23,6 @@ const FeaturedList = withResizeDetector(({
     isCardActive,
     containerStyle,
     header,
-    cardOptions,
     buildHrefByTemplate,
     isPreviousPageAvailable,
     loadFeaturedResources,
@@ -61,7 +60,6 @@ const FeaturedList = withResizeDetector(({
                             resources={resources}
                             formatHref={formatHref}
                             isCardActive={isCardActive}
-                            options={cardOptions}
                             buildHrefByTemplate={buildHrefByTemplate}
                             containerWidth={width}
                             onResize={(cardsCount) => {

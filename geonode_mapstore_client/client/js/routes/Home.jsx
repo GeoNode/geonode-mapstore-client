@@ -52,10 +52,9 @@ const ConnectedFeatureList = connect(
         state => state?.gnsearch?.featuredResources?.isNextPageAvailable || false,
         state => state?.gnsearch?.featuredResources?.isPreviousPageAvailable || false,
         state => state?.gnsearch?.featuredResources?.loading || false,
-        getParsedGeoNodeConfiguration,
         featuredResourceDownload
-    ], (resources, page, isNextPageAvailable, isPreviousPageAvailable, loading, { cardOptionsItemsAllowed }, downloading) => ({
-        resources, page, isNextPageAvailable, isPreviousPageAvailable, loading, cardOptions: cardOptionsItemsAllowed, downloading})
+    ], (resources, page, isNextPageAvailable, isPreviousPageAvailable, loading, downloading) => ({
+        resources, page, isNextPageAvailable, isPreviousPageAvailable, loading, downloading})
     ), {
         loadFeaturedResources,
         onAction: processResources,
