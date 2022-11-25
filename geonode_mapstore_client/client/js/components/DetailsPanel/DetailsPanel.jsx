@@ -36,13 +36,17 @@ Map.displayName = 'Map';
 const MapThumbnailButtonToolTip = tooltip(Button);
 const CopyToClipboard = tooltip(CopyToClipboardCmp);
 
-const EditTitle = ({ title, onEdit, tagName, disabled }) => {
+const EditTitle = ({ title, onEdit, disabled }) => {
+    const [textValue, setTextValue] = React.useState(title);
     return (
         <div className="editContainer">
-            <TextEditable
-                tagName={tagName}
-                onEdit={onEdit}
-                text={title}
+            <input
+                className="editContainer-input"
+                onChange={(evt) => {
+                    setTextValue(evt.target.value);
+                    onEdit(evt.target.value);
+                }}
+                value={textValue}
                 disabled={disabled}
             />
         </div>);
@@ -543,7 +547,7 @@ function DetailsPanel({
 
                     <div className="gn-details-panel-content-text">
                         <div className="gn-details-panel-title" >
-                            <span className="gn-details-panel-title-icon" >{!downloading ? <FaIcon name={icon} /> : <Spinner />} </span> <EditTitle disabled={!activeEditMode} tagName="h1"  title={resource?.title} onEdit={editTitle} >
+                            <span className="gn-details-panel-title-icon" >{!downloading ? <FaIcon name={icon} /> : <Spinner />} </span> <EditTitle disabled={!activeEditMode}  title={resource?.title} onEdit={editTitle} >
 
                             </EditTitle>
 
