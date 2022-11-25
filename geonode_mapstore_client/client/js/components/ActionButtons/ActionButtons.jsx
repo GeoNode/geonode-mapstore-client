@@ -29,7 +29,7 @@ function ActionButtons({
 
 
     return (
-        <div className="gn-resource-action-buttons">
+        !resource.featured ? <div className="gn-resource-action-buttons">
             <Dropdown className="gn-card-options" pullRight>
                 <Dropdown.Toggle
                     id={`gn-card-options-${resource.pk2 || resource.pk}`}
@@ -69,7 +69,7 @@ function ActionButtons({
                     })}
                 </Dropdown.Menu>
             </Dropdown>
-        </div>
+        </div> : null
     );
 }
 
