@@ -156,17 +156,16 @@ const ConnectedSaveAsButton = connect(
 function CopyMenuItem({
     resource,
     authenticated,
-    onCopy
+    onCopy,
+    userCanAddResource
 }) {
-
     if (!(authenticated
+        && userCanAddResource
         && resource?.is_copyable
-        && resource.download_url
         && resource?.perms?.includes('download_resourcebase'))
     ) {
         return null;
     }
-    // {type: 'user', value: 'add_resource'}
     return (
         <Dropdown.Item
             onClick={() =>
@@ -180,7 +179,7 @@ function CopyMenuItem({
 }
 
 const ConnectedMenuItem = connect(
-    createSelector([isLoggedIn], (authenticated) => ({ authenticated })),
+    createSelector([isLoggedIn, canAddResource], (authenticated, userCanAddResource) => ({ authenticated, userCanAddResource })),
     {
         onCopy: setControlProperty.bind(null, ProcessTypes.COPY_RESOURCE, 'value')
     }
