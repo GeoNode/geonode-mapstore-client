@@ -199,12 +199,14 @@
             });
 
             function hashChange() {
-                const newQParam = getQParamFromHash();
-                if (!value || newQParam !== value) {
-                    searchInput.value = newQParam;
-                    value = newQParam;
+                if (window.location.pathname.replace(/\//g, '') === 'catalogue') {
+                    const newQParam = getQParamFromHash();
+                    if (!value || newQParam !== value) {
+                        searchInput.value = newQParam;
+                        value = newQParam;
+                    }
+                    searchClear.style.display = newQParam ? 'block' : 'none';
                 }
-                searchClear.style.display = newQParam ? 'block' : 'none';
             }
 
             window.addEventListener('hashchange', hashChange, false);

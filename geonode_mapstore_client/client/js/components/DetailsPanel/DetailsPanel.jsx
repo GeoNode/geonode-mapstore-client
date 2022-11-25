@@ -439,7 +439,7 @@ function DetailsPanel({
                 {<div className="gn-details-panel-header">
                     <Button
                         variant="default"
-                        href={linkHref()}
+                        href={linkHref ? linkHref() : undefined}
                         onClick={closePanel}
                         className="square-button">
                         <Glyphicon glyph="1-close" />

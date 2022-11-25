@@ -11,17 +11,15 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import CardGrid from '@js/components/CardGrid';
 import { getSearchResults } from '@js/selectors/search';
-import { downloadResource, processResources } from '@js/actions/gnresource';
-import { setControlProperty } from '@mapstore/framework/actions/controls';
-import { actionButtons } from '@js/utils/ResourceServiceUtils';
 import { generalResourceDownload } from '@js/selectors/resourceservice';
 
-const CardGridWithMessageId = ({ query, user, isFirstRequest, ...props }) => {
+const CardGridWithMessageId = ({ query, user, isFirstRequest, error, ...props }) => {
     const hasResources = props.resources?.length > 0;
     const hasFilter = Object.keys(query || {}).filter(key => key !== 'sort').length > 0;
     const isLoggedIn = !!user;
     const messageId = !hasResources && !isFirstRequest && !props.loading
-        ? hasFilter && 'noResultsWithFilter'
+        ? error && 'errorResourcePage'
+            || hasFilter && 'noResultsWithFilter'
             || isLoggedIn && 'noContentYet'
             || 'noPublicContent'
         : undefined;
@@ -34,20 +32,16 @@ const ConnectedCardGrid = connect(
         state => state?.gnsearch?.loading || false,
         state => state?.gnsearch?.isNextPageAvailable || false,
         state => state?.gnsearch?.isFirstRequest,
-        generalResourceDownload
-    ], (resources, loading, isNextPageAvailable, isFirstRequest, downloading) => ({
+        generalResourceDownload,
+        state => state?.gnsearch?.error
+    ], (resources, loading, isNextPageAvailable, isFirstRequest, downloading, error) => ({
         resources,
         loading,
         isNextPageAvailable,
         isFirstRequest,
-        actions: actionButtons,
-        downloading
-    })),
-    {
-        onAction: processResources,
-        onDownload: downloadResource,
-        onControl: setControlProperty
-    }
+        downloading,
+        error
+    }))
 )(CardGridWithMessageId);
 
 export default ConnectedCardGrid;

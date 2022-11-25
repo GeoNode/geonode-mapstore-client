@@ -37,11 +37,10 @@ import widgets from '@mapstore/framework/reducers/widgets';
 import annotations from '@mapstore/framework/reducers/annotations';
 // end
 
-import SearchRoute from '@js/routes/Search';
-import DetailRoute from '@js/routes/Detail';
 import ViewerRoute from '@js/routes/Viewer';
 import UploadDatasetRoute from '@js/routes/UploadDataset';
 import UploadDocumentRoute from '@js/routes/UploadDocument';
+import CatalogueRoute from '@js/routes/Catalogue';
 
 import gnsearch from '@js/reducers/gnsearch';
 import gnresource from '@js/reducers/gnresource';
@@ -59,7 +58,8 @@ import {
     setupConfiguration,
     initializeApp,
     getPluginsConfiguration,
-    storeEpicsCache
+    storeEpicsCache,
+    getPluginsConfigOverride
 } from '@js/utils/AppUtils';
 import { CATALOGUE_ROUTES, appRouteComponentTypes } from '@js/utils/AppRoutesUtils';
 import { updateGeoNodeSettings } from '@js/actions/gnsettings';
@@ -103,8 +103,7 @@ const ConnectedRouter = connect(
 
 const viewers = {
     [appRouteComponentTypes.VIEWER]: ViewerRoute,
-    [appRouteComponentTypes.DETAIL]: DetailRoute,
-    [appRouteComponentTypes.SEARCH]: SearchRoute,
+    [appRouteComponentTypes.CATALOGUE]: CatalogueRoute,
     [appRouteComponentTypes.DATASET_UPLOAD]: UploadDatasetRoute,
     [appRouteComponentTypes.DOCUMENT_UPLOAD]: UploadDocumentRoute
 };
@@ -179,7 +178,7 @@ Promise.all([
                                 }
                             },
                             themeCfg: null,
-                            pluginsConfig: getPluginsConfiguration(localConfig.plugins, pluginsConfigKey),
+                            pluginsConfig: getPluginsConfigOverride(getPluginsConfiguration(localConfig.plugins, pluginsConfigKey)),
                             lazyPlugins: pluginsDefinition.lazyPlugins,
                             pluginsDef: {
                                 plugins: {

@@ -36,10 +36,14 @@
                         </div>
                     </div>
                     {% endcomment %}
+                    <div class="gn-container">
+                        <div id="gn-home-featured-resources-grid"></div>
+                        <div id="gn-home-resources-grid"></div>
+                    </div>
                 {% endblock %}
     
                 {% block container %}
-                    <div id="container">
+                    <div id="ms-container">
                         <div class="gn-main-event-container">
                             <div class="gn-main-event-content">
                                 <div class="gn-main-loader"></div>
@@ -48,9 +52,40 @@
                         </div>
                     </div>
                 {% endblock %}
+
+                <script>
+                    window.addEventListener('mapstore:ready', function(event) {
+                        const msAPI = event.detail;
+                        msAPI.setPluginsConfig([
+                            {
+                                name: 'FeaturedResourcesGrid',
+                                cfg: {
+                                    targetSelector: '#gn-home-featured-resources-grid',
+                                    pagePath: '/catalogue/'
+                                }
+                            },
+                            {
+                                name: 'ResourcesGrid',
+                                cfg: {
+                                    targetSelector: '#gn-home-resources-grid',
+                                    containerSelector: '#gn-home-resources-grid',
+                                    pagination: false,
+                                    pagePath: '/catalogue/',
+                                    disableFilters: true,
+                                    disableDetailPanel: true,
+                                    enableGeoNodeCardsMenuItems: true
+                                }
+                            },
+                            { name: 'SaveAs', cfg: { closeOnSave: true } },
+                            { name: 'DeleteResource' },
+                            { name: 'DownloadResource' },
+                            { name: 'Notifications' }
+                        ]);
+                    });
+                </script>
     
                 {% block ms_scripts %}
-                    <script id="gn-script" src="{% static 'mapstore/dist/js/gn-home.js' %}?{% client_version %}"></script>
+                    <script id="gn-script" src="{% static 'mapstore/dist/js/gn-components.js' %}?{% client_version %}"></script>
                 {% endblock %}
     
                 {% block footer %}

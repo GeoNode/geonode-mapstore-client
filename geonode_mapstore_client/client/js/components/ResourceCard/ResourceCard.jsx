@@ -27,14 +27,14 @@ const ResourceCard = forwardRef(({
     layoutCardsStyle,
     buildHrefByTemplate,
     readOnly,
-    actions,
-    onAction,
     className,
     loading,
     featured,
     onClick,
     downloading,
-    onDownload
+    getDetailHref = (res) => formatHref({
+        pathname: `/detail/${res.resource_type}/${res.pk}`
+    })
 }, ref) => {
     const res = data;
     const types = getTypesInfo();
@@ -68,9 +68,7 @@ const ResourceCard = forwardRef(({
             {!readOnly && (
                 <a
                     className="gn-resource-card-link"
-                    href={formatHref({
-                        pathname: `/detail/${res.resource_type}/${res.pk}`
-                    })}
+                    href={getDetailHref(res)}
                 />
             )}
             {!readOnly &&
@@ -79,12 +77,9 @@ const ResourceCard = forwardRef(({
                 layoutCardsStyle === 'grid' && (
                 <ActionButtons
                     buildHrefByTemplate={buildHrefByTemplate}
-                    actions={actions}
                     resource={res}
                     options={options}
                     readOnly={readOnly}
-                    onAction={onAction}
-                    onDownload={onDownload}
                 />
             )}
             <div className={`card-resource-${layoutCardsStyle}`}>
@@ -126,9 +121,7 @@ const ResourceCard = forwardRef(({
                                             : 'gn-card-title'
                                     }
                                     readOnly={readOnly}
-                                    href={formatHref({
-                                        pathname: `/detail/${res.resource_type}/${res.pk}`
-                                    })}
+                                    href={getDetailHref(res)}
                                 >
                                     {res.title}
                                 </ALink>
@@ -146,12 +139,9 @@ const ResourceCard = forwardRef(({
                             layoutCardsStyle === 'list' && (
                             <ActionButtons
                                 buildHrefByTemplate={buildHrefByTemplate}
-                                actions={actions}
                                 resource={res}
                                 options={options}
                                 readOnly={readOnly}
-                                onAction={onAction}
-                                onDownload={onDownload}
                             />
                         )}
                     </div>

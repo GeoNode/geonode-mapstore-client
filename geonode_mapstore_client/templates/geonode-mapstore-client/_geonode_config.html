@@ -63,6 +63,50 @@
         const translationsPath = geoNodeSettings.TRANSLATIONS_PATH;
         const extensionsFolder = geoNodeSettings.EXTENSIONS_FOLDER_PATH;
         const supportedDatasetFileTypes = geoNodeSettings.SUPPORTED_DATASET_FILE_TYPES;
+        const customFilters = geoNodeSettings.CUSTOM_FILTERS || {
+            "my-resources": {
+                "filter{owner.pk}": "{state('user') && state('user').pk}"
+            },
+            "favorite": {
+                "favorite": true
+            },
+            "featured": {
+                "filter{featured}": true
+            },
+            "unpublished": {
+                "filter{is_published}": false
+            },
+            "pending-approval": {
+                "filter{is_approved}": false
+            },
+            "dataset": {
+                "filter{resource_type.in}": "dataset"
+            },
+            "store-vector": {
+                "filter{subtype.in}": "vector"
+            },
+            "store-raster": {
+                "filter{subtype.in}": "raster"
+            },
+            "store-remote": {
+                "filter{subtype.in}": "remote"
+            },
+            "store-time-series": {
+                "filter{subtype.in}": "vector_time"
+            },
+            "document": {
+                "filter{resource_type.in}": "document"
+            },
+            "map": {
+                "filter{resource_type.in}": "map"
+            },
+            "geostory": {
+                "filter{resource_type.in}": "geostory"
+            },
+            "dashboard": {
+                "filter{resource_type.in}": "dashboard"
+            }
+        };
 
         const isEmbed = checkBoolean('{{ is_embed }}') || false;
         const pluginsConfigKey = '{{ plugins_config_key }}';
@@ -112,6 +156,8 @@
                     endpointV2: siteUrl + 'api/v2'
                 },
                 projectionDefs: projectionDefs,
+                geoNodeCustomFilters: customFilters,
+                geoNodeCardsMenuItems: cardsMenuItems,
                 // the properties inside geoNodeSettings are stored in the state
                 // and accessible by the monitored state with state('settings')
                 geoNodeSettings: {
@@ -132,11 +178,6 @@
                     defaultThumbnailSize: defaultThumbnailSize,
                     upload: { 
                         supportedDatasetFileTypes: supportedDatasetFileTypes
-                        }
-                },
-                geoNodeConfiguration: {
-                    cardsMenu: {
-                        items: cardsMenuItems
                     }
                 }
             }, 

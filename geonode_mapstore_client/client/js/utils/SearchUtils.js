@@ -8,12 +8,7 @@
 
 import url from 'url';
 import castArray from 'lodash/castArray';
-
-let defaultQueryKeys = [
-    'page'
-];
-
-let defaultPageSize = 20;
+import omit from 'lodash/omit';
 
 let filters = {};
 
@@ -23,14 +18,12 @@ export const setFilterById = (id, value) => {
 export const getFilterLabelById = (filterKey = '', id) => filters?.[filterKey + id]?.selectOption?.label;
 export const getFilterById = (filterKey = '', id) => filters?.[filterKey + id];
 
-export const getQueryKeys = () => defaultQueryKeys;
-export const getPageSize = () => defaultPageSize;
-
 export const hashLocationToHref = ({
     location,
     pathname,
     query,
-    replaceQuery
+    replaceQuery,
+    excludeQueryKeys
 }) => {
     const { search, ...loc } = location;
     const { query: locationQuery } = url.parse(search || '', true);
@@ -51,10 +44,10 @@ export const hashLocationToHref = ({
     return `#${url.format({
         ...loc,
         ...(pathname && { pathname }),
-        query: Object.keys(newQuery).reduce((acc, newQueryKey) =>
+        query: omit(Object.keys(newQuery).reduce((acc, newQueryKey) =>
             !newQuery[newQueryKey] || newQuery[newQueryKey].length === 0
                 ? acc
-                : { ...acc,  [newQueryKey]: newQuery[newQueryKey]}, {})
+                : { ...acc,  [newQueryKey]: newQuery[newQueryKey]}, {}), excludeQueryKeys)
     })}`;
 };
 
@@ -81,15 +74,13 @@ export function clearQueryParams(location) {
 }
 
 export function getQueryFilters(query) {
-    const queryFilters = Object.keys(query).reduce((acc, key) => key.indexOf('sort') === 0
+    const queryFilters = Object.keys(query).reduce((acc, key) => ['sort', 'page', 'd'].includes(key)
         ? acc
         : [...acc, ...castArray(query[key]).map((value) => ({ key, value }))], []);
     return queryFilters;
 }
 
 export default {
-    getQueryKeys,
-    getPageSize,
     hashLocationToHref,
     getUserName,
     clearQueryParams,

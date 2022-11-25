@@ -12,7 +12,6 @@ import Spinner from '@js/components/Spinner';
 import HTML from '@mapstore/framework/components/I18N/HTML';
 import FaIcon from '@js/components/FaIcon';
 import { withResizeDetector } from 'react-resize-detector';
-import { actionButtons } from '@js/utils/ResourceServiceUtils';
 import Cards from './Cards';
 
 const FeaturedList = withResizeDetector(({
@@ -28,10 +27,8 @@ const FeaturedList = withResizeDetector(({
     loadFeaturedResources,
     onLoad,
     width,
-    onControl,
-    onAction,
-    onDownload,
-    downloading
+    downloading,
+    getDetailHref
 }) => {
 
     const [count, setCount] = useState();
@@ -66,16 +63,8 @@ const FeaturedList = withResizeDetector(({
                                 !isNaN(cardsCount) && onLoad(undefined, cardsCount);
                                 setCount(cardsCount);
                             }}
-                            actions={actionButtons}
-                            onAction={(action, payload) => {
-                                if (action.isControlled) {
-                                    onControl(action.processType, 'value', payload);
-                                } else {
-                                    onAction(action.processType, payload, action.redirectTo);
-                                }
-                            }}
-                            onDownload={onDownload}
                             downloading={downloading}
+                            getDetailHref={getDetailHref}
                         />
                         <div className="gn-card-grid-pagination featured-list">
 

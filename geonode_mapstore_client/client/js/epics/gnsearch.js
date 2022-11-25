@@ -24,7 +24,8 @@ import {
     loadingResources,
     updateResourcesMetadata,
     setFeaturedResources,
-    UPDATE_FEATURED_RESOURCES
+    UPDATE_FEATURED_RESOURCES,
+    requestResource
 } from '@js/actions/gnsearch';
 import {
     resourceLoading,
@@ -35,10 +36,6 @@ import {
     LOCATION_CHANGE,
     push
 } from 'connected-react-router';
-import {
-    getQueryKeys,
-    getPageSize
-} from '@js/utils/SearchUtils';
 import url from 'url';
 import { getCustomMenuFilters } from '@js/selectors/config';
 import {
@@ -51,6 +48,7 @@ import {
     extractExecutionsFromResources
 } from '@js/utils/ResourceServiceUtils';
 import { userSelector } from '@mapstore/framework/selectors/security';
+import { getResourceData } from '@js/selectors/resource';
 import uuid from 'uuid';
 import { matchPath } from 'react-router-dom';
 import { CATALOGUE_ROUTES } from '@js/utils/AppRoutesUtils';
@@ -62,8 +60,9 @@ const updateResourcesRequest = (payload, reset) => ({
     reset
 });
 
-const cleanParams = (params) => {
+const cleanParams = (params, exclude = ['d']) => {
     return Object.keys(params)
+        .filter((key) => !exclude.includes(key))
         .reduce((acc, key) =>
             (!params[key] || params[key].length === 0)
                 ? acc : { ...acc, [key]: isArray(params[key])
@@ -72,10 +71,13 @@ const cleanParams = (params) => {
                 }, {});
 };
 
-const getParams = (locationSearch = '', params, defaultPage = 1) => {
+const getParams = (locationSearch = '', params, { defaultPage = 1, pagination, exclude }) => {
     const { query: locationQuery } = url.parse(locationSearch || '', true);
     const { page: qPage, ...query } = locationQuery;
-    const { page, ...mergedParams } = cleanParams({ ...params, ...query });
+    const { page, ...mergedParams } = cleanParams({
+        ...params,
+        ...(pagination ? locationQuery : query)
+    }, exclude);
     return [
         mergedParams,
         page ? parseFloat(page) : defaultPage
@@ -99,15 +101,16 @@ const getNextPage = (action, state) => {
 export const gnsSearchResourcesEpic = (action$, store) =>
     action$.ofType(SEARCH_RESOURCES)
         .switchMap(action => {
-            const { pathname, params } = action;
+            const { pathname, params, reset } = action;
             const state = store.getState();
-            const currentParams = cleanParams(state?.gnsearch?.params);
-            const nextParams = cleanParams(params);
-            const DEFAULT_QUERY_KEYS = getQueryKeys();
+            const pagination = !!state?.gnsearch?.config?.pagination;
+            const currentParams = cleanParams(state?.gnsearch?.params, []);
+            const nextParams = cleanParams(params, []);
+            const DEFAULT_QUERY_KEYS_TO_EXCLUDE_IN_COMPARISON = (pagination ? [] : ['page']);
             const currentQuery = Object.keys(currentParams).reduce((acc, key) =>
-                DEFAULT_QUERY_KEYS.indexOf(key) === -1 ? { ...acc, [key]: currentParams[key] } : acc, {});
+                !DEFAULT_QUERY_KEYS_TO_EXCLUDE_IN_COMPARISON.includes(key) ? { ...acc, [key]: currentParams[key] } : acc, {});
             const nextQuery = Object.keys(nextParams).reduce((acc, key) =>
-                DEFAULT_QUERY_KEYS.indexOf(key) === -1 ? { ...acc, [key]: nextParams[key] } : acc, {});
+                !DEFAULT_QUERY_KEYS_TO_EXCLUDE_IN_COMPARISON.includes(key) ? { ...acc, [key]: nextParams[key] } : acc, {});
             if (!isEqual(currentQuery, nextQuery)) {
                 const isSamePath = state.router?.location?.pathname.indexOf(pathname) !== -1;
                 return Observable.of(push({
@@ -117,7 +120,7 @@ export const gnsSearchResourcesEpic = (action$, store) =>
                     })
                 }));
             }
-            if (!isEqual(currentParams, nextParams)) {
+            if (reset || !isEqual(currentParams, nextParams)) {
                 return Observable.of(updateResourcesRequest({
                     action: 'PUSH',
                     params: nextParams,
@@ -136,9 +139,10 @@ const requestResourcesObservable = ({
 }, store) => {
     const state = store.getState();
     const customFilters = getCustomMenuFilters(state);
+    const requestParams = cleanParams({ ...params, ...state?.gnsearch?.config?.defaultQuery });
     return Observable
         .defer(() => getResources({
-            ...params,
+            ...requestParams,
             pageSize,
             customFilters
         }))
@@ -159,6 +163,20 @@ const requestResourcesObservable = ({
                     locationSearch: location.search,
                     locationPathname: location.pathname,
                     total
+                }),
+                loadingResources(false)
+            );
+        })
+        .catch(() => {
+            return Observable.of(
+                updateResources([], true),
+                updateResourcesMetadata({
+                    isNextPageAvailable: false,
+                    params,
+                    locationSearch: location.search,
+                    locationPathname: location.pathname,
+                    total: 0,
+                    error: true
                 }),
                 loadingResources(false)
             );
@@ -184,50 +202,80 @@ export const gnsSearchResourcesOnLocationChangeEpic = (action$, store) =>
         })
         .switchMap(action => {
 
-            const PAGE_SIZE = getPageSize();
-            const { isFirstRendering, location } = action.payload || {};
             const state = store.getState();
+            const pagination = !!state?.gnsearch?.config?.pagination;
+            const pageSize = state?.gnsearch?.config?.pageSize;
+            if (!pageSize) {
+                return Observable.empty();
+            }
+            const { isFirstRendering, location } = action.payload || {};
 
             const nextParams = state.gnsearch.nextParams;
 
-            const [previousParams, previousPage] = getParams(state.gnsearch.locationSearch, state.gnsearch.params);
-            const [currentParams, currentPage] = getParams(location.search, nextParams || {});
+            const [previousParams, previousPage] = getParams(state.gnsearch.locationSearch, state.gnsearch.params, { pagination });
+            const [currentParams, currentPage] = getParams(location.search, nextParams || {}, { pagination });
 
             const { pathname } = action.payload.location;
 
             // history action performed while navigating the browser history
             if (!nextParams || action.reset || isViewerPage(pathname)) {
-                const page = 1;
+                const page = pagination ? currentPage : 1;
                 const params = { ...currentParams, page };
+                const compareParams = pagination
+                    ? isEqual({ ...previousParams, page: previousPage }, { ...currentParams, page: currentPage })
+                    : isEqual(previousParams, currentParams);
                 // avoid new request while browsing through history
                 // if the latest saved request is equal to the new request
                 // also avoid request if location change is made to a viewer page
-                const shouldNotRequest = isViewerPage(pathname) || (!state?.gnsearch?.isFirstRequest && !isFirstRendering && isEqual(previousParams, currentParams) && !action.reset);
+                const shouldNotRequest = isViewerPage(pathname) || (!state?.gnsearch?.isFirstRequest && !isFirstRendering && compareParams && !action.reset);
 
                 if (shouldNotRequest) {
                     return Observable.empty();
                 }
                 return requestResourcesObservable({
                     params,
-                    pageSize: PAGE_SIZE,
+                    pageSize,
                     reset: true,
                     location
                 }, store);
             }
 
-            const resourcesLength = state.gnsearch?.resources.length || 0;
-            const loadedPages = Math.floor(resourcesLength / PAGE_SIZE);
-            const isNextPage = currentPage === previousPage + 1 && currentPage === loadedPages + 1;
-            const resetSearch = isFirstRendering || !isEqual(previousParams, currentParams) || !isNextPage;
-            const page = resetSearch ? 1 : currentPage;
+            let page;
+            let resetSearch = false;
+            if (pagination) {
+                page = !state?.gnsearch?.isFirstRequest && !isEqual(previousParams, currentParams) ? 1 : currentPage;
+                resetSearch = true;
+            } else {
+                const resourcesLength = state.gnsearch?.resources.length || 0;
+                const loadedPages = Math.floor(resourcesLength / pageSize);
+                const isNextPage = currentPage === previousPage + 1 && currentPage === loadedPages + 1;
+                resetSearch = isFirstRendering || !isEqual(previousParams, currentParams) || !isNextPage;
+                page = resetSearch ? 1 : currentPage;
+            }
             const params = { ...currentParams, page };
-
             return requestResourcesObservable({
                 params,
-                pageSize: PAGE_SIZE,
+                pageSize,
                 reset: resetSearch,
                 location
             }, store);
+        });
+
+export const gnsRequestResourceOnLocationChange = (action$, store) =>
+    action$.ofType(LOCATION_CHANGE)
+        .filter(({ payload }) => {
+            return payload.action === 'PUSH' || payload.action === 'POP';
+        })
+        .switchMap(action => {
+            const state = store.getState();
+            const { location } = action.payload || {};
+            const { query } = url.parse(location?.search || '', true);
+            const resource = getResourceData(state) || { pk: '', resource_type: '' };
+            const [pk, resourceType] = (query?.d || '').split(';');
+            if (`${resource?.pk}` === pk && `${resource?.resource_type}` === resourceType) {
+                return Observable.empty();
+            }
+            return Observable.of(requestResource(pk ? pk : undefined, resourceType));
         });
 
 export const gnsSelectResourceEpic = (action$, store) =>
@@ -308,5 +356,6 @@ export default {
     gnsSearchResourcesOnLocationChangeEpic,
     gnsSelectResourceEpic,
     getFeaturedResourcesEpic,
-    gnWatchStopCopyProcessOnSearch
+    gnWatchStopCopyProcessOnSearch,
+    gnsRequestResourceOnLocationChange
 };

@@ -35,6 +35,8 @@ import {
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { processResources } from '@js/actions/gnresource';
 import { getCurrentResourceCopyLoading } from '@js/selectors/resourceservice';
+import Dropdown from '@js/components/Dropdown';
+import FaIcon from '@js/components/FaIcon';
 
 /**
 * @module plugins/SaveAs
@@ -151,6 +153,39 @@ const ConnectedSaveAsButton = connect(
     }
 )((SaveAsButton));
 
+function CopyMenuItem({
+    resource,
+    authenticated,
+    onCopy
+}) {
+
+    if (!(authenticated
+        && resource?.is_copyable
+        && resource.download_url
+        && resource?.perms?.includes('download_resourcebase'))
+    ) {
+        return null;
+    }
+    // {type: 'user', value: 'add_resource'}
+    return (
+        <Dropdown.Item
+            onClick={() =>
+                onCopy([resource])
+            }
+        >
+            <FaIcon name="copy" />{' '}
+            <Message msgId="gnviewer.clone" />
+        </Dropdown.Item>
+    );
+}
+
+const ConnectedMenuItem = connect(
+    createSelector([isLoggedIn], (authenticated) => ({ authenticated })),
+    {
+        onCopy: setControlProperty.bind(null, ProcessTypes.COPY_RESOURCE, 'value')
+    }
+)((CopyMenuItem));
+
 export default createPlugin('SaveAs', {
     component: SaveAsPlugin,
     containers: {
@@ -171,6 +206,11 @@ export default createPlugin('SaveAs', {
         ActionNavbar: {
             name: 'SaveAs',
             Component: ConnectedSaveAsButton
+        },
+        ResourcesGrid: {
+            name: ProcessTypes.COPY_RESOURCE,
+            target: 'cardOptions',
+            Component: ConnectedMenuItem
         }
     },
     epics: {

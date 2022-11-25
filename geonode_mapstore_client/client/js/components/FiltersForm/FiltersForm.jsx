@@ -16,9 +16,10 @@ import FilterByExtent from './FilterByExtent';
 import FilterItems from './FilterItems';
 import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
+import omit from 'lodash/omit';
 import withDebounceOnCallback from '@mapstore/framework/components/misc/enhancers/withDebounceOnCallback';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
-import { FormControl as FormControlRB } from 'react-bootstrap';
+import { FormControl as FormControlRB, Glyphicon } from 'react-bootstrap';
 const FormControl = localizedProps('placeholder')(FormControlRB);
 function InputControl({ onChange, value, ...props }) {
     return <FormControl {...props} value={value} onChange={event => onChange(event.target.value)}/>;
@@ -62,7 +63,7 @@ function FilterForm({
                         size="sm"
                         variant="default"
                         onClick={onClear}
-                        disabled={isEmpty(query)}
+                        disabled={isEmpty(omit(query, ['d', 'page', 'sort']))}
                     >
                         <Message msgId="gnhome.clearFilters"/>
                     </Button>
@@ -70,9 +71,9 @@ function FilterForm({
                 <Button
                     variant="default"
                     onClick={() => onClose()}
-                    size="sm"
+                    className="square-button-md"
                 >
-                    <FaIcon name="times"/>
+                    <Glyphicon glyph="1-close"/>
                 </Button>
             </div>
             <div

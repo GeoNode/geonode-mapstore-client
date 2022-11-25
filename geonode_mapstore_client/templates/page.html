@@ -30,6 +30,11 @@
                 {% block container %}
                 {% endblock %}
 
+                {% block ms_scripts %}
+                    <div id="ms-container"></div>
+                    <script id="gn-script" src="{% static 'mapstore/dist/js/gn-components.js' %}?{% client_version %}"></script>
+                {% endblock %}
+
                 {% block footer %}
                     {% include './geonode-mapstore-client/snippets/footer.html' %}
                 {% endblock %}

@@ -15,7 +15,8 @@ import {
     UPDATE_RESOURCES_METADATA,
     SET_FEATURED_RESOURCES,
     REDUCE_TOTAL_COUNT,
-    INCREASE_TOTAL_COUNT
+    INCREASE_TOTAL_COUNT,
+    SET_SEARCH_CONFIG
 } from '@js/actions/gnsearch';
 
 import { UPDATE_SINGLE_RESOURCE } from '@js/actions/gnresource';
@@ -69,6 +70,7 @@ function gnsearch(state = defaultState, action) {
             ...state,
             total: action.metadata.total,
             isNextPageAvailable: action.metadata.isNextPageAvailable,
+            error: action.metadata.error,
             ...(action.metadata.params &&
                 {
                     params: action.metadata.params,
@@ -88,7 +90,8 @@ function gnsearch(state = defaultState, action) {
     case LOADING_RESOURCES: {
         return {
             ...state,
-            loading: action.loading
+            loading: action.loading,
+            ...(action.loading && { error: false })
         };
     }
     case SET_FEATURED_RESOURCES:
@@ -109,6 +112,12 @@ function gnsearch(state = defaultState, action) {
         return {
             ...state,
             total: state.total + 1
+        };
+    }
+    case SET_SEARCH_CONFIG: {
+        return {
+            ...state,
+            config: action.config
         };
     }
     default:

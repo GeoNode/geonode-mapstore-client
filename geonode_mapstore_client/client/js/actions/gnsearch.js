@@ -16,6 +16,7 @@ export const SET_FEATURED_RESOURCES = 'GEONODE:SET_FEATURED_RESOURCES';
 export const UPDATE_FEATURED_RESOURCES = 'GEONODE_SEARCH:UPDATE_FEATURED_RESOURCES';
 export const REDUCE_TOTAL_COUNT = 'GEONODE_REDUCE_TOTAL_COUNT';
 export const INCREASE_TOTAL_COUNT = 'GEONODE_INCREASE_TOTAL_COUNT';
+export const SET_SEARCH_CONFIG = 'GEONODE_SET_SEARCH_CONFIG';
 
 /**
 * Actions for GeoNode resource featured items
@@ -23,11 +24,12 @@ export const INCREASE_TOTAL_COUNT = 'GEONODE_INCREASE_TOTAL_COUNT';
 * @module actions/gnsearch
 */
 
-export function searchResources(params, pathname) {
+export function searchResources(params, pathname, reset) {
     return {
         type: SEARCH_RESOURCES,
         params,
-        pathname
+        pathname,
+        reset
     };
 }
 
@@ -100,6 +102,12 @@ export function increaseTotalCount() {
     };
 }
 
+export function setSearchConfig(config) {
+    return {
+        type: SET_SEARCH_CONFIG,
+        config
+    };
+}
 
 export default {
     SEARCH_RESOURCES,
@@ -110,5 +118,7 @@ export default {
     loadingResources,
     REQUEST_RESOURCE,
     requestResource,
-    setFeaturedResources
+    setFeaturedResources,
+    SET_SEARCH_CONFIG,
+    setSearchConfig
 };

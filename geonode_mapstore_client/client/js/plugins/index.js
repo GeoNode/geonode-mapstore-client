@@ -435,6 +435,14 @@ export const plugins = {
     DublinCoreDownloadPlugin: toLazyPlugin(
         'DublinCoreDownload',
         () => import(/* webpackChunkName: 'plugins/iso-download-plugin' */ '@js/plugins/downloads/DublinCoreDownload')
+    ),
+    ResourcesGridPlugin: toLazyPlugin(
+        'ResourcesGrid',
+        () => import(/* webpackChunkName: 'plugins/resources-grid' */ '@js/plugins/ResourcesGrid')
+    ),
+    FeaturedResourcesGridPlugin: toLazyPlugin(
+        'FeaturedResourcesGrid',
+        () => import(/* webpackChunkName: 'plugins/featured-resources-grid' */ '@js/plugins/FeaturedResourcesGrid')
     )
 };
 
@@ -444,7 +452,8 @@ const pluginsDefinition = {
         getMetadataUrl,
         getMetadataDetailUrl,
         resourceHasPermission,
-        canCopyResource
+        canCopyResource,
+        userHasPermission: (user, perm) => user?.perms?.includes(perm)
     },
     epics: {},
     reducers: {}

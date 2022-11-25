@@ -10,6 +10,8 @@ import React from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import Dropdown from '@js/components/Dropdown';
+import FaIcon from '@js/components/FaIcon';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@js/components/Button';
 import ResizableModal from '@mapstore/framework/components/misc/ResizableModal';
@@ -20,6 +22,8 @@ import { processResources } from '@js/actions/gnresource';
 import ResourceCard from '@js/components/ResourceCard';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import Loader from '@mapstore/framework/components/misc/Loader';
+import controls from '@mapstore/framework/reducers/controls';
+import { isLoggedIn } from '@mapstore/framework/selectors/security';
 
 function DeleteResourcePlugin({
     enabled,
@@ -134,14 +138,50 @@ const ConnectedDeleteButton = connect(
     }
 )((DeleteButton));
 
+function DeleteMenuItem({
+    resource,
+    authenticated,
+    onDelete
+}) {
+
+    if (!(authenticated && resource?.perms?.includes('delete_resourcebase'))) {
+        return null;
+    }
+
+    return (
+        <Dropdown.Item
+            onClick={() =>
+                onDelete([resource])
+            }
+        >
+            <FaIcon name="trash" />{' '}
+            <Message msgId="gnhome.delete" />
+        </Dropdown.Item>
+    );
+}
+
+const ConnectedMenuItem = connect(
+    createSelector([isLoggedIn], (authenticated) => ({ authenticated })),
+    {
+        onDelete: setControlProperty.bind(null, ProcessTypes.DELETE_RESOURCE, 'value')
+    }
+)((DeleteMenuItem));
+
 export default createPlugin('DeleteResource', {
     component: ConnectedDeleteResourcePlugin,
     containers: {
         ActionNavbar: {
             name: 'DeleteResource',
             Component: ConnectedDeleteButton
+        },
+        ResourcesGrid: {
+            name: ProcessTypes.DELETE_RESOURCE,
+            target: 'cardOptions',
+            Component: ConnectedMenuItem
         }
     },
     epics: {},
-    reducers: {}
+    reducers: {
+        controls
+    }
 });

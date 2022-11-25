@@ -9,7 +9,6 @@
 import expect from 'expect';
 import { setConfigProp } from "@mapstore/framework/utils/ConfigUtils";
 import {
-    getParsedGeoNodeConfiguration,
     getCustomMenuFilters
 } from '../config';
 
@@ -19,53 +18,6 @@ describe('config selector', () => {
         setConfigProp('geoNodeConfiguration', undefined);
         setTimeout(done);
     });
-    it('getParsedGeoNodeConfiguration', () => {
-        setConfigProp('monitorState', [
-            {
-                "name": "user",
-                "path": "security.user"
-            }
-        ]);
-        setConfigProp('geoNodeConfiguration', {
-            "cardsMenu": {
-                "items": []
-            },
-            "cardOptions": {
-                "items": [{
-                    "type": "link",
-                    "href": "/#",
-                    "labelId": "labelId"
-                }]
-            },
-            "filtersForm": {
-                "items": [{
-                    "id": "filter-id",
-                    "type": "select",
-                    "labelId": "labelId",
-                    "options": []
-                }]
-            }
-        });
-
-        const state = {
-            security: {
-                user: { pk: 1 }
-            }
-        };
-        const parsedConfiguration = getParsedGeoNodeConfiguration(state);
-        expect(parsedConfiguration.filterMenuItemsAllowed).toEqual([]);
-        expect(parsedConfiguration.cardOptionsItemsAllowed).toEqual([{
-            "type": "link",
-            "href": "/#",
-            "labelId": "labelId"
-        }]);
-        expect(parsedConfiguration.filtersFormItemsAllowed).toEqual([{
-            "id": "filter-id",
-            "type": "select",
-            "labelId": "labelId",
-            "options": []
-        }]);
-    });
     it('getCustomMenuFilters', () => {
         setConfigProp('monitorState', [
             {
@@ -73,32 +25,12 @@ describe('config selector', () => {
                 "path": "security.user"
             }
         ]);
-        setConfigProp('geoNodeConfiguration', {
-            "filtersForm": {
-                "items": [{
-                    "id": "pending-approval",
-                    "labelId": "pendingApproval",
-                    "type": "filter",
-                    "query": {
-                        "filter{is_approved}": false
-                    },
-                    "authenticated": true
-                },
-                {
-                    "type": "group",
-                    "labelId": "customFiltersTitle",
-                    "authenticated": true,
-                    "items": [
-                        {
-                            "id": "approved-resources",
-                            "labelId": "approvedResources",
-                            "type": "filter",
-                            "query": {
-                                "filter{is_approved}": true
-                            }
-                        }
-                    ]
-                }]
+        setConfigProp('geoNodeCustomFilters', {
+            'pending-approval': {
+                "filter{is_approved}": false
+            },
+            'approved-resources': {
+                "filter{is_approved}": true
             }
         });
 
@@ -111,15 +43,10 @@ describe('config selector', () => {
         expect(menuFilters).toEqual([
             {
                 id: 'pending-approval',
-                labelId: 'pendingApproval',
-                type: 'filter',
-                query: { 'filter{is_approved}': false },
-                authenticated: true
+                query: { 'filter{is_approved}': false }
             },
             {
                 id: 'approved-resources',
-                labelId: 'approvedResources',
-                type: 'filter',
                 query: { 'filter{is_approved}': true }
             }
         ]);
