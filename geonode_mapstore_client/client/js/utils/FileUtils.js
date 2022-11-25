@@ -40,3 +40,24 @@ export const determineResourceType = extension => {
     if (pcdExtensions.includes(extension)) return 'pcd';
     return 'unsupported';
 };
+
+export const getFileNameParts = (file) => {
+    const { name } = file;
+    const nameParts = name.split('.');
+    const ext = nameParts[nameParts.length - 1];
+    const baseName = [...nameParts].splice(0, nameParts.length - 1).join('.');
+    return { ext: ext.toLowerCase(), baseName };
+};
+
+/**
+ * Get file type from file.
+ * In cases where the file type is application/json (which happens when file was originally .geojson converted to .json)
+ * We return json as file type
+ */
+export const getFileType = (file) => {
+    const { type } = file;
+    if (type === 'application/json') {
+        return 'json';
+    }
+    return type;
+};
