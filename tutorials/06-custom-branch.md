@@ -1,6 +1,5 @@
-# Install a custom branch of the geonode-mapstore-client in the geonode-project
 
-This approach should be used only when other type of customizations does not fullfil the needs of the project.
+This approach should be used only when other type of customizations does not fullfil the needs of a GeoNode project.
 The following steps shows how to install geonode-mapstore-client from a github repositoty:
 
 - Create a new fork/branch

@@ -24,6 +24,10 @@ import { parseMapConfig, parseDocumentConfig } from '@js/utils/ResourceUtils';
 import { dashboardResource, originalDataSelector } from '@mapstore/framework/selectors/dashboard';
 import { dashboardLoaded } from '@mapstore/framework/actions/dashboard';
 
+/**
+* @module epics/gnsync
+*/
+
 const getRelevantResourceParams = (resourceType, state) => {
     let resources = [];
     switch (resourceType) {
@@ -46,7 +50,7 @@ const setResourceApi = {
     video: getDocumentByPk
 };
 
-/**
+/*
  * Get resource type and data for state update in sync process
  * @param {String} appType geostory or dashboard
  * @param {Object} resourceData Resource Object
@@ -77,7 +81,7 @@ const getSyncInfo = (appType, resourceData, successArr = []) => {
     return { type, data: updatedData };
 };
 
-/**
+/*
  * Get notification title, leve, and message for showNotification
  * @param {Number} errors length of errors array
  * @param {Number} successes length of success arra

@@ -1,10 +1,5 @@
-# Development
 
-- [Develop with a local GeoNode instance (python django + js client)](#develop-with-a-local-geonode-instance)
-
-- [Develop with a remote GeoNode instance (js client)](#develop-with-a-remote-geonode-instance)
-
-## Develop with a local GeoNode instance
+### Develop with a local GeoNode instance
 
 This setup allows to develop both the django and the GeoNode MapStore javascript applications including templates.
 
@@ -71,7 +66,7 @@ npm start
 Now open the url `http://localhost:8081/` to work on the client.
 
 
-## Develop with a remote GeoNode instance
+### Develop with a remote GeoNode instance
 
 This setup allows to develop only the GeoNode MapStore  javascript applications.
 

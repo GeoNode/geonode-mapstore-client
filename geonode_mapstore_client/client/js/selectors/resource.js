@@ -25,6 +25,10 @@ import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
 
+/**
+* @module selectors/resource
+*/
+
 export const getResourceId = (state) => {
     const resourceId = state?.gnresource?.id;
     const resourcePk = state?.gnresource?.data?.pk;

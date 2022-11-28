@@ -1,4 +1,3 @@
-# Custom theme colors
 
 The GeoNode theme allows to override colors with [css variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) in this ways the layout CSS structure will be always aligned with the version in use but with a customized look.
 
@@ -22,4 +21,4 @@ Here the steps to overrides the variables:
 </style>
 ```
 
-It is possible to use this [page/tool](theme.html) to customize and get the style snippet to apply to the theme.
+It is possible to use this [tool]{@tutorial theme} to customize and get the style snippet to apply to the theme.

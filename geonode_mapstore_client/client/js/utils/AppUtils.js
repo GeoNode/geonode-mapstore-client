@@ -203,6 +203,18 @@ export function setupConfiguration({
     // globlal window interface to interact with the django page
     const actionTrigger = generateActionTrigger(LOCATION_CHANGE);
     // similar implementation of MapStore2 API without the create part
+    /**
+     * @global
+     * @property {function} getMapState return the map state if available
+     * @property {function} triggerAction dispatch an action
+     * @property {function} onAction add listener to an action
+     * @property {function} offAction remove listener to an action
+     * @example
+     * // access to mapstore api
+     * window.addEventListener('mapstore:ready', function(event) {
+     *  const msAPI = event.detail;
+     * });
+     */
     window.MapStoreAPI = {
         ready: true,
         getMapState: function() {

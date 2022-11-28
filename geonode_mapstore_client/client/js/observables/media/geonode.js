@@ -13,7 +13,7 @@ import {
 } from '@js/api/geonode/v2';
 import { parseMapConfig, parseDocumentConfig } from '@js/utils/ResourceUtils';
 
-/**
+/*
  * Get promise of Image dimensions
  * @param {string} src geostory image source (href)
  * @returns {Promise}

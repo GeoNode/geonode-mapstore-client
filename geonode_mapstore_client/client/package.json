@@ -16,19 +16,19 @@
     }
   },
   "scripts": {
-    "compile": "mapstore-project compile && node postCompile && npm run docs",
+    "compile": "mapstore-project compile && node postCompile",
     "start": "mapstore-project start",
     "test": "mapstore-project test",
     "test:watch": "mapstore-project test:watch",
     "lint": "eslint js --ext .jsx,.js --fix",
-    "docs": "jsdoc2md -f js/**/* -t README.hbs > ../../docs/client.md"
+    "docs": "jsdoc -r js/plugins js/utils/AppUtils.js ./README.md -d ../../docs -u ../../tutorials"
   },
   "author": "GeoSolutions",
   "license": "BSD-2-Clause",
   "devDependencies": {
     "@mapstore/project": "1.0.24",
     "dotenv": "10.0.0",
-    "jsdoc-to-markdown": "7.1.0"
+    "jsdoc": "4.0.0"
   },
   "dependencies": {
     "@react-three/drei": "8.6.1",

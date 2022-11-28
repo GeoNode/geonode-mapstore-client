@@ -1,4 +1,3 @@
-# Update client applications bundles
 
 GeoNode MapStore Client django templates uses directly the bundles compiled and committed in the repository so it's important to compile the client and commit it to the repository. This operation is needed if you are working on a custom branch/fork of geonode-mapstore-client to include all the needed updates in the pip module.
 

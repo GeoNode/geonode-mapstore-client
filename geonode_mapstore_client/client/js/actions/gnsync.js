@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree.
 */
 
-/**
-* Sync geostory components with their live resources on geonode
-*/
+// Sync geostory components with their live resources on geonode
+
 export const SYNC_RESOURCES = 'GEONODE:SYNC_RESOURCES';
 
 export function syncResources() {
