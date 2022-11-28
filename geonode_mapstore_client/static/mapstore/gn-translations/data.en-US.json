@@ -60,6 +60,8 @@
             "noPublicContentContent": "This catalog doesn’t have public resources. <br/> Please <a href=\"/account/signup/?next=/\">register</a> or <a href=\"/account/login/?next=/\">sign in</a> to browse the contents.",
             "noContentYetTitle": "Welcome to GeoNode",
             "noContentYetContent": "This catalog doesn’t have published contents yet. <br/> We’re working to populate it with great resources. <br/><br/>Stay tuned!",
+            "errorResourcePageTitle": "Page Loading Error",
+            "errorResourcePageContent": "The selected resources page is not available",
             "resourcesFound": "{count, plural, =0 {0 Resources found} =1 {1 Resource found} other {# Resources found}}",
             "filterApplied": "{count, plural, =0 {0 filters applied} =1 {1 filter applied} other {# filters applied}}",
             "noResultsWithFilterTitle": "No results",

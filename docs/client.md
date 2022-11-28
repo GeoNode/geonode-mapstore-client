@@ -631,23 +631,6 @@ Plugin for SaveAs modal
 <a name="module_selectors/config"></a>
 
 ## selectors/config
-
-* [selectors/config](#module_selectors/config)
-    * [.getParsedGeoNodeConfiguration](#module_selectors/config.getParsedGeoNodeConfiguration)
-    * [.getCustomMenuFilters](#module_selectors/config.getCustomMenuFilters)
-
-<a name="module_selectors/config.getParsedGeoNodeConfiguration"></a>
-
-### selectors/config.getParsedGeoNodeConfiguration
-get the parsed geonode configuration that take into account
-user permissions and expressions
-
-**Kind**: static constant of [<code>selectors/config</code>](#module_selectors/config)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| state | <code>object</code> | redux state |
-
 <a name="module_selectors/config.getCustomMenuFilters"></a>
 
 ### selectors/config.getCustomMenuFilters

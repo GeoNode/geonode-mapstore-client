@@ -96,382 +96,6 @@
             "description": "Español"
         }
     },
-    "geoNodeConfiguration": {
-        "filtersForm": {
-            "items": [
-                {
-                    "type": "group",
-                    "labelId": "gnhome.customFiltersTitle",
-                    "items": [
-                        {
-                            "id": "my-resources",
-                            "labelId": "gnhome.myResources",
-                            "type": "filter",
-                            "query": {
-                                "filter{owner.pk}": "{state('user') && state('user').pk}"
-                            },
-                            "authenticated": true
-                        },{
-                            "id": "favorite",
-                            "labelId": "gnhome.favorites",
-                            "type": "filter",
-                            "query": {
-                                "favorite": true
-                            },
-                            "authenticated": true
-                        },
-                        {
-                            "id": "featured",
-                            "labelId": "gnhome.featuredList",
-                            "type": "filter",
-                            "query": {
-                                "filter{featured}": true
-                            }
-                        },
-                        {
-                            "id": "unpublished",
-                            "labelId": "gnhome.unpublished",
-                            "type": "filter",
-                            "query": {
-                                "filter{is_published}": false
-                            },
-                            "authenticated": true
-                        },
-                        {
-                            "id": "pending-approval",
-                            "labelId": "gnhome.pendingApproval",
-                            "type": "filter",
-                            "query": {
-                                "filter{is_approved}": false
-                            },
-                            "authenticated": true
-                        },
-                        {
-                            "id": "dataset",
-                            "labelId": "gnhome.datasets",
-                            "type": "filter",
-                            "query": {
-                                "filter{resource_type.in}": "dataset"
-                            },
-                            "items": [
-                                {
-                                    "id": "store-vector",
-                                    "labelId": "gnhome.vector",
-                                    "type": "filter",
-                                    "query": {
-                                        "filter{subtype.in}": "vector"
-                                    }
-                                },
-                                {
-                                    "id": "store-raster",
-                                    "labelId": "gnhome.raster",
-                                    "type": "filter",
-                                    "query": {
-                                        "filter{subtype.in}": "raster"
-                                    }
-                                },
-                                {
-                                    "id": "store-remote",
-                                    "labelId": "gnhome.remote",
-                                    "type": "filter",
-                                    "query": {
-                                        "filter{subtype.in}": "remote"
-                                    }
-                                },
-                                {
-                                    "id": "store-time-series",
-                                    "labelId": "gnhome.timeSeries",
-                                    "type": "filter",
-                                    "query": {
-                                        "filter{subtype.in}": "vector_time"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "id": "document",
-                            "labelId": "gnhome.documents",
-                            "type": "filter",
-                            "query": {
-                                "filter{resource_type.in}": "document"
-                            }
-                        },
-                        {
-                            "id": "map",
-                            "labelId": "gnhome.maps",
-                            "type": "filter",
-                            "query": {
-                                "filter{resource_type.in}": "map"
-                            }
-                        },
-                        {
-                            "id": "geostory",
-                            "labelId": "gnhome.geostories",
-                            "type": "filter",
-                            "query": {
-                                "filter{resource_type.in}": "geostory"
-                            }
-                        },
-                        {
-                            "id": "dashboard",
-                            "labelId": "gnhome.dashboards",
-                            "type": "filter",
-                            "query": {
-                                "filter{resource_type.in}": "dashboard"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "divider",
-                    "authenticated": true
-                },
-                {
-                    "labelId": "gnhome.categories",
-                    "placeholderId": "gnhome.categoriesPlaceholder",
-                    "type": "select",
-                    "suggestionsRequestKey": "categories"
-                },
-                {
-                    "labelId": "gnhome.keywords",
-                    "placeholderId": "gnhome.keywordsPlaceholder",
-                    "type": "select",
-                    "suggestionsRequestKey": "keywords"
-                },
-                {
-                    "labelId": "gnhome.regions",
-                    "placeholderId": "gnhome.regionsPlaceholder",
-                    "type": "select",
-                    "suggestionsRequestKey": "regions"
-                },
-                {
-                    "labelId": "gnhome.owners",
-                    "placeholderId": "gnhome.ownersPlaceholder",
-                    "type": "select",
-                    "suggestionsRequestKey": "owners"
-                }
-            ]
-        },
-        "filters": {
-            "order": {
-                "defaultLabelId": "gnhome.orderBy",
-                "options": [
-                    {
-                        "label": "Most recent",
-                        "labelId": "gnhome.mostRecent",
-                        "value": "-date"
-                    },
-                    {
-                        "label": "Less recent",
-                        "labelId": "gnhome.lessRecent",
-                        "value": "date"
-                    },
-                    {
-                        "label": "A Z",
-                        "labelId": "gnhome.aZ",
-                        "value": "title"
-                    },
-                    {
-                        "label": "Z A",
-                        "labelId": "gnhome.zA",
-                        "value": "-title"
-                    },
-                    {
-                        "label": "Most popular",
-                        "labelId": "gnhome.mostPopular",
-                        "value": "popular_count"
-                    }
-                ]
-            },
-            "extent": {
-                "layers": [
-                    {
-                        "type": "osm",
-                        "title": "Open Street Map",
-                        "name": "mapnik",
-                        "source": "osm",
-                        "group": "background",
-                        "visibility": true
-                    }
-                ],
-                "style": {
-                    "color": "#397AAB",
-                    "opacity": 0.8,
-                    "fillColor": "#397AAB",
-                    "fillOpacity": 0.4,
-                    "weight": 4
-                }
-            }
-        },
-        "cardsMenu": {
-            "items": [
-                {
-                    "labelId": "gnhome.addResource",
-                    "authenticated": true,
-                    "disableIf": "{((state('settings') && state('settings').isMobile) ? true : false)}",
-                    "type": "dropdown",
-                    "variant": "primary",
-                    "responsive": "true",
-                    "perms": [
-                        {
-                            "type": "user",
-                            "value": "add_resource"
-                        }
-                    ],
-                    "items": [
-                        {
-                            "labelId": "gnhome.uploadDataset",
-                            "value": "layer",
-                            "type": "link",
-                            "href": "/catalogue/#/upload/dataset",
-                            "authenticated": true,
-                            "perms": [
-                                {
-                                    "type": "user",
-                                    "value": "add_resource"
-                                }
-                            ]
-                        },
-                        {
-                            "labelId": "gnhome.uploadDocument",
-                            "value": "document",
-                            "type": "link",
-                            "href": "/catalogue/#/upload/document",
-                            "authenticated": true,
-                            "perms": [
-                                {
-                                    "type": "user",
-                                    "value": "add_resource"
-                                }
-                            ]
-                        },
-                        {
-                            "labelId": "gnhome.createDataset",
-                            "value": "layer",
-                            "type": "link",
-                            "href": "/createlayer/",
-                            "disableIf": "{((state('settings') && state('settings').createLayer) ? false : true)}",
-                            "authenticated": true,
-                            "perms": [
-                                {
-                                    "type": "user",
-                                    "value": "add_resource"
-                                }
-                            ]
-                        },
-                        {
-                            "labelId": "gnhome.createMap",
-                            "value": "map",
-                            "type": "link",
-                            "href": "/catalogue/#/map/new",
-                            "authenticated": true,
-                            "perms": [
-                                {
-                                    "type": "user",
-                                    "value": "add_resource"
-                                }
-                            ]
-                        },
-                        {
-                            "labelId": "gnhome.createGeostory",
-                            "value": "geostory",
-                            "type": "link",
-                            "href": "/catalogue/#/geostory/new",
-                            "authenticated": true,
-                            "perms": [
-                                {
-                                    "type": "user",
-                                    "value": "add_resource"
-                                }
-                            ]
-                        },
-                        {
-                            "labelId": "gnhome.createDashboard",
-                            "value": "dashboard",
-                            "type": "link",
-                            "href": "/catalogue/#/dashboard/new",
-                            "authenticated": true,
-                            "perms": [
-                                {
-                                    "type": "user",
-                                    "value": "add_resource"
-                                }
-                            ]
-                        },
-                        {
-                            "labelId": "gnhome.remoteServices",
-                            "value": "remote",
-                            "type": "link",
-                            "href": "/services/?limit=5",
-                            "authenticated": true,
-                            "perms": [
-                                {
-                                    "type": "user",
-                                    "value": "add_resource"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "divider",
-                    "authenticated": true,
-                    "perms": [
-                        {
-                            "type": "user",
-                            "value": "add_resource"
-                        }
-                    ]
-                }
-            ]
-        },
-        "cardOptions": {
-            "items": [
-                {
-                    "type": "button",
-                    "action": "delete",
-                    "labelId": "gnhome.delete",
-                    "icon": "trash",
-                    "authenticated": true,
-                    "perms": [
-                        {
-                            "type": "resource",
-                            "value": "delete_resourcebase"
-                        }
-                    ]
-                },
-                {
-                    "type": "button",
-                    "action": "copy",
-                    "labelId": "gnviewer.clone",
-                    "icon": "copy",
-                    "authenticated": true,
-                    "perms": [
-                        {
-                            "type": "user",
-                            "value": "add_resource"
-                        },
-                        {
-                            "type": "resource",
-                            "value": "download_resourcebase"
-                        }
-                    ]
-                },
-                {
-                    "type": "button",
-                    "action": "download",
-                    "labelId": "gnviewer.download",
-                    "icon": "download",
-                    "perms": [
-                        {
-                            "type": "resource",
-                            "value": "download_resourcebase"
-                        }
-                    ]
-                }
-            ]
-        }
-    },
     "plugins": {
         "dataset_preview": [
             {
@@ -793,7 +417,6 @@
             {
                 "name": "Playback"
             }
-            
         ],
         "geostory_embed": [
             {
@@ -2569,7 +2192,6 @@
                             "type": "plugin",
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
                         },
-
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
@@ -3015,6 +2637,30 @@
             },
             {
                 "name": "MediaViewer"
+            }
+        ],
+        "catalogue": [
+            {
+                "name": "ResourcesGrid",
+                "cfg": {
+                    "containerSelector": "#gn-catalogue",
+                    "enableGeoNodeCardsMenuItems": true
+                }
+            },
+            {
+                "name": "SaveAs",
+                "cfg": {
+                    "closeOnSave": true
+                }
+            },
+            {
+                "name": "DeleteResource"
+            },
+            {
+                "name": "DownloadResource"
+            },
+            {
+                "name": "Notifications"
             }
         ]
     }
