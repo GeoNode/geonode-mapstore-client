@@ -1,0 +1,23 @@
+{
+    "01-settings-variables": {
+        "title": "Change variables in settings.py"
+    },
+    "02-theme-variables": {
+        "title": "Custom theme colors"
+    },
+    "03-override-local-config": {
+        "title": "Edit localConfig.json via template override"
+    },
+    "04-development": {
+        "title": "Development"
+    },
+    "05-build": {
+        "title": "Update client applications bundles"
+    },
+    "06-custom-branch": {
+        "title": "Install a custom branch"
+    },
+    "theme": {
+        "title": "[tool] Theme variables generator"
+    }
+}

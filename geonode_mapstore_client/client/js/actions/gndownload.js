@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree.
 */
 
-/**
-* Sync geostory components with their live resources on geonode
-*/
+// Sync geostory components with their live resources on geonode
+
 export const DOWNLOAD_METADATA = 'GEONODE:DOWNLOAD_METADATA';
 export const DOWNLOAD_METADATA_COMPLETE = 'GEONODE:DOWNLOAD_METADATA_COMPLETE';
 

@@ -1,4 +1,3 @@
-# Change variables in settings.py
 
 The geonode project provides a settings.py file where it is possible to override some variables supported by the geonode-mapstore-client 
 
