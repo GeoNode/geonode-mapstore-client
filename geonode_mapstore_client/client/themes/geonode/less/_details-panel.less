@@ -104,7 +104,14 @@
         h6 {
             margin-top: 0
         }
-        [contenteditable]:focus-visible {
+        .editContainer-input {
+            border: none;
+            font-size: 1.4rem;
+            width: 100%;
+            text-overflow: ellipsis;
+            line-height: 1.4;
+        }
+        [contenteditable]:focus-visible, .editContainer-input {
             outline-color: @gn-editable-border;
         }
         &.imagepreview {
