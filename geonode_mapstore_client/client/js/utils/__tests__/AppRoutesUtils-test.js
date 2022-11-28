@@ -20,14 +20,14 @@ describe('Test App Routes Utils', () => {
             CATALOGUE: 'CatalogueRoute',
             DATASET_UPLOAD: 'UploadDatasetRoute',
             DOCUMENT_UPLOAD: 'UploadDocumentRoute',
-            HOME: 'HomeRoute'
+            COMPONENTS: 'ComponentsRoute'
         });
     });
 
-    it('test home route', () => {
-        const homeRoute = routeUtils.HOME_ROUTES[0];
-        expect(homeRoute.path).toEqual(['/']);
-        expect(homeRoute.name).toEqual('homepage');
+    it('test components route', () => {
+        const componentsRoute = routeUtils.COMPONENTS_ROUTES[0];
+        expect(componentsRoute.path).toEqual(['/']);
+        expect(componentsRoute.name).toEqual('components');
     });
 
     it('test map route', () => {

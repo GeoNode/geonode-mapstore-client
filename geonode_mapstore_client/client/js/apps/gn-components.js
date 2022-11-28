@@ -28,6 +28,7 @@ import StandardApp from '@mapstore/framework/components/app/StandardApp';
 import withExtensions from '@mapstore/framework/components/app/withExtensions';
 import gnsettings from '@js/reducers/gnsettings';
 import { updateGeoNodeSettings } from '@js/actions/gnsettings';
+import { COMPONENTS_ROUTES, appRouteComponentTypes } from '@js/utils/AppRoutesUtils';
 
 const requires = {};
 
@@ -38,14 +39,11 @@ const ConnectedRouter = connect((state) => ({
     locale: state?.locale || DEFAULT_LOCALE
 }))(Router);
 
+const viewer = {
+    [appRouteComponentTypes.COMPONENTS]: ComponentsRoute
+};
 
-const routes = [{
-    name: 'components',
-    path: [
-        '/'
-    ],
-    component: ComponentsRoute
-}];
+const routes = COMPONENTS_ROUTES.map(({ component, ...config }) => ({ ...config, component: viewer[component] }));
 
 document.addEventListener('DOMContentLoaded', function() {
     getEndpoints().then(() => {

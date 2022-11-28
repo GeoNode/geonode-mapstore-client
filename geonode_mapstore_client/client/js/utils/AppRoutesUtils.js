@@ -13,14 +13,14 @@ export const appRouteComponentTypes = {
     CATALOGUE: 'CatalogueRoute',
     DATASET_UPLOAD: 'UploadDatasetRoute',
     DOCUMENT_UPLOAD: 'UploadDocumentRoute',
-    HOME: 'HomeRoute'
+    COMPONENTS: 'ComponentsRoute'
 };
 
-export const HOME_ROUTES = [
+export const COMPONENTS_ROUTES = [
     {
-        name: 'homepage',
-        path: '/',
-        component: appRouteComponentTypes.HOME
+        name: 'components',
+        path: ['/'],
+        component: appRouteComponentTypes.COMPONENTS
     }
 ];
 
