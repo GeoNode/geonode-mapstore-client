@@ -89,7 +89,7 @@ const Router = forwardRef(({
                                     const routeConfig = route.pageConfig || {};
                                     const Component = route.component;
                                     if (route.protectedRoute && !user && urlHash === route.hash) {
-                                        window.location.href = `/account/login/?next=${encodeURIComponent(window.location.pathname + '/' + urlHash)}`;
+                                        window.location.href = `/account/login/?next=${encodeURIComponent(window.location.pathname + urlHash)}`;
                                         return null;
                                     }
                                     return (

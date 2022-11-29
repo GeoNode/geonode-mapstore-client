@@ -543,7 +543,7 @@ function ResourcesGrid({
                                 >
                                     {error
                                         ? <Button variant="primary" href="#/"><FaIcon name="refresh" /></Button>
-                                        : <Pagination
+                                        : (!loading || !!totalResources) && <Pagination
                                             prev
                                             next
                                             first
