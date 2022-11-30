@@ -54,49 +54,40 @@ function formatResourceLinkUrl(resourceUrl = '') {
 const ResourceMessage = ({ type, pathname, formatHref }) => {
     return (
         <span className="gn-details-panel-origin">
-            <Message msgId="gnviewer.resourceOrigin.a" />{' '}<a href={formatHref({
-                pathname,
-                query: {
-                    'filter{resource_type.in}': type
-                }
-            })} title="Search all similar resources">{type || 'resource'}</a>{' '}<Message msgId="gnviewer.resourceOrigin.from" />{' '}
+            <Message msgId="gnviewer.resourceOrigin.a" />{' '}
+            <a
+                href={formatHref({
+                    pathname,
+                    query: {
+                        'filter{resource_type.in}': type
+                    }
+                })}
+            >
+                {type || 'resource'}
+            </a>
+            {' '}<Message msgId="gnviewer.resourceOrigin.from" />{' '}
         </span>
     );
 };
 
-function DetailsPanel({
+
+const DetailsPanelTools = ({
     resource,
-    formatHref,
-    linkHref,
-    sectionStyle,
-    loading,
-    downloading,
-    getTypesInfo,
-    editTitle,
-    editThumbnail,
-    activeEditMode,
-    closePanel,
-    favorite,
-    onFavorite,
     enableFavorite,
-    onMapThumbnail,
-    savingThumbnailMap,
-    layers,
-    isThumbnailChanged,
-    onResourceThumbnail,
-    resourceThumbnailUpdating,
-    initialBbox,
-    enableMapViewer,
-    onClose,
+    favorite,
+    downloadUrl,
     onAction,
-    canDownload,
-    tabs,
-    pathname
-}) {
-    const detailsContainerNode = useRef();
+    onFavorite,
+    detailUrl,
+    editThumbnail,
+    resourceCanPreviewed,
+    canView,
+    metadataDetailUrl,
+    name
+}) => {
+
     const isMounted = useRef();
     const [copiedResourceLink, setCopiedResourceLink] = useState(false);
-    const [titleNodeRef, titleInView] = useInView();
 
     useEffect(() => {
         isMounted.current = true;
@@ -104,10 +95,6 @@ function DetailsPanel({
             isMounted.current = false;
         };
     }, []);
-
-    if (!resource && !loading) {
-        return null;
-    }
 
     const handleCopyPermalink = () => {
         setCopiedResourceLink(true);
@@ -122,22 +109,7 @@ function DetailsPanel({
         onFavorite(!fav);
     };
 
-    const types = getTypesInfo();
-    const {
-        formatDetailUrl = res => res?.detail_url,
-        canPreviewed,
-        hasPermission,
-        icon,
-        name
-    } = resource && (types[resource.subtype] || types[resource.resource_type]) || {};
-    const detailUrl = resource?.pk && formatDetailUrl(resource);
-    const resourceCanPreviewed = resource?.pk && canPreviewed && canPreviewed(resource);
-    const canView = resource?.pk && hasPermission && hasPermission(resource);
-    const downloadUrl = (resource?.href && resource?.href.includes('download')) ? resource?.href
-        : (resource?.download_url && canDownload) ? resource?.download_url : undefined;
-    const metadataDetailUrl = resource?.pk && getMetadataDetailUrl(resource);
-
-    const tools = (
+    return (
         <div className="gn-details-panel-tools">
             <ResourceStatus resource={resource} />
             {enableFavorite &&
@@ -175,7 +147,73 @@ function DetailsPanel({
             </Button>}
         </div>
     );
+};
 
+function DetailsPanel({
+    resource,
+    formatHref,
+    linkHref,
+    sectionStyle,
+    loading,
+    downloading,
+    getTypesInfo,
+    editTitle,
+    editThumbnail,
+    activeEditMode,
+    closePanel,
+    favorite,
+    onFavorite,
+    enableFavorite,
+    onMapThumbnail,
+    savingThumbnailMap,
+    layers,
+    isThumbnailChanged,
+    onResourceThumbnail,
+    resourceThumbnailUpdating,
+    initialBbox,
+    enableMapViewer,
+    onClose,
+    onAction,
+    canDownload,
+    tabs,
+    pathname
+}) {
+    const detailsContainerNode = useRef();
+    const [titleNodeRef, titleInView] = useInView();
+    if (!resource && !loading) {
+        return null;
+    }
+
+    const types = getTypesInfo();
+    const {
+        formatDetailUrl = res => res?.detail_url,
+        canPreviewed,
+        hasPermission,
+        icon,
+        name
+    } = resource && (types[resource.subtype] || types[resource.resource_type]) || {};
+    const detailUrl = resource?.pk && formatDetailUrl(resource);
+    const resourceCanPreviewed = resource?.pk && canPreviewed && canPreviewed(resource);
+    const canView = resource?.pk && hasPermission && hasPermission(resource);
+    const downloadUrl = (resource?.href && resource?.href.includes('download')) ? resource?.href
+        : (resource?.download_url && canDownload) ? resource?.download_url : undefined;
+    const metadataDetailUrl = resource?.pk && getMetadataDetailUrl(resource);
+    const tools = (
+        <DetailsPanelTools
+            name={name}
+            resource={resource}
+            enableFavorite={enableFavorite}
+            favorite={favorite}
+            downloadUrl={downloadUrl}
+            onAction={onAction}
+            onFavorite={onFavorite}
+            detailUrl={detailUrl}
+            editThumbnail={editThumbnail}
+            resourceCanPreviewed={resourceCanPreviewed}
+            canView={canView}
+            metadataDetailUrl={metadataDetailUrl}
+        />
+    );
     return (
         <div
             ref={detailsContainerNode}
