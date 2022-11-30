@@ -270,7 +270,30 @@
 
             "filterPendingUploadDocument": "Filter uploads by name...",
             "filterNoMatchUploadDocument": "Filter does not match an upload",
-            "uploadDocument": "Upload a document"
+            "uploadDocument": "Upload a document",
+            "owner": "Owner",
+            "created": "Created",
+            "published": "Published",
+            "lastModified": "Last modified",
+            "resourceType": "Resource type",
+            "category": "Category",
+            "pointOfContact": "Point of contact",
+            "keywords": "Keywords",
+            "regions": "Regions",
+            "license": "License",
+            "attribution": "Attribution",
+            "restriction": "Restriction",
+            "edition": "Edition",
+            "maintenanceFrequency": "Maintenance frequency",
+            "language": "Language",
+            "purpose": "Purpose",
+            "dataQuality": "Data quality",
+            "temporalExtent": "Temporal Extent",
+            "spatialRepresentationType": "Spatial representation type",
+            "supplementalInformation": "Supplemental information",
+            "abstract": "Abstract",
+            "readMore": "Read more",
+            "readLess": "Read less"
         }
     }
 }
