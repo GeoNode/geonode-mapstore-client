@@ -30,24 +30,12 @@
             .background-color-var(@theme-vars[placeholder-bg]);
         }
     }
-    .gn-details-panel-info {
-        .DList-containner{
-            .DList-cell--medium {
-                .background-color-var(@theme-vars[main-variant-bg]);
-            }
-
-
-            .DList, .DList-cell {
-                .border-color-var(@theme-vars[main-border-color]);
-            }
-        }
-    }
     .gn-edit-toogle {
         .background-color-var(@theme-vars[placeholder-bg]);
     }
 
     .gn-details-panel {
-        .editContainer {
+        .gn-details-text {
             &.imagepreview {
                 .icon-image-preview {
                     .color-var(@theme-vars[main-bg]);
@@ -61,6 +49,26 @@
     .card-img-placeholder {
         .background-color-var(@theme-vars[main-bg]);
         .color-var(@theme-vars[primary]);
+    }
+    .gn-details-info-fields {
+        .gn-details-info-row {
+            .border-bottom-color-var(@theme-vars[main-border-color]);
+            .gn-details-info-value {
+                .gn-details-info-html {
+                    .btn {
+                        .border-bottom-color-var(@theme-vars[primary]);
+                    }
+                }
+            }
+        }
+    }
+    .gn-details-info {
+        > .nav {
+            .background-color-var(@theme-vars[main-bg]);
+        }
+    }
+    .gn-details-panel-preview-wrapper {
+        .border-color-var(@theme-vars[main-border-color]);
     }
 }
 
@@ -91,7 +99,7 @@
         }
     }
 
-    .editContainer {
+    .gn-details-text {
         flex: 1;
         [contenteditable], h1, h2, h3, h4, h5, h6 {
             padding: 0;
@@ -104,18 +112,17 @@
         h6 {
             margin-top: 0
         }
-        .editContainer-input {
+        .gn-details-text-input {
             border: none;
             font-size: 1.4rem;
             width: 100%;
             text-overflow: ellipsis;
             line-height: 1.4;
         }
-        [contenteditable]:focus-visible, .editContainer-input {
+        [contenteditable]:focus-visible, .gn-details-text-input {
             outline-color: @gn-editable-border;
         }
         &.imagepreview {
-            width: 250px;
             z-index: 1;
             .icon-image-preview {
                 position: absolute;
@@ -142,10 +149,21 @@
 
 .gn-details-panel-header {
     display: flex;
-    flex-direction: row-reverse;
     position: sticky;
     top: 0;
     z-index: 10;
+    align-items: center;
+    padding-left: 1rem;
+    .fa + .gn-details-panel-header-title {
+        margin-left: 0.5rem;
+    }
+    .gn-details-panel-header-title {
+        flex: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-weight: bold;
+    }
 }
 
 .gn-details-panel-preview {
@@ -170,23 +188,10 @@
         margin-bottom: 0.3rem;
     }
 }
-.gn-details-panel-info{
-    .tabs-info {
-        width: 100%;
-        margin-top: 2em;
-        .tab-content{
-            padding: 2em;
-        }
-    }
-    .tab-content {
-        .table {
-            margin-bottom: 2.5em;
-            min-width: 700px;
-          }
-      }
-}
-.gn-details-panel-content, .gn-details-panel-info {
+
+.gn-details-panel-content {
     padding: 1rem;
+    padding-top: 0;
     font-size: 0.9em;
     display: flex;
     flex: 1 1 auto;
@@ -195,42 +200,29 @@
         font-size: 0.9rem;
         margin: 0.2em 0 0 0;
     }
-    .DList-containner {
-        margin: 0 0 2.8em 0;
-    .DList {
-        display: flex;
-        flex-wrap: wrap;
-        margin: 1em 0;
-        padding: 0;
-        border-width: 1px 1px 0px 1px;
-        border-style: solid;
-        margin: 1em 0 2em 0;
-      }
-      .DList-cell {
-        box-sizing: border-box;
-        flex-grow: 1;
-        width: 100%;
-        padding: 0.8em 1.2em;
-        overflow: hidden;
-        list-style: none;
-        border-bottom: 1px solid;
-
-      }
-      .DList--2cols > .DList-cell  { width: 75%; }
-      .DList--2cols > .DList-cell--medium  { width: 25%; }
-      .moreinfo{
-          margin: 1em 0;
-      }
-    }
-
 }
-
+.gn-details-panel-preview-wrapper {
+    border: 1px solid transparent;
+}
 .gn-details-panel-content-img {
     margin: 0 1.2em 0 0;
+    width: 250px;
+    position: relative;
     img {
-        width: 250px;
+        position: relative;
         height: auto;
         object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+    .card-img-placeholder,
+    .gn-details-panel-preview,
+    .ms-thumbnail,
+    .imagepreview,
+    .gn-detail-extent {
+        position: relative;
+        width: 100%;
+        height: 100%;
     }
     .gn-details-panel-preview{
         .map-thumbnail{
@@ -238,7 +230,7 @@
             top: 10px;
             left: 45px;
             border-radius: 2px;
-
+            z-index: 1;
             &.apply-button {
                 opacity: 1;
                 border-radius: 3px; 
@@ -246,9 +238,6 @@
         }
         .gn-detail-extent {
             position: relative;
-            width: 250px;
-            height: 180px;
-
         }
         .gn-detail-extent-action { 
             position: absolute;
@@ -256,7 +245,10 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
-
+            pointer-events: none;
+            button {
+                pointer-events: auto;
+            }
             .btn {
                 margin: 0.6rem;
             }
@@ -331,8 +323,8 @@
         align-items: center;
         display: flex;
     }
-    .editContainer {
-        h1.gn-text-editable {
+    .gn-details-text {
+        h1.gn-details-text-body {
             line-height: 1.4;
             padding-top: 0;
             padding-bottom: 0;
@@ -373,7 +365,8 @@
         width: 100% !important;
         height: auto !important;
     }
-    .editContainer, .gn-text-editable{
+    .gn-details-text,
+    .gn-details-text-body {
         display: inline-block;
     }
 }
@@ -415,6 +408,70 @@
     right: 0px;
 }
 
+.gn-details-info {
+    padding: 1rem;
+    > .nav {
+        position: sticky;
+        top: 40px;
+        z-index: 1;
+    }
+    .tab-content {
+        margin-top: 0.5rem;
+    }
+}
+
+.gn-details-info-fields {
+    padding: 0.5rem 0;
+    font-size: @font-size-small;
+    position: relative;
+    * {
+        position: relative;
+    }
+    .gn-details-info-row {
+        display: flex;
+        border-bottom: 1px solid transparent;
+        word-break: break-word;
+        .gn-details-info-label {
+            width: 250px; // similar to thumbnail
+            padding: 0.25rem;
+            font-weight: lighter;
+        }
+        .gn-details-info-value {
+            padding: 0.25rem;
+            flex: 1;
+            padding-left: 1rem;
+            max-width: calc(100% - 250px);
+            display: flex;
+            .gn-details-info-html {
+                &.collapsed {
+                    display: flex;
+                    width: 100%;
+                    .gn-details-info-html-value {
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                    }
+                }
+                .btn {
+                    padding: 0;
+                    border: none;
+                    border-bottom: 1px solid transparent;
+                }
+            }
+            &> a + a {
+                margin-left: 0.5rem;
+            }
+        }
+    }
+}
+.gn-details-panel-content-img {
+    > img,
+    > .gn-details-panel-preview-wrapper {
+        position: sticky;
+        top: 40px;
+    }
+}
+
 @media screen and (max-width: @screen-xs) {
     .gn-details-panel-title h1 {
         font-size: 1rem;
@@ -425,23 +482,23 @@
     }
 
     .gn-details-panel-content-img {
+        width: 100%;
         margin: 0 0 1.2rem 0;
     }
 
-    .gn-details-panel .editContainer.imagepreview {
+    .gn-details-panel .gn-details-text.imagepreview {
         width: 100%;
     }
-
-    .gn-details-panel-content,
-    .gn-details-panel-info {
-        .DList-containner {
-            .DList--2cols>.DList-cell,
-            .DList--2cols>.DList-cell--medium {
+    .gn-details-info-fields {
+        .gn-details-info-row {
+            flex-direction: column;
+            .gn-details-info-label {
                 width: 100%;
             }
-
-            .DList-cell {
-                text-overflow: ellipsis;
+            .gn-details-info-value {
+                padding-left: 0.25rem;
+                font-size: @font-size-base;
+                max-width: 100%;
             }
         }
     }

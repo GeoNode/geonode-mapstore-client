@@ -76,7 +76,22 @@
             .background-color-var(@theme-vars[success]);
         }
     }
-    
+    .tabs-underline {
+        > .nav > li {
+            > a {
+                .color-var(@theme-vars[main-color], true);
+                .background-color-var(@theme-vars[main-bg], true);
+            }
+            > a:hover {
+                .border-bottom-color-var(@theme-vars[main-border-color]);
+            }
+            &.active {
+                > a {
+                    .border-bottom-color-var(@theme-vars[primary]);
+                }
+            }
+        }
+    }
 }
 
 // **************
@@ -204,4 +219,16 @@ body {
 
 div.chart-color-class-modal {
     z-index: 10;
+}
+
+.tabs-underline {
+    > .nav > li {
+        + li {
+            margin-left: 1rem;
+        }
+        > a {
+            padding: 0;
+            border-bottom: 0.2rem solid transparent;
+        }
+    }
 }

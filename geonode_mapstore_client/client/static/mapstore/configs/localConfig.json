@@ -663,7 +663,106 @@
             {
                 "name": "DetailViewer",
                 "cfg": {
-                    "containerPosition": "rightOverlay"
+                    "containerPosition": "rightOverlay",
+                    "tabs": [
+                        {
+                            "type": "tab",
+                            "id": "info",
+                            "labelId": "gnviewer.info",
+                            "items": [
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.title",
+                                    "value": "{context.get(state('gnResourceData'), 'title')}"
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.owner",
+                                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
+                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
+                                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.created",
+                                    "value": "{context.get(state('gnResourceData'), 'created')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.published",
+                                    "value": "{context.get(state('gnResourceData'), 'date')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.lastModified",
+                                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.resourceType",
+                                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
+                                    }
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.category",
+                                    "value": "{context.get(state('gnResourceData'), 'category.identifier')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "filter{category.identifier.in}": "{context.get(state('gnResourceData'), 'category.identifier')}"
+                                    }
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.pointOfContact",
+                                    "href": "{'/messages/create/' + context.get(state('gnResourceData'), 'poc.pk')}",
+                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'poc'))}",
+                                    "disableIf": "{!context.get(state('gnResourceData'), 'poc.username')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.keywords",
+                                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
+                                    "valueKey": "name",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{keywords.slug.in}": "${slug}"
+                                    }
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.regions",
+                                    "value": "{context.get(state('gnResourceData'), 'regions')}",
+                                    "valueKey": "name",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{regions.name.in}": "${name}"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.attribution",
+                                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.language",
+                                    "value": "{context.get(state('gnResourceData'), 'language')}"
+                                },
+                                {
+                                    "type": "html",
+                                    "labelId": "gnviewer.supplementalInformation",
+                                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
+                                }
+                            ]
+                        }
+                    ]
                 }
             },
             {
@@ -1417,7 +1516,106 @@
             {
                 "name": "DetailViewer",
                 "cfg": {
-                    "containerPosition": "rightOverlay"
+                    "containerPosition": "rightOverlay",
+                    "tabs": [
+                        {
+                            "type": "tab",
+                            "id": "info",
+                            "labelId": "gnviewer.info",
+                            "items": [
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.title",
+                                    "value": "{context.get(state('gnResourceData'), 'title')}"
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.owner",
+                                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
+                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
+                                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.created",
+                                    "value": "{context.get(state('gnResourceData'), 'created')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.published",
+                                    "value": "{context.get(state('gnResourceData'), 'date')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.lastModified",
+                                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.resourceType",
+                                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
+                                    }
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.category",
+                                    "value": "{context.get(state('gnResourceData'), 'category.identifier')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "filter{category.identifier.in}": "{context.get(state('gnResourceData'), 'category.identifier')}"
+                                    }
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.pointOfContact",
+                                    "href": "{'/messages/create/' + context.get(state('gnResourceData'), 'poc.pk')}",
+                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'poc'))}",
+                                    "disableIf": "{!context.get(state('gnResourceData'), 'poc.username')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.keywords",
+                                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
+                                    "valueKey": "name",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{keywords.slug.in}": "${slug}"
+                                    }
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.regions",
+                                    "value": "{context.get(state('gnResourceData'), 'regions')}",
+                                    "valueKey": "name",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{regions.name.in}": "${name}"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.attribution",
+                                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.language",
+                                    "value": "{context.get(state('gnResourceData'), 'language')}"
+                                },
+                                {
+                                    "type": "html",
+                                    "labelId": "gnviewer.supplementalInformation",
+                                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
+                                }
+                            ]
+                        }
+                    ]
                 }
             },
             {
@@ -1947,7 +2145,106 @@
             {
                 "name": "DetailViewer",
                 "cfg": {
-                    "containerPosition": "rightOverlay"
+                    "containerPosition": "rightOverlay",
+                    "tabs": [
+                        {
+                            "type": "tab",
+                            "id": "info",
+                            "labelId": "gnviewer.info",
+                            "items": [
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.title",
+                                    "value": "{context.get(state('gnResourceData'), 'title')}"
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.owner",
+                                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
+                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
+                                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.created",
+                                    "value": "{context.get(state('gnResourceData'), 'created')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.published",
+                                    "value": "{context.get(state('gnResourceData'), 'date')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.lastModified",
+                                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.resourceType",
+                                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
+                                    }
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.category",
+                                    "value": "{context.get(state('gnResourceData'), 'category.identifier')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "filter{category.identifier.in}": "{context.get(state('gnResourceData'), 'category.identifier')}"
+                                    }
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.pointOfContact",
+                                    "href": "{'/messages/create/' + context.get(state('gnResourceData'), 'poc.pk')}",
+                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'poc'))}",
+                                    "disableIf": "{!context.get(state('gnResourceData'), 'poc.username')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.keywords",
+                                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
+                                    "valueKey": "name",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{keywords.slug.in}": "${slug}"
+                                    }
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.regions",
+                                    "value": "{context.get(state('gnResourceData'), 'regions')}",
+                                    "valueKey": "name",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{regions.name.in}": "${name}"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.attribution",
+                                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.language",
+                                    "value": "{context.get(state('gnResourceData'), 'language')}"
+                                },
+                                {
+                                    "type": "html",
+                                    "labelId": "gnviewer.supplementalInformation",
+                                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
+                                }
+                            ]
+                        }
+                    ]
                 }
             },
             {
@@ -2137,7 +2434,106 @@
             {
                 "name": "DetailViewer",
                 "cfg": {
-                    "containerPosition": "rightOverlay"
+                    "containerPosition": "rightOverlay",
+                    "tabs": [
+                        {
+                            "type": "tab",
+                            "id": "info",
+                            "labelId": "gnviewer.info",
+                            "items": [
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.title",
+                                    "value": "{context.get(state('gnResourceData'), 'title')}"
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.owner",
+                                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
+                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
+                                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.created",
+                                    "value": "{context.get(state('gnResourceData'), 'created')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.published",
+                                    "value": "{context.get(state('gnResourceData'), 'date')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.lastModified",
+                                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.resourceType",
+                                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
+                                    }
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.category",
+                                    "value": "{context.get(state('gnResourceData'), 'category.identifier')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "filter{category.identifier.in}": "{context.get(state('gnResourceData'), 'category.identifier')}"
+                                    }
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.pointOfContact",
+                                    "href": "{'/messages/create/' + context.get(state('gnResourceData'), 'poc.pk')}",
+                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'poc'))}",
+                                    "disableIf": "{!context.get(state('gnResourceData'), 'poc.username')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.keywords",
+                                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
+                                    "valueKey": "name",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{keywords.slug.in}": "${slug}"
+                                    }
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.regions",
+                                    "value": "{context.get(state('gnResourceData'), 'regions')}",
+                                    "valueKey": "name",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{regions.name.in}": "${name}"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.attribution",
+                                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.language",
+                                    "value": "{context.get(state('gnResourceData'), 'language')}"
+                                },
+                                {
+                                    "type": "html",
+                                    "labelId": "gnviewer.supplementalInformation",
+                                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
+                                }
+                            ]
+                        }
+                    ]
                 }
             },
             {
@@ -2245,7 +2641,106 @@
             {
                 "name": "DetailViewer",
                 "cfg": {
-                    "containerPosition": "rightOverlay"
+                    "containerPosition": "rightOverlay",
+                    "tabs": [
+                        {
+                            "type": "tab",
+                            "id": "info",
+                            "labelId": "gnviewer.info",
+                            "items": [
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.title",
+                                    "value": "{context.get(state('gnResourceData'), 'title')}"
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.owner",
+                                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
+                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
+                                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.created",
+                                    "value": "{context.get(state('gnResourceData'), 'created')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.published",
+                                    "value": "{context.get(state('gnResourceData'), 'date')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.lastModified",
+                                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.resourceType",
+                                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
+                                    }
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.category",
+                                    "value": "{context.get(state('gnResourceData'), 'category.identifier')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "filter{category.identifier.in}": "{context.get(state('gnResourceData'), 'category.identifier')}"
+                                    }
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.pointOfContact",
+                                    "href": "{'/messages/create/' + context.get(state('gnResourceData'), 'poc.pk')}",
+                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'poc'))}",
+                                    "disableIf": "{!context.get(state('gnResourceData'), 'poc.username')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.keywords",
+                                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
+                                    "valueKey": "name",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{keywords.slug.in}": "${slug}"
+                                    }
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.regions",
+                                    "value": "{context.get(state('gnResourceData'), 'regions')}",
+                                    "valueKey": "name",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{regions.name.in}": "${name}"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.attribution",
+                                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.language",
+                                    "value": "{context.get(state('gnResourceData'), 'language')}"
+                                },
+                                {
+                                    "type": "html",
+                                    "labelId": "gnviewer.supplementalInformation",
+                                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
+                                }
+                            ]
+                        }
+                    ]
                 }
             },
             {
@@ -2644,7 +3139,106 @@
                 "name": "ResourcesGrid",
                 "cfg": {
                     "containerSelector": "#gn-catalogue",
-                    "enableGeoNodeCardsMenuItems": true
+                    "enableGeoNodeCardsMenuItems": true,
+                    "detailsTabs": [
+                        {
+                            "type": "tab",
+                            "id": "info",
+                            "labelId": "gnviewer.info",
+                            "items": [
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.title",
+                                    "value": "{context.get(state('gnResourceData'), 'title')}"
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.owner",
+                                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
+                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
+                                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.created",
+                                    "value": "{context.get(state('gnResourceData'), 'created')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.published",
+                                    "value": "{context.get(state('gnResourceData'), 'date')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "MMMM Do YYYY",
+                                    "labelId": "gnviewer.lastModified",
+                                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.resourceType",
+                                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
+                                    }
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.category",
+                                    "value": "{context.get(state('gnResourceData'), 'category.identifier')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "filter{category.identifier.in}": "{context.get(state('gnResourceData'), 'category.identifier')}"
+                                    }
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.pointOfContact",
+                                    "href": "{'/messages/create/' + context.get(state('gnResourceData'), 'poc.pk')}",
+                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'poc'))}",
+                                    "disableIf": "{!context.get(state('gnResourceData'), 'poc.username')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.keywords",
+                                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
+                                    "valueKey": "name",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{keywords.slug.in}": "${slug}"
+                                    }
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.regions",
+                                    "value": "{context.get(state('gnResourceData'), 'regions')}",
+                                    "valueKey": "name",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{regions.name.in}": "${name}"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.attribution",
+                                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.language",
+                                    "value": "{context.get(state('gnResourceData'), 'language')}"
+                                },
+                                {
+                                    "type": "html",
+                                    "labelId": "gnviewer.supplementalInformation",
+                                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
+                                }
+                            ]
+                        }
+                    ]
                 }
             },
             {

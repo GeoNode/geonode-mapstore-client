@@ -297,7 +297,30 @@
             "embeddashboard": "Intégrer ce Tableau de bord",
             "directLink": "BLien direct",
             "iso": "Métadonnées ISO",
-            "dublinCore": "Métadonnées de Dublin Core"
+            "dublinCore": "Métadonnées de Dublin Core",
+            "owner": "Propriétaire",
+            "created": "Créé",
+            "published": "Publié",
+            "lastModified": "Dernière modification",
+            "resourceType": "Type de ressource",
+            "category": "Catégorie",
+            "pointOfContact": "Point de contact",
+            "keywords": "Mots clés",
+            "regions": "Régions",
+            "license": "Licence",
+            "attribution": "Attribution",
+            "restriction": "Restriction",
+            "edition": "Édition",
+            "maintenanceFrequency": "Fréquence de maintenance",
+            "language": "Langue",
+            "purpose": "Objectif",
+            "dataQuality": "Qualité des données",
+            "temporalExtent": "Etendue temporelle",
+            "spatialRepresentationType": "Type de représentation spatiale",
+            "supplementalInformation": "Informations supplémentaires",
+            "abstract": "Résumé",
+            "readMore": "En savoir plus",
+            "readLess": "Lire moins"
         }
     }
 }

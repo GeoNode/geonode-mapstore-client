@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { getUserName } from '@js/utils/SearchUtils';
 import ALink from '@js/components/ALink';
 
-function AuthorInfo({ resource, readOnly, formatHref, ...props }) {
+function AuthorInfo({ resource, readOnly, formatHref, pathname, ...props }) {
 
     if (props.detailsPanel) {
         return (<ALink readOnly={readOnly} href={formatHref({
+            pathname,
             query: {
                 'filter{owner.username.in}': resource.owner?.username
             }
@@ -18,6 +19,7 @@ function AuthorInfo({ resource, readOnly, formatHref, ...props }) {
             <img src={resource.owner.avatar} alt={getUserName(resource.owner)} className="gn-card-author-image" />
         }
         <ALink readOnly={readOnly} href={formatHref({
+            pathname,
             query: {
                 'filter{owner.username.in}': resource.owner?.username
             }

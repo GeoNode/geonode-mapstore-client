@@ -18,10 +18,7 @@ import {
     FullScreenActionButton,
     FilterLayerActionButton
 } from '@js/plugins/actionnavbar/buttons';
-import { getMetadataUrl,
-    getMetadataDetailUrl,
-    resourceHasPermission,
-    canCopyResource } from '@js/utils/ResourceUtils';
+import { getPluginsContext } from '@js/utils/PluginsContextUtils';
 
 const EXCLUDED_EPICS_NAMES = [
     'loadGeostoryEpic',
@@ -448,13 +445,7 @@ export const plugins = {
 
 const pluginsDefinition = {
     plugins,
-    requires: {
-        getMetadataUrl,
-        getMetadataDetailUrl,
-        resourceHasPermission,
-        canCopyResource,
-        userHasPermission: (user, perm) => user?.perms?.includes(perm)
-    },
+    requires: getPluginsContext(),
     epics: {},
     reducers: {}
 };

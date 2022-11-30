@@ -356,7 +356,8 @@ function ResourcesGrid({
     ],
     onReplaceLocation,
     error,
-    enableGeoNodeCardsMenuItems
+    enableGeoNodeCardsMenuItems,
+    detailsTabs = []
 }, context) {
 
     const customCardsMenuItems = enableGeoNodeCardsMenuItems ? getConfigProp('geoNodeCardsMenuItems') || [] : [];
@@ -364,7 +365,8 @@ function ResourcesGrid({
         menuItems: [...customCardsMenuItems, ...menuItems],
         filtersFormItems,
         extent,
-        order
+        order,
+        detailsTabs
     });
 
     const { loadedPlugins } = context;
@@ -627,10 +629,12 @@ function ResourcesGrid({
                         className="gn-resource-detail"
                     >
                         {!isEmpty(resource) && <ConnectedDetailsPanel
+                            key={`${resource.pk}:${resource.resource_type}`}
                             enableFavorite={!!user}
                             resource={resource}
                             linkHref={closeDetailPanelHref}
                             formatHref={handleFormatHref}
+                            tabs={parsedConfig.detailsTabs}
                         />}
                     </div>
                 </div>,
