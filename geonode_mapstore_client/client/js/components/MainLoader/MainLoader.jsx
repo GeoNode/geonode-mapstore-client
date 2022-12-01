@@ -9,10 +9,11 @@
 import React from 'react';
 
 function MainLoader({
-    text
+    text,
+    className = ''
 }) {
     return (
-        <div className="gn-main-event-container">
+        <div className={`gn-main-event-container${className ? ` ${className}` : ''}`}>
             <div className="gn-main-event-content">
                 <div className="gn-main-loader"></div>
                 <div className="gn-main-event-text">{text}</div>

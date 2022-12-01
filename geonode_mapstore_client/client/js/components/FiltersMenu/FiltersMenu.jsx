@@ -13,7 +13,6 @@ import Badge from '@js/components/Badge';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import FaIcon from '@js/components/FaIcon';
-import useLocalStorage from '@js/hooks/useLocalStorage';
 import Menu from '@js/components/Menu';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import Spinner from '@js/components/Spinner/Spinner';
@@ -30,12 +29,13 @@ const FiltersMenu = forwardRef(({
     defaultLabelId,
     totalResources,
     totalFilters,
-    loading
+    loading,
+    cardLayoutStyle,
+    setCardLayoutStyle
 }, ref) => {
 
     const { isMobile } = getConfigProp('geoNodeSettings');
     const selectedSort = orderOptions.find(({ value }) => order === value);
-    const [cardLayoutStyle, setCardLayoutStyle] = useLocalStorage('layoutCardsStyle', 'grid');
     function handleToggleCardLayoutStyle() {
         setCardLayoutStyle(cardLayoutStyle === 'grid' ? 'list' : 'grid');
     }

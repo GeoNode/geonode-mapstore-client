@@ -12,9 +12,9 @@ import HTML from '@mapstore/framework/components/I18N/HTML';
 import FaIcon from '@js/components/FaIcon';
 import ResourceCard from '@js/components/ResourceCard';
 import { withResizeDetector } from 'react-resize-detector';
-import useLocalStorage from '@js/hooks/useLocalStorage';
 import useInfiniteScroll from '@js/hooks/useInfiniteScroll';
 import { getResourceStatuses } from '@js/utils/ResourceUtils';
+import MainLoader from '@js/components/MainLoader';
 
 const Cards = withResizeDetector(({
     resources,
@@ -25,7 +25,9 @@ const Cards = withResizeDetector(({
     buildHrefByTemplate,
     options,
     downloading,
-    getDetailHref
+    getDetailHref,
+    cardLayoutStyle,
+    children
 }) => {
 
     const width = containerWidth || detectedWidth;
@@ -38,7 +40,6 @@ const Cards = withResizeDetector(({
 
     const ulPadding = Math.floor(margin / 2);
     const isSingleCard = count === 0 || count === 1;
-    const [cardLayoutStyle] = useLocalStorage('layoutCardsStyle');
 
     const gridLayoutSpace = (idx) => {
 
@@ -111,6 +112,7 @@ const Cards = withResizeDetector(({
                     </li>
                 );
             })}
+            {children}
         </ul>
     );
 });
@@ -131,7 +133,8 @@ const InfiniteScrollCardGrid = ({
     buildHrefByTemplate,
     scrollContainer,
     downloading,
-    getDetailHref
+    getDetailHref,
+    cardLayoutStyle
 }) => {
 
     useInfiniteScroll({
@@ -168,6 +171,7 @@ const InfiniteScrollCardGrid = ({
                             options={cardOptions}
                             buildHrefByTemplate={buildHrefByTemplate}
                             downloading={downloading}
+                            cardLayoutStyle={cardLayoutStyle}
                         />
                         <div className="gn-card-grid-pagination">
                             {loading && <Spinner animation="border" role="status">
@@ -195,7 +199,9 @@ const FixedCardGrid = ({
     downloading,
     onSelect,
     footer,
-    getDetailHref
+    getDetailHref,
+    cardLayoutStyle,
+    loading
 }) => {
     return (
         <div className="gn-card-grid">
@@ -222,7 +228,10 @@ const FixedCardGrid = ({
                             buildHrefByTemplate={buildHrefByTemplate}
                             downloading={downloading}
                             onSelect={onSelect}
-                        />
+                            cardLayoutStyle={cardLayoutStyle}
+                        >
+                            {loading && resources.length > 0 ? <MainLoader className="gn-cards-loader"/> : null}
+                        </Cards>
                         {footer}
                     </div>
                 </div>

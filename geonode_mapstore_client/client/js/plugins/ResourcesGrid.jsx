@@ -52,6 +52,8 @@ import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { replace } from 'connected-react-router';
 import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
+import useLocalStorage from '@js/hooks/useLocalStorage';
+import MainLoader from '@js/components/MainLoader';
 
 const suggestionsRequestTypes = {
     categories: {
@@ -104,6 +106,35 @@ const simulateAClick = (href) => {
     a.setAttribute('href', href);
     a.click();
 };
+
+function PaginationCustom({
+    activePage,
+    items,
+    onSelect
+}) {
+    const [page, setPage] = useState(activePage);
+    function handleSelect(value) {
+        setPage(value);
+        onSelect(value);
+    }
+    useEffect(() => {
+        if (activePage !== page) {
+            setPage(activePage);
+        }
+    }, [activePage]);
+    return (
+        <Pagination
+            prev={<FaIcon name="angle-left" />}
+            next={<FaIcon name="angle-right" />}
+            ellipsis
+            boundaryLinks
+            items={items}
+            maxButtons={3}
+            activePage={page}
+            onSelect={handleSelect}
+        />
+    );
+}
 
 function ResourcesGrid({
     location,
@@ -345,7 +376,7 @@ function ResourcesGrid({
     footerNodeSelector = '.gn-footer',
     containerSelector = '',
     scrollContainerSelector = '',
-    pagination = true,
+    pagination,
     disableDetailPanel,
     disableFilters,
     filterPagePath = '/catalogue/#/search/filter',
@@ -360,6 +391,12 @@ function ResourcesGrid({
     detailsTabs = []
 }, context) {
 
+    const [cardLayoutStyle, setCardLayoutStyle] = useLocalStorage('layoutCardsStyle', 'grid');
+    const isPaginated = pagination !== undefined
+        ? pagination
+        : cardLayoutStyle === 'grid'
+            ? false
+            : true;
     const customCardsMenuItems = enableGeoNodeCardsMenuItems ? getConfigProp('geoNodeCardsMenuItems') || [] : [];
     const parsedConfig = parsePluginConfigExpressions(monitoredState, {
         menuItems: [...customCardsMenuItems, ...menuItems],
@@ -425,17 +462,41 @@ function ResourcesGrid({
         handleUpdate(newParams);
     }
 
+    const [init, setInit] = useState(false);
+
+    // check if page query exist
+    // if the pagination is undefined
     useEffect(() => {
-        onInit({
-            defaultQuery,
-            pageSize,
-            pagination
-        });
-        const { query } = url.parse(location.search, true);
-        onSearch({
-            ...query
-        }, undefined, true);
+        if (!init) {
+            const { query } = url.parse(location.search, true);
+            if (pagination === undefined && query.page) {
+                setCardLayoutStyle('list');
+            }
+            setInit(true);
+        }
     }, []);
+
+    useEffect(() => {
+        if (init) {
+            onInit({
+                defaultQuery,
+                pageSize,
+                pagination: isPaginated
+            });
+            const scrollNode = scrollContainerSelector ? document.querySelector(scrollContainerSelector) : null;
+            if (scrollNode) {
+                scrollNode.scrollTop = 0;
+            }
+            const { query } = url.parse(location.search, true);
+            const page = isPaginated && !query.page && params.page
+                ? params.page
+                : query.page;
+            onSearch({
+                ...query,
+                ...(page && { page })
+            }, undefined, true);
+        }
+    }, [init, isPaginated]);
 
     const [top, setTop] = useState(0);
     const [bottom, setBottom] = useState(0);
@@ -460,6 +521,7 @@ function ResourcesGrid({
     const detailWidth = showDetail ? detailNodeWidth : 0;
     const panelsWidth = filterFormWidth + detailWidth;
     const container = containerSelector ? document.querySelector(containerSelector) : null;
+    const { height: containerHeight } = container?.getBoundingClientRect() || {};
     useEffect(() => {
         if (container) {
             container.style.width = `calc(100% - ${panelsWidth}px)`;
@@ -506,87 +568,88 @@ function ResourcesGrid({
     return (
         <>
             <Portal targetSelector={targetSelector}>
-                <div
-                    className="gn-resources-grid gn-row"
-                    style={container ? {} : {
-                        width: `calc(100% - ${panelsWidth}px)`,
-                        marginLeft: filterFormWidth
-                    }}
-                >
-                    <div className="gn-grid-container">
-                        <ConnectedCardGrid
-                            fixed={pagination}
-                            header={
-                                <FiltersMenu
-                                    formatHref={handleFormatHref}
-                                    cardsMenu={parsedConfig.menuItems || []}
-                                    order={query?.sort}
-                                    onClear={handleClear}
-                                    onClick={handleShowFilterForm.bind(null, true)}
-                                    orderOptions={parsedConfig.order?.options}
-                                    defaultLabelId={parsedConfig.order?.defaultLabelId}
-                                    totalResources={totalResources}
-                                    totalFilters={queryFilters.length}
-                                    filtersActive={!!(queryFilters.length > 0)}
-                                    loading={loading}
-                                    style={{
-                                        position: 'sticky',
-                                        top
-                                    }}
-                                />
-                            }
-                            footer={
-                                <div
-                                    className="gn-resources-pagination"
-                                    style={{
-                                        position: 'sticky',
-                                        bottom
-                                    }}
-                                >
-                                    {error
-                                        ? <Button variant="primary" href="#/"><FaIcon name="refresh" /></Button>
-                                        : (!loading || !!totalResources) && <Pagination
-                                            prev
-                                            next
-                                            first
-                                            last
-                                            ellipsis
-                                            boundaryLinks
-                                            bsSize="xs"
-                                            items={Math.ceil(totalResources / pageSize)}
-                                            maxButtons={3}
-                                            activePage={params.page ? parseFloat(params.page) : 1}
-                                            onSelect={(value) => {
-                                                handleUpdate({
-                                                    page: value
-                                                });
-                                            }}
-                                        />}
-                                </div>
-                            }
-                            user={user}
-                            query={query}
-                            cardOptions={cardOptions}
-                            buildHrefByTemplate={buildHrefByTemplate}
-                            page={params.page ? parseFloat(params.page) : 1}
-                            formatHref={handleFormatHref}
-                            isCardActive={res => res.pk === resource?.pk}
-                            scrollContainer={scrollContainerSelector ? document.querySelector(scrollContainerSelector) : undefined}
-                            getDetailHref={res => handleFormatHref({
-                                query: {
-                                    'd': `${res.pk};${res.resource_type}`
-                                },
-                                replaceQuery: true,
-                                excludeQueryKeys: []
-                            })}
-                            onLoad={(value) => {
-                                handleUpdate({
-                                    page: value
-                                });
-                            }}
-                        />
+                <>
+                    <div
+                        className="gn-resources-grid gn-row"
+                        style={container ? {} : {
+                            width: `calc(100% - ${panelsWidth}px)`,
+                            marginLeft: filterFormWidth
+                        }}
+                    >
+                        <div className="gn-grid-container">
+                            <ConnectedCardGrid
+                                fixed={isPaginated}
+                                cardLayoutStyle={cardLayoutStyle}
+                                containerStyle={{
+                                    ...((containerHeight && isPaginated) && { minHeight: containerHeight })
+                                }}
+                                header={
+                                    <FiltersMenu
+                                        formatHref={handleFormatHref}
+                                        cardsMenu={parsedConfig.menuItems || []}
+                                        order={query?.sort}
+                                        onClear={handleClear}
+                                        onClick={handleShowFilterForm.bind(null, true)}
+                                        orderOptions={parsedConfig.order?.options}
+                                        defaultLabelId={parsedConfig.order?.defaultLabelId}
+                                        totalResources={totalResources}
+                                        totalFilters={queryFilters.length}
+                                        filtersActive={!!(queryFilters.length > 0)}
+                                        loading={loading}
+                                        cardLayoutStyle={cardLayoutStyle}
+                                        setCardLayoutStyle={setCardLayoutStyle}
+                                        style={{
+                                            position: 'sticky',
+                                            top
+                                        }}
+                                    />
+                                }
+                                footer={
+                                    <div
+                                        className="gn-resources-pagination"
+                                        style={{
+                                            position: 'sticky',
+                                            bottom
+                                        }}
+                                    >
+                                        {error
+                                            ? <Button variant="primary" href="#/"><FaIcon name="refresh" /></Button>
+                                            : (!loading || !!totalResources) && <PaginationCustom
+                                                items={Math.ceil(totalResources / pageSize)}
+                                                activePage={params.page ? parseFloat(params.page) : 1}
+                                                onSelect={(value) => {
+                                                    handleUpdate({
+                                                        page: value
+                                                    });
+                                                }}
+                                            />}
+                                    </div>
+                                }
+                                user={user}
+                                query={query}
+                                cardOptions={cardOptions}
+                                buildHrefByTemplate={buildHrefByTemplate}
+                                page={params.page ? parseFloat(params.page) : 1}
+                                formatHref={handleFormatHref}
+                                isCardActive={res => res.pk === resource?.pk}
+                                scrollContainer={scrollContainerSelector ? document.querySelector(scrollContainerSelector) : undefined}
+                                getDetailHref={res => handleFormatHref({
+                                    query: {
+                                        'd': `${res.pk};${res.resource_type}`
+                                    },
+                                    replaceQuery: true,
+                                    excludeQueryKeys: []
+                                })}
+                                onLoad={(value) => {
+                                    handleUpdate({
+                                        page: value
+                                    });
+                                }}
+                            />
+                        </div>
                     </div>
-                </div>
+                    {loading && (totalResources || 0) === 0 ? <MainLoader className="gn-main-grid-loader"/> : null}
+                </>
             </Portal>
             {!disableFilters && createPortal(
                 <div

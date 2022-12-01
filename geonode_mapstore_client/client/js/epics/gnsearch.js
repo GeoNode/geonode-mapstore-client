@@ -101,26 +101,25 @@ const getNextPage = (action, state) => {
 export const gnsSearchResourcesEpic = (action$, store) =>
     action$.ofType(SEARCH_RESOURCES)
         .switchMap(action => {
-            const { pathname, params, reset } = action;
+            const { pathname = '/', params, reset } = action;
             const state = store.getState();
             const pagination = !!state?.gnsearch?.config?.pagination;
             const currentParams = cleanParams(state?.gnsearch?.params, []);
             const nextParams = cleanParams(params, []);
             const DEFAULT_QUERY_KEYS_TO_EXCLUDE_IN_COMPARISON = (pagination ? [] : ['page']);
-            const currentQuery = Object.keys(currentParams).reduce((acc, key) =>
-                !DEFAULT_QUERY_KEYS_TO_EXCLUDE_IN_COMPARISON.includes(key) ? { ...acc, [key]: currentParams[key] } : acc, {});
             const nextQuery = Object.keys(nextParams).reduce((acc, key) =>
                 !DEFAULT_QUERY_KEYS_TO_EXCLUDE_IN_COMPARISON.includes(key) ? { ...acc, [key]: nextParams[key] } : acc, {});
-            if (!isEqual(currentQuery, nextQuery)) {
-                const isSamePath = state.router?.location?.pathname.indexOf(pathname) !== -1;
+            const isSamePath = (state.router?.location?.pathname || '/') === pathname;
+            const isParamsChanged = !isEqual(currentParams, nextParams);
+            const previousSearch = state?.gnsearch?.locationSearch || '';
+            const nextSearch = url.format({ query: nextQuery });
+            if (previousSearch !== nextSearch || !isSamePath) {
                 return Observable.of(push({
                     ...(pathname && !isSamePath && { pathname }),
-                    search: url.format({
-                        query: nextQuery
-                    })
+                    search: nextSearch
                 }));
             }
-            if (reset || !isEqual(currentParams, nextParams)) {
+            if (reset || isParamsChanged) {
                 return Observable.of(updateResourcesRequest({
                     action: 'PUSH',
                     params: nextParams,
