@@ -3139,6 +3139,7 @@
                 "name": "ResourcesGrid",
                 "cfg": {
                     "containerSelector": "#gn-catalogue",
+                    "scrollContainerSelector": "#gn-catalogue",
                     "enableGeoNodeCardsMenuItems": true,
                     "detailsTabs": [
                         {
