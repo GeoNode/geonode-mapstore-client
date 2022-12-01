@@ -7,9 +7,10 @@
  */
 
 import React from 'react';
-import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
+import { createPlugin, getMonitoredState } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import DetailsPanel from '@js/components/DetailsPanel';
 import { userSelector } from '@mapstore/framework/selectors/security';
 import {
@@ -43,6 +44,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import { layersSelector } from '@mapstore/framework/selectors/layers';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import { resourceHasPermission } from '@js/utils/ResourceUtils';
+import { parsePluginConfigExpressions } from '@js/utils/MenuUtils';
 
 const ConnectedDetailsPanel = connect(
     createSelector([
@@ -120,9 +122,13 @@ function DetailViewer({
     canEdit,
     hide,
     user,
-    onClose
+    onClose,
+    monitoredState,
+    queryPathname = '/',
+    tabs = []
 }) {
 
+    const parsedConfig = parsePluginConfigExpressions(monitoredState, { tabs });
 
     const handleTitleValue = (val) => {
         onEditResource(val);
@@ -166,6 +172,8 @@ function DetailViewer({
                 activeEditMode={enabled && canEdit}
                 enableFavorite={!!user}
                 formatHref={handleFormatHref}
+                tabs={parsedConfig.tabs}
+                pathname={queryPathname}
             />
         </OverlayContainer>
     );
@@ -179,13 +187,15 @@ const DetailViewerPlugin = connect(
             canEditResource,
             isNewResource,
             getResourceId,
-            userSelector
+            userSelector,
+            state => getMonitoredState(state, getConfigProp('monitorState'))
         ],
-        (enabled, canEdit, isNew, resourcePk, user) => ({
+        (enabled, canEdit, isNew, resourcePk, user, monitoredState) => ({
             enabled,
             canEdit,
             hide: isNew || !resourcePk,
-            user
+            user,
+            monitoredState
         })
     ),
     {

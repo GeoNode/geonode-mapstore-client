@@ -297,7 +297,30 @@
             "embeddashboard": "Betten Sie dieses Dashboard ein",
             "directLink": "Direkte Verbindung",
             "iso": "ISO -Metadaten",
-            "dublinCore": "Dublin Core Metadaten"
+            "dublinCore": "Dublin Core Metadaten",
+            "owner": "Eigentümer",
+            "created": "Erstellt",
+            "published": "Veröffentlicht",
+            "lastModified": "Zuletzt geändert",
+            "resourceType": "Ressourcentyp",
+            "category": "Kategorie",
+            "pointOfContact": "Kontaktstelle",
+            "keywords": "Schlüsselwörter",
+            "regions": "Regionen",
+            "license": "Lizenz",
+            "attribution": "Attribution",
+            "restriction": "Einschränkung",
+            "edition": "Ausgabe",
+            "maintenanceFrequency": "Wartungshäufigkeit",
+            "language": "Sprache",
+            "purpose": "Zweck",
+            "dataQuality": "Datenqualität",
+            "temporalExtent": "Zeitliche Ausdehnung",
+            "spatialRepresentationType": "Räumlicher darstellungstyp",
+            "supplementalInformation": "Zusätzliche informationen",
+            "abstract": "Zusammenfassung",
+            "readMore": "Weiterlesen",
+            "readLess": "Weniger lesen"
         }
     }
 }

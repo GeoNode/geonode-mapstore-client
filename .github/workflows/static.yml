@@ -28,8 +28,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout master
         uses: actions/checkout@v3
+        with:
+           ref: master
       ############
       # CACHING
       ##########
@@ -44,20 +46,33 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - name: Build
+      - name: Install build dependencies
+        run: |
+          mkdir ../gh-pages
+          npm install jsdoc@4.0.0 -g
+      - name: Build master documentation
         run: |
           cd ./geonode_mapstore_client/client/
-          npm install jsdoc@4.0.0 -g
           npm run docs
           cd ../../
-          mv ./docs ./master-docs
+          mv ./docs ../gh-pages/master
+      - name: Checkout 4.1.x
+        uses: actions/checkout@v3
+        with:
+           ref: 4.1.x
+      - name: Build 4.1.x documentation
+        run: |
+          cd ./geonode_mapstore_client/client/
+          npm run docs
+          cd ../../
+          mv ./docs ../gh-pages/4.1.x
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
-          path: './master-docs'
+          path: '../gh-pages'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1

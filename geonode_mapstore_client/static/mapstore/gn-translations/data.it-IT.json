@@ -299,7 +299,30 @@
             "embeddashboard": "Incorpora questo Dashboard",
             "directLink": "Collegamento Diretto",
             "iso": "Metadati ISO",
-            "dublinCore": "Metadati di Dublin Core"
+            "dublinCore": "Metadati di Dublin Core",
+            "owner": "Proprietario",
+            "created": "Creata",
+            "published": "Pubblicata",
+            "lastModified": "Ultima modifica",
+            "resourceType": "Tipo di risorsa",
+            "category": "Categoria",
+            "pointOfContact": "Punto di contatto",
+            "keywords": "Parole chiave",
+            "regions": "Regioni",
+            "license": "Licenza",
+            "attribution": "Attribuzione",
+            "restriction": "Restrizione",
+            "edition": "Edizione",
+            "maintenanceFrequency": "Frequenza di manutenzione",
+            "language": "Lingua",
+            "purpose": "Scopo",
+            "dataQuality": "Qualità dei dati",
+            "temporalExtent": "Estensione temporale",
+            "spatialRepresentationType": "Tipo di rappresentazione spaziale",
+            "supplementalInformation": "Informazioni supplementari",
+            "abstract": "Astratto",
+            "readMore": "Leggi di più",
+            "readLess": "Leggi di meno"
         }
     }
 }

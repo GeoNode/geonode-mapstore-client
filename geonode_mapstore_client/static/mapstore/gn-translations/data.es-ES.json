@@ -296,7 +296,30 @@
             "embeddashboard": "Insertar este Panel",
             "directLink": "Enlace Directo",
             "iso": "Metadatos iso",
-            "dublinCore": "Metadatos de Dublin Core"
+            "dublinCore": "Metadatos de Dublin Core",
+            "owner": "Propietario",
+            "created": "Creado",
+            "published": "Publicado",
+            "lastModified": "Última modificación",
+            "resourceType": "Tipo de recurso",
+            "category": "Categoría",
+            "pointOfContact": "Punto de contacto",
+            "keywords": "Palabras clave",
+            "regions": "Regiones",
+            "license": "Licencia",
+            "attribution": "Atribución",
+            "restriction": "Restricción",
+            "edition": "Edición",
+            "maintenanceFrequency": "Frecuencia de mantenimiento",
+            "language": "Idioma",
+            "purpose": "Propósito",
+            "dataQuality": "Calidad de los datos",
+            "temporalExtent": "Extensión temporal",
+            "spatialRepresentationType": "Tipo de representación espacial",
+            "supplementalInformation": "Información Suplementaria",
+            "abstract": "Resumen",
+            "readMore": "Leer más",
+            "readLess": "Leer menos"
         }
     }
 }
