@@ -21,7 +21,8 @@ module.exports = (devServerDefault, projectConfig) => {
             'Access-Control-Allow-Origin': '*'
         },
         contentBase: [
-            path.join(appDirectory)
+            path.join(appDirectory),
+            path.join(appDirectory, '..')
         ],
         before: function(app) {
             const hashRegex = /\.[a-zA-Z0-9]{1,}\.js/;
@@ -62,15 +63,13 @@ module.exports = (devServerDefault, projectConfig) => {
             {
                 context: [
                     '/static/mapstore/ms-translations/**',
-                    '/static/mapstore/gn-translations/**',
                     '/docs/**'
                 ],
                 target: `${protocol}://${devServerHost}:8081`,
                 secure: false,
                 changeOrigin: true,
                 pathRewrite: {
-                    '/static/mapstore/ms-translations': '/node_modules/mapstore/web/client/translations',
-                    '/static/mapstore/gn-translations': '/static/mapstore/translations'
+                    '/static/mapstore/ms-translations': '/node_modules/mapstore/web/client/translations'
                 }
             }
         ]

@@ -8,12 +8,22 @@ const { commit, version, name } = info();
 const appDirectory = fs.realpathSync(process.cwd());
 const staticPath = '../static/mapstore';
 const distDirectory = 'dist';
-rimraf.sync(path.resolve(appDirectory, staticPath));
-message.title('cleaned static/mapstore/ directory');
-fs.moveSync(path.resolve(appDirectory, distDirectory, 'static', 'mapstore'), path.resolve(appDirectory, staticPath), { overwrite: true });
+
+// remove unused compiled directories
+['bootstrap', 'ms-configs'].forEach(directoryName => {
+    const directoryPath = path.resolve(appDirectory, distDirectory, directoryName);
+    rimraf.sync(directoryPath);
+    message.title(`removed ${directoryPath}`);
+});
+
+// copy compiled files
 fs.moveSync(path.resolve(appDirectory, distDirectory, 'ms-translations'), path.resolve(appDirectory, staticPath, 'ms-translations'), { overwrite: true });
+message.title('copy ms-translations from MapStore Core');
 fs.moveSync(path.resolve(appDirectory, distDirectory), path.resolve(appDirectory, staticPath, distDirectory), { overwrite: true });
-fs.renameSync(path.resolve(appDirectory, staticPath, 'translations'), path.resolve(appDirectory, staticPath, 'gn-translations'));
-fs.writeFileSync(path.resolve(appDirectory, 'version.txt'), `${name}-v${version}-${commit}`);
-fs.writeFileSync(path.resolve(appDirectory, staticPath, 'version.txt'), `${name}-v${version}-${commit}`);
+message.title('copy dist folder to static/mapstore directory');
+
+// create new version file
+const versionString = `${name}-v${version}-${commit}`;
+fs.writeFileSync(path.resolve(appDirectory, 'version.txt'), versionString);
+fs.writeFileSync(path.resolve(appDirectory, staticPath, 'version.txt'), versionString);
 message.title(`updated version -> version ${version} - commit ${commit}`);
