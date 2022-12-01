@@ -115,7 +115,7 @@ const simulateAClick = (href) => {
   * @prop {object} user user object. Will be set as null for anonymous users.
   * @prop {number} totalResources total number of resources avaiable on server. If a filter is applied, this number represents the total number of such resources.
   * @prop {boolean} loading loading state of page. This is true when resources are being queries and false when server response is received.
-  * @prop {string} defaultQuery
+  * @prop {string} defaultQuery The pre-set filter to be applied by default
   * @prop {object} order an object defining sort options for resource grid.
   * @prop {object} extent the extent used in filters side menu to limit search within set bounds.
   * @prop {array} menuItems contains menu for Add resources button.
@@ -125,7 +125,7 @@ const simulateAClick = (href) => {
   * @prop {object} resource Selected resource to be viewed in detail. Empty when no resource is selected
   * @prop {number} width The width of a resource card.
   * @prop {number} height The height of a resource card.
-  * @prop {boolean} items list of actions for each resource depending on perms
+  * @prop {array} items list of actions for each resource depending on perms
   * @prop {string} targetSelector selector for parent node of resource
   * @prop {function} onInit Function to be executed when plugin is first loaded. It sets the state with search configurations.
   * @prop {object} monitoredState Provides various properties for monitoring state of client and resources
