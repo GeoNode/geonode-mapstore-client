@@ -18,7 +18,7 @@ geonode-project-name/
 |-- ...
 ```
 
-- add the following block extension in the `geostory_catalogue.html` template
+- add the following block extension in the `geostory_resources_page.html` template
 
 ```html
 {% extends "page.html" %}
