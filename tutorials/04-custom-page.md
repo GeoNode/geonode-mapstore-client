@@ -7,14 +7,14 @@ Below are the steps required to create a custom resource grid page:
 - create a new html template named `geostory_page.html` inside the `geonode-project/project-name/templates/geonode-mapstore-client/ `directory
 
 ```
-geonode-project/
+geonode-project-name/
 |-- ...
-|-- project-name/
-|    |-- ...
-|    +-- templates/
+|-- src/
+|    |-- geonode_project_name/
 |         |-- ...
-|         +-- geonode-mapstore-client/
-|              +-- geostory_page.html
+|         +-- templates/
+|              |-- ...
+|              +-- geostory_resources_page.html
 |-- ...
 ```
 
