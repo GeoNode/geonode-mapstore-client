@@ -63,6 +63,6 @@ urlpatterns += [
 ]
 ```
 
-- Now visit `/geostory_page`. You should see a new page displaying a grid of geostories from the database.
+- Now visit `/geostory_resources_page`. You should see a new page displaying a grid of geostories from the database.
 
 
