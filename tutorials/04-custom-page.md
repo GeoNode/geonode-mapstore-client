@@ -58,12 +58,8 @@ geonode-project-name/
 - add the new page inside urls.py inside urlpatterns list
 
 ```python
-urlpatterns = [
-    ...,
-    url(r'^geostory_page/$',
-            TemplateView.as_view(template_name='geostory_page.html'),
-
-    )
+urlpatterns += [
+    url('geostory_resources_page', view=TemplateView.as_view(template_name='geostory_resources_page.html'))
 ]
 ```
 
