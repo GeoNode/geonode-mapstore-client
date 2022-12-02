@@ -2,8 +2,6 @@ Geonode allows for the creation of custom pages to display specific types of res
 
 Below are the steps required to create a custom resource grid page:
 
-- create a new directory named `geonode-mapstore-client` inside the `geonode-project/project-name/templates/` directory
-
 - create a new html template named `geostory_resources_page.html` inside the `geonode-project-name/src/geonode_project_name/templates/ `directory
 
 ```
