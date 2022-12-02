@@ -5,12 +5,21 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Dropdown from '@js/components/Dropdown';
 import Message from '@mapstore/framework/components/I18N/Message';
 import FaIcon from '@js/components/FaIcon';
+import { canCopyResource } from '@js/utils/ResourceUtils';
 
+// this is a workaround based on the current structure of actions in card options
+// new version will centralize this logic inside the correspondent plugins
+const checkAction = {
+    'delete': (resource) => !!resource?.perms?.includes('delete_resourcebase'),
+    // we assume tha the add_resource check has been checked in parent elements
+    'copy': (resource) => canCopyResource(resource, { perms: ['add_resource'] }),
+    'download': (resource) => !!(resource?.download_url && resource?.perms?.includes('download_resourcebase'))
+};
 function ActionButtons({
     options,
     actions,
@@ -20,16 +29,18 @@ function ActionButtons({
     onDownload
 }) {
 
-    // do not render if the options only contain download or copy or both without meeting their requirements
-    if (options?.every(({action}) => action !== 'delete')) {
-        if (options?.every(({action}) => (action === 'download' && !resource.download_url) || (['copy'].includes(action) && !resource.is_copyable & !resource.download_url))) {
-            return null;
-        }
-    }
-
+    const containerNode = useRef();
+    const dropdownClassName = 'gn-card-dropdown';
+    const dropdownNode = containerNode?.current?.querySelector(`.${dropdownClassName}`);
+    const isDropdownEmpty = (dropdownNode?.children?.length || 0) === 0;
 
     return (
-        <div className="gn-resource-action-buttons">
+        <div
+            ref={containerNode}
+            className="gn-resource-action-buttons"
+            onClick={event => event.stopPropagation()}
+            style={isDropdownEmpty ? { display: 'none' } : {}}
+        >
             <Dropdown className="gn-card-options" pullRight>
                 <Dropdown.Toggle
                     id={`gn-card-options-${resource.pk2 || resource.pk}`}
@@ -39,11 +50,12 @@ function ActionButtons({
                 >
                     <FaIcon name="ellipsis-v" />
                 </Dropdown.Toggle>
-                <Dropdown.Menu className={`gn-card-dropdown`}>
+                <Dropdown.Menu className={dropdownClassName}>
                     {options.map((opt) => {
                         if ((opt.type === 'button' && actions[opt.action]) || opt.action === 'download') {
-                            return (
-                                ((opt.action === 'download' && resource.download_url) || (opt.action !== 'copy' && opt.action !== 'download') || (resource?.is_copyable && opt.action !== 'download')) && <Dropdown.Item
+                            const checkFunc = checkAction[opt.action];
+                            return (!checkFunc || checkFunc(resource))
+                                ? (<Dropdown.Item
                                     key={opt.action}
                                     onClick={() =>
                                         opt.action !== 'download' ? onAction(actions[opt.action], [
@@ -53,8 +65,8 @@ function ActionButtons({
                                 >
                                     <FaIcon name={opt.icon} />{' '}
                                     <Message msgId={opt.labelId} />
-                                </Dropdown.Item>
-                            );
+                                </Dropdown.Item>)
+                                : null;
                         }
 
                         return (

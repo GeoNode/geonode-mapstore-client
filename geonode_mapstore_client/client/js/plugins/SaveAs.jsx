@@ -12,9 +12,8 @@ import { createSelector } from 'reselect';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import Message from '@mapstore/framework/components/I18N/Message';
-import { Glyphicon } from 'react-bootstrap';
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
-import { isLoggedIn } from '@mapstore/framework/selectors/security';
+import { userSelector } from '@mapstore/framework/selectors/security';
 import Button from '@js/components/Button';
 import {
     saveContent,
@@ -33,6 +32,7 @@ import {
     getResourceDirtyState
 } from '@js/selectors/resource';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
+import { canCopyResource } from '@js/utils/ResourceUtils';
 import { processResources } from '@js/actions/gnresource';
 import { getCurrentResourceCopyLoading } from '@js/selectors/resourceservice';
 
@@ -133,15 +133,28 @@ function SaveAsButton({
     ;
 }
 
+const canCopyResourceFunction = (state) => {
+    return (resource) => {
+        const user = userSelector(state);
+        if (!user) {
+            return false;
+        }
+        const isResourceNew = isNewResource(state);
+        const canAdd = canAddResource(state);
+        if (isResourceNew && canAdd) {
+            return true;
+        }
+        return canCopyResource(resource, user);
+    };
+};
+
 const ConnectedSaveAsButton = connect(
     createSelector(
-        isLoggedIn,
-        canAddResource,
         getResourceData,
         getResourceDirtyState,
-        isNewResource,
-        (loggedIn, userCanAddResource, resource, dirtyState, isResourceNew) => ({
-            enabled: loggedIn && userCanAddResource && (resource?.is_copyable || isResourceNew),
+        canCopyResourceFunction,
+        (resource, dirtyState, canCopy) => ({
+            enabled: !!canCopy(resource),
             resource,
             disabled: !!dirtyState
         })
@@ -154,20 +167,6 @@ const ConnectedSaveAsButton = connect(
 export default createPlugin('SaveAs', {
     component: SaveAsPlugin,
     containers: {
-        BurgerMenu: {
-            name: 'saveAs',
-            position: 30,
-            text: <Message msgId="saveAs"/>,
-            icon: <Glyphicon glyph="floppy-open"/>,
-            action: setControlProperty.bind(null, 'saveAs', null),
-            selector: createSelector(
-                isLoggedIn,
-                canAddResource,
-                (loggedIn, userCanAddResource) => ({
-                    style: (loggedIn && userCanAddResource) ? {} : { display: 'none' }
-                })
-            )
-        },
         ActionNavbar: {
             name: 'SaveAs',
             Component: ConnectedSaveAsButton
