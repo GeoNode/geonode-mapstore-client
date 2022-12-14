@@ -35,7 +35,12 @@
             "message": "Il livello non è stato ricaricato con un nome modificato"
         },
         "version": {
-            "label": "Versione"
+          "title": "Versione di Mapstore",
+          "label": "Versione",
+          "message": "Testo",
+          "commit": "Commit",
+          "date": "Data",
+          "githubUrl": "Apri Github in una nuova scheda"
         },
         "errorPage": {
             "title":"Ops, qualcosa è andato storto...",
@@ -160,7 +165,8 @@
                     "title": "Errore",
                     "message": "Impossibile recuperare il formato"
                 }
-            }
+            },
+            "forceProxy": "Forza proxy"
         },
         "longitude": "Lon",
         "latitude": "Lat",
@@ -421,6 +427,13 @@
             "renderingErrorTitle": "Errore di rendering",
             "renderingErrorMessage": "<p>Il rendering della mappa si è interrotto e ciò potrebbe essere dovuto a diversi motivi: </p><ul><li>Lo stile applicato contiene alcune regole o variabili non supportate dalle features</li>< li>Il livello non è configurato correttamente</li></ul><p>Puoi applicare le modifiche allo stile del layer e poi prenere il pulsante 'Ricarica mappa'. <br/> Per ulteriori informazioni:< /p>",
             "reloadMap": "Ricarica mappa",
+            "settings": {
+              "title": "Impostazioni della mappa",
+              "skyAtmosphere": "Mostra l'atmosfera del cielo",
+              "groundAtmosphere": "Mostra l'atmosfera del terreno",
+              "fog": "Mostra nebbia",
+              "depthTest": "Abilita il depthTest sul terreno"
+            },
             "thumbnailError": {
                 "error403": "Non disponi dei permessi per aggiornare la thumbnail",
                 "error404": "Non è stato possibile creare la thumbnail sul server",
@@ -486,6 +499,8 @@
             "toggleGroupVisibility": "Attiva o disattiva la visibilità del gruppo",
             "displayLegendAndTools": "Visualizza legenda",
             "zoomToLayerExtent": "Zoom all' estensione del livello",
+            "addAnnotations": "Aggiungi annotazioni",
+            "editAnnotations": "Modifica annotazioni",
             "addLayer": "Aggiungi Livello",
             "addLayerToGroup": "Aggiungi livello al gruppo selezionato",
             "addGroup": "Aggiungi Gruppo",
@@ -654,7 +669,8 @@
             "previewFormatUnsupported": "Formato non supportato per la preview",
             "projection": "Sistema di coordinate",
             "projectionmismatch": "Sistema di coordinate di stampa diverso da quello a schermo",
-            "graticule": "aggiungi griglia con label"
+            "graticule": "aggiungi griglia con label",
+            "additionalLayers": "Includi sovrapposizioni"
         },
         "backgroundSwitcher":{
             "tooltip": "Scegli lo sfondo"
@@ -1190,6 +1206,8 @@
             "passwordChanged": "La password è stata cambiata",
             "passwordError": "Errore nel cambio della password",
             "signIn":"Accedi",
+            "signInWith": "Accedi con",
+            "orSignInWith": "O accedi con",
             "loginFail":"Login Fallito",
             "loginFailedStatusMessages": {
                 "usernamePwdInsert": "Per favore, Inserisci username e password",
@@ -1470,6 +1488,10 @@
               "helpTooltip": "Questa opzione viene utilizzata per suddividere il contenuto in più sottodomini",
               "addAliasTooltip": "Aggiungi alias",
               "removeAliasTooltip": "Rimuovi alias"
+            },
+            "allowUnsecureLayers": {
+              "label": "Consenti livelli non sicuri",
+              "tooltip": "L'aggiunta di un livello da mappare con questa opzione abilitata, costringe l'applicazione ad applicare il proxy"
             }
         },
         "uploader": {
@@ -1692,6 +1714,7 @@
         },
         "layerdownload": {
             "title": "Esporta dati",
+            "service": "Servizio",
             "format": "Formato file",
             "srs": "Sistema di riferimento",
             "export": "Esporta",
@@ -1766,7 +1789,8 @@
                 },
                 "emptyMap": {
                     "title": "Mappa vuota",
-                    "description": "Inizia da una mappa vuota"
+                    "description": "Inizia da una mappa vuota",
+                    "noNameDescription": "La selezione ha una mappa vuota. Aggiungi un nome alla mappa vuota per procedere con la configurazione della mappa"
                 }
             },
             "title": "Titolo",
@@ -1795,7 +1819,7 @@
                     "backToPreview": "Torna all'anteprima",
                     "backToChartOptions": "Torna alle opzioni del grafico",
                     "selectALayer": "Seleziona un livello",
-                    "selectAMap": "Seleziona una mappa",
+                    "selectAMap": "Seleziona una o più mappe",
                     "configureChartOptions": "Configura le opzioni del grafico",
                     "configureWidgetOptions": "Configura le opzioni del widget",
                      "backToTableOptions": "Torna alle opzioni della tabella",
@@ -1806,6 +1830,7 @@
                     "titlePlaceholder": "Inserisci il titolo...",
                     "textPlaceholder": "Inserisci il testo...",
                     "useThisMap": "Usa questa mappa",
+                    "useTheseMap": "Usa queste mappe",
                     "configureMapOptions": "Configura opzioni mappa",
                     "enableIdentifyTool": "Attiva lo strumento di identificazione",
                     "disableIdentifyTool": "Disabilita lo strumento di identificazione",
@@ -1871,6 +1896,13 @@
                     "unhide": "Mostra",
                     "unhideDescription": "Mostra il widget ad altri utenti"
                 }
+            },
+            "mapSwitcher": {
+                "noResults": "Nessuna mappa trovata",
+                "placeholder": "Inserisci il nome della mappa",
+                "selectLabel": "Seleziona una mappa",
+                "infoOnHide": "Espandi il widget per vedere il selettore della mappa",
+                "subTitle": "<p>Per la selezione multipla,<br>su Windows usa CTRL + clic su <br> e su Mac usa control + clic</p>"
             },
             "chartType": {
                 "bar": {
@@ -2003,6 +2035,14 @@
         },
         "dashboard": {
             "loadingSpinner": "Caricamento Dashboard",
+            "importDialog": {
+                "selectFiles": "Seleziona un file",
+                "heading": "Rilasciare un file.json del dashboard esportato in precedenza",
+                "note": "I dati nel file importato sostituiranno i dati nel dashboard corrente"
+            },
+            "exportDialog": {
+              "heading": "Esportare il dashboard come file .json"
+            },
             "errors":{
                 "loading": {
                     "title": "Errore di caricamento della dashboard",
@@ -2172,10 +2212,23 @@
             "addMarkRule": "Aggiungi regola marker",
             "shape": "Forma",
             "fill": "Colore riempimento",
+            "clampToGround": "Adattarsi al terreno",
+            "clampOutlineToGround": "Adattare il contorno al terreno",
+            "msBringToFront": "Portare in primo piano",
+            "heightReferenceFromGround": "Riferimento di altezza da terra",
+            "height": "Altezza",
+            "constantValue": "Valore costante",
+            "attributeValue": "Valore attributo",
             "strokeColor": "Colore linea",
             "strokeWidth": "Spessore linea",
             "radius": "Raggio",
             "rotation": "Rotazione",
+            "classificationtype": "Tipo di poligono",
+            "3dTile": "3D",
+            "terrain": "Terreno",
+            "both": "Ambedue",
+            "relative": "Parente",
+            "clamp": "Morsetto",
             "addIconSymbolizer": "Aggiungi stile icona",
             "addIconRule": "Aggiungi regola icona",
             "image": "Image",
@@ -2185,8 +2238,8 @@
             "addLineSymbolizer": "Aggiungi stile linea",
             "addLineRule": "Aggiungi regola riga",
             "lineStyle": "Stile linea",
-            "lineCap": "Line cap",
-            "lineJoin": "Line join",
+            "lineCap": "Estremi",
+            "lineJoin": "Giunzioni",
             "addFillSymbolizer": "Aggiungi stile di riempimento",
             "addFillRule": "Aggiungi regola di riempimento",
             "outlineColor": "Colore contorno",
@@ -2211,14 +2264,14 @@
             "method": "Metodo",
             "intervals": "Intervalli",
             "continuous": "Colori continui",
-            "lineCapButt": "Butt",
-            "lineCapRound": "Round",
-            "lineCapSquare": "Square",
-            "lineJoinBevel": "Bevel",
-            "lineJoinRound": "Round",
-            "lineJoinMiter": "Miter",
+            "lineCapButt": "Tagliato",
+            "lineCapRound": "Stondato",
+            "lineCapSquare": "Squadrato",
+            "lineJoinBevel": "Smussato",
+            "lineJoinRound": "Stondato",
+            "lineJoinMiter": "Quadrato",
             "fontStyleNormal": "Normale",
-            "fontStyleItalic": "Italic",
+            "fontStyleItalic": "Corsivo",
             "fontWeightNormal": "Normale",
             "fontWeightBold": "Grassetto",
             "boolTrue": "Si",
@@ -2599,6 +2652,14 @@
                     "templateTooltip":"Questa impostazione consente di abilitare la funzione di Identify sulla mappa definendo un formato generico per tutti i layer. E' possibile configurare un formato differente per ogni singolo livello usando l'editor di mappa avanzato (icona matita). Per maggiori informazioni si consulti la <a href='https://mapstore.readthedocs.io/en/latest/user-guide/layer-settings/#templates' target='_blank'>guida utente</a>. Se un layer ha definito il proprio formato di Identify, questo esso verrà usato al posto di quello generico impostato a livello di mappa."
                 }
             },
+            "importDialog": {
+                "selectFiles": "Seleziona un file",
+                "heading": "Rilasciare un file.json della storia esportato in precedenza",
+                "note": "I dati nel file importato sostituiranno i dati nella storia corrente"
+            },
+            "exportDialog": {
+              "heading": "Esportare la storia come file .json"
+            },
             "errors": {
                 "loading": {
                     "notFound": "Geostory non trovata",
@@ -2748,6 +2809,7 @@
             "titlePlaceholder": "Inserisci il nome visualizzato",
             "add": "Inserisci",
             "thumbnailMessage": "Le dimensioni delle immagini devono essere quadrate di 98 px x 98 px o 128 px x 128 px, max 500kb",
+            "imageUploadMessage": "Fare clic o trascinare e rilasciare per aggiungere un'immagine",
             "additionalParameters": "Parametri aggiuntivi",
             "addAdditionalParameterTooltip": "Aggiungi parametro",
             "removeAdditionalParameterTooltip": "Rimuovi parametro",
@@ -3470,6 +3532,9 @@
             "noDataForPosition": "Non ci sono dati Street View per questa posizione",
             "unknownError": "Errore sconosciuto"
           }
-      }
+        },
+        "sidebarMenu": {
+          "showMoreItems": "Mostra più elementi"
+        }
     }
 }

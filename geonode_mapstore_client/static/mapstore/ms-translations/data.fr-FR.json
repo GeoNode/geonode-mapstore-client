@@ -35,7 +35,12 @@
             "message": "Échec du rechargement de la couche avec un nom modifié"
         },
         "version": {
-            "label": "Version"
+          "title": "MapStore Version",
+          "label": "Version",
+          "message": "Message",
+          "commit": "Commit",
+          "date": "Date",
+          "githubUrl": "Ouvrir l'arborescence github dans un nouvel onglet"
         },
         "errorPage": {
             "title":"Oups, quelque chose a mal tourné...",
@@ -160,7 +165,8 @@
                     "title": "Erreur",
                     "message": "Échec de la récupération du format"
                 }
-            }
+            },
+            "forceProxy": "Forcer le proxy"
         },
         "longitude": "Lon",
         "latitude": "Lat",
@@ -421,6 +427,13 @@
             "renderingErrorTitle": "Erreur de rendu",
             "renderingErrorMessage": "<p>Le rendu de la carte s'est arrêté et cela peut être dû à différentes raisons : </p><ul><li>Le style appliqué contient des règles ou des variables non prises en charge par les fonctionnalités</li>< li>Le calque n'est pas correctement configuré</li></ul><p>Vous pouvez appliquer des modifications au style de calque, puis cliquer sur le bouton 'Recharger la carte'. <br/> Consultez le message ci-dessous pour plus d'informations :< /p>",
             "reloadMap": "Recharger la carte",
+            "settings": {
+              "title": "Paramètres de la carte",
+              "skyAtmosphere": "Afficher l'atmosphère du ciel",
+              "groundAtmosphere": "Montrer l'atmosphère du terrain",
+              "fog": "Afficher le brouillard",
+              "depthTest": "Activer le depthTest sur le terrain"
+            },
             "thumbnailError": {
                 "error403": "Une erreur est survenue lors de la suppression de la vignette",
                 "error404": "Une erreur est survenue lors de la création de la vignette",
@@ -486,6 +499,8 @@
             "toggleGroupVisibility": "Changer la visibilité du groupe",
             "displayLegendAndTools": "Afficher la légende",
             "zoomToLayerExtent": "Zoomer sur l'étendue de la couche",
+            "addAnnotations": "Ajouter des annotations",
+            "editAnnotations": "Modifier les annotations",
             "addLayer": "Ajouter une couche",
             "addLayerToGroup": "Ajouter une couche au groupe sélectionné",
             "addGroup": "Ajouter un groupe",
@@ -654,7 +669,8 @@
             "previewFormatUnsupported": "Format non pris en charge pour l'aperçu",
             "projection": "Système de coordonnées",
             "projectionmismatch": "Non-concordance du système de coordonnées entre la carte imprimée et la carte à l'écran",
-            "graticule": "ajouter une grille avec des étiquettes"
+            "graticule": "ajouter une grille avec des étiquettes",
+            "additionalLayers": "Inclure les superpositions"
         },
         "backgroundSwitcher": {
             "tooltip": "Sélection du fond de plan"
@@ -1091,7 +1107,7 @@
             "styleGeometry": "Changer le style",
             "deleteGeometry": "Supprimer toutes les géométries d'annotations",
             "removeannotation": "Voulez-vous supprimer l'annotation avec le titre : {title}?",
-            "removegeometry": "Voulez-vous supprimer toutes les annotations ?",
+            "removegeometry": "Voulez-vous supprimer cette géometrie ?",
             "confirm": "Confirmer",
             "mandatory": "Champ obligatoire",
             "add": "Nouvelle",
@@ -1190,6 +1206,8 @@
             "passwordChanged": "Mot de passe changé",
             "passwordError": "Erreur lors du changement de mot de passe",
             "signIn": "S'authentifier",
+            "signInWith": "Se connecter avec",
+            "orSignInWith": "Ou connectez-vous avec",
             "loginFail": "Erreur d'authentification",
             "loginFailedStatusMessages": {
                 "usernamePwdInsert": "Merci d'entrer votre nom d'utilisateur et votre mot de passe",
@@ -1466,12 +1484,16 @@
                 "label": "Définir la limite de visibilité",
                 "tooltip": "Applique automatiquement les limites de visibilité suggérées par le serveur"
             },
-          "domainAliases": {
-            "title": "Alias de domaine",
-            "helpTooltip": "Cette option est utilisée pour diviser le contenu sur plusieurs sous-domaines",
-            "addAliasTooltip": "Ajouter un alias",
-            "removeAliasTooltip": "Supprimer l'alias"
-          }
+            "domainAliases": {
+              "title": "Alias de domaine",
+              "helpTooltip": "Cette option est utilisée pour diviser le contenu sur plusieurs sous-domaines",
+              "addAliasTooltip": "Ajouter un alias",
+              "removeAliasTooltip": "Supprimer l'alias"
+            },
+            "allowUnsecureLayers": {
+              "label": "Autoriser les couches non sécurisées",
+              "tooltip": "L'ajout d'une couche à la carte avec cette option activée force l'application à appliquer un proxy"
+            }
         },
         "uploader": {
             "filename": "Nom du fichier",
@@ -1693,6 +1715,7 @@
         },
         "layerdownload": {
             "title": "Exporter des données",
+            "service": "Service",
             "format": "Format de fichier",
             "srs": "Système de référence spatiale",
             "export": "Exporter",
@@ -1767,7 +1790,8 @@
                 },
                 "emptyMap": {
                     "title": "Carte vide",
-                    "description": "Démarrer à partir d'une carte vide"
+                    "description": "Démarrer à partir d'une carte vide",
+                    "noNameDescription": "La sélection a une carte vide. Ajoutez un nom à la carte vide pour procéder à la configuration de la carte"
                 }
             },
             "title": "Titre",
@@ -1796,7 +1820,7 @@
                     "backToPreview": "Retour à l'aperçu",
                     "backToChartOptions": "Retour aux options de graphique",
                     "selectALayer": "Sélectionner une couche",
-                    "selectAMap": "Sélectionner une carte",
+                    "selectAMap": "Sélectionnez une ou plusieurs cartes",
                     "configureChartOptions": "Configurer les options de graphique",
                     "configureWidgetOptions": "Configurer les options du widget",
                     "backToTableOptions": "Retour à l'option de table",
@@ -1807,6 +1831,7 @@
                     "titlePlaceholder": "Entrez le titre...",
                     "textPlaceholder": "Entrez le texte...",
                     "useThisMap": "Utiliser cette carte",
+                    "useTheseMap": "Utilisez ces cartes",
                     "configureMapOptions": "Configurer les options de la carte",
                     "enableIdentifyTool": "Activer l'outil d'identification",
                     "disableIdentifyTool": "Désactiver l'outil d'identification",
@@ -1870,6 +1895,13 @@
                     "unhide": "Afficher",
                     "unhideDescription": "Afficher le widget pour les autres utilisateurs"
                 }
+            },
+            "mapSwitcher": {
+                "noResults": "Aucune carte trouvée",
+                "placeholder": "Entrez le nom de la carte",
+                "selectLabel": "Sélectionnez une carte",
+                "infoOnHide": "Développer le widget pour voir le sélecteur de carte",
+                "subTitle": "<p>Pour la multi-sélection,<br>sur Windows utilisez CTRL + clic <br> et sur Mac utilisez contrôle + clic</p>"
             },
             "chartType": {
                 "bar": {
@@ -2002,6 +2034,14 @@
         },
         "dashboard": {
             "loadingSpinner": "Chargement du tableau de bord",
+            "importDialog": {
+                "heading": "Supprimer un fichier.json de tableau de bord précédemment exporté",
+                "selectFiles": "Sélectionner un fichier",
+                "note": "Les données du fichier importé remplaceront les données du tableau de bord actuel"
+            },
+            "exportDialog": {
+              "heading": "Exporter le tableau de bord sous forme de fichier .json"
+            },
             "errors": {
                 "loading": {
                     "title": "Erreur lors du chargement du tableau de bord",
@@ -2171,10 +2211,23 @@
             "addMarkRule": "Ajouter une règle de marque",
             "shape": "Forme",
             "fill": "Fill color",
+            "clampToGround": "S'adapter au terrain",
+            "clampOutlineToGround": "Fixer le contour au sol",
+            "msBringToFront": "Mettre en avant",
+            "heightReferenceFromGround": "Référence de hauteur à partir du sol",
+            "height": "Hauteur",
+            "constantValue": "Valeur constante",
+            "attributeValue": "Valeur d'attribut",
             "strokeColor": "Couleur de ligne",
             "strokeWidth": "Largeur de ligne",
             "radius": "Rayon",
             "rotation": "Rotation",
+            "classificationtype": "Type de polygone",
+            "3dTile": "3D",
+            "terrain": "Terrain",
+            "both": "Les deux",
+            "relative": "Relatif",
+            "clamp": "Serrer",
             "addIconSymbolizer": "Ajouter un symboliseur d'icône",
             "addIconRule": "Ajouter une règle d'icône",
             "image": "Image",
@@ -2598,6 +2651,14 @@
                     "templateTooltip":"Ce paramètre vous permet d'activer la fonction Identifier sur la carte en définissant un format générique pour toutes les couches. Il est possible de configurer un format différent pour chaque niveau à l'aide de l'éditeur de carte avancé (icône crayon). Pour plus d'informations, consultez le <a href='https://mapstore.readthedocs.io/en/latest/user-guide/layer-settings/#templates' target='_blank'> guide de l'utilisateur </a>. Si une couche a défini son propre format d'identification, elle sera utilisée à la place du format générique défini au niveau de la carte."
                 }
             },
+            "importDialog": {
+                "heading": "Supprimer un fichier.json de story précédemment exporté",
+                "selectFiles": "Sélectionner un fichier",
+                "note": "Les données du fichier importé remplaceront les données du story actuel"
+            },
+            "exportDialog": {
+              "heading": "Exporter le story sous forme de fichier .json"
+            },
             "errors": {
                 "loading": {
                     "notFound": "Geostory introuvable",
@@ -2748,6 +2809,7 @@
             "titlePlaceholder": "Entrez le nom affiché",
             "add": "Ajouter",
             "thumbnailMessage": "La taille des images doit être un carré de 98px x 98px ou 128px x 128px, maximum 500kb",
+            "imageUploadMessage": "Cliquez ou faites glisser et déposez pour ajouter une image",
             "additionalParameters": "Paramètres additionnels",
             "addAdditionalParameterTooltip": "Ajouter un paramètre",
             "removeAdditionalParameterTooltip": "Supprimer le paramètre",
@@ -3470,6 +3532,9 @@
             "noDataForPosition": "pas de données Street View pour cette position",
             "unknownError": "erreur inconnue, voir console"
           }
+        },
+        "sidebarMenu": {
+          "showMoreItems": "Afficher plus d'éléments"
         }
     }
 }

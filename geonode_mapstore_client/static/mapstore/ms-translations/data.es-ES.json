@@ -35,7 +35,12 @@
             "message": "La capa no se pudo recargar con un nombre cambiado"
         },
         "version": {
-            "label": "Versión"
+          "title": "MapStore Versión",
+          "label": "Versión",
+          "message": "Mensaje",
+          "commit": "Commit",
+          "date": "Fecha",
+          "githubUrl": "Abre el árbol de github en una nueva pestaña"
         },
         "errorPage": {
             "title":"Vaya, algo salió mal...",
@@ -160,7 +165,8 @@
                     "title": "Error",
                     "message": "No se pudo recuperar el formato"
                 }
-            }
+            },
+            "forceProxy": "Forzar proxy"
         },
         "longitude": "Lon",
         "latitude": "Lat",
@@ -421,6 +427,13 @@
             "renderingErrorTitle": "Error de procesamiento",
             "renderingErrorMessage": "<p>La representación del mapa se detuvo y esto podría deberse a diferentes razones: </p><ul><li>El estilo aplicado contiene algunas reglas o variables que no son compatibles con las características</li>< li>La capa no está configurada correctamente</li></ul><p>Puede aplicar cambios al estilo de la capa y luego hacer clic en el botón 'Recargar mapa'. <br/> Consulte el mensaje a continuación para obtener información adicional:< /p>",
             "reloadMap": "Recargar mapa",
+            "settings": {
+              "title": "Configuración del mapa",
+              "skyAtmosphere": "Mostrar la atmósfera del cielo",
+              "groundAtmosphere": "Mostrar la atmósfera de la superficie",
+              "fog": "Mostrar niebla",
+              "depthTest": "Activar depthTest contra el terreno"
+            },
             "thumbnailError": {
                 "error403": "Error al modificar la miniatura",
                 "error404": "Error al crear la miniatura",
@@ -486,6 +499,8 @@
             "toggleGroupVisibility": "Alternar la visibilidad del grupo",
             "displayLegendAndTools": "Mostrar la leyenda",
             "zoomToLayerExtent": "Zoom a la extensión de la capa",
+            "addAnnotations": "Agregar anotaciones",
+            "editAnnotations": "Editar anotaciones",
             "addLayer": "Añadir capa",
             "addLayerToGroup": "Añadir capa al grupo seleccionado",
             "addGroup": "Añadir grupo",
@@ -654,7 +669,8 @@
             "previewFormatUnsupported": "Formato no compatible para la vista previa",
             "projection": "Sistema de coordenadas",
             "projectionmismatch": "Falta de coincidencia del sistema de coordenadas entre el mapa impreso y en pantalla",
-            "graticule": "agregar cuadrícula con etiquetas"
+            "graticule": "agregar cuadrícula con etiquetas",
+            "additionalLayers": "Incluir superposiciones"
         },
         "backgroundSwitcher":{
             "tooltip": "Selección del fondo"
@@ -1190,6 +1206,8 @@
             "passwordChanged": "Clave actualizada",
             "passwordError": "Error en el cambio de clave",
             "signIn":"Login",
+            "signInWith": "Iniciar sesión con",
+            "orSignInWith": "O iniciar sesión con",
             "loginFail":"Error de autenticación",
             "loginFailedStatusMessages": {
                 "usernamePwdInsert": "Por favor, introduzca su clave y contraseña",
@@ -1465,12 +1483,16 @@
                 "label": "Establecer límite de visibilidad",
                 "tooltip": "Aplica automáticamente los límites de visibilidad sugeridos por el servidor"
             },
-          "domainAliases": {
-            "title": "Alias de dominio",
-            "helpTooltip": "Esta opción se utiliza para dividir el contenido en varios subdominios",
-            "addAliasTooltip": "Agregar alias",
-            "removeAliasTooltip": "Eliminar alias"
-          }
+            "domainAliases": {
+              "title": "Alias de dominio",
+              "helpTooltip": "Esta opción se utiliza para dividir el contenido en varios subdominios",
+              "addAliasTooltip": "Agregar alias",
+              "removeAliasTooltip": "Eliminar alias"
+            },
+            "allowUnsecureLayers": {
+              "label": "Permitir capas no seguras",
+              "tooltip": "Agregar una capa al mapa con esta opción habilitada obliga a la aplicación a aplicar proxy"
+            }
         },
         "uploader": {
             "filename": "Nombre del fichero",
@@ -1692,6 +1714,7 @@
         },
         "layerdownload": {
             "title": "Exportar los datos",
+            "service": "Servicio",
             "format": "Formato de fichero",
             "srs": "Sistema de referencia espacial",
             "export": "Exportar",
@@ -1766,7 +1789,8 @@
                 },
                 "emptyMap": {
                     "title": "Mapa vacío",
-                    "description": "Comience desde un mapa vacío"
+                    "description": "Comience desde un mapa vacío",
+                    "noNameDescription": "La selección tiene un mapa vacío. Agregue un nombre al mapa vacío para continuar con la configuración del mapa"
                  }
             },
             "title": "Título",
@@ -1795,7 +1819,7 @@
                     "backToPreview": "Volver a vista previa",
                     "backToChartOptions": "Volver a las opciones de gráfico",
                     "selectALayer": "Seleccionar una capa",
-                    "selectAMap": "Seleccionar un mapa",
+                    "selectAMap": "Seleccione uno o más mapas",
                     "configureChartOptions": "Configurar opciones de gráfico",
                     "configureWidgetOptions": "Configurar las opciones del widget",
                     "backToTableOptions": "Volver a las opciones de tabla",
@@ -1806,6 +1830,7 @@
                     "titlePlaceholder": "Introduzca el título...",
                     "textPlaceholder": "Introduzca texto...",
                     "useThisMap": "Usar este mapa",
+                    "useTheseMap": "Usa estos mapas",
                     "configureMapOptions": "Configurar opciones de mapa",
                     "enableIdentifyTool": "Habilitar herramienta de identificación",
                     "disableIdentifyTool": "Deshabilitar la herramienta de identificación",
@@ -1869,6 +1894,13 @@
                     "unhide": "Ocultar",
                     "unhideDescription": "Mostrar el widget a otros usuarios"
                 }
+            },
+            "mapSwitcher": {
+                "noResults": "No se encontró ningún mapa",
+                "placeholder": "Ingrese el nombre del mapa",
+                "selectLabel": "Seleccione un mapa",
+                "infoOnHide": "Expanda el widget para ver el selector de mapas",
+                "subTitle": "<p>Para la selección múltiple,<br>en Windows use CTRL + clic <br> y en Mac use control + clic</p>"
             },
             "chartType": {
                 "bar": {
@@ -2001,6 +2033,14 @@
         },
         "dashboard": {
             "loadingSpinner": "Cargando panel de control",
+            "importDialog": {
+              "selectFiles": "Selecciona un archivo",
+              "heading": "Suelta un archivo .json previamente exportado de un dashboard",
+              "note": "Los datos del archivo importado sustituirán a los del dashboard actual"
+            },
+            "exportDialog": {
+              "heading": "Exporta el panel de control como archivo .json"
+            },
             "errors":{
                 "loading": {
                     "title": "Error al cargar el panel de control",
@@ -2170,10 +2210,23 @@
             "addMarkRule": "Agregar regla de marca",
             "shape": "Forma",
             "fill": "Color de relleno",
+            "clampToGround": "Adaptar al terreno",
+            "clampOutlineToGround": "Adaptar el contorno al suelo",
+            "msBringToFront": "Traer al frente",
+            "heightReferenceFromGround": "Referencia de altura desde el suelo",
+            "height": "Altura",
+            "constantValue": "Valor constante",
+            "attributeValue": "Valor de atributo",
             "strokeColor": "Color de línea",
             "strokeWidth": "Ancho de línea",
             "radius": "Radio",
             "rotation": "Rotación",
+            "classificationtype": "Tipo de polígono",
+            "3dTile": "3D",
+            "terrain": "Terreno",
+            "both": "Ambos",
+            "relative": "Relativo",
+            "clamp": "Abrazadera",
             "addIconSymbolizer": "Agregar simbolizador de icono",
             "addIconRule": "Agregar regla de icono",
             "image": "Imagen",
@@ -2597,6 +2650,14 @@
                     "templateTooltip":"Esta configuración le permite habilitar la función Identificar en el mapa definiendo un formato genérico para todas las capas. Es posible configurar un formato diferente para cada nivel usando el editor de mapas avanzado (icono de lápiz). Para obtener más información, consulte la <a href='https://mapstore.readthedocs.io/en/latest/user-guide/layer-settings/#templates' target='_blank'> guía del usuario </a>. Si una capa ha definido su propio formato de identificación, se utilizará en lugar del genérico establecido en el nivel del mapa."
                 }
             },
+            "importDialog": {
+                "selectFiles": "Selecciona un archivo",
+                "heading": "Suelta un archivo .json previamente exportado de una historia",
+                "note": "Los datos del archivo importado sustituirán a los de la historia actual"
+            },
+              "exportDialog": {
+                "heading": "Exporta la historia como archivo .json"
+            },
             "errors": {
                 "loading": {
                     "notFound": "Geografía no encontrada",
@@ -2746,6 +2807,7 @@
             "titlePlaceholder": "Ingrese el nombre que se muestra",
             "add": "Añadir",
             "thumbnailMessage": "El tamaño de las imágenes debe ser un cuadrado de 98 px x 98 px o 128 px x 128 px, máximo 500kb",
+            "imageUploadMessage": "Haga clic, o arrastre y suelte para agregar una imagen",
             "additionalParameters": "Parámetros adicionales",
             "addAdditionalParameterTooltip": "Agregar parámetro",
             "removeAdditionalParameterTooltip": "Eliminar parámetro",
@@ -3469,6 +3531,9 @@
             "noDataForPosition": "no hay datos de Street View para esta",
             "unknownError": "error desconocido, ver consola"
           }
+        },
+        "sidebarMenu": {
+          "showMoreItems": "Mostrar más elementos"
         }
     }
 }
