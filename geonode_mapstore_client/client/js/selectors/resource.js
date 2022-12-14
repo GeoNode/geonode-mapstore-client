@@ -154,7 +154,7 @@ function removeProperty(value, paths) {
     return value;
 }
 
-function isMapCenterEqual(initialCenter, currentCenter) {
+function isMapCenterEqual(initialCenter = {}, currentCenter = {}) {
     const CENTER_EPS = 1e-12;
     return initialCenter.crs === currentCenter.crs && Math.abs(initialCenter.x - currentCenter.x) < CENTER_EPS && Math.abs(initialCenter.y - currentCenter.y) < CENTER_EPS;
 }
@@ -179,17 +179,45 @@ function isResourceDataEqual(state, initialData = {}, currentData = {}) {
     }
     case ResourceTypes.DASHBOARD: {
         const initialWidgets = (initialData?.widgets || []);
+
+        // check if the current dashboard was built after mapstore update
+        // the mapstore submodule update introduces breaking changes which must be catered for
+        // If the dashboard was created with the new features from mapstore, it supports multiple map widgets
+        const supportsMultipleWidgets = initialWidgets.every((widget) => {
+            if (widget.widgetType === 'map') {
+                return !!widget.maps;
+            }
+            return true;
+        });
         const isWidgetMapCenterChanged = !!(currentData?.widgets || [])
             .find((widget) => {
                 if (widget.widgetType === 'map') {
                     const initialWidget = initialWidgets.find(({ id }) => id === widget.id);
-                    return initialWidget ? !isMapCenterEqual(initialWidget?.map?.center, widget?.map?.center) : true;
+                    const currentWidgets = [...widget.maps];
+                    const allCentresEqual = supportsMultipleWidgets ? currentWidgets.every((mapWidget) => {
+                        const relatedWidget = initialWidget?.maps?.find(w => w.mapId === mapWidget.mapId) || {};
+                        return isMapCenterEqual(relatedWidget?.center, mapWidget?.center);
+                    }) : isMapCenterEqual(initialWidget?.map?.center, currentWidgets[0].center);
+                    return initialWidget ? !allCentresEqual : true;
                 }
                 return false;
             });
+        const newCurrentData = supportsMultipleWidgets ? currentData : {
+            ...currentData,
+            widgets: currentData.widgets.map(widget => {
+                if (!!widget.maps) {
+                    const mapList = widget.maps;
+                    delete widget.maps;
+                    widget.map = mapList[0];
+                }
+                return widget;
+            })
+        };
+        const initialListItemsToRemove = ['bbox', 'size', 'center', 'layouts'];
+        const currentListItemsToRemove = !supportsMultipleWidgets ? ['bbox', 'size', 'center', 'layouts', 'mapId', 'dependenciesMap', 'selectedMapId'] : initialListItemsToRemove;
         return isEqual(
-            removeProperty(initialData, ['bbox', 'size', 'center', 'layouts']),
-            removeProperty(currentData, ['bbox', 'size', 'center', 'layouts'])
+            removeProperty(initialData, initialListItemsToRemove),
+            removeProperty(newCurrentData, currentListItemsToRemove)
         ) && !isWidgetMapCenterChanged;
     }
     default:

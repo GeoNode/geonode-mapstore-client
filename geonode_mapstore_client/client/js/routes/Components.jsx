@@ -14,8 +14,9 @@ import isArray from 'lodash/isArray';
 import { getMonitoredState } from '@mapstore/framework/utils/PluginsUtils';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import PluginsContainer from '@mapstore/framework/components/plugins/PluginsContainer';
-import useLazyPlugins from '@js/hooks/useLazyPlugins';
 import { createShallowSelector } from '@mapstore/framework/utils/ReselectUtils';
+import useModulePlugins from '@mapstore/framework/hooks/useModulePlugins';
+import { getPlugins } from '@mapstore/framework/utils/ModulePluginsUtils';
 
 const urlQuery = url.parse(window.location.href, true).query;
 
@@ -52,18 +53,17 @@ function ComponentsRoute({
     name,
     pluginsConfig: propPluginsConfig,
     params,
-    lazyPlugins,
     plugins
 }) {
 
     const pluginsConfig = getPluginsConfiguration(name, propPluginsConfig);
 
-    const { plugins: loadedPlugins, pending } = useLazyPlugins({
-        pluginsEntries: lazyPlugins,
+    const { plugins: loadedPlugins, pending } = useModulePlugins({
+        pluginsEntries: getPlugins(plugins, 'module'),
         pluginsConfig
     });
 
-    const parsedPlugins = useMemo(() => ({ ...loadedPlugins, ...plugins }), [loadedPlugins]);
+    const parsedPlugins = useMemo(() => ({ ...loadedPlugins, ...getPlugins(plugins) }), [loadedPlugins]);
     const className = `gn-components`;
 
     return (
@@ -74,6 +74,7 @@ function ComponentsRoute({
                 className={className}
                 pluginsConfig={pluginsConfig}
                 plugins={parsedPlugins}
+                allPlugins={plugins}
                 params={params}
             />}
         </>

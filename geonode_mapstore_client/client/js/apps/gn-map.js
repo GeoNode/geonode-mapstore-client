@@ -47,7 +47,6 @@ import {
     setupConfiguration,
     initializeApp,
     getPluginsConfiguration,
-    storeEpicsCache,
     getPluginsConfigOverride
 } from '@js/utils/AppUtils';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
@@ -66,7 +65,7 @@ import maplayout from '@mapstore/framework/reducers/maplayout';
 import 'react-widgets/dist/css/react-widgets.css';
 import 'react-select/dist/react-select.css';
 
-import pluginsDefinition from '@js/plugins/index';
+import pluginsDefinition, { storeEpicsNamesToExclude } from '@js/plugins/index';
 import ReactSwipe from 'react-swipeable-views';
 import SwipeHeader from '@mapstore/framework/components/data/identify/SwipeHeader';
 const requires = {
@@ -129,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         ...timelineEpics
                     };
 
-                    storeEpicsCache(appEpics);
+                    storeEpicsNamesToExclude(appEpics);
 
                     // register custom arcgis layer
                     import('@js/map/' + mapType + '/plugins/ArcGisMapServer')
@@ -149,7 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 },
                                 themeCfg: null,
                                 pluginsConfig: getPluginsConfigOverride(getPluginsConfiguration(localConfig.plugins, pluginsConfigKey)),
-                                lazyPlugins: pluginsDefinition.lazyPlugins,
                                 pluginsDef: {
                                     plugins: {
                                         ...pluginsDefinition.plugins

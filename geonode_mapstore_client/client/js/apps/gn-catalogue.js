@@ -58,7 +58,6 @@ import {
     setupConfiguration,
     initializeApp,
     getPluginsConfiguration,
-    storeEpicsCache,
     getPluginsConfigOverride
 } from '@js/utils/AppUtils';
 import { CATALOGUE_ROUTES, appRouteComponentTypes } from '@js/utils/AppRoutesUtils';
@@ -78,7 +77,7 @@ import gnsearchEpics from '@js/epics/gnsearch';
 import favoriteEpics from '@js/epics/favorite';
 import maplayout from '@mapstore/framework/reducers/maplayout';
 
-import pluginsDefinition from '@js/plugins/index';
+import pluginsDefinition, { storeEpicsNamesToExclude } from '@js/plugins/index';
 import ReactSwipe from 'react-swipeable-views';
 import SwipeHeader from '@mapstore/framework/components/data/identify/SwipeHeader';
 
@@ -152,7 +151,7 @@ Promise.all([
                     ...timelineEpics
                 };
 
-                storeEpicsCache(appEpics);
+                storeEpicsNamesToExclude(appEpics);
 
                 // register custom arcgis layer
                 import('@js/map/' + mapType + '/plugins/ArcGisMapServer')
@@ -179,7 +178,6 @@ Promise.all([
                             },
                             themeCfg: null,
                             pluginsConfig: getPluginsConfigOverride(getPluginsConfiguration(localConfig.plugins, pluginsConfigKey)),
-                            lazyPlugins: pluginsDefinition.lazyPlugins,
                             pluginsDef: {
                                 plugins: {
                                     ...pluginsDefinition.plugins

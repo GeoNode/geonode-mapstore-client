@@ -28,7 +28,7 @@
                 "lg": 600
             },
             "right": {
-                "md": 658
+                "md": 550
             },
             "bottom": {
                 "sm": 30
@@ -422,6 +422,7 @@
             {
                 "name": "GeoStory",
                 "cfg": {
+                    "hideIdentifyOptions": true,
                     "mediaEditorSettings": {
                         "sourceId": "geonode",
                         "mediaTypes": {
@@ -2257,6 +2258,7 @@
             {
                 "name": "GeoStory",
                 "cfg": {
+                    "hideIdentifyOptions": true,
                     "mediaEditorSettings": {
                         "sourceId": "geonode",
                         "mediaTypes": {
@@ -3051,6 +3053,7 @@
             {
                 "name": "GeoStory",
                 "cfg": {
+                    "hideIdentifyOptions": true,
                     "mediaEditorSettings": {
                         "sourceId": "geonode",
                         "mediaTypes": {

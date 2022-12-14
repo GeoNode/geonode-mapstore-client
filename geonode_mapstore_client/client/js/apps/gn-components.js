@@ -19,11 +19,10 @@ import {
 import {
     setupConfiguration,
     initializeApp,
-    storeEpicsCache,
     getPluginsConfiguration,
     getPluginsConfigOverride
 } from '@js/utils/AppUtils';
-import pluginsDefinition from '@js/plugins/index';
+import pluginsDefinition, { storeEpicsNamesToExclude } from '@js/plugins/index';
 import StandardApp from '@mapstore/framework/components/app/StandardApp';
 import withExtensions from '@mapstore/framework/components/app/withExtensions';
 import gnsettings from '@js/reducers/gnsettings';
@@ -67,14 +66,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             ...configEpics
                         };
 
-                        storeEpicsCache(appEpics);
+                        storeEpicsNamesToExclude(appEpics);
 
                         main({
                             appComponent: withRoutes(routes)(ConnectedRouter),
                             pluginsConfig: getPluginsConfigOverride(getPluginsConfiguration(localConfig.plugins, pluginsConfigKey)),
                             targetId: 'ms-container',
                             loaderComponent: MainLoader,
-                            lazyPlugins: pluginsDefinition.lazyPlugins,
                             pluginsDef: {
                                 plugins: {
                                     ...pluginsDefinition.plugins

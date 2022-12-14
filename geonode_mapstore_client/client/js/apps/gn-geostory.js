@@ -29,11 +29,10 @@ import {
     setupConfiguration,
     initializeApp,
     getPluginsConfiguration,
-    storeEpicsCache,
     getPluginsConfigOverride
 } from '@js/utils/AppUtils';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
-import pluginsDefinition from '@js/plugins/index';
+import pluginsDefinition, { storeEpicsNamesToExclude } from '@js/plugins/index';
 import ReactSwipe from 'react-swipeable-views';
 import SwipeHeader from '@mapstore/framework/components/data/identify/SwipeHeader';
 const requires = {
@@ -86,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         ...gnresourceEpics
                     };
 
-                    storeEpicsCache(appEpics);
+                    storeEpicsNamesToExclude(appEpics);
 
                     // register custom arcgis layer
                     import('@js/map/' + mapType + '/plugins/ArcGisMapServer')
@@ -96,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 appComponent: withRoutes(routes)(ConnectedRouter),
                                 pluginsConfig: getPluginsConfigOverride(getPluginsConfiguration(localConfig.plugins, pluginsConfigKey)),
                                 loaderComponent: MainLoader,
-                                lazyPlugins: pluginsDefinition.lazyPlugins,
                                 pluginsDef: {
                                     plugins: {
                                         ...pluginsDefinition.plugins

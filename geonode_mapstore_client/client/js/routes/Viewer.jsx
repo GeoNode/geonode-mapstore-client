@@ -15,13 +15,14 @@ import isArray from 'lodash/isArray';
 import { getMonitoredState } from '@mapstore/framework/utils/PluginsUtils';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import PluginsContainer from '@mapstore/framework/components/plugins/PluginsContainer';
-import useLazyPlugins from '@js/hooks/useLazyPlugins';
 import { requestResourceConfig, requestNewResourceConfig } from '@js/actions/gnresource';
 import MetaTags from '@js/components/MetaTags';
 import MainEventView from '@js/components/MainEventView';
 import ViewerLayout from '@js/components/ViewerLayout';
 import { createShallowSelector } from '@mapstore/framework/utils/ReselectUtils';
 import { getResourceImageSource } from '@js/utils/ResourceUtils';
+import useModulePlugins from '@mapstore/framework/hooks/useModulePlugins';
+import { getPlugins } from '@mapstore/framework/utils/ModulePluginsUtils';
 
 const urlQuery = url.parse(window.location.href, true).query;
 
@@ -61,7 +62,6 @@ function ViewerRoute({
     onUpdate,
     onCreate = () => {},
     loaderComponent,
-    lazyPlugins,
     plugins,
     match,
     resource,
@@ -74,8 +74,8 @@ function ViewerRoute({
     const { pk } = match.params || {};
     const pluginsConfig = getPluginsConfiguration(name, propPluginsConfig);
 
-    const { plugins: loadedPlugins, pending } = useLazyPlugins({
-        pluginsEntries: lazyPlugins,
+    const { plugins: loadedPlugins, pending } = useModulePlugins({
+        pluginsEntries: getPlugins(plugins, 'module'),
         pluginsConfig
     });
     useEffect(() => {
@@ -91,7 +91,7 @@ function ViewerRoute({
     }, [pending, pk]);
 
     const loading = loadingConfig || pending;
-    const parsedPlugins = useMemo(() => ({ ...loadedPlugins, ...plugins }), [loadedPlugins]);
+    const parsedPlugins = useMemo(() => ({ ...loadedPlugins, ...getPlugins(plugins) }), [loadedPlugins]);
     const Loader = loaderComponent;
     const className = `page-${resourceType}-viewer`;
 
@@ -137,6 +137,7 @@ function ViewerRoute({
                 component={ViewerLayout}
                 pluginsConfig={pluginsConfig}
                 plugins={parsedPlugins}
+                allPlugins={plugins}
                 params={params}
             />}
             {loading && Loader && <Loader />}

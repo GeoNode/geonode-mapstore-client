@@ -278,3 +278,159 @@ div#mapstore-globalspinner {
         color: #ffffff;
     }
 }
+
+// this override is needed to ensure the identify is correctly placed on close
+// !important flag is needed to override inline style
+#identify-container {
+    width: 100% !important; 
+    transform: unset !important;
+}
+
+// we need to override the styles of the widgets
+// because we are using rem unit of measure inside geonode mapstore client
+// to compute correctly we need to overrides the rules inside mapstore
+.widget-container {
+    .mapstore-widget-card {
+        .setFontSize(16px);
+        font-size: @fSize;
+        .mapstore-widget-layer {
+            .em(margin-top, 10);
+            .em(margin-right, 10);
+        }
+        .mapstore-widget-header {
+            font-size: @fSize;
+            .em(height, 28);
+            .widget-title {
+                .setFontSize(14px);
+                font-size: @fSize;
+                .em(margin-left, 6);
+            }
+            .mapstore-info-popover .glyphicon {
+                .setFontSize(14px);
+                font-size: @fSize;
+                .em(margin-top, 7);
+                .em(left, 22);
+            }
+            .widget-icons {
+                .em(height, 10);
+                .em(margin-left, 4);
+                .btn-group {
+                    button {
+                        .em(top, -8);
+                        .em(padding-left, 4);
+                        .em(padding-right, 4);
+                    }
+                }
+            }
+        }
+        .react-grid-Grid {
+            .react-grid-Header {
+                .react-grid-HeaderCell {
+                    .setFontSize(12px);
+                    font-size: @fSize;
+                    .em(padding, 4);
+                    input {
+                        .setFontSize(11px);
+                        font-size: @fSize;
+                        .em(height, 20);
+                        .em(padding-top, 5);
+                        .em(padding-right, 10);
+                        .em(padding-bottom, 5);
+                        .em(padding-left, 10);
+                    }
+                }
+            }
+            .react-grid-Viewport {
+                .react-grid-Cell {
+                    font-size: 12px;
+                }
+            }
+        }
+        .mapstore-widget-default-content {
+            &.ql-editor {
+                .setFontSize(12px);
+                font-size: @fSize;
+                .em(margin-top, 10);
+                .em(margin-right, 10);
+            }
+        }
+        .mapstore-widget-description {
+            font-size: @fSize;
+            .em(margin-top, 5);
+            .em(margin-right, 5);
+        }
+        .mapstore-widget-options {
+            .setFontSize(18px);
+            font-size: @fSize;
+            .em(margin-top, 4);
+            .em(margin-right, 10);;
+        }
+        .widget-menu {
+            .em(margin-top, -4);
+            .em(margin-right, -8);
+        }
+        .widget-footer {
+            .em(height, 30);
+            .result-info {
+                font-size: 12px;
+                .em(margin, 5);
+            }
+        }
+        .mapstore-widget-table {
+            font-size: 12px;
+        }
+        .legend-widget {
+            .setFontSize(12px);
+            font-size: @fSize;
+            .em(padding-right, 15);
+            .em(padding-bottom, 15);
+            .em(padding-left, 15);
+            .widget-legend-toc {
+                .em(margin-top, 10);
+                .toc-default-layer-head {
+                    .em(height, 44);
+                    .em(padding-top, 14);
+                    .em(padding-right, 14);
+                    .em(border-bottom-width, 1);
+                    .visibility-check{
+                        &.glyphicon {
+                            .em(margin-bottom, 10);
+                            .em(margin-left, 10);
+                        }
+                    }
+                    .toc-title {
+                        .em(height, 15);
+                        .em(margin-bottom, 5);
+                        .em(margin-left, 5);
+                        .em(width, 140);
+                    }
+                    .toc-legend-icon {
+                        &.glyphicon {
+                            .em(margin-right, 10);
+                        }
+                    }
+                    .mapstore-slider {
+                        .em(margin-top, -8);
+                    }
+                }
+                .expanded-legend-view {
+                    .em(margin-top, 15);
+                }
+            }
+        }
+        .map-widget-view {
+            .widget-icons, .widget-title {
+                .em(margin-bottom, 6);
+            }
+            .mapstore-widget-header {
+                .mapstore-widget-options {
+                    .em(margin-top, 4);
+                    .em(margin-bottom, 4);
+                    .map-switcher {
+                        .em(width, 200);
+                    }
+                }
+            }
+        }
+    }
+}

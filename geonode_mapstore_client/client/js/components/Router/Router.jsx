@@ -58,7 +58,6 @@ const Router = forwardRef(({
     themeCfg,
     loaderComponent,
     geoNodeConfiguration,
-    lazyPlugins,
     user
 }, ref) => {
     const urlHash = url.parse(window.location.href, true).hash;
@@ -101,7 +100,6 @@ const Router = forwardRef(({
                                                 <Component
                                                     {...props}
                                                     name={route.name}
-                                                    lazyPlugins={lazyPlugins}
                                                     plugins={plugins}
                                                     pluginsConfig={pluginsConfig}
                                                     loaderComponent={loaderComponent}

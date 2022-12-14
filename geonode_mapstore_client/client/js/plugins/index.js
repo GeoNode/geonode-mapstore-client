@@ -5,10 +5,8 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-import isFunction from 'lodash/isFunction';
-import merge from 'lodash/merge';
 import omit from 'lodash/omit';
+import uniq from 'lodash/uniq';
 import {
     PrintActionButton,
     CatalogActionButton,
@@ -19,15 +17,24 @@ import {
     FilterLayerActionButton
 } from '@js/plugins/actionnavbar/buttons';
 import { getPluginsContext } from '@js/utils/PluginsContextUtils';
+import { toModulePlugin as msToModulePlugin } from '@mapstore/framework/utils/ModulePluginsUtils';
 
-const EXCLUDED_EPICS_NAMES = [
+let epicsNamesToExclude = [
     'loadGeostoryEpic',
     'reloadGeoStoryOnLoginLogout',
     'loadStoryOnHistoryPop',
     'saveGeoStoryResource'
 ];
 
-function cleanEpics(epics, excludedNames = EXCLUDED_EPICS_NAMES) {
+// we need to exclude epics that have been initialized already at app level
+export const storeEpicsNamesToExclude = (epics) => {
+    Object.keys(epics).forEach((key) => {
+        epicsNamesToExclude.push(key);
+    });
+    epicsNamesToExclude = uniq(epicsNamesToExclude);
+};
+
+function cleanEpics(epics, excludedNames = []) {
     const containsExcludedEpic = !!excludedNames.find((epicName) => epics[epicName]);
     if (containsExcludedEpic) {
         return omit(epics, excludedNames);
@@ -35,409 +42,377 @@ function cleanEpics(epics, excludedNames = EXCLUDED_EPICS_NAMES) {
     return epics;
 }
 
-function toLazyPlugin(name, implFunc, overrides) {
-    const getLazyPlugin = () => {
-        return implFunc().then((mod) => {
-            const impl = mod.default;
-            const pluginName = name + 'Plugin';
-            if (!isFunction(impl[pluginName])) {
-                const {
-                    enabler,
-                    loadPlugin,
-                    disablePluginIf,
-                    ...containers
-                } = impl[pluginName];
-                return {
-                    'default': merge({
-                        name,
-                        component: impl[pluginName],
-                        reducers: impl.reducers || {},
-                        epics: cleanEpics(impl.epics || {}),
-                        containers,
-                        disablePluginIf,
-                        enabler,
-                        loadPlugin
-                    }, overrides)
-                };
+// workaround to exclude epics we do not need in geonode
+const toModulePlugin = (...args) => {
+    const getModulePlugin = () => msToModulePlugin(...args)()
+        .then((mod) => {
+            if (!mod?.default?.epics) {
+                return mod;
             }
             return {
-                'default': merge({
-                    name,
-                    component: impl[pluginName],
-                    reducers: impl.reducers || {},
-                    epics: cleanEpics(impl.epics || {}),
-                    containers: impl.containers || {}
-                }, overrides)
+                ...mod,
+                'default': {
+                    ...mod.default,
+                    epics: cleanEpics(mod.default.epics, epicsNamesToExclude)
+                }
             };
         });
-    };
-    getLazyPlugin.isGNLazyWrapper = true;
-    return getLazyPlugin;
-}
-
-
-function splitLazyAndStaticPlugins(pluginsDefinition) {
-    const { plugins: allPlugins = {}, ...definition } = pluginsDefinition;
-    const plugins = Object.keys(allPlugins)
-        .filter((name) => !allPlugins[name].isGNLazyWrapper)
-        .reduce((acc, name) => ({
-            ...acc,
-            [name]: allPlugins[name]
-        }), {});
-    const lazyPlugins = Object.keys(allPlugins)
-        .filter((name) => allPlugins[name].isGNLazyWrapper)
-        .reduce((acc, name) => ({
-            ...acc,
-            [name]: allPlugins[name]
-        }), {});
-    return {
-        ...definition,
-        plugins,
-        lazyPlugins
-    };
-}
-
-// this plugins index combined with the hook `useLazyPlugins`
-// provides a way to import dynamically plugins similar to extensions
+    getModulePlugin.isModulePlugin = true;
+    return getModulePlugin;
+};
 
 export const plugins = {
-    LayerDownloadPlugin: toLazyPlugin(
+    LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
         () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload'),
         {
-            containers: {
-                ActionNavbar: {
-                    name: 'LayerDownload',
-                    Component: LayerDownloadActionButton
+            overrides: {
+                containers: {
+                    ActionNavbar: {
+                        name: 'LayerDownload',
+                        Component: LayerDownloadActionButton
+                    }
                 }
             }
         }
     ),
-    SwipePlugin: toLazyPlugin(
+    SwipePlugin: toModulePlugin(
         'Swipe',
         () => import(/* webpackChunkName: 'plugins/swipe' */ '@mapstore/framework/plugins/Swipe')
     ),
-    SearchServicesConfigPlugin: toLazyPlugin(
+    SearchServicesConfigPlugin: toModulePlugin(
         'SearchServicesConfig',
         () => import(/* webpackChunkName: 'plugins/search-service-config' */ '@mapstore/framework/plugins/SearchServicesConfig')
     ),
-    MousePositionPlugin: toLazyPlugin(
+    MousePositionPlugin: toModulePlugin(
         'MousePosition',
         () => import(/* webpackChunkName: 'plugins/mouse-position' */ '@mapstore/framework/plugins/MousePosition')
     ),
-    StyleEditorPlugin: toLazyPlugin(
+    StyleEditorPlugin: toModulePlugin(
         'StyleEditor',
         () => import(/* webpackChunkName: 'plugins/style-editor' */ '@mapstore/framework/plugins/StyleEditor')
     ),
-    MetadataExplorerPlugin: toLazyPlugin(
+    MetadataExplorerPlugin: toModulePlugin(
         'MetadataExplorer',
         () => import(/* webpackChunkName: 'plugins/metadata-explorer' */ '@mapstore/framework/plugins/MetadataExplorer'),
         {
-            containers: {
-                ActionNavbar: {
-                    name: 'Catalog',
-                    Component: CatalogActionButton,
-                    priority: 1,
-                    doNotHide: true
-                },
-                TOC: {
-                    priority: 1,
-                    doNotHide: true
+            overrides: {
+                containers: {
+                    ActionNavbar: {
+                        name: 'Catalog',
+                        Component: CatalogActionButton,
+                        priority: 1,
+                        doNotHide: true
+                    },
+                    TOC: {
+                        priority: 1,
+                        doNotHide: true
+                    }
                 }
             }
         }
     ),
-    QueryPanelPlugin: toLazyPlugin(
+    QueryPanelPlugin: toModulePlugin(
         'QueryPanel',
         () => import(/* webpackChunkName: 'plugins/query-panel' */ '@mapstore/framework/plugins/QueryPanel')
     ),
-    FeatureEditorPlugin: toLazyPlugin(
+    FeatureEditorPlugin: toModulePlugin(
         'FeatureEditor',
         () => import(/* webpackChunkName: 'plugins/feature-editor-plugin' */ '@mapstore/framework/plugins/FeatureEditor')
     ),
-    WidgetsTrayPlugin: toLazyPlugin(
+    WidgetsTrayPlugin: toModulePlugin(
         'WidgetsTray',
         () => import(/* webpackChunkName: 'plugins/widgets-tray-plugin' */ '@mapstore/framework/plugins/WidgetsTray')
     ),
-    WidgetsBuilderPlugin: toLazyPlugin(
+    WidgetsBuilderPlugin: toModulePlugin(
         'WidgetsBuilder',
         () => import(/* webpackChunkName: 'plugins/widgets-builder-plugin' */ '@mapstore/framework/plugins/WidgetsBuilder')
     ),
-    WidgetsPlugin: toLazyPlugin(
+    WidgetsPlugin: toModulePlugin(
         'Widgets',
         () => import(/* webpackChunkName: 'plugins/widgets-plugin' */ '@mapstore/framework/plugins/Widgets')
     ),
-    TOCItemsSettingsPlugin: toLazyPlugin(
+    TOCItemsSettingsPlugin: toModulePlugin(
         'TOCItemsSettings',
         () => import(/* webpackChunkName: 'plugins/toc-items-settings-plugin' */ '@mapstore/framework/plugins/TOCItemsSettings')
     ),
-    FilterLayerPlugin: toLazyPlugin(
+    FilterLayerPlugin: toModulePlugin(
         'FilterLayer',
         () => import(/* webpackChunkName: 'plugins/filter-layer-plugin' */ '@mapstore/framework/plugins/FilterLayer'),
         {
-            containers: {
-                ActionNavbar: {
-                    name: 'FilterLayer',
-                    Component: FilterLayerActionButton,
-                    priority: 1
-                },
-                TOC: {
-                    name: "FilterLayer",
-                    priority: 2
+            overrides: {
+                containers: {
+                    ActionNavbar: {
+                        name: 'FilterLayer',
+                        Component: FilterLayerActionButton,
+                        priority: 1
+                    },
+                    TOC: {
+                        name: "FilterLayer",
+                        priority: 2
+                    }
                 }
             }
         }
     ),
-    MeasurePlugin: toLazyPlugin(
+    MeasurePlugin: toModulePlugin(
         'Measure',
         () => import(/* webpackChunkName: 'plugins/measure-plugin' */ '@mapstore/framework/plugins/Measure'),
         {
-            containers: {
-                ActionNavbar: {
-                    name: 'Measure',
-                    Component: MeasureActionButton
+            overrides: {
+                containers: {
+                    ActionNavbar: {
+                        name: 'Measure',
+                        Component: MeasureActionButton
+                    }
                 }
             }
         }
     ),
-    FullScreenPlugin: toLazyPlugin(
+    FullScreenPlugin: toModulePlugin(
         'FullScreen',
         () => import(/* webpackChunkName: 'plugins/fullscreen-plugin' */ '@mapstore/framework/plugins/FullScreen'),
         {
-            containers: {
-                ActionNavbar: {
-                    name: 'FullScreen',
-                    Component: FullScreenActionButton,
-                    priority: 5
+            overrides: {
+                containers: {
+                    ActionNavbar: {
+                        name: 'FullScreen',
+                        Component: FullScreenActionButton,
+                        priority: 5
+                    }
                 }
             }
         }
     ),
-    AddGroupPlugin: toLazyPlugin(
+    AddGroupPlugin: toModulePlugin(
         'AddGroup',
         () => import(/* webpackChunkName: 'plugins/add-group-plugin' */ '@mapstore/framework/plugins/AddGroup')
     ),
-    OmniBarPlugin: toLazyPlugin(
+    OmniBarPlugin: toModulePlugin(
         'OmniBar',
         () => import(/* webpackChunkName: 'plugins/omni-bar-plugin' */ '@mapstore/framework/plugins/OmniBar')
     ),
-    BurgerMenuPlugin: toLazyPlugin(
+    BurgerMenuPlugin: toModulePlugin(
         'BurgerMenu',
         () => import(/* webpackChunkName: 'plugins/burger-menu-plugin' */ '@mapstore/framework/plugins/BurgerMenu')
     ),
-    GeoStoryPlugin: toLazyPlugin(
+    GeoStoryPlugin: toModulePlugin(
         'GeoStory',
         () => import(/* webpackChunkName: 'plugins/geostory-plugin' */ '@mapstore/framework/plugins/GeoStory')
     ),
-    MapPlugin: toLazyPlugin(
+    MapPlugin: toModulePlugin(
         'Map',
         () => import(/* webpackChunkName: 'plugins/map-plugin' */ '@mapstore/framework/plugins/Map')
     ),
-    MediaEditorPlugin: toLazyPlugin(
+    MediaEditorPlugin: toModulePlugin(
         'MediaEditor',
         () => import(/* webpackChunkName: 'plugins/media-editor-plugin' */ '@mapstore/framework/plugins/MediaEditor')
     ),
-    GeoStoryEditorPlugin: toLazyPlugin(
+    GeoStoryEditorPlugin: toModulePlugin(
         'GeoStoryEditor',
         () => import(/* webpackChunkName: 'plugins/geostory-editor-plugin' */ '@mapstore/framework/plugins/GeoStoryEditor')
     ),
-    GeoStoryNavigationPlugin: toLazyPlugin(
+    GeoStoryNavigationPlugin: toModulePlugin(
         'GeoStoryNavigation',
         () => import(/* webpackChunkName: 'plugins/geostory-navigation-plugin' */ '@mapstore/framework/plugins/GeoStoryNavigation')
     ),
-    NotificationsPlugin: toLazyPlugin(
+    NotificationsPlugin: toModulePlugin(
         'Notifications',
         () => import(/* webpackChunkName: 'plugins/notifications-plugin' */ '@mapstore/framework/plugins/Notifications')
     ),
-    SavePlugin: toLazyPlugin(
+    SavePlugin: toModulePlugin(
         'Save',
         () => import(/* webpackChunkName: 'plugins/save-plugin' */ '@js/plugins/Save')
     ),
-    SaveAsPlugin: toLazyPlugin(
+    SaveAsPlugin: toModulePlugin(
         'SaveAs',
         () => import(/* webpackChunkName: 'plugins/save-as-plugin' */ '@js/plugins/SaveAs')
     ),
-    SearchPlugin: toLazyPlugin(
+    SearchPlugin: toModulePlugin(
         'Search',
         () => import(/* webpackChunkName: 'plugins/search-plugin' */ '@mapstore/framework/plugins/Search')
     ),
-    SharePlugin: toLazyPlugin(
+    SharePlugin: toModulePlugin(
         'Share',
         () => import(/* webpackChunkName: 'plugins/share-plugin' */ '@js/plugins/Share')
     ),
-    IdentifyPlugin: toLazyPlugin(
+    IdentifyPlugin: toModulePlugin(
         'Identify',
         () => import(/* webpackChunkName: 'plugins/identify-plugin' */ '@mapstore/framework/plugins/Identify')
     ),
-    ToolbarPlugin: toLazyPlugin(
+    ToolbarPlugin: toModulePlugin(
         'Toolbar',
         () => import(/* webpackChunkName: 'plugins/toolbar-plugin' */ '@mapstore/framework/plugins/Toolbar')
     ),
-    ZoomAllPlugin: toLazyPlugin(
+    ZoomAllPlugin: toModulePlugin(
         'ZoomAll',
         () => import(/* webpackChunkName: 'plugins/zoom-all-plugin' */ '@mapstore/framework/plugins/ZoomAll')
     ),
-    MapLoadingPlugin: toLazyPlugin(
+    MapLoadingPlugin: toModulePlugin(
         'MapLoading',
         () => import(/* webpackChunkName: 'plugins/map-loading-plugin' */ '@mapstore/framework/plugins/MapLoading')
     ),
-    BackgroundSelectorPlugin: toLazyPlugin(
+    BackgroundSelectorPlugin: toModulePlugin(
         'BackgroundSelector',
         () => import(/* webpackChunkName: 'plugins/background-selector-plugin' */ '@mapstore/framework/plugins/BackgroundSelector')
     ),
-    ZoomInPlugin: toLazyPlugin(
+    ZoomInPlugin: toModulePlugin(
         'ZoomIn',
         () => import(/* webpackChunkName: 'plugins/zoom-in-plugin' */ '@mapstore/framework/plugins/ZoomIn')
     ),
-    ZoomOutPlugin: toLazyPlugin(
+    ZoomOutPlugin: toModulePlugin(
         'ZoomOut',
         () => import(/* webpackChunkName: 'plugins/zoom-out-plugin' */ '@mapstore/framework/plugins/ZoomOut')
     ),
-    ExpanderPlugin: toLazyPlugin(
+    ExpanderPlugin: toModulePlugin(
         'Expander',
         () => import(/* webpackChunkName: 'plugins/expander-plugin' */ '@mapstore/framework/plugins/Expander')
     ),
-    ScaleBoxPlugin: toLazyPlugin(
+    ScaleBoxPlugin: toModulePlugin(
         'ScaleBox',
         () => import(/* webpackChunkName: 'plugins/scale-box-plugin' */ '@mapstore/framework/plugins/ScaleBox')
     ),
-    MapFooterPlugin: toLazyPlugin(
+    MapFooterPlugin: toModulePlugin(
         'MapFooter',
         () => import(/* webpackChunkName: 'plugins/map-footer-plugin' */ '@mapstore/framework/plugins/MapFooter')
     ),
-    PrintPlugin: toLazyPlugin(
+    PrintPlugin: toModulePlugin(
         'Print',
         () => import(/* webpackChunkName: 'plugins/print-plugin' */ '@mapstore/framework/plugins/Print'),
         {
-            containers: {
-                ActionNavbar: {
-                    name: 'Print',
-                    Component: PrintActionButton,
-                    priority: 5,
-                    doNotHide: true
+            overrides: {
+                containers: {
+                    ActionNavbar: {
+                        name: 'Print',
+                        Component: PrintActionButton,
+                        priority: 5,
+                        doNotHide: true
+                    }
                 }
             }
         }
     ),
-    PrintTextInputPlugin: toLazyPlugin(
+    PrintTextInputPlugin: toModulePlugin(
         'PrintTextInput',
         () => import(/* webpackChunkName: 'plugins/print-text-input-plugin' */ '@mapstore/framework/plugins/print/TextInput')
     ),
-    PrintOutputFormatPlugin: toLazyPlugin(
+    PrintOutputFormatPlugin: toModulePlugin(
         'PrintOutputFormat',
         () => import(/* webpackChunkName: 'plugins/print-output-format-plugin' */ '@mapstore/framework/plugins/print/OutputFormat')
     ),
-    PrintScalePlugin: toLazyPlugin(
+    PrintScalePlugin: toModulePlugin(
         'PrintScale',
         () => import(/* webpackChunkName: 'plugins/print-scale-plugin' */ '@mapstore/framework/plugins/print/Scale')
     ),
-    PrintProjectionPlugin: toLazyPlugin(
+    PrintProjectionPlugin: toModulePlugin(
         'PrintProjection',
         () => import(/* webpackChunkName: 'plugins/print-projection-plugin' */ '@mapstore/framework/plugins/print/Projection')
     ),
-    PrintGraticulePlugin: toLazyPlugin(
+    PrintGraticulePlugin: toModulePlugin(
         'PrintGraticule',
         () => import(/* webpackChunkName: 'plugins/print-graticule-plugin' */ '@mapstore/framework/plugins/print/Graticule')
     ),
-    TimelinePlugin: toLazyPlugin(
+    TimelinePlugin: toModulePlugin(
         'Timeline',
         () => import(/* webpackChunkName: 'plugins/timeline-plugin' */ '@mapstore/framework/plugins/Timeline')
     ),
-    PlaybackPlugin: toLazyPlugin(
+    PlaybackPlugin: toModulePlugin(
         'Playback',
         () => import(/* webpackChunkName: 'plugins/playback-plugin' */ '@mapstore/framework/plugins/Playback')
     ),
-    LocatePlugin: toLazyPlugin(
+    LocatePlugin: toModulePlugin(
         'Locate',
         () => import(/* webpackChunkName: 'plugins/locate-plugin' */ '@mapstore/framework/plugins/Locate')
     ),
-    TOCPlugin: toLazyPlugin(
+    TOCPlugin: toModulePlugin(
         'TOC',
         () => import(/* webpackChunkName: 'plugins/toc-plugin' */ '@mapstore/framework/plugins/TOC')
     ),
-    DrawerMenuPlugin: toLazyPlugin(
+    DrawerMenuPlugin: toModulePlugin(
         'DrawerMenu',
         () => import(/* webpackChunkName: 'plugins/drawer-menu-plugin' */ '@mapstore/framework/plugins/DrawerMenu')
     ),
-    ActionNavbarPlugin: toLazyPlugin(
+    ActionNavbarPlugin: toModulePlugin(
         'ActionNavbar',
         () => import(/* webpackChunkName: 'plugins/action-navbar-plugin' */ '@js/plugins/ActionNavbar')
     ),
-    DetailViewerPlugin: toLazyPlugin(
+    DetailViewerPlugin: toModulePlugin(
         'DetailViewer',
         () => import(/* webpackChunkName: 'plugins/detail-viewer-plugin' */ '@js/plugins/DetailViewer')
     ),
-    MediaViewerPlugin: toLazyPlugin(
+    MediaViewerPlugin: toModulePlugin(
         'MediaViewer',
         () => import(/* webpackChunkName: 'plugins/media-viewer-plugin' */ '@js/plugins/MediaViewer')
     ),
-    FitBoundsPlugin: toLazyPlugin(
+    FitBoundsPlugin: toModulePlugin(
         'FitBounds',
         () => import(/* webpackChunkName: 'plugins/fit-bounds-plugin' */ '@js/plugins/FitBounds')
     ),
-    DashboardEditorPlugin: toLazyPlugin(
+    DashboardEditorPlugin: toModulePlugin(
         'DashboardEditor',
         () => import(/* webpackChunkName: 'plugins/dashboard-editor-plugin' */ '@mapstore/framework/plugins/DashboardEditor')
     ),
-    DashboardPlugin: toLazyPlugin(
+    DashboardPlugin: toModulePlugin(
         'Dashboard',
         () => import(/* webpackChunkName: 'plugins/dashboard-plugin' */ '@mapstore/framework/plugins/Dashboard')
     ),
-    AnnotationsPlugin: toLazyPlugin(
+    AnnotationsPlugin: toModulePlugin(
         'Annotations',
         () => import(/* webpackChunkName: 'plugins/annotations-plugin' */ '@mapstore/framework/plugins/Annotations'),
         {
-            containers: {
-                ActionNavbar: {
-                    name: 'Annotations',
-                    Component: AnnotationsActionButton,
-                    priority: 2,
-                    doNotHide: true
+            overrides: {
+                containers: {
+                    ActionNavbar: {
+                        name: 'Annotations',
+                        Component: AnnotationsActionButton,
+                        priority: 3,
+                        doNotHide: true
+                    }
                 }
             }
         }
     ),
-    DeleteResourcePlugin: toLazyPlugin(
+    DeleteResourcePlugin: toModulePlugin(
         'DeleteResource',
         () => import(/* webpackChunkName: 'plugins/delete-resource-plugin' */ '@js/plugins/DeleteResource')
     ),
-    DownloadResourcePlugin: toLazyPlugin(
+    DownloadResourcePlugin: toModulePlugin(
         'DownloadResource',
         () => import(/* webpackChunkName: 'plugins/download-resource-plugin' */ '@js/plugins/DownloadResource')
     ),
-    VisualStyleEditorPlugin: toLazyPlugin(
+    VisualStyleEditorPlugin: toModulePlugin(
         'VisualStyleEditor',
         () => import(/* webpackChunkName: 'plugins/visual-style-editor-plugin' */ '@js/plugins/VisualStyleEditor')
     ),
-    LegendPlugin: toLazyPlugin(
+    LegendPlugin: toModulePlugin(
         'Legend',
         () => import(/* webpackChunkName: 'plugins/legend-plugin' */ '@js/plugins/Legend')
     ),
-    DatasetsCatalogPlugin: toLazyPlugin(
+    DatasetsCatalogPlugin: toModulePlugin(
         'DatasetsCatalog',
         () => import(/* webpackChunkName: 'plugins/dataset-catalog' */ '@js/plugins/DatasetsCatalog')
     ),
-    LayerSettingsPlugin: toLazyPlugin(
+    LayerSettingsPlugin: toModulePlugin(
         'LayerSettings',
         () => import(/* webpackChunkName: 'plugins/layer-settings' */ '@js/plugins/LayerSettings')
     ),
-    SyncPlugin: toLazyPlugin(
+    SyncPlugin: toModulePlugin(
         'Sync',
         () => import(/* webpackChunkName: 'plugins/sync-plugin' */ '@js/plugins/Sync')
     ),
-    IsoDownloadPlugin: toLazyPlugin(
+    IsoDownloadPlugin: toModulePlugin(
         'IsoDownload',
         () => import(/* webpackChunkName: 'plugins/iso-download-plugin' */ '@js/plugins/downloads/IsoDownload')
     ),
-    DublinCoreDownloadPlugin: toLazyPlugin(
+    DublinCoreDownloadPlugin: toModulePlugin(
         'DublinCoreDownload',
         () => import(/* webpackChunkName: 'plugins/iso-download-plugin' */ '@js/plugins/downloads/DublinCoreDownload')
     ),
-    ResourcesGridPlugin: toLazyPlugin(
+    ResourcesGridPlugin: toModulePlugin(
         'ResourcesGrid',
         () => import(/* webpackChunkName: 'plugins/resources-grid' */ '@js/plugins/ResourcesGrid')
     ),
-    FeaturedResourcesGridPlugin: toLazyPlugin(
+    FeaturedResourcesGridPlugin: toModulePlugin(
         'FeaturedResourcesGrid',
         () => import(/* webpackChunkName: 'plugins/featured-resources-grid' */ '@js/plugins/FeaturedResourcesGrid')
     )
@@ -450,4 +425,4 @@ const pluginsDefinition = {
     reducers: {}
 };
 
-export default splitLazyAndStaticPlugins(pluginsDefinition);
+export default pluginsDefinition;
