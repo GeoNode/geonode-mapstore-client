@@ -124,6 +124,7 @@ function PaginationCustom({
     }, [activePage]);
     return (
         <Pagination
+            className="custom"
             prev={<FaIcon name="angle-left" />}
             next={<FaIcon name="angle-right" />}
             ellipsis
