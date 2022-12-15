@@ -719,6 +719,7 @@ maxx, maxy -> top-right corner of square
 * [utils/FileUtils](#module_utils/FileUtils)
     * [.getFileFromDownload](#module_utils/FileUtils.getFileFromDownload) ⇒ <code>string</code>
     * [.determineResourceType](#module_utils/FileUtils.determineResourceType) ⇒ <code>string</code>
+    * [.getFileType](#module_utils/FileUtils.getFileType)
 
 <a name="module_utils/FileUtils.getFileFromDownload"></a>
 
@@ -745,6 +746,14 @@ check if a resource extension is supported for display in the media viewer
 | --- | --- | --- |
 | extension | <code>string</code> | extension of the resource accessed on resource.extenstion |
 
+<a name="module_utils/FileUtils.getFileType"></a>
+
+### utils/FileUtils.getFileType
+Get file type from file.
+In cases where the file type is application/json (which happens when file was originally .geojson converted to .json)
+We return json as file type
+
+**Kind**: static constant of [<code>utils/FileUtils</code>](#module_utils/FileUtils)  
 <a name="module_utils/MenuUtils"></a>
 
 ## utils/MenuUtils
