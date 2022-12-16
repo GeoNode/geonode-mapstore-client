@@ -208,10 +208,81 @@ export function setupConfiguration({
      * @property {function} onAction add listener to an action
      * @property {function} offAction remove listener to an action
      * @example
-     * // access to mapstore api
-     * window.addEventListener('mapstore:ready', function(event) {
-     *  const msAPI = event.detail;
-     * });
+     * <!--
+     * access to mapstore api
+     * -->
+     * <script>
+     *  window.addEventListener('mapstore:ready', function(event) {
+     *      const msAPI = event.detail;
+     *  });
+     * </script>
+     *
+     * @example
+     * <!--
+     * use mapstore api onAction method to listen to an action
+     * this example works only in a page with the map plugin (eg. dataset and map viewers)
+     * -->
+     * <script>
+     *  window.addEventListener('mapstore:ready', function(event) {
+     *      const msAPI = event.detail;
+     *      function onChangeMapView(action) {
+     *          // read parameters dispatched by the action
+     *          const center = action.center;
+     *          console.log(center);
+     *          // get all the current stored map state
+     *          const currentMapState = msAPI.getMapState();
+     *          console.log(currentMapState);
+     *      }
+     *      // listen on map view changes
+     *      msAPI.onAction('CHANGE_MAP_VIEW', onChangeMapView);
+     *  });
+     * </script>
+     * 
+     * @example
+     * <!--
+     * use mapstore api offAction method to listen to an action only once
+     * this example works only in a page with the map plugin (eg. dataset and map viewers)
+     * -->
+     * <script>
+     *  window.addEventListener('mapstore:ready', function(event) {
+     *      const msAPI = event.detail;
+     *      function onChangeMapView(action) {
+     *          // read parameters dispatched by the action
+     *          const center = action.center;
+     *          console.log(center);
+     *          // ...
+     *          // remove the same action
+     *          msAPI.offAction('CHANGE_MAP_VIEW', onChangeMapView);
+     *      }
+     *      // listen on map view changes
+     *      msAPI.onAction('CHANGE_MAP_VIEW', onChangeMapView);
+     *  });
+     * </script>
+     * 
+     * @example
+     * <!--
+     * use mapstore api triggerAction method to dispatch an action
+     * this example works only in a page with the map plugin (eg. dataset and map viewers)
+     * -->
+     * <button id="custom-zoom-button">Zoom to extent</button>
+     * <script>
+     *  window.addEventListener('mapstore:ready', function(event) {
+     *      const msAPI = event.detail;
+     *      const button = document.querySelector('#custom-zoom-button');
+     *      button.addEventListener('click', function() {
+     *          msAPI.triggerAction({
+     *              type: 'ZOOM_TO_EXTENT',
+     *              crs: 'EPSG:4326',
+     *              extent: {
+     *                  minx: -10,
+     *                  miny: -10,
+     *                  maxx: 10,
+     *                  maxy: 10
+     *              }
+     *          });
+     *      });
+     *  });
+     * </script>
      */
     window.MapStoreAPI = {
         ready: true,

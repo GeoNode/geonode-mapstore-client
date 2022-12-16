@@ -38,14 +38,6 @@ import { getCurrentResourceCopyLoading } from '@js/selectors/resourceservice';
 import Dropdown from '@js/components/Dropdown';
 import FaIcon from '@js/components/FaIcon';
 
-/**
-* @module plugins/SaveAs
-*/
-
-/**
- * Plugin for SaveAs modal
- * @name SaveAs
- */
 function SaveAs({
     resources,
     onSave,
@@ -197,6 +189,22 @@ const ConnectedMenuItem = connect(
     }
 )((CopyMenuItem));
 
+/**
+* @module SaveAs
+*/
+
+/**
+ * enable button or menu item to clone a specific resource
+ * @name SaveAs
+ * @prop {boolean} closeOnSave close the modal after clicking on save button
+ * @example
+ * {
+ *  "name": "SaveAs",
+ *  "cfg": {
+ *      "closeOnSave": true
+ *  }
+ * }
+ */
 export default createPlugin('SaveAs', {
     component: SaveAsPlugin,
     containers: {

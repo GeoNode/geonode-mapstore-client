@@ -73,6 +73,18 @@ const ConnectedMenuItem = connect(
     }
 )((DownloadMenuItem));
 
+/**
+* @module DownloadResource
+*/
+
+/**
+ * enable button or menu item to download a specific resource
+ * @name DownloadResource
+ * @example
+ * {
+ *  "name": "DownloadResource"
+ * }
+ */
 export default createPlugin('DownloadResource', {
     component: ConnectedDownloadResource,
     containers: {

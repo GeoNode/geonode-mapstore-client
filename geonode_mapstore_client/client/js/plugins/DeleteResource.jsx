@@ -25,6 +25,22 @@ import Loader from '@mapstore/framework/components/misc/Loader';
 import controls from '@mapstore/framework/reducers/controls';
 import { isLoggedIn } from '@mapstore/framework/selectors/security';
 
+/**
+* @module DeleteResource
+*/
+
+/**
+ * enable button or menu item to delete a specific resource
+ * @name DeleteResource
+ * @prop {string|boolean} redirectTo path to redirect after delete, if false will not redirect
+ * @example
+ * {
+ *  "name": "DeleteResource",
+ *  "cfg": {
+ *      "redirectTo": false
+ *  }
+ * }
+ */
 function DeleteResourcePlugin({
     enabled,
     resources = [],

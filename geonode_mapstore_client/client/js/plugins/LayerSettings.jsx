@@ -41,17 +41,10 @@ const ConnectedGeoNodeStyleSelector = connect(
     {}
 )(GeoNodeStyleSelector);
 
-/**
-* @module plugins/LayerSettings
-*/
-
-/**
+/*
  * Plugin for layer and groups settings
  * @name LayerSettings
  * @example
- * {
- *   "name": "LayerSettings",
- * }
  */
 function LayerSettings({
     node,

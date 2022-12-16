@@ -21,7 +21,7 @@
     "test": "mapstore-project test",
     "test:watch": "mapstore-project test:watch",
     "lint": "eslint js --ext .jsx,.js --fix",
-    "docs": "jsdoc -r js/plugins js/utils/AppUtils.js ./README.md -d ../../docs -u ../../tutorials"
+    "docs": "jsdoc -r js/plugins js/utils/AppUtils.js ./README.md -d ../../docs -u ../../tutorials -t ./docs-template"
   },
   "author": "GeoSolutions",
   "license": "BSD-2-Clause",
@@ -31,6 +31,7 @@
     "jsdoc": "4.0.0"
   },
   "dependencies": {
+    "@jsdoc/salty": "0.2.1",
     "@react-three/drei": "8.6.1",
     "@react-three/fiber": "7.0.25",
     "dompurify": "2.2.6",
