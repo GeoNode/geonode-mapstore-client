@@ -17,6 +17,9 @@
     "06-custom-branch": {
         "title": "Install a custom branch"
     },
+    "07-custom-resources-page": {
+        "title": "Create a custom resources page"
+    },
     "theme": {
         "title": "[tool] Theme variables generator"
     }

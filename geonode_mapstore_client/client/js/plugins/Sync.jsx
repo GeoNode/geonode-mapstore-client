@@ -17,11 +17,6 @@ import { isLoggedIn } from '@mapstore/framework/selectors/security';
 import gnsyncEpics from '@js/epics/gnsync';
 import { syncResources } from '@js/actions/gnsync';
 
-/**
-* @module plugins/Sync
-*/
-
-
 function SyncButton({ synchronize, enabled, size }) {
 
     return enabled && (<Button

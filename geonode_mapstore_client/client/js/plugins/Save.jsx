@@ -33,14 +33,6 @@ import { withRouter } from 'react-router';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 
-/**
-* @module plugins/Save
-*/
-
-/**
- * Plugin for Save modal
- * @name Save
- */
 function Save(props) {
     return props.saving ? (<div
         style={{ position: 'absolute', width: '100%',

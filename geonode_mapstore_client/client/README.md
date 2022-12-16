@@ -1,4 +1,3 @@
-## GeoNode MapStore Client
 
 ![Build Status](https://github.com/GeoNode/geonode-mapstore-client/actions/workflows/build.yml/badge.svg)
 
