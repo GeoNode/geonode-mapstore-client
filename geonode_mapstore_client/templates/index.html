@@ -18,6 +18,9 @@
 
         {% block extra_style %}
         {% endblock %}
+
+        {% block extra_head %}
+        {% endblock %}
     </head>
     <body class="msgapi ms2" data-ms2-container="ms2">
         <div class="gn-page-wrapper {% if request.user_agent.is_mobile %}gn-mobile{% else %}gn-desktop{% endif %}">
