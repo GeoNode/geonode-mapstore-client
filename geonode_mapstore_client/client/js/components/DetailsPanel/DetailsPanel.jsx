@@ -43,9 +43,9 @@ const EditTitle = ({ title, onEdit, disabled }) => {
         </div>);
 };
 
-function formatResourceLinkUrl(resourceUrl = '') {
-    if (resourceUrl.indexOf('http') === 0) {
-        return resourceUrl;
+function formatResourceLinkUrl(resource) {
+    if (resource?.uuid) {
+        return window.location.href.replace(/#.+$/, `uuid/${resource.uuid}`);
     }
     return window.location.href;
 }
@@ -123,21 +123,21 @@ const DetailsPanelTools = ({
                 <FaIcon name="download" />
             </Button>}
 
-            {detailUrl && <CopyToClipboard
+            <CopyToClipboard
                 tooltipPosition="top"
                 tooltipId={
                     copiedResourceLink
                         ? 'gnhome.copiedResourceUrl'
                         : 'gnhome.copyResourceUrl'
                 }
-                text={formatResourceLinkUrl(detailUrl)}
+                text={formatResourceLinkUrl(resource)}
             >
                 <Button
                     variant="default"
                     onClick={handleCopyPermalink}>
                     <FaIcon name="share-alt" />
                 </Button>
-            </CopyToClipboard>}
+            </CopyToClipboard>
             {detailUrl && !editThumbnail && <Button
                 variant="primary"
                 href={(resourceCanPreviewed || canView) ? detailUrl : metadataDetailUrl}
