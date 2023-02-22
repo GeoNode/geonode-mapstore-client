@@ -950,6 +950,8 @@
                 "name": "LayerDownload",
                 "cfg": {
                     "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                    "hideServiceSelector": true,
+                    "defaultSelectedService": "wps",
                     "formats": [
                         {
                             "name": "application/json",
@@ -1793,6 +1795,8 @@
                 "name": "LayerDownload",
                 "cfg": {
                     "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                    "hideServiceSelector": true,
+                    "defaultSelectedService": "wps",
                     "formats": [
                         {
                             "name": "application/json",
