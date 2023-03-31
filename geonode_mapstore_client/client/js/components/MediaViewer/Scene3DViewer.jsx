@@ -84,7 +84,9 @@ function Scene3DViewer({
         <div className="gn-media-scene-3d">
             <Suspense fallback={null}>
                 <Canvas>
-                    <Environment files={environmentFiles} />
+                    <Suspense fallback={null}>
+                        <Environment files={environmentFiles} />
+                    </Suspense>
                     <Suspense fallback={<Loader />}>
                         <Model src={src} onChange={setBoundingSphere}/>
                     </Suspense>
@@ -99,7 +101,6 @@ function Scene3DViewer({
                 </Canvas>
             </Suspense>
         </div>
-
     );
 }
 
