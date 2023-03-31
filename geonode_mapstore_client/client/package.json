@@ -32,15 +32,15 @@
   },
   "dependencies": {
     "@jsdoc/salty": "0.2.1",
-    "@react-three/drei": "8.6.1",
-    "@react-three/fiber": "7.0.25",
+    "@react-three/drei": "8.20.2",
+    "@react-three/fiber": "6.0.0",
     "dompurify": "2.2.6",
     "font-awesome": "4.7.0",
     "mapstore": "file:MapStore2",
     "react-helmet": "6.1.0",
     "react-intl": "2.3.0",
-    "three": "0.134.0",
-    "three-stdlib": "2.6.1"
+    "three": "0.138.3",
+    "three-stdlib": "2.8.9"
   },
   "mapstore": {
     "output": "dist",
