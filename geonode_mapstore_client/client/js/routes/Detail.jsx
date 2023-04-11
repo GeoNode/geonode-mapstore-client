@@ -175,6 +175,7 @@ function Detail({
                 </div>
                 {!!resource &&
                 <ConnectedDetailsPanel
+                    key={resource?.uuid || resource?.pk}
                     enableFavorite={!!user}
                     resource={resource}
                     linkHref={hrefDetailPanel}
