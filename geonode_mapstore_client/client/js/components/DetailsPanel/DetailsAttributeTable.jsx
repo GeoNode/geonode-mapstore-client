@@ -37,9 +37,7 @@ const parseAttributeData = (fields) => {
 };
 
 
-const DetailsAttributeTable = ({
-    fields
-}) => {
+const DetailsAttributeTable = ({ fields }) => {
     const attributeData = parseAttributeData(fields);
     return (
         <div className="gn-details-info-table">
@@ -49,11 +47,11 @@ const DetailsAttributeTable = ({
 };
 
 DetailsAttributeTable.propTypes = {
-    resource: PropTypes.object
+    fields: PropTypes.array,
 };
 
 DetailsAttributeTable.defaultProps = {
-    resource: {}
+    fields: []
 };
 
 export default DetailsAttributeTable;
