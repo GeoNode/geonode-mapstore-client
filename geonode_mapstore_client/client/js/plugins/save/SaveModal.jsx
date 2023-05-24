@@ -36,7 +36,7 @@ function SaveModal({
     const [thumbnail, setThumbnail] =  useState();
     const [name, setName] =  useState('');
     const [description, setDescription] =  useState('');
-    const [nameValidation, setNameValidation] =  useState(false);
+    const [nameValidation, setNameValidation] =  useState();
 
     const state = useRef();
     state.current = {

@@ -29,9 +29,8 @@ function ActionButtons({
             onClick={event => event.stopPropagation()}
             style={isDropdownEmpty ? { display: 'none' } : {}}
         >
-            <Dropdown className="gn-card-options" pullRight>
+            <Dropdown className="gn-card-options" pullRight id={`gn-card-options-${resource.pk2 || resource.pk}`}>
                 <Dropdown.Toggle
-                    id={`gn-card-options-${resource.pk2 || resource.pk}`}
                     variant="default"
                     size="sm"
                     noCaret

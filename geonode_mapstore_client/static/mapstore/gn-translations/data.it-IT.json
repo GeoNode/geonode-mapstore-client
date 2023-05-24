@@ -80,7 +80,6 @@
             "logOut": "Esci",
             "terms": "Termini e condizioni",
             "privacy": "Privacy",
-            "extent": "Estensione",
             "enableFilterByExtent": "Abilita filtro per estensione",
             "advancedSearch": "Ricerca avanzata",
             "apply": "Applica",
@@ -332,7 +331,12 @@
             "abstract": "Astratto",
             "readMore": "Leggi di più",
             "readLess": "Leggi di meno",
-            "linkedResources": "Risorse collegate"
+            "linkedResources": "Risorse collegate",
+            "extent": "Estensione",
+            "dateFilter": {
+                "from": "La data inizia dopo il",
+                "to": "La data termina prima del"
+            }
         }
     }
 }

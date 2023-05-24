@@ -77,7 +77,6 @@
             "logOut": "Log out",
             "terms": "Terms",
             "privacy": "Privacy",
-            "extent": "Extent",
             "enableFilterByExtent": "Enable filter by extent",
             "advancedSearch": "Advanced search",
             "apply": "Apply",
@@ -298,7 +297,12 @@
             "viewFullMetadata": "View full metadata",
             "abstract": "Abstract",
             "readMore": "Read more",
-            "readLess": "Read less"
+            "readLess": "Read less",
+            "extent": "Extent",
+            "dateFilter": {
+                "from": "Date begins after",
+                "to": "Date ends before"
+            }
         }
     }
 }

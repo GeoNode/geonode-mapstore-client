@@ -27,7 +27,8 @@ function FilterByExtent({
     projection,
     onChange,
     vectorLayerStyle,
-    layers
+    layers,
+    labelId = 'gnviewer.extent'
 }) {
 
     const enabled = !!extent;
@@ -68,7 +69,7 @@ function FilterByExtent({
                 id="gn-filter-by-extent-switch"
                 onChange={handleOnSwitch}
             >
-                <Message msgId="gnhome.extent"/>
+                <Message msgId={labelId}/>
             </Checkbox>
             <div
                 className="gn-filter-by-extent-map"

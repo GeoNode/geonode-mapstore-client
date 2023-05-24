@@ -83,9 +83,8 @@ const FiltersMenu = forwardRef(({
                         <FaIcon name={cardLayoutStyle === 'grid' ? 'list' : 'th'} />
                     </Button>
                     {orderOptions.length > 0 &&
-                    <Dropdown pullRight>
+                    <Dropdown pullRight id="sort-dropdown">
                         <Dropdown.Toggle
-                            id="sort-dropdown"
                             bsStyle="default"
                             bsSize="sm"
                             noCaret

@@ -101,7 +101,7 @@ Accordion.propTypes = {
     title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     titleId: PropTypes.string,
     identifier: PropTypes.string,
-    content: PropTypes.node,
+    content: PropTypes.func,
     loadItems: PropTypes.func,
     items: PropTypes.array
 };
@@ -109,7 +109,7 @@ Accordion.propTypes = {
 Accordion.defaultProps = {
     title: null,
     identifier: "",
-    content: null,
+    content: () => null,
     noItemsMsgId: "gnhome.emptyAccordion"
 };
 export default Accordion;

@@ -9,6 +9,7 @@
 import url from 'url';
 import castArray from 'lodash/castArray';
 import omit from 'lodash/omit';
+import uuid from 'uuid/v1';
 
 let filters = {};
 
@@ -93,15 +94,15 @@ export const updateFilterFormItemsWithFacet = (formItems, facetItems) => {
             return [
                 ...acc,
                 ...filteredFacetItems
-                    .map(({ name, key, label, labelId, loadItems } = {}) => {
+                    .map(({ name, key, label, is_localized: isLocalized, loadItems } = {}) => {
                         return {
+                            uuid: uuid(),
                             name,
                             key,
                             id: name,
                             type: formItem.type,
                             style: formItem.style,
-                            labelId,
-                            label,
+                            ...(isLocalized ? { labelId: label } : { label }),
                             loadItems: (params) => loadItems({ name, style: formItem.style, filterKey: key }, params)
                         };
                     })
@@ -112,13 +113,17 @@ export const updateFilterFormItemsWithFacet = (formItems, facetItems) => {
                 ...acc,
                 {
                     ...formItem,
+                    uuid: formItem.uuid || uuid(),
                     items: updateFilterFormItemsWithFacet(formItem.items, facetItems)
                 }
             ];
         }
         return [
             ...acc,
-            formItem
+            {
+                ...formItem,
+                uuid: formItem.uuid || uuid()
+            }
         ];
     }, []);
 };
