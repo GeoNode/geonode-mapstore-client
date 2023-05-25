@@ -10,8 +10,8 @@ import expect from 'expect';
 import {
     getViewedResourceType,
     isNewResource,
-    getGeonodeResourceDataFromGeostory,
-    getGeonodeResourceFromDashboard,
+    getGeoNodeResourceDataFromGeoStory,
+    getGeoNodeResourceFromDashboard,
     getResourceThumbnail,
     updatingThumbnailResource,
     isThumbnailChanged,
@@ -33,7 +33,7 @@ const testState = {
     },
     geostory: {
         currentStory: {
-            resources: [{data: {sourceId: 'geonode'}, name: 'test'}, {name: 'test2'}]
+            resources: [{data: {sourceId: 'geonode'}, name: 'test', type: 'map', id: 300}, {data: {sourceId: 'geonode'}, name: 'test', type: 'video', id: 200}, {data: {sourceId: 'geonode'}, name: 'test', type: 'image', id: 100}, {name: 'test2'}]
         }
     },
     dashboard: {
@@ -58,11 +58,11 @@ describe('resource selector', () => {
     it('is new resource', () => {
         expect(isNewResource(testState)).toBeTruthy();
     });
-    it('getGeonodeResourceDataFromGeostory', () => {
-        expect(getGeonodeResourceDataFromGeostory(testState)).toEqual([{ data: { sourceId: 'geonode' }, name: 'test' }]);
+    it('getGeoNodeResourceDataFromGeoStory', () => {
+        expect(getGeoNodeResourceDataFromGeoStory(testState)).toEqual({ maps: [300], documents: [200, 100] });
     });
-    it('getGeonodeResourceFromDashboard', () => {
-        expect(getGeonodeResourceFromDashboard(testState)).toEqual([{widgetType: 'map', name: 'test widget', map: {extraParams: {pk: 1}}}]);
+    it('getGeoNodeResourceFromDashboard', () => {
+        expect(getGeoNodeResourceFromDashboard(testState)).toEqual({ maps: [1] });
     });
 
     it('should get thumbnail change status', () => {
