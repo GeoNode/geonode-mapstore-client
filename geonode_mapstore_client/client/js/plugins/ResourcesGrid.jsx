@@ -54,6 +54,7 @@ import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
 import useLocalStorage from '@js/hooks/useLocalStorage';
 import MainLoader from '@js/components/MainLoader';
+import detailViewerEpics from '@js/epics/detailviewer';
 
 const suggestionsRequestTypes = {
     categories: {
@@ -813,7 +814,8 @@ export default createPlugin('ResourcesGrid', {
         ...gnsearchEpics,
         ...gnsaveEpics,
         ...resourceServiceEpics,
-        ...favoriteEpics
+        ...favoriteEpics,
+        ...detailViewerEpics
     },
     reducers: {
         gnsearch,

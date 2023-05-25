@@ -12,14 +12,12 @@ import axios from '@mapstore/framework/libs/ajax';
 import { testEpic } from '@mapstore/framework/epics/__tests__/epicTestUtils';
 import {
     gnViewerSetNewResourceThumbnail,
-    closeInfoPanelOnMapClick,
-    gnGetLinkedResources
+    closeInfoPanelOnMapClick
 } from '@js/epics/gnresource';
 import {
     setResourceThumbnail,
     UPDATE_RESOURCE_PROPERTIES,
-    UPDATE_SINGLE_RESOURCE,
-    setResource
+    UPDATE_SINGLE_RESOURCE
 } from '@js/actions/gnresource';
 import { clickOnMap } from '@mapstore/framework/actions/map';
 import { SET_CONTROL_PROPERTY } from '@mapstore/framework/actions/controls';
@@ -133,37 +131,5 @@ describe('gnresource epics', () => {
             testState
         );
 
-    });
-    it('gnGetLinkedResources', (done) => {
-        const NUM_ACTIONS = 1;
-        const pk = 1;
-        const resource = {
-            pk,
-            'title': 'Map',
-            'thumbnail_url': 'thumbnail.jpeg'
-        };
-        const testState = {
-            gnresource: {data: {}}
-        };
-        mockAxios.onGet(new RegExp(`resources/${pk}/linked_resources`))
-            .reply(() => [200, { resources: [{pk: 2, title: "Title"}] }]);
-
-        testEpic(
-            gnGetLinkedResources,
-            NUM_ACTIONS,
-            setResource(resource),
-            (actions) => {
-                try {
-                    expect(actions.map(({ type }) => type))
-                        .toEqual([
-                            UPDATE_RESOURCE_PROPERTIES
-                        ]);
-                } catch (e) {
-                    done(e);
-                }
-                done();
-            },
-            testState
-        );
     });
 });

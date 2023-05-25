@@ -54,11 +54,13 @@ export function resourceLoading() {
 /**
 * Set the resource in the state
 * @param {object} data resource data object
+* @param {object} pending declare if the request is still pending
 */
-export function setResource(data) {
+export function setResource(data, pending) {
     return {
         type: SET_RESOURCE,
-        data
+        data,
+        pending
     };
 }
 

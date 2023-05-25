@@ -307,7 +307,7 @@ export const gnsSelectResourceEpic = (action$, store) =>
                             ...selectedResource,
                             /* store information related to detail */
                             '@ms-detail': true
-                        }) ]
+                        }, true) ]
                         : [ resourceLoading() ])
                 );
         });

@@ -15,6 +15,23 @@ import isEmpty from "lodash/isEmpty";
 * @module utils/APIUtils
 */
 
+let geoNodeTargetHostname;
+
+const getGeoNodeTargetHostname = () => {
+    if (geoNodeTargetHostname) {
+        return geoNodeTargetHostname;
+    }
+    const endpointV2 = window?.__GEONODE_CONFIG__?.localConfig?.geoNodeApi?.endpointV2;
+    if (endpointV2) {
+        const { hostname } = url.parse(endpointV2);
+        if (hostname) {
+            geoNodeTargetHostname = hostname;
+        }
+        return hostname;
+    }
+    return '';
+};
+
 /**
 * In development mode it returns the request with a relative path
 * if the request url contain localhost:8000
@@ -22,17 +39,28 @@ import isEmpty from "lodash/isEmpty";
 * @return {string} correct url for localhost
 */
 export const parseDevHostname = (requestUrl) => {
-    if (__DEVTOOLS__ && requestUrl.indexOf('localhost') !== -1) {
-        const parsedUrl = url.parse(requestUrl);
-        return url.format({
-            ...parsedUrl,
-            hostname: null,
-            host: null,
-            protocol: null,
-            port: null,
-            href: null,
-            slashes: null
-        });
+    if (__DEVTOOLS__) {
+        if (requestUrl.includes('localhost')
+        || (getGeoNodeTargetHostname() && requestUrl.includes(getGeoNodeTargetHostname()))) {
+            const parsedUrl = url.parse(requestUrl, true);
+            // add debug param
+            const { query } = url.parse(window.location.href, true);
+            return url.format({
+                ...parsedUrl,
+                hostname: null,
+                host: null,
+                protocol: null,
+                port: null,
+                href: null,
+                slashes: null,
+                query: requestUrl.includes('/api/')
+                    ? parsedUrl?.query
+                    : {
+                        ...query,
+                        ...parsedUrl?.query
+                    }
+            });
+        }
     }
     return requestUrl;
 };
