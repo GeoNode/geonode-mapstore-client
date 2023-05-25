@@ -876,11 +876,11 @@ export const getFacetItemsByFacetName = ({ name: facetName, style, filterKey }, 
             isNextPageAvailable,
             items: items.map(({label, is_localized: isLocalized, key, count} = {})=> {
                 const item = {
-                    id: String(key),
                     type: "filter",
                     ...(isLocalized ? { label } : { labelId: label }),
                     count,
                     filterKey,
+                    filterValue: String(key),
                     style
                 };
                 setFilterById(filterKey + key, item);

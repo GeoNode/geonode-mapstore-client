@@ -12,20 +12,12 @@ import Button from '@js/components/Button';
 import Message from '@mapstore/framework/components/I18N/Message';
 import FaIcon from '@js/components/FaIcon';
 import isEqual from 'lodash/isEqual';
-import FilterByExtent from './FilterByExtent';
 import FilterItems from './FilterItems';
-import debounce from 'lodash/debounce';
 import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
-import withDebounceOnCallback from '@mapstore/framework/components/misc/enhancers/withDebounceOnCallback';
-import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
 import { updateFilterFormItemsWithFacet, filterFormItemsContainFacet } from '@js/utils/SearchUtils';
-import { FormControl as FormControlRB, Glyphicon } from 'react-bootstrap';
-const FormControl = localizedProps('placeholder')(FormControlRB);
-function InputControl({ onChange, value, ...props }) {
-    return <FormControl {...props} value={value} onChange={event => onChange(event.target.value)}/>;
-}
-const InputControlWithDebounce = withDebounceOnCallback('onChange', 'value')(InputControl);
+import { Glyphicon } from 'react-bootstrap';
+
 
 /**
  * FilterForm component allows to configure a list of field that can be used to apply filter on the page
@@ -49,7 +41,14 @@ function FilterForm({
     onGetFacets
 }) {
 
-    const [fields, setFields] = useState(updateFilterFormItemsWithFacet(fieldsProp, facets));
+    const [fields, setFields] = useState([]);
+    const [prevFieldsProp, setPrevFieldsProp] = useState();
+    const [prevFacets, setPrevFacets] = useState();
+    if (!isEqual(fieldsProp, prevFieldsProp) || !isEqual(facets, prevFacets)) {
+        setPrevFieldsProp(fieldsProp);
+        setPrevFacets(facets);
+        setFields(updateFilterFormItemsWithFacet(fieldsProp, facets));
+    }
 
     useEffect(() => {
         if (filterFormItemsContainFacet(fieldsProp) && fieldsProp && onGetFacets) {
@@ -57,19 +56,9 @@ function FilterForm({
         }
     }, []);
 
-    useEffect(() => {
-        setFields(
-            updateFilterFormItemsWithFacet(fieldsProp, facets)
-        );
-    }, [facets, fieldsProp]);
-
     const handleFieldChange = (newParam) => {
         onChange(newParam);
     };
-
-    const extentChange = debounce((extent) => {
-        onChange({ extent });
-    }, timeDebounce);
 
     return (
         <div className="gn-filter-form" style={styleContainerForm} >
@@ -100,27 +89,13 @@ function FilterForm({
                     <form
                         style={style}
                     >
-                        <InputControlWithDebounce
-                            placeholder="gnhome.search"
-                            value={query.q || ''}
-                            debounceTime={300}
-                            onChange={(q) => handleFieldChange({ q })}
-                        />
                         <FilterItems
                             id={id}
                             items={fields}
                             suggestionsRequestTypes={suggestionsRequestTypes}
                             values={query}
+                            extentProps={{ ...extentProps, timeDebounce }}
                             onChange={handleFieldChange}
-                        />
-                        <FilterByExtent
-                            id={id}
-                            extent={query.extent}
-                            layers={extentProps?.layers}
-                            vectorLayerStyle={extentProps?.style}
-                            onChange={(({ extent }) =>{
-                                extentChange(extent);
-                            })}
                         />
                     </form>
                 </div>

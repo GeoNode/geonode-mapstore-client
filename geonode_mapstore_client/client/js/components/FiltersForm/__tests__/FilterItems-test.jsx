@@ -165,6 +165,70 @@ describe('FilterItems component', () => {
 
             isExpanded() && Simulate.click(filterItemsAccordionTitleNode);
         });
+        it('should render field date-range from', (done) => {
+            const items = [
+                {
+                    type: 'date-range',
+                    filterKey: 'date',
+                    labelId: 'gnviewer.dateFilter'
+                }
+            ];
+            ReactDOM.render( <FilterItems id="test" items={items} onChange={(value) => {
+                try {
+                    expect(value['filter{date.gte}']).toBeTruthy();
+                    expect(value['filter{date.gte}'].split('T')[1]).toBe('00:00:00');
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }}/>, document.getElementById("container"));
+
+            const dateTimePickersLabels = document.querySelectorAll('label > span');
+            expect(dateTimePickersLabels.length).toBe(2);
+            expect([...dateTimePickersLabels].map(node => node.innerText)).toEqual([ 'gnviewer.dateFilter.from', 'gnviewer.dateFilter.to' ]);
+            const dateTimePickers = document.querySelectorAll('.rw-datetimepicker');
+            expect(dateTimePickers.length).toBe(2);
+            const dateTimePickersButtons = document.querySelectorAll('.rw-btn-calendar');
+            expect(dateTimePickersButtons.length).toBe(2);
+
+            Simulate.click(dateTimePickersButtons[0]);
+
+            const calendarButton = document.querySelectorAll('tbody .rw-btn');
+
+            Simulate.click(calendarButton[0]);
+        });
+        it('should render field date-range to', (done) => {
+            const items = [
+                {
+                    type: 'date-range',
+                    filterKey: 'date',
+                    labelId: 'gnviewer.dateFilter'
+                }
+            ];
+            ReactDOM.render( <FilterItems id="test" items={items} onChange={(value) => {
+                try {
+                    expect(value['filter{date.lte}']).toBeTruthy();
+                    expect(value['filter{date.lte}'].split('T')[1]).toBe('23:59:59');
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }}/>, document.getElementById("container"));
+
+            const dateTimePickersLabels = document.querySelectorAll('label > span');
+            expect(dateTimePickersLabels.length).toBe(2);
+            expect([...dateTimePickersLabels].map(node => node.innerText)).toEqual([ 'gnviewer.dateFilter.from', 'gnviewer.dateFilter.to' ]);
+            const dateTimePickers = document.querySelectorAll('.rw-datetimepicker');
+            expect(dateTimePickers.length).toBe(2);
+            const dateTimePickersButtons = document.querySelectorAll('.rw-btn-calendar');
+            expect(dateTimePickersButtons.length).toBe(2);
+
+            Simulate.click(dateTimePickersButtons[1]);
+
+            const calendarButton = document.querySelectorAll('tbody .rw-btn');
+
+            Simulate.click(calendarButton[0]);
+        });
     });
 
 });

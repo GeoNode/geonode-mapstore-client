@@ -77,7 +77,6 @@
             "logOut": "Log out",
             "terms": "Terms",
             "privacy": "Privacy",
-            "extent": "Extent",
             "enableFilterByExtent": "Enable filter by extent",
             "advancedSearch": "Advanced search",
             "apply": "Apply",
@@ -299,7 +298,12 @@
             "abstract": "Abstract",
             "readMore": "Read more",
             "readLess": "Read less",
-            "linkedResources": "Linked Resources"
+            "linkedResources": "Linked Resources",
+            "extent": "Extent",
+            "dateFilter": {
+                "from": "Date from",
+                "to": "Date to"
+            }
         }
     }
 }

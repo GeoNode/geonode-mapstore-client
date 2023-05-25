@@ -299,6 +299,9 @@ function ResourcesGrid({
     ],
     filtersFormItems = [
         {
+            type: 'search'
+        },
+        {
             type: 'group',
             labelId: 'gnhome.customFiltersTitle',
             items: [
@@ -412,6 +415,15 @@ function ResourcesGrid({
             type: "accordion",
             style: "facet",
             facet: "thesaurus"
+        },
+        {
+            type: 'date-range',
+            filterKey: 'date',
+            labelId: 'gnviewer.dateFilter'
+        },
+        {
+            labelId: 'gnviewer.extent',
+            type: 'extent'
         }
     ],
     pagePath = '',

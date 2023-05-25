@@ -78,7 +78,6 @@
             "logOut": "Se déconnecter",
             "terms": "Terms",
             "privacy": "Privacy",
-            "extent": "Étendue",
             "enableFilterByExtent": "Activer le filtre par étendue",
             "advancedSearch": "Recherche vvancée",
             "apply": "Appliquer",
@@ -330,7 +329,12 @@
             "abstract": "Résumé",
             "readMore": "En savoir plus",
             "readLess": "Lire moins",
-            "linkedResources": "Ressources liées"
+            "linkedResources": "Ressources liées",
+            "extent": "Étendue",
+            "dateFilter": {
+                "from": "Date de",
+                "to": "Date à"
+            }
         }
     }
 }

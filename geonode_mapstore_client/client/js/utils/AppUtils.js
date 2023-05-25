@@ -28,6 +28,7 @@ import isFunction from 'lodash/isFunction';
 
 import url from 'url';
 import axios from '@mapstore/framework/libs/ajax';
+import moment from 'moment';
 import { addLocaleData } from 'react-intl';
 import { setViewer } from '@mapstore/framework/utils/MapInfoUtils';
 
@@ -154,6 +155,8 @@ function setupLocale(locale) {
                         });
                     });
             }
+            // setup locale for moment
+            moment.locale(locale);
             return locale;
         });
 }

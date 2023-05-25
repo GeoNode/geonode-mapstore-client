@@ -67,7 +67,7 @@ Menu.propTypes = {
     items: PropTypes.array.isRequired,
     containerClass: PropTypes.string,
     childrenClass: PropTypes.string,
-    query: PropTypes.string,
+    query: PropTypes.object,
     formatHref: PropTypes.func
 
 };

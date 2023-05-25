@@ -78,7 +78,6 @@
             "logOut": "Ausloggen",
             "terms": "Bedingungen",
             "privacy": "Datenschutz",
-            "extent": "Ausmaß",
             "enableFilterByExtent": "Filter nach Ausmaß aktivieren",
             "advancedSearch": "Erweiterte Suche",
             "apply": "Anwenden",
@@ -330,7 +329,12 @@
             "abstract": "Zusammenfassung",
             "readMore": "Weiterlesen",
             "readLess": "Weniger lesen",
-            "linkedResources": "Verknüpfte Ressourcen"
+            "linkedResources": "Verknüpfte Ressourcen",
+            "extent": "Ausmaß",
+            "dateFilter": {
+                "from": "Datum von",
+                "to": "Datum bis"
+            }
         }
     }
 }
