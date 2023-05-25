@@ -1,21 +1,27 @@
 
 
+{% load i18n %}
+{% load get_menu_json %}
+{% get_base_left_topbar_menu as BASE_TOPBAR_MENU_LEFT %}
 <footer class="gn-footer">
-    <ul>
-        <li>
-            <a href="https://geonode.org/" class="nav-link">
-                <span>geonode.org</span>
-            </a>
-        </li>
-        <li>
-            <a href="/developer/" class="nav-link">
-                <span>Developers</span>
-            </a>
-        </li>
-        <li>
-            <a href="/about/" class="nav-link">
-                <span>About</span>
-            </a>
-        </li>
-    </ul>
+    <div>
+        <ul>
+            {% for menu_item in BASE_TOPBAR_MENU_LEFT %}
+                <li>
+                    <a
+                        href="{{ menu_item.href }}"
+                        target="{{ menu_item.target }}"
+                    >
+                        <span>{% trans menu_item.label %}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="footer-signIn">
+        <form>
+            <input class="footer-signIn_field" placeholder="E-mail">
+            <button class="footer-signIn_button">{% trans "Signup" %}</button>
+        </form>
+    </div>
 </footer>

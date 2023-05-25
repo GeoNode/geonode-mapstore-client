@@ -1,13 +1,18 @@
 {% load static %}
-<header class="gn-main-header">
-    {% include './brand_navbar.html'  with id='gn-brand-navbar' %}
-</header>
-<div class="gn-main-header-placeholder"></div>
 {% if show_hero %}
-    {% include './hero.html' %}
+    <div class="main-page-header" style="background-image: url('/static/images/main-screen-bg.png')">
 {% endif %}
+        <header class="gn-main-header">
+            {% include './topbar.html' with id='gn-topbar' %}
 
-{% include './topbar.html' with id='gn-topbar' %}
+            {% comment %} {% include './brand_navbar.html'  with id='gn-brand-navbar' %} {% endcomment %}
+        </header>
+        <div class="gn-main-header-placeholder"></div>
+        {% if show_hero %}
+            {% include './hero.html' %}
+    </div>
+        {% endif %}
+
 
 <script>
     (function () {

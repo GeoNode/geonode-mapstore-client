@@ -17,6 +17,7 @@
                     data-lang-state="{% if lang.0 == LANGUAGE %}active{% else %}{% endif %}"
                     class="btn btn-primary {% if lang.0 == LANGUAGE %} active{% else %}{% endif %}"
                 >
+                    <i class="fa fa-globe" aria-hidden="true"></i>
                     {{lang.0}}
                 </button>
             {% endfor %}
@@ -55,6 +56,7 @@
                     class="dropdown-toggle btn btn-{{variant|default:'default'}}"
                     data-toggle="dropdown"
                 >
+                    <i class="fa fa-globe" aria-hidden="true"></i>
                     {{ lang_info.name_local }}
                 </button>
                 <ul class="dropdown-menu{% if align_right %} dropdown-menu-right{% endif %}" aria-labelledby="gn-language-selector">

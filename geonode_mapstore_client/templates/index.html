@@ -21,15 +21,16 @@
 
         {% block extra_head %}
         {% endblock %}
+        <link href="/static/css/redesign.css" rel="stylesheet">
     </head>
-    <body class="msgapi ms2" data-ms2-container="ms2">
+    <body class="msgapi ms2 main-page" data-ms2-container="ms2">
         <div class="gn-page-wrapper {% if request.user_agent.is_mobile %}gn-mobile{% else %}gn-desktop{% endif %}">
             <div class="gn-theme gn-homepage">
                 {% include './geonode-mapstore-client/_geonode_config.html' %}
                 {% block header %}
                     {% include './geonode-mapstore-client/snippets/header.html' with show_hero=True %}
                 {% endblock %}
-    
+                {% include './geonode-mapstore-client/snippets/main-page-statistics.html' %}
                 {% block content %}
                     {% comment %}
                     <!-- example of content extension -->
@@ -41,6 +42,13 @@
                     {% endcomment %}
                     <div class="gn-container">
                         <div id="gn-home-featured-resources-grid"></div>
+                        <div class="resources-preheader">
+                            <h3>Топ слоёв и карт</h3>
+                            <div class="resources-preheader-sort">
+                                <div class="resources-sort-option active">Последние</div>
+                                <div class="resources-sort-option">Популярные</div>
+                            </div>
+                        </div>
                         <div id="gn-home-resources-grid"></div>
                     </div>
                 {% endblock %}

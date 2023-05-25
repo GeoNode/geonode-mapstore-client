@@ -4,6 +4,7 @@
 {% get_menu_json 'TOPBAR_MENU_LEFT' as TOPBAR_MENU_LEFT %}
 {% get_base_right_topbar_menu as BASE_TOPBAR_MENU_RIGHT %}
 {% get_menu_json 'TOPBAR_MENU_RIGHT' as TOPBAR_MENU_RIGHT %}
+{% get_user_menu as USER_MENU %}
 
 <nav id="{{ id|default:'' }}" class="gn-menu gn-primary" data-gn-menu-resize="true">
     <div class="gn-menu-container">
@@ -34,7 +35,7 @@
                         {% for menu_item in TOPBAR_MENU_LEFT %}
                             {% include './menu_item_compact.html' with menu_item=menu_item %}
                         {% endfor %}
-
+                        
                     </ul>
                 </div>
                 <ul class="gn-menu-list">
@@ -47,6 +48,9 @@
                     {% for menu_item in TOPBAR_MENU_LEFT %}
                         {% include './menu_item.html' with menu_item=menu_item variant='primary' %}
                     {% endfor %}
+                    {% block language_selector %}
+                        {% include './language_selector.html' with variant='primary' align_right=True %}
+                    {% endblock %}
                 </ul>
                 {% endblock %}
             </div>
@@ -64,9 +68,10 @@
                         {% include './menu_item.html' with menu_item=menu_item variant='primary' align_right=True %}
                     {% endfor %}
 
-                    {% block language_selector %}
-                        {% include './language_selector.html' with variant='primary' align_right=True %}
-                    {% endblock %}
+                    
+                    {% for menu_item in USER_MENU %}
+                        {% include './menu_item.html' with menu_item=menu_item align_right=True %}
+                    {% endfor %}
                 </ul>
                 {% endblock %}
             </div>

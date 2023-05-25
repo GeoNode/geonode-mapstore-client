@@ -74,50 +74,50 @@ def get_base_right_topbar_menu(context):
     if is_mobile:
         return []
 
-    home = {
-        "type": "link",
-        "href": "/",
-        "label": "Home"
-    }
-    user = context.get('request').user
-    about = {
-            "label": "About",
-            "type": "dropdown",
-            "items": [
-                {
-                    "type": "link",
-                    "href": "/people/",
-                    "label": "People"
-                },
-                {
-                    "type": "link",
-                    "href": "/groups/",
-                    "label": "Groups"
-                }
-            ]
-        }
-    if user.is_authenticated and not Configuration.load().read_only:
-        about['items'].extend([
-            {
-                "type": "divider"
-            },
-            {
-                "type": "link",
-                "href": "/invitations/geonode-send-invite/",
-                "label": "Invite users"
-            },
-            {
-                "type": "link",
-                "href": "/admin/people/profile/add/",
-                "label": "Add user"
-            } if user.is_superuser else None,
-            {
-                "type": "link",
-                "href": "/groups/create/",
-                "label": "Create group"
-            }if user.is_superuser else None,
-        ])
-    return [home, about]
+    # home = {
+    #     "type": "link",
+    #     "href": "/",
+    #     "label": "Home"
+    # }
+    # user = context.get('request').user
+    # about = {
+    #         "label": "About",
+    #         "type": "dropdown",
+    #         "items": [
+    #             {
+    #                 "type": "link",
+    #                 "href": "/people/",
+    #                 "label": "People"
+    #             },
+    #             {
+    #                 "type": "link",
+    #                 "href": "/groups/",
+    #                 "label": "Groups"
+    #             }
+    #         ]
+    #     }
+    # if user.is_authenticated and not Configuration.load().read_only:
+    #     about['items'].extend([
+    #         {
+    #             "type": "divider"
+    #         },
+    #         {
+    #             "type": "link",
+    #             "href": "/invitations/geonode-send-invite/",
+    #             "label": "Invite users"
+    #         },
+    #         {
+    #             "type": "link",
+    #             "href": "/admin/people/profile/add/",
+    #             "label": "Add user"
+    #         } if user.is_superuser else None,
+    #         {
+    #             "type": "link",
+    #             "href": "/groups/create/",
+    #             "label": "Create group"
+    #         }if user.is_superuser else None,
+    #     ])
+    # return [home, about]
 
 
 @register.simple_tag(takes_context=True)
