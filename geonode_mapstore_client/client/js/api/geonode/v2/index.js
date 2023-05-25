@@ -322,6 +322,18 @@ export const getDocumentByPk = (pk) => {
         .then(({ data }) => data.document);
 };
 
+export const getDocumentsByPk = (pk) => {
+    const pks = castArray(pk);
+    return axios.get(parseDevHostname(`${endpoints[DOCUMENTS]}/`), {
+        params: {
+            'filter{pk.in}': pks,
+            page_size: pks.length
+        },
+        paramsSerializer
+    })
+        .then(({ data }) => data.documents);
+};
+
 export const createGeoApp = (body) => {
     return axios.post(parseDevHostname(`${endpoints[GEOAPPS]}`), body, {
         params: {
@@ -577,6 +589,20 @@ export const getMapByPk = (pk) => {
             }
         })
         .then(({ data }) => data?.map);
+};
+
+export const getMapsByPk = (pk) => {
+    const pks = castArray(pk);
+    return axios.get(parseDevHostname(`${endpoints[MAPS]}/`),
+        {
+            params: {
+                include: ['data'],
+                'filter{pk.in}': pks,
+                page_size: pks.length
+            },
+            paramsSerializer
+        })
+        .then(({ data }) => data?.maps);
 };
 
 export const getFeaturedResources = (page = 1, page_size =  4) => {
@@ -921,9 +947,11 @@ export default {
     getResourcesTotalCount,
     getDatasetByPk,
     getDocumentByPk,
+    getDocumentsByPk,
     createMap,
     updateMap,
     getMapByPk,
+    getMapsByPk,
     getCategories,
     getRegions,
     getOwners,

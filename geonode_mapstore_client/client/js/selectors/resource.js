@@ -261,6 +261,36 @@ export const getResourceDirtyState = (state) => {
  * @param {Object} state App state
  * @returns {Array} Array of geonode resources
  */
-export const getGeonodeResourceDataFromGeostory = (state) => get(currentStorySelector(state), 'resources', []).filter(res => res?.data?.sourceId === 'geonode');
+export const getGeoNodeResourceDataFromGeoStory = (state) => get(currentStorySelector(state), 'resources', [])
+    .filter(res => res?.data?.sourceId === 'geonode')
+    .reduce((acc, resource) => {
+        if (['image', 'video'].includes(resource.type) && resource.id) {
+            return { ...acc, documents: [...acc.documents, resource.id] };
+        }
+        if (resource.type === 'map' && resource.id) {
+            return { ...acc, maps: [...acc.maps, resource.id] };
+        }
+        return acc;
+    }, { maps: [], documents: [] });
 
-export const getGeonodeResourceFromDashboard = (state) => get(originalDataSelector(state), 'widgets', []).filter(widget => !!(widget.widgetType === 'map' && widget.map?.hasOwnProperty('extraParams')));
+export const getGeoNodeResourceFromDashboard = (state) => get(originalDataSelector(state), 'widgets', [])
+    .reduce((acc, { maps, ...widget }) => {
+        if (maps && widget.widgetType === 'map') {
+            return {
+                ...acc,
+                maps: [
+                    ...acc.maps,
+                    ...maps
+                        .filter((map) => !!map?.extraParams?.pk)
+                        .map((map) => map.extraParams.pk)
+                ]
+            };
+        }
+        if (widget.widgetType === 'map' && widget.map?.extraParams?.pk) {
+            return {
+                ...acc,
+                maps: [ ...acc.maps, widget.map?.extraParams?.pk ]
+            };
+        }
+        return acc;
+    }, { maps: [] });

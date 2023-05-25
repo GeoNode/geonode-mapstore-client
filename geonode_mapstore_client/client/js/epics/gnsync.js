@@ -8,13 +8,13 @@
 
 import { Observable } from 'rxjs';
 import axios from '@mapstore/framework/libs/ajax';
-import { merge } from 'lodash';
+import { merge, uniq } from 'lodash';
 import { SYNC_RESOURCES } from '@js/actions/gnsync';
 import {
     savingResource, saveSuccess
 } from '@js/actions/gnsave';
-import { getViewedResourceType, getGeonodeResourceDataFromGeostory, getGeonodeResourceFromDashboard } from '@js/selectors/resource';
-import { getMapByPk, getDocumentByPk } from '@js/api/geonode/v2';
+import { getViewedResourceType, getGeoNodeResourceDataFromGeoStory, getGeoNodeResourceFromDashboard } from '@js/selectors/resource';
+import { getMapsByPk, getDocumentsByPk } from '@js/api/geonode/v2';
 import { editResource } from '@mapstore/framework/actions/geostory';
 import {
     show as showNotification,
@@ -29,25 +29,16 @@ import { dashboardLoaded } from '@mapstore/framework/actions/dashboard';
 */
 
 const getRelevantResourceParams = (resourceType, state) => {
-    let resources = [];
     switch (resourceType) {
     case 'geostory': {
-        resources = getGeonodeResourceDataFromGeostory(state);
-        return resources;
+        return getGeoNodeResourceDataFromGeoStory(state);
     }
     case 'dashboard': {
-        resources = getGeonodeResourceFromDashboard(state);
-        return resources;
+        return getGeoNodeResourceFromDashboard(state);
     }
     default:
-        return resources;
+        return [];
     }
-};
-
-const setResourceApi = {
-    map: getMapByPk,
-    image: getDocumentByPk,
-    video: getDocumentByPk
 };
 
 /*
@@ -58,16 +49,28 @@ const setResourceApi = {
  * @returns {Object}
  */
 const getSyncInfo = (appType, resourceData, successArr = []) => {
-    let type = '';
-    let updatedData = {};
-
 
     if (appType === 'geostory') {
-        type = resourceData.subtype || resourceData.resource_type;
-        updatedData = type !== 'map' ? parseDocumentConfig(resourceData, resourceData) : parseMapConfig(resourceData);
-
-    } else if (appType === 'dashboard') {
+        const type = resourceData.subtype || resourceData.resource_type;
+        const data = type !== 'map' ? parseDocumentConfig(resourceData, resourceData) : parseMapConfig(resourceData);
+        return { type, data };
+    }
+    if (appType === 'dashboard') {
         const updatedWidgets = resourceData.widgets?.map((widget) => {
+
+            if (widget.widgetType === 'map' && widget.maps) {
+                return {
+                    ...widget,
+                    maps: widget.maps.map((map) => {
+                        const currentMapResource = successArr.find(res => !!(res.data.pk === map?.extraParams?.pk));
+                        if (currentMapResource) {
+                            return { ...map, ...currentMapResource.data.data.map };
+                        }
+                        return map;
+                    })
+                };
+            }
+
             const currentWidget = successArr.find(res => !!(res.data.pk === widget.map?.extraParams?.pk));
             if (currentWidget) {
                 return { ...widget, map: { ...widget.map, ...currentWidget.data.data.map } };
@@ -75,10 +78,10 @@ const getSyncInfo = (appType, resourceData, successArr = []) => {
 
             return widget;
         });
-        updatedData = merge(resourceData, { widgets: updatedWidgets });
+        return { data: merge(resourceData, { widgets: updatedWidgets }) };
     }
 
-    return { type, data: updatedData };
+    return {};
 };
 
 /*
@@ -107,13 +110,36 @@ export const gnSyncComponentsWithResources = (action$, store) => action$.ofType(
         const state = store.getState();
         const resourceType = getViewedResourceType(state);
         const resources = getRelevantResourceParams(resourceType, state);
-
+        const maps = uniq(resources.maps || []);
+        const documents = uniq(resources.documents || []);
         return Observable.defer(() =>
-            axios.all(resources.map((resource) => (resourceType === 'geostory' ?
-                setResourceApi[resource.type](resource.id)
-                : getMapByPk(resource?.map?.extraParams?.pk)).then(data => ({ data, status: 'success', title: data.title }))
-                .catch(() => ({ data: resource, status: 'error', title: resource?.data?.title ||  resource?.map?.extraParams?.pk || resource?.data?.name }))
-            )))
+            axios.all([
+                maps.length > 0
+                    ? getMapsByPk(maps)
+                        .then((mapsResources) => mapsResources)
+                        .catch(() => [])
+                    : Promise.resolve([]),
+                documents.length > 0
+                    ? getDocumentsByPk(documents)
+                        .then((documentResources) => documentResources)
+                        .catch(() => [])
+                    : Promise.resolve([])
+            ]).then(([mapsResources, documentResources]) => {
+                return [
+                    ...maps.map(pk => {
+                        const data = mapsResources.find(map => map.pk === pk);
+                        return data
+                            ? { data, status: 'success', title: data.title }
+                            : { status: 'error', title: `map/${pk}` };
+                    }),
+                    ...documents.map(pk => {
+                        const data = documentResources.find(document => document.pk === pk);
+                        return data
+                            ? { data, status: 'success', title: data.title }
+                            : { status: 'error', title: `document/${pk}` };
+                    })
+                ];
+            }))
             .switchMap(updatedResources => {
 
                 const errorsResponses = updatedResources.filter(({ status }) => status === 'error');

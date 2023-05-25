@@ -16,6 +16,7 @@ import {
     SAVE_SUCCESS, SAVING_RESOURCE
 } from '@js/actions/gnsave';
 import { EDIT_RESOURCE } from '@mapstore/framework/actions/geostory';
+import { DASHBOARD_LOADED } from '@mapstore/framework/actions/dashboard';
 import {
     SHOW_NOTIFICATION
 } from '@mapstore/framework/actions/notifications';
@@ -34,37 +35,26 @@ describe('gnsave epics', () => {
         setTimeout(done);
     });
 
-    const pk = 1;
-
-    const geostoryState = {
-        geostory: {currentStory: {resources: [{data: {id: pk, sourceId: 'geonode', title: 'test'}, type: 'video', id: pk}]}},
-        gnresource: {type: 'geostory'}
-    };
-
-
     it('should sync resources for geostory', (done) => {
-        const NUM_ACTIONS = 4;
-        const resource = {
-            document: {
-                pk,
-                title: 'Test title',
-                thumbnail: 'Test',
-                src: 'Test src',
-                description: 'A test',
-                credits: null,
-                resource_type: 'video'
-            }
-        };
+        const pk = 1;
 
-        mockAxios.onGet().reply((config) => {
-            // debug config
-            if (config.url.match(`/api/v2/documents/${pk}/`)) {
-                return [200, resource];
-            }
-            if (config.url.match(`/api/v2/maps/${pk}/`)) {
-                return [200, resource];
-            }
-            return [200, resource];
+        const state = {
+            geostory: {currentStory: {resources: [{data: {id: pk, sourceId: 'geonode', title: 'test'}, type: 'video', id: pk}]}},
+            gnresource: {type: 'geostory'}
+        };
+        const NUM_ACTIONS = 4;
+        mockAxios.onGet().reply(200, {
+            documents: [
+                {
+                    pk,
+                    title: 'Test title',
+                    thumbnail: 'Test',
+                    src: 'Test src',
+                    description: 'A test',
+                    credits: null,
+                    resource_type: 'video'
+                }
+            ]
         });
         testEpic(
             gnSyncComponentsWithResources,
@@ -81,7 +71,60 @@ describe('gnsave epics', () => {
                 }
                 done();
             },
-            geostoryState
+            state
+        );
+    });
+    it('should sync resources for dashboard', (done) => {
+        const pk = 1;
+
+        const state = {
+            dashboard: {
+                originalData: {
+                    widgets: [
+                        {
+                            id: 'b8fe78a0-fadb-11ed-8d62-774d377a0552',
+                            maps: [
+                                {
+                                    extraParams: {
+                                        pk
+                                    }
+                                }
+                            ],
+                            widgetType: 'map'
+                        }
+                    ]
+                }
+            },
+            gnresource: {type: 'dashboard'}
+        };
+        const NUM_ACTIONS = 4;
+        mockAxios.onGet().reply(200, {
+            maps: [
+                {
+                    pk,
+                    title: 'Test title',
+                    data: {
+                        map: {}
+                    }
+                }
+            ]
+        });
+        testEpic(
+            gnSyncComponentsWithResources,
+            NUM_ACTIONS,
+            syncResources(),
+            (actions) => {
+                try {
+                    expect(actions.map(({ type }) => type))
+                        .toEqual([
+                            SAVING_RESOURCE, DASHBOARD_LOADED, SAVE_SUCCESS, SHOW_NOTIFICATION
+                        ]);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            state
         );
     });
 });
