@@ -10,7 +10,6 @@ import { Observable } from 'rxjs';
 import axios from '@mapstore/framework/libs/ajax';
 import uuid from "uuid";
 import url from "url";
-import isEmpty from 'lodash/isEmpty';
 import { getNewMapConfiguration, getNewGeoStoryConfig } from '@js/api/geonode/config';
 import {
     getDatasetByPk,
@@ -18,8 +17,7 @@ import {
     getDocumentByPk,
     getMapByPk,
     getCompactPermissionsByPk,
-    setResourceThumbnail,
-    getLinkedResourcesByPk
+    setResourceThumbnail
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
 import { mapSelector } from '@mapstore/framework/selectors/map';
@@ -47,8 +45,7 @@ import {
     setResourceCompactPermissions,
     updateResourceProperties,
     SET_RESOURCE_THUMBNAIL,
-    updateResource,
-    SET_RESOURCE
+    updateResource
 } from '@js/actions/gnresource';
 
 import {
@@ -500,29 +497,10 @@ export const closeOpenPanels = (action$, store) => action$.ofType(SET_CONTROL_PR
         return actions.length > 0 ? Observable.of(...actions) : Observable.empty();
     });
 
-/**
- * Get linked resources
- */
-export const gnGetLinkedResources = (action$, store) =>
-    action$.ofType(SET_RESOURCE)
-        .filter((action) =>
-            action.data?.pk && isEmpty(getResourceData(store.getState())?.linkedResources)
-        )
-        .switchMap((action) =>
-            Observable.defer(() =>
-                getLinkedResourcesByPk(action.data.pk)
-            ).switchMap((linkedResources) =>
-                Observable.of(
-                    updateResourceProperties({linkedResources})
-                )
-            )
-        );
-
 export default {
     gnViewerRequestNewResourceConfig,
     gnViewerRequestResourceConfig,
     gnViewerSetNewResourceThumbnail,
-    gnGetLinkedResources,
     closeInfoPanelOnMapClick,
     closeOpenPanels
 };

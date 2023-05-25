@@ -45,6 +45,7 @@ import { layersSelector } from '@mapstore/framework/selectors/layers';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import { resourceHasPermission } from '@js/utils/ResourceUtils';
 import { parsePluginConfigExpressions } from '@js/utils/MenuUtils';
+import detailViewerEpics from '@js/epics/detailviewer';
 
 const ConnectedDetailsPanel = connect(
     createSelector([
@@ -269,7 +270,7 @@ export default createPlugin('DetailViewer', {
             Component: ConnectedButton
         }
     },
-    epics: {},
+    epics: detailViewerEpics,
     reducers: {
         gnresource,
         controls
