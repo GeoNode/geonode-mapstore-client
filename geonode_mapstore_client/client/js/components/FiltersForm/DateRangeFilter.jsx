@@ -19,21 +19,21 @@ momentLocalizer(moment);
 
 function DateRangeFilter({
     query,
-    filterKey = 'dateFilter',
-    labelId = 'gnviewer.date',
-    format = 'YYYY-MM-DDT00:00:00',
+    filterKey = 'date',
+    labelId = 'gnviewer.dateFilter',
     onChange
 }) {
 
+    const format = 'YYYY-MM-DD';
     const dateFromFilterKey = `filter{${filterKey}.gte}`;
-    const dateToFilterKey = `filter{${filterKey}.lt}`;
+    const dateToFilterKey = `filter{${filterKey}.lte}`;
     const dateFromValue = query[dateFromFilterKey] ? moment(query[dateFromFilterKey]).toDate() : undefined;
     const dateToValue = query[dateToFilterKey] ? moment(query[dateToFilterKey]).toDate() : undefined;
 
-    function parseDate(value) {
+    function parseDate(value, time) {
         const date = moment(value);
         if (date.isValid()) {
-            return date.format(format);
+            return `${date.format(format)}${time}`;
         }
         return null;
     }
@@ -48,7 +48,7 @@ function DateRangeFilter({
                     time={false}
                     onChange={(value) => {
                         onChange({
-                            [dateFromFilterKey]: parseDate(value)
+                            [dateFromFilterKey]: parseDate(value, 'T00:00:00')
                         });
                     }}
                 />
@@ -61,7 +61,7 @@ function DateRangeFilter({
                     time={false}
                     onChange={(value) => {
                         onChange({
-                            [dateToFilterKey]: parseDate(value)
+                            [dateToFilterKey]: parseDate(value, 'T23:59:59')
                         });
                     }}
                 />

@@ -118,7 +118,6 @@ function FilterItem({
                 query={values}
                 labelId={field.labelId}
                 filterKey={field.filterKey}
-                format={field.format}
                 onChange={onChange}
             />
         );

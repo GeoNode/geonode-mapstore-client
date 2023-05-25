@@ -334,8 +334,8 @@
             "linkedResources": "Risorse collegate",
             "extent": "Estensione",
             "dateFilter": {
-                "from": "La data inizia dopo il",
-                "to": "La data termina prima del"
+                "from": "Data da",
+                "to": "Data a"
             }
         }
     }

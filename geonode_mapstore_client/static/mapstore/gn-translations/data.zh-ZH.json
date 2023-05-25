@@ -300,8 +300,8 @@
             "readLess": "Read less",
             "extent": "Extent",
             "dateFilter": {
-                "from": "Date begins after",
-                "to": "Date ends before"
+                "from": "Date from",
+                "to": "Date to"
             }
         }
     }

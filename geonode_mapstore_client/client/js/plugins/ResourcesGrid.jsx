@@ -419,8 +419,7 @@ function ResourcesGrid({
         {
             type: 'date-range',
             filterKey: 'date',
-            labelId: 'gnviewer.dateFilter',
-            format: 'YYYY-MM-DDT00:00:00'
+            labelId: 'gnviewer.dateFilter'
         },
         {
             labelId: 'gnviewer.extent',

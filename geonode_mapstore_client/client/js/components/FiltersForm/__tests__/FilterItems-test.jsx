@@ -170,13 +170,13 @@ describe('FilterItems component', () => {
                 {
                     type: 'date-range',
                     filterKey: 'date',
-                    labelId: 'gnviewer.dateFilter',
-                    format: 'YYYY-MM-DDT00:00:00'
+                    labelId: 'gnviewer.dateFilter'
                 }
             ];
             ReactDOM.render( <FilterItems id="test" items={items} onChange={(value) => {
                 try {
                     expect(value['filter{date.gte}']).toBeTruthy();
+                    expect(value['filter{date.gte}'].split('T')[1]).toBe('00:00:00');
                     done();
                 } catch (e) {
                     done(e);
@@ -202,13 +202,13 @@ describe('FilterItems component', () => {
                 {
                     type: 'date-range',
                     filterKey: 'date',
-                    labelId: 'gnviewer.dateFilter',
-                    format: 'YYYY-MM-DDT00:00:00'
+                    labelId: 'gnviewer.dateFilter'
                 }
             ];
             ReactDOM.render( <FilterItems id="test" items={items} onChange={(value) => {
                 try {
-                    expect(value['filter{date.lt}']).toBeTruthy();
+                    expect(value['filter{date.lte}']).toBeTruthy();
+                    expect(value['filter{date.lte}'].split('T')[1]).toBe('23:59:59');
                     done();
                 } catch (e) {
                     done(e);

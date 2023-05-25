@@ -332,8 +332,8 @@
             "linkedResources": "Verknüpfte Ressourcen",
             "extent": "Ausmaß",
             "dateFilter": {
-                "from": "Datum beginnt nach",
-                "to": "Datum endet vor"
+                "from": "Datum von",
+                "to": "Datum bis"
             }
         }
     }
