@@ -866,31 +866,22 @@
                 "name": "Print",
                 "cfg": {
                     "useFixedScales": true,
-                    "mapWidth": 256
-                }
-            },
-            {
-                "name": "PrintOutputFormat",
-                "cfg": {
-                    "allowedFormats": [
-                        {
-                            "value": "pdf",
-                            "name": "PDF"
-                        },
-                        {
-                            "value": "png",
-                            "name": "PNG"
-                        },
-                        {
-                            "value": "jpg",
-                            "name": "JPEG"
-                        }
-                    ]
-                },
-                "override": {
-                    "Print": {
-                        "target": "left-panel",
-                        "position": 3
+                    "mapWidth": 256,
+                    "outputFormatOptions": {
+                        "allowedFormats": [
+                            {
+                                "value": "pdf",
+                                "name": "PDF"
+                            },
+                            {
+                                "value": "png",
+                                "name": "PNG"
+                            },
+                            {
+                                "value": "jpg",
+                                "name": "JPEG"
+                            }
+                        ]
                     }
                 }
             },
@@ -1731,31 +1722,22 @@
                 "name": "Print",
                 "cfg": {
                     "useFixedScales": true,
-                    "mapWidth": 256
-                }
-            },
-            {
-                "name": "PrintOutputFormat",
-                "cfg": {
-                    "allowedFormats": [
-                        {
-                            "value": "pdf",
-                            "name": "PDF"
-                        },
-                        {
-                            "value": "png",
-                            "name": "PNG"
-                        },
-                        {
-                            "value": "jpg",
-                            "name": "JPEG"
-                        }
-                    ]
-                },
-                "override": {
-                    "Print": {
-                        "target": "left-panel",
-                        "position": 3
+                    "mapWidth": 256,
+                    "outputFormatOptions": {
+                        "allowedFormats": [
+                            {
+                                "value": "pdf",
+                                "name": "PDF"
+                            },
+                            {
+                                "value": "png",
+                                "name": "PNG"
+                            },
+                            {
+                                "value": "jpg",
+                                "name": "JPEG"
+                            }
+                        ]
                     }
                 }
             },
