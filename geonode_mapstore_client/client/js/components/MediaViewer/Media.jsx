@@ -29,6 +29,7 @@ const mediaMap = {
     pdf: PdfViewer,
     gltf: Scene3DViewer,
     pcd: Scene3DViewer,
+    ifc: Scene3DViewer,
     unsupported: UnsupportedViewer
 };
 

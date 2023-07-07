@@ -63,13 +63,15 @@ module.exports = (devServerDefault, projectConfig) => {
             {
                 context: [
                     '/static/mapstore/ms-translations/**',
-                    '/docs/**'
+                    '/docs/**',
+                    '/static/mapstore/dist/js/web-ifc/**'
                 ],
                 target: `${protocol}://${devServerHost}:8081`,
                 secure: false,
                 changeOrigin: true,
                 pathRewrite: {
-                    '/static/mapstore/ms-translations': '/node_modules/mapstore/web/client/translations'
+                    '/static/mapstore/ms-translations': '/node_modules/mapstore/web/client/translations',
+                    '/static/mapstore/dist/js/web-ifc': '/node_modules/web-ifc'
                 }
             }
         ]
