@@ -8,14 +8,17 @@
 
 import React, { useRef } from 'react';
 import Dropzone from 'react-dropzone';
-import ViewerLayout from '@js/components/ViewerLayout';
 import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
-import Message from '@mapstore/framework/components/I18N/Message';
 import { Alert } from 'react-bootstrap';
+
+import Message from '@mapstore/framework/components/I18N/Message';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
-import PendingUploadCard from '@js/routes/upload/PendingUploadCard';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
+
+import ViewerLayout from '@js/components/ViewerLayout';
+import PendingUploadFile from '@js/routes/upload/PendingUploadFile';
+import PendingUploadUrl from "@js/routes/upload/PendingUploadUrl";
 
 function ErrorButton(props) {
     return (
@@ -33,6 +36,7 @@ function UploadContainer({
     waitingUploads,
     children,
     onDrop,
+    onAddUrl,
     supportedLabels,
     onRemove,
     unsupported,
@@ -43,11 +47,15 @@ function UploadContainer({
     progress,
     type,
     abort,
-    abortAll
+    abortAll,
+    setUploadUrls,
+    uploadUrls,
+    onRemoveUrl
 }) {
 
     const inputFile = useRef();
     const waitingUploadNames = Object.keys(waitingUploads);
+    const waitingUploadFiles = [...waitingUploadNames];
 
     const handleFileDrop = (event) => {
         const files = [...event?.target?.files];
@@ -72,13 +80,17 @@ function UploadContainer({
         let aFileExceeds = false;
         waitingFiles.every((baseName) => {
             const { files } = waitingUploads[baseName];
-            const filesExt = Object.keys(files);
-            const size = getSize(files, filesExt);
+            if (files) {
+                const filesExt = Object.keys(files);
+                const size = getSize(files, filesExt);
 
-            if (size > limit) {
-                aFileExceeds = true;
-                return false;
-            } return true;
+                if (size > limit) {
+                    aFileExceeds = true;
+                    return false;
+                }
+                return true;
+            }
+            return true;
         });
 
         return aFileExceeds;
@@ -97,33 +109,58 @@ function UploadContainer({
             <ViewerLayout
                 leftColumn={
                     <div className="gn-upload-list">
-                        <div className="gn-upload-list-header">
+                        <div className={`gn-upload-list-header ${type}`}>
                             <input disabled={loading} ref={inputFile} value="" type="file" multiple onChange={handleFileDrop} style={{ display: 'none' }} />
                             <Button onClick={() => inputFile?.current?.click()}>
-                                <FaIcon name="plus" />{' '}<Message msgId="gnviewer.selectFiles" />
+                                <FaIcon name="plus" /><Message msgId="gnviewer.selectFiles" />
                             </Button>
+                            {type === "document" && <Button className={"add-url"} onClick={()=> onAddUrl()}>
+                                <FaIcon name="plus" /><Message msgId="gnviewer.addUrl" />
+                            </Button>}
                         </div>
-                        {waitingUploadNames.length > 0 ? (
+                        {waitingUploadFiles.length > 0 || uploadUrls?.length > 0 ? (
                             <ul>
-                                {waitingUploadNames.map((baseName) => {
+                                {waitingUploadFiles.map((baseName) => {
                                     const { files, missingExt = [], error, addMissingFiles = false } = waitingUploads[baseName];
-                                    const filesExt = Object.keys(files);
-                                    const size = getSize(files, filesExt);
+                                    if (files) {
+                                        const filesExt = Object.keys(files);
+                                        const size = getSize(files, filesExt);
+                                        return (
+                                            <li
+                                                key={baseName}
+                                            >
+                                                <PendingUploadFile
+                                                    missingExt={missingExt}
+                                                    baseName={baseName}
+                                                    onRemove={() => onRemove(baseName)}
+                                                    filesExt={filesExt}
+                                                    loading={loading}
+                                                    progress={progress}
+                                                    size={size}
+                                                    onAbort={abort}
+                                                    error={error}
+                                                    addMissingFiles={addMissingFiles}
+                                                />
+                                            </li>
+                                        );
+                                    }
+                                    return null;
+                                })}
+                                {type === "document" && uploadUrls?.map((document, index) => {
                                     return (
-                                        <li
-                                            key={baseName}
-                                        >
-                                            <PendingUploadCard
-                                                missingExt={missingExt}
-                                                baseName={baseName}
-                                                onRemove={() => onRemove(baseName)}
-                                                filesExt={filesExt}
+                                        <li key={index}>
+                                            <PendingUploadUrl
+                                                {...document}
+                                                index={index}
+                                                onAddUrl={onAddUrl}
+                                                supportedLabels={supportedLabels}
                                                 loading={loading}
                                                 progress={progress}
-                                                size={size}
+                                                onRemove={onRemove}
                                                 onAbort={abort}
-                                                error={error}
-                                                addMissingFiles={addMissingFiles}
+                                                setUploadUrls={setUploadUrls}
+                                                uploadUrls={uploadUrls}
+                                                onRemoveUrl={onRemoveUrl}
                                             />
                                         </li>
                                     );
@@ -147,7 +184,7 @@ function UploadContainer({
                         )}
                         <div className="gn-upload-list-footer">
                             {unsupported.length > 0 ? <Alert bsStyle="danger">
-                                <Message msgId="gnviewer.unsupportedFiles" />: {unsupported.map(({ file }) => file?.name).join(', ')}
+                                <Message msgId="gnviewer.unsupportedFiles" />: {unsupported.map(({ file, url } = {}) => (file?.name || url?.name)).join(', ')}
                             </Alert> : null}
                             {(waitingUploadNames.length > 0 && getExceedingFileSize(waitingUploadNames, maxAllowedSize)) ?
                                 <ButtonWithTooltip noTooltipWhenDisabled tooltip={<Message msgId="gnviewer.exceedingFileMsg" msgParams={{ limit: maxAllowedSize }} />} >

@@ -21,7 +21,7 @@ function ErrorMessage(props) {
 
 const ErrorMessageWithTooltip = tooltip(ErrorMessage);
 
-function PendingUploadCard({
+function PendingUploadFile({
     missingExt,
     baseName,
     onRemove,
@@ -99,4 +99,4 @@ function PendingUploadCard({
     );
 }
 
-export default PendingUploadCard;
+export default PendingUploadFile;

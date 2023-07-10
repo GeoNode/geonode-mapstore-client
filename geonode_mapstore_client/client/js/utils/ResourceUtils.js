@@ -56,6 +56,8 @@ export const GXP_PTYPES = {
     'GN_WMS': 'gxp_geonodecataloguesource'
 };
 
+export const FEATURE_INFO_FORMAT = 'TEMPLATE';
+
 /**
 * convert resource layer configuration to a mapstore layer object
 * @param {object} resource geonode layer resource
@@ -145,7 +147,7 @@ export const resourceToLayerConfig = (resource) => {
             ...(bbox ? { bbox } : { bboxError: true }),
             ...(template && {
                 featureInfo: {
-                    format: 'TEMPLATE',
+                    format: FEATURE_INFO_FORMAT,
                     template
                 }
             }),
@@ -473,13 +475,15 @@ export function toMapStoreMapConfig(resource, baseConfig) {
                     ...(mapLayer?.dataset?.defaul_style ? [mapLayer.dataset.defaul_style] : []),
                     ...(mapLayer?.dataset?.styles || [])
                 ]).map(({ name }) => name);
+                const template = mapLayer?.dataset?.featureinfo_custom_template || '';
                 return {
                     ...layer,
                     style: mapLayer.current_style || layer.style || '',
                     availableStyles: cleanStyles(mapLayer?.extra_params?.styles || [], mapLayerDatasetStyles),
                     featureInfo: {
                         ...layer?.featureInfo,
-                        template: mapLayer?.dataset?.featureinfo_custom_template || ''
+                        format: layer?.featureInfo?.format ?? (template ? FEATURE_INFO_FORMAT : undefined),
+                        template
                     },
                     extendedParams: {
                         ...layer.extendedParams,

@@ -25,7 +25,8 @@ import {
     cleanUrl,
     parseUploadFiles,
     getResourceTypesInfo,
-    ResourceTypes
+    ResourceTypes,
+    FEATURE_INFO_FORMAT
 } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
@@ -239,7 +240,7 @@ describe('Test Resource Utils', () => {
                                 }
                             },
                             availableStyles: [],
-                            featureInfo: { template: '' }
+                            featureInfo: { template: '', format: undefined }
                         }
                     ]
                 }
@@ -275,6 +276,9 @@ describe('Test Resource Utils', () => {
                                 mapLayer: {
                                     pk: 10
                                 }
+                            },
+                            featureInfo: {
+                                format: FEATURE_INFO_FORMAT
                             }
                         }
                     ]
@@ -315,7 +319,7 @@ describe('Test Resource Utils', () => {
                                 }
                             },
                             availableStyles: [],
-                            featureInfo: { template: '' }
+                            featureInfo: { template: '', format: FEATURE_INFO_FORMAT }
                         }
                     ]
                 }
@@ -405,12 +409,64 @@ describe('Test Resource Utils', () => {
                                 }
                             },
                             availableStyles: [],
-                            featureInfo: { template: '' }
+                            featureInfo: { template: '', format: undefined }
                         }
                     ]
                 }
             }
         );
+    });
+
+    it('transform a resource to a mapstore map config with featureinfo template', () => {
+        const template = '<div>Test</div>';
+        const resource = {
+            maplayers: [
+                {
+                    pk: 10,
+                    current_style: 'geonode:style01',
+                    extra_params: {
+                        msId: '03'
+                    },
+                    dataset: {
+                        pk: 1,
+                        featureinfo_custom_template: template
+                    }
+                }
+            ],
+            data: {
+                map: {
+                    layers: [
+                        {
+                            id: '03',
+                            type: 'wms',
+                            name: 'geonode:layer',
+                            url: 'geoserver/wms',
+                            style: 'geonode:style',
+                            extendedParams: {
+                                mapLayer: {
+                                    pk: 10
+                                }
+                            },
+                            featureInfo: {
+                                template: ""
+                            }
+                        }
+                    ]
+                }
+            }
+        };
+        const baseConfig = {
+            map: {
+                layers: [
+                    { type: 'osm', source: 'osm', group: 'background', visibility: true }
+                ]
+            }
+        };
+        const mapStoreMapConfig = toMapStoreMapConfig(resource, baseConfig);
+        expect(mapStoreMapConfig).toBeTruthy();
+        const layers = mapStoreMapConfig.map.layers;
+        expect(layers.length).toBe(2);
+        expect(layers[1].featureInfo).toEqual({ template, format: FEATURE_INFO_FORMAT });
     });
 
     it('should parse style name into accepted format', () => {

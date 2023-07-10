@@ -45,6 +45,23 @@
     .gn-upload-card-error-message {
         .color-var(@theme-vars[danger]);
     }
+    .gn-upload-error-inline {
+        > span, > i {
+            .color-var(@theme-vars[danger]);
+        }
+    }
+    .gn-upload-card {
+        &.gn-upload-url {
+            .gn-upload-card-bottom {
+                .Select {
+                    .Select-value-label {
+                        .color-var(@theme-vars[badge-color]);
+                        .background-color-var(@theme-vars[badge-bg]);
+                    }
+                }
+            }
+        }
+    }
 }
 
 // **************
@@ -80,7 +97,7 @@
             padding: 3rem;
         }
     }
-    
+
 }
 
 .gn-upload-list {
@@ -99,9 +116,20 @@
         overflow: auto;
     }
     .gn-upload-list-header {
+        &.document {
+            display: flex;
+            .add-url {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
         .btn {
             width: 100%;
             text-align: left;
+            > span {
+                margin-left: 0.25rem;
+            }
         }
         border-bottom-width: 1px;
         border-bottom-style: solid;
@@ -130,7 +158,61 @@
         }
         .gn-upload-card-error {
             padding-right: 0.5rem;
+        }    
+    }
+    &.gn-upload-url {
+        .gn-upload-card-header {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            .gn-upload-input {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
         }
+        .gn-upload-card-bottom {
+            flex-direction: column;
+            align-items: flex-start;
+            .Select {
+                &.is-disabled {
+                    .Select-control {
+                        background: transparent;
+                        cursor: not-allowed;
+                    }
+                }
+                .Select-control {
+                    width: 70px;
+                    border-left: none;
+                    border-top: none;
+                    border-right: none;
+                }
+                .Select-menu-outer {
+                    width: auto;
+                    font-size: 0.7rem;
+                    font-weight: normal;
+                    line-height: 0.8rem;
+                }
+                input {
+                    max-width: 30px;
+                }
+                .Select-placeholder,
+                .Select-value {
+                    padding: 0 0.25rem;
+                }
+                .Select-input {
+                    padding-left: 0.25rem;
+                }
+                .Select-value-label {
+                    padding: 3px 7px;
+                    border-radius: 10px;
+                    font-size: 0.7rem;
+                    font-weight: normal;
+                    line-height: 0.8rem;
+                }
+            }
+        }   
     }
     .gn-upload-card-body {
         padding: 0 0.5rem;
@@ -157,8 +239,6 @@
 
     ul {
         display: flex;
-        padding: 0.5rem;
-        padding-top: 0;
         flex-wrap: wrap;
         li + li {
             margin-left: 0.25rem;
@@ -179,7 +259,7 @@
     .gn-upload-processing-header {
         margin: 1.0rem;
     }
-    
+
     .gn-upload-processing-list {
         flex: 1;
         position: relative;
@@ -201,7 +281,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-right: 0.5rem;
+    padding: 0 0.5rem 0.5rem;
 }
 
 .gn-disabled-upload {

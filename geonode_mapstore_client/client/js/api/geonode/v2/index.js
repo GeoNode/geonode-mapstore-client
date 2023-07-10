@@ -83,7 +83,7 @@ export const setEndpoints = (data) => {
 export const getEndpoints = () => {
     const apikey = getApiToken();
     const endpointV2 = getGeoNodeLocalConfig('geoNodeApi.endpointV2', '/api/v2/');
-    return axios.get(endpointV2, {
+    return axios.get(parseDevHostname(endpointV2), {
         params: {
             ...(apikey && { apikey })
         }
@@ -865,11 +865,18 @@ export const uploadDataset = ({
 export const uploadDocument = ({
     title,
     file,
+    url,
+    extension,
     config
 }) => {
     const formData = new FormData();
     formData.append('title', title);
-    formData.append('doc_file', file);
+    if (file) {
+        formData.append('doc_file', file);
+    } else if (url) {
+        formData.append('doc_url', url);
+        formData.append('extension', extension);
+    }
     return axios.post(`/documents/upload?no__redirect=true`, formData, config)
         .then(({ data }) => (data));
 };
