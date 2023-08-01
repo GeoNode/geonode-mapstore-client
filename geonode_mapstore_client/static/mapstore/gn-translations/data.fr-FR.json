@@ -115,6 +115,8 @@
             "customFilterExample": "Filtre personnalisé (Global)",
             "copiedResourceUrl": "URL de la ressource copiée!",
             "copyResourceUrl": "Copier l'URL de la ressource",
+            "copiedDatasetOwsUrl": "URL des OGC Web Services copiée!",
+            "copyDatasetOwsUrl": "Copier l'URL des OGC Web Services",
             "copiedCapabilitiesUrl": "URL des capacités WMS copiée!",
             "copyCapabilitiesUrl": "Copier l'URL des fonctionnalités WMS",
             "open": "Ouvert",

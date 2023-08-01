@@ -88,7 +88,7 @@ const DetailsPanelTools = ({
     const isMounted = useRef();
     const [copiedUrl, setCopiedUrl] = useState({
         resource: false,
-        capabilities: false
+        datasetowsurl: false
     });
 
     useEffect(() => {
@@ -141,18 +141,18 @@ const DetailsPanelTools = ({
                     <FaIcon name="share-alt" />
                 </Button>
             </CopyToClipboard>
-            {resource?.capabilities_url && <CopyToClipboard
+            {resource?.dataset_ows_url && <CopyToClipboard
                 tooltipPosition="top"
                 tooltipId={
                     copiedUrl.capabilities
-                        ? 'gnhome.copiedCapabilitiesUrl'
-                        : 'gnhome.copyCapabilitiesUrl'
+                        ? 'gnhome.copiedDatasetOwsUrl'
+                        : 'gnhome.copyDatasetOwsUrl'
                 }
-                text={resource.capabilities_url}
+                text={resource.dataset_ows_url}
             >
                 <Button
                     variant="default"
-                    onClick={()=> handleCopyPermalink('capabilities')}>
+                    onClick={()=> handleCopyPermalink('datasetowsurl')}>
                     <FaIcon name="globe" />
                 </Button>
             </CopyToClipboard>}
