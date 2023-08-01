@@ -115,6 +115,8 @@
             "customFilterExample": "Benutzerdefinierter Filter (Global)",
             "copiedResourceUrl": "Ressourcen-URL kopiert!",
             "copyResourceUrl": "Ressourcen-URL kopieren",
+            "copiedDatasetOwsUrl": "OGC Web Services URL kopiert!",
+            "copyDatasetOwsUrl": "OGC Web Services URL Kopieren",
             "copiedCapabilitiesUrl": "WMS Funktionen-URL kopiert!",
             "copyCapabilitiesUrl": "WMS Funktionen-URL Kopieren",
             "open": "Öffnen",
