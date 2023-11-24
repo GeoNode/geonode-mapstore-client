@@ -1,24 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import Loader from '@mapstore/framework/components/misc/Loader';
-
 import { getFileFromDownload } from '@js/utils/FileUtils';
 
-const PdfViewer = ({src, embedUrl}) => {
+const IframePDF = ({ src }) => {
+    return (
+        <iframe
+            className="gn-pdf-viewer"
+            type="application/pdf"
+            frameBorder="0"
+            scrolling="auto"
+            height="100%"
+            width="100%" src={src}
+        />
+    );
+};
+
+const AsyncIframePDF = ({ src }) => {
     const [filePath, setFilePath] = useState(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (embedUrl) {
-            setFilePath(embedUrl);
-        } else {
-            setLoading(true);
-            getFileFromDownload(src)
-                .then((fileURL) => {
-                    setFilePath(fileURL);
-                }).finally(() => {
-                    setLoading(false);
-                });
-        }
+        setLoading(true);
+        getFileFromDownload(src)
+            .then((fileURL) => {
+                setLoading(false);
+                setFilePath(fileURL);
+            }).finally(() => {
+                setLoading(false);
+            });
     }, []);
 
     if (loading) {
@@ -28,11 +37,12 @@ const PdfViewer = ({src, embedUrl}) => {
         </div>);
     }
 
-    return (<iframe className="gn-pdf-viewer" type="application/pdf"
-        frameBorder="0"
-        scrolling="auto"
-        height="100%"
-        width="100%" src={filePath}/>);
+    return (<IframePDF src={filePath}/>);
+};
+
+const PdfViewer = ({ src, isExternalSource }) => {
+    const Viewer = isExternalSource ? IframePDF : AsyncIframePDF;
+    return <Viewer src={src} />;
 };
 
 export default PdfViewer;
