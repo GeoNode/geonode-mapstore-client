@@ -3,19 +3,22 @@ import Loader from '@mapstore/framework/components/misc/Loader';
 
 import { getFileFromDownload } from '@js/utils/FileUtils';
 
-const PdfViewer = ({src}) => {
+const PdfViewer = ({src, embedUrl}) => {
     const [filePath, setFilePath] = useState(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        getFileFromDownload(src)
-            .then((fileURL) => {
-                setLoading(false);
-                setFilePath(fileURL);
-            }).finally(() => {
-                setLoading(false);
-            });
+        if (embedUrl) {
+            setFilePath(embedUrl);
+        } else {
+            setLoading(true);
+            getFileFromDownload(src)
+                .then((fileURL) => {
+                    setFilePath(fileURL);
+                }).finally(() => {
+                    setLoading(false);
+                });
+        }
     }, []);
 
     if (loading) {

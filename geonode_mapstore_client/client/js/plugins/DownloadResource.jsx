@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
-import { getDownloadUrlInfo } from '@js/utils/ResourceUtils';
+import { getDownloadUrlInfo, isDocumentExternalSource } from '@js/utils/ResourceUtils';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@js/components/Button';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
@@ -44,9 +44,13 @@ const DownloadButton = ({
     const isButton = renderType !== "menuItem";
     const _resource = resource ?? resourceData;
     const downloadInfo = getDownloadUrlInfo(_resource);
+    const isExternal = isDocumentExternalSource(_resource);
     const isNotAjaxSafe = !Boolean(downloadInfo?.ajaxSafe);
 
-    if ((isEmpty(_resource?.download_urls) && !_resource?.perms?.includes('download_resourcebase')) || (!isButton && isNotAjaxSafe)) {
+    if ((isEmpty(_resource?.download_urls) && !_resource?.perms?.includes('download_resourcebase'))
+        || !_resource?.perms?.includes('download_resourcebase')
+        || (!isButton && isNotAjaxSafe)
+    ) {
         return null;
     }
 
@@ -61,7 +65,7 @@ const DownloadButton = ({
                 rel="noopener noreferrer"
             >
                 {showIcon
-                    ? <FaIcon name="external-link" />
+                    ? <FaIcon name={isExternal ? "external-link" : "download"} />
                     : <Message msgId="gnviewer.download" />
                 }
             </Component>

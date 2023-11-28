@@ -182,7 +182,11 @@ def get_user_menu(context):
     admin_only = (
         [
             {"type": "link", "href": "/admin/", "label": "Admin"},
-            {"type": "link", "href": settings.GEOSERVER_WEB_UI_LOCATION, "label": "GeoServer"},
+            {
+                "type": "link",
+                "href": settings.GEOSERVER_WEB_UI_LOCATION,
+                "label": "GeoServer",
+            },
         ]
         + monitoring
         + [devider]

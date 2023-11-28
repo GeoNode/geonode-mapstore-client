@@ -71,6 +71,7 @@ const Media = ({ resource, ...props }) => {
                 thumbnail={() => getResourceImageSource(resource?.thumbnail_url)}
                 src={resource.href}
                 url={resource ? metadataPreviewUrl(resource) : ''}
+                embedUrl={resource?.embed_url}
             />
         </Suspense>);
     }

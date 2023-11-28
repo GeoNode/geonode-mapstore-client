@@ -13,4 +13,5 @@ default_app_config = "geonode_mapstore_client.apps.AppConfig"
 
 class GeoNodeMapstore2Exception(Exception):
     """Base class for exceptions in this module."""
+
     pass

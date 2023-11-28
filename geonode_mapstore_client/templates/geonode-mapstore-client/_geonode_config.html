@@ -2,6 +2,7 @@
 {% load base_tags %}
 {% load get_menu_json %}
 {% load apikey %}
+{% load get_search_services %}
 {% load static %}
 {% comment %}
     app and map configuration need to be normalized
@@ -9,6 +10,7 @@
 
 {% comment %} setting.py variables {% endcomment %}
 {{GEONODE_SETTINGS|json_script:"GEONODE_SETTINGS" }}
+{% get_services_dict as SEARCH_SERVICES_PAYLOAD %}
 
 {% comment %} menu items {% endcomment %}
 
@@ -117,6 +119,16 @@
         let siteName = '{{ SITE_NAME }}' || 'Geonode';
         let geoServerPublicLocation = '{{ GEOSERVER_PUBLIC_LOCATION }}' || '';
         let isMobile = '{{ request.user_agent.is_mobile }}' === 'True' ? true : false;
+
+        const searchServicesPayload =  {{SEARCH_SERVICES_PAYLOAD|safe}};
+        let searchServicesPatchRules = searchServicesPayload.length ? ['map_viewer', 'dataset_viewr', 'map_viewer_mobile', 'dataset_viewer_mobile'].map(
+            (v, i) => ({
+                "op": "replace",
+                "jsonpath": `$.${v}..[?(@.name == 'Search')].cfg`,
+                "value": {"searchOptions": {"services": searchServicesPayload}}
+            })
+        ) : [];
+
         {% block override_settings %}
         {% endblock %}
         window.__GEONODE_CONFIG__ = {
@@ -127,7 +139,7 @@
             resourceType: '{{ resource.resource_type|default:"" }}',
             isEmbed: isEmbed,
             pluginsConfigKey: pluginsConfigKey,
-            pluginsConfigPatchRules: pluginsConfigPatchRules,
+            pluginsConfigPatchRules: [...searchServicesPatchRules, ...pluginsConfigPatchRules],
             apikey: '{%if user_apikey %}{{user_apikey}}{% else %}{% endif %}',
             localConfig: {
                 proxyUrl: {
