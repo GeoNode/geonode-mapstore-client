@@ -12,13 +12,24 @@ import isEmpty from "lodash/isEmpty";
 * @return {string} Object url to view resource in browser
 */
 export const getFileFromDownload = (downloadURL, type = 'application/pdf') => {
-    return axios.get(downloadURL, {
-        responseType: 'blob'
-    }).then(({data}) => {
+    const resolve = (data) => {
         const file = new Blob([data], {type});
         const fileURL = URL.createObjectURL(file);
         return fileURL;
-    });
+    };
+    // try a direct request
+    return fetch(downloadURL)
+        .then(res => res.blob())
+        .then((data) => resolve(data))
+        // if it fails try to use proxy
+        .catch(() =>
+            axios.get(downloadURL, {
+                responseType: 'blob'
+            })
+                .then(({ data }) => {
+                    return resolve(data);
+                })
+        );
 };
 
 
