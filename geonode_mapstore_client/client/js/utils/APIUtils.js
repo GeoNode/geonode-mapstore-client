@@ -52,9 +52,9 @@ const getGeoNodeTargetHostname = () => {
     if (geoNodeTargetHostname) {
         return geoNodeTargetHostname;
     }
-    const geoserverUrl = getGeoNodeLocalConfig('geoNodeSettings.geoserverUrl');
-    if (geoserverUrl) {
-        const { hostname } = url.parse(geoserverUrl);
+    const endpointV2 = getGeoNodeLocalConfig('geoNodeApi.endpointV2');
+    if (endpointV2) {
+        const { hostname } = url.parse(endpointV2);
         if (hostname) {
             geoNodeTargetHostname = hostname;
         }
