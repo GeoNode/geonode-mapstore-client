@@ -6,8 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
@@ -28,8 +27,8 @@ import {
     getResourceDirtyState
 } from '@js/selectors/resource';
 import { getCurrentResourcePermissionsLoading } from '@js/selectors/resourceservice';
-import { withRouter, Prompt } from 'react-router';
-import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
+import { withRouter } from 'react-router';
+import withPrompt from '@js/plugins/save/withPrompt';
 
 function Save(props) {
     return props.saving ? (<div
@@ -50,32 +49,15 @@ const SavePlugin = connect(
 )(Save);
 
 function SaveButton({
-    enabled,
     onClick,
     variant,
     size,
     loading,
     className,
     dirtyState: dirtyStateProp
-}, { messages }) {
-
-    const dirtyState = useRef();
-    dirtyState.current = dirtyStateProp;
-    useEffect(() => {
-
-        function onBeforeUnload(event) {
-            if (dirtyState.current) {
-                (event || window.event).returnValue = null;
-            }
-        }
-        window.addEventListener('beforeunload', onBeforeUnload);
-        return () => {
-            window.removeEventListener('beforeunload', onBeforeUnload);
-        };
-    }, []);
-
-    return enabled
-        ? <><Button
+}) {
+    return (
+        <Button
             variant={dirtyStateProp ? 'warning' : (variant || "primary")}
             size={size}
             onClick={() => onClick()}
@@ -84,28 +66,8 @@ function SaveButton({
         >
             <Message msgId="save"/>{' '}{loading && <Spinner />}
         </Button>
-        <Prompt
-            when={!!dirtyStateProp}
-            message={(/* nextLocation, action */) => {
-                const confirmed = window.confirm(getMessageById(messages, 'gnviewer.prompPendingChanges')); // eslint-disable-line no-alert
-                // if confirm the path should be the next one
-                if (confirmed) {
-                    return true;
-                }
-                // currently it's not possible to replace the pathname
-                // without side effect
-                // such as reloading of the page
-                return false;
-            }}
-        />
-        </>
-        : null
-    ;
+    );
 }
-
-SaveButton.contextTypes = {
-    messages: PropTypes.object
-};
 
 const ConnectedSaveButton = connect(
     createSelector(
@@ -126,7 +88,7 @@ const ConnectedSaveButton = connect(
     {
         onClick: saveDirectContent
     }
-)((withRouter(SaveButton)));
+)((withRouter(withPrompt(SaveButton))));
 
 export default createPlugin('Save', {
     component: SavePlugin,

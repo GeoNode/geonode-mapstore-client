@@ -396,7 +396,7 @@ const resourceTypes = {
             const { response } = payload;
             const { success, error: [error] } = response;
             if (success) {
-                window.location.reload();
+                window.location.replace(window.location.href);
                 return Observable.empty();
             }
             return Observable.throw(new Error(error));
@@ -595,32 +595,37 @@ export const gnManageLinkedResource = (action$, store) =>
         .switchMap((action) => {
             const state = store.getState();
             const resource = state.gnresource ?? {};
+            const params = state?.gnresource?.params;
             const { source, target, resourceType, processType } = action.payload;
+            const isLinkResource = processType === ProcessTypes.LINK_RESOURCE;
             const resourceObservable = resourceTypes[resourceType];
             let observable$ = resourceObservable?.linkedResourceObservable;
             let linkedResourceFn = setLinkedResourcesByPk;
-            if (processType === ProcessTypes.REMOVE_LINKED_RESOURCE) {
+            if (!isLinkResource) {
                 observable$ = resourceObservable?.removeLinkedResourceObservable;
                 linkedResourceFn = removeLinkedResourcesByPk;
             }
             if (!observable$) Observable.empty();
-            return Observable.defer(() => linkedResourceFn(source, target))
-                .switchMap((response) =>
-                    Observable.concat(
-                        observable$({response, source, resource}),
-                        Observable.of(
-                            successNotification({
-                                title: "gnviewer.linkedResource.title",
-                                message: `gnviewer.linkedResource.message.success.${processType}`}
-                            ))
-                    ).catch(() => Observable.of(errorNotification({
-                        title: "gnviewer.linkedResource.title",
-                        message: `gnviewer.linkedResource.message.failure.${processType}`
-                    }))))
-                .let(wrapStartStop(
-                    setControlProperty(processType, 'loading', true),
-                    setControlProperty(processType, 'loading', false)
-                ));
+            return Observable.concat(
+                ...(isLinkResource ? [Observable.of(setResourcePathParameters({ ...params, pk: target}))] : []),
+                Observable.defer(() => linkedResourceFn(source, target))
+                    .switchMap((response) =>
+                        Observable.concat(
+                            observable$({response, source, resource}),
+                            Observable.of(
+                                successNotification({
+                                    title: "gnviewer.linkedResource.title",
+                                    message: `gnviewer.linkedResource.message.success.${processType}`}
+                                ))
+                        ).catch(() => Observable.of(errorNotification({
+                            title: "gnviewer.linkedResource.title",
+                            message: `gnviewer.linkedResource.message.failure.${processType}`
+                        }))))
+                    .let(wrapStartStop(
+                        setControlProperty(processType, 'loading', true),
+                        setControlProperty(processType, 'loading', false)
+                    ))
+            );
         });
 export default {
     gnViewerRequestNewResourceConfig,

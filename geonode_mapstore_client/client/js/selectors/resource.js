@@ -253,7 +253,16 @@ function isResourceDataEqual(state, initialData = {}, currentData = {}) {
     }
 }
 
+export const isNewMapViewerResource = (state) => {
+    const isNew = state?.gnresource?.params?.pk === "new";
+    const isMapViewer = state?.gnresource?.type === ResourceTypes.VIEWER;
+    return isNew && isMapViewer;
+};
+
 export const getResourceDirtyState = (state) => {
+    if (isNewMapViewerResource(state)) {
+        return true;
+    }
     const canEdit = canEditPermissions(state);
     const isDeleting = getCurrentResourceDeleteLoading(state);
     const isCopying = getCurrentResourceCopyLoading(state);

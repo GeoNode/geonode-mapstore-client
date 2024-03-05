@@ -37,6 +37,7 @@ import { processResources } from '@js/actions/gnresource';
 import { getCurrentResourceCopyLoading } from '@js/selectors/resourceservice';
 import Dropdown from '@js/components/Dropdown';
 import FaIcon from '@js/components/FaIcon';
+import withPrompt from '@js/plugins/save/withPrompt';
 
 function SaveAs({
     resources,
@@ -107,24 +108,24 @@ const SaveAsPlugin = connect(
 )(SaveAs);
 
 function SaveAsButton({
-    enabled,
     onClick,
     variant,
     size,
     resource,
+    dirtyState,
     disabled
 }) {
-    return enabled
-        ? <Button
-            variant={variant || "primary"}
+
+    return (
+        <Button
+            variant={dirtyState ? 'warning' : (variant || "primary")}
             size={size}
             disabled={disabled}
             onClick={() => onClick([ resource ])}
         >
             <Message msgId="saveAs"/>
         </Button>
-        : null
-    ;
+    );
 }
 
 const canCopyResourceFunction = (state) => {
@@ -142,6 +143,10 @@ const canCopyResourceFunction = (state) => {
     };
 };
 
+const isDisabledByDirtyState = (dirtyState) => {
+    return typeof dirtyState === 'object' ? !!dirtyState : false;
+};
+
 const ConnectedSaveAsButton = connect(
     createSelector(
         getResourceData,
@@ -150,13 +155,14 @@ const ConnectedSaveAsButton = connect(
         (resource, dirtyState, canCopy) => ({
             enabled: !!canCopy(resource),
             resource,
-            disabled: !!dirtyState
+            dirtyState: !isDisabledByDirtyState(dirtyState) && !!dirtyState,
+            disabled: isDisabledByDirtyState(dirtyState)
         })
     ),
     {
         onClick: setControlProperty.bind(null, ProcessTypes.COPY_RESOURCE, 'value')
     }
-)((SaveAsButton));
+)(withPrompt(SaveAsButton));
 
 function CopyMenuItem({
     resource,
