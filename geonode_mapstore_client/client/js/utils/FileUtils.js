@@ -37,7 +37,6 @@ export const getFileFromDownload = (downloadURL, type = 'application/pdf') => {
 export const imageExtensions = ['jpg', 'jpeg', 'png'];
 export const videoExtensions = ['mp4', 'mpg', 'avi', 'm4v', 'mp2', '3gp', 'flv', 'vdo', 'afl', 'mpga', 'webm'];
 export const gltfExtensions = ['glb', 'gltf'];
-export const pcdExtensions = ['pcd'];
 export const ifcExtensions = ['ifc'];
 
 /**
@@ -50,7 +49,6 @@ export const determineResourceType = extension => {
     if (imageExtensions.includes(extension)) return 'image';
     if (videoExtensions.includes(extension)) return 'video';
     if (gltfExtensions.includes(extension)) return 'gltf';
-    if (pcdExtensions.includes(extension)) return 'pcd';
     if (ifcExtensions.includes(extension)) return 'ifc';
     return 'unsupported';
 };

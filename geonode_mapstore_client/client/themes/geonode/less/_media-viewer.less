@@ -3,13 +3,6 @@
 // **************
 
 #gn-components-theme(@theme-vars) {
-    .gn-media-scene-3d-progress {
-        .background-color-var(@theme-vars[main-variant-bg]);
-        > div {
-            height: 6px;
-            .background-color-var(@theme-vars[success]);
-        }
-    }
     .gn-media-scene-3d-info-bg {
         .background-color-var(@theme-vars[main-variant-bg]);
     }
@@ -85,16 +78,6 @@
     width: 100%;
     height: 100%;
     z-index: 0;
-}
-
-.gn-media-scene-3d-progress {
-    width: 256px;
-    height: 6px;
-    transition: 0.3s all;
-    text-align: center;
-    > div {
-        height: 6px;
-    }
 }
 
 // this gives a higher z-index than #ms-container inorder to make lightbox show

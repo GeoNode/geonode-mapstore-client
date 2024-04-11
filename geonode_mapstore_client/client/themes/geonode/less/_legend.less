@@ -14,70 +14,7 @@
 // **************
 
 .gn-legend-wrapper {
-    position: absolute;
-    left: 10px;
-    top: 10px;
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    min-width: 120px;
-    border-radius: 2px;
-    max-height: 50%;
-    max-width: 400px;
-
-    .gn-legend-head {
-        padding: 0.5rem;
-    }
-
-    .gn-legend-list {
-        list-style: none;
-        padding: 0;
-        flex: 1;
-        margin: 0;
-        padding: 0.5rem;
+    .ms-layers-tree {
         padding-top: 0;
-        overflow-y: auto;
-    }
-
-    .gn-legend-list-item {
-            margin: 0;
-        
-        &:not(span) {
-            padding-right: 40px;
-            display: flex;
-            align-items: center;
-        }
-
-        span.glyphicon {
-            margin-right: 10px;
-            top: 0;
-        }
-      
-        p {
-            margin: 0;
-            font-weight: normal;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-    }
-
-    span {
-        margin: 0;
-    }
-
-    span.gn-legend-list-item {
-        margin-left: .5rem;
-        font-size: @font-size-small;
-
-    }
-
-    .identify-icon {
-        font-size: small;
-    }
-
-    .gn-legend-bottom:not(:last-of-type) {
-        margin-bottom: 20px;
     }
 }
-

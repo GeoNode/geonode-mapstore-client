@@ -6,16 +6,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import LegendImage from '@mapstore/framework/components/TOC/fragments/legend/Legend';
 import { layersSelector } from '@mapstore/framework/selectors/layers';
-import OpacitySlider from '@mapstore/framework/components/TOC/fragments/OpacitySlider';
+import { mapSelector } from '@mapstore/framework/selectors/map';
 import { updateNode } from '@mapstore/framework/actions/layers';
-import VisibilityCheck from '@mapstore/framework/components/TOC/fragments/VisibilityCheck';
 import Message from '@mapstore/framework/components/I18N/HTML';
+import TOC from '@mapstore/framework/plugins/TOC/components/TOC';
+import { currentLocaleLanguageSelector, currentLocaleSelector } from '@mapstore/framework/selectors/locale';
+import { isLocalizedLayerStylesEnabledSelector } from '@mapstore/framework/selectors/localizedLayerStyles';
+import { getScales } from '@mapstore/framework/utils/MapUtils';
 
 function applyVersionParamToLegend(layer) {
     // we need to pass a parameter that invalidate the cache for GetLegendGraphic
@@ -25,7 +27,11 @@ function applyVersionParamToLegend(layer) {
 
 function Legend({
     layers,
-    onUpdateNode
+    onUpdateNode,
+    currentZoomLvl,
+    scales,
+    language,
+    currentLocale
 }) {
 
     const [expandLegend, setExpandLegend] = useState(false);
@@ -34,35 +40,65 @@ function Legend({
         setExpandLegend(ex => !ex);
     };
 
-    return layers.length > 0 && <div className="shadow gn-legend-wrapper" style={{width: expandLegend ? 'auto' : '80px'}}>
-        <div onClick={expand} className="gn-legend-head">
-            <span role="button" className={`identify-icon glyphicon glyphicon-chevron-${expandLegend ? 'down' : 'right'}`} title="Expand layer legend" />
-            <span className="gn-legend-list-item"><Message msgId="gnviewer.legend" /></span>
+    if (!layers.length) {
+        return null;
+    }
+
+    return (
+        <div className="shadow gn-legend-wrapper" style={{ position: 'absolute', margin: 4, width: 'auto', zIndex: 50 }}>
+            <div onClick={expand} className="gn-legend-head" style={{ padding: '4px 8px', fontSize: '0.75rem' }}>
+                <span role="button" className={`identify-icon glyphicon glyphicon-${expandLegend ? 'bottom' : 'next'}`} title="Expand layer legend" />
+                <span className="gn-legend-list-item" style={{ paddingLeft: 4 }}><Message msgId="gnviewer.legend" /></span>
+            </div>
+            <div style={{ display: expandLegend ? 'block' : 'none' }}>
+                <TOC
+                    map={{
+                        layers: layers.map(applyVersionParamToLegend),
+                        groups: []
+                    }}
+                    theme="legend"
+                    config={{
+                        sortable: false,
+                        showFullTitle: true,
+                        hideOpacitySlider: false,
+                        hideVisibilityButton: false,
+                        expanded: true,
+                        language,
+                        currentLocale,
+                        scales,
+                        zoom: currentZoomLvl
+                    }}
+                    onChangeMap={(newMap) => {
+                        newMap.layers.forEach(layer => {
+                            onUpdateNode(layer.id, 'layers', {
+                                opacity: layer.opacity,
+                                visibility: layer.visibility
+                            });
+                        });
+                    }}
+                />
+            </div>
         </div>
-        <ul className="gn-legend-list" style={{display: expandLegend ? 'inline-block' : 'none'}}>
-            {layers.map((layer, ind) => <Fragment key={ind}>
-                <li className="gn-legend-list-item"><VisibilityCheck key="visibilitycheck"
-                    tooltip={layer.loadingError === 'Warning' ? 'toc.toggleLayerVisibilityWarning' : 'toc.toggleLayerVisibility'}
-                    node={layer}
-                    propertiesChangeHandler={(id, options) => onUpdateNode(id, 'layers', options)} /><p>{layer.title}</p></li>
-                <li className="gn-legend-bottom">
-                    <OpacitySlider
-                        opacity={layer.opacity}
-                        disabled={!layer.visibility}
-                        onChange={(opacity) => onUpdateNode(layer.id, 'layers', { opacity })}
-                    />
-                    <LegendImage layer={applyVersionParamToLegend(layer)} />
-                </li>
-            </Fragment>
-            )}
-        </ul>
-    </div>;
+    );
 }
 
 const ConnectedLegend = connect(
     createSelector([
-        layersSelector
-    ], (layers) => ({ layers: layers.filter(layer => layer.group !== 'background' && layer.type === 'wms') })),
+        layersSelector,
+        mapSelector,
+        currentLocaleSelector,
+        currentLocaleLanguageSelector,
+        isLocalizedLayerStylesEnabledSelector
+    ], (layers, map, currentLocale, currentLocaleLanguage, isLocalizedLayerStylesEnabled) => ({
+        layers: layers.filter(layer => layer.group !== 'background' && layer.type === 'wms'),
+        currentZoomLvl: map?.zoom,
+        scales: getScales(
+            map && map.projection || 'EPSG:3857',
+            map && map.mapOptions && map.mapOptions.view && map.mapOptions.view.DPI || null
+        ),
+        language: isLocalizedLayerStylesEnabled ? currentLocaleLanguage : null,
+        currentLocale
+    })),
     {
         onUpdateNode: updateNode
 

@@ -24,7 +24,7 @@ function SettingsSection({
     return (
         <>
             <div className="gn-layer-settings-section-title" onClick={() => setExpanded(!expanded)}>
-                <Glyphicon glyph={`chevron-${expanded ? 'down' : 'right'}`}/>&nbsp;
+                <Glyphicon glyph={`${expanded ? 'bottom' : 'next'}`}/>&nbsp;
                 {title}
             </div>
             {expanded ? children : null}

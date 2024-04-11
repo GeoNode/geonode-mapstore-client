@@ -3796,7 +3796,7 @@
                     "documentationBaseURL": "https://mapstore.geosolutionsgroup.com/mapstore/docs/api/plugins",
                     "backToPageDestRoute": "/context-manager",
                     "backToPageConfirmationMessage": "contextCreator.undo",
-                    "availableSteps": [
+                    "stepIds": [
                         "configure-plugins"
                     ],
                     "hideUploadExtension": true,

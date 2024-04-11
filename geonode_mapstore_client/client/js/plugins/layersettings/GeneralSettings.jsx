@@ -15,8 +15,8 @@ import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Select from 'react-select';
 import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
-import { isValidNewGroupOption, flattenGroups, getLabelName as _getLabelName, getTitle as _getTitle } from '@mapstore/framework/utils/TOCUtils';
-
+import { isValidNewGroupOption, getLabelName as _getLabelName } from '@mapstore/framework/plugins/TOC/utils/TOCUtils';
+import { getTitle as _getTitle, flattenGroups } from '@mapstore/framework/utils/LayersUtils';
 function SelectGroup({
     node,
     allowNew = false,

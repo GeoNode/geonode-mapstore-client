@@ -29,7 +29,13 @@ describe('Share Plugin', () => {
 
     const testState = {
         layers: {
-            flat: [{name: 'test', id: 1, title: 'test layer', type: 'wms', url: 'https://gs-stable.geo-solutions.it/geoserver/wms' }]
+            flat: [{
+                name: 'test',
+                id: '1',
+                title: 'test layer',
+                type: 'wms',
+                url: 'https://gs-stable.geo-solutions.it/geoserver/wms'
+            }]
         }
     };
 

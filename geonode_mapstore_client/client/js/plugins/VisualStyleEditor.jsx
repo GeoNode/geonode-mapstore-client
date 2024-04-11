@@ -358,7 +358,8 @@ export default createPlugin('VisualStyleEditor', {
     containers: {
         TOC: {
             target: 'toolbar',
-            Component: ConnectedStyleEditorTocButton
+            Component: ConnectedStyleEditorTocButton,
+            position: 100
         },
         LayerSettings: {
             target: 'style-button',

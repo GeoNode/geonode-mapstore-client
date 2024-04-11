@@ -16,7 +16,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import InfoPopover from '@mapstore/framework/components/widgets/widget/InfoPopover';
 import { getSupportedFormat } from '@mapstore/framework/api/WMS';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
-import LegendImage from '@mapstore/framework/components/TOC/fragments/legend/Legend';
+import LegendImage from '@mapstore/framework/plugins/TOC/components/Legend';
 import Select from 'react-select';
 import GeneralSettings from '@js/plugins/layersettings/GeneralSettings';
 import VisibilitySettings from '@js/plugins/layersettings/VisibilitySettings';
