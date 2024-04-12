@@ -17,6 +17,8 @@ const distDirectory = 'dist';
 });
 
 // copy compiled files
+fs.moveSync(path.resolve(appDirectory, distDirectory, 'web-ifc'), path.resolve(appDirectory, distDirectory, 'js', 'web-ifc'));
+message.title('copy ifc files in dist folder');
 fs.moveSync(path.resolve(appDirectory, distDirectory, 'ms-translations'), path.resolve(appDirectory, staticPath, 'ms-translations'), { overwrite: true });
 message.title('copy ms-translations from MapStore Core');
 fs.moveSync(path.resolve(appDirectory, distDirectory), path.resolve(appDirectory, staticPath, distDirectory), { overwrite: true });
