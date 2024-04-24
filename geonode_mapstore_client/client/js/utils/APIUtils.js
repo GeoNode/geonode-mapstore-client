@@ -114,16 +114,22 @@ export const getApiToken = () => {
  * @param {Object} params
  * @returns {Object} updated params
  */
-export const paramsSerializer = (params) => {
-    const {include, exclude, sort, ...rest} = params ?? {}; // Update bracket params (if any)
-    let queryParams = '';
-    if (!isEmpty(include) || !isEmpty(exclude) || !isEmpty(sort)) {
-        queryParams = queryString.stringify({include, exclude, sort}, { arrayFormat: 'bracket'});
-    }
-    if (!isEmpty(rest)) {
-        queryParams = (isEmpty(queryParams) ? '' : `${queryParams}&`) + queryString.stringify(rest);
-    }
-    return queryParams;
+export const paramsSerializer = () => {
+    return {
+        paramsSerializer: {
+            serialize: params => {
+                const {include, exclude, sort, ...rest} = params ?? {}; // Update bracket params (if any)
+                let queryParams = '';
+                if (!isEmpty(include) || !isEmpty(exclude) || !isEmpty(sort)) {
+                    queryParams = queryString.stringify({include, exclude, sort}, { arrayFormat: 'bracket'});
+                }
+                if (!isEmpty(rest)) {
+                    queryParams = (isEmpty(queryParams) ? '' : `${queryParams}&`) + queryString.stringify(rest);
+                }
+                return queryParams;
+            }
+        }
+    };
 };
 
 export const API_PRESET = {

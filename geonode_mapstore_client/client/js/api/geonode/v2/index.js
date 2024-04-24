@@ -146,7 +146,7 @@ export const getResources = ({
     };
     return axios.get(parseDevHostname(endpoints[RESOURCES]), {
         params: _params,
-        paramsSerializer
+        ...paramsSerializer()
     })
         .then(({ data }) => {
             return {
@@ -182,7 +182,7 @@ export const getMaps = ({
                     page_size: pageSize,
                     api_preset: API_PRESET.MAPS
                 },
-                paramsSerializer
+                ...paramsSerializer()
             })
         .then(({ data }) => {
             return {
@@ -218,7 +218,7 @@ export const getDatasets = ({
                     page_size: pageSize,
                     api_preset: API_PRESET.DATASETS
                 },
-                paramsSerializer
+                ...paramsSerializer()
             })
         .then(({ data }) => {
             return {
@@ -255,7 +255,7 @@ export const getDocumentsByDocType = (docType = 'image', {
                     page_size: pageSize,
                     api_preset: API_PRESET.DOCUMENTS
                 },
-                paramsSerializer
+                ...paramsSerializer()
             })
         .then(({ data }) => {
             return {
@@ -337,7 +337,7 @@ export const getDatasetByPk = (pk) => {
         params: {
             api_preset: [API_PRESET.VIEWER_COMMON, API_PRESET.DATASET]
         },
-        paramsSerializer
+        ...paramsSerializer()
     })
         .then(({ data }) => data.dataset);
 };
@@ -347,7 +347,7 @@ export const getDocumentByPk = (pk) => {
         params: {
             api_preset: [API_PRESET.VIEWER_COMMON, API_PRESET.DOCUMENT]
         },
-        paramsSerializer
+        ...paramsSerializer()
     })
         .then(({ data }) => data.document);
 };
@@ -360,7 +360,7 @@ export const getDocumentsByPk = (pk) => {
             page_size: pks.length,
             api_preset: [API_PRESET.VIEWER_COMMON, API_PRESET.DOCUMENT]
         },
-        paramsSerializer
+        ...paramsSerializer()
     })
         .then(({ data }) => data.documents);
 };
@@ -406,7 +406,7 @@ export const getGeoApps = ({
                     page,
                     page_size: pageSize
                 },
-                paramsSerializer
+                ...paramsSerializer()
             })
         .then(({ data }) => {
             return {
@@ -458,7 +458,7 @@ export const getUsers = ({
                 page,
                 page_size: pageSize
             },
-            paramsSerializer
+            ...paramsSerializer()
         })
         .then(({ data }) => {
             return {
@@ -487,7 +487,7 @@ export const getGroups = ({
                 page,
                 page_size: pageSize
             },
-            paramsSerializer
+            ...paramsSerializer()
         })
         .then(({ data }) => {
             return {
@@ -661,7 +661,7 @@ export const getMapByPk = (pk) => {
             params: {
                 api_preset: [API_PRESET.VIEWER_COMMON, API_PRESET.MAP]
             },
-            paramsSerializer
+            ...paramsSerializer()
         })
         .then(({ data }) => data?.map);
 };
@@ -675,7 +675,7 @@ export const getMapsByPk = (pk) => {
                 page_size: pks.length,
                 api_preset: API_PRESET.MAPS
             },
-            paramsSerializer
+            ...paramsSerializer()
         })
         .then(({ data }) => data?.maps);
 };
@@ -839,7 +839,7 @@ export const getFacetItemsByFacetName = ({ name: facetName, style, filterKey, fi
     return axios.get(`${parseDevHostname(endpoints[FACETS])}/${facetName}`,
         { ...config,
             params: updatedParams,
-            paramsSerializer
+            ...paramsSerializer()
         }
     ).then(({data}) => {
         const {page: _page = 0, items: _items = [], total, page_size: size} = data?.topics ?? {};
@@ -890,7 +890,7 @@ export const getFacetItemsByFacetName = ({ name: facetName, style, filterKey, fi
 
 export const getFacetsByKey = (facet, filterParams) => {
     return axios
-        .get(parseDevHostname(endpoints[FACETS] + `/${facet}`), {params: {...filterParams}, paramsSerializer})
+        .get(parseDevHostname(endpoints[FACETS] + `/${facet}`), {params: {...filterParams}, ...paramsSerializer()})
         .then(({ data } = {}) => ({
             ...data?.topics,
             items: data?.topics?.items?.map(item => ({...item, facetName: facet}))
