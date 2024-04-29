@@ -7,7 +7,7 @@
  */
 
 import { updateMapLayout, UPDATE_MAP_LAYOUT } from '@mapstore/framework/actions/maplayout';
-import { mapLayoutSelector } from '@mapstore/framework/selectors/maplayout';
+import { mapLayoutSelector, boundingSidebarRectSelector } from '@mapstore/framework/selectors/maplayout';
 import { getConfigProp } from "@mapstore/framework/utils/ConfigUtils";
 import { SHOW_SETTINGS } from '@mapstore/framework/actions/layers';
 import { LayoutSections } from "@js/utils/LayoutUtils";
@@ -26,6 +26,7 @@ export const gnUpdateLayerSettingsMapLayout = (action$, store) =>
         })
         .map(({ layout }) => {
             const mapLayout = getConfigProp('mapLayout') || { left: { sm: 300, md: 500, lg: 600 }, right: { md: 658 }, bottom: { sm: 30 } };
+            const boundingSidebarRect = boundingSidebarRectSelector(store.getState());
             const action = updateMapLayout({
                 ...mapLayoutSelector(store.getState()),
                 ...layout,
@@ -33,6 +34,10 @@ export const gnUpdateLayerSettingsMapLayout = (action$, store) =>
                 boundingMapRect: {
                     ...(layout?.boundingMapRect || {}),
                     left: mapLayout.left.sm
+                },
+                boundingSideBarReact: {
+                    ...boundingSidebarRect,
+                    ...layout.boundingSidebarRect
                 }
             });
             return { ...action, source: LayoutSections.PANEL }; // add an argument to avoid infinite loop.

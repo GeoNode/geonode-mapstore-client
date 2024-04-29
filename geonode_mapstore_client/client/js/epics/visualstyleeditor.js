@@ -23,7 +23,7 @@ import tinycolor from 'tinycolor2';
 import { parseStyleName } from '@js/utils/ResourceUtils';
 import { getStyleProperties } from '@js/api/geonode/style';
 import { updateMapLayout, UPDATE_MAP_LAYOUT } from '@mapstore/framework/actions/maplayout';
-import { mapLayoutSelector } from '@mapstore/framework/selectors/maplayout';
+import { mapLayoutSelector, boundingSidebarRectSelector } from '@mapstore/framework/selectors/maplayout';
 import { getConfigProp } from "@mapstore/framework/utils/ConfigUtils";
 import { LayoutSections } from "@js/utils/LayoutUtils";
 
@@ -177,6 +177,7 @@ export const gnUpdateVisualStyleEditorMapLayout = (action$, store) =>
         })
         .map(({ layout }) => {
             const mapLayout = getConfigProp('mapLayout') || { left: { sm: 300, md: 500, lg: 600 }, right: { md: 658 }, bottom: { sm: 30 } };
+            const boundingSidebarRect = boundingSidebarRectSelector(store.getState());
             const action = updateMapLayout({
                 ...mapLayoutSelector(store.getState()),
                 ...layout,
@@ -184,6 +185,10 @@ export const gnUpdateVisualStyleEditorMapLayout = (action$, store) =>
                 boundingMapRect: {
                     ...(layout?.boundingMapRect || {}),
                     left: mapLayout.left.md
+                },
+                boundingSidebarRect: {
+                    ...boundingSidebarRect,
+                    ...layout.boundingSidebarRect
                 }
             });
             return { ...action, source: LayoutSections.PANEL }; // add an argument to avoid infinite loop.

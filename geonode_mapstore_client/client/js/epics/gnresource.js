@@ -94,7 +94,7 @@ import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
 import { styleServiceSelector } from '@mapstore/framework/selectors/styleeditor';
 import { updateStyleService } from '@mapstore/framework/api/StyleEditor';
 import { CLICK_ON_MAP, resizeMap } from '@mapstore/framework/actions/map';
-import { purgeMapInfoResults, closeIdentify } from '@mapstore/framework/actions/mapInfo';
+import { purgeMapInfoResults, closeIdentify, NEW_MAPINFO_REQUEST } from '@mapstore/framework/actions/mapInfo';
 import { saveError } from '@js/actions/gnsave';
 import {
     error as errorNotification,
@@ -113,6 +113,7 @@ import { setContext } from '@mapstore/framework/actions/context';
 import { wrapStartStop } from '@mapstore/framework/observables/epics';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
+import { catalogClose } from '@mapstore/framework/actions/catalog';
 
 const resourceTypes = {
     [ResourceTypes.DATASET]: {
@@ -579,6 +580,15 @@ export const closeOpenPanels = (action$, store) => action$.ofType(SET_CONTROL_PR
             if (isMapInfoOpen(state)) {
                 setActions.push(purgeMapInfoResults(), closeIdentify());
             }
+            const isDatasetCatalogPanelOpen = get(state, "controls.datasetsCatalog.enabled");
+            const isCatalogOpen = get(state, "controls.metadataexplorer.enabled");
+            const isVisualStyleEditorOpen = get(state, "controls.visualStyleEditor.enabled");
+            if ((isDatasetCatalogPanelOpen || isVisualStyleEditorOpen) && isCatalogOpen) {
+                setActions.push(catalogClose());
+            }
+            if (isDatasetCatalogPanelOpen && isVisualStyleEditorOpen) {
+                setActions.push(setControlProperty('datasetsCatalog', 'enabled', false));
+            }
             const control = oneOfTheOther(action.control);
             if (control?.control) {
                 if (state.controls?.rightOverlay?.enabled === 'DetailViewer' || state.controls?.rightOverlay?.enabled === 'Share') {
@@ -591,6 +601,15 @@ export const closeOpenPanels = (action$, store) => action$.ofType(SET_CONTROL_PR
         };
         const actions = getActions();
         return actions.length > 0 ? Observable.of(...actions) : Observable.empty();
+    });
+
+/**
+ * Close dataset panels on map info panel open
+ */
+export const closeDatasetCatalogPanel = (action$, store) => action$.ofType(NEW_MAPINFO_REQUEST)
+    .filter(() => isMapInfoOpen(store.getState()) && get(store.getState(), "controls.datasetsCatalog.enabled"))
+    .switchMap(() => {
+        return Observable.of(setControlProperty('datasetsCatalog', 'enabled', false));
     });
 
 export const gnManageLinkedResource = (action$, store) =>
@@ -636,5 +655,6 @@ export default {
     gnViewerSetNewResourceThumbnail,
     closeInfoPanelOnMapClick,
     closeOpenPanels,
+    closeDatasetCatalogPanel,
     gnManageLinkedResource
 };

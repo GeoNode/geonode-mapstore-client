@@ -35,6 +35,11 @@
     },
     {
       "name": "DrawerMenu",
+      "defaultConfig": {
+        "menuOptions": {
+          "width": 350
+        }
+      },
       "hidden": true
     },
     {

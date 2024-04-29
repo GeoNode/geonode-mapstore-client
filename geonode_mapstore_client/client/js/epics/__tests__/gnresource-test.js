@@ -12,7 +12,8 @@ import axios from '@mapstore/framework/libs/ajax';
 import { testEpic } from '@mapstore/framework/epics/__tests__/epicTestUtils';
 import {
     gnViewerSetNewResourceThumbnail,
-    closeInfoPanelOnMapClick
+    closeInfoPanelOnMapClick,
+    closeDatasetCatalogPanel
 } from '@js/epics/gnresource';
 import {
     setResourceThumbnail,
@@ -24,6 +25,7 @@ import { SET_CONTROL_PROPERTY } from '@mapstore/framework/actions/controls';
 import {
     SHOW_NOTIFICATION
 } from '@mapstore/framework/actions/notifications';
+import { newMapInfoRequest } from '@mapstore/framework/actions/mapInfo';
 
 let mockAxios;
 
@@ -123,6 +125,46 @@ describe('gnresource epics', () => {
                         .toEqual([
                             SET_CONTROL_PROPERTY
                         ]);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            testState
+        );
+
+    });
+    it('close dataset panels on map info panel open', (done) => {
+        const NUM_ACTIONS = 1;
+        const testState = {
+            context: {
+                currentContext: {
+                    plugins: {
+                        desktop: [
+                            {name: "Identify"}
+                        ]
+                    }
+                }
+            },
+            mapInfo: {
+                requests: ["something"]
+            },
+            controls: {
+                datasetsCatalog: {
+                    enabled: true
+                }
+            }
+        };
+
+        testEpic(closeDatasetCatalogPanel,
+            NUM_ACTIONS,
+            newMapInfoRequest(),
+            (actions) => {
+                try {
+                    expect(actions.length).toBe(1);
+                    expect(actions[0].type).toBe(SET_CONTROL_PROPERTY);
+                    expect(actions[0].control).toBe("datasetsCatalog");
+                    expect(actions[0].value).toBe(false);
                 } catch (e) {
                     done(e);
                 }
