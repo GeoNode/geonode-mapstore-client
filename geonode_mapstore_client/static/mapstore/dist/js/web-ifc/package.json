@@ -1,29 +1,29 @@
 {
-  "_from": "web-ifc@^0.0.39",
-  "_id": "web-ifc@0.0.39",
+  "_from": "web-ifc@0.0.50",
+  "_id": "web-ifc@0.0.50",
   "_inBundle": false,
-  "_integrity": "sha512-sg+DyxDiyXBqlXXbz+uSqw8IGX+mVvHmn2+hg6UXDvAcrzJJw8EI2H4ZzlxWxCqqdpGVeK0wCpdeQm43UCDbrA==",
+  "_integrity": "sha512-zUxZQ0xpxVpE+imJVlN1CbBwSpLk5Y0F78leU6ct52YjkHymL1LCDRNEOUnyqIGhYp5rilWIWjvS6IhEzKB5cw==",
   "_location": "/web-ifc",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "version",
     "registry": true,
-    "raw": "web-ifc@^0.0.39",
+    "raw": "web-ifc@0.0.50",
     "name": "web-ifc",
     "escapedName": "web-ifc",
-    "rawSpec": "^0.0.39",
+    "rawSpec": "0.0.50",
     "saveSpec": null,
-    "fetchSpec": "^0.0.39"
+    "fetchSpec": "0.0.50"
   },
   "_requiredBy": [
-    "/web-ifc-three"
+    "/mapstore"
   ],
-  "_resolved": "https://registry.npmjs.org/web-ifc/-/web-ifc-0.0.39.tgz",
-  "_shasum": "c3c7e9b16aad79f8ad78e346671cb5b854480737",
-  "_spec": "web-ifc@^0.0.39",
-  "_where": "/home/runner/work/geonode-mapstore-client/geonode-mapstore-client/geonode_mapstore_client/client/node_modules/web-ifc-three",
+  "_resolved": "https://registry.npmjs.org/web-ifc/-/web-ifc-0.0.50.tgz",
+  "_shasum": "0e0a03271fa5c9235c5c337c57c43ff838daf7d2",
+  "_spec": "web-ifc@0.0.50",
+  "_where": "/home/runner/work/geonode-mapstore-client/geonode-mapstore-client/geonode_mapstore_client/client/MapStore2",
   "author": {
-    "name": "tomvandig"
+    "name": "web-ifc"
   },
   "browser": {
     "crypto": false,
@@ -34,53 +34,62 @@
   "deprecated": false,
   "description": "ifc loading on the web",
   "devDependencies": {
-    "@types/jest": "^27.0.3",
-    "@types/three": "^0.130.1",
-    "concurrently": "^6.2.0",
+    "@types/three": "^0.156.0",
+    "adm-zip": "^0.5.10",
     "cpy-cli": "^4.2.0",
     "esbuild": "^0.12.15",
     "jest": "^27.4.2",
-    "local-web-server": "^5.2.1",
     "make-dir-cli": "^3.0.0",
-    "npm-watch": "^0.10.0",
-    "three": "^0.130.1",
+    "rimraf": "^5.0.0",
+    "three": "^0.157.0",
     "ts-jest": "^27.0.7",
     "ts-node": "^10.9.1",
     "typedoc": "^0.23.25",
-    "typescript": "^4.3.5"
+    "typescript": "^4.7.0",
+    "vblob": "^1.1.0"
+  },
+  "exports": {
+    ".": {
+      "require": "./web-ifc-api-node.js",
+      "node": "./web-ifc-api-node.js",
+      "import": "./web-ifc-api.js",
+      "browser": "./web-ifc-api.js"
+    }
   },
   "files": [
     "web-ifc.wasm",
     "web-ifc-mt.wasm",
+    "web-ifc-node.wasm",
     "web-ifc-api-node.js",
     "web-ifc-api-node.d.ts",
     "web-ifc-api.js",
-    "web-ifc-api-browser.js",
     "web-ifc-api.d.ts",
     "ifc-schema.d.ts",
     "helpers/properties.d.ts",
     "helpers/log.d.ts",
-    "web-ifc-mt-worker.js"
+    "web-ifc-mt.worker.js"
   ],
-  "main": "web-ifc-api-node.js",
-  "module": "web-ifc-api.js",
+  "main": "./web-ifc-api-node.js",
+  "module": "./web-ifc-api.js",
   "name": "web-ifc",
   "pckg-gui": {},
   "scripts": {
-    "build-api": "make-dir dist/helpers && npm run build-ts-api && npm run build-web-ifc-api-mjs && npm run build-web-ifc-api-browser && npm run build-web-ifc-api-node && cpy README.md dist && cpy package.json dist",
+    "benchmark": "ts-node ./tests/benchmark/benchmark.ts",
+    "build-api": "make-dir dist/helpers && npm run build-ts-api && npm run build-web-ifc-api-browser && npm run build-web-ifc-api-node && npm run build-web-ifc-api-umd &&cpy README.md dist && cpy package.json dist",
+    "build-cleanup": "rimraf dist/helpers/properties.ts && rimraf dist/web-ifc-api.ts && rimraf dist/ifc-schema.ts",
     "build-debug": "npm run build-wasm-debug && npm run build-api",
-    "build-publish-repo": "npm run build-release && cpy ./.npmrc ./dist  && cd dist && npm publish",
-    "build-release": "npm run build-wasm-release && npm run build-api",
+    "build-publish-repo": "npm run build-release && cpy ./npmrc ./dist/  --rename=.npmrc && cd dist && npm publish",
+    "build-release": "npm run build-wasm-release && npm run build-api && npm run build-cleanup",
     "build-ts-api": "make-dir dist/helpers && cpy \"src/*.ts\" dist && cpy \"src/helpers/*\" dist/helpers --flat && tsc  --incremental --emitDeclarationOnly && cpy dist/web-ifc-api.d.ts . --rename=web-ifc-api-node.d.ts",
     "build-viewer": "cd examples/viewer/ && npm run build",
     "build-wasm-debug": "make-dir src/wasm/build_debug && cd src/wasm/build_debug && emcmake cmake .. -DEMSCRIPTEN=true -DCMAKE_BUILD_TYPE=Debug && emmake make && npm run copy-debug-to-dist",
     "build-wasm-release": "make-dir src/wasm/build && cd src/wasm/build && emcmake cmake .. -DEMSCRIPTEN=true -DCMAKE_BUILD_TYPE=Release && emmake make && npm run copy-to-dist",
-    "build-web-ifc-api-browser": "make-dir dist && esbuild dist/web-ifc-api.ts --bundle --format=iife --global-name=WebIFC --external:os --external:path --external:fs --external:perf_hooks --outfile=./dist/web-ifc-api-browser.js",
-    "build-web-ifc-api-mjs": "make-dir dist && esbuild dist/web-ifc-api.ts --bundle --format=esm --external:path --external:fs --external:os --external:perf_hooks --outfile=./dist/web-ifc-api.js",
-    "build-web-ifc-api-node": "make-dir dist && esbuild dist/web-ifc-api.ts --bundle --platform=node --outfile=./dist/web-ifc-api-node.js",
+    "build-web-ifc-api-browser": "make-dir dist && esbuild dist/web-ifc-api.ts --bundle --format=esm --define:__WASM_PATH__=\\\"./web-ifc\\\" --outfile=./dist/web-ifc-api.js",
+    "build-web-ifc-api-node": "make-dir dist && esbuild dist/web-ifc-api.ts --define:__WASM_PATH__=\\\"./web-ifc-node\\\" --bundle --platform=node --outfile=./dist/web-ifc-api-node.js",
+    "build-web-ifc-api-umd": "make-dir dist && esbuild dist/web-ifc-api.ts --bundle --format=iife --define:__WASM_PATH__=\\\"./web-ifc\\\" --global-name=WebIFC --outfile=./dist/web-ifc-api-umd.js",
     "copy-debug-to-dist": "make-dir dist && cpy \"src/wasm/build_debug/*.js\" dist &&  cpy \"src/wasm/build_debug/*.wasm\" dist ",
     "copy-to-dist": "make-dir dist && cpy \"src/wasm/build/*.js\" dist &&  cpy \"src/wasm/build/*.wasm\" dist ",
-    "dev": "npm run build-viewer && concurrently --kill-others \"npm-watch\" \"cd examples/viewer && npm run start\"",
+    "dev": "npm run build-viewer && cd examples/viewer && npm run start",
     "docker-build": "docker build -t web-ifc .",
     "docker-get-compiled-files": "docker cp web-ifc-container:/web-ifc-app/dist .",
     "docker-run": "npm run docker-run-container && npm run docker-get-compiled-files ",
@@ -89,8 +98,8 @@
     "gen-schema": "cd src/schema-generator && ts-node gen_functional_types.ts",
     "postversion": "node src/setversion.js",
     "publish-repo": "npm run set-version && cd dist && npm publish",
-    "regression-test": "npm run regression-test-build && cd tests/regression/dist && ws -p 8080 --cors.opener-policy same-origin --cors.embedder-policy require-corp",
-    "regression-test-build": "esbuild tests/regression/src/index.js --bundle --sourcemap --platform=node --outfile=tests/regression/dist/test.js && cd tests/regression && cpy public/*.html dist/ --flat && cpy ../../dist/web-ifc.wasm dist/web-ifc.wasm && cpy ../../dist/web-ifc.js dist/web-ifc.js && cpy ../../dist/web-ifc-mt.wasm dist/web-ifc-mt.wasm && cpy ../../dist/web-ifc-mt.worker.js dist/web-ifc-mt-worker.js && cpy ../../dist/web-ifc-mt.js dist/web-ifc-mt.js",
+    "regression": "node --max-old-space-size=4096 ./tests/regression/regression.mjs",
+    "regression-update": "node --max-old-space-size=4096 ./tests/regression/regression.mjs update",
     "serve-viewer": "npm run build-viewer && cd examples/viewer/ && npm run start",
     "setup-env": "emsdk_env",
     "setup-mingw": "mingw-get instal msys-make gettext",
@@ -98,7 +107,7 @@
     "test:functional": "jest  --runInBand --testMatch['**/tests/functional/**/*.spec.ts']",
     "test:unit": "jest  --runInBand --testMatch['**/tests/unit/**/*.spec.ts']"
   },
-  "version": "0.0.39",
+  "version": "0.0.50",
   "watch": {
     "build-viewer": {
       "patterns": [
@@ -106,13 +115,7 @@
       ],
       "extensions": "ts"
     },
-    "build-web-ifc-api-mjs": {
-      "patterns": [
-        "./src"
-      ],
-      "extensions": "ts"
-    },
-    "build-web-ifc-api-browser": {
+    "build-api": {
       "patterns": [
         "./src"
       ],

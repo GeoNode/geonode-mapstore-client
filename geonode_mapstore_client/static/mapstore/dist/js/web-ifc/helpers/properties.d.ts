@@ -28,7 +28,7 @@ export declare class Properties {
      * @param recursive default false, if true get all nested properties recursively
      * @returns array of IfcElements inheriting from IfcPropertySetDefinition
      */
-    getPropertySets(modelID: number, elementID?: number, recursive?: boolean): Promise<any[]>;
+    getPropertySets(modelID: number, elementID?: number, recursive?: boolean, includeTypeProperties?: boolean): Promise<any[]>;
     /**
      * Set IfcRelDefinesByProperties relations of IfcElements and IfcPropertySets
      * @param modelID model handle
@@ -37,7 +37,14 @@ export declare class Properties {
      * @returns true if success or false if error
      */
     setPropertySets(modelID: number, elementID: number | number[], psetID: number | number[]): Promise<boolean>;
-    getTypeProperties(modelID: number, elementID: number, recursive?: boolean): Promise<any[]>;
+    /**
+     * Get TypeObject of IfcElements
+     * @param modelID model handle
+     * @param elementID expressID of IfcElement, default 0 (all type objects in model)
+     * @param recursive default false, if true get all nested properties of the type object recursively
+     * @returns array of objects inheriting from IfcTypeObject
+     */
+    getTypeProperties(modelID: number, elementID?: number, recursive?: boolean): Promise<any[]>;
     /**
      * Get materials of IfcElement
      * @param modelID model handle
@@ -45,7 +52,7 @@ export declare class Properties {
      * @param recursive default false, if true get all nested properties recursively
      * @returns array of IfcElements inheriting from IfcMaterialDefinition
      */
-    getMaterialsProperties(modelID: number, elementID?: number, recursive?: boolean): Promise<any[]>;
+    getMaterialsProperties(modelID: number, elementID?: number, recursive?: boolean, includeTypeMaterials?: boolean): Promise<any[]>;
     /**
      * Set IfcRelAssociatesMaterial relations of IfcElements and IfcMaterialDefinitions
      * @param modelID model handle
