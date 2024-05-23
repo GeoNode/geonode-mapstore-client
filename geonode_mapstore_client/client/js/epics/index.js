@@ -14,12 +14,13 @@ import Rx from "rxjs";
 import { setEditPermissionStyleEditor, INIT_STYLE_SERVICE } from "@mapstore/framework/actions/styleeditor";
 import { getSelectedLayer, layersSelector } from "@mapstore/framework/selectors/layers";
 import { getConfigProp } from "@mapstore/framework/utils/ConfigUtils";
-import { getDatasetByName, getDatasetsByName } from '@js/api/geonode/v2';
+import { getDatasetByName, getDatasetsByName, getResourceByTypeAndByPk } from '@js/api/geonode/v2';
 import { MAP_CONFIG_LOADED } from '@mapstore/framework/actions/config';
 import { setPermission } from '@mapstore/framework/actions/featuregrid';
 import { SELECT_NODE, updateNode, ADD_LAYER } from '@mapstore/framework/actions/layers';
-import { setSelectedDatasetPermissions } from '@js/actions/gnresource';
+import { setSelectedDatasetPermissions, setLayerResource, loadingLayerResourceConfig } from '@js/actions/gnresource';
 import { updateMapLayoutEpic as msUpdateMapLayoutEpic } from '@mapstore/framework/epics/maplayout';
+import { wrapStartStop } from "@mapstore/framework/observables/epics";
 
 // We need to include missing epics. The plugins that normally include this epic is not used.
 
@@ -37,15 +38,32 @@ export const gnCheckSelectedDatasetPermissions = (action$, { getState } = {}) =>
         .switchMap(() => {
             const state = getState() || {};
             const layer = getSelectedLayer(state);
+            const layerResourceId = layer?.extendedParams?.pk;
             const permissions = layer?.perms || [];
             const canEditStyles = permissions.includes("change_dataset_style");
             const canEdit = permissions.includes("change_dataset_data");
+            const actions = [
+                setPermission({canEdit}),
+                setEditPermissionStyleEditor(canEditStyles),
+                setSelectedDatasetPermissions(permissions)
+            ];
+            if (layer && layerResourceId) {
+                return Rx.Observable.defer(() =>
+                    getResourceByTypeAndByPk('dataset', layerResourceId)
+                        .then((layerDataset) => layerDataset)
+                        .catch(() => [])
+                ).switchMap((layerDataset) =>
+                    Rx.Observable.of(
+                        setLayerResource(layerDataset),
+                        ...actions
+                    )
+                ).let(wrapStartStop(
+                    loadingLayerResourceConfig(true),
+                    loadingLayerResourceConfig(false)
+                ));
+            }
             return layer
-                ? Rx.Observable.of(
-                    setPermission({canEdit}),
-                    setEditPermissionStyleEditor(canEditStyles),
-                    setSelectedDatasetPermissions(permissions)
-                )
+                ? Rx.Observable.of(...actions)
                 : Rx.Observable.of(
                     setPermission({canEdit: false}),
                     setEditPermissionStyleEditor(false),

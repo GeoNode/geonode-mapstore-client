@@ -12,8 +12,10 @@ import isEmpty from 'lodash/isEmpty';
 import {
     RESOURCE_LOADING,
     SET_RESOURCE,
+    SET_LAYER_RESOURCE,
     RESOURCE_ERROR,
     UPDATE_RESOURCE_PROPERTIES,
+    UPDATE_LAYER_RESOURCE_PROPERTIES,
     SET_RESOURCE_TYPE,
     SET_NEW_RESOURCE,
     SET_RESOURCE_ID,
@@ -32,7 +34,8 @@ import {
     ENABLE_MAP_THUMBNAIL_VIEWER,
     SET_RESOURCE_EXTENT,
     SET_RESOURCE_PATH_PARAMETERS,
-    SET_MAP_VIEWER_LINKED_RESOURCE
+    SET_MAP_VIEWER_LINKED_RESOURCE,
+    LOADING_LAYER_RESOURCE_CONFIG
 } from '@js/actions/gnresource';
 import {
     cleanCompactPermissions,
@@ -86,6 +89,27 @@ function gnresource(state = defaultState, action) {
             isNew: false
         };
     }
+    case SET_LAYER_RESOURCE: {
+        const { data, ...resource } = action.data || {};
+        let updatedResource = {...resource};
+        const linkedResources = state.layerDataset?.linkedResources;
+        if (!isEmpty(linkedResources) && updatedResource.pk === state.layerDataset?.pk) {
+            updatedResource.linkedResources = linkedResources;
+        }
+
+        return {...state,
+            error: null,
+            initialLayerResource: { ...action.data },
+            layerDataset: updatedResource,
+            loading: false
+        };
+    }
+    case LOADING_LAYER_RESOURCE_CONFIG: {
+        return {
+            ...state,
+            loadingLayerDatasetResourceConfig: action.loading
+        };
+    }
     case RESOURCE_ERROR: {
         return {
             ...state,
@@ -100,6 +124,15 @@ function gnresource(state = defaultState, action) {
             ...state,
             data: {
                 ...state.data,
+                ...action.properties
+            }
+        };
+    }
+    case UPDATE_LAYER_RESOURCE_PROPERTIES: {
+        return {
+            ...state,
+            layerDataset: {
+                ...state.layerDataset,
                 ...action.properties
             }
         };

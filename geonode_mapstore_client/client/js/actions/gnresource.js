@@ -8,8 +8,10 @@
 
 export const RESOURCE_LOADING = 'GEONODE:RESOURCE_LOADING';
 export const SET_RESOURCE = 'GEONODE:SET_RESOURCE';
+export const SET_LAYER_RESOURCE = 'GEONODE:SET_LAYER_RESOURCE';
 export const RESOURCE_ERROR = 'GEONODE:RESOURCE_ERROR';
 export const UPDATE_RESOURCE_PROPERTIES = 'GEONODE:UPDATE_RESOURCE_PROPERTIES';
+export const UPDATE_LAYER_RESOURCE_PROPERTIES = 'GEONODE:UPDATE_LAYER_RESOURCE_PROPERTIES';
 export const SET_RESOURCE_TYPE = 'GEONODE:SET_RESOURCE_TYPE';
 export const SET_NEW_RESOURCE = 'GEONODE:SET_NEW_RESOURCE';
 export const SET_RESOURCE_ID = 'GEONODE:SET_RESOURCE_ID';
@@ -23,6 +25,7 @@ export const SET_SELECTED_DATASET_PERMISSIONS = "GEONODE:SET_SELECTED_DATASET_PE
 export const REQUEST_RESOURCE_CONFIG = 'GEONODE:REQUEST_RESOURCE_CONFIG';
 export const REQUEST_NEW_RESOURCE_CONFIG = 'GEONODE:REQUEST_NEW_RESOURCE_CONFIG';
 export const LOADING_RESOURCE_CONFIG = 'GEONODE:LOADING_RESOURCE_CONFIG';
+export const LOADING_LAYER_RESOURCE_CONFIG = 'GEONODE:LOADING_LAYER_RESOURCE_CONFIG';
 export const RESET_RESOURCE_STATE = 'GEONODE:RESET_RESOURCE_STATE';
 export const RESOURCE_CONFIG_ERROR = 'GEONODE:RESOURCE_CONFIG_ERROR';
 export const SET_RESOURCE_COMPACT_PERMISSIONS = 'GEONODE:SET_RESOURCE_COMPACT_PERMISSIONS';
@@ -64,6 +67,26 @@ export function setResource(data, pending) {
         type: SET_RESOURCE,
         data,
         pending
+    };
+}
+
+/**
+* Restores resource from the state
+* @param {object} data resource data object
+* @param {object} pending declare if the request is still pending
+*/
+export function setLayerResource(data, pending) {
+    return {
+        type: SET_LAYER_RESOURCE,
+        data,
+        pending
+    };
+}
+
+export function loadingLayerResourceConfig(loading) {
+    return {
+        type: LOADING_LAYER_RESOURCE_CONFIG,
+        loading
     };
 }
 
@@ -152,6 +175,17 @@ export function resourceError(error) {
 export function updateResourceProperties(properties) {
     return {
         type: UPDATE_RESOURCE_PROPERTIES,
+        properties
+    };
+}
+
+/**
+* Update resource properties
+* @param {object} properties resource properties to override
+*/
+export function updateLayerResourceProperties(properties) {
+    return {
+        type: UPDATE_LAYER_RESOURCE_PROPERTIES,
         properties
     };
 }
