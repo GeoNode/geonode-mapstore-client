@@ -203,9 +203,18 @@
               "legendHeight": "Höhe",
               "legendPreview": "Vorschau"
             },
+            "enableInteractiveLegendInfo": {
+                "label": "Aktivieren Sie die interaktive Legende",
+                "info": "Wenn diese Option aktiviert ist, kann der Filter nach Legende angewendet werden, indem im Inhaltsverzeichnis auf Legendenelemente dieser Ebene geklickt wird. Hinweis: Diese Einstellung benötigt spezifische Konfigurationen im GeoServer",
+                "fetchError": "Die Legenden Informationen konnten nicht vom Dienst abgerufen werden"
+            },
             "enableLocalizedLayerStyles": {
                 "label": "Lokalisierten Stil aktivieren",
                 "tooltip": "Hinweis: Diese Einstellung benötigt spezifische Konfigurationen im GeoServer"
+            },
+            "useCacheOptionInfo": {
+                "label": "Verwenden Sie entfernte benutzerdefinierte Kachelraster",
+                "info": "Stellen Sie sicher, dass WMTS aktiviert ist, um benutzerdefinierte Kachelraster verwenden zu können"
             },
             "format": {
                 "title": "Format",
@@ -898,6 +907,7 @@
             "addressSearch": "Suche nach Standortname",
             "searchOnAllServices": "Suchen Sie unten nach allen Diensten",
             "coordinatesSearch": "Suche nach Koordinaten",
+            "currentMapCRS": "Aktuelles Kartenkoordinatensystem",
             "searchservicesbutton": "Suchdienste konfigurieren",
             "configpaneltitle": "Einen Suchdienst anlegen / bearbeiten",
             "serviceslistlabel": "Verfügbare Suchdienste",
@@ -919,6 +929,8 @@
             "b_newpaneltitle": "Neues Lesezeichen hinzufügen",
             "latitude": "Lat",
             "longitude": "Lon",
+            "yCoord": "Y",
+            "xCoord": "X",
             "b_title": "Titel",
             "b_layer_tooltip": "Deaktivieren Sie das Neuladen der Ebenensichtbarkeit",
             "b_bbox": "Begrenzungsrahmen",
@@ -1109,7 +1121,7 @@
         "zoombuttons": {
             "zoomInTooltip": "Zoom vergrößern",
             "zoomOutTooltip": "Zoom verringern",
-            "zoomAllTooltip": "Zoom auf maximale Ausdehnung"
+            "zoomAllTooltip": "Zoom auf zur Anfangsansicht"
         },
         "fullscreen": {
             "tooltipActivate": "Umschalten auf Vollbild",
@@ -1143,7 +1155,7 @@
             "title": "Erweiterte Suche",
             "query": "Suche",
             "apply": "Anwenden",
-            "reset": "Zurücksetzen",
+            "reset": "Zurücksetzen: Alle Filter zurücksetzen, einschließlich aller anderen externen Filter",
             "save": "Speichern",
             "discard": "Rückgängig machen",
             "query_request_exception": "Abfrage Fehler",
@@ -1611,6 +1623,10 @@
             "noRecordsMatched": "Kein passender Eintrag",
             "wmsGetCapLink": "WMS",
             "wfsGetCapLink": "WFS",
+            "additionalOGCServices": {
+                "wfs": "AUS WFS",
+                "wms": "AUS WMS"
+            },
             "share": "Teilen",
             "copyToClipboard": "In die Zwischenablage kopieren",
             "copied": "Kopiert!",
@@ -4008,8 +4024,10 @@
           "emptyDescription": "Klicken Sie auf die Karte, um die Bilder von Street-View zu durchsuchen",
           "messages": {
             "noDataForPosition": "keine Street-View-Daten für diese Position",
-            "unknownError": "Unbekannter Fehler, siehe Konsole"
-          },
+            "unknownError": "Unbekannter Fehler, siehe Konsole",
+            "errorServiceUrl": "Service nicht verfügbar. Bitte überprüfen Sie die angegebene URL",
+            "errorRetriveingLayerData": "Es gab einen Fehler beim Laden der Layer-Daten"
+        },
           "loadingAPI": "API wird geladen...",
           "cyclomedia": {
             "initializing": "Initialisiere Street Smart API...",
