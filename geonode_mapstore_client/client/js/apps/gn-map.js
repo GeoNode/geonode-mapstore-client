@@ -109,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         geoNodePageConfig,
                         query,
                         configEpics,
-                        mapType = 'openlayers',
                         onStoreInit,
                         targetId = 'ms-container',
                         settings

@@ -639,9 +639,9 @@ export const gnManageLinkedResource = (action$, store) =>
                                     message: `gnviewer.linkedResource.message.success.${processType}`}
                                 ))
                         )).catch(() => Observable.of(errorNotification({
-                            title: "gnviewer.linkedResource.title",
-                            message: `gnviewer.linkedResource.message.failure.${processType}`
-                        })))
+                        title: "gnviewer.linkedResource.title",
+                        message: `gnviewer.linkedResource.message.failure.${processType}`
+                    })))
                     .let(wrapStartStop(
                         setControlProperty(processType, 'loading', true),
                         setControlProperty(processType, 'loading', false)

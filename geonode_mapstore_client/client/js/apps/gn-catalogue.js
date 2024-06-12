@@ -129,7 +129,6 @@ getEndpoints()
                     pluginsConfigKey,
                     query,
                     configEpics,
-                    mapType = 'openlayers',
                     onStoreInit,
                     targetId = 'ms-container',
                     settings

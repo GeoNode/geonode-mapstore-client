@@ -70,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         geoNodeConfiguration,
                         pluginsConfigKey,
                         configEpics,
-                        mapType = 'openlayers',
                         onStoreInit,
                         geoNodePageConfig,
                         targetId = 'ms-container',
