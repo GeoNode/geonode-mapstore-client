@@ -16,6 +16,7 @@ import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
 import { uniqBy, orderBy, isString, isObject, pick, difference } from 'lodash';
 import { excludeGoogleBackground, extractTileMatrixFromSources } from '@mapstore/framework/utils/LayersUtils';
 import { determineResourceType } from '@js/utils/FileUtils';
+import { isImageServerUrl } from '@mapstore/framework/utils/ArcGISUtils';
 
 /**
 * @module utils/ResourceUtils
@@ -113,7 +114,9 @@ export const resourceToLayerConfig = (resource) => {
             id: uuid(),
             pk,
             type: 'arcgis',
-            name: alternate.replace('remoteWorkspace:', ''),
+            ...(isImageServerUrl(arcgisUrl)
+                ? { queryable: false }
+                : { name: alternate.replace('remoteWorkspace:', '') }),
             url: arcgisUrl,
             ...(bbox && { bbox }),
             title,

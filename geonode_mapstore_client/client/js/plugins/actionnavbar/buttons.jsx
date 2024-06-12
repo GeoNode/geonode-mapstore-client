@@ -23,6 +23,9 @@ import { openQueryBuilder } from '@mapstore/framework/actions/layerFilter';
 import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
 import { isDashboardEditing } from '@mapstore/framework/selectors/dashboard';
 import { createWidget } from '@mapstore/framework/actions/widgets';
+import { getResourceData } from '@js/selectors/resource';
+import { GXP_PTYPES } from '@js/utils/ResourceUtils';
+
 // buttons override to use in ActionNavbar for plugin imported from mapstore
 
 export const FullScreenActionButton = connect(createSelector([
@@ -53,13 +56,20 @@ export const FullScreenActionButton = connect(createSelector([
 });
 
 export const LayerDownloadActionButton = connect(
-    () => ({}),
+    (state) => ({
+        data: getResourceData(state)
+    }),
     { onClick: setControlProperty.bind(null, 'layerdownload', 'enabled', true, true) }
 )(({
     onClick,
     variant,
-    size
+    size,
+    data
 }) => {
+    // hide button for arcgis sources
+    if ([GXP_PTYPES.REST_MAP, GXP_PTYPES.REST_IMG].includes(data?.ptype)) {
+        return null;
+    }
     return (
         <Button
             variant={variant}

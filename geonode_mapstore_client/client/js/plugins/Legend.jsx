@@ -90,7 +90,7 @@ const ConnectedLegend = connect(
         currentLocaleLanguageSelector,
         isLocalizedLayerStylesEnabledSelector
     ], (layers, map, currentLocale, currentLocaleLanguage, isLocalizedLayerStylesEnabled) => ({
-        layers: layers.filter(layer => layer.group !== 'background' && layer.type === 'wms'),
+        layers: layers.filter(layer => layer.group !== 'background' && ['wms', 'arcgis'].includes(layer.type)),
         currentZoomLvl: map?.zoom,
         scales: getScales(
             map && map.projection || 'EPSG:3857',

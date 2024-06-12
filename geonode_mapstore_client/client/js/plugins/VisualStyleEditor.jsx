@@ -312,8 +312,8 @@ function StyleEditorTocButton({
     hide,
     selectedStyle
 }) {
-
-    if (!(!hide && status === 'LAYER' && layer?.extendedParams?.mapLayer && (enabled || isNew))) {
+    const mapLayer = layer?.extendedParams?.mapLayer;
+    if (!(!hide && status === 'LAYER' && mapLayer && mapLayer?.dataset?.sourcetype !== 'REMOTE' && (enabled || isNew))) {
         return null;
     }
 
