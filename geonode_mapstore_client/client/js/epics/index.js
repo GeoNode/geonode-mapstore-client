@@ -18,7 +18,7 @@ import { getDatasetByName, getDatasetsByName } from '@js/api/geonode/v2';
 import { MAP_CONFIG_LOADED } from '@mapstore/framework/actions/config';
 import { setPermission } from '@mapstore/framework/actions/featuregrid';
 import { SELECT_NODE, updateNode, ADD_LAYER } from '@mapstore/framework/actions/layers';
-import { setSelectedDatasetPermissions, setSelectedLayerType } from '@js/actions/gnresource';
+import { setSelectedDatasetPermissions, setSelectedLayer } from '@js/actions/gnresource';
 import { updateMapLayoutEpic as msUpdateMapLayoutEpic } from '@mapstore/framework/epics/maplayout';
 
 // We need to include missing epics. The plugins that normally include this epic is not used.
@@ -45,13 +45,13 @@ export const gnCheckSelectedDatasetPermissions = (action$, { getState } = {}) =>
                     setPermission({canEdit}),
                     setEditPermissionStyleEditor(canEditStyles),
                     setSelectedDatasetPermissions(permissions),
-                    setSelectedLayerType(layer)
+                    setSelectedLayer(layer)
                 )
                 : Rx.Observable.of(
                     setPermission({canEdit: false}),
                     setEditPermissionStyleEditor(false),
                     setSelectedDatasetPermissions([]),
-                    setSelectedLayerType(null)
+                    setSelectedLayer(null)
                 );
         });
 

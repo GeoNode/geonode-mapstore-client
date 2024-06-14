@@ -85,8 +85,8 @@
             "path": "gnresource.viewerLinkedResource"
         },
         {
-            "name": "isSelectedLayerDataset",
-            "path": "gnresource.selectedLayerIsDataset"
+            "name": "selectedLayer",
+            "path": "gnresource.selectedLayer"
         }
     ],
     "projectionDefs": [],
@@ -583,7 +583,7 @@
                                     "type": "link",
                                     "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
                                     "labelId": "gnviewer.viewData",
-                                    "disableIf": "{state('gnResourceData') && (state('gnResourceData').subtype === 'raster' || state('gnResourceData').subtype === 'remote')}"
+                                    "disableIf": "{state('gnResourceData') && ['raster', 'remote', '3dtiles'].includes(state('gnResourceData').subtype)}"
                                 }
                             ]
                         },
@@ -618,7 +618,8 @@
                                 {
                                     "type": "link",
                                     "href": "{'/datasets/' + (state('gnResourceData') || {}).alternate + '/metadata_upload'}",
-                                    "labelId": "gnviewer.metadataUpload"
+                                    "labelId": "gnviewer.metadataUpload",
+                                    "disableIf": "{state('gnResourceData').subtype === '3dtiles'}"
                                 }
                             ]
                         },
@@ -651,7 +652,7 @@
                         },
                         {
                             "type": "link",
-                            "href": "{'#/map/new?gn-dataset=' + (state('gnResourceData') || {}).pk}",
+                            "href": "{context.getCreateNewMapLink(state('gnResourceData'))}",
                             "labelId": "gnviewer.createMap",
                             "disableIf": "{!(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}"
                         }
@@ -2086,14 +2087,14 @@
                 "name": "LayerSettings",
                 "mandatory": true,
                 "cfg": {
-                    "disablePluginIf":"{!state('isSelectedLayerDataset')}"
+                    "disablePluginIf":"{context.hasDefaultSettings(state('selectedLayer'))}"
                 }
             },
             {
                 "name": "TOCItemsSettings",
                 "mandatory": true,
                 "cfg": {
-                    "disablePluginIf":"{state('isSelectedLayerDataset')}"
+                    "disablePluginIf":"{!context.hasDefaultSettings(state('selectedLayer'))}"
                 }
             },
             {
@@ -3922,6 +3923,11 @@
                                   {
                                     "id": "store-time-series",
                                     "labelId": "gnhome.timeSeries",
+                                    "type": "filter"
+                                  },
+                                  {
+                                    "id": "3dtiles",
+                                    "labelId": "gnhome.3dtiles",
                                     "type": "filter"
                                   }
                               ]

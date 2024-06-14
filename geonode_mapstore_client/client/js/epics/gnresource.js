@@ -19,6 +19,7 @@ import {
 } from '@js/api/geonode/config';
 import {
     getDatasetByPk,
+    getResourceByPk,
     getGeoAppByPk,
     getDocumentByPk,
     getMapByPk,
@@ -81,7 +82,8 @@ import {
     toMapStoreMapConfig,
     parseStyleName,
     getCataloguePath,
-    getResourceWithLinkedResources
+    getResourceWithLinkedResources,
+    isDefaultDatasetSubtype
 } from '@js/utils/ResourceUtils';
 import {
     canAddResource,
@@ -113,6 +115,10 @@ import { wrapStartStop } from '@mapstore/framework/observables/epics';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { catalogClose } from '@mapstore/framework/actions/catalog';
+import { VisualizationModes } from '@mapstore/framework/utils/MapTypeUtils';
+import { forceUpdateMapLayout } from '@mapstore/framework/actions/maplayout';
+
+const FIT_BOUNDS_CONTROL = 'fitBounds';
 
 const FIT_BOUNDS_CONTROL = 'fitBounds';
 
@@ -120,12 +126,15 @@ const resourceTypes = {
     [ResourceTypes.DATASET]: {
         resourceObservable: (pk, options) => {
             const { page, selectedLayer, map: currentMap } = options || {};
+            const { subtype } = options?.params || {};
             return Observable.defer(() =>
                 axios.all([
                     getNewMapConfiguration(),
                     options?.isSamePreviousResource
                         ? new Promise(resolve => resolve(options.resourceData))
-                        : getDatasetByPk(pk)
+                        : isDefaultDatasetSubtype(subtype)
+                            ? getDatasetByPk(pk)
+                            : getResourceByPk(pk)
                 ])
                     .then((response) => {
                         const [mapConfig, gnLayer] = response;
@@ -163,6 +172,7 @@ const resourceTypes = {
                             map: {
                                 ...mapConfig.map,
                                 ...currentMap, // keep configuration for other pages when resource id is the same (eg: center, zoom)
+                                visualizationMode: ['3dtiles'].includes(subtype) ? VisualizationModes._3D : VisualizationModes._2D,
                                 layers: [
                                     ...mapConfig.map.layers,
                                     {
@@ -179,6 +189,7 @@ const resourceTypes = {
                             : []),
                         setControlProperty('toolbar', 'expanded', false),
                         setControlProperty('rightOverlay', 'enabled', 'DetailViewer'),
+                        forceUpdateMapLayout(),
                         selectNode(newLayer.id, 'layer', false),
                         setResource(gnLayer),
                         setResourceId(pk),
@@ -236,11 +247,16 @@ const resourceTypes = {
                         })
                     );
                 }),
-        newResourceObservable: (options) =>
-            Observable.defer(() => axios.all([
+        newResourceObservable: (options, action$) => {
+            const queryDatasetParts = (options?.query?.['gn-dataset'] || '').split(':');
+            const queryDatasetPk = queryDatasetParts[0];
+            const quryDatasetSubtype = queryDatasetParts[1];
+            return Observable.defer(() => axios.all([
                 getNewMapConfiguration(),
-                ...(options?.query?.['gn-dataset']
-                    ? [ getDatasetByPk(options.query['gn-dataset']) ]
+                ...(queryDatasetPk !== undefined
+                    ? [isDefaultDatasetSubtype(quryDatasetSubtype)
+                        ? getDatasetByPk(queryDatasetPk)
+                        : getResourceByPk(queryDatasetPk)]
                     : [])
             ]))
                 .switchMap(([ response, gnLayer ]) => {
@@ -254,6 +270,11 @@ const resourceTypes = {
                                 ...mapConfig,
                                 map: {
                                     ...mapConfig?.map,
+                                    ...(queryDatasetPk !== undefined && {
+                                        visualizationMode: ['3dtiles'].includes(quryDatasetSubtype)
+                                            ? VisualizationModes._3D
+                                            : VisualizationModes._2D
+                                        }),
                                     layers: [
                                         ...(mapConfig?.map?.layers || []),
                                         newLayer
@@ -267,6 +288,7 @@ const resourceTypes = {
                         setControlProperty('toolbar', 'expanded', false)
                     );
                 })
+        }
     },
     [ResourceTypes.GEOSTORY]: {
         resourceObservable: (pk, options) =>
@@ -450,7 +472,7 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
                     setResourceType(action.resourceType),
                     setResourcePathParameters(action?.options?.params)
                 ),
-                newResourceObservable({ query }),
+                newResourceObservable({ query }, action$),
                 Observable.of(
                     loadingResourceConfig(false)
                 )
@@ -664,6 +686,7 @@ function validateGeometry(extent, projection) {
     }
     return extent;
 }
+
 export const gnZoomToFitBounds = (action$) =>
     action$.ofType(SET_CONTROL_PROPERTY)
         .filter(action => action.control === FIT_BOUNDS_CONTROL && !!action.value)

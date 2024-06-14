@@ -6,14 +6,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@js/components/Button';
-import { getDatasets } from '@js/api/geonode/v2';
+import { getDatasets, getDatasetByPk, getResourceByPk } from '@js/api/geonode/v2';
 import { resourceToLayerConfig } from '@js/utils/ResourceUtils';
 import { addLayer } from '@mapstore/framework/actions/layers';
 import { zoomToExtent } from '@mapstore/framework/actions/map';
@@ -21,25 +21,39 @@ import { setControlProperty } from '@mapstore/framework/actions/controls';
 import datasetscatalogEpics from '@js/epics/datasetscatalog';
 import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
 import ResourcesCompactCatalog from '@js/components/ResourcesCompactCatalog';
+import { isDefaultDatasetSubtype } from '@js/utils/ResourceUtils';
+import useIsMounted from "@js/hooks/useIsMounted";
 
 function DatasetsCatalog({
     onAdd,
     onZoomTo,
     ...props
 }) {
+    const isMounted = useIsMounted();
+    const [loading, setLoading] = useState(false);
 
     function handleSelectResource(entry) {
-        const layer = resourceToLayerConfig(entry);
-        onAdd(layer);
-        const { minx, miny, maxx, maxy } = layer?.bbox?.bounds || {};
-        const extent = layer?.bbox?.bounds && [minx, miny, maxx, maxy];
-        if (extent) {
-            onZoomTo(extent, layer?.bbox?.crs);
-        }
+        setLoading(true);
+        (isDefaultDatasetSubtype(entry.subtype)
+            ? getDatasetByPk(entry.pk)
+            : getResourceByPk(entry.pk))
+            .then((dataset) => {
+                const layer = resourceToLayerConfig(dataset);
+                onAdd(layer);
+                const { minx, miny, maxx, maxy } = layer?.bbox?.bounds || {};
+                const extent = layer?.bbox?.bounds && [minx, miny, maxx, maxy];
+                if (extent) {
+                    onZoomTo(extent, layer?.bbox?.crs);
+                }
+            })
+            .finally(() => {
+                isMounted(() => setLoading(false));
+            });
     }
 
     return (<ResourcesCompactCatalog
         {...props}
+        loading={loading}
         onSelect={handleSelectResource}
     />);
 }

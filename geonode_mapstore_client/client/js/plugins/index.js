@@ -15,6 +15,8 @@ import {
 import { getPluginsContext } from '@js/utils/PluginsContextUtils';
 import { toModulePlugin as msToModulePlugin } from '@mapstore/framework/utils/ModulePluginsUtils';
 
+import TOCPlugin from '@mapstore/framework/plugins/TOC';
+
 let epicsNamesToExclude = [
     'loadGeostoryEpic',
     'reloadGeoStoryOnLoginLogout',
@@ -58,6 +60,7 @@ const toModulePlugin = (...args) => {
 };
 
 export const plugins = {
+    TOCPlugin,
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
         () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload'),
@@ -279,10 +282,6 @@ export const plugins = {
     LocatePlugin: toModulePlugin(
         'Locate',
         () => import(/* webpackChunkName: 'plugins/locate-plugin' */ '@mapstore/framework/plugins/Locate')
-    ),
-    TOCPlugin: toModulePlugin(
-        'TOC',
-        () => import(/* webpackChunkName: 'plugins/toc-plugin' */ '@mapstore/framework/plugins/TOC')
     ),
     DrawerMenuPlugin: toModulePlugin(
         'DrawerMenu',

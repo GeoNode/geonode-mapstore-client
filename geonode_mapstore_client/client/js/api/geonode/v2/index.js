@@ -27,7 +27,7 @@ import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
 import isNil from 'lodash/isNil';
 import { getUserInfo } from '@js/api/geonode/user';
-import { ResourceTypes, availableResourceTypes, setAvailableResourceTypes, getDownloadUrlInfo } from '@js/utils/ResourceUtils';
+import { ResourceTypes, availableResourceTypes, setAvailableResourceTypes, getDownloadUrlInfo, isDefaultDatasetSubtype } from '@js/utils/ResourceUtils';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import { mergeConfigsPatch } from '@mapstore/patcher';
 import { parseIcon } from '@js/utils/SearchUtils';
@@ -205,10 +205,11 @@ export const getDatasets = ({
 }) => {
     return axios
         .get(
-            parseDevHostname(endpoints[DATASETS]), {
+            parseDevHostname(endpoints[RESOURCES]), {
                 // axios will format query params array to `key[]=value1&key[]=value2`
                 params: {
-                    ...params,
+                    'filter{resource_type.in}': 'dataset',
+                    'filter{metadata_only}': false,
                     ...(q && {
                         search: q,
                         search_fields: ['title', 'abstract']
@@ -216,7 +217,7 @@ export const getDatasets = ({
                     ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
                     page,
                     page_size: pageSize,
-                    api_preset: API_PRESET.DATASETS
+                    api_preset: API_PRESET.CATALOGS
                 },
                 ...paramsSerializer()
             })
@@ -224,10 +225,7 @@ export const getDatasets = ({
             return {
                 totalCount: data.total,
                 isNextPageAvailable: !!data.links.next,
-                resources: (data.datasets || [])
-                    .map((resource) => {
-                        return resource;
-                    })
+                resources: (data.resources || [])
             };
         });
 };
@@ -823,12 +821,14 @@ export const deleteExecutionRequest = (executionId) => {
     return axios.delete(`${parseDevHostname(endpoints[EXECUTIONREQUEST])}/${executionId}`);
 };
 
-export const getResourceByTypeAndByPk = (type, pk) => {
+export const getResourceByTypeAndByPk = (type, pk, subtype) => {
     switch (type) {
     case "document":
         return getDocumentByPk(pk);
     case "dataset":
-        return getDatasetByPk(pk);
+        return isDefaultDatasetSubtype(subtype)
+            ? getDatasetByPk(pk)
+            : getResourceByPk(pk);
     // Add type condition based on requirement
     default:
         return getResourceByPk(pk);

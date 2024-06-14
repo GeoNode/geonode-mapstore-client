@@ -15,6 +15,7 @@ import {
     getCataloguePath
 } from '@js/utils/ResourceUtils';
 import get from 'lodash/get';
+import isNil from 'lodash/isNil';
 
 function getUserResourceName(user) {
     return user?.first_name !== '' && user?.last_name !== ''
@@ -36,6 +37,17 @@ function getUserResourceNames(users = []) {
     });
 }
 
+const getCreateNewMapLink = (resource) => {
+    return `'#/map/new?gn-dataset=${resource?.pk}:${resource?.subtype || ''}`
+};
+
+const hasDefaultSettings = (layer) => {
+    if (layer?.type === 'wms' && !isNil(layer?.extendedParams?.pk)) {
+        return false;
+    }
+    return true;
+};
+
 export const getPluginsContext = () => ({
     get,
     getMetadataUrl,
@@ -46,5 +58,7 @@ export const getPluginsContext = () => ({
     getUserResourceName,
     getUserResourceNames,
     isDocumentExternalSource,
-    getCataloguePath
+    getCataloguePath,
+    getCreateNewMapLink,
+    hasDefaultSettings
 });
