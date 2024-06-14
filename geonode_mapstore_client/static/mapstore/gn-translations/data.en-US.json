@@ -146,7 +146,8 @@
             "noPreview": "A preview is not available for this resource",
             "na": "N/A",
             "emptyFilterItems": "No items to display",
-            "loadingItems": "Loading items..."
+            "loadingItems": "Loading items...",
+            "3dtiles": "3D Tiles"
         },
         "viewer": {
             "document": {

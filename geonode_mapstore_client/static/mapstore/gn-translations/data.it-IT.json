@@ -148,7 +148,8 @@
             "noPreview": "Un'anteprima non è disponibile per questa risorsa",
             "na": "N/D",
             "emptyFilterItems": "Nessun elemento da visualizzare",
-            "loadingItems": "Caricamento elementi..."
+            "loadingItems": "Caricamento elementi...",
+            "3dtiles": "3D Tiles"
         },
         "viewer": {
             "document": {

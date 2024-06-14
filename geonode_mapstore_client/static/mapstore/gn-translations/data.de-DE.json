@@ -146,7 +146,8 @@
             "noPreview": "Für diese Ressource ist keine Vorschau verfügbar",
             "na": "n.a.",
             "emptyFilterItems": "Keine Elemente zum Anzeigen",
-            "loadingItems": "Artikel werden geladen..."
+            "loadingItems": "Artikel werden geladen...",
+            "3dtiles": "3D Tiles"
         },
         "viewer": {
             "document": {

@@ -15,6 +15,8 @@ import {
 import { getPluginsContext } from '@js/utils/PluginsContextUtils';
 import { toModulePlugin as msToModulePlugin } from '@mapstore/framework/utils/ModulePluginsUtils';
 
+import TOCPlugin from '@mapstore/framework/plugins/TOC';
+
 let epicsNamesToExclude = [
     'loadGeostoryEpic',
     'reloadGeoStoryOnLoginLogout',
@@ -58,6 +60,7 @@ const toModulePlugin = (...args) => {
 };
 
 export const plugins = {
+    TOCPlugin,
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
         () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload'),
@@ -280,10 +283,6 @@ export const plugins = {
         'Locate',
         () => import(/* webpackChunkName: 'plugins/locate-plugin' */ '@mapstore/framework/plugins/Locate')
     ),
-    TOCPlugin: toModulePlugin(
-        'TOC',
-        () => import(/* webpackChunkName: 'plugins/toc-plugin' */ '@mapstore/framework/plugins/TOC')
-    ),
     DrawerMenuPlugin: toModulePlugin(
         'DrawerMenu',
         () => import(/* webpackChunkName: 'plugins/drawer-menu-plugin' */ '@mapstore/framework/plugins/DrawerMenu')
@@ -299,10 +298,6 @@ export const plugins = {
     MediaViewerPlugin: toModulePlugin(
         'MediaViewer',
         () => import(/* webpackChunkName: 'plugins/media-viewer-plugin' */ '@js/plugins/MediaViewer')
-    ),
-    FitBoundsPlugin: toModulePlugin(
-        'FitBounds',
-        () => import(/* webpackChunkName: 'plugins/fit-bounds-plugin' */ '@js/plugins/FitBounds')
     ),
     DashboardEditorPlugin: toModulePlugin(
         'DashboardEditor',

@@ -84,7 +84,6 @@ const DetailsPanelTools = ({
     name,
     toolbarItems = []
 }) => {
-
     const isMounted = useRef();
     const [copiedUrl, setCopiedUrl] = useState({
         resource: false,

@@ -52,6 +52,8 @@ export const GXP_PTYPES = {
     'GN_WMS': 'gxp_geonodecataloguesource'
 };
 
+export const isDefaultDatasetSubtype = (subtype) => !subtype || ['vector', 'raster', 'remote', 'vector_time'].includes(subtype);
+
 export const FEATURE_INFO_FORMAT = 'TEMPLATE';
 
 const datasetAttributeSetToFields = ({ attribute_set: attributeSet = [] }) => {
@@ -86,7 +88,8 @@ export const resourceToLayerConfig = (resource) => {
         pk,
         has_time: hasTime,
         default_style: defaultStyle,
-        ptype
+        ptype,
+        subtype
     } = resource;
 
     const bbox = getExtentFromResource(resource);
@@ -104,6 +107,20 @@ export const resourceToLayerConfig = (resource) => {
         },
         ...defaultStyleParams
     };
+
+    if (subtype === '3dtiles') {
+
+        const { url: tilesetUrl } = links.find(({ extension }) => (extension === '3dtiles')) || {};
+
+        return {
+            type: '3dtiles',
+            title,
+            url: parseDevHostname(tilesetUrl || ''),
+            ...(bbox && { bbox }),
+            visibility: true,
+            extendedParams
+        };
+    }
 
     switch (ptype) {
     case GXP_PTYPES.REST_MAP:
@@ -284,12 +301,17 @@ export const getResourceTypesInfo = () => ({
     [ResourceTypes.DATASET]: {
         icon: 'database',
         canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
-        formatEmbedUrl: (resource) => parseDevHostname(updateUrlQueryParameter(resource.embed_url, {
+        formatEmbedUrl: (resource) => resource.embed_url && parseDevHostname(updateUrlQueryParameter(resource.embed_url, {
             config: 'dataset_preview'
         })),
-        formatDetailUrl: (resource) => resource?.detail_url && parseDevHostname(resource.detail_url),
+        formatDetailUrl: (resource) =>
+            resource?.subtype === '3dtiles' // REMOVE
+            ? `/catalogue/#/dataset/${resource.subtype}/${resource.pk}`
+            : resource?.detail_url && parseDevHostname(resource.detail_url),
         name: 'Dataset',
-        formatMetadataUrl: (resource) => (`/datasets/${resource.store ? resource.store + ":" : ''}${resource.alternate}/metadata`),
+        formatMetadataUrl: (resource) => isDefaultDatasetSubtype(resource)
+            ? `/datasets/${resource.store ? resource.store + ":" : ''}${resource.alternate}/metadata`
+            : `/resources/${resource.pk}/metadata`,
         catalogPageUrl: '/datasets'
     },
     [ResourceTypes.MAP]: {

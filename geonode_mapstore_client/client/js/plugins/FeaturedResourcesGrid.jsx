@@ -79,7 +79,7 @@ function FeaturedResourcesGrid({
                         query={query}
                         getDetailHref={res => handleFormatHref({
                             query: {
-                                'd': `${res.pk};${res.resource_type}`
+                                'd': `${res.pk};${res.resource_type}${res.subtype ? `;${res.subtype}` : ''}`
                             },
                             replaceQuery: true,
                             excludeQueryKeys: []

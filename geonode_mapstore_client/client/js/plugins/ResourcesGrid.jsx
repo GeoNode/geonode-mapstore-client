@@ -377,6 +377,11 @@ function ResourcesGrid({
                             id: 'store-time-series',
                             labelId: 'gnhome.timeSeries',
                             type: 'filter'
+                        },
+                        {
+                            id: '3dtiles',
+                            labelId: 'gnhome.3dtiles',
+                            type: 'filter'
                         }
                     ]
                 },
@@ -821,7 +826,7 @@ function ResourcesGrid({
                                 scrollContainer={scrollContainerSelector ? document.querySelector(scrollContainerSelector) : undefined}
                                 getDetailHref={res => handleFormatHref({
                                     query: {
-                                        'd': `${res.pk};${res.resource_type}`
+                                        'd': `${res.pk};${res.resource_type}${res.subtype ? `;${res.subtype}` : ''}`
                                     },
                                     replaceQuery: true,
                                     excludeQueryKeys: []

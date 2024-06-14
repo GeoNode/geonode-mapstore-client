@@ -59,11 +59,12 @@ export function loadingResources(loading) {
     };
 }
 
-export function requestResource(pk, ctype) {
+export function requestResource(pk, ctype, subtype) {
     return {
         type: REQUEST_RESOURCE,
         pk,
-        ctype
+        ctype,
+        subtype
     };
 }
 

@@ -188,7 +188,7 @@ export const gnUpdateVisualStyleEditorMapLayout = (action$, store) =>
                 },
                 boundingSidebarRect: {
                     ...boundingSidebarRect,
-                    ...layout.boundingSidebarRect
+                    ...layout?.boundingSidebarRect
                 }
             });
             return { ...action, source: LayoutSections.PANEL }; // add an argument to avoid infinite loop.

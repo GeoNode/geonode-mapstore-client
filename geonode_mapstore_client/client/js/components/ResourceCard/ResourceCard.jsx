@@ -33,8 +33,12 @@ const ResourceCard = forwardRef(({
     featured,
     onClick,
     downloading,
-    getDetailHref = (res) => formatHref({
-        pathname: `/detail/${res.resource_type}/${res.pk}`
+    getDetailHref = res => formatHref({
+        query: {
+            'd': `${res.pk};${res.resource_type}${res.subtype ? `;${res.subtype}` : ''}`
+        },
+        replaceQuery: true,
+        excludeQueryKeys: []
     })
 }, ref) => {
     const abstractRef = useRef();

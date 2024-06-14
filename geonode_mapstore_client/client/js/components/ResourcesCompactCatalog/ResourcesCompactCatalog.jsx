@@ -37,7 +37,8 @@ function ResourcesCompactCatalog({
     onClose,
     titleId,
     noResultId,
-    loading: resourceLoading
+    loading: resourceLoading,
+    params
 }) {
 
     const scrollContainer = useRef();
@@ -48,9 +49,9 @@ function ResourcesCompactCatalog({
     const [q, setQ] = useState('');
     const isMounted = useRef();
 
-    useEffect(()=>{
-        !isNil(resourceLoading) && setLoading(resourceLoading);
-    }, [resourceLoading]);
+    const loadingActive = loading
+        ? loading
+        : !!resourceLoading;
 
     useInfiniteScroll({
         scrollContainer: scrollContainer.current,
@@ -68,6 +69,7 @@ function ResourcesCompactCatalog({
 
             setLoading(true);
             request({
+                ...params,
                 q,
                 page: options.page,
                 pageSize
@@ -157,7 +159,7 @@ function ResourcesCompactCatalog({
             </ul>
 
         </div>
-        {loading && <div
+        {loadingActive && <div
             style={{
                 position: 'absolute',
                 top: 0,
