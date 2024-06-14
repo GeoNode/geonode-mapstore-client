@@ -113,6 +113,7 @@ export const resourceToLayerConfig = (resource) => {
         const { url: tilesetUrl } = links.find(({ extension }) => (extension === '3dtiles')) || {};
 
         return {
+            id: uuid(),
             type: '3dtiles',
             title,
             url: parseDevHostname(tilesetUrl || ''),
@@ -306,10 +307,10 @@ export const getResourceTypesInfo = () => ({
         })),
         formatDetailUrl: (resource) =>
             resource?.subtype === '3dtiles' // REMOVE
-            ? `/catalogue/#/dataset/${resource.subtype}/${resource.pk}`
-            : resource?.detail_url && parseDevHostname(resource.detail_url),
+                ? `/catalogue/#/dataset/${resource.subtype}/${resource.pk}`
+                : resource?.detail_url && parseDevHostname(resource.detail_url),
         name: 'Dataset',
-        formatMetadataUrl: (resource) => isDefaultDatasetSubtype(resource)
+        formatMetadataUrl: (resource) => isDefaultDatasetSubtype(resource?.subtype)
             ? `/datasets/${resource.store ? resource.store + ":" : ''}${resource.alternate}/metadata`
             : `/resources/${resource.pk}/metadata`,
         catalogPageUrl: '/datasets'
@@ -474,11 +475,13 @@ export function getGeoNodeMapLayers(data) {
                 }),
                 extra_params: {
                     msId: layer.id,
-                    styles: cleanStyles(layer?.availableStyles)
-                        .map(({ canEdit, metadata, ...style }) => ({ ...style }))
+                    ...(layer?.availableStyles && {
+                        styles: cleanStyles(layer?.availableStyles)
+                            .map(({ canEdit, metadata, ...style }) => ({ ...style }))
+                    })
                 },
-                current_style: layer.style || '',
-                name: layer.name,
+                ...(layer.type === 'wms' && { current_style: layer.style || '' }),
+                name: layer.name || '',
                 order: index,
                 opacity: layer.opacity ?? 1,
                 visibility: layer.visibility
@@ -523,15 +526,17 @@ export function toMapStoreMapConfig(resource, baseConfig) {
         .map((layer) => {
             const mapLayer = maplayers.find(mLayer => layer.id !== undefined && mLayer?.extra_params?.msId === layer.id);
             if (mapLayer) {
-                const mapLayerDatasetStyles = cleanStyles([
+                const mapLayerDatasetStyles = layer.type === 'wms' ? cleanStyles([
                     ...(mapLayer?.dataset?.defaul_style ? [mapLayer.dataset.defaul_style] : []),
                     ...(mapLayer?.dataset?.styles || [])
-                ]).map(({ name }) => name);
+                ]).map(({ name }) => name) : [];
                 const template = mapLayer?.dataset?.featureinfo_custom_template || '';
                 return {
                     ...layer,
-                    style: mapLayer.current_style || layer.style || '',
-                    availableStyles: cleanStyles(mapLayer?.extra_params?.styles || [], mapLayerDatasetStyles),
+                    ...(layer.type === 'wms' && {
+                        style: mapLayer.current_style || layer.style || '',
+                        availableStyles: cleanStyles(mapLayer?.extra_params?.styles || [], mapLayerDatasetStyles)
+                    }),
                     featureInfo: {
                         ...layer?.featureInfo,
                         format: layer?.featureInfo?.format ?? (template ? FEATURE_INFO_FORMAT : undefined),

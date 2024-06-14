@@ -14,14 +14,13 @@ import { createSelector } from 'reselect';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@js/components/Button';
 import { getDatasets, getDatasetByPk, getResourceByPk } from '@js/api/geonode/v2';
-import { resourceToLayerConfig } from '@js/utils/ResourceUtils';
+import { resourceToLayerConfig, isDefaultDatasetSubtype } from '@js/utils/ResourceUtils';
 import { addLayer } from '@mapstore/framework/actions/layers';
 import { zoomToExtent } from '@mapstore/framework/actions/map';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import datasetscatalogEpics from '@js/epics/datasetscatalog';
 import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
 import ResourcesCompactCatalog from '@js/components/ResourcesCompactCatalog';
-import { isDefaultDatasetSubtype } from '@js/utils/ResourceUtils';
 import useIsMounted from "@js/hooks/useIsMounted";
 
 function DatasetsCatalog({

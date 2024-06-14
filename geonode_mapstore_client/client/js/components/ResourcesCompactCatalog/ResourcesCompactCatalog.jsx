@@ -8,7 +8,6 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import isNil from 'lodash/isNil';
 import { FormControl as FormControlRB, Glyphicon } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@js/components/Button';

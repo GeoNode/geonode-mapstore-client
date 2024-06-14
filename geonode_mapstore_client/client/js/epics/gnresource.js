@@ -74,8 +74,7 @@ import {
 import {
     setControlProperty,
     resetControls,
-    SET_CONTROL_PROPERTY,
-    setControlProperties
+    SET_CONTROL_PROPERTY
 } from '@mapstore/framework/actions/controls';
 import {
     resourceToLayerConfig,
@@ -246,13 +245,13 @@ const resourceTypes = {
                         })
                     );
                 }),
-        newResourceObservable: (options, action$) => {
+        newResourceObservable: (options) => {
             const queryDatasetParts = (options?.query?.['gn-dataset'] || '').split(':');
             const queryDatasetPk = queryDatasetParts[0];
             const quryDatasetSubtype = queryDatasetParts[1];
             return Observable.defer(() => axios.all([
                 getNewMapConfiguration(),
-                ...(queryDatasetPk !== undefined
+                ...(queryDatasetPk !== ''
                     ? [isDefaultDatasetSubtype(quryDatasetSubtype)
                         ? getDatasetByPk(queryDatasetPk)
                         : getResourceByPk(queryDatasetPk)]
@@ -273,7 +272,7 @@ const resourceTypes = {
                                         visualizationMode: ['3dtiles'].includes(quryDatasetSubtype)
                                             ? VisualizationModes._3D
                                             : VisualizationModes._2D
-                                        }),
+                                    }),
                                     layers: [
                                         ...(mapConfig?.map?.layers || []),
                                         newLayer
@@ -286,7 +285,7 @@ const resourceTypes = {
                             : []),
                         setControlProperty('toolbar', 'expanded', false)
                     );
-                })
+                });
         }
     },
     [ResourceTypes.GEOSTORY]: {
@@ -471,7 +470,7 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
                     setResourceType(action.resourceType),
                     setResourcePathParameters(action?.options?.params)
                 ),
-                newResourceObservable({ query }, action$),
+                newResourceObservable({ query }),
                 Observable.of(
                     loadingResourceConfig(false)
                 )
@@ -685,7 +684,7 @@ function validateGeometry(extent, projection) {
     }
     return extent;
 }
-export const gnZoomToFitBounds = (action$) => 
+export const gnZoomToFitBounds = (action$) =>
     action$.ofType(SET_CONTROL_PROPERTY)
         .filter(action => action.control === FIT_BOUNDS_CONTROL && !!action.value)
         .switchMap((action) =>
