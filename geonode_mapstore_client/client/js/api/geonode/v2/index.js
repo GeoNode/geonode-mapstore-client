@@ -200,8 +200,7 @@ export const getDatasets = ({
     q,
     pageSize = 20,
     page = 1,
-    sort,
-    ...params
+    sort
 }) => {
     return axios
         .get(
