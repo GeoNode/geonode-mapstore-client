@@ -307,14 +307,20 @@ function StyleEditorTocButton({
     layer,
     status,
     onClick = () => {},
-    enabled,
+    changeResource,
     isNew,
     btnProps = {},
     hide,
-    selectedStyle
+    selectedStyle,
+    statusTypes
 }) {
     const mapLayer = layer?.extendedParams?.mapLayer;
-    if (!(!hide && status === 'LAYER' && mapLayer && mapLayer?.dataset?.sourcetype !== 'REMOTE' && (enabled || isNew))
+    if (hide
+    || status !== statusTypes.LAYER
+    || !mapLayer?.dataset
+    || mapLayer?.dataset?.sourcetype === 'REMOTE'
+    || !changeResource
+    || isNew
     || !isDefaultDatasetSubtype(mapLayer?.dataset?.subtype)) {
         return null;
     }
@@ -349,7 +355,7 @@ const ConnectedStyleEditorTocButton = connect(createSelector([
     isNewResource
 ], (layer, perms, newMap) => ({
     layer,
-    enabled: !!perms?.includes('change_resourcebase'),
+    changeResource: !!perms?.includes('change_resourcebase'),
     isNew: newMap
 })), {
     onClick: requestDatasetAvailableStyles
