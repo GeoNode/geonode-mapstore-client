@@ -157,18 +157,12 @@ class MapStoreHookSet(BaseHookSet):
         return resource_detail_url(resource.resource_type, resource.id)
     
     # 3dtiles
-    def tiles3d_list_template(self, context=None):
-        return "geonode-mapstore-client/legacy/app_list.html"
-
-    def tiles3d_view_template(self, context=None):
-        return "geonode-mapstore-client/legacy/app_view.html"
-
-    def tiles3d_list_url(self):
-        return resource_list_url("dataset")
 
     def tiles3d_detail_url(self, resource):
         return resource_detail_url(resource.subtype, resource.id)
 
+    def resourcebase_embed_template(self, context=None):
+        return "geonode-mapstore-client/base_embed.html"
 
     # Map Persisting
     def viewer_json(self, conf, context=None):
