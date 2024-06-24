@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         setConfigProp('mapLayout', mapLayout[query.theme] || mapLayout.viewer);
 
                         const resourceId = geoNodePageConfig.resourceId;
+                        const resourceSubtype = geoNodePageConfig.resourceSubtype;
 
                         const appEpics = {
                             ...standardEpics,
@@ -185,7 +186,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                 loadPrintCapabilities.bind(null, getConfigProp('printUrl')),
                                 setControlProperty.bind(null, 'toolbar', 'expanded', false),
                                 ...(resourceId !== undefined
-                                    ? [ requestResourceConfig.bind(null, geoNodePageConfig.resourceType || ResourceTypes.MAP, resourceId) ]
+                                    ? [ requestResourceConfig.bind(null, geoNodePageConfig.resourceType || ResourceTypes.MAP, resourceId, {
+                                        params: {
+                                            subtype: resourceSubtype
+                                        }
+                                    }) ]
                                     : []),
                                 changeMapInfoFormat.bind(null, 'application/json')
                             ]

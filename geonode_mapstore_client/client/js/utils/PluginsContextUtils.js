@@ -38,7 +38,7 @@ function getUserResourceNames(users = []) {
 }
 
 const getCreateNewMapLink = (resource) => {
-    return `'#/map/new?gn-dataset=${resource?.pk}:${resource?.subtype || ''}`;
+    return `#/map/new?gn-dataset=${resource?.pk}:${resource?.subtype || ''}`;
 };
 
 const hasDefaultSettings = (layer) => {
