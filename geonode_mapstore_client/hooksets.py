@@ -162,6 +162,8 @@ class MapStoreHookSet(BaseHookSet):
         return resource_detail_url(resource.subtype, resource.id)
 
     def resourcebase_embed_template(self, context=None):
+        if context['resource'].subtype == '3dtiles':
+            return "geonode-mapstore-client/dataset_embed.html"
         return "geonode-mapstore-client/base_embed.html"
 
     # Map Persisting

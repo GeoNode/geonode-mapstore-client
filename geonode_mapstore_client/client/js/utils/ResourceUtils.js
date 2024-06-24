@@ -305,10 +305,7 @@ export const getResourceTypesInfo = () => ({
         formatEmbedUrl: (resource) => resource.embed_url && parseDevHostname(updateUrlQueryParameter(resource.embed_url, {
             config: 'dataset_preview'
         })),
-        formatDetailUrl: (resource) =>
-            resource?.subtype === '3dtiles' // REMOVE
-                ? `/catalogue/#/dataset/${resource.subtype}/${resource.pk}`
-                : resource?.detail_url && parseDevHostname(resource.detail_url),
+        formatDetailUrl: (resource) => resource?.detail_url && parseDevHostname(resource.detail_url),
         name: 'Dataset',
         formatMetadataUrl: (resource) => isDefaultDatasetSubtype(resource?.subtype)
             ? `/datasets/${resource.store ? resource.store + ":" : ''}${resource.alternate}/metadata`
