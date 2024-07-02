@@ -73,8 +73,7 @@ import {
 import {
     setControlProperty,
     resetControls,
-    SET_CONTROL_PROPERTY,
-    setControlProperties
+    SET_CONTROL_PROPERTY
 } from '@mapstore/framework/actions/controls';
 import {
     resourceToLayerConfig,
@@ -93,7 +92,7 @@ import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallay
 import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
 import { styleServiceSelector } from '@mapstore/framework/selectors/styleeditor';
 import { updateStyleService } from '@mapstore/framework/api/StyleEditor';
-import { CLICK_ON_MAP, resizeMap } from '@mapstore/framework/actions/map';
+import { CLICK_ON_MAP, resizeMap, CHANGE_MAP_VIEW, zoomToExtent } from '@mapstore/framework/actions/map';
 import { purgeMapInfoResults, closeIdentify, NEW_MAPINFO_REQUEST } from '@mapstore/framework/actions/mapInfo';
 import { saveError } from '@js/actions/gnsave';
 import {
@@ -114,6 +113,8 @@ import { wrapStartStop } from '@mapstore/framework/observables/epics';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { catalogClose } from '@mapstore/framework/actions/catalog';
+
+const FIT_BOUNDS_CONTROL = 'fitBounds';
 
 const resourceTypes = {
     [ResourceTypes.DATASET]: {
@@ -174,7 +175,7 @@ const resourceTypes = {
                             }
                         }),
                         ...((extent && !currentMap)
-                            ? [ setControlProperty('fitBounds', 'geometry', extent) ]
+                            ? [ setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', extent) ]
                             : []),
                         setControlProperty('toolbar', 'expanded', false),
                         setControlProperty('rightOverlay', 'enabled', 'DetailViewer'),
@@ -261,8 +262,7 @@ const resourceTypes = {
                             }
                             : mapConfig),
                         ...(extent
-                            // Add duration to allow map config to be properly updated with zoom on fitBounds action
-                            ? [ setControlProperties('fitBounds', 'geometry', extent, "duration", 400) ]
+                            ? [ setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', extent) ]
                             : []),
                         setControlProperty('toolbar', 'expanded', false)
                     );
@@ -413,7 +413,7 @@ const getResetActions = (isSameResource) => [
     resetControls(),
     ...(!isSameResource ? [ resetResourceState() ] : []),
     setControlProperty('rightOverlay', 'enabled', false),
-    setControlProperty('fitBounds', 'geometry', null)
+    setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', null)
 ];
 
 export const gnViewerRequestNewResourceConfig = (action$, store) =>
@@ -648,6 +648,37 @@ export const gnManageLinkedResource = (action$, store) =>
                     ))
             );
         });
+
+const MAX_EXTENT_WEB_MERCATOR = [-180, -85, 180, 85];
+
+function validateGeometry(extent, projection) {
+    if (extent && ['EPSG:900913', 'EPSG:3857'].includes(projection)) {
+        const [minx, miny, maxx, maxy] = extent;
+        const [eMinx, eMiny, eMaxx, eMaxy] = MAX_EXTENT_WEB_MERCATOR;
+        return [
+            minx < eMinx ? eMinx : minx,
+            (miny < eMiny || miny > eMaxy) ? eMiny : miny,
+            maxx > eMaxx ? eMaxx : maxx,
+            (maxy > eMaxy || maxy < eMiny) ? eMaxy : maxy
+        ];
+    }
+    return extent;
+}
+export const gnZoomToFitBounds = (action$) =>
+    action$.ofType(SET_CONTROL_PROPERTY)
+        .filter(action => action.control === FIT_BOUNDS_CONTROL && !!action.value)
+        .switchMap((action) =>
+            action$.ofType(CHANGE_MAP_VIEW)
+                .take(1)
+                .switchMap(() => {
+                    const extent = validateGeometry(action.value);
+                    return Observable.of(
+                        zoomToExtent(extent, 'EPSG:4326'),
+                        setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', null)
+                    );
+                })
+        );
+
 export default {
     gnViewerRequestNewResourceConfig,
     gnViewerRequestResourceConfig,
@@ -655,5 +686,6 @@ export default {
     closeInfoPanelOnMapClick,
     closeOpenPanels,
     closeDatasetCatalogPanel,
-    gnManageLinkedResource
+    gnManageLinkedResource,
+    gnZoomToFitBounds
 };

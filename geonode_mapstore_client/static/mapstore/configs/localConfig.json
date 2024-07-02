@@ -183,9 +183,6 @@
                 "name": "MapFooter"
             },
             {
-                "name": "FitBounds"
-            },
-            {
                 "name": "Notifications"
             },
             {
@@ -250,9 +247,6 @@
             },
             {
                 "name": "MapFooter"
-            },
-            {
-                "name": "FitBounds"
             },
             {
                 "name": "Timeline"
@@ -333,9 +327,6 @@
             },
             {
                 "name": "MapFooter"
-            },
-            {
-                "name": "FitBounds"
             },
             {
                 "name": "Notifications"
@@ -1202,9 +1193,6 @@
                 "name": "Locate"
             },
             {
-                "name": "FitBounds"
-            },
-            {
                 "name": "Legend"
             },
             {
@@ -1337,9 +1325,6 @@
             },
             {
                 "name": "Notifications"
-            },
-            {
-                "name": "FitBounds"
             }
         ],
         "dataset_edit_style_viewer": [
@@ -1431,9 +1416,6 @@
             },
             {
                 "name": "Notifications"
-            },
-            {
-                "name": "FitBounds"
             },
             {
                 "name": "BackgroundSelector"
@@ -2154,9 +2136,6 @@
                     "geodesic": false,
                     "symbolsPath": "/static/mapstore/symbols/"
                 }
-            },
-            {
-                "name": "FitBounds"
             },
             {
                 "mandatory": true,
@@ -3171,9 +3150,6 @@
                 }
             },
             {
-                "name": "FitBounds"
-            },
-            {
                 "name": "Locate"
             },
             {
@@ -3284,9 +3260,6 @@
             },
             {
                 "name": "Legend"
-            },
-            {
-                "name": "FitBounds"
             },
             {
                 "name": "Locate"

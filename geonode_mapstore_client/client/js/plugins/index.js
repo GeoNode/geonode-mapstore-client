@@ -300,10 +300,6 @@ export const plugins = {
         'MediaViewer',
         () => import(/* webpackChunkName: 'plugins/media-viewer-plugin' */ '@js/plugins/MediaViewer')
     ),
-    FitBoundsPlugin: toModulePlugin(
-        'FitBounds',
-        () => import(/* webpackChunkName: 'plugins/fit-bounds-plugin' */ '@js/plugins/FitBounds')
-    ),
     DashboardEditorPlugin: toModulePlugin(
         'DashboardEditor',
         () => import(/* webpackChunkName: 'plugins/dashboard-editor-plugin' */ '@mapstore/framework/plugins/DashboardEditor'),
