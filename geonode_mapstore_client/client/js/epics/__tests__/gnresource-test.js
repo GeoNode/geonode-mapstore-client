@@ -13,15 +13,16 @@ import { testEpic } from '@mapstore/framework/epics/__tests__/epicTestUtils';
 import {
     gnViewerSetNewResourceThumbnail,
     closeInfoPanelOnMapClick,
-    closeDatasetCatalogPanel
+    closeDatasetCatalogPanel,
+    gnZoomToFitBounds
 } from '@js/epics/gnresource';
 import {
     setResourceThumbnail,
     UPDATE_RESOURCE_PROPERTIES,
     UPDATE_SINGLE_RESOURCE
 } from '@js/actions/gnresource';
-import { clickOnMap } from '@mapstore/framework/actions/map';
-import { SET_CONTROL_PROPERTY } from '@mapstore/framework/actions/controls';
+import { clickOnMap, changeMapView, ZOOM_TO_EXTENT } from '@mapstore/framework/actions/map';
+import { SET_CONTROL_PROPERTY, setControlProperty } from '@mapstore/framework/actions/controls';
 import {
     SHOW_NOTIFICATION
 } from '@mapstore/framework/actions/notifications';
@@ -165,6 +166,27 @@ describe('gnresource epics', () => {
                     expect(actions[0].type).toBe(SET_CONTROL_PROPERTY);
                     expect(actions[0].control).toBe("datasetsCatalog");
                     expect(actions[0].value).toBe(false);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            testState
+        );
+
+    });
+
+    it('should zoom to extent with the fitBounds control', (done) => {
+        const NUM_ACTIONS = 2;
+        const testState = {};
+        testEpic(gnZoomToFitBounds,
+            NUM_ACTIONS,
+            [setControlProperty('fitBounds', 'geometry', [-180, -90, 180, 90]), changeMapView()],
+            (actions) => {
+                try {
+                    expect(actions.length).toBe(2);
+                    expect(actions[0].type).toBe(ZOOM_TO_EXTENT);
+                    expect(actions[1].type).toBe(SET_CONTROL_PROPERTY);
                 } catch (e) {
                     done(e);
                 }
