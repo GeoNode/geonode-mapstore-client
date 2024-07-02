@@ -404,7 +404,8 @@
                         "linkResource": "Échec de l'enregistrement de la ressource liée"
                     }
                 }
-            }
+            },
+            "allResources": "All resources"
         }
     }
 }

@@ -403,7 +403,8 @@
                         "linkResource": "No se pudo guardar el recurso vinculado"
                     }
                 }
-            }
+            },
+            "allResources": "All resources"
         }
     }
 }
