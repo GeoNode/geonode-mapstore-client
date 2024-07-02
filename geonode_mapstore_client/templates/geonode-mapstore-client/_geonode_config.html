@@ -57,6 +57,8 @@
         let defaultLayerFormat = geoNodeSettings.DEFAULT_LAYER_FORMAT || 'image/png';
         let catalogueServices = geoNodeSettings.CATALOGUE_SERVICES || {};
         let catalogueSelectedService = geoNodeSettings.CATALOGUE_SELECTED_SERVICE || '';
+        let dashboardCatalogueServices = geoNodeSettings.DASHBOARD_CATALOGUE_SERVICES || {};
+        let dashboardCatalogueSelectedService = geoNodeSettings.DASHBOARD_CATALOGUE_SELECTED_SERVICE || '';
         let createLayer = geoNodeSettings.CREATE_LAYER || false
         let timeEnabled = geoNodeSettings.TIME_ENABLED || false;
         let allowedDocumentTypes = geoNodeSettings.ALLOWED_DOCUMENT_TYPES || [];
@@ -183,6 +185,8 @@
                 geoNodeSettings: {
                     catalogueSelectedService: catalogueSelectedService,
                     catalogueServices: catalogueServices,
+                    dashboardCatalogueServices: dashboardCatalogueServices,
+                    dashboardCatalogueSelectedService: dashboardCatalogueSelectedService,
                     createLayer: createLayer,
                     geonodeUrl: siteUrl,
                     geoserverUrl: geoServerPublicLocation,

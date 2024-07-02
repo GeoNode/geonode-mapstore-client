@@ -3034,8 +3034,8 @@
                 "cfg": {
                     "disablePluginIf": "{state('gnResourceData') && state('gnResourceData').perms && state('gnResourceData').perms.indexOf('change_resourcebase') === -1 ? true : false}",
                     "containerPosition": "leftColumn",
-                    "selectedService": "{state('settings') && state('settings').catalogueSelectedService ? state('settings').catalogueSelectedService : ''}",
-                    "services": "{state('settings') && state('settings').catalogueServices ? state('settings').catalogueServices : {}}",
+                    "selectedService": "{state('settings') && state('settings').dashboardCatalogueSelectedService ? state('settings').dashboardCatalogueSelectedService : ''}",
+                    "services": "{state('settings') && state('settings').dashboardCatalogueServices ? state('settings').dashboardCatalogueServices : {}}",
                     "disableEmptyMap": true
                 }
             },
