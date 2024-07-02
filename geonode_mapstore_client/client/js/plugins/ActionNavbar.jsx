@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { createSelector } from 'reselect';
@@ -84,6 +84,30 @@ function ActionNavbarPlugin(
     const rightItems = reduceArrayRecursive(rightMenuItemsPlugins, (menuItem) =>
         checkResourcePerms(menuItem, resourcePerms)
     );
+
+    useEffect(() => {
+        // set the correct height of navbar
+        const mainHeader = document.querySelector('.gn-main-header');
+        const mainHeaderPlaceholder = document.querySelector('.gn-main-header-placeholder');
+        const topbar = document.querySelector('#gn-topbar');
+        function resize() {
+            if (mainHeaderPlaceholder && mainHeader) {
+                mainHeaderPlaceholder.style.height = mainHeader.clientHeight + 'px';
+            }
+            if (topbar && mainHeader) {
+                topbar.style.top = mainHeader.clientHeight + 'px';
+            }
+        }
+        // hide the navigation bar if a resource is being viewed
+        document.getElementById('gn-topbar')?.classList.add('hide-navigation');
+        document.getElementById('gn-brand-navbar-bottom')?.classList.add('hide-search-bar');
+        resize();
+        return () => {
+            document.getElementById('gn-topbar')?.classList.remove('hide-navigation');
+            document.getElementById('gn-brand-navbar-bottom')?.classList.remove('hide-search-bar');
+            resize();
+        };
+    }, []);
 
     return (
         <ActionNavbar
