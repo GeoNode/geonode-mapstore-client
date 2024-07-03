@@ -120,8 +120,6 @@ import { forceUpdateMapLayout } from '@mapstore/framework/actions/maplayout';
 
 const FIT_BOUNDS_CONTROL = 'fitBounds';
 
-const FIT_BOUNDS_CONTROL = 'fitBounds';
-
 const resourceTypes = {
     [ResourceTypes.DATASET]: {
         resourceObservable: (pk, options) => {
