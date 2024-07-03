@@ -268,7 +268,7 @@ def run_setup_hooks(*args, **kwargs):
         "pnts",
     )
 
-    GEONODE_CATALOGUE_SERVICE = getattr(settings, GEONODE_CATALOGUE_SERVICE, None)
+    GEONODE_CATALOGUE_SERVICE = getattr(settings, "GEONODE_CATALOGUE_SERVICE", None)
     MAPSTORE_DASHBOARD_CATALOGUE_SERVICES = {}
     MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE = ""
 
