@@ -207,6 +207,10 @@
                 "label": "Lokalisierten Stil aktivieren",
                 "tooltip": "Hinweis: Diese Einstellung benötigt spezifische Konfigurationen im GeoServer"
             },
+            "useCacheOptionInfo": {
+                "label": "Verwenden Sie entfernte benutzerdefinierte Kachelraster",
+                "info": "Stellen Sie sicher, dass WMTS aktiviert ist, um benutzerdefinierte Kachelraster verwenden zu können"
+            },
             "format": {
                 "title": "Format",
                 "tile": "Fliese",
@@ -898,6 +902,7 @@
             "addressSearch": "Suche nach Standortname",
             "searchOnAllServices": "Suchen Sie unten nach allen Diensten",
             "coordinatesSearch": "Suche nach Koordinaten",
+            "currentMapCRS": "Aktuelles Kartenkoordinatensystem",
             "searchservicesbutton": "Suchdienste konfigurieren",
             "configpaneltitle": "Einen Suchdienst anlegen / bearbeiten",
             "serviceslistlabel": "Verfügbare Suchdienste",
@@ -919,6 +924,8 @@
             "b_newpaneltitle": "Neues Lesezeichen hinzufügen",
             "latitude": "Lat",
             "longitude": "Lon",
+            "yCoord": "Y",
+            "xCoord": "X",
             "b_title": "Titel",
             "b_layer_tooltip": "Deaktivieren Sie das Neuladen der Ebenensichtbarkeit",
             "b_bbox": "Begrenzungsrahmen",
@@ -1109,7 +1116,7 @@
         "zoombuttons": {
             "zoomInTooltip": "Zoom vergrößern",
             "zoomOutTooltip": "Zoom verringern",
-            "zoomAllTooltip": "Zoom auf maximale Ausdehnung"
+            "zoomAllTooltip": "Zoom auf zur Anfangsansicht"
         },
         "fullscreen": {
             "tooltipActivate": "Umschalten auf Vollbild",
@@ -1611,6 +1618,10 @@
             "noRecordsMatched": "Kein passender Eintrag",
             "wmsGetCapLink": "WMS",
             "wfsGetCapLink": "WFS",
+            "additionalOGCServices": {
+                "wfs": "AUS WFS",
+                "wms": "AUS WMS"
+            },
             "share": "Teilen",
             "copyToClipboard": "In die Zwischenablage kopieren",
             "copied": "Kopiert!",
