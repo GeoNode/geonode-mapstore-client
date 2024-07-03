@@ -374,7 +374,8 @@
                         "linkResource": "Failed to save linked resource"
                     }
                 }
-            }
+            },
+            "allResources": "All resources"
         }
     }
 }

@@ -21,20 +21,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checking out"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Checkout submodules
         run: git submodule update --init --recursive
 
       - name: "Setting up npm"
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-            node-version: '12.x'
+            node-version: 20
 
       ############
       # CACHING
       ##########
       - name: "Cache node modules"
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         env:
           cache-name: cache-node-modules
         with:

@@ -183,9 +183,6 @@
                 "name": "MapFooter"
             },
             {
-                "name": "FitBounds"
-            },
-            {
                 "name": "Notifications"
             },
             {
@@ -250,9 +247,6 @@
             },
             {
                 "name": "MapFooter"
-            },
-            {
-                "name": "FitBounds"
             },
             {
                 "name": "Timeline"
@@ -333,9 +327,6 @@
             },
             {
                 "name": "MapFooter"
-            },
-            {
-                "name": "FitBounds"
             },
             {
                 "name": "Notifications"
@@ -529,6 +520,12 @@
                 "cfg": {
                     "containerPosition": "header",
                     "leftMenuItems": [
+                        {
+                            "type": "link",
+                            "size": "md",
+                            "href": "#/all",
+                            "labelId": "gnviewer.allResources"
+                        },
                         {
                             "type": "plugin",
                             "size": "md",
@@ -1202,9 +1199,6 @@
                 "name": "Locate"
             },
             {
-                "name": "FitBounds"
-            },
-            {
                 "name": "Legend"
             },
             {
@@ -1337,9 +1331,6 @@
             },
             {
                 "name": "Notifications"
-            },
-            {
-                "name": "FitBounds"
             }
         ],
         "dataset_edit_style_viewer": [
@@ -1433,9 +1424,6 @@
                 "name": "Notifications"
             },
             {
-                "name": "FitBounds"
-            },
-            {
                 "name": "BackgroundSelector"
             },
             {
@@ -1475,6 +1463,12 @@
                 "cfg": {
                     "containerPosition": "header",
                     "leftMenuItems": [
+                        {
+                            "type": "link",
+                            "size": "md",
+                            "href": "#/all",
+                            "labelId": "gnviewer.allResources"
+                        },
                         {
                             "type": "plugin",
                             "size": "md",
@@ -2156,9 +2150,6 @@
                 }
             },
             {
-                "name": "FitBounds"
-            },
-            {
                 "mandatory": true,
                 "name": "DatasetsCatalog"
             },
@@ -2205,6 +2196,12 @@
                 "cfg": {
                     "containerPosition": "header",
                     "leftMenuItems": [
+                        {
+                            "type": "link",
+                            "size": "md",
+                            "href": "#/all",
+                            "labelId": "gnviewer.allResources"
+                        },
                         {
                             "type": "plugin",
                             "size": "md",
@@ -2528,6 +2525,12 @@
                     "containerPosition": "header",
                     "leftMenuItems": [
                         {
+                            "type": "link",
+                            "size": "md",
+                            "href": "#/all",
+                            "labelId": "gnviewer.allResources"
+                        },
+                        {
                             "type": "plugin",
                             "size": "md",
                             "name": "DetailViewerButton"
@@ -2778,6 +2781,12 @@
                 "cfg": {
                     "containerPosition": "header",
                     "leftMenuItems": [
+                        {
+                            "type": "link",
+                            "size": "md",
+                            "href": "#/all",
+                            "labelId": "gnviewer.allResources"
+                        },
                         {
                             "type": "plugin",
                             "size": "md",
@@ -3171,9 +3180,6 @@
                 }
             },
             {
-                "name": "FitBounds"
-            },
-            {
                 "name": "Locate"
             },
             {
@@ -3284,9 +3290,6 @@
             },
             {
                 "name": "Legend"
-            },
-            {
-                "name": "FitBounds"
             },
             {
                 "name": "Locate"
@@ -4083,6 +4086,13 @@
                 "cfg": {
                     "containerPosition": "header",
                     "leftMenuItems": [
+                        {
+                            "type": "link",
+                            "size": "md",
+                            "href": "#/all",
+                            "labelId": "gnviewer.allResources",
+                            "disableIf": "{!!state('resourceParams')?.mapPk}"
+                        },
                         {
                             "type": "link",
                             "href": "{'#/map/' + state('resourceParams')?.mapPk}",
