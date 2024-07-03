@@ -268,6 +268,19 @@ def run_setup_hooks(*args, **kwargs):
         "pnts",
     )
 
+    GEONODE_CATALOGUE_SERVICE = getattr(settings, "GEONODE_CATALOGUE_SERVICE", None)
+    MAPSTORE_DASHBOARD_CATALOGUE_SERVICES = {}
+    MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE = ""
+
+    if GEONODE_CATALOGUE_SERVICE:
+        MAPSTORE_DASHBOARD_CATALOGUE_SERVICES[list(list(GEONODE_CATALOGUE_SERVICE.keys()))[0]] = GEONODE_CATALOGUE_SERVICE[
+            list(list(GEONODE_CATALOGUE_SERVICE.keys()))[0]
+        ]  # noqa
+        MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE = list(list(GEONODE_CATALOGUE_SERVICE.keys()))[0]
+
+    setattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE", MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE)
+    setattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SERVICES", MAPSTORE_DASHBOARD_CATALOGUE_SERVICES)
+
 
 def connect_geoserver_style_visual_mode_signal():
     from geonode.geoserver.signals import geoserver_automatic_default_style_set

@@ -25,6 +25,10 @@ def resource_urls(request):
         "CATALOGUE_SELECTED_SERVICE": getattr(
             settings, "MAPSTORE_CATALOGUE_SELECTED_SERVICE", None
         ),
+        "DASHBOARD_CATALOGUE_SERVICES": getattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SERVICES", {}),
+        "DASHBOARD_CATALOGUE_SELECTED_SERVICE": getattr(
+            settings, "MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE", None
+        ),
         "CREATE_LAYER": getattr(settings, "CREATE_LAYER", False),
         "DEFAULT_MAP_CENTER_X": getattr(settings, "DEFAULT_MAP_CENTER_X", 0),
         "DEFAULT_MAP_CENTER_Y": getattr(settings, "DEFAULT_MAP_CENTER_Y", 0),
