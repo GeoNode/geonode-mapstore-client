@@ -694,7 +694,7 @@ export const gnZoomToFitBounds = (action$) =>
                 .switchMap(() => {
                     const extent = validateGeometry(action.value);
                     return Observable.of(
-                        zoomToExtent(extent, 'EPSG:4326'),
+                        zoomToExtent(extent, 'EPSG:4326', undefined, { duration: 0 }),
                         setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', null)
                     );
                 })
