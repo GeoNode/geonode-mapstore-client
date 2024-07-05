@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
 import Message from '@mapstore/framework/components/I18N/Message';
-import { ResourceTypes, GXP_PTYPES, getResourceImageSource } from '@js/utils/ResourceUtils';
+import { ResourceTypes, GXP_PTYPES, getResourceImageSource, isDefaultDatasetSubtype } from '@js/utils/ResourceUtils';
 import ThumbnailEditable from './ThumbnailEditable';
 import BaseMap from '@mapstore/framework/components/map/BaseMap';
 import mapTypeHOC from '@mapstore/framework/components/map/enhancers/mapType';
@@ -110,6 +110,14 @@ function DetailsThumbnail({
         onResourceThumbnail();
     };
 
+    const canCreateMapThumbnail = resource.resource_type === ResourceTypes.MAP
+        ? true
+        : resource.resource_type === ResourceTypes.DATASET
+            && ![GXP_PTYPES.REST_IMG, GXP_PTYPES.REST_MAP].includes(resource.ptype)
+            && isDefaultDatasetSubtype(resource.subtype)
+            ? true
+            : false;
+
     return (
         <div className="gn-details-panel-content-img" >
             <div className="gn-details-panel-preview-wrapper" style={{ ...(aspectRatio && { aspectRatio: `${width} / ${height}` }) }}>
@@ -124,8 +132,7 @@ function DetailsThumbnail({
                                 image={() => getResourceImageSource(resource?.thumbnail_url)}
                                 thumbnailUpdating={resourceThumbnailUpdating}
                             />
-                            {((resource.resource_type === ResourceTypes.MAP || resource.resource_type === ResourceTypes.DATASET)
-                                && (resource.ptype !== GXP_PTYPES.REST_IMG || resource.ptype !== GXP_PTYPES.REST_MAP)) ?
+                            {canCreateMapThumbnail ?
                                 <MapThumbnailButtonToolTip
                                     variant="default"
                                     onClick={() => onClose(!enableMapViewer)}
