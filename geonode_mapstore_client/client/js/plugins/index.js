@@ -21,7 +21,8 @@ let epicsNamesToExclude = [
     'loadGeostoryEpic',
     'reloadGeoStoryOnLoginLogout',
     'loadStoryOnHistoryPop',
-    'saveGeoStoryResource'
+    'saveGeoStoryResource',
+    'storeDetailsInfoDashboardEpic'
 ];
 
 // we need to exclude epics that have been initialized already at app level
@@ -32,7 +33,7 @@ export const storeEpicsNamesToExclude = (epics) => {
     epicsNamesToExclude = uniq(epicsNamesToExclude);
 };
 
-function cleanEpics(epics, excludedNames = []) {
+export function cleanEpics(epics, excludedNames = epicsNamesToExclude) {
     const containsExcludedEpic = !!excludedNames.find((epicName) => epics[epicName]);
     if (containsExcludedEpic) {
         return omit(epics, excludedNames);

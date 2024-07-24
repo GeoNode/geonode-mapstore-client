@@ -67,7 +67,7 @@ import maplayout from '@mapstore/framework/reducers/maplayout';
 import 'react-widgets/dist/css/react-widgets.css';
 import 'react-select/dist/react-select.css';
 
-import pluginsDefinition, { storeEpicsNamesToExclude } from '@js/plugins/index';
+import pluginsDefinition, { storeEpicsNamesToExclude, cleanEpics } from '@js/plugins/index';
 import ReactSwipe from 'react-swipeable-views';
 import SwipeHeader from '@mapstore/framework/components/data/identify/SwipeHeader';
 const requires = {
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const resourceId = geoNodePageConfig.resourceId;
                         const resourceSubtype = geoNodePageConfig.resourceSubtype;
 
-                        const appEpics = {
+                        const appEpics = cleanEpics({
                             ...standardEpics,
                             ...configEpics,
                             updateMapLayoutEpic,
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             ...pluginsDefinition.epics,
                             // needed to initialize the correct time range
                             ...timelineEpics
-                        };
+                        });
 
                         storeEpicsNamesToExclude(appEpics);
 

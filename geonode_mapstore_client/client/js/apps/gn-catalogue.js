@@ -78,7 +78,7 @@ import gnsearchEpics from '@js/epics/gnsearch';
 import favoriteEpics from '@js/epics/favorite';
 import maplayout from '@mapstore/framework/reducers/maplayout';
 
-import pluginsDefinition, { storeEpicsNamesToExclude } from '@js/plugins/index';
+import pluginsDefinition, { storeEpicsNamesToExclude, cleanEpics } from '@js/plugins/index';
 import ReactSwipe from 'react-swipeable-views';
 import SwipeHeader from '@mapstore/framework/components/data/identify/SwipeHeader';
 
@@ -137,7 +137,7 @@ getEndpoints()
                     const mapLayout = getConfigProp('mapLayout') || {};
                     setConfigProp('mapLayout', mapLayout[query.theme] || mapLayout.viewer);
 
-                    const appEpics = {
+                    const appEpics = cleanEpics({
                         ...standardEpics,
                         ...configEpics,
                         gnCheckSelectedDatasetPermissions,
@@ -150,7 +150,7 @@ getEndpoints()
                         updateMapLayoutEpic,
                         // needed to initialize the correct time range
                         ...timelineEpics
-                    };
+                    });
 
                     storeEpicsNamesToExclude(appEpics);
 

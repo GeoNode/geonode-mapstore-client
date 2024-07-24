@@ -22,7 +22,7 @@ import {
     getPluginsConfiguration,
     getPluginsConfigOverride
 } from '@js/utils/AppUtils';
-import pluginsDefinition, { storeEpicsNamesToExclude } from '@js/plugins/index';
+import pluginsDefinition, { storeEpicsNamesToExclude, cleanEpics } from '@js/plugins/index';
 import StandardApp from '@mapstore/framework/components/app/StandardApp';
 import withExtensions from '@mapstore/framework/components/app/withExtensions';
 import gnsettings from '@js/reducers/gnsettings';
@@ -62,9 +62,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         settings
                     }) => {
 
-                        const appEpics = {
+                        const appEpics = cleanEpics({
                             ...configEpics
-                        };
+                        });
 
                         storeEpicsNamesToExclude(appEpics);
 
