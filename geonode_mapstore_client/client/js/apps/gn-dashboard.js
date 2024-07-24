@@ -30,7 +30,7 @@ import {
     getPluginsConfigOverride
 } from '@js/utils/AppUtils';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
-import pluginsDefinition, { storeEpicsNamesToExclude } from '@js/plugins/index';
+import pluginsDefinition, { storeEpicsNamesToExclude, cleanEpics } from '@js/plugins/index';
 import ReactSwipe from 'react-swipeable-views';
 import SwipeHeader from '@mapstore/framework/components/data/identify/SwipeHeader';
 import { requestResourceConfig } from '@js/actions/gnresource';
@@ -77,10 +77,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         settings
                     }) => {
 
-                        const appEpics = {
+                        const appEpics = cleanEpics({
                             ...configEpics,
                             ...gnresourceEpics
-                        };
+                        });
 
                         storeEpicsNamesToExclude(appEpics);
 
