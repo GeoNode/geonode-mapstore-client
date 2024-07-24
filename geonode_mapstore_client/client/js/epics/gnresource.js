@@ -10,7 +10,6 @@ import { Observable } from 'rxjs';
 import axios from '@mapstore/framework/libs/ajax';
 import uuid from "uuid";
 import url from "url";
-import omit from 'lodash/omit';
 import get from 'lodash/get';
 import {
     getNewMapConfiguration,
@@ -82,7 +81,6 @@ import {
     toMapStoreMapConfig,
     parseStyleName,
     getCataloguePath,
-    getResourceWithLinkedResources,
     isDefaultDatasetSubtype
 } from '@js/utils/ResourceUtils';
 import {
@@ -216,8 +214,7 @@ const resourceTypes = {
             Observable.defer(() =>  axios.all([
                 getNewMapConfiguration(),
                 getMapByPk(pk)
-                    .then((_resource) => {
-                        const resource = getResourceWithLinkedResources(_resource);
+                    .then((resource) => {
                         const mapViewers = get(resource, 'linkedResources.linkedTo', [])
                             .find(({ resource_type: type } = {}) => type === ResourceTypes.VIEWER);
                         return mapViewers?.pk
@@ -237,7 +234,7 @@ const resourceTypes = {
                         setContext(mapViewerResource ? mapViewerResource.data : null),
                         setResource(mapResource),
                         setResourceId(pk),
-                        setMapViewerLinkedResource({...getResourceWithLinkedResources(omit(mapViewerResource, ['data']))}),
+                        setMapViewerLinkedResource(mapViewerResource),
                         setResourcePathParameters({
                             ...options?.params,
                             appPk: mapViewerResource?.pk,
