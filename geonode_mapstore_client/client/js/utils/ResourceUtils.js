@@ -196,7 +196,7 @@ export const resourceToLayerConfig = (resource) => {
     }
 };
 
-function updateUrlQueryParameter(requestUrl, query) {
+function updateUrlQueryParameter(requestUrl = '', query) {
     const parsedUrl = url.parse(requestUrl, true);
     return url.format({
         ...parsedUrl,
