@@ -45,7 +45,6 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import { layersSelector } from '@mapstore/framework/selectors/layers';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import { parsePluginConfigExpressions } from '@js/utils/MenuUtils';
-import detailViewerEpics from '@js/epics/detailviewer';
 import usePluginItems from '@js/hooks/usePluginItems';
 import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
 
@@ -277,7 +276,6 @@ export default createPlugin('DetailViewer', {
             Component: ConnectedButton
         }
     },
-    epics: detailViewerEpics,
     reducers: {
         gnresource,
         controls

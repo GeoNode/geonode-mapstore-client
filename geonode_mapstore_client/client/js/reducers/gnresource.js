@@ -9,6 +9,7 @@
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import isNil from 'lodash/isNil';
+import omit from 'lodash/omit';
 
 import {
     RESOURCE_LOADING,
@@ -39,7 +40,8 @@ import {
 } from '@js/actions/gnresource';
 import {
     cleanCompactPermissions,
-    getGeoLimitsFromCompactPermissions
+    getGeoLimitsFromCompactPermissions,
+    getResourceWithLinkedResources
 } from '@js/utils/ResourceUtils';
 
 const defaultState = {
@@ -74,7 +76,8 @@ function gnresource(state = defaultState, action) {
         };
     }
     case SET_RESOURCE: {
-        const { data, ...resource } = action.data || {};
+        const actionData = getResourceWithLinkedResources(action.data || {});
+        const { data, ...resource } = actionData;
         let updatedResource = {...resource};
         const linkedResources = state.data?.linkedResources;
         if (!isEmpty(linkedResources) && updatedResource.pk === state.data?.pk) {
@@ -83,7 +86,7 @@ function gnresource(state = defaultState, action) {
 
         return {...state,
             error: null,
-            initialResource: { ...action.data },
+            initialResource: { ...actionData },
             data: updatedResource,
             loading: false,
             isNew: false
@@ -239,7 +242,7 @@ function gnresource(state = defaultState, action) {
     case SET_MAP_VIEWER_LINKED_RESOURCE:
         return {
             ...state,
-            viewerLinkedResource: action.resource
+            viewerLinkedResource: { ...getResourceWithLinkedResources(omit(action.resource, ['data'])) }
         };
     case SET_DEFAULT_VIEWER_PLUGINS:
         return {
