@@ -81,7 +81,7 @@ function ViewerRoute({
         pluginsConfig
     });
 
-    const viewer = useRef({ requestedPk: '', prevPluginsLength: null });
+    const viewer = useRef({ requestedPk: undefined, prevPluginsLength: null });
     const { requestedPk, prevPluginsLength } = viewer.current ?? {};
     useEffect(() => {
         if (!prevPluginsLength || pluginsCfgLength === 0) {
