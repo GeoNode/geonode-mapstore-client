@@ -793,6 +793,16 @@ export const getResourceWithLinkedResources = (resource = {}) => {
     return resource;
 };
 
+export const getResourceAdditionalProperties = (_resource = {}) => {
+    const resource =  getResourceWithLinkedResources(_resource);
+    const links = resource?.links || [];
+    const assets = links.filter(link => link?.extras?.type === 'asset' && link?.extras?.content?.title);
+    return {
+        ...resource,
+        ...(assets?.length && { assets })
+    };
+};
+
 export const onDeleteRedirectTo = (resources = []) => {
     let redirectUrl = '/';
     if (!isEmpty(resources) && resources?.length === 1) {

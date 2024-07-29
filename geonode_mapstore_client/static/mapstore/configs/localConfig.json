@@ -828,6 +828,12 @@
                             "id": "related",
                             "labelId": "gnviewer.linkedResources.label",
                             "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
+                        },
+                        {
+                            "type": "assets",
+                            "id": "assets",
+                            "labelId": "gnviewer.assets",
+                            "items": "{context.get(state('gnResourceData'), 'assets')}"
                         }
                     ]
                 }
@@ -1722,6 +1728,12 @@
                             "id": "related",
                             "labelId": "gnviewer.linkedResources.label",
                             "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
+                        },
+                        {
+                            "type": "assets",
+                            "id": "assets",
+                            "labelId": "gnviewer.assets",
+                            "items": "{context.get(state('gnResourceData'), 'assets')}"
                         }
                     ]
                 }
@@ -2418,6 +2430,12 @@
                             "id": "related",
                             "labelId": "gnviewer.linkedResources.label",
                             "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
+                        },
+                        {
+                            "type": "assets",
+                            "id": "assets",
+                            "labelId": "gnviewer.assets",
+                            "items": "{context.get(state('gnResourceData'), 'assets')}"
                         }
                     ]
                 }
@@ -2753,6 +2771,12 @@
                             "id": "related",
                             "labelId": "gnviewer.linkedResources.label",
                             "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
+                        },
+                        {
+                            "type": "assets",
+                            "id": "assets",
+                            "labelId": "gnviewer.assets",
+                            "items": "{context.get(state('gnResourceData'), 'assets')}"
                         }
                     ]
                 }
@@ -3017,6 +3041,12 @@
                             "id": "related",
                             "labelId": "gnviewer.linkedResources.label",
                             "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
+                        },
+                        {
+                            "type": "assets",
+                            "id": "assets",
+                            "labelId": "gnviewer.assets",
+                            "items": "{context.get(state('gnResourceData'), 'assets')}"
                         }
                     ]
                 }
@@ -3551,6 +3581,12 @@
                             "id": "related",
                             "labelId": "gnviewer.linkedResources.label",
                             "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
+                        },
+                        {
+                            "type": "assets",
+                            "id": "assets",
+                            "labelId": "gnviewer.assets",
+                            "items": "{context.get(state('gnResourceData'), 'assets')}"
                         }
                     ],
                     "allPage": {},
@@ -4322,6 +4358,12 @@
                             "id": "related",
                             "labelId": "gnviewer.linkedResources.label",
                             "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
+                        },
+                        {
+                            "type": "assets",
+                            "id": "assets",
+                            "labelId": "gnviewer.assets",
+                            "items": "{context.get(state('gnResourceData'), 'assets')}"
                         }
                     ]
                 }

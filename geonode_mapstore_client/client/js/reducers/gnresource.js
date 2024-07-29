@@ -40,7 +40,7 @@ import {
 import {
     cleanCompactPermissions,
     getGeoLimitsFromCompactPermissions,
-    getResourceWithLinkedResources
+    getResourceAdditionalProperties
 } from '@js/utils/ResourceUtils';
 
 const defaultState = {
@@ -75,7 +75,7 @@ function gnresource(state = defaultState, action) {
         };
     }
     case SET_RESOURCE: {
-        const actionData = getResourceWithLinkedResources(action.data || {});
+        const actionData = getResourceAdditionalProperties(action.data || {});
         const { data, ...resource } = actionData;
         let updatedResource = {...resource};
         const linkedResources = state.data?.linkedResources;
@@ -241,7 +241,7 @@ function gnresource(state = defaultState, action) {
     case SET_MAP_VIEWER_LINKED_RESOURCE:
         return {
             ...state,
-            viewerLinkedResource: { ...getResourceWithLinkedResources(omit(action.resource, ['data'])) }
+            viewerLinkedResource: { ...getResourceAdditionalProperties(omit(action.resource, ['data'])) }
         };
     case SET_DEFAULT_VIEWER_PLUGINS:
         return {

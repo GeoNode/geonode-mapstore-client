@@ -408,7 +408,8 @@
                     }
                 }
             },
-            "allResources": "All resources"
+            "allResources": "All resources",
+            "assets": "Assets"
         }
     }
 }

@@ -32,7 +32,8 @@ import {
     isDocumentExternalSource,
     getDownloadUrlInfo,
     getCataloguePath,
-    getResourceWithLinkedResources
+    getResourceWithLinkedResources,
+    getResourceAdditionalProperties
 } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
@@ -1047,5 +1048,117 @@ describe('Test Resource Utils', () => {
             .toEqual({pk: 1, linkedResources: {linkedBy: ["1"], linkedTo: ["1"]}});
         expect(getResourceWithLinkedResources({linked_resources: {linked_to: ["1"], linked_by: ["1"]}}))
             .toEqual({linkedResources: {linkedBy: ["1"], linkedTo: ["1"]}});
+    });
+    it('getResourceAdditionalProperties', () => {
+        expect(getResourceAdditionalProperties({})).toEqual({});
+        expect(getResourceAdditionalProperties()).toEqual({});
+        expect(getResourceAdditionalProperties({pk: 1, linked_resources: {linked_to: ["1"], linked_by: ["1"]}}))
+            .toEqual({pk: 1, linkedResources: {linkedBy: ["1"], linkedTo: ["1"]}});
+        expect(getResourceAdditionalProperties({
+            pk: 1,
+            links: [
+                {
+                    extension: '3dtiles',
+                    extras: {
+                        type: 'asset',
+                        content: {
+                            title: 'Original',
+                            description: null,
+                            type: '3dtiles',
+                            download_url: '/api/v2/assets/12/download'
+                        }
+                    },
+                    link_type: 'uploaded',
+                    mime: '',
+                    name: 'tileset',
+                    url: '/path'
+                },
+                {
+                    extension: '3dtiles',
+                    extras: {
+                        type: 'asset',
+                        content: {
+                            title: null,
+                            description: null,
+                            type: '3dtiles',
+                            download_url: '/api/v2/assets/12/download'
+                        }
+                    },
+                    link_type: 'uploaded',
+                    mime: '',
+                    name: 'tileset',
+                    url: '/path'
+                },
+                {
+                    extension: 'xml',
+                    link_type: 'metadata',
+                    mime: 'text/xml',
+                    name: 'ISO',
+                    url: '/path'
+                }
+            ]
+        }))
+            .toEqual({
+                pk: 1,
+                assets: [
+                    {
+                        extension: '3dtiles',
+                        extras: {
+                            type: 'asset',
+                            content: {
+                                title: 'Original',
+                                description: null,
+                                type: '3dtiles',
+                                download_url: '/api/v2/assets/12/download'
+                            }
+                        },
+                        link_type: 'uploaded',
+                        mime: '',
+                        name: 'tileset',
+                        url: '/path'
+                    }
+                ],
+                links: [
+                    {
+                        extension: '3dtiles',
+                        extras: {
+                            type: 'asset',
+                            content: {
+                                title: 'Original',
+                                description: null,
+                                type: '3dtiles',
+                                download_url: '/api/v2/assets/12/download'
+                            }
+                        },
+                        link_type: 'uploaded',
+                        mime: '',
+                        name: 'tileset',
+                        url: '/path'
+                    },
+                    {
+                        extension: '3dtiles',
+                        extras: {
+                            type: 'asset',
+                            content: {
+                                title: null,
+                                description: null,
+                                type: '3dtiles',
+                                download_url: '/api/v2/assets/12/download'
+                            }
+                        },
+                        link_type: 'uploaded',
+                        mime: '',
+                        name: 'tileset',
+                        url: '/path'
+                    },
+                    {
+                        extension: 'xml',
+                        link_type: 'metadata',
+                        mime: 'text/xml',
+                        name: 'ISO',
+                        url: '/path'
+                    }
+                ]
+            });
     });
 });

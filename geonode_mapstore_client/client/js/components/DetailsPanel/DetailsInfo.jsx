@@ -16,6 +16,7 @@ import DetailsAttributeTable from '@js/components/DetailsPanel/DetailsAttributeT
 import DetailsLinkedResources from '@js/components/DetailsPanel/DetailsLinkedResources';
 import Message from '@mapstore/framework/components/I18N/Message';
 import DetailsLocations from '@js/components/DetailsPanel/DetailsLocations';
+import DetailsAssets from '@js/components/DetailsPanel/DetailsAssets';
 
 const replaceTemplateString = (properties, str) => {
     return Object.keys(properties).reduce((updatedStr, key) => {
@@ -146,7 +147,8 @@ const tabTypes = {
     'attribute-table': DetailsAttributeTable,
     'linked-resources': DetailsLinkedResources,
     'locations': DetailsLocations,
-    'tab': DetailsInfoFields
+    'tab': DetailsInfoFields,
+    'assets': DetailsAssets
 };
 
 const parseTabItems = (items) => {
