@@ -2,7 +2,8 @@ import expect from 'expect';
 import {
     determineResourceType,
     getFileNameAndExtensionFromUrl,
-    getFileNameParts
+    getFileNameParts,
+    getFilenameFromContentDispositionHeader
 } from '@js/utils/FileUtils';
 
 describe('FileUtils', () => {
@@ -64,6 +65,12 @@ describe('FileUtils', () => {
             expect(ext).toBe('');
             expect(fileName).toBe('');
         });
+    });
+    it('getFilenameFromContentDispositionHeader', () => {
+        expect(getFilenameFromContentDispositionHeader()).toBe('');
+        expect(getFilenameFromContentDispositionHeader('attachment; filename="tileset.json"')).toBe('tileset.json');
+        expect(getFilenameFromContentDispositionHeader('attachment; filename*="filename.jpg"')).toBe('filename.jpg');
+        expect(getFilenameFromContentDispositionHeader('attachment')).toBe('');
     });
 });
 

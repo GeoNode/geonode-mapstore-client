@@ -1,5 +1,6 @@
 import axios from '@mapstore/framework/libs/ajax';
 import isEmpty from "lodash/isEmpty";
+import trim from 'lodash/trim';
 
 /**
 * @module utils/FileUtils
@@ -93,4 +94,17 @@ export const getFileNameAndExtensionFromUrl = (url) => {
     fileName = period !== -1 ? parsedName.substring(0, period) : parsedName;
     ext = period !== -1 ? parsedName.substring(period + 1) : "";
     return { fileName, ext: !isEmpty(ext) ? "." + ext : ext };
+};
+/**
+ * Get file name from Content-Disposition header
+ * @param {string} contentDisposition
+ * @return {string}
+ */
+export const getFilenameFromContentDispositionHeader = (contentDisposition) => {
+    if ((contentDisposition || '').includes('attachment')) {
+        // regex from https://stackoverflow.com/a/23054920
+        const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition) || [];
+        return trim(trim(matches?.[1] || '', '"'), "'");
+    }
+    return '';
 };

@@ -10,7 +10,10 @@ function DetailsAssets({ fields }) {
                     <div key={idx} className="gn-details-info-fields">
                         <div className="gn-details-info-row linked-resources">
                             <FaIcon name="file" />
-                            {asset.download_url ? <a download href={asset.download_url}>
+                            {asset.download_url ? <a
+                                download
+                                href={asset.download_url}
+                            >
                                 {asset.title}{' '}<FaIcon name="download" />
                             </a> : asset.title}
                         </div>

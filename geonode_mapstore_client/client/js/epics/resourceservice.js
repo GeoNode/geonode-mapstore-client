@@ -34,6 +34,7 @@ import { push } from 'connected-react-router';
 import {
     error as errorNotification
 } from '@mapstore/framework/actions/notifications';
+import { getFilenameFromContentDispositionHeader } from '@js/utils/FileUtils';
 
 export const gnMonitorAsyncProcesses = (action$, store) => {
     return action$.ofType(START_ASYNC_PROCESS)
@@ -105,7 +106,9 @@ export const gnDownloadResource = (action$) =>
             const resource = action?.resource;
             return Observable.defer(() => downloadResource(resource)
                 .then(({ output, headers }) => {
-                    saveAs(new Blob([output], { type: headers?.['content-type'] }), resource.title);
+                    const filename = getFilenameFromContentDispositionHeader(headers?.['content-disposition'])
+                        || resource.title;
+                    saveAs(new Blob([output], { type: headers?.['content-type'] }), filename);
                     return { resource };
                 })
                 .catch((error) => ({ resource, error: error?.data?.detail || error?.statusText || error?.message || true }))

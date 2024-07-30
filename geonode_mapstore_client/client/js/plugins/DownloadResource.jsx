@@ -60,7 +60,7 @@ const DownloadButton = ({
             <Component
                 {...isButton && { variant, size }}
                 {...showIcon && { tooltipId: "gnviewer.download" }}
-                download={`${_resource?.title}.${_resource?.extension}`}
+                download
                 href={ downloadInfo.url }
                 target="_blank"
                 rel="noopener noreferrer"
