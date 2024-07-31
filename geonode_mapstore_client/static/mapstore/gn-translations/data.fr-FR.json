@@ -290,6 +290,11 @@
             "supportedFiles": "Extensions de fichiers prises en charge",
             "unsupportedFiles": "Fichiers non pris en charge pour le téléchargement",
             "upload": "Télécharger",
+            "addFromUrl": "Ajouter depuis l'URL...",
+            "invalidUrl": "Insérer une URL absolue valide",
+            "unsupportedUrlServiceType": "Sélectionner un type de service",
+            "remoteResourceURLPlaceholder": "URL de la ressource...",
+            "invalidRemoteUploadMessageErrorTooltip": "Le processus de téléchargement a échoué. Veuillez vérifier la validité de l'URL et réessayer de la télécharger",
 
             "uploadDataset": "Télécharger un jeu de données",
             "dragAndDropFile": "Glisser et déposer un fichier à télécharger",

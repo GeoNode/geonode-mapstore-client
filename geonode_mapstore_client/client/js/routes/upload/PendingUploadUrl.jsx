@@ -10,96 +10,120 @@ import React from "react";
 import Select from "react-select";
 import isEmpty from "lodash/isEmpty";
 import isNil from "lodash/isNil";
-
+import { FormControl as FormControlRB } from 'react-bootstrap';
 import FaIcon from "@js/components/FaIcon";
 import Button from "@js/components/Button";
 import { isValidURL } from "@mapstore/framework/utils/URLUtils";
 import Message from '@mapstore/framework/components/I18N/Message';
 import { getFileNameAndExtensionFromUrl } from "@js/utils/FileUtils";
+import withDebounceOnCallback from '@mapstore/framework/components/misc/enhancers/withDebounceOnCallback';
+import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
+import ErrorMessageWithTooltip from './ErrorMessageWithTooltip';
+const FormControl = localizedProps('placeholder')(FormControlRB);
+function InputControl({ onChange, value, debounceTime, ...props }) {
+    return <FormControl {...props} value={value} onChange={event => onChange(event.target.value)}/>;
+}
+const InputControlWithDebounce = withDebounceOnCallback('onChange', 'value')(InputControl);
 
-export default ({
-    supportedLabels,
-    baseName,
-    extension,
-    docUrl,
+const PendingUploadUrl = ({
+    data,
+    extensions,
+    serviceTypes,
     loading,
     progress,
-    index,
-    supported,
-    uploadUrls,
-    setUploadUrls,
-    onAddUrl,
+    onChange,
     onRemove,
     onAbort,
-    onRemoveUrl
+    error
 } = {}) => {
 
-    const _supportedLabels = supportedLabels?.split(',')
-        ?.map(label => label.trim())
-        ?.map(label => ({value: label, label})) ?? [];
+    const {
+        baseName,
+        extension,
+        remoteUrl,
+        supported,
+        serviceType,
+        validation,
+        edited
+    } = data || {};
 
-    const isDuplicateUrl = (documentUrls = uploadUrls, _docUrl = docUrl) => {
-        const urls = documentUrls.map(d => d.docUrl);
-        const hasSameUrl = urls?.filter(doc => doc === _docUrl)?.length > 1;
-        return hasSameUrl && urls.indexOf(docUrl) !== index;
-    };
-
-    const onChange = (event) => {
-        const {value, name} = event.target ?? {};
-        let documentUrls = [...uploadUrls];
-        if (name === 'docUrl') {
-            let fileName = "";
-            let ext = "";
-            if (isValidURL(value)) {
-                const data = getFileNameAndExtensionFromUrl(value);
-                fileName = data.fileName;
-                ext = data.ext;
-            }
-            let supportedUrl = !isEmpty(value) && _supportedLabels.some(({label}) => label === ext);
-            documentUrls[index] = {
-                ...documentUrls[index],
+    const updateProperty = (name, value) => {
+        if (name === 'remoteUrl') {
+            const { ext } = isValidURL(value)
+                ? getFileNameAndExtensionFromUrl(value)
+                : { fileName: '', ext: '' };
+            return {
+                ...data,
                 [name]: value,
-                baseName: fileName,
-                supported: supportedUrl && !isDuplicateUrl(documentUrls, documentUrls[index]?.docUrl),
-                extension: ext
-            };
-        } else {
-            documentUrls[index] = {
-                ...documentUrls[index],
-                supported: !isEmpty(baseName) && !isEmpty(value),
-                [name]: value
+                baseName: value,
+                extension: ext,
+                edited: true
             };
         }
-        setUploadUrls(documentUrls);
-        onAddUrl(documentUrls);
+        return {
+            ...data,
+            [name]: value,
+            edited: true
+        };
     };
 
-    const onClickRemove = () => {
-        onRemoveUrl((onUnsupportedUrl) => {
-            !isDuplicateUrl(uploadUrls) && onRemove(baseName);
-            const filteredUploadUrls = uploadUrls.filter((_, docIndex) => docIndex !== index);
-            setUploadUrls(filteredUploadUrls);
-            onUnsupportedUrl(filteredUploadUrls);
-        });
-
+    const handleOnChange = ({ value, name } = {}) => {
+        const newEntry = updateProperty(name, value);
+        return onChange(newEntry);
     };
+
+    function handleOnRemove() {
+        onRemove(data);
+    }
 
     const hasExtensionInUrl = () => {
-        const {ext} = getFileNameAndExtensionFromUrl(docUrl);
+        const {ext} = getFileNameAndExtensionFromUrl(remoteUrl);
         return !isEmpty(ext);
     };
 
     const isNotSupported = () => !isNil(supported) && !supported;
 
+    const getErrorMessageId = () => {
+        const {
+            isRemoteUrlDuplicated,
+            isValidRemoteUrl,
+            isExtensionSupported,
+            isServiceTypeSupported
+        } = validation;
+        if (!isValidRemoteUrl) {
+            return 'gnviewer.invalidUrl';
+        }
+        if (!isExtensionSupported) {
+            return 'gnviewer.unsupportedUrlExtension';
+        }
+        if (!isServiceTypeSupported) {
+            return 'gnviewer.unsupportedUrlServiceType';
+        }
+        if (isRemoteUrlDuplicated) {
+            return 'gnviewer.duplicateUrl';
+        }
+        return 'gnviewer.invalidUrl';
+    };
+
     return (
         <div className={"gn-upload-card gn-upload-url"}>
             <div className="gn-upload-card-header">
                 <div className="gn-upload-input">
-                    <input className={"form-control"} name={"docUrl"} value={docUrl || ""} onChange={(e) => onChange(e)}/>
-                    {isNotSupported() && <div className="gn-upload-error-inline"><FaIcon name="exclamation" /></div>}
+                    <InputControlWithDebounce
+                        value={remoteUrl || ""}
+                        placeholder="gnviewer.remoteResourceURLPlaceholder"
+                        debounceTime={300}
+                        onChange={(value) => handleOnChange({
+                            name: 'remoteUrl',
+                            value
+                        })}/>
+                    {edited && <>
+                        {!isNotSupported() && error ? <ErrorMessageWithTooltip tooltipId={<Message msgId="gnviewer.invalidRemoteUploadMessageErrorTooltip" />} /> : null}
+                        {isNotSupported() && <div className="gn-upload-error-inline"><FaIcon name="exclamation" /></div>}
+                    </>}
                     {onRemove
                         ? (!loading || !(progress?.[baseName]))
-                            ? <Button size="xs" onClick={onClickRemove}>
+                            ? <Button size="xs" onClick={handleOnRemove}>
                                 <FaIcon name="trash" />
                             </Button> : <Button size="xs" onClick={() => onAbort(baseName)}>
                                 <FaIcon name="stop" />
@@ -108,23 +132,30 @@ export default ({
                     }
                 </div>
             </div>
-            {(isDuplicateUrl() || isNotSupported()) && <div className="gn-upload-card-body">
+            {(edited && isNotSupported()) && <div className="gn-upload-card-body">
                 <div className="text-danger">
-                    <Message msgId={isNotSupported()
-                        ? 'gnviewer.unsupportedUrlExtension'
-                        : 'gnviewer.duplicateUrl'} />
+                    <Message msgId={getErrorMessageId()} />
                 </div>
             </div>}
-            <div className={"gn-upload-card-bottom"}>
+            {extensions && <div className={"gn-upload-card-bottom"}>
                 <Select
-                    disabled={isEmpty(docUrl) || !isValidURL(docUrl) || hasExtensionInUrl()}
+                    disabled={!validation?.isValidRemoteUrl || hasExtensionInUrl() }
                     clearable={false}
                     placeholder={"ext"}
-                    options={_supportedLabels}
+                    options={extensions}
                     value={extension}
-                    onChange={(option) => onChange({ target: {...option, name: 'extension'} || {} })}
+                    onChange={(option) => handleOnChange({...option, name: 'extension'})}
                 />
-            </div>
+            </div>}
+            {serviceTypes && <div className={"gn-upload-card-bottom"}>
+                <Select
+                    clearable={false}
+                    placeholder={"type"}
+                    options={serviceTypes}
+                    value={serviceType}
+                    onChange={(option) => handleOnChange({...option, name: 'serviceType'})}
+                />
+            </div>}
             {loading && progress && progress?.[baseName] && <div style={{ position: 'relative' }}>
                 <div
                     className="gn-upload-card-progress"
@@ -146,3 +177,5 @@ export default ({
         </div>
     );
 };
+
+export default PendingUploadUrl;

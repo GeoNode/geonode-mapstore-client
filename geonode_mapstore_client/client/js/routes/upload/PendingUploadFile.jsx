@@ -13,13 +13,7 @@ import Button from '@js/components/Button';
 import Badge from '@js/components/Badge';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Spinner from '@js/components/Spinner';
-import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
-
-function ErrorMessage(props) {
-    return (<div {...props} className="gn-failed-upload"><FaIcon name="exclamation" /></div> );
-}
-
-const ErrorMessageWithTooltip = tooltip(ErrorMessage);
+import ErrorMessageWithTooltip from './ErrorMessageWithTooltip';
 
 function PendingUploadFile({
     missingExt,

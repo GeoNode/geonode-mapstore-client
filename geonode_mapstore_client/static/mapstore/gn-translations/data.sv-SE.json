@@ -283,6 +283,11 @@
             "supportedFiles": "Supported file extensions",
             "unsupportedFiles": "Files not supported for the upload",
             "upload": "Upload",
+            "addFromUrl": "Add from URL...",
+            "invalidUrl": "Insert a valid absolute URL",
+            "unsupportedUrlServiceType": "Select a service type",
+            "remoteResourceURLPlaceholder": "Resource URL...",
+            "invalidRemoteUploadMessageErrorTooltip": "The upload process failed. Please check the validity of the URL and try to upload it again",
 
             "uploadDataset": "Upload a dataset",
             "dragAndDropFile": "Drag and drop a file to upload",

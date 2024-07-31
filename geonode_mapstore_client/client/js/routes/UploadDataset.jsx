@@ -10,6 +10,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
 import merge from 'lodash/merge';
+import uniqBy from 'lodash/uniqBy';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import {
@@ -59,6 +60,7 @@ function UploadList({
     const [unsupported, setUnsupported] = useState([]);
     const [loading, setLoading] = useState(false);
     const [uploadContainerProgress, setUploadContainerProgress] = useState({});
+    const [remoteResourceUploads, setRemoteResourceUploads] = useState([]);
 
     function updateWaitingUploads(uploadFiles) {
         // prepare params for parseUploadFiles
@@ -113,6 +115,36 @@ function UploadList({
         setUnsupported(unsupportedFiles);
     }
 
+    function handleSetRemoteResourceUploads(newRemoteResourceUploads) {
+        setRemoteResourceUploads(newRemoteResourceUploads);
+        const newWaitingRemoteResourceUploads = newRemoteResourceUploads
+            .filter(({ supported }) => supported)
+            .reduce((acc, entry) => {
+                const { baseName, remoteUrl, serviceType } = entry;
+                return {
+                    ...acc,
+                    [baseName]: {
+                        serviceType,
+                        baseName,
+                        remoteUrl,
+                        remote: true
+                    }
+                };
+            }, {});
+        updateWaitingUploads({
+            ...Object.keys(waitingUploads)
+                .reduce((acc, key) => waitingUploads[key]?.remote
+                    ? acc
+                    : { ...acc, [key]: waitingUploads[key] }, {}),
+            ...newWaitingRemoteResourceUploads
+        });
+        setUnsupported([
+            ...unsupported.filter(({ remote } = {})=> !remote),
+            ...uniqBy(newRemoteResourceUploads.filter(({ supported } = {}) => !supported), 'remoteUrl')
+                .map(({ remoteUrl } = {}) => ({ url: { name: remoteUrl }, remote: true }))
+        ]);
+    }
+
     const datasetUploadProgress = (fileName) => (progress) => {
         const percentCompleted = Math.floor((progress.loaded * 100) / progress.total);
         setUploadContainerProgress((prevFiles) => ({ ...prevFiles, [fileName]: percentCompleted }));
@@ -124,6 +156,22 @@ function UploadList({
         return validFile;
     }
 
+    function getUploadRequestPayload({ readyUpload }) {
+        if (readyUpload.remote) {
+            return {
+                url: readyUpload.remoteUrl,
+                title: readyUpload.remoteUrl,
+                type: readyUpload.serviceType
+            };
+        }
+        const mainExt = (readyUpload.mainExt !== 'sld' && readyUpload.mainExt !== 'xml') ? readyUpload.mainExt : getValidFileExt(readyUpload);
+        return {
+            file: readyUpload.files[mainExt],
+            ext: mainExt,
+            auxiliaryFiles: readyUpload.files
+        };
+    }
+
     function handleUploadProcess() {
         if (!loading) {
             setLoading(true);
@@ -132,19 +180,14 @@ function UploadList({
                 const readyUpload = readyUploads[baseName];
                 cancelTokens[baseName] = axios.CancelToken;
                 sources[baseName] = cancelTokens[baseName].source();
-
-                const mainExt = (readyUpload.mainExt !== 'sld' && readyUpload.mainExt !== 'xml') ? readyUpload.mainExt : getValidFileExt(readyUpload);
-
-                readyUpload.mainExt = mainExt;
-
+                const config = {
+                    onUploadProgress: datasetUploadProgress(baseName),
+                    cancelToken: sources[baseName].token
+                };
+                const payload = getUploadRequestPayload({ readyUpload, baseName });
                 return uploadDataset({
-                    file: readyUpload.files[readyUpload.mainExt],
-                    ext: readyUpload.mainExt,
-                    auxiliaryFiles: readyUpload.files,
-                    config: {
-                        onUploadProgress: datasetUploadProgress(baseName),
-                        cancelToken: sources[baseName].token
-                    }
+                    ...payload,
+                    config
                 })
                     .then((data) => ({ status: 'success', data, baseName }))
                     .catch((error) => {
@@ -159,16 +202,20 @@ function UploadList({
                     const successfulUploads = responses.filter(({ status }) => status === 'success');
                     const errorUploads = responses.filter(({ status }) => status === 'error');
                     if (errorUploads.length > 0) {
-                        errorUploads.forEach((upload) => {
-                            const { baseName } = upload;
-                            waitingUploads[baseName].error = true;
-                        });
+                        updateWaitingUploads(Object.keys(waitingUploads).reduce((acc, baseName) => {
+                            const error = !!errorUploads.find(errorUpload => errorUpload.baseName === baseName);
+                            const waitingUpload = waitingUploads[baseName];
+                            return {
+                                ...acc,
+                                [baseName]: error ? { ...waitingUpload, error: true } : waitingUpload
+                            };
+                        }, {}));
                     }
                     if (successfulUploads.length > 0) {
                         const successfulUploadsIds = successfulUploads.filter(({ data }) => !!data?.id).map(({data}) => data?.id);
                         const successfulUploadsNames = successfulUploads.map(({ baseName }) => baseName);
                         updateWaitingUploads(omit(waitingUploads, successfulUploadsNames));
-
+                        setRemoteResourceUploads(remoteResourceUploads.filter(({ baseName } = {}) => !successfulUploadsNames.includes(baseName)));
                         successfulUploadsIds.length > 0 && getProcessedUploadsByImportId(successfulUploadsIds)
                             .then((successfulUploadProcesses) => {
                                 onSuccess(successfulUploadProcesses);
@@ -200,6 +247,15 @@ function UploadList({
             waitingUploads={waitingUploads}
             onDrop={handleDrop}
             supportedLabels={supportedLabels}
+            getDefaultRemoteResource={(value) => ({
+                ...value,
+                // now 3d tiles is the only supported service type
+                // we could remove this as soon we have new types
+                serviceType: '3dtiles'
+            })}
+            serviceTypes={[
+                { value: '3dtiles', label: '3D Tiles' }
+            ]}
             onRemove={(baseName) => updateWaitingUploads(omit(waitingUploads, baseName))}
             unsupported={unsupported}
             disabledUpload={Object.keys(readyUploads).length === 0}
@@ -210,6 +266,8 @@ function UploadList({
             type="dataset"
             abort={handleCancelSingleUpload}
             abortAll={handleCancelAllUploads}
+            remoteResourceUploads={remoteResourceUploads}
+            setRemoteResourceUploads={handleSetRemoteResourceUploads}
         >
             {children}
         </UploadContainer>

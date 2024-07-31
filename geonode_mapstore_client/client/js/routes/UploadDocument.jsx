@@ -12,8 +12,6 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import uniqBy from 'lodash/uniqBy';
 import omit from 'lodash/omit';
-import isEmpty from 'lodash/isEmpty';
-import isNil from 'lodash/isNil';
 import uuidv1 from 'uuid/v1';
 
 import { uploadDocument } from '@js/api/geonode/v2';
@@ -21,7 +19,8 @@ import axios from '@mapstore/framework/libs/ajax';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import UploadListContainer from '@js/routes/upload/UploadListContainer';
 import UploadContainer from '@js/routes/upload/UploadContainer';
-import { getFileNameParts } from '@js/utils/FileUtils';
+import { getFileNameParts, getFileNameAndExtensionFromUrl } from '@js/utils/FileUtils';
+import { isValidURL } from "@mapstore/framework/utils/URLUtils";
 
 function getAllowedDocumentTypes() {
     const { allowedDocumentTypes } = getConfigProp('geoNodeSettings') || [];
@@ -40,7 +39,7 @@ function UploadList({
     const [unsupported, setUnsupported] = useState([]);
     const [loading, setLoading] = useState(false);
     const [uploadContainerProgress, setUploadContainerProgress] = useState({});
-    const [uploadUrls, setUploadUrls] = useState([]);
+    const [remoteResourceUploads, setRemoteResourceUploads] = useState([]);
 
     function updateWaitingUploads(uploadFiles) {
         setWaitingUploads(uploadFiles);
@@ -74,47 +73,35 @@ function UploadList({
         setUnsupported(unsupportedFiles);
     }
 
-    const onUnsupportedUrl = (unsupportedUrls) => {
-        setUnsupported(unsupported
-            ?.filter(({file} = {})=> file)
-            ?.concat(
-                uniqBy(unsupportedUrls
-                    ?.filter(({ supported } = {}) => !isNil(supported) && !supported)
-                    ?.map(({docUrl} = {}) => ({url: {name: docUrl}})), 'url.name')
-            ));
-    };
-
-    const handleAddUrl = (docUrls) => {
-        let _uploadUrls = [...uploadUrls];
-        const emptyBaseName = 'empty-url';
-        if (isEmpty(docUrls)) {
-            if (!uploadUrls.some(doc => doc.baseName === emptyBaseName || isEmpty(doc.docUrl))) {
-                _uploadUrls = _uploadUrls.concat({
-                    docUrl: '',
-                    extension: '',
-                    baseName: emptyBaseName
-                });
-                setUploadUrls(_uploadUrls);
-            }
-        }
-        let _waitingUploads = {...waitingUploads};
-        const waitingUploadUrls = docUrls
-            ?.filter(({ supported }) => supported)
-            ?.reduce((acc, documentUrl) => {
-                const { extension, baseName, docUrl } = documentUrl;
+    function handleSetRemoteResourceUploads(newRemoteResourceUploads) {
+        setRemoteResourceUploads(newRemoteResourceUploads);
+        const newWaitingRemoteResourceUploads = newRemoteResourceUploads
+            .filter(({ supported }) => supported)
+            .reduce((acc, entry) => {
+                const { baseName, remoteUrl, extension } = entry;
                 return {
                     ...acc,
                     [baseName]: {
-                        urls: {
-                            [extension]: docUrl
-                        }
+                        extension,
+                        baseName,
+                        remoteUrl,
+                        remote: true
                     }
                 };
             }, {});
-        _waitingUploads = {..._waitingUploads, ...waitingUploadUrls};
-        updateWaitingUploads(_waitingUploads);
-        onUnsupportedUrl((isEmpty(docUrls) ? uploadUrls : docUrls));
-    };
+        updateWaitingUploads({
+            ...Object.keys(waitingUploads)
+                .reduce((acc, key) => waitingUploads[key]?.remote
+                    ? acc
+                    : { ...acc, [key]: waitingUploads[key] }, {}),
+            ...newWaitingRemoteResourceUploads
+        });
+        setUnsupported([
+            ...unsupported.filter(({ remote } = {})=> !remote),
+            ...uniqBy(newRemoteResourceUploads.filter(({ supported } = {}) => !supported), 'remoteUrl')
+                .map(({ remoteUrl } = {}) => ({ url: { name: remoteUrl }, remote: true }))
+        ]);
+    }
 
     const documentUploadProgress = (fileName) => (progress) => {
         const percentCompleted = Math.floor((progress.loaded * 100) / progress.total);
@@ -126,15 +113,31 @@ function UploadList({
         updateWaitingUploads(uploadFiles);
     };
 
-    const removeUrl = (onRemove) => {
-        onRemove(onUnsupportedUrl);
-    };
-
     const onSuccessfulUpload = (successfulUploads) => {
         const successfulUploadsNames = successfulUploads.map(({ baseName }) => baseName);
         updateWaitingUploads(omit(waitingUploads, successfulUploadsNames));
-        setUploadUrls(uploadUrls?.filter(({baseName} = {}) => !successfulUploadsNames?.includes(baseName)));
+        setRemoteResourceUploads(remoteResourceUploads.filter(({ baseName } = {}) => !successfulUploadsNames.includes(baseName)));
     };
+
+    function getUploadRequestPayload({ readyUpload }) {
+        if (readyUpload.remote) {
+            const remoteUrl = readyUpload.remoteUrl;
+            const { fileName } = isValidURL(remoteUrl)
+                ? getFileNameAndExtensionFromUrl(remoteUrl)
+                : { fileName: '', ext: '' };
+            return {
+                title: fileName || remoteUrl,
+                url: remoteUrl,
+                extension: readyUpload.extension
+            };
+        }
+        const fileExt = Object.keys(readyUpload.files);
+        const file = readyUpload.files[fileExt[0]];
+        return {
+            title: file?.name,
+            file
+        };
+    }
 
     function handleUploadProcess() {
         if (!loading) {
@@ -144,16 +147,7 @@ function UploadList({
                 const readyUpload = waitingUploads[baseName];
                 cancelTokens[baseName] = axios.CancelToken;
                 sources[baseName] = cancelTokens[baseName].source();
-                let payload;
-                if (readyUpload.files) {
-                    const fileExt = Object.keys(readyUpload.files);
-                    const file = readyUpload.files[fileExt[0]];
-                    payload = {title: file?.name, file};
-                } else if (readyUpload.urls) {
-                    const [urlExt] = Object.keys(readyUpload.urls);
-                    const url = readyUpload.urls[urlExt];
-                    payload = {title: baseName, url, extension: urlExt};
-                }
+                const payload = getUploadRequestPayload({ readyUpload });
                 const fileName = payload.title;
                 return uploadDocument({
                     ...payload,
@@ -210,15 +204,15 @@ function UploadList({
     const isDisableUpload = () => {
         return (
             Object.keys(waitingUploads).length === 0
-            || uploadUrls.some(({supported} = {}) => supported === false)
+            || remoteResourceUploads.some(({supported} = {}) => supported === false)
         );
     };
     return (
         <UploadContainer
             waitingUploads={waitingUploads}
             onDrop={handleDrop}
-            onAddUrl={handleAddUrl}
             supportedLabels={getAllowedDocumentTypes().map((ext) => `.${ext}`).join(', ')}
+            extensions={getAllowedDocumentTypes().map((ext) => ({ value: `.${ext}`, label: `.${ext}` }))}
             onRemove={(baseName) => removeFile(waitingUploads, baseName)}
             unsupported={unsupported}
             disabledUpload={isDisableUpload()}
@@ -229,9 +223,8 @@ function UploadList({
             type="document"
             abort={handleCancelSingleUpload}
             abortAll={handleCancelAllUploads}
-            setUploadUrls={setUploadUrls}
-            uploadUrls={uploadUrls}
-            onRemoveUrl={removeUrl}
+            remoteResourceUploads={remoteResourceUploads}
+            setRemoteResourceUploads={handleSetRemoteResourceUploads}
         >
             {children}
         </UploadContainer>

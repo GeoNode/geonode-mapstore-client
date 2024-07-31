@@ -774,8 +774,21 @@ export const uploadDataset = ({
     auxiliaryFiles,
     ext,
     charset = 'UTF-8',
+    url,
+    title,
+    type,
     config
 }) => {
+
+    if (url) {
+        return axios.post(`${parseDevHostname(endpoints[UPLOADS])}/upload`, {
+            url,
+            title,
+            type
+        }, config)
+            .then(({ data }) => (data));
+    }
+
     const formData = new FormData();
     formData.append('base_file', file);
     formData.append('charset', charset);

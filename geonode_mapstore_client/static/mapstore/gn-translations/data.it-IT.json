@@ -292,6 +292,11 @@
             "supportedFiles": "Estensioni supportate",
             "unsupportedFiles": "File non supportati per il caricamento",
             "upload": "Carica",
+            "addFromUrl": "Aggiungi da URL...",
+            "invalidUrl": "Inserisci un URL assoluto valido",
+            "unsupportedUrlServiceType": "Seleziona un tipo di servizio",
+            "remoteResourceURLPlaceholder": "URL risorsa...",
+            "invalidRemoteUploadMessageErrorTooltip": "Il processo di caricamento non è riuscito. Controlla la validità dell'URL e prova a caricarlo di nuovo",
 
             "uploadDataset": "Carica un dataset",
             "dragAndDropFile": "Trascina e rilascia un file da caricare",

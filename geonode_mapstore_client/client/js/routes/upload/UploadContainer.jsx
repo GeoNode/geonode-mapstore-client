@@ -19,6 +19,7 @@ import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import ViewerLayout from '@js/components/ViewerLayout';
 import PendingUploadFile from '@js/routes/upload/PendingUploadFile';
 import PendingUploadUrl from "@js/routes/upload/PendingUploadUrl";
+import { isValidURL } from "@mapstore/framework/utils/URLUtils";
 
 function ErrorButton(props) {
     return (
@@ -36,7 +37,6 @@ function UploadContainer({
     waitingUploads,
     children,
     onDrop,
-    onAddUrl,
     supportedLabels,
     onRemove,
     unsupported,
@@ -48,9 +48,11 @@ function UploadContainer({
     type,
     abort,
     abortAll,
-    setUploadUrls,
-    uploadUrls,
-    onRemoveUrl
+    extensions,
+    serviceTypes,
+    remoteResourceUploads,
+    setRemoteResourceUploads,
+    getDefaultRemoteResource = value => value
 }) {
 
     const inputFile = useRef();
@@ -62,9 +64,9 @@ function UploadContainer({
         return onDrop(files);
     };
 
-    const getSize = (filesObj, extensions) => {
+    const getSize = (filesObj, _extensions) => {
         let bytes = 0;
-        extensions.forEach(ext => {
+        _extensions.forEach(ext => {
             bytes += filesObj[ext].size;
         });
 
@@ -96,6 +98,45 @@ function UploadContainer({
         return aFileExceeds;
     };
 
+    const validateRemoteResourceUploads = (newRemoteResourceUploads) => {
+        const remoteUrls = newRemoteResourceUploads.map(({ remoteUrl }) => remoteUrl);
+        return newRemoteResourceUploads.map((remoteResourceUpload, idx) => {
+            const isRemoteUrlDuplicated = remoteUrls.filter(remoteUrl => remoteUrl === remoteResourceUpload.remoteUrl)?.length > 1
+                && remoteUrls.indexOf(remoteResourceUpload.remoteUrl) !== idx;
+            const isValidRemoteUrl = !!remoteResourceUpload.remoteUrl
+                && !(remoteResourceUpload.remoteUrl.indexOf('/') === 0) // is not relative
+                && isValidURL(remoteResourceUpload.remoteUrl);
+            const isExtensionSupported = extensions ? extensions.find(({ value }) => value === remoteResourceUpload.extension) : true;
+            const isServiceTypeSupported = serviceTypes ? serviceTypes.find(({ value }) => value === remoteResourceUpload.serviceType) : true;
+            return {
+                ...remoteResourceUpload,
+                supported: !!(!isRemoteUrlDuplicated && isValidRemoteUrl && isExtensionSupported && isServiceTypeSupported),
+                validation: {
+                    isRemoteUrlDuplicated,
+                    isValidRemoteUrl,
+                    isExtensionSupported,
+                    isServiceTypeSupported
+                }
+            };
+        });
+    };
+
+    function handleRemoteResourceUploadsUpdates(newRemoteResourceUploads) {
+        setRemoteResourceUploads(
+            validateRemoteResourceUploads(newRemoteResourceUploads)
+        );
+    }
+
+    function handleAddRemoteResourceUpload() {
+        handleRemoteResourceUploadsUpdates([...remoteResourceUploads, getDefaultRemoteResource({
+            remoteUrl: '',
+            extension: '',
+            baseName: ''
+        })]);
+    }
+
+    const unsupportedLabels = (unsupported || []).map(({ file, url } = {}) => (file?.name || url?.name)).join(', ');
+
     return (
         <Dropzone
             multiple
@@ -109,20 +150,20 @@ function UploadContainer({
             <ViewerLayout
                 leftColumn={
                     <div className="gn-upload-list">
-                        <div className={`gn-upload-list-header ${type}`}>
+                        <div className="gn-upload-list-header">
                             <input disabled={loading} ref={inputFile} value="" type="file" multiple onChange={handleFileDrop} style={{ display: 'none' }} />
                             <Button onClick={() => inputFile?.current?.click()}>
                                 <FaIcon name="plus" /><Message msgId="gnviewer.selectFiles" />
                             </Button>
-                            {type === "document" && <Button className={"add-url"} onClick={()=> onAddUrl()}>
-                                <FaIcon name="plus" /><Message msgId="gnviewer.addUrl" />
-                            </Button>}
+                            <Button className={"add-url"} onClick={handleAddRemoteResourceUpload}>
+                                <FaIcon name="plus" /><Message msgId="gnviewer.addFromUrl" />
+                            </Button>
                         </div>
-                        {waitingUploadFiles.length > 0 || uploadUrls?.length > 0 ? (
+                        {waitingUploadFiles.length > 0 || remoteResourceUploads?.length > 0 ? (
                             <ul>
                                 {waitingUploadFiles.map((baseName) => {
-                                    const { files, missingExt = [], error, addMissingFiles = false } = waitingUploads[baseName];
-                                    if (files) {
+                                    const { remote, files, missingExt = [], error, addMissingFiles = false } = waitingUploads[baseName];
+                                    if (!remote) {
                                         const filesExt = Object.keys(files);
                                         const size = getSize(files, filesExt);
                                         return (
@@ -146,21 +187,31 @@ function UploadContainer({
                                     }
                                     return null;
                                 })}
-                                {type === "document" && uploadUrls?.map((document, index) => {
+                                {remoteResourceUploads?.map((entry, index) => {
                                     return (
                                         <li key={index}>
                                             <PendingUploadUrl
-                                                {...document}
+                                                data={entry}
                                                 index={index}
-                                                onAddUrl={onAddUrl}
-                                                supportedLabels={supportedLabels}
+                                                extensions={extensions}
+                                                serviceTypes={serviceTypes}
                                                 loading={loading}
                                                 progress={progress}
-                                                onRemove={onRemove}
+                                                error={!!waitingUploads?.[entry.baseName]?.error}
                                                 onAbort={abort}
-                                                setUploadUrls={setUploadUrls}
-                                                uploadUrls={uploadUrls}
-                                                onRemoveUrl={onRemoveUrl}
+                                                onRemove={() => {
+                                                    handleRemoteResourceUploadsUpdates(remoteResourceUploads.filter((remoteResourceUpload, idx) => {
+                                                        return idx !== index;
+                                                    }));
+                                                }}
+                                                onChange={(newEntry) => {
+                                                    handleRemoteResourceUploadsUpdates(remoteResourceUploads.map((remoteResourceUpload, idx) => {
+                                                        if (idx === index) {
+                                                            return newEntry;
+                                                        }
+                                                        return remoteResourceUpload;
+                                                    }));
+                                                }}
                                             />
                                         </li>
                                     );
@@ -183,8 +234,8 @@ function UploadContainer({
                             </div>
                         )}
                         <div className="gn-upload-list-footer">
-                            {unsupported.length > 0 ? <Alert bsStyle="danger">
-                                <Message msgId="gnviewer.unsupportedFiles" />: {unsupported.map(({ file, url } = {}) => (file?.name || url?.name)).join(', ')}
+                            {unsupportedLabels ? <Alert bsStyle="danger">
+                                <Message msgId="gnviewer.unsupportedFiles" />{unsupportedLabels ? `: ${unsupportedLabels}` : ''}
                             </Alert> : null}
                             {(waitingUploadNames.length > 0 && getExceedingFileSize(waitingUploadNames, maxAllowedSize)) ?
                                 <ButtonWithTooltip noTooltipWhenDisabled tooltip={<Message msgId="gnviewer.exceedingFileMsg" msgParams={{ limit: maxAllowedSize }} />} >

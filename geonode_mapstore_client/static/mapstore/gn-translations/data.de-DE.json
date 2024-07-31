@@ -290,6 +290,11 @@
             "supportedFiles": "Unterstützte Dateierweiterungen",
             "unsupportedFiles": "Für den Upload nicht unterstützte Dateien",
             "upload": "Hochladen",
+            "addFromUrl": "Von URL hinzufügen...",
+            "invalidUrl": "Fügen Sie eine gültige absolute URL ein",
+            "unsupportedUrlServiceType": "Wählen Sie einen Diensttyp aus",
+            "remoteResourceURLPlaceholder": "Ressourcen-URL...",
+            "invalidRemoteUploadMessageErrorTooltip": "Der Upload-Vorgang ist fehlgeschlagen. Bitte überprüfen Sie die Gültigkeit der URL und versuchen Sie, sie erneut hochzuladen",
 
             "uploadDataset": "Einen Datensatz hochladen",
             "dragAndDropFile": "Ziehen und Ablegen einer Datei zum Hochladen",
