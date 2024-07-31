@@ -215,7 +215,7 @@ const resourceTypes = {
                 getNewMapConfiguration(),
                 getMapByPk(pk)
                     .then((resource) => {
-                        const mapViewers = get(resource, 'linkedResources.linkedTo', [])
+                        const mapViewers = get(resource, 'linked_resources.linked_to', [])
                             .find(({ resource_type: type } = {}) => type === ResourceTypes.VIEWER);
                         return mapViewers?.pk
                             ? axios.all([{...resource}, getGeoAppByPk(mapViewers?.pk, {api_preset: 'catalog_list', include: ['data', 'linked_resources']})])
