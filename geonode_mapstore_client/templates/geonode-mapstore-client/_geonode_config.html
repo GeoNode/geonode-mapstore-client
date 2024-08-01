@@ -87,6 +87,9 @@
             "pending-approval": {
                 "filter{is_approved}": false
             },
+            "remote": {
+                "filter{sourcetype.in}": "REMOTE"
+            },
             "dataset": {
                 "filter{resource_type.in}": "dataset"
             },

@@ -353,6 +353,11 @@ function ResourcesGrid({
                     disableIf: '{!state("user")}'
                 },
                 {
+                    id: 'remote',
+                    labelId: 'gnhome.remote',
+                    type: 'filter'
+                },
+                {
                     id: 'dataset',
                     labelId: 'gnhome.datasets',
                     type: 'filter',
@@ -365,11 +370,6 @@ function ResourcesGrid({
                         {
                             id: 'store-raster',
                             labelId: 'gnhome.raster',
-                            type: 'filter'
-                        },
-                        {
-                            id: 'store-remote',
-                            labelId: 'gnhome.remote',
                             type: 'filter'
                         },
                         {
