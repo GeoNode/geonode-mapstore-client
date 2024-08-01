@@ -8,14 +8,13 @@
 
 import React from "react";
 import Select from "react-select";
-import isEmpty from "lodash/isEmpty";
-import isNil from "lodash/isNil";
 import { FormControl as FormControlRB } from 'react-bootstrap';
 import FaIcon from "@js/components/FaIcon";
 import Button from "@js/components/Button";
 import { isValidURL } from "@mapstore/framework/utils/URLUtils";
 import Message from '@mapstore/framework/components/I18N/Message';
 import { getFileNameAndExtensionFromUrl } from "@js/utils/FileUtils";
+import { isNotSupported, getErrorMessageId, hasExtensionInUrl  } from "@js/utils/UploadUtils";
 import withDebounceOnCallback from '@mapstore/framework/components/misc/enhancers/withDebounceOnCallback';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
 import ErrorMessageWithTooltip from './ErrorMessageWithTooltip';
@@ -41,7 +40,6 @@ const PendingUploadUrl = ({
         baseName,
         extension,
         remoteUrl,
-        supported,
         serviceType,
         validation,
         edited
@@ -76,35 +74,6 @@ const PendingUploadUrl = ({
         onRemove(data);
     }
 
-    const hasExtensionInUrl = () => {
-        const {ext} = getFileNameAndExtensionFromUrl(remoteUrl);
-        return !isEmpty(ext);
-    };
-
-    const isNotSupported = () => !isNil(supported) && !supported;
-
-    const getErrorMessageId = () => {
-        const {
-            isRemoteUrlDuplicated,
-            isValidRemoteUrl,
-            isExtensionSupported,
-            isServiceTypeSupported
-        } = validation;
-        if (!isValidRemoteUrl) {
-            return 'gnviewer.invalidUrl';
-        }
-        if (!isExtensionSupported) {
-            return 'gnviewer.unsupportedUrlExtension';
-        }
-        if (!isServiceTypeSupported) {
-            return 'gnviewer.unsupportedUrlServiceType';
-        }
-        if (isRemoteUrlDuplicated) {
-            return 'gnviewer.duplicateUrl';
-        }
-        return 'gnviewer.invalidUrl';
-    };
-
     return (
         <div className={"gn-upload-card gn-upload-url"}>
             <div className="gn-upload-card-header">
@@ -118,8 +87,8 @@ const PendingUploadUrl = ({
                             value
                         })}/>
                     {edited && <>
-                        {!isNotSupported() && error ? <ErrorMessageWithTooltip tooltipId={<Message msgId="gnviewer.invalidRemoteUploadMessageErrorTooltip" />} /> : null}
-                        {isNotSupported() && <div className="gn-upload-error-inline"><FaIcon name="exclamation" /></div>}
+                        {!isNotSupported(data) && error ? <ErrorMessageWithTooltip tooltipId={<Message msgId="gnviewer.invalidRemoteUploadMessageErrorTooltip" />} /> : null}
+                        {isNotSupported(data) && <div className="gn-upload-error-inline"><FaIcon name="exclamation" /></div>}
                     </>}
                     {onRemove
                         ? (!loading || !(progress?.[baseName]))
@@ -132,14 +101,14 @@ const PendingUploadUrl = ({
                     }
                 </div>
             </div>
-            {(edited && isNotSupported()) && <div className="gn-upload-card-body">
+            {(edited && isNotSupported(data)) && <div className="gn-upload-card-body">
                 <div className="text-danger">
-                    <Message msgId={getErrorMessageId()} />
+                    <Message msgId={getErrorMessageId(data)} />
                 </div>
             </div>}
             {extensions && <div className={"gn-upload-card-bottom"}>
                 <Select
-                    disabled={!validation?.isValidRemoteUrl || hasExtensionInUrl() }
+                    disabled={!validation?.isValidRemoteUrl || hasExtensionInUrl(data) }
                     clearable={false}
                     placeholder={"ext"}
                     options={extensions}

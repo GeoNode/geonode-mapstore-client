@@ -1,7 +1,6 @@
 import axios from '@mapstore/framework/libs/ajax';
 import isEmpty from "lodash/isEmpty";
 import trim from 'lodash/trim';
-
 /**
 * @module utils/FileUtils
 */

@@ -19,7 +19,7 @@ import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import ViewerLayout from '@js/components/ViewerLayout';
 import PendingUploadFile from '@js/routes/upload/PendingUploadFile';
 import PendingUploadUrl from "@js/routes/upload/PendingUploadUrl";
-import { isValidURL } from "@mapstore/framework/utils/URLUtils";
+import { validateRemoteResourceUploads } from '@js/utils/UploadUtils';
 
 function ErrorButton(props) {
     return (
@@ -98,32 +98,9 @@ function UploadContainer({
         return aFileExceeds;
     };
 
-    const validateRemoteResourceUploads = (newRemoteResourceUploads) => {
-        const remoteUrls = newRemoteResourceUploads.map(({ remoteUrl }) => remoteUrl);
-        return newRemoteResourceUploads.map((remoteResourceUpload, idx) => {
-            const isRemoteUrlDuplicated = remoteUrls.filter(remoteUrl => remoteUrl === remoteResourceUpload.remoteUrl)?.length > 1
-                && remoteUrls.indexOf(remoteResourceUpload.remoteUrl) !== idx;
-            const isValidRemoteUrl = !!remoteResourceUpload.remoteUrl
-                && !(remoteResourceUpload.remoteUrl.indexOf('/') === 0) // is not relative
-                && isValidURL(remoteResourceUpload.remoteUrl);
-            const isExtensionSupported = extensions ? extensions.find(({ value }) => value === remoteResourceUpload.extension) : true;
-            const isServiceTypeSupported = serviceTypes ? serviceTypes.find(({ value }) => value === remoteResourceUpload.serviceType) : true;
-            return {
-                ...remoteResourceUpload,
-                supported: !!(!isRemoteUrlDuplicated && isValidRemoteUrl && isExtensionSupported && isServiceTypeSupported),
-                validation: {
-                    isRemoteUrlDuplicated,
-                    isValidRemoteUrl,
-                    isExtensionSupported,
-                    isServiceTypeSupported
-                }
-            };
-        });
-    };
-
     function handleRemoteResourceUploadsUpdates(newRemoteResourceUploads) {
         setRemoteResourceUploads(
-            validateRemoteResourceUploads(newRemoteResourceUploads)
+            validateRemoteResourceUploads(newRemoteResourceUploads, { serviceTypes, extensions })
         );
     }
 
