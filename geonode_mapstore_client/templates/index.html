@@ -58,26 +58,21 @@
 
                 <script>
                     window.addEventListener('mapstore:ready', function(event) {
-                        const catalogPagePath = window.__GEONODE_CONFIG__.localConfig.geoNodeSettings.catalogPagePath;
-                        const pagePath = catalogPagePath ? catalogPagePath : '/catalogue/';
                         const msAPI = event.detail;
                         msAPI.setPluginsConfig([
                             {
                                 name: 'FeaturedResourcesGrid',
                                 cfg: {
                                     targetSelector: '#gn-home-featured-resources-grid',
-                                    pagePath: pagePath
+                                    pagePath: ''
                                 }
                             },
                             {
                                 name: 'ResourcesGrid',
                                 cfg: {
                                     targetSelector: '#gn-home-resources-grid',
-                                    containerSelector: '#gn-home-resources-grid',
-                                    pagination: false,
-                                    pagePath: pagePath,
-                                    disableFilters: true,
-                                    disableDetailPanel: true,
+                                    pagination: true,
+                                    pagePath: '',
                                     enableGeoNodeCardsMenuItems: true
                                 }
                             },

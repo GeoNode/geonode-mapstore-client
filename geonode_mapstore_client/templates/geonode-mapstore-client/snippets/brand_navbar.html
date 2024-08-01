@@ -81,6 +81,29 @@
             }
             window.addEventListener('DOMContentLoaded', manageUrlChange);
             window.addEventListener('hashchange', manageUrlChange, false);
+
+            window.addEventListener('mapstore:ready', function(event) {
+                const msAPI = event.detail;
+                msAPI.onAction('@@router/LOCATION_CHANGE', (action) => {
+                    const hashPathname = action?.payload?.location?.pathname || '';
+                    const parts = hashPathname.split('/');
+                    const page = parts[parts.length - 1];
+                    // Remove previous highlighted menu
+                    const menuHighlighted = document.querySelector('#gn-topbar .highlight-menu');
+                    if (menuHighlighted) {
+                        menuHighlighted.classList.remove('highlight-menu');
+                    }
+                    // add new highlight
+                    // exclude number
+                    if (page && isNaN(parseFloat(page))) {
+                        const topBarMenu = document.querySelector(`#gn-topbar #${page}`);
+                        if (topBarMenu) {
+                            topBarMenu.classList.add('highlight-menu');
+                        }
+                    }
+                });
+            });
+
         })();
     </script>
 {% endblock extra_script %}
