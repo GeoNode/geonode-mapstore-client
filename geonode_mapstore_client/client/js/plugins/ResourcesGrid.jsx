@@ -30,8 +30,8 @@ import {
 import { withResizeDetector } from 'react-resize-detector';
 import { userSelector } from '@mapstore/framework/selectors/security';
 import ConnectedCardGrid from '@js/plugins/resourcesgrid/ConnectedCardGrid';
-import { getTotalResources, getFacetsItems } from '@js/selectors/search';
-import { searchResources, setSearchConfig, getFacetItems, setFilters as setFiltersAction } from '@js/actions/gnsearch';
+import { getTotalResources, getFacetsItems, getShowFilterForm } from '@js/selectors/search';
+import { searchResources, setSearchConfig, getFacetItems, setFilters as setFiltersAction, showFilterForm as showFilterFormAction } from '@js/actions/gnsearch';
 
 import gnsearch from '@js/reducers/gnsearch';
 import gnresource from '@js/reducers/gnresource';
@@ -541,8 +541,13 @@ function ResourcesGrid({
     onGetFacets,
     facets,
     filters,
-    setFilters
+    setFilters,
+    showFilterForm: showFilterFormProp,
+    setShowFilterForm
 }, context) {
+
+    const showDetail = !isEmpty(resource);
+    const showFilterForm = showFilterFormProp && !showDetail;
 
     const [_cardLayoutStyleState, setCardLayoutStyle] = useLocalStorage('layoutCardsStyle', defaultCardLayoutStyle);
     const cardLayoutStyleState = cardLayoutStyle || _cardLayoutStyleState; // Force style when `cardLayoutStyle` is configured
@@ -590,10 +595,6 @@ function ResourcesGrid({
         replaceQuery: true,
         excludeQueryKeys: []
     });
-
-    const [_showFilterForm, setShowFilterForm] = useState(false);
-    const showDetail = !isEmpty(resource);
-    const showFilterForm = _showFilterForm && !showDetail;
 
     const handleShowFilterForm = (show) => {
         if (!isEmpty(resource)) {
@@ -858,8 +859,9 @@ const ResourcesGridPlugin = connect(
         state => getMonitoredState(state, getConfigProp('monitorState')),
         state => state?.gnsearch?.error,
         getFacetsItems,
-        state => state?.gnsearch?.filters
-    ], (params, user, totalResources, loading, location, resource, monitoredState, error, facets, filters) => ({
+        state => state?.gnsearch?.filters,
+        getShowFilterForm
+    ], (params, user, totalResources, loading, location, resource, monitoredState, error, facets, filters, showFilterForm) => ({
         params,
         user,
         totalResources,
@@ -869,13 +871,15 @@ const ResourcesGridPlugin = connect(
         monitoredState,
         error,
         facets,
-        filters
+        filters,
+        showFilterForm
     })),
     {
         onSearch: searchResources,
         onInit: setSearchConfig,
         onGetFacets: getFacetItems,
-        setFilters: setFiltersAction
+        setFilters: setFiltersAction,
+        setShowFilterForm: showFilterFormAction
     }
 )(withResizeDetector(withPageConfig(ResourcesGrid)));
 

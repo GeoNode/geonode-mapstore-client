@@ -42,3 +42,4 @@ export const getTotalResources = (state) => {
 };
 
 export const getFacetsItems = state => state?.gnsearch?.facetItems;
+export const getShowFilterForm = state => state?.gnsearch?.showFilterForm;
