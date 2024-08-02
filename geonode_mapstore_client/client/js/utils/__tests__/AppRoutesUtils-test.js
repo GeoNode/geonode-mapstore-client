@@ -103,10 +103,6 @@ describe('Test App Routes Utils', () => {
         expect(mapViewerRoute.shouldNotRequestResources).toEqual(true);
         expect(catalogueRoute.path).toEqual([
             '/',
-            '/search/',
-            '/search/filter',
-            '/detail/:pk',
-            '/detail/:ctype/:pk',
             '/:page'
         ]);
         expect(catalogueRoute.name).toEqual('catalogue');

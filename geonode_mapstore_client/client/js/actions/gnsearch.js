@@ -21,6 +21,7 @@ export const GET_FACET_ITEMS = 'GEONODE:GET_FACET_ITEMS';
 export const SET_FACET_ITEMS = 'GEONODE:SET_FACET_ITEMS';
 export const GET_FACET_FILTERS = 'GEONODE:GET_FACET_FILTERS';
 export const SET_FILTERS = "SET_FILTERS";
+export const SHOW_FILTER_FORM = "GEONODE:SHOW_FILTER_FORM";
 
 /**
 * Actions for GeoNode resource featured items
@@ -140,6 +141,13 @@ export function setFilters(filters) {
     };
 }
 
+export function showFilterForm(show) {
+    return {
+        type: SHOW_FILTER_FORM,
+        show
+    };
+}
+
 export default {
     SEARCH_RESOURCES,
     searchResources,
@@ -151,5 +159,7 @@ export default {
     requestResource,
     setFeaturedResources,
     SET_SEARCH_CONFIG,
-    setSearchConfig
+    setSearchConfig,
+    SHOW_FILTER_FORM,
+    showFilterForm
 };

@@ -32,7 +32,8 @@ const FiltersMenu = forwardRef(({
     loading,
     hideCardLayoutButton,
     cardLayoutStyle,
-    setCardLayoutStyle
+    setCardLayoutStyle,
+    disableFilters
 }, ref) => {
 
     const { isMobile } = getConfigProp('geoNodeSettings');
@@ -50,22 +51,24 @@ const FiltersMenu = forwardRef(({
             <div className="gn-menu-container">
                 <div className="gn-menu-content">
                     <div className="gn-menu-fill">
-                        {totalFilters > 0 ? <ButtonWithTooltip
-                            variant="primary"
-                            size="sm"
-                            onClick={onClick}
-                            className="gn-success-changes-icon"
-                            tooltip={<Message msgId="gnhome.filterApplied" msgParams={{ count: totalFilters }}/>}
-                        >
-                            {isMobile ? <FaIcon name="filter" /> : <Message msgId="gnhome.filter"/>}
-                        </ButtonWithTooltip> : <Button
-                            variant="primary"
-                            size="sm"
-                            onClick={onClick}
-                        >
-                            {isMobile ? <FaIcon name="filter" /> : <Message msgId="gnhome.filter"/>}
-                        </Button>}
-                        {' '}
+                        {!disableFilters && <>
+                            {totalFilters > 0 ? <ButtonWithTooltip
+                                variant="primary"
+                                size="sm"
+                                onClick={onClick}
+                                className="gn-success-changes-icon"
+                                tooltip={<Message msgId="gnhome.filterApplied" msgParams={{ count: totalFilters }}/>}
+                            >
+                                {isMobile ? <FaIcon name="filter" /> : <Message msgId="gnhome.filter"/>}
+                            </ButtonWithTooltip> : <Button
+                                variant="primary"
+                                size="sm"
+                                onClick={onClick}
+                            >
+                                {isMobile ? <FaIcon name="filter" /> : <Message msgId="gnhome.filter"/>}
+                            </Button>}
+                            {' '}
+                        </>}
                         {loading ? <span className="resources-count-loading"><Spinner /></span> : <Badge>
                             <span className="resources-count"> <Message msgId="gnhome.resourcesFound" msgParams={{ count: totalResources }}/> </span>
                         </Badge>}
