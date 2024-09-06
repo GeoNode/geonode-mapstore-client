@@ -108,12 +108,38 @@
                 }
 
                 const newQueryHash = newParams.join('&');
-                const catalogPagePath = window.__GEONODE_CONFIG__.localConfig.geoNodeSettings.catalogPagePath;
-                const searchPath = '/catalogue/#/search';
-                const baseCatalogPath = catalogPagePath ? searchPath.replace('/catalogue/', catalogPagePath) : searchPath;
-                
+                const pathname = splitHash[0].replace('#', '');
+
                 {% block searchbar_search_href %}
-                location.href = baseCatalogPath + (newQueryHash ? '?' + newQueryHash : '');
+                    if (queryHash !== newQueryHash) {
+                        // if MapStoreAPI are available we are in the catalog
+                        if (window.MapStoreAPI && window.MapStoreAPI.triggerAction) {
+                            // the location change will modify the internal mapstore routing after the #
+                            // without changing the browser path
+                            window.MapStoreAPI.triggerAction({
+                                type: '@@router/LOCATION_CHANGE',
+                                payload: {
+                                    location: {
+                                        pathname: pathname,
+                                        search: '?' + newQueryHash,
+                                        hash: ''
+                                    },
+                                    action: 'PUSH',
+                                    isFirstRendering: false
+                                }
+                            })
+                        } else {
+                            // we need to redirect to catalog page
+                            // if we are in a page different from catalog
+                            const catalogPagePath = window.__GEONODE_CONFIG__
+                                && window.__GEONODE_CONFIG__.localConfig
+                                && window.__GEONODE_CONFIG__.localConfig.geoNodeSettings
+                                && window.__GEONODE_CONFIG__.localConfig.geoNodeSettings.catalogPagePath;
+                            const searchPath = '/catalogue/#/search';
+                            const baseCatalogPath = catalogPagePath ? searchPath.replace('/catalogue/', catalogPagePath) : searchPath;
+                            location.href = baseCatalogPath + (newQueryHash ? '?' + newQueryHash : '');
+                        }
+                    }
                 {% endblock %}
 
                 clearRequest();

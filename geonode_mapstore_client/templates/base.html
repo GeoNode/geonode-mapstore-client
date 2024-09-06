@@ -17,6 +17,9 @@
 
 {% block header %}
 {% include './geonode-mapstore-client/snippets/header.html' %}
+{% block gn_config %}
+    {% include './geonode-mapstore-client/_geonode_config.html' %}
+{% endblock %}
 {% endblock %}
 
 {% block footer %}
