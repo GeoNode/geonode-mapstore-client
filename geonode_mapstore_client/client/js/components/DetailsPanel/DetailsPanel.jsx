@@ -190,7 +190,8 @@ function DetailsPanel({
     tabs,
     pathname,
     toolbarItems,
-    onSetExtent
+    onSetExtent,
+    tabComponents
 }) {
     const detailsContainerNode = useRef();
     const [titleNodeRef, titleInView] = useInView();
@@ -292,7 +293,7 @@ function DetailsPanel({
                             : null}
                     </div>
                 </div>
-                <DetailsInfo tabs={tabs} formatHref={formatHref} allowEdit={activeEditMode} resourceTypesInfo={types} resource={resource} onSetExtent={onSetExtent}/>
+                <DetailsInfo tabs={tabs} tabComponents={tabComponents} formatHref={formatHref} allowEdit={activeEditMode} resourceTypesInfo={types} resource={resource} onSetExtent={onSetExtent}/>
             </section>
         </div>
     );

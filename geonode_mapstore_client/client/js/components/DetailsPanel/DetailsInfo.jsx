@@ -12,11 +12,7 @@ import moment from 'moment';
 
 import Button from '@js/components/Button';
 import Tabs from '@js/components/Tabs';
-import DetailsAttributeTable from '@js/components/DetailsPanel/DetailsAttributeTable';
-import DetailsLinkedResources from '@js/components/DetailsPanel/DetailsLinkedResources';
 import Message from '@mapstore/framework/components/I18N/Message';
-import DetailsLocations from '@js/components/DetailsPanel/DetailsLocations';
-import DetailsAssets from '@js/components/DetailsPanel/DetailsAssets';
 
 const replaceTemplateString = (properties, str) => {
     return Object.keys(properties).reduce((updatedStr, key) => {
@@ -143,12 +139,8 @@ function DetailsInfoFields({ fields, formatHref }) {
     </div>);
 }
 
-const tabTypes = {
-    'attribute-table': DetailsAttributeTable,
-    'linked-resources': DetailsLinkedResources,
-    'locations': DetailsLocations,
-    'tab': DetailsInfoFields,
-    'assets': DetailsAssets
+const defaultTabComponents = {
+    'tab': DetailsInfoFields
 };
 
 const parseTabItems = (items) => {
@@ -160,15 +152,22 @@ const isDefaultTabType = (type) => type === 'tab';
 
 function DetailsInfo({
     tabs = [],
+    tabComponents: tabComponentsProp,
     ...props
 }) {
+
+    const tabComponents = {
+        ...tabComponentsProp,
+        ...defaultTabComponents
+    };
+
     const filteredTabs = tabs
         .filter((tab) => !tab?.disableIf)
         .map((tab) =>
             ({
                 ...tab,
                 items: isDefaultTabType(tab.type) ? parseTabItems(tab?.items) : tab?.items,
-                Component: tabTypes[tab.type] || tabTypes.tab
+                Component: tabComponents[tab.type] || tabComponents.tab
             }))
         .filter(tab => !isEmpty(tab?.items));
     const [selectedTabId, onSelect] = useState(filteredTabs?.[0]?.id);

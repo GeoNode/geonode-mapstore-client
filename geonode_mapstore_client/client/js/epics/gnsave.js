@@ -72,12 +72,15 @@ import {
 import {
     ResourceTypes,
     cleanCompactPermissions,
-    toGeoNodeMapConfig
+    toGeoNodeMapConfig,
+    RESOURCE_MANAGEMENT_PROPERTIES
 } from '@js/utils/ResourceUtils';
 import {
     ProcessTypes,
     ProcessStatus
 } from '@js/utils/ResourceServiceUtils';
+
+const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys(RESOURCE_MANAGEMENT_PROPERTIES);
 
 function parseMapBody(body) {
     const geoNodeMap = toGeoNodeMapConfig(body.data);
@@ -142,13 +145,17 @@ export const gnSaveContent = (action$, store) =>
             const contentType = state.gnresource?.type || 'map';
             const data = getDataPayload(state, contentType);
             const extent = getExtentPayload(state, contentType);
+            const currentResource = getResourceData(state);
             const body = {
                 'title': action.metadata.name,
+                ...(RESOURCE_MANAGEMENT_PROPERTIES_KEYS.reduce((acc, key) => {
+                    acc[key] = !!currentResource?.[key];
+                    return acc;
+                }, {})),
                 ...(action.metadata.description && { 'abstract': action.metadata.description }),
                 ...(data && { 'data': JSON.parse(JSON.stringify(data)) }),
                 ...(extent && { extent })
             };
-            const currentResource = getResourceData(state);
             return Observable.defer(() => SaveAPI[contentType](state, action.id, body, action.reload))
                 .switchMap((resource) => {
                     if (action.reload) {

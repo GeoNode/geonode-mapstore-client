@@ -48,6 +48,12 @@ const hasDefaultSettings = (layer) => {
     return true;
 };
 
+const canManageResourceSettings = (resource) => {
+    const { perms } = resource || {};
+    const settingsPerms = ['feature_resourcebase', 'approve_resourcebase', 'publish_resourcebase'];
+    return !!(perms || []).find(perm => settingsPerms.includes(perm));
+};
+
 export const getPluginsContext = () => ({
     get,
     getMetadataUrl,
@@ -60,5 +66,6 @@ export const getPluginsContext = () => ({
     isDocumentExternalSource,
     getCataloguePath,
     getCreateNewMapLink,
-    hasDefaultSettings
+    hasDefaultSettings,
+    canManageResourceSettings
 });

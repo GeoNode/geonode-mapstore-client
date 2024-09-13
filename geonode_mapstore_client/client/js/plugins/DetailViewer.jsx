@@ -47,6 +47,7 @@ import { mapSelector } from '@mapstore/framework/selectors/map';
 import { parsePluginConfigExpressions } from '@js/utils/MenuUtils';
 import usePluginItems from '@js/hooks/usePluginItems';
 import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
+import tabComponents from '@js/plugins/detailviewer/tabComponents';
 
 const ConnectedDetailsPanel = connect(
     createSelector([
@@ -71,7 +72,8 @@ const ConnectedDetailsPanel = connect(
         initialBbox: mapData?.bbox,
         enableMapViewer: showMapThumbnail,
         downloading,
-        resourceId: resource.pk
+        resourceId: resource.pk,
+        tabComponents
     })),
     {
         closePanel: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),

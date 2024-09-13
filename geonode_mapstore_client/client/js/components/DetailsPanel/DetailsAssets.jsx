@@ -4,11 +4,11 @@ import FaIcon from '@js/components/FaIcon';
 function DetailsAssets({ fields }) {
     return (
         <div className="gn-details-assets">
-            {fields.map((field, idx) => {
-                const asset = field?.extras?.content || {};
-                return (
-                    <div key={idx} className="gn-details-info-fields">
-                        <div className="gn-details-info-row linked-resources">
+            <div className="gn-details-info-fields">
+                {fields.map((field, idx) => {
+                    const asset = field?.extras?.content || {};
+                    return (
+                        <div key={idx} className="gn-details-info-row gn-details-flex-field">
                             <FaIcon name="file" />
                             {asset.download_url ? <a
                                 download
@@ -17,9 +17,9 @@ function DetailsAssets({ fields }) {
                                 {asset.title}{' '}<FaIcon name="download" />
                             </a> : asset.title}
                         </div>
-                    </div>
-                );
-            })}
+                    );
+                })}
+            </div>
         </div>
     );
 }

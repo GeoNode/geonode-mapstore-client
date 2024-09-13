@@ -14,19 +14,19 @@ import Message from '@mapstore/framework/components/I18N/Message';
 
 const DetailLinkedResource = ({resources, type}) => {
     return !isEmpty(resources) && (
-        <>
+        <div className="gn-details-info-fields">
             <Message msgId={`gnviewer.linkedResources.${type}`} />
             {resources.map((field, key) => {
-                return (<div key={key} className="gn-details-info-fields">
-                    <div className="gn-details-info-row linked-resources">
+                return (
+                    <div key={key} className="gn-details-info-row gn-details-flex-field">
                         {field.icon && <FaIcon name={field.icon} />}
                         <a key={field.pk} href={field.detail_url}>
                             {field.title}
                         </a>
                     </div>
-                </div>);
+                );
             })}
-        </>
+        </div>
     );
 };
 
@@ -54,7 +54,7 @@ const DetailsLinkedResources = ({ fields, resourceTypesInfo }) => {
     ];
 
     return (
-        <div className="linked-resources">
+        <div className="gn-details-linked-resources">
             {
                 linkedResources.map(({resources, type})=> <DetailLinkedResource resources={resources} type={type}/>)
             }

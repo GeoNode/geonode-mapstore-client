@@ -12,7 +12,7 @@ import { compareMapChanges } from '@mapstore/framework/utils/MapUtils';
 import { currentStorySelector } from '@mapstore/framework/selectors/geostory';
 import { originalDataSelector } from '@mapstore/framework/selectors/dashboard';
 import { widgetsConfig } from '@mapstore/framework/selectors/widgets';
-import { ResourceTypes } from '@js/utils/ResourceUtils';
+import { ResourceTypes, RESOURCE_MANAGEMENT_PROPERTIES } from '@js/utils/ResourceUtils';
 import {
     getCurrentResourceDeleteLoading,
     getCurrentResourceCopyLoading
@@ -25,6 +25,9 @@ import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
 import { generateContextResource } from '@mapstore/framework/selectors/contextcreator';
+
+const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys(RESOURCE_MANAGEMENT_PROPERTIES);
+
 /**
 * @module selectors/resource
 */
@@ -270,7 +273,7 @@ export const getResourceDirtyState = (state) => {
         return null;
     }
     const resourceType = state?.gnresource?.type;
-    const metadataKeys = ['title', 'abstract', 'data', 'extent'];
+    const metadataKeys = ['title', 'abstract', 'data', 'extent', ...RESOURCE_MANAGEMENT_PROPERTIES_KEYS];
     const { data: initialData = {}, ...resource } = pick(state?.gnresource?.initialResource || {}, metadataKeys);
     const { compactPermissions, geoLimits } = getPermissionsPayload(state);
     const currentData = JSON.parse(JSON.stringify(getDataPayload(state) || {})); // JSON stringify is needed to remove undefined values

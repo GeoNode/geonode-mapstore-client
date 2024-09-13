@@ -833,6 +833,13 @@
                             "id": "assets",
                             "labelId": "gnviewer.assets",
                             "items": "{context.get(state('gnResourceData'), 'assets')}"
+                        },
+                        {
+                            "type": "management",
+                            "id": "management",
+                            "labelId": "gnviewer.management",
+                            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
+                            "items": [true]
                         }
                     ]
                 }
@@ -1733,6 +1740,13 @@
                             "id": "assets",
                             "labelId": "gnviewer.assets",
                             "items": "{context.get(state('gnResourceData'), 'assets')}"
+                        },
+                        {
+                            "type": "management",
+                            "id": "management",
+                            "labelId": "gnviewer.management",
+                            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
+                            "items": [true]
                         }
                     ]
                 }
@@ -2435,6 +2449,13 @@
                             "id": "assets",
                             "labelId": "gnviewer.assets",
                             "items": "{context.get(state('gnResourceData'), 'assets')}"
+                        },
+                        {
+                            "type": "management",
+                            "id": "management",
+                            "labelId": "gnviewer.management",
+                            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
+                            "items": [true]
                         }
                     ]
                 }
@@ -2776,6 +2797,13 @@
                             "id": "assets",
                             "labelId": "gnviewer.assets",
                             "items": "{context.get(state('gnResourceData'), 'assets')}"
+                        },
+                        {
+                            "type": "management",
+                            "id": "management",
+                            "labelId": "gnviewer.management",
+                            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
+                            "items": [true]
                         }
                     ]
                 }
@@ -3045,6 +3073,13 @@
                             "id": "assets",
                             "labelId": "gnviewer.assets",
                             "items": "{context.get(state('gnResourceData'), 'assets')}"
+                        },
+                        {
+                            "type": "management",
+                            "id": "management",
+                            "labelId": "gnviewer.management",
+                            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
+                            "items": [true]
                         }
                     ]
                 }
@@ -4367,6 +4402,13 @@
                             "id": "assets",
                             "labelId": "gnviewer.assets",
                             "items": "{context.get(state('gnResourceData'), 'assets')}"
+                        },
+                        {
+                            "type": "management",
+                            "id": "management",
+                            "labelId": "gnviewer.management",
+                            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
+                            "items": [true]
                         }
                     ]
                 }

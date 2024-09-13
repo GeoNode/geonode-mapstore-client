@@ -53,6 +53,7 @@ import FaIcon from '@js/components/FaIcon';
 import Button from '@js/components/Button';
 import useLocalStorage from '@js/hooks/useLocalStorage';
 import MainLoader from '@js/components/MainLoader';
+import tabComponents from '@js/plugins/detailviewer/tabComponents';
 
 const ConnectedDetailsPanel = connect(
     createSelector([
@@ -65,7 +66,8 @@ const ConnectedDetailsPanel = connect(
         favorite: favorite,
         downloading,
         canDownload: resourceHasPermission(resource, 'download_resourcebase'),
-        resourceId: resource?.pk
+        resourceId: resource?.pk,
+        tabComponents
     })),
     {
         onFavorite: setFavoriteResource,

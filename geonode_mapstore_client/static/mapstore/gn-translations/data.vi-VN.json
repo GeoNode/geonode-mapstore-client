@@ -381,7 +381,13 @@
                 }
             },
             "allResources": "All resources",
-            "assets": "Assets"
+            "assets": "Assets",
+            "management": "Management",
+            "resourceManagement": "Resource management",
+            "preserveUploadedMetadata": "Preserve uploaded metadata",
+            "approved": "Approved",
+            "featured": "Featured",
+            "advertised": "Advertised"
         }
     }
 }

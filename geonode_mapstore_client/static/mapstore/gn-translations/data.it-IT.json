@@ -414,7 +414,13 @@
                 }
             },
             "allResources": "All resources",
-            "assets": "Assets"
+            "assets": "Assets",
+            "management": "Gestione",
+            "resourceManagement": "Gestione della risorsa",
+            "preserveUploadedMetadata": "Conserva i metadati caricati",
+            "approved": "Approvato",
+            "featured": "In evidenza",
+            "advertised": "Pubblicizzato"
         }
     }
 }
