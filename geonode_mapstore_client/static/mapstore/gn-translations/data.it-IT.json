@@ -415,7 +415,7 @@
             },
             "allResources": "All resources",
             "assets": "Assets",
-            "management": "Gestione",
+            "settings": "Impostazioni",
             "resourceManagement": "Gestione della risorsa",
             "preserveUploadedMetadata": "Conserva il file dei metadati ISO caricato invece di generarlo",
             "approveResource": "Approva questa risorsa (utilizzata dall' Advanced Workflow)",

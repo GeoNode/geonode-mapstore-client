@@ -412,7 +412,7 @@
             },
             "allResources": "All resources",
             "assets": "Assets",
-            "management": "Gestión",
+            "settings": "Configuracion",
             "resourceManagement": "Gestión de recursos",
             "preserveUploadedMetadata": "Conservar el archivo de metadatos ISO cargado en lugar de generarlo",
             "approveResource": "Aprobar este recurso (utilizado por el flujo de trabajo avanzado)",

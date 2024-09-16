@@ -413,7 +413,7 @@
             },
             "allResources": "All resources",
             "assets": "Assets",
-            "management": "Gestion",
+            "settings": "Paramètres",
             "resourceManagement": "Gestion des ressources",
             "preserveUploadedMetadata": "Conserver le fichier de métadonnées ISO téléchargé au lieu de le générer",
             "approveResource": "Approuver cette ressource (utilisé par le flux de travail avancé)",

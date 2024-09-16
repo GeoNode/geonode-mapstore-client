@@ -3,10 +3,10 @@ import { Checkbox } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { RESOURCE_MANAGEMENT_PROPERTIES } from '@js/utils/ResourceUtils';
 
-function DetailsManagement({ resource, onChange }) {
+function DetailsSettings({ resource, onChange }) {
     const perms = resource?.perms || [];
     return (
-        <div className="gn-details-management">
+        <div className="gn-details-settings">
             <div className="gn-details-info-fields">
                 <Message msgId={"gnviewer.resourceManagement"} />
                 {Object.keys(RESOURCE_MANAGEMENT_PROPERTIES).map((key) => {
@@ -29,4 +29,4 @@ function DetailsManagement({ resource, onChange }) {
     );
 }
 
-export default DetailsManagement;
+export default DetailsSettings;

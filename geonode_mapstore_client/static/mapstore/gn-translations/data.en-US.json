@@ -413,7 +413,7 @@
             },
             "allResources": "All resources",
             "assets": "Assets",
-            "management": "Management",
+            "settings": "Settings",
             "resourceManagement": "Resource management",
             "preserveUploadedMetadata": "Keep the uploaded ISO metadata file instead of generating it",
             "approveResource": "Approve this resource (used by the Advanced Workflow)",

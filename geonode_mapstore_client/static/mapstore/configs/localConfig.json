@@ -835,9 +835,9 @@
                             "items": "{context.get(state('gnResourceData'), 'assets')}"
                         },
                         {
-                            "type": "management",
-                            "id": "management",
-                            "labelId": "gnviewer.management",
+                            "type": "settings",
+                            "id": "settings",
+                            "labelId": "gnviewer.settings",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
                             "items": [true]
                         }
@@ -1742,9 +1742,9 @@
                             "items": "{context.get(state('gnResourceData'), 'assets')}"
                         },
                         {
-                            "type": "management",
-                            "id": "management",
-                            "labelId": "gnviewer.management",
+                            "type": "settings",
+                            "id": "settings",
+                            "labelId": "gnviewer.settings",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
                             "items": [true]
                         }
@@ -2451,9 +2451,9 @@
                             "items": "{context.get(state('gnResourceData'), 'assets')}"
                         },
                         {
-                            "type": "management",
-                            "id": "management",
-                            "labelId": "gnviewer.management",
+                            "type": "settings",
+                            "id": "settings",
+                            "labelId": "gnviewer.settings",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
                             "items": [true]
                         }
@@ -2799,9 +2799,9 @@
                             "items": "{context.get(state('gnResourceData'), 'assets')}"
                         },
                         {
-                            "type": "management",
-                            "id": "management",
-                            "labelId": "gnviewer.management",
+                            "type": "settings",
+                            "id": "settings",
+                            "labelId": "gnviewer.settings",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
                             "items": [true]
                         }
@@ -3075,9 +3075,9 @@
                             "items": "{context.get(state('gnResourceData'), 'assets')}"
                         },
                         {
-                            "type": "management",
-                            "id": "management",
-                            "labelId": "gnviewer.management",
+                            "type": "settings",
+                            "id": "settings",
+                            "labelId": "gnviewer.settings",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
                             "items": [true]
                         }
@@ -4404,9 +4404,9 @@
                             "items": "{context.get(state('gnResourceData'), 'assets')}"
                         },
                         {
-                            "type": "management",
-                            "id": "management",
-                            "labelId": "gnviewer.management",
+                            "type": "settings",
+                            "id": "settings",
+                            "labelId": "gnviewer.settings",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
                             "items": [true]
                         }

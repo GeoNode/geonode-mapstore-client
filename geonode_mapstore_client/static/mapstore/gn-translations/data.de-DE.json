@@ -413,7 +413,7 @@
             },
             "allResources": "All resources",
             "assets": "Assets",
-            "management": "Verwaltung",
+            "settings": "Einstellungen",
             "resourceManagement": "Ressourcenverwaltung",
             "preserveUploadedMetadata": "Behalte die hochgeladene ISO-Metadatendatei, anstatt sie zu generieren",
             "approveResource": "Diese Ressource genehmigen (wird vom erweiterten Workflow verwendet)",

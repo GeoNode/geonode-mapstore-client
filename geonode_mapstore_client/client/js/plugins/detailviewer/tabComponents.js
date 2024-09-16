@@ -11,7 +11,7 @@ import DetailsLocations from '@js/components/DetailsPanel/DetailsLocations';
 import DetailsAssets from '@js/components/DetailsPanel/DetailsAssets';
 import DetailsAttributeTable from '@js/components/DetailsPanel/DetailsAttributeTable';
 import DetailsLinkedResources from '@js/components/DetailsPanel/DetailsLinkedResources';
-import DetailsManagement from '@js/components/DetailsPanel/DetailsManagement';
+import DetailsSettings from '@js/components/DetailsPanel/DetailsSettings';
 import { updateResourceProperties } from '@js/actions/gnresource';
 
 const tabComponents = {
@@ -19,7 +19,7 @@ const tabComponents = {
     'linked-resources': DetailsLinkedResources,
     'locations': DetailsLocations,
     'assets': DetailsAssets,
-    'management': connect(() => ({}), { onChange: updateResourceProperties })(DetailsManagement)
+    'settings': connect(() => ({}), { onChange: updateResourceProperties })(DetailsSettings)
 };
 
 export default tabComponents;
