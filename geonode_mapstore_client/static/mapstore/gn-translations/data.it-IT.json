@@ -417,10 +417,11 @@
             "assets": "Assets",
             "management": "Gestione",
             "resourceManagement": "Gestione della risorsa",
-            "preserveUploadedMetadata": "Conserva i metadati caricati",
-            "approved": "Approvato",
-            "featured": "In evidenza",
-            "advertised": "Pubblicizzato"
+            "preserveUploadedMetadata": "Conserva il file dei metadati ISO caricato invece di generarlo",
+            "approveResource": "Approva questa risorsa (utilizzata dal flusso di lavoro dei metadati avanzati)",
+            "publishResource": "Pubblica questa risorsa (utilizzata dal flusso di lavoro dei metadati avanzati)",
+            "featureResource": "Aggiungi questa risorsa alle risorse in evidenza",
+            "advertiseResource": "Rendi questa risorsa ricercabile"
         }
     }
 }

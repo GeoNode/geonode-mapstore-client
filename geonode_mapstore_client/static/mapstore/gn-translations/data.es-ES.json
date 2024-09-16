@@ -414,10 +414,11 @@
             "assets": "Assets",
             "management": "Gestión",
             "resourceManagement": "Gestión de recursos",
-            "preserveUploadedMetadata": "Conservar metadatos cargados",
-            "approved": "Aprobado",
-            "featured": "Destacado",
-            "advertised": "Anunciado"
+            "preserveUploadedMetadata": "Conservar el archivo de metadatos ISO cargado en lugar de generarlo",
+            "approveResource": "Aprobar este recurso (utilizado por el flujo de trabajo de metadatos avanzado)",
+            "publishResource": "Publicar este recurso (utilizado por el flujo de trabajo de metadatos avanzado)",
+            "featureResource": "Agregar este recurso a los recursos destacados",
+            "advertiseResource": "Hacer que este recurso sea buscable"
         }
     }
 }

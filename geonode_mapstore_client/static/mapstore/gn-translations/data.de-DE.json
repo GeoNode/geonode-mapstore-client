@@ -415,10 +415,11 @@
             "assets": "Assets",
             "management": "Verwaltung",
             "resourceManagement": "Ressourcenverwaltung",
-            "preserveUploadedMetadata": "Hochgeladene Metadaten beibehalten",
-            "approved": "Genehmigt",
-            "featured": "Hervorgehoben",
-            "advertised": "Beworben"
+            "preserveUploadedMetadata": "Behalte die hochgeladene ISO-Metadatendatei, anstatt sie zu generieren",
+            "approveResource": "Diese Ressource genehmigen (wird vom erweiterten Metadaten-Workflow verwendet)",
+            "publishResource": "Diese Ressource veröffentlichen (wird vom erweiterten Metadaten-Workflow verwendet)",
+            "featureResource": "Diese Ressource zu den vorgestellten Ressourcen hinzufügen",
+            "advertiseResource": "Diese Ressource durchsuchbar machen"
         }
     }
 }

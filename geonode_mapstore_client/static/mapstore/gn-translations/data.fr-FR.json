@@ -415,10 +415,11 @@
             "assets": "Assets",
             "management": "Gestion",
             "resourceManagement": "Gestion des ressources",
-            "preserveUploadedMetadata": "Conserver les métadonnées téléchargées",
-            "approved": "Approuvé",
-            "featured": "En vedette",
-            "advertised": "Annoncé"
+            "preserveUploadedMetadata": "Conserver le fichier de métadonnées ISO téléchargé au lieu de le générer",
+            "approveResource": "Approuver cette ressource (utilisée par le flux de travail des métadonnées avancées)",
+            "publishResource": "Publier cette ressource (utilisée par le flux de travail des métadonnées avancées)",
+            "featureResource": "Ajouter cette ressource aux ressources en vedette",
+            "advertiseResource": "Rendre cette ressource consultable"
         }
     }
 }

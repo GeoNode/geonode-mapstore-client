@@ -58,19 +58,19 @@ export const RESOURCE_MANAGEMENT_PROPERTIES = {
         disabled: (perms = []) => !perms.includes('change_resourcebase')
     },
     'is_approved': {
-        labelId: 'gnviewer.approved',
+        labelId: 'gnviewer.approveResource',
         disabled: (perms = []) => !perms.includes('approve_resourcebase')
     },
     'is_published': {
-        labelId: 'gnviewer.published',
+        labelId: 'gnviewer.publishResource',
         disabled: (perms = []) => !perms.includes('publish_resourcebase')
     },
     'featured': {
-        labelId: 'gnviewer.featured',
+        labelId: 'gnviewer.featureResource',
         disabled: (perms = []) => !perms.includes('feature_resourcebase')
     },
     'advertised': {
-        labelId: 'gnviewer.advertised',
+        labelId: 'gnviewer.advertiseResource',
         disabled: (perms = []) => !perms.includes('change_resourcebase')
     }
 };

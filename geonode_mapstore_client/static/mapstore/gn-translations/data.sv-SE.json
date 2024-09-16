@@ -385,10 +385,11 @@
             "assets": "Assets",
             "management": "Management",
             "resourceManagement": "Resource management",
-            "preserveUploadedMetadata": "Preserve uploaded metadata",
-            "approved": "Approved",
-            "featured": "Featured",
-            "advertised": "Advertised"
+            "preserveUploadedMetadata": "Keep the uploaded ISO metadata file instead of generating it",
+            "approveResource": "Approve this resource (used by the Advanced Metadata Workflow)",
+            "publishResource": "Publish this resource (used by the Advanced Metadata Workflow)",
+            "featureResource": "Add this resource to featured resources",
+            "advertiseResource": "Make this resource searchable"
         }
     }
 }
