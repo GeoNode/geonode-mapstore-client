@@ -416,8 +416,8 @@
             "management": "Verwaltung",
             "resourceManagement": "Ressourcenverwaltung",
             "preserveUploadedMetadata": "Behalte die hochgeladene ISO-Metadatendatei, anstatt sie zu generieren",
-            "approveResource": "Diese Ressource genehmigen (wird vom erweiterten Metadaten-Workflow verwendet)",
-            "publishResource": "Diese Ressource veröffentlichen (wird vom erweiterten Metadaten-Workflow verwendet)",
+            "approveResource": "Diese Ressource genehmigen (wird vom erweiterten Workflow verwendet)",
+            "publishResource": "Diese Ressource veröffentlichen (wird vom erweiterten Workflow verwendet)",
             "featureResource": "Diese Ressource zu den vorgestellten Ressourcen hinzufügen",
             "advertiseResource": "Diese Ressource durchsuchbar machen"
         }

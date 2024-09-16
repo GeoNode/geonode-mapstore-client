@@ -418,8 +418,8 @@
             "management": "Gestione",
             "resourceManagement": "Gestione della risorsa",
             "preserveUploadedMetadata": "Conserva il file dei metadati ISO caricato invece di generarlo",
-            "approveResource": "Approva questa risorsa (utilizzata dal flusso di lavoro dei metadati avanzati)",
-            "publishResource": "Pubblica questa risorsa (utilizzata dal flusso di lavoro dei metadati avanzati)",
+            "approveResource": "Approva questa risorsa (utilizzata dall' Advanced Workflow)",
+            "publishResource": "Pubblica questa risorsa (utilizzata dall' Advanced Workflow)",
             "featureResource": "Aggiungi questa risorsa alle risorse in evidenza",
             "advertiseResource": "Rendi questa risorsa ricercabile"
         }
