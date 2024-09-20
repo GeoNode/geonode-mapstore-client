@@ -149,7 +149,9 @@ export const gnSaveContent = (action$, store) =>
             const body = {
                 'title': action.metadata.name,
                 ...(RESOURCE_MANAGEMENT_PROPERTIES_KEYS.reduce((acc, key) => {
-                    acc[key] = !!currentResource?.[key];
+                    if (currentResource?.[key] !== undefined) {
+                        acc[key] = !!currentResource[key];
+                    }
                     return acc;
                 }, {})),
                 ...(action.metadata.description && { 'abstract': action.metadata.description }),
