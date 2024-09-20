@@ -186,10 +186,6 @@ export const CATALOGUE_ROUTES = [
         name: 'catalogue',
         path: [
             '/',
-            '/search/',
-            '/search/filter',
-            '/detail/:pk',
-            '/detail/:ctype/:pk',
             '/:page'
         ],
         component: appRouteComponentTypes.CATALOGUE

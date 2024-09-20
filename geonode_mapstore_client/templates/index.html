@@ -57,7 +57,7 @@
                 {% endblock %}
 
                 <script>
-                    window.addEventListener('mapstore:ready', function(event) {
+                    window.addEventListener('mapstore:ready', function (event) {
                         const catalogPagePath = window.__GEONODE_CONFIG__.localConfig.geoNodeSettings.catalogPagePath;
                         const pagePath = catalogPagePath ? catalogPagePath : '/catalogue/';
                         const msAPI = event.detail;
@@ -73,11 +73,8 @@
                                 name: 'ResourcesGrid',
                                 cfg: {
                                     targetSelector: '#gn-home-resources-grid',
-                                    containerSelector: '#gn-home-resources-grid',
-                                    pagination: false,
                                     pagePath: pagePath,
-                                    disableFilters: true,
-                                    disableDetailPanel: true,
+                                    pagination: true,
                                     enableGeoNodeCardsMenuItems: true
                                 }
                             },
@@ -88,7 +85,7 @@
                         ]);
                     });
                 </script>
-    
+
                 {% block ms_scripts %}
                     <script id="gn-script" src="{% static 'mapstore/dist/js/gn-components.js' %}?{% client_version %}"></script>
                 {% endblock %}
