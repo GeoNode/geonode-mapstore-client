@@ -55,22 +55,27 @@ export const GXP_PTYPES = {
 export const RESOURCE_MANAGEMENT_PROPERTIES = {
     'metadata_uploaded_preserve': {
         labelId: 'gnviewer.preserveUploadedMetadata',
+        tooltipId: 'gnviewer.preserveUploadedMetadataTooltip',
         disabled: (perms = []) => !perms.includes('change_resourcebase')
     },
     'is_approved': {
         labelId: 'gnviewer.approveResource',
+        tooltipId: 'gnviewer.approveResourceTooltip',
         disabled: (perms = []) => !perms.includes('approve_resourcebase')
     },
     'is_published': {
         labelId: 'gnviewer.publishResource',
+        tooltipId: 'gnviewer.publishResourceTooltip',
         disabled: (perms = []) => !perms.includes('publish_resourcebase')
     },
     'featured': {
         labelId: 'gnviewer.featureResource',
+        tooltipId: 'gnviewer.featureResourceTooltip',
         disabled: (perms = []) => !perms.includes('feature_resourcebase')
     },
     'advertised': {
         labelId: 'gnviewer.advertiseResource',
+        tooltipId: 'gnviewer.advertiseResourceTooltip',
         disabled: (perms = []) => !perms.includes('change_resourcebase')
     }
 };

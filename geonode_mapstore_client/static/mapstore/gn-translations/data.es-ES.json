@@ -414,11 +414,16 @@
             "assets": "Assets",
             "settings": "Configuracion",
             "resourceManagement": "Gestión de recursos",
-            "preserveUploadedMetadata": "Conservar el archivo de metadatos ISO cargado en lugar de generarlo",
-            "approveResource": "Aprobar este recurso (utilizado por el flujo de trabajo avanzado)",
-            "publishResource": "Publicar este recurso (utilizado por el flujo de trabajo avanzado)",
-            "featureResource": "Agregar este recurso a los recursos destacados",
-            "advertiseResource": "Hacer que este recurso sea buscable"
+            "preserveUploadedMetadata": "Conservar metadatos cargados",
+            "approveResource": "Aprobado",
+            "publishResource": "Publicado",
+            "featureResource": "Destacado",
+            "advertiseResource": "Anunciado",
+            "preserveUploadedMetadataTooltip": "Conservar el archivo de metadatos ISO cargado en lugar de generarlo",
+            "approveResourceTooltip": "Aprobar este recurso (utilizado por el flujo de trabajo avanzado)",
+            "publishResourceTooltip": "Publicar este recurso (utilizado por el flujo de trabajo avanzado)",
+            "featureResourceTooltip": "Agregar este recurso a los recursos destacados",
+            "advertiseResourceTooltip": "Hacer que este recurso sea buscable"
         }
     }
 }

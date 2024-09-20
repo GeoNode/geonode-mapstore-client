@@ -384,11 +384,16 @@
             "assets": "Assets",
             "settings": "Settings",
             "resourceManagement": "Resource management",
-            "preserveUploadedMetadata": "Keep the uploaded ISO metadata file instead of generating it",
-            "approveResource": "Approve this resource (used by the Advanced Workflow)",
-            "publishResource": "Publish this resource (used by the Advanced Workflow)",
-            "featureResource": "Add this resource to featured resources",
-            "advertiseResource": "Make this resource searchable"
+            "preserveUploadedMetadata": "Preserve uploaded metadata",
+            "approveResource": "Approved",
+            "publishResource": "Published",
+            "featureResource": "Featured",
+            "advertiseResource": "Advertised",
+            "preserveUploadedMetadataTooltip": "Keep the uploaded ISO metadata file instead of generating it",
+            "approveResourceTooltip": "Approve this resource (used by the Advanced Workflow)",
+            "publishResourceTooltip": "Publish this resource (used by the Advanced Workflow)",
+            "featureResourceTooltip": "Add this resource to featured resources",
+            "advertiseResourceTooltip": "Make this resource searchable"
         }
     }
 }

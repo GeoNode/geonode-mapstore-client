@@ -415,11 +415,16 @@
             "assets": "Assets",
             "settings": "Paramètres",
             "resourceManagement": "Gestion des ressources",
-            "preserveUploadedMetadata": "Conserver le fichier de métadonnées ISO téléchargé au lieu de le générer",
-            "approveResource": "Approuver cette ressource (utilisé par le flux de travail avancé)",
-            "publishResource": "Publier cette ressource (utilisé par le flux de travail avancé)",
-            "featureResource": "Ajouter cette ressource aux ressources en vedette",
-            "advertiseResource": "Rendre cette ressource consultable"
+            "preserveUploadedMetadata": "Conserver les métadonnées téléchargées",
+            "approveResource": "Approuvé",
+            "publishResource": "Publié",
+            "featureResource": "En vedette",
+            "advertiseResource": "Annoncé",
+            "preserveUploadedMetadataTooltip": "Conserver le fichier de métadonnées ISO téléchargé au lieu de le générer",
+            "approveResourceTooltip": "Approuver cette ressource (utilisé par le flux de travail avancé)",
+            "publishResourceTooltip": "Publier cette ressource (utilisé par le flux de travail avancé)",
+            "featureResourceTooltip": "Ajouter cette ressource aux ressources en vedette",
+            "advertiseResourceTooltip": "Rendre cette ressource consultable"
         }
     }
 }

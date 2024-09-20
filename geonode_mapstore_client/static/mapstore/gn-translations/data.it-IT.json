@@ -417,11 +417,16 @@
             "assets": "Assets",
             "settings": "Impostazioni",
             "resourceManagement": "Gestione della risorsa",
-            "preserveUploadedMetadata": "Conserva il file dei metadati ISO caricato invece di generarlo",
-            "approveResource": "Approva questa risorsa (utilizzata dall' Advanced Workflow)",
-            "publishResource": "Pubblica questa risorsa (utilizzata dall' Advanced Workflow)",
-            "featureResource": "Aggiungi questa risorsa alle risorse in evidenza",
-            "advertiseResource": "Rendi questa risorsa ricercabile"
+            "preserveUploadedMetadata": "Conserva i metadati caricati",
+            "approveResource": "Approvata",
+            "publishResource": "Pubblicata",
+            "featureResource": "In evidenza",
+            "advertiseResource": "Pubblicizzata",
+            "preserveUploadedMetadataTooltip": "Conserva il file dei metadati ISO caricato invece di generarlo",
+            "approveResourceTooltip": "Approva questa risorsa (utilizzata dall' Advanced Workflow)",
+            "publishResourceTooltip": "Pubblica questa risorsa (utilizzata dall' Advanced Workflow)",
+            "featureResourceTooltip": "Aggiungi questa risorsa alle risorse in evidenza",
+            "advertiseResourceTooltip": "Rendi questa risorsa ricercabile"
         }
     }
 }

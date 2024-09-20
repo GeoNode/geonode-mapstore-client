@@ -415,11 +415,16 @@
             "assets": "Assets",
             "settings": "Einstellungen",
             "resourceManagement": "Ressourcenverwaltung",
-            "preserveUploadedMetadata": "Behalte die hochgeladene ISO-Metadatendatei, anstatt sie zu generieren",
-            "approveResource": "Diese Ressource genehmigen (wird vom erweiterten Workflow verwendet)",
-            "publishResource": "Diese Ressource veröffentlichen (wird vom erweiterten Workflow verwendet)",
-            "featureResource": "Diese Ressource zu den vorgestellten Ressourcen hinzufügen",
-            "advertiseResource": "Diese Ressource durchsuchbar machen"
+            "preserveUploadedMetadata": "Hochgeladene Metadaten beibehalten",
+            "approveResource": "Genehmigt",
+            "publishResource": "Veröffentlicht",
+            "featureResource": "Hervorgehoben",
+            "advertiseResource": "Beworben",
+            "preserveUploadedMetadataTooltip": "Behalte die hochgeladene ISO-Metadatendatei, anstatt sie zu generieren",
+            "approveResourceTooltip": "Diese Ressource genehmigen (wird vom erweiterten Workflow verwendet)",
+            "publishResourceTooltip": "Diese Ressource veröffentlichen (wird vom erweiterten Workflow verwendet)",
+            "featureResourceTooltip": "Diese Ressource zu den vorgestellten Ressourcen hinzufügen",
+            "advertiseResourceTooltip": "Diese Ressource durchsuchbar machen"
         }
     }
 }
