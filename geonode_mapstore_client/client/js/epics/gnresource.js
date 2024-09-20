@@ -217,7 +217,10 @@ const resourceTypes = {
                     .then((resource) => {
                         const mapViewers = get(resource, 'linked_resources.linked_to', [])
                             .find(({ resource_type: type } = {}) => type === ResourceTypes.VIEWER);
-                        return mapViewers?.pk
+                        // if we are using a query parameter for configuration
+                        // we should not use the associated viewer
+                        const { query } = url.parse(window.location.href, true);
+                        return !query.config && mapViewers?.pk
                             ? axios.all([{...resource}, getGeoAppByPk(mapViewers?.pk, {api_preset: 'catalog_list', include: ['data', 'linked_resources']})])
                             : Promise.resolve([{...resource}]);
                     })
