@@ -26,7 +26,7 @@
   "author": "GeoSolutions",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "@mapstore/project": "1.0.27",
+    "@mapstore/project": "git+https://github.com/geosolutions-it/mapstore-project.git#2024.02.xx",
     "dotenv": "10.0.0",
     "jsdoc": "4.0.0"
   },
@@ -35,7 +35,8 @@
     "dompurify": "2.5.4",
     "mapstore": "file:MapStore2",
     "react-helmet": "6.1.0",
-    "react-intl": "2.3.0"
+    "react-intl": "2.3.0",
+    "react-router-dom": "4.1.1"
   },
   "mapstore": {
     "output": "dist",
