@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import ResourceCard from '@js/components/ResourceCard';
-import { withResizeDetector } from 'react-resize-detector';
 import { getResourceStatuses } from '@js/utils/ResourceUtils';
 
 const Cards = ({
@@ -16,62 +15,20 @@ const Cards = ({
     formatHref,
     isCardActive,
     buildHrefByTemplate,
-    containerWidth,
-    width: detectedWidth,
     options,
-    onResize,
     downloading,
     getDetailHref
 }) => {
-    const width = detectedWidth || containerWidth;
-    const margin = 24;
-    const size = 320;
-    const countNum = Math.floor(width / (size + margin));
-    const count = countNum > 4 ? 4 : countNum; // limit count in order not to request for more than 4 per page
-    const cardWidth = width >= size + margin * 2
-        ? Math.floor((width - margin * count) / count)
-        : '100%';
-    useEffect(() => {
-        onResize(count);
-    }, [count]);
-    const ulPadding = Math.floor(margin / 2);
-    const isSingleCard = count === 0 || count === 1;
-
-    const gridLayoutSpace = (idx) => {
-
-        const gridSpace = isSingleCard
-            ? {
-                width: width - margin,
-                margin: ulPadding
-            }
-            : {
-                width: cardWidth,
-                marginRight: (idx + 1) % count === 0 ? 0 : margin,
-                marginTop: 8
-            };
-
-        return gridSpace;
-    };
-
-    const containerStyle = isSingleCard
-        ? {
-            paddingBottom: 0
-        }
-        : {
-            paddingLeft: ulPadding,
-            paddingBottom: 0
-        };
-    return (detectedWidth ?
+    return (
         <ul
-            style={containerStyle}
+            className={`gn-card-list gn-cards-type-grid`}
         >
-            {resources.map((resource, idx) => {
+            {resources.map((resource) => {
                 const { isProcessing } = getResourceStatuses(resource);
 
                 return (
                     <li
                         key={resource?.pk}
-                        style={(gridLayoutSpace(idx))}
                     >
                         <ResourceCard
                             active={isCardActive(resource)}
@@ -89,8 +46,8 @@ const Cards = ({
                     </li>
                 );
             })}
-        </ul> : <div />
+        </ul>
     );
 };
 
-export default withResizeDetector(Cards);
+export default Cards;

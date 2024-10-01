@@ -21,25 +21,60 @@ const ButtonWithTooltip = tooltip(Button);
 
 const FiltersMenu = forwardRef(({
     formatHref,
-    orderOptions,
     order,
     cardsMenu,
     style,
     onClick,
-    defaultLabelId,
     totalResources,
     totalFilters,
     loading,
     hideCardLayoutButton,
     cardLayoutStyle,
-    setCardLayoutStyle
+    setCardLayoutStyle,
+    orderConfig
 }, ref) => {
+
+    const {
+        defaultLabelId,
+        options: orderOptions,
+        variant: orderVariant,
+        align: orderAlign = 'right'
+    } = orderConfig;
 
     const { isMobile } = getConfigProp('geoNodeSettings');
     const selectedSort = orderOptions.find(({ value }) => order === value);
     function handleToggleCardLayoutStyle() {
         setCardLayoutStyle(cardLayoutStyle === 'grid' ? 'list' : 'grid');
     }
+
+    const orderButtonNode = orderOptions.length > 0 &&
+        <Dropdown pullRight={orderAlign === 'right'} id="sort-dropdown">
+            <Dropdown.Toggle
+                bsStyle={orderVariant || 'default'}
+                bsSize="sm"
+                noCaret
+            >
+                <Message msgId={selectedSort?.labelId || defaultLabelId} />
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+                {orderOptions.map(({ labelId, value }) => {
+                    return (
+                        <Dropdown.Item
+                            key={value}
+                            active={value === selectedSort?.value}
+                            href={formatHref({
+                                query: {
+                                    sort: [value]
+                                },
+                                replaceQuery: true
+                            })}
+                        >
+                            <Message msgId={labelId} />
+                        </Dropdown.Item>
+                    );
+                })}
+            </Dropdown.Menu>
+        </Dropdown>;
 
     return (
         <div
@@ -65,7 +100,7 @@ const FiltersMenu = forwardRef(({
                         >
                             {isMobile ? <FaIcon name="filter" /> : <Message msgId="gnhome.filter"/>}
                         </Button>}
-                        {' '}
+                        {orderAlign === 'left' ? orderButtonNode : null}
                         {loading ? <span className="resources-count-loading"><Spinner /></span> : <Badge>
                             <span className="resources-count"> <Message msgId="gnhome.resourcesFound" msgParams={{ count: totalResources }}/> </span>
                         </Badge>}
@@ -83,34 +118,7 @@ const FiltersMenu = forwardRef(({
                     >
                         <FaIcon name={cardLayoutStyle === 'grid' ? 'list' : 'th'} />
                     </Button>}
-                    {orderOptions.length > 0 &&
-                    <Dropdown pullRight id="sort-dropdown">
-                        <Dropdown.Toggle
-                            bsStyle="default"
-                            bsSize="sm"
-                            noCaret
-                        >
-                            <Message msgId={selectedSort?.labelId || defaultLabelId} />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {orderOptions.map(({ labelId, value }) => {
-                                return (
-                                    <Dropdown.Item
-                                        key={value}
-                                        active={value === selectedSort?.value}
-                                        href={formatHref({
-                                            query: {
-                                                sort: [value]
-                                            },
-                                            replaceQuery: true
-                                        })}
-                                    >
-                                        <Message msgId={labelId} />
-                                    </Dropdown.Item>
-                                );
-                            })}
-                        </Dropdown.Menu>
-                    </Dropdown>}
+                    {orderAlign === 'right' ? orderButtonNode : null}
                 </div>
             </div>
         </div>

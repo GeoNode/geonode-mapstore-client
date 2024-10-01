@@ -781,8 +781,7 @@ function ResourcesGrid({
                                         order={query?.sort}
                                         onClear={handleClear}
                                         onClick={handleShowFilterForm.bind(null, true)}
-                                        orderOptions={parsedConfig.order?.options}
-                                        defaultLabelId={parsedConfig.order?.defaultLabelId}
+                                        orderConfig={parsedConfig.order}
                                         totalResources={totalResources}
                                         totalFilters={queryFilters.length}
                                         filtersActive={!!(queryFilters.length > 0)}

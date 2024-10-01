@@ -1,0 +1,57 @@
+{% load i18n %}
+<div class="gn-resource-card gn-card-type-grid">
+    {% if params.detail_panel_url %}
+        <a class="gn-resource-card-link" href="{{ params.detail_panel_url }}"></a>
+    {% else %}
+        <a class="gn-resource-card-link" href="{{ params.detail_url }}"></a>
+    {% endif %}
+    <div class="card-resource-grid">
+        {% if params.thumbnail_url %}
+            <img
+                class="card-img-top"
+                src="{{ params.thumbnail_url }}"
+            >
+        {% else %}
+            <div class="card-img-top card-img-placeholder"><i class="fa fa-{{ params.icon_name }}"></i></div>
+        {% endif %}
+        <div class="gn-resource-card-body-wrapper">
+            <div class="card-body">
+                <div class="card-title">
+                    <div>
+                        <i class="fa fa-{{ params.icon_name }}"></i>
+                        <span class="gn-card-title">
+                            {% trans params.title %}
+                        </span>
+                        <p class="card-text gn-card-description grid">{% trans params.description  %}</p>
+                    </div>
+                    <div>
+                        <p class="gn-resource-status-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="gn-footer-wrapper">
+                <div class="gn-card-footer" style="padding: 0px 0.5rem;">
+                    <p class="card-text gn-card-user">
+                        {% if params.avatar %}
+                            <img class="gn-card-author-image" src="{{params.avatar}}">
+                        {% endif %}
+                        <span>{{ params.username }}</span>
+                    </p>
+                    {% if params.detail_url and params.detail_panel_url %}
+                        <div class="gn-card-actions">
+                            <div class="gn-card-view-editor">
+                                <a
+                                    href={{ params.detail_url }}
+                                    rel="noopener noreferrer"
+                                    class="btn btn-primary"
+                                >
+                                    <span>{% trans "View" %}</span>
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

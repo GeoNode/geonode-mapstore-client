@@ -51,6 +51,8 @@
 
 .gn-card-grid {
     padding-top: 20px;
+    container-name: card-grid;
+    container-type: inline-size;
     .gn-card-grid-container {
         position: relative;
         max-width: @gn-page-max-width;
@@ -74,9 +76,13 @@
         max-width: @gn-page-max-width;
         margin: auto;
         width: 100%;
-        li {
+        > li {
             padding: 0;
-            margin: 0;
+            width: calc(100% - 1rem);
+            margin: 0.5rem;
+        }
+        &.gn-cards-type-grid > li {
+            width: calc(25% - 1rem);
         }
         .gn-cards-loader {
             z-index: 2;
@@ -125,6 +131,17 @@
             outline: none !important;
         }
 
+    }
+}
+
+@container card-grid (width < 1100px) {
+    .gn-card-grid .gn-card-grid-container>ul.gn-cards-type-grid > li {
+        width: calc(50% - 1rem);
+    }
+}
+@container card-grid (width < 600px) {
+    .gn-card-grid .gn-card-grid-container>ul.gn-cards-type-grid > li {
+        width: calc(100% - 1rem);
     }
 }
 

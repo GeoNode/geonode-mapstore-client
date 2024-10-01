@@ -1,0 +1,37 @@
+{% load i18n %}
+<div class="gn-resources-grid gn-row">
+    <div class="gn-grid-container">
+        <div class="gn-card-grid">
+            <div class="gn-card-grid-container" style="min-height:auto;">
+                {%if not params.hide_filter_menu %}
+                    <div class="gn-filters-menu gn-menu gn-default">
+                        <div class="gn-menu-container">
+                            <div class="gn-menu-content">
+                                <div class="gn-menu-fill">
+                                    {% for item in params.left_menu_items %}
+                                        <a class="btn btn-sm btn-{{item.variant}}" href={{item.href}}>{{item.label}}</a>
+                                    {% endfor %}
+                                    <span class="badge">
+                                        <span class="resources-count"> <span>{{ params.count }} {% trans "Resource found" %}</span> </span>
+                                    </span>
+                                </div>
+                                <ul class="gn-menu-list">
+                                    {% for item in params.right_menu_items %}
+                                        <li><a class="btn btn-sm btn-{{item.variant}}" href={{item.href}}>{{item.label}}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {%endif%}
+                <ul class="gn-card-list gn-cards-type-grid">
+                    {% for resource in params.resources %}
+                        <li>
+                            {% include './resource_card.html' with params=resource %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

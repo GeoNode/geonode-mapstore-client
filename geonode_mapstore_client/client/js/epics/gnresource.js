@@ -442,11 +442,12 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
             const { newResourceObservable } = resourceTypes[action.resourceType] || {};
             const state = store.getState();
             if (!canAddResource(state)) {
+                const pathname = state?.router?.location?.pathname;
                 const formattedUrl = url.format({
                     ...window.location,
                     pathname: '/account/login/',
                     hash: '',
-                    search: `?next=${getCataloguePath('/catalogue')}`
+                    search: `?next=${getCataloguePath('/catalogue')}${pathname ? `/#${pathname}` : ''}`
                 });
                 window.location.href = formattedUrl;
                 window.reload();
