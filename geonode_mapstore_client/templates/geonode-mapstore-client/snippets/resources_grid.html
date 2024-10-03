@@ -12,7 +12,16 @@
                                         <a class="btn btn-sm btn-{{item.variant}}" href={{item.href}}>{{item.label}}</a>
                                     {% endfor %}
                                     <span class="badge">
-                                        <span class="resources-count"> <span>{{ params.count }} {% trans "Resource found" %}</span> </span>
+                                        <span class="resources-count">
+                                            <span>
+                                                {{ params.count }}
+                                                {%if params.count == 1%}
+                                                    {% trans "Resource found" %}
+                                                {% else %}
+                                                    {% trans "Resources found" %}
+                                                {%endif%}
+                                            </span>
+                                        </span>
                                     </span>
                                 </div>
                                 <ul class="gn-menu-list">
