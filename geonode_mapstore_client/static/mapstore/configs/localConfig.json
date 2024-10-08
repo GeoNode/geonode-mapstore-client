@@ -839,7 +839,9 @@
                             "id": "settings",
                             "labelId": "gnviewer.settings",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-                            "items": [true]
+                            "items": [
+                                true
+                            ]
                         }
                     ]
                 }
@@ -1143,10 +1145,6 @@
                             "name": "queryform.spatialfilter.operations.intersects"
                         },
                         {
-                            "id": "BBOX",
-                            "name": "queryform.spatialfilter.operations.bbox"
-                        },
-                        {
                             "id": "CONTAINS",
                             "name": "queryform.spatialfilter.operations.contains"
                         },
@@ -1267,10 +1265,6 @@
                         {
                             "id": "INTERSECTS",
                             "name": "queryform.spatialfilter.operations.intersects"
-                        },
-                        {
-                            "id": "BBOX",
-                            "name": "queryform.spatialfilter.operations.bbox"
                         },
                         {
                             "id": "CONTAINS",
@@ -1746,7 +1740,9 @@
                             "id": "settings",
                             "labelId": "gnviewer.settings",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-                            "items": [true]
+                            "items": [
+                                true
+                            ]
                         }
                     ]
                 }
@@ -2041,10 +2037,6 @@
                         {
                             "id": "INTERSECTS",
                             "name": "queryform.spatialfilter.operations.intersects"
-                        },
-                        {
-                            "id": "BBOX",
-                            "name": "queryform.spatialfilter.operations.bbox"
                         },
                         {
                             "id": "CONTAINS",
@@ -2455,7 +2447,9 @@
                             "id": "settings",
                             "labelId": "gnviewer.settings",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-                            "items": [true]
+                            "items": [
+                                true
+                            ]
                         }
                     ]
                 }
@@ -2803,7 +2797,9 @@
                             "id": "settings",
                             "labelId": "gnviewer.settings",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-                            "items": [true]
+                            "items": [
+                                true
+                            ]
                         }
                     ]
                 }
@@ -3079,7 +3075,9 @@
                             "id": "settings",
                             "labelId": "gnviewer.settings",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-                            "items": [true]
+                            "items": [
+                                true
+                            ]
                         }
                     ]
                 }
@@ -3118,8 +3116,37 @@
                     "containerPosition": "leftColumn",
                     "toolsOptions": {
                         "hideCrossLayer": true,
-                        "hideSpatialFilter": true
-                    }
+                        "useEmbeddedMap": true
+                    },
+                    "spatialPanelExpanded": false,
+                    "spatialOperations": [
+                        {
+                            "id": "INTERSECTS",
+                            "name": "queryform.spatialfilter.operations.intersects"
+                        },
+                        {
+                            "id": "CONTAINS",
+                            "name": "queryform.spatialfilter.operations.contains"
+                        },
+                        {
+                            "id": "WITHIN",
+                            "name": "queryform.spatialfilter.operations.within"
+                        }
+                    ],
+                    "spatialMethodOptions": [
+                        {
+                            "id": "BBOX",
+                            "name": "queryform.spatialfilter.methods.box"
+                        },
+                        {
+                            "id": "Circle",
+                            "name": "queryform.spatialfilter.methods.circle"
+                        },
+                        {
+                            "id": "Polygon",
+                            "name": "queryform.spatialfilter.methods.poly"
+                        }
+                    ]
                 }
             },
             {
@@ -4408,7 +4435,9 @@
                             "id": "settings",
                             "labelId": "gnviewer.settings",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-                            "items": [true]
+                            "items": [
+                                true
+                            ]
                         }
                     ]
                 }
