@@ -411,7 +411,8 @@
                 }
             },
             "allResources": "All resources",
-            "assets": "Assets"
+            "assets": "Assets",
+            "includeFullscreen": "Incluir pantalla completa"
         }
     }
 }

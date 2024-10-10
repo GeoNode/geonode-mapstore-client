@@ -412,7 +412,8 @@
                 }
             },
             "allResources": "All resources",
-            "assets": "Assets"
+            "assets": "Assets",
+            "includeFullscreen": "Inclure le plein écran"
         }
     }
 }

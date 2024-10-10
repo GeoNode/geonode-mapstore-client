@@ -350,3 +350,39 @@ export const getPluginsConfigOverride = (pluginsConfig) => isFunction(apiPlugins
     : isObject(apiPluginsConfig)
         ? apiPluginsConfig
         : pluginsConfig;
+
+/* this function adds plugin based on the current query, used mainly for embed pages*/
+export const addQueryPlugins = (pluginsConfig, query) => {
+    if (isArray(pluginsConfig)) {
+        return [
+            ...(query?.allowFullscreen === 'true'
+                ? [{
+                    mandatory: true, // needed for custom viewers
+                    name: 'FullScreen',
+                    cfg: {
+                        showText: true
+                    }
+                },
+                {
+                    mandatory: true, // needed for custom viewers
+                    name: 'ActionNavbar',
+                    cfg: {
+                        containerPosition: 'footer',
+                        variant: 'default',
+                        leftMenuItems: [{
+                            type: 'placeholder'
+                        }],
+                        rightMenuItems: [
+                            {
+                                type: 'plugin',
+                                name: 'FullScreen',
+                                size: 'xs'
+                            }
+                        ]
+                    }
+                }] : []),
+            ...pluginsConfig
+        ];
+    }
+    return pluginsConfig;
+};
