@@ -424,7 +424,8 @@
             "approveResourceTooltip": "Diese Ressource genehmigen (wird vom erweiterten Workflow verwendet)",
             "publishResourceTooltip": "Diese Ressource veröffentlichen (wird vom erweiterten Workflow verwendet)",
             "featureResourceTooltip": "Diese Ressource zu den vorgestellten Ressourcen hinzufügen",
-            "advertiseResourceTooltip": "Diese Ressource durchsuchbar machen"
+            "advertiseResourceTooltip": "Diese Ressource durchsuchbar machen",
+            "includeFullscreen": "Vollbild einschließen"
         }
     }
 }

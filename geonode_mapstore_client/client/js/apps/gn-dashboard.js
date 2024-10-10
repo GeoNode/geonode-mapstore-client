@@ -11,6 +11,7 @@ import main from '@mapstore/framework/components/app/main';
 import MainLoader from '@js/components/MainLoader';
 import ViewerRoute from '@js/routes/Viewer';
 import Router, { withRoutes } from '@js/components/Router';
+import controls from '@mapstore/framework/reducers/controls';
 import security from '@mapstore/framework/reducers/security';
 import maptype from '@mapstore/framework/reducers/maptype';
 import dashboard from '@mapstore/framework/reducers/dashboard';
@@ -27,7 +28,8 @@ import {
     setupConfiguration,
     initializeApp,
     getPluginsConfiguration,
-    getPluginsConfigOverride
+    getPluginsConfigOverride,
+    addQueryPlugins
 } from '@js/utils/AppUtils';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 import pluginsDefinition, { storeEpicsNamesToExclude, cleanEpics } from '@js/plugins/index';
@@ -73,7 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         onStoreInit,
                         geoNodePageConfig,
                         targetId = 'ms-container',
-                        settings
+                        settings,
+                        query
                     }) => {
 
                         const appEpics = cleanEpics({
@@ -86,7 +89,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         main({
                             targetId,
                             appComponent: withRoutes(routes)(ConnectedRouter),
-                            pluginsConfig: getPluginsConfigOverride(getPluginsConfiguration(localConfig.plugins, pluginsConfigKey)),
+                            pluginsConfig: addQueryPlugins(
+                                getPluginsConfigOverride(getPluginsConfiguration(localConfig.plugins, pluginsConfigKey)),
+                                query
+                            ),
                             loaderComponent: MainLoader,
                             pluginsDef: {
                                 plugins: {
@@ -107,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             },
                             themeCfg: null,
                             appReducers: {
+                                controls,
                                 dashboard,
                                 gnresource,
                                 gnsettings,

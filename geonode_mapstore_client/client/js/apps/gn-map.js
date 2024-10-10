@@ -49,7 +49,8 @@ import {
     setupConfiguration,
     initializeApp,
     getPluginsConfiguration,
-    getPluginsConfigOverride
+    getPluginsConfigOverride,
+    addQueryPlugins
 } from '@js/utils/AppUtils';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 import { requestResourceConfig } from '@js/actions/gnresource';
@@ -145,7 +146,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                             },
                             themeCfg: null,
-                            pluginsConfig: getPluginsConfigOverride(getPluginsConfiguration(localConfig.plugins, pluginsConfigKey)),
+                            pluginsConfig: addQueryPlugins(
+                                getPluginsConfigOverride(getPluginsConfiguration(localConfig.plugins, pluginsConfigKey)),
+                                query
+                            ),
                             pluginsDef: {
                                 plugins: {
                                     ...pluginsDefinition.plugins

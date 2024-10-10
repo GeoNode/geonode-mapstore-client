@@ -12,7 +12,7 @@ import { connect, createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { createSelector } from 'reselect';
 import ActionNavbar from '@js/components/ActionNavbar';
 
-import usePluginItems from '@js/hooks/usePluginItems';
+import usePluginItems from '@mapstore/framework/hooks/usePluginItems';
 import {
     getResourcePerms,
     canAddResource,
@@ -41,7 +41,8 @@ function ActionNavbarPlugin(
         resourcePerms,
         resource,
         isDirtyState,
-        selectedLayerPermissions
+        selectedLayerPermissions,
+        variant = 'primary'
     },
     context
 ) {
@@ -113,7 +114,7 @@ function ActionNavbarPlugin(
         <ActionNavbar
             leftItems={leftItems}
             rightItems={rightItems}
-            variant="primary"
+            variant={variant}
             size="sm"
             resource={resource}
         />

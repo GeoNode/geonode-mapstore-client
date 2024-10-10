@@ -81,6 +81,10 @@ const MenuItem = ({ item, menuItemsProps, containerNode, tabIndex, classItem = '
         return <div className="gn-menu-divider" style={style}></div>;
     }
 
+    if (type === 'placeholder') {
+        return <span />;
+    }
+
     if (type === 'filter') {
         const active = castArray(query.f || []).find(value => value === item.id);
         return (

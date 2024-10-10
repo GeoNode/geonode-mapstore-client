@@ -54,7 +54,11 @@ function MapViewerRoute({
 
     const selectPluginsConfig = () => {
         if (hasViewer === true && embed) {
-            return getPluginsConfiguration('desktop', viewerPluginsConfig);
+            return [
+                ...getPluginsConfiguration(name, propPluginsConfig)
+                    .filter((plugin) => !!plugin.mandatory),
+                ...getPluginsConfiguration('desktop', viewerPluginsConfig)
+            ];
         }
         if (hasViewer === true && (resource?.pk === pk || pk === 'new')) {
             return uniqBy([

@@ -12,7 +12,7 @@ import FaIcon from '@js/components/FaIcon/FaIcon';
 import CopyToClipboard from 'react-copy-to-clipboard';
 
 
-function SharePageLink({label, url}) {
+function SharePageLink({label, value, children}) {
     const [copied, setCopied] = useState(false);
     useEffect(() => {
         if (copied) {
@@ -31,10 +31,10 @@ function SharePageLink({label, url}) {
                             readOnly
                             rel="noopener noreferrer"
                             target="_blank"
-                            value={url}
+                            value={value}
                         />
                         {!copied && <CopyToClipboard
-                            text={url}
+                            text={value}
                         >
                             <Button
                                 size="sm"
@@ -44,6 +44,7 @@ function SharePageLink({label, url}) {
                             </Button>
                         </CopyToClipboard>}
                         {copied && <Button size="sm"><FaIcon name="check" /></Button>}</div>
+                    {children}
                 </div>
             </div>
         </div>

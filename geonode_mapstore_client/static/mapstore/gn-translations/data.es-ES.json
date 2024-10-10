@@ -423,7 +423,8 @@
             "approveResourceTooltip": "Aprobar este recurso (utilizado por el flujo de trabajo avanzado)",
             "publishResourceTooltip": "Publicar este recurso (utilizado por el flujo de trabajo avanzado)",
             "featureResourceTooltip": "Agregar este recurso a los recursos destacados",
-            "advertiseResourceTooltip": "Hacer que este recurso sea buscable"
+            "advertiseResourceTooltip": "Hacer que este recurso sea buscable",
+            "includeFullscreen": "Incluir pantalla completa"
         }
     }
 }

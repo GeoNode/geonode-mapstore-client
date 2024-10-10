@@ -40,6 +40,7 @@ import {
     getResourceTypesInfo
 } from '@js/utils/ResourceUtils';
 import SharePageLink from '@js/plugins/share/SharePageLink';
+import ShareEmbedLink from '@js/plugins/share/ShareEmbedLink';
 import { getCurrentResourcePermissionsLoading } from '@js/selectors/resourceservice';
 
 const getEmbedUrl = (resource) => {
@@ -152,9 +153,9 @@ function Share({
                     </Button>
                 </div>
                 <div className="gn-share-panel-body">
-                    <SharePageLink url={pageUrl} label={<Message msgId="gnviewer.thisPage" />} />
-                    {embedUrl && <SharePageLink url={embedUrl} label={<Message msgId={`gnviewer.embed${resourceType}`} />} />}
-                    {(resourceType === 'document' && !!downloadUrl) && <SharePageLink url={downloadUrl} label={<Message msgId={`gnviewer.directLink`} />} />}
+                    <SharePageLink value={pageUrl} label={<Message msgId="gnviewer.thisPage" />} />
+                    {embedUrl && <ShareEmbedLink embedUrl={embedUrl} label={<Message msgId={`gnviewer.embed${resourceType}`} />} />}
+                    {(resourceType === 'document' && !!downloadUrl) && <SharePageLink value={downloadUrl} label={<Message msgId={`gnviewer.directLink`} />} />}
                     {canEdit && <>
                         <Permissions
                             compactPermissions={compactPermissions}

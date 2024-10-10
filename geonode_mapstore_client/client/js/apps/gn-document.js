@@ -10,6 +10,7 @@ import main from '@mapstore/framework/components/app/main';
 import ViewerRoute from '@js/routes/Viewer';
 import MainLoader from '@js/components/MainLoader';
 import Router, { withRoutes } from '@js/components/Router';
+import controls from '@mapstore/framework/reducers/controls';
 import security from '@mapstore/framework/reducers/security';
 import gnresource from '@js/reducers/gnresource';
 import gnsettings from '@js/reducers/gnsettings';
@@ -23,7 +24,8 @@ import {
     setupConfiguration,
     initializeApp,
     getPluginsConfiguration,
-    getPluginsConfigOverride
+    getPluginsConfigOverride,
+    addQueryPlugins
 } from '@js/utils/AppUtils';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 import pluginsDefinition, { storeEpicsNamesToExclude, cleanEpics } from '@js/plugins/index';
@@ -68,7 +70,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         onStoreInit,
                         geoNodePageConfig,
                         targetId = 'ms-container',
-                        settings
+                        settings,
+                        query
                     }) => {
 
                         const appEpics = cleanEpics({
@@ -81,7 +84,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         main({
                             targetId,
                             appComponent: withRoutes(routes)(ConnectedRouter),
-                            pluginsConfig: getPluginsConfigOverride(getPluginsConfiguration(localConfig.plugins, pluginsConfigKey)),
+                            pluginsConfig: addQueryPlugins(
+                                getPluginsConfigOverride(getPluginsConfiguration(localConfig.plugins, pluginsConfigKey)),
+                                query
+                            ),
                             loaderComponent: MainLoader,
                             pluginsDef: {
                                 plugins: {
@@ -99,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             },
                             themeCfg: null,
                             appReducers: {
+                                controls,
                                 gnresource,
                                 gnsettings,
                                 security

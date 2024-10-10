@@ -426,7 +426,8 @@
             "approveResourceTooltip": "Approva questa risorsa (utilizzata dall' Advanced Workflow)",
             "publishResourceTooltip": "Pubblica questa risorsa (utilizzata dall' Advanced Workflow)",
             "featureResourceTooltip": "Aggiungi questa risorsa alle risorse in evidenza",
-            "advertiseResourceTooltip": "Rendi questa risorsa ricercabile"
+            "advertiseResourceTooltip": "Rendi questa risorsa ricercabile",
+            "includeFullscreen": "Includi fullscreen"
         }
     }
 }

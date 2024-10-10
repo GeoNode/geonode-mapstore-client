@@ -424,7 +424,8 @@
             "approveResourceTooltip": "Approuver cette ressource (utilisé par le flux de travail avancé)",
             "publishResourceTooltip": "Publier cette ressource (utilisé par le flux de travail avancé)",
             "featureResourceTooltip": "Ajouter cette ressource aux ressources en vedette",
-            "advertiseResourceTooltip": "Rendre cette ressource consultable"
+            "advertiseResourceTooltip": "Rendre cette ressource consultable",
+            "includeFullscreen": "Inclure le plein écran"
         }
     }
 }

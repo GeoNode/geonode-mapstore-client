@@ -394,7 +394,8 @@
             "approveResourceTooltip": "Approve this resource (used by the Advanced Workflow)",
             "publishResourceTooltip": "Publish this resource (used by the Advanced Workflow)",
             "featureResourceTooltip": "Add this resource to featured resources",
-            "advertiseResourceTooltip": "Make this resource searchable"
+            "advertiseResourceTooltip": "Make this resource searchable",
+            "includeFullscreen": "Include fullscreen"
         }
     }
 }

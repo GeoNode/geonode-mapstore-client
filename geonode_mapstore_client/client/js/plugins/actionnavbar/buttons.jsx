@@ -39,18 +39,20 @@ export const FullScreenActionButton = connect(createSelector([
     onClick,
     variant,
     size,
-    enabled
+    enabled,
+    showText
 }) => {
     const FullScreenButton = tooltip(Button);
+    const label = enabled ?  <Message msgId="gnviewer.nativescreen"/> : <Message msgId="gnviewer.fullscreen"/>;
     return (
         <FullScreenButton
             tooltipPosition={enabled ? "left" : "top"}
-            tooltip={ enabled ?  <Message msgId="gnviewer.nativescreen"/> : <Message msgId="gnviewer.fullscreen"/>  }
+            tooltip={ showText ? undefined : label }
             variant={variant}
             size={size}
             onClick={() => onClick(!enabled)}
         >
-            <FaIcon name={enabled ? "expand" : "expand"} />
+            {showText ? label : <FaIcon name={enabled ? "expand" : "expand"} />}
         </FullScreenButton>
     );
 });
