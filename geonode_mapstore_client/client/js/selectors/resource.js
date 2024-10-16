@@ -91,6 +91,14 @@ export const getResourceData = (state) => {
     return state?.gnresource?.data;
 };
 
+export const getLayerResourceData = (state) => {
+    return state?.gnresource?.layerDataset;
+};
+
+export const getSelectedLayer = (state) => {
+    return state?.gnresource?.selectedLayer;
+};
+
 export const getCompactPermissions = (state) => {
     const compactPermissions = state?.gnresource?.compactPermissions || {};
     return compactPermissions;

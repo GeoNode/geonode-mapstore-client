@@ -14,7 +14,7 @@ import Rx from "rxjs";
 import { setEditPermissionStyleEditor, INIT_STYLE_SERVICE } from "@mapstore/framework/actions/styleeditor";
 import { getSelectedLayer, layersSelector } from "@mapstore/framework/selectors/layers";
 import { getConfigProp } from "@mapstore/framework/utils/ConfigUtils";
-import { getDatasetByName, getDatasetsByName } from '@js/api/geonode/v2';
+import { getDatasetByName, getDatasetsByName, getDatasetByPk } from '@js/api/geonode/v2';
 import { MAP_CONFIG_LOADED } from '@mapstore/framework/actions/config';
 import { setPermission } from '@mapstore/framework/actions/featuregrid';
 import { SELECT_NODE, updateNode, ADD_LAYER } from '@mapstore/framework/actions/layers';
@@ -37,21 +37,33 @@ export const gnCheckSelectedDatasetPermissions = (action$, { getState } = {}) =>
         .switchMap(() => {
             const state = getState() || {};
             const layer = getSelectedLayer(state);
+            const layerResourceId = layer?.extendedParams?.pk;
             const permissions = layer?.perms || [];
             const canEditStyles = permissions.includes("change_dataset_style");
             const canEdit = permissions.includes("change_dataset_data");
             return layer
-                ? Rx.Observable.of(
-                    setPermission({canEdit}),
-                    setEditPermissionStyleEditor(canEditStyles),
-                    setSelectedDatasetPermissions(permissions),
-                    setSelectedLayer(layer)
-                )
+                ? layerResourceId
+                    ? Rx.Observable.defer(() =>
+                        getDatasetByPk(layerResourceId, true)
+                            .then((layerDataset) => layerDataset)
+                            .catch(() => [])
+                    ).switchMap((layerDataset) =>
+                        Rx.Observable.of(
+                            setSelectedLayer(layerDataset),
+                            setPermission({canEdit}),
+                            setEditPermissionStyleEditor(canEditStyles),
+                            setSelectedDatasetPermissions(permissions)
+                        )
+                    )
+                    : Rx.Observable.of(
+                        setPermission({canEdit}),
+                        setEditPermissionStyleEditor(canEditStyles),
+                        setSelectedDatasetPermissions(permissions)
+                    )
                 : Rx.Observable.of(
                     setPermission({canEdit: false}),
                     setEditPermissionStyleEditor(false),
-                    setSelectedDatasetPermissions([]),
-                    setSelectedLayer(null)
+                    setSelectedDatasetPermissions([])
                 );
         });
 
