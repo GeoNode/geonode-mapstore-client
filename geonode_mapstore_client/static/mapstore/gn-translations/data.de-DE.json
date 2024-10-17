@@ -431,7 +431,7 @@
             "uploadDatasetMetadata": "Datensatzmetadaten hochladen",
             "uploadName": "Name",
             "uploadCreated": "Erstellt",
-            "replaceDataset": "Ersetzen",
+            "replaceDataset": "Datensatz Ersetzen",
             "replaceDatasetTitle": "Datensatz ersetzen"
         }
     }

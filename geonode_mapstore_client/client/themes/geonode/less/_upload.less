@@ -62,6 +62,12 @@
             }
         }
     }
+    .gn-upload-processing {
+        .table > tbody > tr > td {
+            .background-color-var(@theme-vars[main-bg]);
+            .border-top-color-var(@theme-vars[main-variant-bg]);
+        }
+    }
 }
 
 // **************
@@ -289,6 +295,7 @@
         font-weight: normal;
         vertical-align: middle;
         word-break: break-word;
+        border-top-width: 0.25rem;
     }
 }
 

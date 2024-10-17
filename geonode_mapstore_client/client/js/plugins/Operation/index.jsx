@@ -60,7 +60,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
  *      "source": "upload",
  *      "api": {
  *          "upload": {
- *              "url": "{context.getEndpointUrl('upload')}",
+ *              "url": "{context.getEndpointUrl('uploads', '/upload')}",
  *              "maxParallelUploads": 1,
  *              "enableRemoteUploads": false,
  *              "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { source: ['upload'] })}",

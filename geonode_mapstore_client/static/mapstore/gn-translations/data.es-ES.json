@@ -430,7 +430,7 @@
             "uploadDatasetMetadata": "Metadatos del conjunto de datos de carga",
             "uploadName": "Nombre",
             "uploadCreated": "Creado",
-            "replaceDataset": "Reemplazar",
+            "replaceDataset": "Reemplazar Conjunto De Datos",
             "replaceDatasetTitle": "Reemplazar conjunto de datos"
         }
     }

@@ -23,7 +23,7 @@ import {
 } from '@js/utils/UploadUtils';
 import {
     getEndpointUrl,
-    UPLOADS_UPLOAD,
+    UPLOADS,
     EXECUTION_REQUEST
 } from '@js/api/geonode/v2/constants';
 
@@ -33,7 +33,7 @@ function UploadDataset({
 
     const api = {
         upload: {
-            url: getEndpointUrl(UPLOADS_UPLOAD),
+            url: getEndpointUrl(UPLOADS, '/upload'),
             body: {
                 file: {
                     'base_file': getUploadMainFile,

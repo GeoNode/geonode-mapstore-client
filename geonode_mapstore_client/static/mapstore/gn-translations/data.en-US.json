@@ -431,7 +431,7 @@
             "uploadDatasetMetadata": "Upload dataset metadata",
             "uploadName": "Name",
             "uploadCreated": "Created",
-            "replaceDataset": "Replace",
+            "replaceDataset": "Replace Dataset",
             "replaceDatasetTitle": "Replace dataset"
         }
     }
