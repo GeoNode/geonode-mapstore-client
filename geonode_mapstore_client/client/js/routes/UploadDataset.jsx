@@ -37,20 +37,21 @@ function UploadDataset({
             body: {
                 file: {
                     'base_file': getUploadMainFile,
-                    'store_spatial_files': true
+                    'store_spatial_files': true,
+                    'action': 'upload'
                 },
                 remote: {
                     'url': getUploadProperty('url'),
                     'title': getUploadProperty('url'),
-                    'type': getUploadProperty('remoteType')
+                    'type': getUploadProperty('remoteType'),
+                    'action': 'upload'
                 }
             }
         },
         executionRequest: {
             url: getEndpointUrl(EXECUTION_REQUEST),
             params: {
-                'filter{action}': 'import',
-                'filter{source}': 'upload',
+                'filter{action}': 'upload',
                 'sort[]': '-created'
             }
         }
@@ -83,11 +84,10 @@ function UploadDataset({
             setForceRequests(prevForceRequests => prevForceRequests + 1);
         }
     });
-
     return (
         <UploadPanel
             enableRemoteUploads
-            supportedFiles={getSupportedFilesByResourceType('dataset', { source: ['upload'] })}
+            supportedFiles={getSupportedFilesByResourceType('dataset', { actions: ['upload'] })}
             maxParallelUploads={getMaxParallelUploads()}
             maxAllowedSize={getMaxAllowedSizeByResourceType('dataset')}
             progress={progress}

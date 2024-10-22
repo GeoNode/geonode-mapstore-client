@@ -31,7 +31,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
  * @prop {string} iconName a font awesome icon name for the central section
  * @prop {string} titleMsgId title for the central section
  * @prop {string} descriptionMsgId description for the central section
- * @prop {string} source the operation source used in the upload process
+ * @prop {string} action the operation action used in the upload process
  * @prop {boolean} pageReload if true the page is reloaded after clicking on reload
  * @prop {object} api an object with the api configuration for upload and execution request
  * @prop {object} api.upload configuration for the upload process
@@ -57,25 +57,25 @@ import Message from '@mapstore/framework/components/I18N/Message';
  *      "iconName": "file",
  *      "titleMsgId": "gnviewer.operationTitle",
  *      "descriptionMsgId": "gnviewer.operationDescription",
- *      "source": "upload",
+ *      "action": "upload",
  *      "api": {
  *          "upload": {
  *              "url": "{context.getEndpointUrl('uploads', '/upload')}",
  *              "maxParallelUploads": 1,
  *              "enableRemoteUploads": false,
- *              "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { source: ['upload'] })}",
+ *              "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['upload'] })}",
  *              "body": {
  *                  "file": {
  *                      "base_file": "{context.getUploadMainFile}",
- *                      "resource_pk": "{context.get(state('gnResourceData'), 'pk')}"
+ *                      "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
+ *                      "action": "upload"
  *                  }
  *              }
  *          },
  *          "executionRequest": {
  *              "url": "{context.getEndpointUrl('executionrequest')}",
  *              "params": {
- *                  "filter{source}": "resource_file_upload",
- *                  "filter{name.endswith}": ".xml",
+ *                  "filter{action}": "upload",
  *                  "sort[]": "-created",
  *                  "filter{geonode_resource}": "{context.get(state('gnResourceData'), 'pk')}"
  *              }
@@ -100,22 +100,22 @@ function Operation({
     iconName,
     titleMsgId,
     descriptionMsgId,
-    source,
+    action,
     pageReload
 }) {
 
     // open the import ui if a blocking execution is still running
     const executions = resource?.executions;
     useEffect(() => {
-        if (executions && source && blocking) {
+        if (executions && action && blocking) {
             const runningExecution = executions
                 .find((execution) => execution.status === 'running'
-                && execution?.input_params?.source === source);
+                && execution?.input_params?.action === action);
             if (runningExecution) {
                 onSelect(id);
             }
         }
-    }, [id, blocking, source, executions]);
+    }, [id, blocking, action, executions]);
 
     if (selected !== id) {
         return null;

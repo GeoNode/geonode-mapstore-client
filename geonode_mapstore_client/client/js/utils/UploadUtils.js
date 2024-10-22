@@ -194,7 +194,7 @@ export const getMaxAllowedSizeByResourceType = (resourceType) => {
     return maxAllowedSize;
 };
 
-export const getSupportedFilesByResourceType = (resourceType, { source } = {}) => {
+export const getSupportedFilesByResourceType = (resourceType, { actions } = {}) => {
     if (resourceType === 'document') {
         const { allowedDocumentTypes } = getConfigProp('geoNodeSettings') || [];
         return allowedDocumentTypes.map((ext) => {
@@ -205,122 +205,10 @@ export const getSupportedFilesByResourceType = (resourceType, { source } = {}) =
             };
         });
     }
-    // const { upload: uploadSettings = {} } = getConfigProp('geoNodeSettings') || {};
-    // const { supportedDatasetFileTypes: supportedDatasetTypes } = uploadSettings;
-    return [
-        {
-            "id": "shp",
-            "label": "ESRI Shapefile",
-            "required_ext": ["shp", "prj", "dbf", "shx"],
-            "optional_ext": ["xml", "sld", "cpg", "cst"],
-            "source": ["upload"],
-            "format": "vector"
-        },
-        {
-            "id": "csv",
-            "label": "CSV",
-            "required_ext": ["csv"],
-            "optional_ext": ["sld", "xml"],
-            "source": ["upload"],
-            "format": "vector"
-        },
-        {
-            "id": "gpkg",
-            "label": "GeoPackage",
-            "required_ext": ["gpkg"],
-            "source": ["upload"],
-            "format": "vector"
-        },
-        {
-            "id": "json",
-            "label": "GeoJSON",
-            "required_ext": ["json"],
-            "optional_ext": ["sld", "xml"],
-            "source": ["upload"],
-            "format": "vector"
-        },
-        {
-            "id": "geojson",
-            "label": "GeoJSON",
-            "required_ext": ["geojson"],
-            "optional_ext": ["sld", "xml"],
-            "source": ["upload"],
-            "format": "vector"
-        },
-        {
-            "id": "kml",
-            "label": "KML",
-            "required_ext": ["kml"],
-            "source": ["upload"],
-            "format": "vector"
-        },
-        {
-            "id": "kmz",
-            "label": "KMZ",
-            "required_ext": ["kmz"],
-            "source": ["upload"],
-            "format": "vector"
-        },
-        {
-            "id": "3dtiles",
-            "label": "3D Tiles",
-            "required_ext": ["zip"],
-            "source": ["upload"],
-            "format": "vector"
-        },
-        {
-            "id": "tiff",
-            "label": "TIFF",
-            "required_ext": ["tiff"],
-            "optional_ext": ["xml", "sld"],
-            "source": ["upload"],
-            "format": "raster"
-        },
-        {
-            "id": "tif",
-            "label": "TIF",
-            "required_ext": ["tif"],
-            "optional_ext": ["xml", "sld"],
-            "source": ["upload"],
-            "format": "raster"
-        },
-        {
-            "id": "geotiff",
-            "label": "GeoTIFF",
-            "required_ext": ["geotiff"],
-            "optional_ext": ["xml", "sld"],
-            "source": ["upload"],
-            "format": "raster"
-        },
-        {
-            "id": "geotif",
-            "label": "GeoTIF",
-            "required_ext": ["geotif"],
-            "optional_ext": ["xml", "sld"],
-            "source": ["upload"],
-            "format": "raster"
-        },
-        {
-            "id": "zip",
-            "label": "Zip Archive",
-            "required_ext": ["zip"],
-            "optional_ext": ["xml", "sld"],
-            "source": ["upload"],
-            "format": "archive"
-        },
-        {
-            "id": "sld",
-            "label": "Styled Layer Descriptor 1.0, 1.1 (SLD)",
-            "required_ext": ["sld"],
-            "source": ["resource_style_upload"],
-            "format": "metadata"
-        },
-        {
-            "id": "xml",
-            "label": "XML Metadata File (XML - ISO, FGDC, ebRIM, Dublin Core)",
-            "required_ext": ["xml"],
-            "source": ["resource_metadata_upload"],
-            "format": "metadata"
-        }
-    ].filter(supportedType => source ? supportedType.source.some(value => source.includes(value)) : true);
+    const { upload: uploadSettings = {} } = getConfigProp('geoNodeSettings') || {};
+    const { supportedDatasetFileTypes: supportedDatasetTypes } = uploadSettings;
+    return (supportedDatasetTypes || [])
+        .map((supportedType) => supportedType.formats.map(format => ({ ...supportedType, ...format })))
+        .flat()
+        .filter(supportedType => actions ? supportedType.actions.some(value => actions.includes(value)) : true);
 };

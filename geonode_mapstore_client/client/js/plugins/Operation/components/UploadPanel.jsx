@@ -14,6 +14,7 @@ import FaIcon from '@js/components/FaIcon';
 import Message from '@mapstore/framework/components/I18N/Message';
 import ViewerLayout from '@js/components/ViewerLayout';
 import uuidv1 from 'uuid/v1';
+import uniq from 'lodash/uniq';
 import { getFileNameParts } from '@js/utils/FileUtils';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import PendingUploadCard from './PendingUploadCard';
@@ -109,7 +110,7 @@ function UploadPanel({
         return handleAdd([getDefaultRemoteResource({ id: uuidv1(), type: 'remote', url: '' })]);
     };
 
-    const supportedLabels = supportedFiles.map(supportedFile => supportedFile.label).join(', ');
+    const supportedLabels = uniq(supportedFiles.map(supportedFile => supportedFile.label)).join(', ');
     const uploadsList = uploads.filter(upload => upload.type === 'file' ? upload.supported : true);
     const supportedUploads = uploads.filter(upload => upload.supported);
     const readyUploads = uploads.filter(upload => upload.ready);
