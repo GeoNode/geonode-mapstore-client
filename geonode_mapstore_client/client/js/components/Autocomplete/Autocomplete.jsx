@@ -9,6 +9,7 @@
 import React from 'react';
 import isArray from 'lodash/isArray';
 import isEmpty from 'lodash/isEmpty';
+import isString from 'lodash/isString';
 import PropTypes from 'prop-types';
 
 import SelectInfiniteScroll from '@js/components/SelectInfiniteScroll/SelectInfiniteScroll';
@@ -22,30 +23,25 @@ const Autocomplete = ({
     description,
     helpTitleIcon,
     id,
-    labelKey,
+    labelKey = "label",
     name,
     title,
     value,
-    valueKey,
+    valueKey = "value",
     ...props
 }) => {
     const getValue = () => {
-        if (value && isArray(value) && valueKey && labelKey) {
+        if (value && isArray(value)) {
             return value.map((entry) => {
                 return {
                     result: entry,
-                    value: entry[valueKey],
-                    label: entry[labelKey]
+                    [valueKey]: isString(entry) ? entry : entry[valueKey],
+                    [labelKey]: isString(entry) ? entry : entry[labelKey]
                 };
             });
         }
         return value;
     };
-
-    const defaultNewOptionCreator  = (option) => ({
-        [valueKey]: option.label,
-        [labelKey]: option.label
-    });
 
     return (
         <div className={`autocomplete${className ? " " + className : ""}`}>
@@ -59,9 +55,6 @@ const Autocomplete = ({
                 value={getValue()}
                 valueKey={valueKey}
                 labelKey={labelKey}
-                {...props.creatable && {
-                    newOptionCreator: props.newOptionCreator ?? defaultNewOptionCreator
-                }}
             />
         </div>
     );

@@ -29,7 +29,11 @@ const SchemaField = (props) => {
         uiSchema
     } = props;
     const autocomplete = uiSchema?.['ui:options']?.['geonode-ui:autocomplete'];
-    const isMultiSelect =  schema?.items?.type === 'object' && !isEmpty(schema?.items?.properties);
+    const isSchemaItemString = schema?.items?.type === 'string';
+    const isSchemaItemObject = schema?.items?.type === 'object';
+    const isMultiSelect = schema?.type === 'array' && (isSchemaItemString ||
+        (isSchemaItemObject && !isEmpty(schema?.items?.properties))
+    );
     const isSingleSelect = schema?.type === 'object' && !isEmpty(schema?.properties);
 
     if (autocomplete && (isMultiSelect || isSingleSelect)) {
@@ -65,10 +69,14 @@ const SchemaField = (props) => {
                         if (result === undefined) {
                             return option;
                         }
-                        return Object.fromEntries(
-                            Object.keys(schema.items.properties)
-                                .map((key) => [key, result[key]])
-                        );
+                        return isString(result)
+                            ? result
+                            : isSchemaItemString
+                                ? result[valueKey]
+                                : Object.fromEntries(
+                                    Object.keys(schema.items?.properties)
+                                        .map((key) => [key, result[key]])
+                                );
                     });
                 }
                 onChange(_selected);
@@ -89,8 +97,8 @@ const SchemaField = (props) => {
                                 return {
                                     selectOption: {
                                         result,
-                                        value: result[valueKey],
-                                        label: result[labelKey]
+                                        [valueKey]: isString(result) ? result : result[valueKey],
+                                        [labelKey]: isString(result) ? result : result[labelKey]
                                     }
                                 };
                             })

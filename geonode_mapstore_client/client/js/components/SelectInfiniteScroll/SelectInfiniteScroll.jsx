@@ -19,8 +19,8 @@ function SelectInfiniteScroll({
     loadOptions,
     pageSize = 20,
     debounceTime = 500,
-    labelKey,
-    valueKey,
+    labelKey = "label",
+    valueKey = "value",
     newOptionPromptText = "Create option",
     ...props
 }) {
@@ -46,13 +46,17 @@ function SelectInfiniteScroll({
 
     const updateNewOption = (newOptions, query) => {
         if (props.creatable && !isEmpty(query)) {
-            const isValueExist = props.value?.some(v => v[labelKey] === query);
-            const isOptionExist = newOptions.some((o) => o[labelKey] === query);
+            const compareValue = (option) =>
+                option?.[labelKey]?.toLowerCase() === query.toLowerCase();
+
+            const isValueExist = props.value?.some(compareValue);
+            const isOptionExist = newOptions.some(compareValue);
 
             // Add new option if it doesn't exist and `creatable` is enabled
             if (!isValueExist && !isOptionExist) {
                 return [{
-                    [labelKey]: `${newOptionPromptText} "${query}"`, value: query,
+                    [labelKey]: `${newOptionPromptText} "${query}"`,
+                    [valueKey]: query,
                     result: { [valueKey]: query, [labelKey]: query }
                 }].concat(newOptions);
             }
@@ -141,6 +145,8 @@ function SelectInfiniteScroll({
             {...props}
             isLoading={loading}
             options={options}
+            labelKey={labelKey}
+            valueKey={valueKey}
             onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}
             filterOptions={filterOptions}
