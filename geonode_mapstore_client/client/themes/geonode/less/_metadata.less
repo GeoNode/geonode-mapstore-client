@@ -13,8 +13,17 @@
             .border-color-var(@theme-vars[main-border-color]);
         }
     }
-    .gn-metadata-groups .gn-metadata-group > .field-object {
-        .border-color-var(@theme-vars[main-border-color]);
+    .gn-metadata-groups {
+        .gn-metadata-group {
+            & > .field-object {
+                .border-color-var(@theme-vars[main-border-color]);
+            }
+            .has-error {
+                label, .help-title, .gn-metadata-form-description {
+                    .color-var(@theme-vars[danger])
+                }
+            }
+        }
     }
     .gn-metadata-list {
         .border-right-color-var(@theme-vars[main-border-color]);

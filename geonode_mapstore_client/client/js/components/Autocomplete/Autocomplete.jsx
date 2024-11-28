@@ -21,6 +21,7 @@ const IconWithTooltip = tooltip((props) => <div {...props}><FaIcon name="info-ci
 const Autocomplete = ({
     className,
     description,
+    error,
     helpTitleIcon,
     id,
     labelKey = "label",
@@ -44,7 +45,7 @@ const Autocomplete = ({
     };
 
     return (
-        <div className={`autocomplete${className ? " " + className : ""}`}>
+        <div className={`autocomplete${className ? " " + className : ""}${!!error ? " " + "has-error" : ""}`}>
             <div className="title-container">
                 <label className="control-label" htmlFor={id}>{title || name}</label>
                 {helpTitleIcon && !isEmpty(description) && <IconWithTooltip className="help-title" tooltip={description} tooltipPosition={"right"} />}
@@ -56,6 +57,7 @@ const Autocomplete = ({
                 valueKey={valueKey}
                 labelKey={labelKey}
             />
+            {error}
         </div>
     );
 };
@@ -63,6 +65,7 @@ const Autocomplete = ({
 Autocomplete.propTypes = {
     className: PropTypes.string,
     description: PropTypes.string,
+    error: PropTypes.element,
     helpTitleIcon: PropTypes.bool,
     id: PropTypes.string.isRequired,
     labelKey: PropTypes.string,
