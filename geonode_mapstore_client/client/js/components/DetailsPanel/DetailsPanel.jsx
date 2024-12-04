@@ -38,7 +38,7 @@ const EditTitle = ({ title, onEdit, disabled }) => {
                     setTextValue(evt.target.value);
                     onEdit(evt.target.value);
                 }}
-                value={textValue}
+                value={onEdit ? textValue : title}
                 disabled={disabled}
             />
         </div>);

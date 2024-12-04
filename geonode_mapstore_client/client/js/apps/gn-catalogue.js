@@ -64,6 +64,7 @@ import {
 import { CATALOGUE_ROUTES, appRouteComponentTypes } from '@js/utils/AppRoutesUtils';
 import { updateGeoNodeSettings } from '@js/actions/gnsettings';
 import {
+    gnFetchMissingLayerData,
     gnCheckSelectedDatasetPermissions,
     gnSetDatasetsPermissions,
     // to make the current layout work we need this epic
@@ -140,6 +141,7 @@ getEndpoints()
                     const appEpics = cleanEpics({
                         ...standardEpics,
                         ...configEpics,
+                        gnFetchMissingLayerData,
                         gnCheckSelectedDatasetPermissions,
                         gnSetDatasetsPermissions,
                         ...pluginsDefinition.epics,

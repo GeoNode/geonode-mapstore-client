@@ -14,12 +14,13 @@ import Rx from "rxjs";
 import { setEditPermissionStyleEditor, INIT_STYLE_SERVICE } from "@mapstore/framework/actions/styleeditor";
 import { getSelectedLayer, layersSelector } from "@mapstore/framework/selectors/layers";
 import { getConfigProp } from "@mapstore/framework/utils/ConfigUtils";
-import { getDatasetByName, getDatasetsByName } from '@js/api/geonode/v2';
+import { getDatasetByName, getDatasetsByName, getDatasetByPk } from '@js/api/geonode/v2';
 import { MAP_CONFIG_LOADED } from '@mapstore/framework/actions/config';
 import { setPermission } from '@mapstore/framework/actions/featuregrid';
 import { SELECT_NODE, updateNode, ADD_LAYER } from '@mapstore/framework/actions/layers';
-import { setSelectedDatasetPermissions, setSelectedLayer } from '@js/actions/gnresource';
+import { setSelectedDatasetPermissions, setSelectedLayer, updateLayerDataset, setLayerDataset } from '@js/actions/gnresource';
 import { updateMapLayoutEpic as msUpdateMapLayoutEpic } from '@mapstore/framework/epics/maplayout';
+import isEmpty from 'lodash/isEmpty';
 
 // We need to include missing epics. The plugins that normally include this epic is not used.
 
@@ -53,6 +54,37 @@ export const gnCheckSelectedDatasetPermissions = (action$, { getState } = {}) =>
                     setSelectedDatasetPermissions([]),
                     setSelectedLayer(null)
                 );
+        });
+
+/**
+ * Fetches missing values for selected layers
+ */
+export const gnFetchMissingLayerData = (action$, { getState } = {}) =>
+    action$.ofType(SELECT_NODE)
+        .filter(({ nodeType }) => nodeType && nodeType === "layer")
+        .switchMap(() => {
+            const state = getState() || {};
+            const layer = getSelectedLayer(state);
+            const layerResourceId = layer?.extendedParams?.pk;
+            const layerResourceDataset = state.gnresource.data?.maplayers?.find(mapLayer => mapLayer.dataset?.pk === parseInt(layerResourceId, 10))?.dataset;
+            return layerResourceDataset
+            ? isEmpty(layerResourceDataset?.linkedResources)
+                ? Rx.Observable.defer(() =>
+                    getDatasetByPk(layerResourceId)
+                        .then((layerDataset) => layerDataset)
+                        .catch(() => [])
+                ).switchMap((layerDataset) =>
+                    Rx.Observable.of(
+                        updateLayerDataset(layerDataset),
+                        setLayerDataset(layerResourceId)
+                    )
+                )
+                : Rx.Observable.of(
+                    setLayerDataset(layerResourceId)
+                )
+            : Rx.Observable.of(
+                setLayerDataset()
+            )
         });
 
 
