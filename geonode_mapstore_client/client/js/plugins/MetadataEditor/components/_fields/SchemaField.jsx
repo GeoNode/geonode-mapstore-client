@@ -27,11 +27,11 @@ const SchemaField = (props) => {
         formData,
         idSchema,
         name,
-        hideError,
         errorSchema,
         uiSchema
     } = props;
-    const autocomplete = uiSchema?.['ui:options']?.['geonode-ui:autocomplete'];
+    const uiOptions = uiSchema?.['ui:options'];
+    const autocomplete = uiOptions?.['geonode-ui:autocomplete'];
     const isSchemaItemString = schema?.items?.type === 'string';
     const isSchemaItemObject = schema?.items?.type === 'object';
     const isMultiSelect = schema?.type === 'array' && (isSchemaItemString ||
@@ -40,6 +40,17 @@ const SchemaField = (props) => {
     const isSingleSelect = schema?.type === 'object' && !isEmpty(schema?.properties);
 
     if (autocomplete && (isMultiSelect || isSingleSelect)) {
+        const {
+            classNames,
+            style,
+            description,
+            disabled,
+            help: helpText,
+            hideError,
+            label,
+            placeholder: autoCompletePlaceholder,
+            title
+        } = uiOptions;
         const errors = (!hideError ? castArray(errorSchema) : [])
             .reduce((acc, errorEntry) => {
                 if (errorEntry?.__errors) {
@@ -61,11 +72,11 @@ const SchemaField = (props) => {
         const resultsKey = autocompleteOptions?.resultsKey || 'results';
         const valueKey = autocompleteOptions?.valueKey || 'id';
         const labelKey = autocompleteOptions?.labelKey || 'label';
-        const placeholder = autocompleteOptions?.placeholder ?? '...';
         const creatable = !!autocompleteOptions?.creatable;
+        const placeholder = autoCompletePlaceholder ?? '...';
 
         let autoCompleteProps = {
-            className: "gn-metadata-autocomplete",
+            className: `gn-metadata-autocomplete${classNames ? ' ' + classNames : ''}`,
             clearable: !isMultiSelect,
             creatable,
             id: idSchema.$id,
@@ -73,11 +84,14 @@ const SchemaField = (props) => {
             multi: isMultiSelect,
             name,
             placeholder,
-            title: schema.title,
+            showLabel: label ?? true,
+            title: title ?? schema.title,
             value: formData,
             valueKey,
             helpTitleIcon: true,
-            description: schema.description,
+            description: helpText ?? description ?? schema.description, // Help text is preferred over description and displayed as a tooltip
+            disabled,
+            style,
             onChange: (selected) => {
                 let _selected = selected?.result ?? null;
                 if (isMultiSelect) {

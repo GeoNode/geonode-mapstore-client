@@ -21,7 +21,8 @@ import {
     setMetadataError,
     setMetadataUpdating,
     setMetadataUpdateError,
-    setMetadataResource
+    setMetadataResource,
+    setExtraErrors
 } from './actions/metadata';
 import { parseDevHostname } from '@js/utils/APIUtils';
 
@@ -35,6 +36,7 @@ const connectMetadata = connect(
     createSelector([
         state => state?.metadata?.loading,
         state => state?.metadata?.error,
+        state => state?.metadata?.extraErrors,
         state => state?.metadata?.metadata,
         state => state?.metadata?.initialMetadata,
         state => state?.metadata?.schema,
@@ -42,9 +44,10 @@ const connectMetadata = connect(
         state => state?.metadata?.updating,
         state => state?.metadata?.updateError,
         state => state?.metadata?.resource
-    ], (loading, error, metadata, initialMetadata, schema, uiSchema, updating, updateError, resource) => ({
+    ], (loading, error, extraErrors, metadata, initialMetadata, schema, uiSchema, updating, updateError, resource) => ({
         loading,
         error,
+        extraErrors,
         metadata,
         schema,
         uiSchema,
@@ -62,7 +65,8 @@ const connectMetadata = connect(
         setInitialMetadata,
         setUpdateError: setMetadataUpdateError,
         setUpdating: setMetadataUpdating,
-        setResource: setMetadataResource
+        setResource: setMetadataResource,
+        setExtraErrors
     }
 );
 

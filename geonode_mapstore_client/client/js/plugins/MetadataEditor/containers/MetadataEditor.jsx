@@ -22,6 +22,7 @@ function MetadataEditor({
     pk,
     loading,
     error,
+    extraErrors,
     metadata,
     schema,
     uiSchema,
@@ -97,6 +98,7 @@ function MetadataEditor({
                     validator={validator}
                     templates={templates}
                     fields={fields}
+                    extraErrors={extraErrors}
                     experimental_defaultFormStateBehavior={{
                         arrayMinItems: {
                             populate: 'never',

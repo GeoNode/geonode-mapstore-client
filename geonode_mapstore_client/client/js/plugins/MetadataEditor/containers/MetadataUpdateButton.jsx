@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import get from 'lodash/get';
 import { updateMetadata } from '@js/api/geonode/v2/metadata';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@js/components/Button';
@@ -20,15 +21,17 @@ function MetadataUpdateButton({
     updating,
     setUpdating,
     setUpdateError,
-    setInitialMetadata
+    setInitialMetadata,
+    setExtraErrors
 }) {
 
     function handleUpdate() {
         setUpdating(true);
         setUpdateError(false);
         updateMetadata(pk, metadata)
-            .then(() => {
+            .then((res) => {
                 setInitialMetadata(metadata);
+                setExtraErrors(get(res, 'data.extraErrors', {}));
             })
             .catch(() => {
                 setUpdateError(true);

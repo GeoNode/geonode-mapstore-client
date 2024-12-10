@@ -16,7 +16,8 @@ import {
     SET_METADATA_UPDATING,
     SET_METADATA_UPDATE_ERROR,
     SET_METADATA_PREVIEW,
-    SET_METADATA_RESOURCE
+    SET_METADATA_RESOURCE,
+    SET_METADATA_EXTRA_ERRORS
 } from '../actions/metadata';
 
 function metadata(state = {}, action) {
@@ -79,6 +80,12 @@ function metadata(state = {}, action) {
         return {
             ...state,
             resource: action.resource
+        };
+    }
+    case SET_METADATA_EXTRA_ERRORS: {
+        return {
+            ...state,
+            extraErrors: action.extraErrors
         };
     }
     default:
