@@ -244,6 +244,42 @@
             .gn-metadata-form-title {
                 font-weight: 700;
             }
+            &.field-array {
+                fieldset.field-array {
+                    position: relative;
+                    .array-item-list {
+                        width: 100%;
+                        .array-item {
+                            display: flex;
+                            align-items: center;
+                            .field-error {
+                                &.form-group{
+                                    margin-bottom: 0;
+                                }
+                            }
+                            .array-item-toolbox {
+                                display: flex;
+                                padding-left: 0;
+                                .btn-group {
+                                    gap: 10px;
+                                    button {
+                                        width: 30px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .row {
+                        button {
+                            width: 30px;
+                        }
+                        &:last-child {
+                            position: absolute;
+                            right: 50px;
+                        }
+                    }
+                }
+            }
         }
         label {
             text-transform: capitalize;
