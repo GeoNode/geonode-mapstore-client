@@ -29,11 +29,11 @@ function MetadataUpdateButton({
         setUpdating(true);
         setUpdateError(false);
         updateMetadata(pk, metadata)
-            .then((res) => {
+            .then(() => {
                 setInitialMetadata(metadata);
-                setExtraErrors(get(res, 'data.extraErrors', {}));
             })
-            .catch(() => {
+            .catch((error) => {
+                setExtraErrors(get(error, 'data.extraErrors', {}));
                 setUpdateError(true);
             })
             .finally(() => {
