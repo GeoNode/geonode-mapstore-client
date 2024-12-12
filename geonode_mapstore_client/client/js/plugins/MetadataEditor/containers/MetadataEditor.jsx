@@ -10,6 +10,8 @@ import React, { useEffect, useRef } from 'react';
 import validator from '@rjsf/validator-ajv8';
 import Form from '@rjsf/core';
 import { Alert } from 'react-bootstrap';
+import isEmpty from 'lodash/isEmpty';
+
 import { getMetadataByPk } from '@js/api/geonode/v2/metadata';
 import Message from '@mapstore/framework/components/I18N/Message';
 import widgets from '../components/_widgets';
@@ -22,7 +24,7 @@ function MetadataEditor({
     pk,
     loading,
     error,
-    extraErrors,
+    extraErrors: __extraErrors,
     metadata,
     schema,
     uiSchema,
@@ -78,11 +80,14 @@ function MetadataEditor({
         return null;
     }
 
+    const {__errors: rootErrors, ...extraErrors} = __extraErrors ?? {};
+
     return (
         <div className="gn-metadata">
             <div className="gn-metadata-header">
                 {updateError && <Alert bsStyle="danger" style={{ margin: '0.25rem 0' }}>
                     <Message msgId="gnviewer.metadataUpdateError" />
+                    {!isEmpty(rootErrors) && <ul>{rootErrors.map((_error, idx) => <li key={idx}>{_error}</li>)}</ul>}
                 </Alert>}
             </div>
             <div className="gn-metadata-container">
