@@ -22,7 +22,7 @@ function MetadataEditor({
     pk,
     loading,
     error,
-    extraErrors,
+    extraErrors: extraErrorsProp,
     metadata,
     schema,
     uiSchema,
@@ -78,6 +78,8 @@ function MetadataEditor({
         return null;
     }
 
+    const {__errors: rootErrors, ...extraErrors} = extraErrorsProp ?? {};
+
     return (
         <div className="gn-metadata">
             <div className="gn-metadata-header">
@@ -88,6 +90,13 @@ function MetadataEditor({
             <div className="gn-metadata-container">
                 <Form
                     liveValidate
+                    ref={(ref) => {
+                        if (ref?.validateForm && !init.current) {
+                            init.current = true;
+                            // force initial validation
+                            ref.validateForm();
+                        }
+                    }}
                     formContext={{
                         title: metadata?.title
                     }}
@@ -105,17 +114,8 @@ function MetadataEditor({
                             mergeExtraDefaults: false
                         }
                     }}
-                    onChange={({ formData }, id) => {
-                        if (id) {
-                            handleChange(formData);
-                        } else if (!init.current) {
-                            // initially we need to create a metadata copy to trigger validation
-                            // the id is missing on mount
-                            const refreshedMetadata = {...metadata};
-                            setMetadata(refreshedMetadata);
-                            setInitialMetadata(refreshedMetadata);
-                            init.current = true;
-                        }
+                    onChange={({ formData }) => {
+                        handleChange(formData);
                     }}
                 >
                     <></>
