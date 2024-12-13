@@ -1,6 +1,15 @@
 {
     "locale": "it-IT",
     "messages": {
+        "metadata": {
+            "error": {
+                "must match exactly one schema in oneOf": "Seleziona uno dei valori disponibili",
+                "must be string": "Il valore deve essere una stringa",
+                "must be object": "Il valore deve essere un oggetto",
+                "must NOT have fewer than 1 items": "Seleziona almeno un elemento",
+                "must match format \"uri\"": "Inserisci un 'uri' valido"
+            }
+        },
         "geostory": {
             "geoNode": "GeoNode"
         },

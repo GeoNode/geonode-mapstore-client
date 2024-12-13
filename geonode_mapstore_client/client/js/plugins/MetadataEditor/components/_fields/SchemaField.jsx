@@ -114,7 +114,7 @@ const SchemaField = (props) => {
             style,
             required,
             onChange: (selected) => {
-                let _selected = selected?.result ?? null;
+                let _selected = selected?.result ?? undefined;
                 if (isMultiSelect) {
                     _selected = selected.map(({ result, ...option }) => {
                         if (result === undefined) {
