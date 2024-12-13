@@ -12,9 +12,11 @@ const TitleFieldTemplate = (props) => {
     const { id, required, title, description } = props;
     return (
         <div id={id}>
-            <label>{title}</label>
-            {required && <span className="required">{' '}*</span>}
-            {description ? <>{' '}{description}</> : null}
+            <label>
+                {title}
+                {required && <span className="required">{' '}*</span>}
+                {description ? <>{' '}{description}</> : null}
+            </label>
         </div>
     );
 };

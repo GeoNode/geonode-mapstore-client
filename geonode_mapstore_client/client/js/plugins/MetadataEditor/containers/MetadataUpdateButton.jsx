@@ -29,8 +29,9 @@ function MetadataUpdateButton({
         setUpdating(true);
         setUpdateError(false);
         updateMetadata(pk, metadata)
-            .then(() => {
+            .then((response) => {
                 setInitialMetadata(metadata);
+                setExtraErrors(get(response, 'data.extraErrors', {}));
             })
             .catch((error) => {
                 setExtraErrors(get(error, 'data.extraErrors', {}));
