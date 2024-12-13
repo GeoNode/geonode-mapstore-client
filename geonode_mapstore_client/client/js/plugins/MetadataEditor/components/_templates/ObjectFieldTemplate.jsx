@@ -8,12 +8,18 @@
  */
 
 import React, { useState } from 'react';
-import DefaultObjectFieldTemplate from '@rjsf/core/lib/components/templates/ObjectFieldTemplate';
 import Button from '@js/components/Button';
 import { Glyphicon } from 'react-bootstrap';
 import FaIcon from '@js/components/FaIcon';
 import Message from '@mapstore/framework/components/I18N/Message';
 import InputControlWithDebounce from '@js/components/InputControlWithDebounce';
+import {
+    canExpand,
+    descriptionId,
+    getTemplate,
+    getUiOptions,
+    titleId
+} from '@rjsf/utils';
 
 const scrollIntoView = (id) => {
     const node = document.querySelector(`[for=${id}]`) || document.getElementById(id);
@@ -34,7 +40,7 @@ function MetadataGroupList({
     return (
         <li>
             <Button className={groupError ? 'gn-metadata-error' : ''} size="xs" onClick={() => setExpanded((prevExpanded) => !prevExpanded)}>
-                <Glyphicon glyph={expanded ? "bottom" : "next"}/>{' '}{title}{groupError ?  <>{' '}<FaIcon name="exclamation"/></> : null}
+                <Glyphicon glyph={expanded ? "bottom" : "next"} />{' '}{title}{groupError ? <>{' '}<FaIcon name="exclamation" /></> : null}
             </Button>
             {expanded ? <ul>
                 {group
@@ -46,7 +52,7 @@ function MetadataGroupList({
                                     className={property.error ? 'gn-metadata-error' : ''}
                                     onClick={() => scrollIntoView(idSchema[property.name]?.$id)}>
                                     {property.title}
-                                    {property.error ?  <>{' '}<FaIcon name="exclamation"/></> : null}
+                                    {property.error ? <>{' '}<FaIcon name="exclamation" /></> : null}
                                 </Button>
                             </li>
                         );
@@ -77,7 +83,7 @@ function RootMetadata({
         const _uiSchema = uiSchema?.[property?.name] || {};
         const options = _uiSchema?.['ui:options'] || {};
         if ((_uiSchema?.['ui:widget'] || options.widget) === 'hidden'
-        || !title.toLowerCase().includes((filterText || '').toLowerCase())) {
+            || !title.toLowerCase().includes((filterText || '').toLowerCase())) {
             return acc;
         }
         const sectionKey = options?.['geonode-ui:group'] || 'General';
@@ -141,10 +147,63 @@ function RootMetadata({
 function ObjectFieldTemplate(props) {
     const isRoot = props?.idSchema?.$id === 'root';
     if (isRoot) {
-        return <RootMetadata {...props}/>;
+        return <RootMetadata {...props} />;
     }
+    const {
+        description,
+        disabled,
+        formData,
+        idSchema,
+        onAddClick,
+        properties,
+        readonly,
+        registry,
+        required,
+        schema,
+        title,
+        uiSchema
+    } = props;
+    const options = getUiOptions(uiSchema);
+    const TitleFieldTemplate = getTemplate('TitleFieldTemplate', registry, options);
+    const DescriptionFieldTemplate = getTemplate(
+        'DescriptionFieldTemplate',
+        registry,
+        options
+    );
+    const {
+        ButtonTemplates: { AddButton }
+    } = registry.templates;
     return (
-        <DefaultObjectFieldTemplate {...props}/>
+        <div id={idSchema.$id}>
+            {title && (
+                <TitleFieldTemplate
+                    id={titleId(idSchema)}
+                    title={title}
+                    required={required}
+                    schema={schema}
+                    uiSchema={uiSchema}
+                    registry={registry}
+                    description={<DescriptionFieldTemplate
+                        id={descriptionId(idSchema)}
+                        description={description}
+                        schema={schema}
+                        uiSchema={uiSchema}
+                        registry={registry}
+                    />}
+                />
+            )}
+            {properties?.length ? <div className="field-object-properties">
+                {properties.map((prop) => prop.content)}
+            </div> : null}
+            {canExpand(schema, uiSchema, formData) && (
+                <AddButton
+                    onClick={onAddClick(schema)}
+                    disabled={disabled || readonly}
+                    uiSchema={uiSchema}
+                    registry={registry}
+                />
+            )}
+        </div>
     );
 }
 

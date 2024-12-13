@@ -13,10 +13,7 @@ import isString from 'lodash/isString';
 import PropTypes from 'prop-types';
 
 import SelectInfiniteScroll from '@js/components/SelectInfiniteScroll/SelectInfiniteScroll';
-import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
-import FaIcon from '@js/components/FaIcon/FaIcon';
-
-const IconWithTooltip = tooltip((props) => <div {...props}><FaIcon name="info-circle" /></div>);
+import IconWithTooltip from './IconWithTooltip';
 
 const Autocomplete = ({
     className,
@@ -30,6 +27,7 @@ const Autocomplete = ({
     value,
     valueKey = "value",
     showLabel = true,
+    required,
     ...props
 }) => {
     const getValue = () => {
@@ -46,11 +44,14 @@ const Autocomplete = ({
     };
 
     return (
-        <div className={`autocomplete${className ? " " + className : ""}${!!error ? " " + "has-error" : ""}`}>
-            {showLabel && <div className="title-container">
-                <label className="control-label" htmlFor={id}>{title || name}</label>
-                {helpTitleIcon && !isEmpty(description) && <IconWithTooltip className="help-title" tooltip={description} tooltipPosition={"right"} />}
-            </div>}
+        <div className={`form-group${className ? " " + className : ""}${!!error ? " " + "has-error" : ""}`}>
+            {showLabel ? <label className="control-label" htmlFor={id}>
+                {title || name}
+                {required ? <span className="required">{' '}*</span> : null}
+                {helpTitleIcon && !isEmpty(description) ? <>{' '}
+                    <IconWithTooltip tooltip={description} tooltipPosition={"right"} />
+                </> : null}
+            </label> : null}
             <SelectInfiniteScroll
                 {...props}
                 id={id}

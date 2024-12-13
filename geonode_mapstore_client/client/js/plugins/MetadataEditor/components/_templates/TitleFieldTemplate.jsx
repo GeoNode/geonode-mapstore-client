@@ -9,11 +9,12 @@
 import React from 'react';
 
 const TitleFieldTemplate = (props) => {
-    const { id, required, title } = props;
+    const { id, required, title, description } = props;
     return (
-        <div className="gn-metadata-form-title" id={id}>
-            {title}
-            {required && <mark>*</mark>}
+        <div id={id}>
+            <label>{title}</label>
+            {required && <span className="required">{' '}*</span>}
+            {description ? <>{' '}{description}</> : null}
         </div>
     );
 };
