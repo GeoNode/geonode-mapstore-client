@@ -53,13 +53,15 @@ export const getMetadataByPk = (pk) => {
                 axios.get(getEndpointUrl(RESOURCES, `/${pk}/?exclude[]=*&${resourceProperties.map(value => `include[]=${value}`).join('&')}`))
             ])
                 .then((response) => {
-                    const metadata = response?.[0]?.data || {};
+                    const metadataResponse = response?.[0]?.data || {};
                     const resource = response?.[1]?.data?.resource || {};
+                    const { extraErrors, ...metadata } = metadataResponse;
                     return {
                         schema,
                         uiSchema,
                         metadata,
-                        resource
+                        resource,
+                        extraErrors
                     };
                 });
         });

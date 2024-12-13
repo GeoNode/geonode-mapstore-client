@@ -37,7 +37,8 @@ function MetadataEditor({
     setInitialMetadata,
     setUpdateError,
     setResource,
-    updating
+    updating,
+    setExtraErrors
 }) {
 
     const init = useRef(false);
@@ -53,6 +54,7 @@ function MetadataEditor({
                     setMetadata(payload.metadata);
                     setInitialMetadata(payload.metadata);
                     setResource(payload.resource);
+                    setExtraErrors(payload.extraErrors);
                 })
                 .catch(() => {
                     setError(true);
