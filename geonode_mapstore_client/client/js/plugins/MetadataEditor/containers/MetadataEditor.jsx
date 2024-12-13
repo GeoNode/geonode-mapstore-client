@@ -7,6 +7,7 @@
  */
 
 import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import validator from '@rjsf/validator-ajv8';
 import Form from '@rjsf/core';
 import { Alert } from 'react-bootstrap';
@@ -19,6 +20,7 @@ import templates from '../components/_templates';
 import fields from '../components/_fields';
 import MainEventView from '@js/components/MainEventView';
 import MainLoader from '@js/components/MainLoader';
+import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 
 function MetadataEditor({
     pk,
@@ -39,7 +41,7 @@ function MetadataEditor({
     setResource,
     updating,
     setExtraErrors
-}) {
+}, { messages }) {
 
     const init = useRef(false);
 
@@ -113,6 +115,16 @@ function MetadataEditor({
                     templates={templates}
                     fields={fields}
                     extraErrors={extraErrors}
+                    transformErrors={(errors) => {
+                        return errors.filter(err => err.message !== 'must be equal to constant').map(err => {
+                            const messageId = `metadata.error.${err.message}`;
+                            const message = getMessageById(messages, messageId);
+                            return {
+                                ...err,
+                                message: messageId === message ? err.message : message
+                            };
+                        });
+                    }}
                     experimental_defaultFormStateBehavior={{
                         arrayMinItems: {
                             populate: 'never',
@@ -130,5 +142,9 @@ function MetadataEditor({
         </div>
     );
 }
+
+MetadataEditor.contextTypes = {
+    messages: PropTypes.object
+};
 
 export default MetadataEditor;
