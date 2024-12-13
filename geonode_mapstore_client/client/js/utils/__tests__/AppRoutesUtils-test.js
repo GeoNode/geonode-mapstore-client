@@ -21,8 +21,7 @@ describe('Test App Routes Utils', () => {
             DATASET_UPLOAD: 'UploadDatasetRoute',
             DOCUMENT_UPLOAD: 'UploadDocumentRoute',
             COMPONENTS: 'ComponentsRoute',
-            MAP_VIEWER: 'MapViewerRoute',
-            METADATA: 'MetadataRoute'
+            MAP_VIEWER: 'MapViewerRoute'
         });
     });
 
@@ -73,7 +72,7 @@ describe('Test App Routes Utils', () => {
             uploadDatasetRoute,
             uploadDocumentRoute
         ] = routeUtils.CATALOGUE_ROUTES;
-        expect(metadataRoute.path).toEqual(['/:resourceType/:pk/metadata']);
+        expect(metadataRoute.path).toEqual(['/metadata/:pk']);
         expect(metadataRoute.name).toEqual('metadata');
         expect(metadataRoute.shouldNotRequestResources).toEqual(true);
         expect(datasetSubtypeRoute.path).toEqual(['/dataset/:subtype/:pk']);
