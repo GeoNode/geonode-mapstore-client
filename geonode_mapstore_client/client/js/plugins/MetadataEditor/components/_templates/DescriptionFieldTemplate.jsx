@@ -8,11 +8,7 @@
 
 import React from "react";
 import isEmpty from "lodash/isEmpty";
-
-import FaIcon from "@js/components/FaIcon/FaIcon";
-import tooltip from "@mapstore/framework/components/misc/enhancers/tooltip";
-
-const IconWithTooltip = tooltip((props) => <div {...props}><FaIcon name="info-circle" /></div>);
+import IconWithTooltip from '../IconWithTooltip';
 
 const DescriptionFieldTemplate = (props) => {
     const { description, id } = props;
@@ -21,7 +17,6 @@ const DescriptionFieldTemplate = (props) => {
     }
     return (
         <IconWithTooltip
-            className="gn-metadata-form-description"
             id={id}
             tooltip={description}
             tooltipPosition={"right"}

@@ -11,8 +11,27 @@ import axios from '@mapstore/framework/libs/ajax';
 import castArray from 'lodash/castArray';
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
-import Autocomplete from '@js/components/Autocomplete/Autocomplete';
+import Autocomplete from '../Autocomplete';
 import DefaultSchemaField from '@rjsf/core/lib/components/fields/SchemaField';
+
+function findProperty(name, properties) {
+    return Object.keys(properties || {}).some((key) => {
+        return key === name
+            || (properties[key]?.properties ? findProperty(name, properties[key].properties) : false);
+    });
+}
+
+function shouldHideLabel({
+    name,
+    ...props
+}) {
+    const parts = (name || '').split('-');
+    const arrayId = parseFloat(parts[parts.length - 1]);
+    if (!isNaN(arrayId)) {
+        return !findProperty(name, props?.registry?.rootSchema?.properties);
+    }
+    return false;
+}
 
 /**
  * `SchemaField` is an enhanced component that overrides `@rjsf`'s default `SchemaField`
@@ -28,7 +47,8 @@ const SchemaField = (props) => {
         idSchema,
         name,
         errorSchema,
-        uiSchema
+        uiSchema,
+        required
     } = props;
     const uiOptions = uiSchema?.['ui:options'];
     const autocomplete = uiOptions?.['geonode-ui:autocomplete'];
@@ -76,7 +96,7 @@ const SchemaField = (props) => {
         const placeholder = autoCompletePlaceholder ?? '...';
 
         let autoCompleteProps = {
-            className: `gn-metadata-autocomplete${classNames ? ' ' + classNames : ''}`,
+            className: `field${classNames ? ' ' + classNames : ''}`,
             clearable: !isMultiSelect,
             creatable,
             id: idSchema.$id,
@@ -92,6 +112,7 @@ const SchemaField = (props) => {
             description: helpText ?? description ?? schema.description, // Help text is preferred over description and displayed as a tooltip
             disabled,
             style,
+            required,
             onChange: (selected) => {
                 let _selected = selected?.result ?? null;
                 if (isMultiSelect) {
@@ -150,7 +171,21 @@ const SchemaField = (props) => {
 
         return <Autocomplete {...autoCompleteProps}/>;
     }
-    return <DefaultSchemaField {...props}/>;
+
+    const hideLabel = shouldHideLabel(props);
+    return (
+        <DefaultSchemaField
+            {...props}
+            uiSchema={hideLabel ? {
+                ...props.uiSchema,
+                'ui:label': false,
+                'ui:options': {
+                    ...props.uiSchema?.['ui:options'],
+                    label: false
+                }
+            } : uiSchema}
+        />
+    );
 };
 
 export default SchemaField;
