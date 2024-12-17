@@ -40,7 +40,8 @@ function MetadataEditor({
     setUpdateError,
     setResource,
     updating,
-    setExtraErrors
+    setExtraErrors,
+    readOnly
 }, { messages }) {
 
     const init = useRef(false);
@@ -97,6 +98,7 @@ function MetadataEditor({
             <div className="gn-metadata-container">
                 <Form
                     liveValidate
+                    readonly={readOnly}
                     ref={(ref) => {
                         if (ref?.validateForm && !init.current) {
                             init.current = true;

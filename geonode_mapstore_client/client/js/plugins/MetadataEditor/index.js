@@ -82,9 +82,12 @@ const MetadataEditorComponent = ({ match,  ...props }) => {
 
 const MetadataEditorPlugin = connectMetadata(withRouter(MetadataEditorComponent));
 
-const UpdateButton = ({ match,  ...props }) => {
+const UpdateButton = ({ match, readOnly,  ...props }) => {
     const { params } = match || {};
     const pk = params?.pk;
+    if (readOnly) {
+        return null;
+    }
     return (
         <MetadataUpdateButton {...props} pk={pk} />
     );
