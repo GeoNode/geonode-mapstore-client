@@ -29,6 +29,7 @@ import { parseDevHostname } from '@js/utils/APIUtils';
 import metadataReducer from './reducers/metadata';
 import Button from '@js/components/Button';
 import Message from '@mapstore/framework/components/I18N/Message';
+import { resourceHasPermission } from '@js/utils/ResourceUtils';
 
 const MetadataEditor = lazy(() => import('./containers/MetadataEditor'));
 
@@ -54,7 +55,8 @@ const connectMetadata = connect(
         updating,
         updateError,
         pendingChanges: !isEqual(initialMetadata, metadata),
-        resource
+        resource,
+        readOnly: !resourceHasPermission(resource, 'change_resourcebase_metadata')
     })),
     {
         setLoading: setMetadataLoading,
