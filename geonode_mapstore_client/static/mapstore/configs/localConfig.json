@@ -87,6 +87,10 @@
         {
             "name": "selectedLayer",
             "path": "gnresource.selectedLayer"
+        },
+        {
+            "name": "metadataResource",
+            "path": "metadata.resource"
         }
     ],
     "projectionDefs": [],
@@ -4648,7 +4652,7 @@
             {
                 "name": "MetadataEditor",
                 "cfg": {
-                    "readOnly": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                    "readOnly": "{!context.resourceHasPermission(state('metadataResource'), 'change_resourcebase')}"
                 }
             },
             {
