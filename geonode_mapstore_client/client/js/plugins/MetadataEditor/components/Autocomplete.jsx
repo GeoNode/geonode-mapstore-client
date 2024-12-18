@@ -31,17 +31,14 @@ const Autocomplete = ({
     ...props
 }) => {
     const getValue = () => {
-        if (value) {
-            return isArray(value) ? value.map((entry) => {
+        if (value && isArray(value)) {
+            return value.map((entry) => {
                 return {
                     result: entry,
                     [valueKey]: isString(entry) ? entry : entry[valueKey],
                     [labelKey]: isString(entry) ? entry : entry[labelKey]
                 };
-            }) : {
-                [valueKey]: isString(value) ? value : value[valueKey],
-                [labelKey]: isString(value) ? value : value[labelKey]
-            };
+            });
         }
         return value;
     };
