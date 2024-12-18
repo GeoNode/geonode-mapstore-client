@@ -12,6 +12,7 @@ import {
     RESOURCES,
     getEndpointUrl
 } from './constants';
+import { isObject, isArray, castArray } from 'lodash';
 
 const parseUiSchema = (properties) => {
     return Object.keys(properties).reduce((acc, key) => {
@@ -44,6 +45,24 @@ export const getMetadataSchema = () => {
         });
 };
 
+const removeNullValueRecursive = (metadata = {}, schema = {}) => {
+    return Object.keys(metadata).reduce((acc, key) => {
+        const schemaTypes = castArray(schema?.[key]?.type || []);
+        if (metadata[key] === null && !schemaTypes.includes('null')) {
+            return {
+                ...acc,
+                [key]: undefined
+            };
+        }
+        return {
+            ...acc,
+            [key]: !isArray(metadata[key]) && isObject(metadata[key])
+                ? removeNullValueRecursive(metadata[key], schema[key])
+                : metadata[key]
+        };
+    }, {});
+};
+
 export const getMetadataByPk = (pk) => {
     return getMetadataSchema()
         .then(({ schema, uiSchema }) => {
@@ -59,7 +78,7 @@ export const getMetadataByPk = (pk) => {
                     return {
                         schema,
                         uiSchema,
-                        metadata,
+                        metadata: removeNullValueRecursive(metadata, schema?.properties),
                         resource,
                         extraErrors
                     };

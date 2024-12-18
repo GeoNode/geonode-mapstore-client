@@ -52,12 +52,12 @@ const SchemaField = (props) => {
     } = props;
     const uiOptions = uiSchema?.['ui:options'];
     const autocomplete = uiOptions?.['geonode-ui:autocomplete'];
-    const isSchemaItemString = schema?.items?.type === 'string';
+    const isSchemaItemString = schema?.items?.type === 'string' || schema?.type === 'string';
     const isSchemaItemObject = schema?.items?.type === 'object';
     const isMultiSelect = schema?.type === 'array' && (isSchemaItemString ||
         (isSchemaItemObject && !isEmpty(schema?.items?.properties))
     );
-    const isSingleSelect = schema?.type === 'object' && !isEmpty(schema?.properties);
+    const isSingleSelect = schema?.type === 'object' ? !isEmpty(schema?.properties) : schema?.type === 'string';
 
     if (autocomplete && (isMultiSelect || isSingleSelect)) {
         const {
@@ -93,7 +93,7 @@ const SchemaField = (props) => {
         const valueKey = autocompleteOptions?.valueKey || 'id';
         const labelKey = autocompleteOptions?.labelKey || 'label';
         const creatable = !!autocompleteOptions?.creatable;
-        const placeholder = autoCompletePlaceholder ?? '...';
+        const placeholder = autoCompletePlaceholder ?? ' ';
 
         let autoCompleteProps = {
             className: `field${classNames ? ' ' + classNames : ''}`,
