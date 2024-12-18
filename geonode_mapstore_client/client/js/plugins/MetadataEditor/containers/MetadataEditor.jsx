@@ -103,7 +103,9 @@ function MetadataEditor({
                         if (ref?.validateForm && !init.current) {
                             init.current = true;
                             // force initial validation
-                            ref.validateForm();
+                            if (isEmpty(extraErrors)) {
+                                ref.validateForm();
+                            }
                         }
                     }}
                     formContext={{
