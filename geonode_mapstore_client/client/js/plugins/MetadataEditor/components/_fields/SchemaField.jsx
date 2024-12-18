@@ -114,9 +114,9 @@ const SchemaField = (props) => {
             style,
             required,
             onChange: (selected) => {
-                let _selected = selected?.result ?? undefined;
+                const _selected = selected?.result ?? undefined;
                 if (isMultiSelect) {
-                    _selected = selected.map(({ result, ...option }) => {
+                    return onChange(selected.map(({ result, ...option }) => {
                         if (result === undefined) {
                             return option;
                         }
@@ -128,9 +128,11 @@ const SchemaField = (props) => {
                                     Object.keys(schema.items?.properties)
                                         .map((key) => [key, result[key]])
                                 );
-                    });
+                    }));
                 }
-                onChange(_selected);
+                return onChange(_selected === undefined || isString(_selected)
+                    ? _selected
+                    : _selected?.[valueKey]);
             },
             loadOptions: ({ q, config, ...params }) => {
                 return axios.get(autocompleteUrl, {
