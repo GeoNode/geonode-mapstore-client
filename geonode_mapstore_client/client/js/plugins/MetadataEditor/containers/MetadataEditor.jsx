@@ -43,7 +43,17 @@ function MetadataEditor({
 }, { messages }) {
 
     const init = useRef(false);
-
+    const initialize = useRef();
+    const {__errors: rootErrors, ...extraErrors} = extraErrorsProp ?? {};
+    initialize.current = (ref) => {
+        if (ref?.validateForm && !init.current) {
+            init.current = true;
+            // force initial validation
+            if (isEmpty(extraErrors)) {
+                ref.validateForm();
+            }
+        }
+    };
     useEffect(() => {
         if (pk) {
             setLoading(true);
@@ -83,8 +93,6 @@ function MetadataEditor({
         return null;
     }
 
-    const {__errors: rootErrors, ...extraErrors} = extraErrorsProp ?? {};
-
     return (
         <div className="gn-metadata">
             <div className="gn-metadata-header">
@@ -96,15 +104,7 @@ function MetadataEditor({
                 <Form
                     liveValidate
                     readonly={readOnly}
-                    ref={(ref) => {
-                        if (ref?.validateForm && !init.current) {
-                            init.current = true;
-                            // force initial validation
-                            if (isEmpty(extraErrors)) {
-                                ref.validateForm();
-                            }
-                        }
-                    }}
+                    ref={initialize.current}
                     formContext={{
                         title: metadata?.title
                     }}
