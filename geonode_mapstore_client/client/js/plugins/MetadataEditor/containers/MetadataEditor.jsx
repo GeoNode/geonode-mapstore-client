@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import validator from '@rjsf/validator-ajv8';
 import Form from '@rjsf/core';
 import { Alert } from 'react-bootstrap';
+import isEmpty from 'lodash/isEmpty';
 import { getMetadataByPk } from '@js/api/geonode/v2/metadata';
 import Message from '@mapstore/framework/components/I18N/Message';
 import widgets from '../components/_widgets';
