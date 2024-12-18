@@ -119,11 +119,14 @@ function MetadataEditor({
                     extraErrors={extraErrors}
                     transformErrors={(errors) => {
                         return errors.filter(err => err.message !== 'must be equal to constant').map(err => {
-                            const messageId = `metadata.error.${err.message}`;
+                            const errorMessage = (err.message || '').startsWith('must have required property')
+                                ? 'must have required property'
+                                : err.message;
+                            const messageId = `metadata.error.${errorMessage}`;
                             const message = getMessageById(messages, messageId);
                             return {
                                 ...err,
-                                message: messageId === message ? err.message : message
+                                message: messageId === message ? errorMessage : message
                             };
                         });
                     }}

@@ -7,7 +7,8 @@
                 "must be string": "Il valore deve essere una stringa",
                 "must be object": "Il valore deve essere un oggetto",
                 "must NOT have fewer than 1 items": "Seleziona almeno un elemento",
-                "must match format \"uri\"": "Inserisci un 'uri' valido"
+                "must match format \"uri\"": "Inserisci un 'uri' valido",
+                "must have required property": "Questa proprietà è obbligatoria"
             }
         },
         "geostory": {
