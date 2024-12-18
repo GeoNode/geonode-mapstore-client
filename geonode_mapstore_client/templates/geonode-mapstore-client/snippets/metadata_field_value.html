@@ -1,2 +1,32 @@
-{{value}} {{schema}}
-
+{% if schema.type == 'object' %}
+    {% if value.items|length == 2 and value.id and value.label %}
+        {{value.label.value}}
+    {% else %}
+        <ul>
+        {% for property_key, property in value.items %}
+            <li>
+                {% if property.schema.title %}
+                    <i>{{property.schema.title}} </i>:
+                {% else %}
+                    <i>{{property_key}} </i>:
+                {% endif %}
+                {% include 'geonode-mapstore-client/snippets/metadata_field_value.html' with name=name value=property.value schema=property.schema %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% elif schema.type == 'array' %}
+    <ul>
+    {% for property in value %}
+        <li>
+            {% include 'geonode-mapstore-client/snippets/metadata_field_value.html' with name=name value=property.value schema=property.schema %}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    {% if schema.format == 'date-time' %}
+        {{value|date:"DATETIME_FORMAT"}}
+    {% else %}
+        {{value}}
+    {% endif %}
+{% endif %}

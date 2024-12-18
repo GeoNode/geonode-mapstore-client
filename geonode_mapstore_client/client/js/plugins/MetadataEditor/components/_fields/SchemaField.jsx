@@ -97,7 +97,7 @@ const SchemaField = (props) => {
 
         let autoCompleteProps = {
             className: `field${classNames ? ' ' + classNames : ''}`,
-            clearable: !isMultiSelect,
+            clearable: !required,
             creatable,
             id: idSchema.$id,
             labelKey,
