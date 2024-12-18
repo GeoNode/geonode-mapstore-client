@@ -52,12 +52,12 @@ const SchemaField = (props) => {
     } = props;
     const uiOptions = uiSchema?.['ui:options'];
     const autocomplete = uiOptions?.['geonode-ui:autocomplete'];
-    const isSchemaItemString = schema?.items?.type === 'string' || schema?.type === 'string';
+    const isSchemaItemString = schema?.items?.type === 'string';
     const isSchemaItemObject = schema?.items?.type === 'object';
     const isMultiSelect = schema?.type === 'array' && (isSchemaItemString ||
         (isSchemaItemObject && !isEmpty(schema?.items?.properties))
     );
-    const isSingleSelect = schema?.type === 'object' ? !isEmpty(schema?.properties) : schema?.type === 'string';
+    const isSingleSelect = schema?.type === 'object' && !isEmpty(schema?.properties);
 
     if (autocomplete && (isMultiSelect || isSingleSelect)) {
         const {
@@ -130,9 +130,7 @@ const SchemaField = (props) => {
                                 );
                     }));
                 }
-                return onChange(_selected === undefined || isString(_selected)
-                    ? _selected
-                    : _selected?.[valueKey]);
+                return onChange(_selected);
             },
             loadOptions: ({ q, config, ...params }) => {
                 return axios.get(autocompleteUrl, {

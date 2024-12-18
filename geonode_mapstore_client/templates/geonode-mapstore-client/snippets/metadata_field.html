@@ -6,6 +6,6 @@
 </dt>
 <dd>
     <div class="gn-metadata-group-value" id="{{prefix}}_{{name}}">
-        {% include 'geonode-mapstore-client/snippets/metadata_field_value.html' with name=name property=property %}
+        {% include 'geonode-mapstore-client/snippets/metadata_field_value.html' with name=name value=property.value schema=property.schema %}
     </div>
 </dd>

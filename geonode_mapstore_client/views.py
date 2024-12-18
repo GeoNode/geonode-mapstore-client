@@ -18,19 +18,53 @@ def _parse_value(value, schema):
     return value
 
 def _parse_schema_instance(instance, schema):
+    schema_type = schema.get('type')
     metadata = {}
-    for key in instance:
-        if instance[key]:
-            metadata[key] = {}
-            property_schema = { "type": None }
-            if key in schema:
-                property_schema = schema[key]
-            if property_schema['type'] == 'object':
-                metadata[key]['value'] = _parse_schema_instance(instance[key], property_schema['properties'])
-            else:
-                metadata[key]['value'] = _parse_value(instance[key], property_schema)
-            metadata[key]['schema'] = property_schema
+    if schema_type == 'object':
+        metadata['value'] = {}
+        for key in instance:
+            property_schema = None
+            if key in schema.get('properties'):
+                property_schema = schema.get('properties')[key]
+            if instance[key] and property_schema:
+                metadata['value'][key] = _parse_schema_instance(instance[key], property_schema)
+        return None
+    if schema_type == 'array':
+        return None
+    metadata['value'] = _parse_value(instance, schema)
+    metadata['schema'] = schema
     return metadata
+
+'''
+def _parse_schema_instance(instance, schema):
+    schema_type = schema.get('type')
+    metadata = {}
+    if schema_type == 'object':
+        for key in instance:
+            if instance[key]:
+                metadata[key] = {}
+                property_schema = { "type": None }
+                if key in schema.get('properties'):
+                    property_schema = schema.get('properties')[key]
+                if property_schema['type'] == 'object':
+                    metadata[key]['value'] = _parse_schema_instance(instance[key], property_schema)
+                    metadata[key]['schema'] = property_schema
+                if property_schema['type'] == 'array':
+                    metadata[key]['value'] = []
+                    metadata[key]['schema'] = property_schema
+                    for entry in instance[key]:
+                        metadata[key]['value'].append(
+                            _parse_schema_instance(entry, property_schema['items'])
+                        )
+                else:
+                    metadata[key] = _parse_schema_instance(instance[key], property_schema)
+        return metadata
+
+    metadata['value'] = _parse_value(instance, schema)
+    metadata['schema'] = schema
+
+    return metadata
+'''
 
 def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
 
@@ -42,19 +76,20 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
     resource = ResourceBase.objects.get(pk=pk)
     schema_instance = metadata_manager.build_schema_instance(resource)
 
-    metadata = _parse_schema_instance(schema_instance, schema['properties'])
+    metadata = _parse_schema_instance(schema_instance, schema)
 
     metadata_groups = {}
 
     for key in metadata:
-        property = metadata[key]
-        ui_options = property.get('ui:options', {})
-        group = 'General'
-        if ui_options.get('geonode-ui:group'):
-            group = ui_options.get('geonode-ui:group')
-        if group not in metadata_groups:
-            metadata_groups[group] = { }
-        metadata_groups[group][key] = property
+        if key != 'extraErrors':
+            property = metadata[key]
+            ui_options = property.get('ui:options', {})
+            group = 'General'
+            if ui_options.get('geonode-ui:group'):
+                group = ui_options.get('geonode-ui:group')
+            if group not in metadata_groups:
+                metadata_groups[group] = { }
+            metadata_groups[group][key] = property
 
     return render(request, template, context={ "resource": resource, "metadata_groups": metadata_groups })
 

@@ -1,18 +1,2 @@
-{% if property.schema.format == 'date-time' %}
-    {{property.value|date:"DATETIME_FORMAT"}}
-{% elif name == 'tkeywords' %}
-    <ul>
-        {% for t_id, tkeyword in property.value.items %}
-            <li>{{tkeyword.schema.title|default:t_id}}</li>
-            <ul>
-                {%for tkeyword_item in tkeyword.value %}
-                    <li>
-                        {{tkeyword_item.label}}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endfor %}
-    </ul>
-{% else %}
-    {{property.value}}
-{% endif %}
+{{value}} {{schema}}
+
