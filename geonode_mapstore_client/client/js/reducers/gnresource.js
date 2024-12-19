@@ -35,7 +35,9 @@ import {
     SET_RESOURCE_PATH_PARAMETERS,
     SET_MAP_VIEWER_LINKED_RESOURCE,
     SET_DEFAULT_VIEWER_PLUGINS,
-    SET_SELECTED_LAYER
+    SET_SELECTED_LAYER,
+    UPDATE_LAYER_DATASET,
+    SET_SELECTED_LAYER_DATASET
 } from '@js/actions/gnresource';
 import {
     cleanCompactPermissions,
@@ -252,6 +254,38 @@ function gnresource(state = defaultState, action) {
         return {
             ...state,
             selectedLayer: action.layer
+        };
+    case SET_SELECTED_LAYER_DATASET:
+        return {
+            ...state,
+            selectedLayerDataset: state.data?.maplayers?.find(layer => layer.dataset?.pk === parseInt(action.layerId, 10))?.dataset
+        };
+    case UPDATE_LAYER_DATASET:
+        const { pk, ...newData } = action.layer;
+        let linkedResources = action.layer.linked_resources ?? {};
+        if (!isEmpty(linkedResources)) {
+            const linkedTo = linkedResources.linked_to ?? [];
+            const linkedBy = linkedResources.linked_by ?? [];
+            linkedResources = isEmpty(linkedTo) && isEmpty(linkedBy) ? {} : ({ linkedTo, linkedBy });
+        }
+        return {
+            ...state,
+            data: {
+                ...state.data,
+                maplayers: state.data?.maplayers?.map(layer => {
+                    if (layer.dataset?.pk === parseInt(pk, 10)) {
+                        return {
+                            ...layer,
+                            dataset: {
+                                ...layer.dataset,
+                                ...newData,
+                                linkedResources
+                            }
+                        };
+                    }
+                    return layer;
+                })
+            }
         };
     default:
         return state;

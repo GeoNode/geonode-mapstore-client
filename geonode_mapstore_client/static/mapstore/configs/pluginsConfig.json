@@ -277,7 +277,89 @@
       "description": "plugins.Print.description",
       "dependencies": [
         "SidebarMenu"
+      ],
+      "children": [
+        "PrintScale",
+        "PrintGraticule",
+        "PrintAuthor",
+        "PrintCopyright"
+      ],
+      "autoEnableChildren": [
+        "PrintScale",
+        "PrintAuthor",
+        "PrintCopyright"
       ]
+    },
+    {
+      "name": "PrintScale",
+      "override": {
+          "Print": {
+              "position": 4
+          }
+      },
+      "hidden": true
+    },
+    {
+      "name": "PrintGraticule",
+      "override": {
+          "Print": {
+              "position": 5
+          }
+      },
+      "defaultConfig": {
+          "frame": 0.07,
+          "style": {
+              "color": "#000000",
+              "weight": 1,
+              "lineDash": [
+                  0.5,
+                  4
+              ],
+              "opacity": 0.5
+          },
+          "frameStyle": {
+              "color": "#000000",
+              "weight": 1,
+              "fillColor": "#FFFFFF"
+          },
+          "labelXStyle": {
+              "color": "#000000",
+              "font": "sans-serif",
+              "fontWeight": "bold",
+              "fontSize": "20",
+              "labelOutlineColor": "#FFFFFF",
+              "labelOutlineWidth": 2
+          },
+          "labelYStyle": {
+              "color": "#000000",
+              "font": "sans-serif",
+              "fontWeight": "bold",
+              "fontSize": "20",
+              "labelOutlineColor": "#FFFFFF",
+              "labelOutlineWidth": 2,
+              "rotation": 90,
+              "verticalAlign": "top",
+              "textAlign": "center"
+          }
+      }
+    },
+    {
+      "name": "PrintAuthor",
+      "override": {
+          "Print": {
+              "position": 6
+          }
+      },
+      "hidden": true
+    },
+    {
+        "name": "PrintCopyright",
+        "override": {
+            "Print": {
+                "position": 7
+            }
+        },
+        "hidden": true
     },
     {
       "name": "MousePosition",

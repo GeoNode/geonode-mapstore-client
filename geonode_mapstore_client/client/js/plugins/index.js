@@ -9,6 +9,7 @@ import omit from 'lodash/omit';
 import uniq from 'lodash/uniq';
 import {
     LayerDownloadActionButton,
+    FilterLayerActionButton,
     FullScreenActionButton,
     AddWidgetActionButton
 } from '@js/plugins/actionnavbar/buttons';
@@ -128,7 +129,17 @@ export const plugins = {
     ),
     FilterLayerPlugin: toModulePlugin(
         'FilterLayer',
-        () => import(/* webpackChunkName: 'plugins/filter-layer-plugin' */ '@mapstore/framework/plugins/FilterLayer')
+        () => import(/* webpackChunkName: 'plugins/filter-layer-plugin' */ '@mapstore/framework/plugins/FilterLayer'),
+        {
+            overrides: {
+                containers: {
+                    ActionNavbar: {
+                        name: 'FilterLayer',
+                        Component: FilterLayerActionButton
+                    }
+                }
+            }
+        }
     ),
     MeasurePlugin: toModulePlugin(
         'Measure',
@@ -382,6 +393,10 @@ export const plugins = {
         'VisualStyleEditor',
         () => import(/* webpackChunkName: 'plugins/visual-style-editor-plugin' */ '@js/plugins/VisualStyleEditor')
     ),
+    LayerDetailViewerPlugin: toModulePlugin(
+        'LayerDetailViewer',
+        () => import(/* webpackChunkName: 'plugins/detail-viewer-plugin' */ '@js/plugins/LayerDetailViewer')
+    ),
     LegendPlugin: toModulePlugin(
         'Legend',
         () => import(/* webpackChunkName: 'plugins/legend-plugin' */ '@js/plugins/Legend')
@@ -441,6 +456,14 @@ export const plugins = {
     SettingsPlugin: toModulePlugin(
         'Settings',
         () => import(/* webpackChunkName: 'plugins/settings' */ '@mapstore/framework/plugins/Settings')
+    ),
+    PrintAuthorPlugin: toModulePlugin(
+        'PrintAuthor',
+        () => import(/* webpackChunkName: 'plugins/print-author' */ '@js/plugins/Print/Author')
+    ),
+    PrintCopyrightPlugin: toModulePlugin(
+        'PrintCopyright',
+        () => import(/* webpackChunkName: 'plugins/print-copyright' */ '@js/plugins/Print/Copyright')
     )
 };
 

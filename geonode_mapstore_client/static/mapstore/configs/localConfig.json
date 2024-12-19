@@ -85,8 +85,8 @@
             "path": "gnresource.viewerLinkedResource"
         },
         {
-            "name": "selectedLayer",
-            "path": "gnresource.selectedLayer"
+            "name": "gnResourceSelectedLayerDataset",
+            "path": "gnresource.selectedLayerDataset"
         }
     ],
     "projectionDefs": [],
@@ -839,7 +839,7 @@
                         {
                             "type": "settings",
                             "id": "settings",
-                            "labelId": "gnviewer.settings",
+                            "labelId": "gnviewer.management",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
                             "items": [
                                 true
@@ -920,7 +920,6 @@
                 "name": "Print",
                 "cfg": {
                     "useFixedScales": true,
-                    "mapWidth": 256,
                     "outputFormatOptions": {
                         "allowedFormats": [
                             {
@@ -934,6 +933,14 @@
                             {
                                 "value": "jpg",
                                 "name": "JPEG"
+                            },
+                            {
+                                "value": "gif",
+                                "name": "GIF"
+                            },
+                            {
+                                "value": "tiff",
+                                "name": "TIFF"
                             }
                         ]
                     }
@@ -988,6 +995,22 @@
                         "rotation": 90,
                         "verticalAlign": "top",
                         "textAlign": "center"
+                    }
+                }
+            },
+            {
+                "name": "PrintAuthor",
+                "override": {
+                    "Print": {
+                        "position": 6
+                    }
+                }
+            },
+            {
+                "name": "PrintCopyright",
+                "override": {
+                    "Print": {
+                        "position": 7
                     }
                 }
             },
@@ -1226,7 +1249,7 @@
                     "blocking": true,
                     "iconName": "paint-brush",
                     "titleMsgId": "gnviewer.uploadDatasetStyle",
-                    "source": "resource_file_upload",
+                    "action": "resource_style_upload",
                     "api": {
                         "upload": {
                             "url": "{context.getEndpointUrl('uploads', '/upload')}",
@@ -1234,17 +1257,16 @@
                             "body": {
                                 "file": {
                                     "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
-                                    "base_file": "{context.getUploadMainFile}"
+                                    "base_file": "{context.getUploadMainFile}",
+                                    "action": "resource_style_upload"
                                 }
                             },
-                            "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { source: ['resource_style_upload'] })}"
+                            "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['resource_style_upload'] })}"
                         },
                         "executionRequest": {
                             "url": "{context.getEndpointUrl('executionrequest')}",
                             "params": {
-                                "filter{source}": "resource_file_upload",
-                                "filter{name.endswith}": ".sld",
-                                "filter{action}": "import",
+                                "filter{action}": "resource_style_upload",
                                 "sort[]": "-created",
                                 "filter{geonode_resource}": "{context.get(state('gnResourceData'), 'pk')}"
                             }
@@ -1266,7 +1288,8 @@
                     "iconName": "file-code-o",
                     "titleMsgId": "gnviewer.uploadDatasetMetadata",
                     "blocking": true,
-                    "source": "resource_file_upload",
+                    "action": "resource_metadata_upload",
+                    "pageReload": true,
                     "api": {
                         "upload": {
                             "url": "{context.getEndpointUrl('uploads', '/upload')}",
@@ -1274,17 +1297,16 @@
                             "body": {
                                 "file": {
                                     "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
-                                    "base_file": "{context.getUploadMainFile}"
+                                    "base_file": "{context.getUploadMainFile}",
+                                    "action": "resource_metadata_upload"
                                 }
                             },
-                            "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { source: ['resource_metadata_upload'] })}"
+                            "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['resource_metadata_upload'] })}"
                         },
                         "executionRequest": {
                             "url": "{context.getEndpointUrl('executionrequest')}",
                             "params": {
-                                "filter{source}": "resource_file_upload",
-                                "filter{name.endswith}": ".xml",
-                                "filter{action}": "import",
+                                "filter{action}": "resource_metadata_upload",
                                 "sort[]": "-created",
                                 "filter{geonode_resource}": "{context.get(state('gnResourceData'), 'pk')}"
                             }
@@ -1306,7 +1328,7 @@
                     "iconName": "refresh",
                     "titleMsgId": "gnviewer.replaceDatasetTitle",
                     "blocking": true,
-                    "source": "upload",
+                    "action": "replace",
                     "pageReload": true,
                     "api": {
                         "upload": {
@@ -1317,16 +1339,16 @@
                                     "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
                                     "base_file": "{context.getUploadMainFile}",
                                     "store_spatial_files": true,
-                                    "overwrite_existing_layer": true
+                                    "overwrite_existing_layer": true,
+                                    "action": "replace"
                                 }
                             },
-                            "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { source: ['upload'] })}"
+                            "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['replace'] })}"
                         },
                         "executionRequest": {
                             "url": "{context.getEndpointUrl('executionrequest')}",
                             "params": {
-                                "filter{source}": "upload",
-                                "filter{action}": "import",
+                                "filter{action}": "replace",
                                 "sort[]": "-created",
                                 "filter{geonode_resource}": "{context.get(state('gnResourceData'), 'pk')}"
                             }
@@ -1864,7 +1886,7 @@
                         {
                             "type": "settings",
                             "id": "settings",
-                            "labelId": "gnviewer.settings",
+                            "labelId": "gnviewer.management",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
                             "items": [
                                 true
@@ -1936,7 +1958,6 @@
                 "name": "Print",
                 "cfg": {
                     "useFixedScales": true,
-                    "mapWidth": 256,
                     "outputFormatOptions": {
                         "allowedFormats": [
                             {
@@ -1950,6 +1971,14 @@
                             {
                                 "value": "jpg",
                                 "name": "JPEG"
+                            },
+                            {
+                                "value": "gif",
+                                "name": "GIF"
+                            },
+                            {
+                                "value": "tiff",
+                                "name": "TIFF"
                             }
                         ]
                     }
@@ -2004,6 +2033,22 @@
                         "rotation": 90,
                         "verticalAlign": "top",
                         "textAlign": "center"
+                    }
+                }
+            },
+            {
+                "name": "PrintAuthor",
+                "override": {
+                    "Print": {
+                        "position": 6
+                    }
+                }
+            },
+            {
+                "name": "PrintCopyright",
+                "override": {
+                    "Print": {
+                        "position": 7
                     }
                 }
             },
@@ -2335,6 +2380,151 @@
             },
             {
                 "name": "MetadataViewer"
+            },
+            {
+                "mandatory": true,
+                "name": "LayerDetailViewer",
+                "cfg": {
+                    "containerPosition": "rightOverlay",
+                    "tabs": [
+                        {
+                            "type": "tab",
+                            "id": "info",
+                            "labelId": "gnviewer.info",
+                            "items": [
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.title",
+                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'title')}"
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.owner",
+                                    "href": "{'/people/profile/' + context.get(state('gnResourceSelectedLayerDataset'), 'owner.username')}",
+                                    "value": "{context.getUserResourceName(context.get(state('gnResourceSelectedLayerDataset'), 'owner'))}",
+                                    "disableIf": "{!context.get(state('gnResourceSelectedLayerDataset'), 'owner.username')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "YYYY-MM-DD HH:mm",
+                                    "labelId": "{'gnviewer.'+context.get(state('gnResourceSelectedLayerDataset'), 'date_type')}",
+                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'date')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "YYYY-MM-DD HH:mm",
+                                    "labelId": "gnviewer.created",
+                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'created')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "YYYY-MM-DD HH:mm",
+                                    "labelId": "gnviewer.lastModified",
+                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'last_updated')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.resourceType",
+                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'resource_type')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "f": "{context.get(state('gnResourceSelectedLayerDataset'), 'resource_type')}"
+                                    }
+                                },
+                                {
+                                    "type": "{context.isDocumentExternalSource(state('gnResourceSelectedLayerDataset')) ? 'link' : 'text'}",
+                                    "labelId": "gnviewer.sourceType",
+                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'sourcetype', '').toLowerCase()}",
+                                    "href": "{context.get(state('gnResourceSelectedLayerDataset'), 'href')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.category",
+                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'category.gn_description')}",
+                                    "pathname": "/",
+                                    "query": {
+                                        "filter{category.identifier}": "{context.get(state('gnResourceSelectedLayerDataset'), 'category.identifier')}"
+                                    }
+                                },
+                                {
+                                    "type": "link",
+                                    "labelId": "gnviewer.pointOfContact",
+                                    "value": "{context.getUserResourceNames(context.get(state('gnResourceSelectedLayerDataset'), 'poc'))}",
+                                    "disableIf": "{!context.get(state('gnResourceSelectedLayerDataset'), 'poc')}"
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.keywords",
+                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'keywords')}",
+                                    "valueKey": "name",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{keywords.slug.in}": "${slug}"
+                                    }
+                                },
+                                {
+                                    "type": "query",
+                                    "labelId": "gnviewer.regions",
+                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'regions')}",
+                                    "valueKey": "code",
+                                    "pathname": "/",
+                                    "queryTemplate": {
+                                        "filter{regions.code.in}": "${code}"
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.attribution",
+                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'attribution')}"
+                                },
+                                {
+                                    "type": "text",
+                                    "labelId": "gnviewer.language",
+                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'language')}"
+                                },
+                                {
+                                    "type": "html",
+                                    "labelId": "gnviewer.supplementalInformation",
+                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'supplemental_information')}"
+                                },
+                                {
+                                    "type": "date",
+                                    "format": "YYYY-MM-DD HH:mm",
+                                    "labelId": "gnviewer.temporalExtent",
+                                    "value": {
+                                        "start": "{context.get(state('gnResourceSelectedLayerDataset'), 'temporal_extent_start')}",
+                                        "end": "{context.get(state('gnResourceSelectedLayerDataset'), 'temporal_extent_end')}"
+                                    }
+                                },
+                                {
+                                    "type": "link",
+                                    "style": "label",
+                                    "labelId": "gnviewer.viewFullMetadata",
+                                    "href": "{context.getMetadataDetailUrl(state('gnResourceSelectedLayerDataset'))}",
+                                    "disableIf": "{!context.getMetadataDetailUrl(state('gnResourceSelectedLayerDataset'))}"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "locations",
+                            "id": "locations",
+                            "labelId": "gnviewer.locations",
+                            "items": "{({extent: context.get(state('gnResourceSelectedLayerDataset'), 'extent')})}"
+                        },
+                        {
+                            "type": "linked-resources",
+                            "id": "related",
+                            "labelId": "gnviewer.linkedResources.label",
+                            "items": "{context.get(state('gnResourceSelectedLayerDataset'), 'linkedResources')}"
+                        },
+                        {
+                            "type": "assets",
+                            "id": "assets",
+                            "labelId": "gnviewer.assets",
+                            "items": "{context.get(state('gnResourceSelectedLayerDataset'), 'assets')}"
+                        }
+                    ]
+                }
             }
         ],
         "geostory_viewer": [
@@ -2573,7 +2763,7 @@
                         {
                             "type": "settings",
                             "id": "settings",
-                            "labelId": "gnviewer.settings",
+                            "labelId": "gnviewer.management",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
                             "items": [
                                 true
@@ -2925,7 +3115,7 @@
                         {
                             "type": "settings",
                             "id": "settings",
-                            "labelId": "gnviewer.settings",
+                            "labelId": "gnviewer.management",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
                             "items": [
                                 true
@@ -3205,7 +3395,7 @@
                         {
                             "type": "settings",
                             "id": "settings",
-                            "labelId": "gnviewer.settings",
+                            "labelId": "gnviewer.management",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
                             "items": [
                                 true
@@ -4567,7 +4757,7 @@
                         {
                             "type": "settings",
                             "id": "settings",
-                            "labelId": "gnviewer.settings",
+                            "labelId": "gnviewer.management",
                             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
                             "items": [
                                 true
