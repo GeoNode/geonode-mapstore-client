@@ -450,6 +450,14 @@ export const plugins = {
     SettingsPlugin: toModulePlugin(
         'Settings',
         () => import(/* webpackChunkName: 'plugins/settings' */ '@mapstore/framework/plugins/Settings')
+    ),
+    PrintAuthorPlugin: toModulePlugin(
+        'PrintAuthor',
+        () => import(/* webpackChunkName: 'plugins/print-author' */ '@js/plugins/Print/Author')
+    ),
+    PrintCopyrightPlugin: toModulePlugin(
+        'PrintCopyright',
+        () => import(/* webpackChunkName: 'plugins/print-copyright' */ '@js/plugins/Print/Copyright')
     )
 };
 

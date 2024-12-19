@@ -153,6 +153,12 @@
             },
             "errors": {
                 "noPermissions": "You dont have permissions to add a geostory"
+            },
+            "print": {
+                "author": "Author",
+                "authorPlaceholder": "Enter an author name...",
+                "copyright": "Copyright",
+                "copyrightPlaceholder": "Enter a copyright..."
             }
         },
         "gnviewer": {
