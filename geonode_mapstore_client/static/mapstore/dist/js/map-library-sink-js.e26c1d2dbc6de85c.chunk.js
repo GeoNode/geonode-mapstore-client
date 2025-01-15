@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkgeonode_mapstore_client=self.webpackChunkgeonode_mapstore_client||[]).push([[80309],{985568:(e,n,t)=>{t.r(n),t.d(n,{default:()=>o});var c=t(916589).createSink;const o=function(){return{Map:c((function(){})),Layer:c((function(){})),Feature:c((function(){}))}}}}]);
