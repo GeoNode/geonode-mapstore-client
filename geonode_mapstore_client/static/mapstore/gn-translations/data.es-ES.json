@@ -452,7 +452,8 @@
             "metadataUpdateError": "No fue posible actualizar los metadatos",
             "metadataNotFound": "No se encontraron metadatos para el recurso seleccionado",
             "filterMetadata": "Filtrar por nombre...",
-            "noMetadataFound": "No se encontraron metadatos..."
+            "noMetadataFound": "No se encontraron metadatos...",
+            "metadataGroupTitle": "General"
         }
     }
 }

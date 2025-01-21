@@ -8,10 +8,12 @@
  */
 
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@js/components/Button';
 import { Glyphicon } from 'react-bootstrap';
 import FaIcon from '@js/components/FaIcon';
 import Message from '@mapstore/framework/components/I18N/Message';
+import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 import InputControlWithDebounce from '@js/components/InputControlWithDebounce';
 import {
     canExpand,
@@ -69,11 +71,10 @@ function RootMetadata({
     properties,
     errorSchema,
     formContext
-}) {
+}, context) {
     const {
         title: metadataTitle
     } = formContext;
-
     const [filterText, setFilterText] = useState('');
 
     const groups = properties.reduce((acc, property) => {
@@ -86,7 +87,7 @@ function RootMetadata({
             || !title.toLowerCase().includes((filterText || '').toLowerCase())) {
             return acc;
         }
-        const sectionKey = options?.['geonode-ui:group'] || 'General';
+        const sectionKey = options?.['geonode-ui:group'] || getMessageById(context.messages, 'gnviewer.metadataGroupTitle');
         const sectionItems = acc[sectionKey] || [];
         return {
             ...acc,
@@ -143,6 +144,10 @@ function RootMetadata({
         </div>
     );
 }
+
+RootMetadata.contextTypes = {
+    messages: PropTypes.object
+};
 
 function ObjectFieldTemplate(props) {
     const isRoot = props?.idSchema?.$id === 'root';

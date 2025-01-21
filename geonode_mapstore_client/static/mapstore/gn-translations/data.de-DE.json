@@ -453,7 +453,8 @@
             "metadataUpdateError": "Die Metadaten konnten nicht aktualisiert werden",
             "metadataNotFound": "Für die ausgewählte Ressource wurden keine Metadaten gefunden",
             "filterMetadata": "Nach Namen filtern...",
-            "noMetadataFound": "Keine Metadaten gefunden..."
+            "noMetadataFound": "Keine Metadaten gefunden...",
+            "metadataGroupTitle": "Allgemein"
         }
     }
 }
