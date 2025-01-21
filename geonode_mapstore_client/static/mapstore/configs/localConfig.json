@@ -87,6 +87,10 @@
         {
             "name": "gnResourceSelectedLayerDataset",
             "path": "gnresource.selectedLayerDataset"
+        },
+        {
+            "name": "selectedLayer",
+            "path": "gnresource.selectedLayer"
         }
     ],
     "projectionDefs": [],
