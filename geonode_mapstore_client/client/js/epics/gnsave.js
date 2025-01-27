@@ -39,6 +39,7 @@ import {
 import {
     getResourceByPk,
     updateDataset,
+    updateDatasetTimeSeries,
     createGeoApp,
     updateGeoApp,
     createMap,
@@ -73,12 +74,15 @@ import {
     ResourceTypes,
     cleanCompactPermissions,
     toGeoNodeMapConfig,
-    RESOURCE_MANAGEMENT_PROPERTIES
+    RESOURCE_MANAGEMENT_PROPERTIES,
+    getDimensions
 } from '@js/utils/ResourceUtils';
 import {
     ProcessTypes,
     ProcessStatus
 } from '@js/utils/ResourceServiceUtils';
+import { updateNode } from '@mapstore/framework/actions/layers';
+import { layersSelector } from '@mapstore/framework/selectors/layers';
 
 const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys(RESOURCE_MANAGEMENT_PROPERTIES);
 
@@ -146,6 +150,7 @@ export const gnSaveContent = (action$, store) =>
             const data = getDataPayload(state, contentType);
             const extent = getExtentPayload(state, contentType);
             const currentResource = getResourceData(state);
+            const timeseries = currentResource?.timeseries;
             const body = {
                 'title': action.metadata.name,
                 ...(RESOURCE_MANAGEMENT_PROPERTIES_KEYS.reduce((acc, key) => {
@@ -156,10 +161,15 @@ export const gnSaveContent = (action$, store) =>
                 }, {})),
                 ...(action.metadata.description && { 'abstract': action.metadata.description }),
                 ...(data && { 'data': JSON.parse(JSON.stringify(data)) }),
-                ...(extent && { extent })
+                ...(extent && { extent }),
+                ...(timeseries && { has_time: timeseries?.has_time })
             };
-            return Observable.defer(() => SaveAPI[contentType](state, action.id, body, action.reload))
-                .switchMap((resource) => {
+            const layerId = layersSelector(state)?.find((l) => l.pk === currentResource.pk)?.id;
+            return Observable.defer(() => axios.all([
+                SaveAPI[contentType](state, action.id, body, action.reload)]
+                .concat(contentType === ResourceTypes.DATASET && timeseries?.has_time ? [updateDatasetTimeSeries(action.id, timeseries)] : []))
+            )
+                .switchMap(([resource]) => {
                     if (action.reload) {
                         if (contentType === ResourceTypes.VIEWER) {
                             const sourcepk = get(state, 'router.location.pathname', '').split('/').pop();
@@ -169,13 +179,16 @@ export const gnSaveContent = (action$, store) =>
                         window.location.reload();
                         return Observable.empty();
                     }
+                    const dimensions = timeseries?.has_time ? getDimensions({...currentResource, has_time: true}) : [];
                     return Observable.of(
                         saveSuccess(resource),
                         setResource({
                             ...currentResource,
                             ...body,
-                            ...resource
+                            ...resource,
+                            timeseries
                         }),
+                        ...(timeseries ? [updateNode(layerId, 'layers', { dimensions: dimensions?.length > 0 ? dimensions : undefined })] : []),
                         updateResource(resource),
                         ...(action.showNotifications
                             ? [

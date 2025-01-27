@@ -468,9 +468,6 @@
     padding: 0.5rem 0;
     font-size: @font-size-small;
     position: relative;
-    * {
-        position: relative;
-    }
     .gn-details-info-row {
         display: flex;
         border-bottom: 1px solid transparent;
@@ -520,7 +517,22 @@
             }
         }
     }
-    
+    .gn-details-info-form {
+        margin-top: 10px;
+        .gn-details-info-row {
+            border: none;
+            .mapstore-info-popover {
+                display: flex;
+            }
+        }
+        .gn-time-settings-form {
+            .form-group {
+                width: 100%;
+                align-items: center;
+                margin-bottom: 0;
+            }
+        }
+    }
 }
 
 .gn-details-info-table {

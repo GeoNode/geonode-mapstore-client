@@ -285,7 +285,10 @@ export const getResourceDirtyState = (state) => {
         return null;
     }
     const resourceType = state?.gnresource?.type;
-    const metadataKeys = ['title', 'abstract', 'data', 'extent', ...RESOURCE_MANAGEMENT_PROPERTIES_KEYS];
+    let metadataKeys = ['title', 'abstract', 'data', 'extent', ...RESOURCE_MANAGEMENT_PROPERTIES_KEYS];
+    if (resourceType === ResourceTypes.DATASET) {
+        metadataKeys = metadataKeys.concat('timeseries');
+    }
     const { data: initialData = {}, ...resource } = pick(state?.gnresource?.initialResource || {}, metadataKeys);
     const { compactPermissions, geoLimits } = getPermissionsPayload(state);
     const currentData = JSON.parse(JSON.stringify(getDataPayload(state) || {})); // JSON stringify is needed to remove undefined values

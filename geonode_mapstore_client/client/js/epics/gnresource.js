@@ -25,7 +25,8 @@ import {
     getCompactPermissionsByPk,
     setResourceThumbnail,
     setLinkedResourcesByPk,
-    removeLinkedResourcesByPk
+    removeLinkedResourcesByPk,
+    getDatasetTimeSettingsByPk
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
 import { mapSelector } from '@mapstore/framework/selectors/map';
@@ -130,14 +131,15 @@ const resourceTypes = {
                         ? new Promise(resolve => resolve(options.resourceData))
                         : isDefaultDatasetSubtype(subtype)
                             ? getDatasetByPk(pk)
-                            : getResourceByPk(pk)
+                            : getResourceByPk(pk),
+                    getDatasetTimeSettingsByPk(pk)
                 ])
                     .then((response) => {
-                        const [mapConfig, gnLayer] = response;
+                        const [mapConfig, gnLayer, timeseries] = response;
                         const newLayer = resourceToLayerConfig(gnLayer);
 
                         if (!newLayer?.extendedParams?.defaultStyle || page !== 'dataset_edit_style_viewer') {
-                            return [mapConfig, gnLayer, newLayer];
+                            return [mapConfig, {...gnLayer, timeseries}, newLayer];
                         }
 
                         return getStyleProperties({
@@ -146,7 +148,7 @@ const resourceTypes = {
                         }).then((updatedStyle) => {
                             return [
                                 mapConfig,
-                                gnLayer,
+                                {...gnLayer, timeseries},
                                 {
                                     ...newLayer,
                                     availableStyles: [{

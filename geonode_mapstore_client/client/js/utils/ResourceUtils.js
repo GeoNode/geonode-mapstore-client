@@ -80,6 +80,12 @@ export const RESOURCE_MANAGEMENT_PROPERTIES = {
     }
 };
 
+export const TIME_SERIES_PROPERTIES = ['attribute', 'end_attribute', 'presentation', 'precision_value', 'precision_step'];
+
+export const TIME_ATTRIBUTE_TYPES = ['xsd:date', 'xsd:dateTime', 'xsd:date-time', 'xsd:time'];
+
+export const TIME_PRECISION_STEPS = ['years', 'months', 'days', 'hours', 'minutes', 'seconds'];
+
 export const isDefaultDatasetSubtype = (subtype) => !subtype || ['vector', 'raster', 'remote', 'vector_time'].includes(subtype);
 
 export const FEATURE_INFO_FORMAT = 'TEMPLATE';
@@ -100,6 +106,21 @@ const datasetAttributeSetToFields = ({ attribute_set: attributeSet = [] }) => {
         });
 };
 
+export const getDimensions = ({links, has_time: hasTime} = {}) => {
+    const { url: wmsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMS') || {};
+    const { url: wmtsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMTS') || {};
+    const dimensions = [
+        ...(hasTime ? [{
+            name: 'time',
+            source: {
+                type: 'multidim-extension',
+                url: wmtsUrl || (wmsUrl || '').split('/geoserver/')[0] + '/geoserver/gwc/service/wmts'
+            }
+        }] : [])
+    ];
+    return dimensions;
+};
+
 /**
 * convert resource layer configuration to a mapstore layer object
 * @param {object} resource geonode layer resource
@@ -114,7 +135,6 @@ export const resourceToLayerConfig = (resource) => {
         title,
         perms,
         pk,
-        has_time: hasTime,
         default_style: defaultStyle,
         ptype,
         subtype,
@@ -174,17 +194,8 @@ export const resourceToLayerConfig = (resource) => {
     default:
         const { url: wfsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WFS') || {};
         const { url: wmsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMS') || {};
-        const { url: wmtsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMTS') || {};
 
-        const dimensions = [
-            ...(hasTime ? [{
-                name: 'time',
-                source: {
-                    type: 'multidim-extension',
-                    url: wmtsUrl || (wmsUrl || '').split('/geoserver/')[0] + '/geoserver/gwc/service/wmts'
-                }
-            }] : [])
-        ];
+        const dimensions = getDimensions(resource);
 
         const params = wmsUrl && url.parse(wmsUrl, true).query;
         const {

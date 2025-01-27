@@ -1,8 +1,9 @@
 import React, { forwardRef } from 'react';
 import { Checkbox } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
-import { RESOURCE_MANAGEMENT_PROPERTIES } from '@js/utils/ResourceUtils';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
+import { RESOURCE_MANAGEMENT_PROPERTIES } from '@js/utils/ResourceUtils';
+import TimeSeriesSettings from '@js/components/DetailsPanel/DetailsTimeSeries';
 
 const MessageTooltip = tooltip(forwardRef(({children, msgId, ...props}, ref) => {
     return (
@@ -35,6 +36,9 @@ function DetailsSettings({ resource, onChange }) {
                         </div>
                     );
                 })}
+                <div className="gn-details-info-form">
+                    <TimeSeriesSettings resource={resource} onChange={onChange} />
+                </div>
             </div>
         </div>
     );
