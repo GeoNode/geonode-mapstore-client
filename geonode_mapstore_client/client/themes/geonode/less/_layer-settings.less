@@ -66,3 +66,31 @@
     }
     
 }
+
+.ms-toc-container {
+    .ms-toc-toolbar-content {
+        .gn-layer-download {
+            width: 30px;
+            .download-dropdown {
+                position: absolute;
+                top: 0;
+                width: inherit;
+                button.dropdown-toggle{
+                    width: inherit;
+                }
+                ul.dropdown-menu {
+                    width: 120px;
+                    li {
+                        a[role="menuitem"] {
+                          padding: 0;  
+                        }
+                        button {
+                            width: 100%;
+                            text-align: left;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

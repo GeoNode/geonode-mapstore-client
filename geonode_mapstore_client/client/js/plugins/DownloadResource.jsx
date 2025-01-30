@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
-import { getDownloadUrlInfo, isDocumentExternalSource, GXP_PTYPES } from '@js/utils/ResourceUtils';
+import { getDownloadUrlInfo, isDocumentExternalSource, GXP_PTYPES, SOURCE_TYPES } from '@js/utils/ResourceUtils';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@js/components/Button';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
@@ -38,6 +38,8 @@ const DownloadButton = ({
     onAction = () => {},
     renderType = "button",
     showIcon,
+    downloadMsgId = "gnviewer.download",
+    allowedSources = [SOURCE_TYPES.LOCAL, SOURCE_TYPES.REMOTE],
     downloading
 }) => {
     const Component =  RENDER_TYPE[renderType];
@@ -51,6 +53,7 @@ const DownloadButton = ({
         || !_resource?.perms?.includes('download_resourcebase')
         || (!isButton && isNotAjaxSafe)
         || [GXP_PTYPES.REST_MAP, GXP_PTYPES.REST_IMG].includes(_resource?.ptype) // exclude arcgis remote layers from direct download
+        || !allowedSources.includes(_resource?.sourcetype)
     ) {
         return null;
     }
@@ -59,7 +62,7 @@ const DownloadButton = ({
         return downloadInfo.url ? (
             <Component
                 {...isButton && { variant, size }}
-                {...showIcon && { tooltipId: "gnviewer.download" }}
+                {...showIcon && { tooltipId: downloadMsgId }}
                 download
                 href={ downloadInfo.url }
                 target="_blank"
@@ -67,7 +70,7 @@ const DownloadButton = ({
             >
                 {showIcon
                     ? <FaIcon name={isExternal ? "external-link" : "download"} />
-                    : <Message msgId="gnviewer.download" />
+                    : <Message msgId={downloadMsgId} />
                 }
             </Component>
         ) : null;
@@ -78,11 +81,11 @@ const DownloadButton = ({
             disabled={!!downloading}
             onClick={() => downloading ? null : onAction(_resource)}
             {...isButton && { variant, size}}
-            {...showIcon && { tooltipId: "gnviewer.download" }}
+            {...showIcon && { tooltipId: downloadMsgId }}
         >
             {showIcon
                 ? <FaIcon name="download" />
-                : <Message msgId="gnviewer.download" />
+                : <Message msgId={downloadMsgId} />
             }
         </Component>
     );
@@ -129,6 +132,12 @@ export default createPlugin('DownloadResource', {
             priority: 1
         },
         DetailViewer: {
+            name: 'DownloadResource',
+            target: 'toolbar',
+            Component: DownloadResource,
+            priority: 1
+        },
+        DatasetDownload: {
             name: 'DownloadResource',
             target: 'toolbar',
             Component: DownloadResource,

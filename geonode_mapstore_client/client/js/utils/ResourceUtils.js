@@ -84,6 +84,11 @@ export const isDefaultDatasetSubtype = (subtype) => !subtype || ['vector', 'rast
 
 export const FEATURE_INFO_FORMAT = 'TEMPLATE';
 
+export const SOURCE_TYPES = {
+    LOCAL: 'LOCAL',
+    REMOTE: 'REMOTE'
+};
+
 const datasetAttributeSetToFields = ({ attribute_set: attributeSet = [] }) => {
     return attributeSet
         .filter(({ attribute_type: type }) => !type.includes('gml:'))
@@ -221,7 +226,7 @@ export const resourceToLayerConfig = (resource) => {
             ...(dimensions.length > 0 && ({ dimensions })),
             extendedParams,
             ...(fields && { fields }),
-            ...(sourcetype === 'REMOTE' && !wmsUrl.includes('/geoserver/') && {
+            ...(sourcetype === SOURCE_TYPES.REMOTE && !wmsUrl.includes('/geoserver/') && {
                 serverType: ServerTypes.NO_VENDOR
             })
         };
@@ -327,7 +332,7 @@ export const ResourceTypes = {
 };
 
 export const isDocumentExternalSource = (resource) => {
-    return resource && resource.resource_type === ResourceTypes.DOCUMENT && resource.sourcetype === 'REMOTE';
+    return resource && resource.resource_type === ResourceTypes.DOCUMENT && resource.sourcetype === SOURCE_TYPES.REMOTE;
 };
 
 export const getResourceTypesInfo = () => ({

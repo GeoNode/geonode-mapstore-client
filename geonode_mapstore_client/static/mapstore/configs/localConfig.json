@@ -631,6 +631,14 @@
                             "items": [
                                 {
                                     "type": "plugin",
+                                    "name": "DownloadResource",
+                                    "cfg": {
+                                        "downloadMsgId": "gnhome.dataset",
+                                        "allowedSources": ["LOCAL"]
+                                    }
+                                },
+                                {
+                                    "type": "plugin",
                                     "name": "LayerDownload"
                                 },
                                 {
@@ -1609,6 +1617,14 @@
                         }
                     }
                 }
+            },
+            {
+                "name": "DatasetDownload",
+                "mandatory": true
+            },
+            {
+                "name": "DownloadResource",
+                "mandatory": true
             },
             {
                 "name": "MapThumbnail"

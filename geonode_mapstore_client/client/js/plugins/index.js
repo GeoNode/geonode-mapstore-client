@@ -69,15 +69,25 @@ export const plugins = {
     OperationPlugin,
     MetadataEditorPlugin,
     MetadataViewerPlugin,
+    DatasetDownloadPlugin: toModulePlugin(
+        'DatasetDownload',
+        () => import(/* webpackChunkName: 'plugins/dataset-download' */ '@js/plugins/DatasetDownload')
+    ),
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
         () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload'),
         {
             overrides: {
                 containers: {
+                    TOC: {},
                     ActionNavbar: {
                         name: 'LayerDownload',
                         Component: LayerDownloadActionButton
+                    },
+                    DatasetDownload: {
+                        name: 'LayerDownload',
+                        Component: LayerDownloadActionButton,
+                        target: 'toolbar'
                     }
                 }
             }
