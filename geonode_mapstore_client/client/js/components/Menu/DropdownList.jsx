@@ -28,10 +28,10 @@ const itemElement = ({ labelId, href, badge, target }) =>  (
 
 const itemsList = (items) => (items && items.map((item) => {
 
-    const { labelId, href, badge, target, type, Component, className, cfg } = item;
+    const { labelId, href, badge, target, type, Component, className } = item;
 
     if (type === 'plugin' && Component) {
-        return (<li><Component {...cfg} variant="default" className={className} showMessage /></li>);
+        return (<li><Component variant="default" className={className} showMessage /></li>);
     }
 
     return itemElement({ labelId, href, badge, target });
@@ -97,7 +97,7 @@ const DropdownList = ({
         .map((itm, idx) => {
 
             if (itm.type === 'plugin' && itm.Component) {
-                return (<li><itm.Component {...itm.cfg} variant="default" className={itm.className} showMessage /></li>);
+                return (<li><itm.Component variant="default" className={itm.className} showMessage /></li>);
             }
             if (itm.type === 'divider') {
                 return <Dropdown.Divider key={idx} />;

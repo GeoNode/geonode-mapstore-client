@@ -8,6 +8,7 @@
 
 import expect from 'expect';
 import { getCurrentProcesses, processingDownload, generalResourceDownload, featuredResourceDownload } from '../resourceservice';
+import { ResourceTypes } from '@js/utils/ResourceUtils';
 
 
 describe('resourceservice selector', () => {
@@ -30,6 +31,21 @@ describe('resourceservice selector', () => {
             },
             resourceservice: {
                 downloads: [{  pk: 1 }]
+            }
+        };
+        expect(processingDownload(testState)).toEqual(true);
+    });
+    it('test processingDownload when downloding dataset in the maplayers', () => {
+        const testState = {
+            gnresource: {
+                data: {
+                    pk: 1,
+                    resource_type: ResourceTypes.MAP,
+                    maplayers: [{dataset: {pk: 2}}]
+                }
+            },
+            resourceservice: {
+                downloads: [{  pk: 2 }]
             }
         };
         expect(processingDownload(testState)).toEqual(true);

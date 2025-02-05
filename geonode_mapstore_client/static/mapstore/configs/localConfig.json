@@ -631,11 +631,7 @@
                             "items": [
                                 {
                                     "type": "plugin",
-                                    "name": "DownloadResource",
-                                    "cfg": {
-                                        "downloadMsgId": "gnhome.dataset",
-                                        "allowedSources": ["LOCAL"]
-                                    }
+                                    "name": "DownloadResource"
                                 },
                                 {
                                     "type": "plugin",
@@ -860,7 +856,11 @@
                 "name": "DeleteResource"
             },
             {
-                "name": "DownloadResource"
+                "name": "DownloadResource",
+                "cfg": {
+                    "downloadMsgId": "gnhome.dataset",
+                    "allowedSources": ["LOCAL"]
+                }
             },
             {
                 "name": "Map",
@@ -1617,10 +1617,6 @@
                         }
                     }
                 }
-            },
-            {
-                "name": "DatasetDownload",
-                "mandatory": true
             },
             {
                 "name": "DownloadResource",

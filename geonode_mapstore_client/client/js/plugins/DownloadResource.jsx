@@ -137,9 +137,8 @@ export default createPlugin('DownloadResource', {
             Component: DownloadResource,
             priority: 1
         },
-        DatasetDownload: {
+        LayerDownload: {
             name: 'DownloadResource',
-            target: 'toolbar',
             Component: DownloadResource,
             priority: 1
         }
