@@ -456,7 +456,8 @@
             "metadataNotFound": "Metadati non disponibili per la risorsa selezionata",
             "filterMetadata": "Filtra per nome...",
             "noMetadataFound": "Nessun metadato trovato...",
-            "metadataGroupTitle": "Generale"
+            "metadataGroupTitle": "Generale",
+            "noGridData": "Nessun dato da visualizzare"
         }
     }
 }

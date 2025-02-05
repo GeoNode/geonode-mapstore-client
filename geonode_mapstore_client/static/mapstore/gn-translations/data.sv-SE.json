@@ -424,7 +424,8 @@
             "metadataNotFound": "Metadata not found for the selected resource",
             "filterMetadata": "Filter by name...",
             "noMetadataFound": "No metadata found...",
-            "metadataGroupTitle": "General"
+            "metadataGroupTitle": "General",
+            "noGridData": "No data to display"
         }
     }
 }

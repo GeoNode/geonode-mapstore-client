@@ -39,6 +39,7 @@ export const videoExtensions = ['mp4', 'mpg', 'avi', 'm4v', 'mp2', '3gp', 'flv',
 export const audioExtensions = ['mp3', 'wav', 'ogg'];
 export const gltfExtensions = ['glb', 'gltf'];
 export const ifcExtensions = ['ifc'];
+export const spreedsheetExtensions = ['csv', 'xls', 'xlsx'];
 
 /**
 * check if a resource extension is supported for display in the media viewer
@@ -53,6 +54,7 @@ export const determineResourceType = extension => {
     if (ifcExtensions.includes(extension)) return 'ifc';
     if (ifcExtensions.includes(extension)) return 'ifc';
     if (audioExtensions.includes(extension)) return 'video';
+    if (spreedsheetExtensions.includes(extension)) return 'excel';
     return 'unsupported';
 };
 
@@ -108,4 +110,20 @@ export const getFilenameFromContentDispositionHeader = (contentDisposition) => {
         return trim(trim(matches?.[1] || '', '"'), "'");
     }
     return '';
+};
+
+/**
+ * Identify the delimiter used in a CSV string
+ * Based on https://github.com/Inist-CNRS/node-csv-string
+ * @param {string} input
+ * @returns {string} delimiter
+ */
+export const detectCSVDelimiter = (input) => {
+    const separators = [',', ';', '|', '\t'];
+    const idx = separators
+        .map((separator) => input.indexOf(separator))
+        .reduce((prev, cur) =>
+            prev === -1 || (cur !== -1 && cur < prev) ? cur : prev
+        );
+    return input[idx] || ',';
 };

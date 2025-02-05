@@ -454,7 +454,8 @@
             "metadataNotFound": "Für die ausgewählte Ressource wurden keine Metadaten gefunden",
             "filterMetadata": "Nach Namen filtern...",
             "noMetadataFound": "Keine Metadaten gefunden...",
-            "metadataGroupTitle": "Allgemein"
+            "metadataGroupTitle": "Allgemein",
+            "noGridData": "Keine Daten zum Anzeigen"
         }
     }
 }

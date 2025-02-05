@@ -31,6 +31,14 @@ describe('FileUtils', () => {
         const mediaType = determineResourceType('mp3');
         expect(mediaType).toEqual('video');
     });
+    it('should return excel if extension is a supported spreadsheet format', () => {
+        let mediaType = determineResourceType('csv');
+        expect(mediaType).toEqual('excel');
+        mediaType = determineResourceType('xls');
+        expect(mediaType).toEqual('excel');
+        mediaType = determineResourceType('xlsx');
+        expect(mediaType).toEqual('excel');
+    });
 
     it('should always return file extension in lowercase', () => {
         const file = {
