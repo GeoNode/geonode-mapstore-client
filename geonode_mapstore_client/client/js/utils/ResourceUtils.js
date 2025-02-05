@@ -107,8 +107,8 @@ const datasetAttributeSetToFields = ({ attribute_set: attributeSet = [] }) => {
 };
 
 export const getDimensions = ({links, has_time: hasTime} = {}) => {
-    const { url: wmsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMS') || {};
-    const { url: wmtsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMTS') || {};
+    const { url: wmsUrl } = links?.find(({ link_type: linkType }) => linkType === 'OGC:WMS') || {};
+    const { url: wmtsUrl } = links?.find(({ link_type: linkType }) => linkType === 'OGC:WMTS') || {};
     const dimensions = [
         ...(hasTime ? [{
             name: 'time',

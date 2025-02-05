@@ -31,11 +31,12 @@ import {
 import { configureMap } from '@mapstore/framework/actions/config';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import { isMapInfoOpen } from '@mapstore/framework/selectors/mapInfo';
-import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
+import { getSelectedLayer, layersSelector } from '@mapstore/framework/selectors/layers';
 import { isLoggedIn } from '@mapstore/framework/selectors/security';
 import {
     browseData,
-    selectNode
+    selectNode,
+    updateNode
 } from '@mapstore/framework/actions/layers';
 import {
     updateStatus,
@@ -57,7 +58,8 @@ import {
     updateResource,
     setResourcePathParameters,
     MANAGE_LINKED_RESOURCE,
-    setMapViewerLinkedResource
+    setMapViewerLinkedResource,
+    UPDATE_SINGLE_RESOURCE
 } from '@js/actions/gnresource';
 
 import {
@@ -82,7 +84,8 @@ import {
     toMapStoreMapConfig,
     parseStyleName,
     getCataloguePath,
-    isDefaultDatasetSubtype
+    isDefaultDatasetSubtype,
+    getDimensions
 } from '@js/utils/ResourceUtils';
 import {
     canAddResource,
@@ -131,9 +134,17 @@ const resourceTypes = {
                         ? new Promise(resolve => resolve(options.resourceData))
                         : isDefaultDatasetSubtype(subtype)
                             ? getDatasetByPk(pk)
-                            : getResourceByPk(pk),
-                    getDatasetTimeSettingsByPk(pk)
+                            : getResourceByPk(pk)
                 ])
+                    .then((response) => {
+                        const [, gnLayer] = response ?? [];
+                        if (gnLayer?.has_time) {
+                            // fetch timeseries when applicable
+                            return getDatasetTimeSettingsByPk(pk)
+                                .then((timeseries) => response.concat(timeseries));
+                        }
+                        return response;
+                    })
                     .then((response) => {
                         const [mapConfig, gnLayer, timeseries] = response;
                         const newLayer = resourceToLayerConfig(gnLayer);
@@ -703,6 +714,24 @@ export const gnZoomToFitBounds = (action$) =>
                 })
         );
 
+export const gnAddDimensionToLayer = (action$, store) =>
+    action$.ofType(UPDATE_SINGLE_RESOURCE)
+        .filter(({data: {resource_type: resourceType, subtype} = {}} = {}) =>
+            resourceType === ResourceTypes.DATASET && subtype !== '3dtiles'
+        )
+        .switchMap(() => {
+            const state = store.getState();
+            const resource = getResourceData(state);
+            if (resource?.timeseries) {
+                const dimensions = resource?.has_time ? getDimensions({...resource, has_time: true}) : [];
+                const layerId = layersSelector(state)?.find((l) => l.pk === resource.pk)?.id;
+                return Observable.of(updateNode(layerId, 'layers',
+                    { dimensions: dimensions?.length > 0 ? dimensions : undefined }
+                ));
+            }
+            return Observable.empty();
+        });
+
 export default {
     gnViewerRequestNewResourceConfig,
     gnViewerRequestResourceConfig,
@@ -711,5 +740,6 @@ export default {
     closeOpenPanels,
     closeDatasetCatalogPanel,
     gnManageLinkedResource,
-    gnZoomToFitBounds
+    gnZoomToFitBounds,
+    gnAddDimensionToLayer
 };

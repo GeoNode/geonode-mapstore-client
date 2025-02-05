@@ -5,7 +5,7 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from "prop-types";
 import isNil from 'lodash/isNil';
 import isEmpty from 'lodash/isEmpty';
@@ -23,13 +23,8 @@ const TimeSeriesSettings = ({ resource, onChange }, context) => {
         .map((attribute)=> ({value: attribute.pk, label: attribute.attribute}));
 
     if (isEmpty(timeAttributes)) return null;
-
-    const [timeseries, setTimeSeries] = useState();
+    const [timeseries, setTimeSeries] = useState(resource.timeseries);
     const [error, setError] = useState();
-    useEffect(() => {
-        resource.timeseries && setTimeSeries(resource.timeseries);
-    }, [resource?.timeseries]);
-
 
     const onChangeTimeSettings = (key, value) => {
         const _timeseries = {
@@ -48,16 +43,14 @@ const TimeSeriesSettings = ({ resource, onChange }, context) => {
                     : { presentation: "LIST"} : undefined
             )
         };
+        const isFormInValid = _timeseries.has_time ? isNil(_timeseries.attribute) && isNil(_timeseries.end_attribute) : false;
         setTimeSeries(_timeseries);
-        setError(_timeseries.has_time ? isNil(_timeseries.attribute) && isNil(_timeseries.end_attribute) : false );
-    };
-
-    useEffect(() => {
-        if (!error && !isEmpty(timeseries)) {
+        setError(isFormInValid);
+        if (!isFormInValid) {
             // update resource when timeseries is changed and valid
-            onChange({timeseries}, "timeseries");
+            onChange({timeseries: _timeseries}, "timeseries");
         }
-    }, [error, JSON.stringify(timeseries)]);
+    };
 
     const attributeFields = ['attribute', 'end_attribute'];
     const hasTime = !!timeseries?.has_time;

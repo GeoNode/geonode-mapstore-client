@@ -393,15 +393,16 @@ export const updateGeoApp = (pk, body) => {
         .then(({ data }) => data.geoapp);
 };
 
-
-export const updateDataset = (pk, body) => {
-    return axios.patch(getEndpointUrl(DATASETS, `/${pk}`), body)
-        .then(({ data }) => (data.dataset));
-};
-
 export const updateDatasetTimeSeries = (pk, body) => {
     return axios.put(getEndpointUrl(DATASETS, `/${pk}/timeseries`), body)
         .then(({ data }) => data);
+};
+
+export const updateDataset = (pk, body, timeseries) => {
+    const patchDataset = axios.patch(getEndpointUrl(DATASETS, `/${pk}`), body);
+    const patchTimeSeries = timeseries ? updateDatasetTimeSeries(pk, timeseries) : Promise.resolve();
+    return axios.all([patchDataset, patchTimeSeries])
+        .then(([{ data } = {}] = []) => data.dataset);
 };
 
 export const updateDocument = (pk, body) => {

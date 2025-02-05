@@ -32,7 +32,8 @@ import {
     getDownloadUrlInfo,
     getCataloguePath,
     getResourceWithLinkedResources,
-    getResourceAdditionalProperties
+    getResourceAdditionalProperties,
+    getDimensions
 } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
@@ -944,5 +945,53 @@ describe('Test Resource Utils', () => {
                     }
                 ]
             });
+    });
+    describe('getDimensions', () => {
+        it('should return empty array if no links and has_time is false', () => {
+            const result = getDimensions();
+            expect(result).toEqual([]);
+        });
+
+        it('should return dimensions with time if has_time is true and WMTS link is present', () => {
+            const links = [{ link_type: 'OGC:WMTS', url: 'http://example.com/wmts' }];
+            const result = getDimensions({ links, has_time: true });
+            expect(result).toEqual([{
+                name: 'time',
+                source: {
+                    type: 'multidim-extension',
+                    url: 'http://example.com/wmts'
+                }
+            }]);
+        });
+
+        it('should return dimensions with time if has_time is true and only WMS link is present', () => {
+            const links = [{ link_type: 'OGC:WMS', url: 'http://example.com/geoserver/wms' }];
+            const result = getDimensions({ links, has_time: true });
+            expect(result).toEqual([{
+                name: 'time',
+                source: {
+                    type: 'multidim-extension',
+                    url: 'http://example.com/geoserver/gwc/service/wmts'
+                }
+            }]);
+        });
+
+        it('should return empty array if has_time is false', () => {
+            const links = [{ link_type: 'OGC:WMTS', url: 'http://example.com/wmts' }];
+            const result = getDimensions({ links, has_time: false });
+            expect(result).toEqual([]);
+        });
+
+        it('should return default url if no matching link types are found', () => {
+            const links = [{ link_type: 'OGC:OTHER', url: 'http://example.com/other' }];
+            const result = getDimensions({ links, has_time: true });
+            expect(result).toEqual([{
+                name: 'time',
+                source: {
+                    type: 'multidim-extension',
+                    url: '/geoserver/gwc/service/wmts'
+                }
+            }]);
+        });
     });
 });
