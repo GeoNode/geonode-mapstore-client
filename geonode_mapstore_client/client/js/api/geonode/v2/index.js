@@ -398,11 +398,9 @@ export const updateDatasetTimeSeries = (pk, body) => {
         .then(({ data }) => data);
 };
 
-export const updateDataset = (pk, body, timeseries) => {
-    const patchDataset = axios.patch(getEndpointUrl(DATASETS, `/${pk}`), body);
-    const patchTimeSeries = timeseries ? updateDatasetTimeSeries(pk, timeseries) : Promise.resolve();
-    return axios.all([patchDataset, patchTimeSeries])
-        .then(([{ data } = {}] = []) => data.dataset);
+export const updateDataset = (pk, body) => {
+    return axios.patch(getEndpointUrl(DATASETS, `/${pk}`), body)
+        .then(({ data }) => (data.dataset));
 };
 
 export const updateDocument = (pk, body) => {

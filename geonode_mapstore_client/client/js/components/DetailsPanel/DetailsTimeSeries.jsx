@@ -11,11 +11,13 @@ import isNil from 'lodash/isNil';
 import isEmpty from 'lodash/isEmpty';
 import { Checkbox, FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
 import Select from 'react-select';
+
 import Message from '@mapstore/framework/components/I18N/Message';
 import HTML from '@mapstore/framework/components/I18N/HTML';
-import { TIME_SERIES_PROPERTIES, TIME_ATTRIBUTE_TYPES, TIME_PRECISION_STEPS } from '@js/utils/ResourceUtils';
 import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 import InfoPopover from '@mapstore/framework/components/widgets/widget/InfoPopover';
+
+import { TIME_SERIES_PROPERTIES, TIME_ATTRIBUTE_TYPES, TIME_PRECISION_STEPS } from '@js/utils/ResourceUtils';
 
 const TimeSeriesSettings = ({ resource, onChange }, context) => {
     const timeAttributes = (resource?.attribute_set ?? [])
