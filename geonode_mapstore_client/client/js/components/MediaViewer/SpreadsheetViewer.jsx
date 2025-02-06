@@ -6,31 +6,30 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense, lazy } from "react";
 
-import AdaptiveGrid from "@mapstore/framework/components/misc/AdaptiveGrid";
 import Loader from "@mapstore/framework/components/misc/Loader";
 import Message from "@mapstore/framework/components/I18N/Message";
 
 import MetadataPreview from "@js/components/MetadataPreview/MetadataPreview";
 import { parseCSVToArray } from "@js/utils/FileUtils";
-
+const AdaptiveGrid = lazy(() => import("@mapstore/framework/components/misc/AdaptiveGrid"));
 
 const VirtualizedGrid = ({data}) => {
     let [columns, ...rows] = data ?? [];
-    columns = columns?.map((column, index) => ({key: index, name: column})) ?? [];
-
+    columns = columns?.map((column, index) => ({ key: index, name: column, resizable: true })) ?? [];
     const rowGetter = rowNumber => rows?.[rowNumber];
-
     return (
         <div className="grid-container">
-            <AdaptiveGrid
-                columns={columns}
-                rowGetter={rowGetter}
-                rowsCount={rows?.length ?? 0}
-                emptyRowsView={() => <span className="empty-data"><Message msgId="gnviewer.noGridData"/></span>}
-                minColumnWidth={100}
-            />
+            <Suspense fallback={null}>
+                <AdaptiveGrid
+                    columns={columns}
+                    rowGetter={rowGetter}
+                    rowsCount={rows?.length ?? 0}
+                    emptyRowsView={() => <span className="empty-data"><Message msgId="gnviewer.noGridData"/></span>}
+                    minColumnWidth={100}
+                />
+            </Suspense>
         </div>
     );
 };

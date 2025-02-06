@@ -92,6 +92,13 @@
                 }
             }
         }
+        // make the content of cell copyable
+        .react-grid-Cell {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
         @media screen and (max-width: 768px) {
             padding: 0;
             overflow-y: auto;
