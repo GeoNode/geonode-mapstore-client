@@ -125,9 +125,7 @@ const SaveAPI = {
             });
     },
     [ResourceTypes.DOCUMENT]: (state, id, body) => {
-        return id
-            ? updateDocument(id, body)
-            : false;
+        return id ? updateDocument(id, body) : false;
     },
     [ResourceTypes.DATASET]: (state, id, body) => {
         const currentResource = getResourceData(state);
