@@ -24,9 +24,10 @@ const TimeSeriesSettings = ({ resource, onChange }, context) => {
         .filter((attribute) => TIME_ATTRIBUTE_TYPES.includes(attribute.attribute_type))
         .map((attribute)=> ({value: attribute.pk, label: attribute.attribute}));
 
-    if (isEmpty(timeAttributes)) return null;
     const [timeseries, setTimeSeries] = useState(resource.timeseries);
     const [error, setError] = useState();
+
+    if (isEmpty(timeAttributes)) return null;
 
     const onChangeTimeSettings = (key, value) => {
         const _timeseries = {

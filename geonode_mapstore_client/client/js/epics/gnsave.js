@@ -9,6 +9,8 @@
 import axios from '@mapstore/framework/libs/ajax';
 import { Observable } from 'rxjs';
 import get from 'lodash/get';
+import castArray from 'lodash/castArray';
+
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import { userSelector } from '@mapstore/framework/selectors/security';
 import {
@@ -95,66 +97,61 @@ function parseMapBody(body) {
 }
 
 const SaveAPI = {
-    [ResourceTypes.MAP]: (store, id, body) => {
-        return Observable.defer(() => id
+    [ResourceTypes.MAP]: (state, id, body) => {
+        return id
             ? updateMap(id, { ...parseMapBody(body), id })
-            : createMap(parseMapBody(body))
-        );
+            : createMap(parseMapBody(body));
     },
-    [ResourceTypes.GEOSTORY]: (store, id, body) => {
-        const user = userSelector(store.getState());
-        return Observable.defer(()=> id
+    [ResourceTypes.GEOSTORY]: (state, id, body) => {
+        const user = userSelector(state);
+        return id
             ? updateGeoApp(id, body)
             : createGeoApp({
                 'name': body.title + ' ' + uuid(),
                 'owner': user.name,
                 'resource_type': ResourceTypes.GEOSTORY,
                 ...body
-            })
-        );
+            });
     },
-    [ResourceTypes.DASHBOARD]: (store, id, body) => {
-        const user = userSelector(store.getState());
-        return Observable.defer(() => id
+    [ResourceTypes.DASHBOARD]: (state, id, body) => {
+        const user = userSelector(state);
+        return id
             ? updateGeoApp(id, body)
             : createGeoApp({
                 'name': body.title + ' ' + uuid(),
                 'owner': user.name,
                 'resource_type': ResourceTypes.DASHBOARD,
                 ...body
-            })
-        );
+            });
     },
-    [ResourceTypes.DOCUMENT]: (store, id, body) => {
-        return Observable.defer(() => id
+    [ResourceTypes.DOCUMENT]: (state, id, body) => {
+        return id
             ? updateDocument(id, body)
-            : Observable.of(null)
-        );
+            : false;
     },
-    [ResourceTypes.DATASET]: (store, id, body) => {
-        const state = store.getState();
+    [ResourceTypes.DATASET]: (state, id, body) => {
         const currentResource = getResourceData(state);
         const timeseries = currentResource?.timeseries;
         const updatedBody = {
             ...body,
             ...(timeseries && { has_time: timeseries?.has_time })
         };
-        return Observable.defer(() => id
+        return (id
             ? axios.all([updateDataset(id, updatedBody), updateDatasetTimeSeries(id, timeseries)])
-            : Observable.of(null)
-        ).switchMap(([resource] = []) => {
-            if (timeseries) {
-                const dimensions = resource?.has_time ? getDimensions({...resource, has_time: true}) : [];
-                const layerId = layersSelector(state)?.find((l) => l.pk === resource?.pk)?.id;
-                // update dimension of the layer
-                store.dispatch(updateNode(layerId, 'layers', { dimensions: dimensions?.length > 0 ? dimensions : undefined }));
-            }
-            return Observable.of({...resource, timeseries});
-        });
+            : Promise.resolve([]))
+            .then(([resource]) => {
+                if (timeseries) {
+                    const dimensions = resource?.has_time ? getDimensions({...resource, has_time: true}) : [];
+                    const layerId = layersSelector(state)?.find((l) => l.pk === resource?.pk)?.id;
+                    // actions to be dispacted are added to response array
+                    return [resource, updateNode(layerId, 'layers', { dimensions: dimensions?.length > 0 ? dimensions : undefined })];
+                }
+                return resource;
+            });
     },
     [ResourceTypes.VIEWER]: (state, id, body) => {
         const user = userSelector(state);
-        return Observable.defer(() => id
+        return id
             ? updateGeoApp(id, body)
             : createGeoApp({
                 'name': body.title + ' ' + uuid(),
@@ -162,8 +159,7 @@ const SaveAPI = {
                 'resource_type': ResourceTypes.VIEWER,
                 'advertised': false,
                 ...body
-            })
-        );
+            });
     }
 };
 
@@ -187,8 +183,9 @@ export const gnSaveContent = (action$, store) =>
                 ...(data && { 'data': JSON.parse(JSON.stringify(data)) }),
                 ...(extent && { extent })
             };
-            return SaveAPI[contentType](store, action.id, body, action.reload)
-                .switchMap((resource) => {
+            return Observable.defer(() => SaveAPI[contentType](state, action.id, body, action.reload))
+                .switchMap((response) => {
+                    const [resource, ...actions] = castArray(response);
                     if (action.reload) {
                         if (contentType === ResourceTypes.VIEWER) {
                             const sourcepk = get(state, 'router.location.pathname', '').split('/').pop();
@@ -212,7 +209,8 @@ export const gnSaveContent = (action$, store) =>
                                     ? successNotification({title: "saveDialog.saveSuccessTitle", message: "saveDialog.saveSuccessMessage"})
                                     : warningNotification(action.showNotifications)
                             ]
-                            : [])
+                            : []),
+                        ...actions // additional actions to be dispatched
                     );
                 })
                 .catch((error) => {
