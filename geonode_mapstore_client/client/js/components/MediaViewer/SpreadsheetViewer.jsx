@@ -7,14 +7,13 @@
  */
 
 import React, { useEffect, useState } from "react";
-import {read, utils} from 'xlsx';
 
 import AdaptiveGrid from "@mapstore/framework/components/misc/AdaptiveGrid";
 import Loader from "@mapstore/framework/components/misc/Loader";
 import Message from "@mapstore/framework/components/I18N/Message";
 
 import MetadataPreview from "@js/components/MetadataPreview/MetadataPreview";
-import { detectCSVDelimiter } from "@js/utils/FileUtils";
+import { parseCSVToArray } from "@js/utils/FileUtils";
 
 
 const VirtualizedGrid = ({data}) => {
@@ -52,16 +51,20 @@ export const SpreadsheetViewer = ({extension, title, description, src, url}) => 
                 .then((res) => {
                     let response = res;
                     if (extension !== "csv") {
-                        const workbook = read(response, { type: "array" });
+                        import('xlsx').then(({ read, utils }) => {
+                            const workbook = read(response, { type: "array" });
 
-                        // Convert first sheet to CSV
-                        const sheetName = workbook.SheetNames[0];
-                        const worksheet = workbook.Sheets[sheetName];
-                        response = utils.sheet_to_csv(worksheet);
+                            // Convert first sheet to CSV
+                            const sheetName = workbook.SheetNames[0];
+                            const worksheet = workbook.Sheets[sheetName];
+                            response = utils.sheet_to_csv(worksheet);
+                            setData(parseCSVToArray(response));
+                        }).catch((e) => {
+                            console.error("Failed to load xlsx module", e);
+                        });
+                    } else {
+                        setData(parseCSVToArray(response));
                     }
-                    const delimiter = detectCSVDelimiter(response);
-                    const rows = response?.split('\n')?.map(row => row?.split(delimiter));
-                    setData(rows);
                 }).catch(() => {
                     setError(true);
                 }).finally(()=> {

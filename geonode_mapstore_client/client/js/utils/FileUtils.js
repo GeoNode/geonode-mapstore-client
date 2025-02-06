@@ -127,3 +127,9 @@ export const detectCSVDelimiter = (input) => {
         );
     return input[idx] || ',';
 };
+
+export const parseCSVToArray = (response) => {
+    if (isEmpty(response)) return [];
+    const delimiter = detectCSVDelimiter(response);
+    return response?.split('\n')?.map(row => row?.split(delimiter)) ?? [];
+};
