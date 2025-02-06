@@ -633,6 +633,10 @@
                             "items": [
                                 {
                                     "type": "plugin",
+                                    "name": "DownloadResource"
+                                },
+                                {
+                                    "type": "plugin",
                                     "name": "LayerDownload"
                                 },
                                 {
@@ -845,7 +849,11 @@
                 "name": "DeleteResource"
             },
             {
-                "name": "DownloadResource"
+                "name": "DownloadResource",
+                "cfg": {
+                    "downloadMsgId": "gnhome.dataset",
+                    "allowedSources": ["LOCAL"]
+                }
             },
             {
                 "name": "Map",
@@ -1478,6 +1486,10 @@
                         }
                     }
                 }
+            },
+            {
+                "name": "DownloadResource",
+                "mandatory": true
             },
             {
                 "name": "MapThumbnail"

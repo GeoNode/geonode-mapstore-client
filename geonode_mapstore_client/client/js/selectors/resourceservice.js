@@ -9,6 +9,7 @@
 import { getResourceData } from '@js/selectors/resource';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { getSearchResults, getFeaturedResults } from '@js/selectors/search';
+import { ResourceTypes } from '@js/utils/ResourceUtils';
 
 export const isProcessCompleted = (state, payload) => {
     const completedProcess = state?.resourceservice?.processes?.find(process =>
@@ -21,8 +22,11 @@ export const isProcessCompleted = (state, payload) => {
 
 export const processingDownload = (state) => {
     const resource = getResourceData(state);
+    const pks = (resource.resource_type === ResourceTypes.MAP
+        ? resource?.maplayers?.map(layer => layer?.dataset?.pk)
+        : [resource?.pk])?.filter(Boolean);
     const isProcessingDownload = state?.resourceservice?.downloads?.find((download) =>
-        download?.pk === resource?.pk
+        pks.includes(download?.pk)
     );
     const downloading = isProcessingDownload ? true : false;
     return downloading;

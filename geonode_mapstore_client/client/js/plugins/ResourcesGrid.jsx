@@ -46,7 +46,7 @@ import { processingDownload } from '@js/selectors/resourceservice';
 import { resourceHasPermission, getCataloguePath } from '@js/utils/ResourceUtils';
 import {downloadResource, setFavoriteResource} from '@js/actions/gnresource';
 import FiltersForm from '@js/components/FiltersForm';
-import usePluginItems from '@js/hooks/usePluginItems';
+import usePluginItems from '@mapstore/framework/hooks/usePluginItems';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { replace } from 'connected-react-router';
 import FaIcon from '@js/components/FaIcon';

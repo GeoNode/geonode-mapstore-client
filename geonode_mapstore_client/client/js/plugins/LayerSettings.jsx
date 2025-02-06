@@ -24,7 +24,7 @@ import GroupSettings from '@js/plugins/layersettings/GroupSettings';
 import BaseLayerSettings from '@js/plugins/layersettings/BaseLayerSettings';
 import WMSLayerSettings from '@js/plugins/layersettings/WMSLayerSettings';
 import GeoNodeStyleSelector from '@js/plugins/layersettings/GeoNodeStyleSelector';
-import usePluginItems from '@js/hooks/usePluginItems';
+import usePluginItems from '@mapstore/framework/hooks/usePluginItems';
 import layersettingsEpics from '@js/epics/layersettings';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import { isAnnotationLayer } from '@mapstore/framework/plugins/Annotations/utils/AnnotationsUtils';

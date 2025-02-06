@@ -168,6 +168,7 @@
         "gnviewer": {
             "edit": "Modifica",
             "export": "Esporta",
+            "exportData": "Esporta Dati",
             "editMetadata": "Modifica Metadati",
             "view": "Visualizza",
             "viewMetadata": "Visualizza i metadati",

@@ -164,6 +164,7 @@
         "gnviewer": {
             "edit": "Edit",
             "export": "Export",
+            "exportData": "Export Data",
             "editInfo": "Edit Info",
             "editMetadata": "Edit Metadata",
             "editStyle": "Edit Style",

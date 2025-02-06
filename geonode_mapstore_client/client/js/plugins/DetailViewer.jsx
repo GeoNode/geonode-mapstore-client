@@ -45,7 +45,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import { layersSelector } from '@mapstore/framework/selectors/layers';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import { parsePluginConfigExpressions } from '@js/utils/MenuUtils';
-import usePluginItems from '@js/hooks/usePluginItems';
+import usePluginItems from '@mapstore/framework/hooks/usePluginItems';
 import { getResourceTypesInfo } from '@js/utils/ResourceUtils';
 
 const ConnectedDetailsPanel = connect(
