@@ -316,7 +316,7 @@ function StyleEditorTocButton({
 }) {
     const mapLayer = layer?.extendedParams?.mapLayer;
     if (hide
-    || status !== statusTypes.LAYER
+    || status !== statusTypes?.LAYER
     || !mapLayer?.dataset
     || mapLayer?.dataset?.sourcetype === SOURCE_TYPES.REMOTE
     || !changeResource
@@ -368,10 +368,6 @@ export default createPlugin('VisualStyleEditor', {
             target: 'toolbar',
             Component: ConnectedStyleEditorTocButton,
             position: 100
-        },
-        LayerSettings: {
-            target: 'style-button',
-            Component: ConnectedStyleEditorTocButton
         }
     },
     reducers: {
