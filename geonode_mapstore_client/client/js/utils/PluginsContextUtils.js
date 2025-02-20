@@ -20,7 +20,6 @@ import {
     getUploadProperty
 } from '@js/utils/UploadUtils';
 import get from 'lodash/get';
-import isNil from 'lodash/isNil';
 import { getEndpointUrl } from '@js/api/geonode/v2/constants';
 
 function getUserResourceName(user) {
@@ -47,13 +46,6 @@ const getCreateNewMapLink = (resource) => {
     return `#/map/new?gn-dataset=${resource?.pk}:${resource?.subtype || ''}`;
 };
 
-const hasDefaultSettings = (layer) => {
-    if (layer?.type === 'wms' && !isNil(layer?.extendedParams?.pk)) {
-        return false;
-    }
-    return true;
-};
-
 const canManageResourceSettings = (resource) => {
     const { perms } = resource || {};
     const settingsPerms = ['feature_resourcebase', 'approve_resourcebase', 'publish_resourcebase'];
@@ -72,7 +64,6 @@ export const getPluginsContext = () => ({
     isDocumentExternalSource,
     getCataloguePath,
     getCreateNewMapLink,
-    hasDefaultSettings,
     canManageResourceSettings,
     getUploadMainFile,
     getEndpointUrl,

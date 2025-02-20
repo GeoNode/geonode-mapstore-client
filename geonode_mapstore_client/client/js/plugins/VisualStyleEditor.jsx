@@ -11,10 +11,10 @@ import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { Glyphicon } from 'react-bootstrap';
+
 import { StyleCodeEditor } from '@mapstore/framework/plugins/styleeditor/index';
 import styleeditor from '@mapstore/framework/reducers/styleeditor';
 import styleeditorEpics from '@mapstore/framework/epics/styleeditor';
-import visualStyleEditorEpics from '@js/epics/visualstyleeditor';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import {
     updateStatus,
@@ -24,10 +24,6 @@ import {
     editStyleCode,
     updateEditorMetadata
 } from '@mapstore/framework/actions/styleeditor';
-import {
-    requestDatasetAvailableStyles
-} from '@js/actions/visualstyleeditor';
-
 import { updateNode, updateSettingsParams } from '@mapstore/framework/actions/layers';
 import {
     getUpdatedLayer,
@@ -42,17 +38,18 @@ import {
     selectedStyleSelector
 } from '@mapstore/framework/selectors/styleeditor';
 import Message from '@mapstore/framework/components/I18N/Message';
-import GNButton from '@js/components/Button';
 import Portal from '@mapstore/framework/components/misc/Portal';
 import ResizableModal from '@mapstore/framework/components/misc/ResizableModal';
 import StylesAPI from '@mapstore/framework/api/geoserver/Styles';
-import { getResourcePerms, isNewResource, getViewedResourceType } from '@js/selectors/resource';
 import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import { getSelectedLayer, layersSelector } from '@mapstore/framework/selectors/layers';
+
+import GNButton from '@js/components/Button';
+import visualStyleEditorEpics from '@js/epics/visualstyleeditor';
+import { getViewedResourceType } from '@js/selectors/resource';
 import useLocalStorage from '@js/hooks/useLocalStorage';
 import TemplateSelector from '@js/plugins/visualstyleeditor/TemplateSelector';
-import { isDefaultDatasetSubtype, SOURCE_TYPES } from '@js/utils/ResourceUtils';
 
 const Button = tooltip(GNButton);
 
@@ -303,73 +300,9 @@ const VisualStyleEditorPlugin = connect(
     }
 )(VisualStyleEditor);
 
-function StyleEditorTocButton({
-    layer,
-    status,
-    onClick = () => {},
-    changeResource,
-    isNew,
-    btnProps = {},
-    hide,
-    selectedStyle,
-    statusTypes
-}) {
-    const mapLayer = layer?.extendedParams?.mapLayer;
-    if (hide
-    || status !== statusTypes?.LAYER
-    || !mapLayer?.dataset
-    || mapLayer?.dataset?.sourcetype === SOURCE_TYPES.REMOTE
-    || !changeResource
-    || isNew
-    || !isDefaultDatasetSubtype(mapLayer?.dataset?.subtype)) {
-        return null;
-    }
-
-    function handleClick(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        onClick(layer, { style: selectedStyle });
-    }
-    function handleMouseDown(event) {
-        event.stopPropagation();
-        event.preventDefault();
-    }
-
-    return (
-        <Button
-            variant="primary"
-            className="square-button-md"
-            {...btnProps}
-            onClick={handleClick}
-            onMouseDown={handleMouseDown}
-            tooltipId={<Message msgId={`gnviewer.editLayerStyle`} />}
-        >
-            <Glyphicon glyph="dropper"/>
-        </Button>
-    );
-}
-
-const ConnectedStyleEditorTocButton = connect(createSelector([
-    getUpdatedLayer,
-    getResourcePerms,
-    isNewResource
-], (layer, perms, newMap) => ({
-    layer,
-    changeResource: !!perms?.includes('change_resourcebase'),
-    isNew: newMap
-})), {
-    onClick: requestDatasetAvailableStyles
-})(StyleEditorTocButton);
-
 export default createPlugin('VisualStyleEditor', {
     component: VisualStyleEditorPlugin,
-    containers: {
-        TOC: {
-            target: 'toolbar',
-            Component: ConnectedStyleEditorTocButton,
-            position: 100
-        }
-    },
+    containers: {},
     reducers: {
         styleeditor
     },

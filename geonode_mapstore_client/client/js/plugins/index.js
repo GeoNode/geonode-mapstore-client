@@ -414,10 +414,6 @@ export const plugins = {
         'DatasetsCatalog',
         () => import(/* webpackChunkName: 'plugins/dataset-catalog' */ '@js/plugins/DatasetsCatalog')
     ),
-    LayerSettingsPlugin: toModulePlugin(
-        'LayerSettings',
-        () => import(/* webpackChunkName: 'plugins/layer-settings' */ '@js/plugins/LayerSettings')
-    ),
     SyncPlugin: toModulePlugin(
         'Sync',
         () => import(/* webpackChunkName: 'plugins/sync-plugin' */ '@js/plugins/Sync')
