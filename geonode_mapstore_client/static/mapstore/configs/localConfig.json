@@ -87,10 +87,6 @@
         {
             "name": "gnResourceSelectedLayerDataset",
             "path": "gnresource.selectedLayerDataset"
-        },
-        {
-            "name": "selectedLayer",
-            "path": "gnresource.selectedLayer"
         }
     ],
     "projectionDefs": [],
@@ -2288,18 +2284,11 @@
                 }
             },
             {
-                "name": "LayerSettings",
-                "mandatory": true,
-                "cfg": {
-                    "disablePluginIf": "{context.hasDefaultSettings(state('selectedLayer'))}"
-                }
-            },
-            {
                 "name": "TOCItemsSettings",
                 "mandatory": true,
                 "cfg": {
-                    "disablePluginIf": "{!context.hasDefaultSettings(state('selectedLayer'))}"
-                }
+                    "enableIFrameModule": true
+                }  
             },
             {
                 "name": "Widgets"
@@ -2358,32 +2347,8 @@
                 "mandatory": true,
                 "name": "DatasetsCatalog"
             },
-            {
-                "name": "VisualStyleEditor",
-                "cfg": {
-                    "showLayerProperties": true,
-                    "styleService": {
-                        "baseUrl": "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}",
-                        "formats": [
-                            "css",
-                            "sld"
-                        ],
-                        "availableUrls": [
-                            "{state('settings') && state('settings').geoserverUrl || '/geoserver/'}",
-                            "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}"
-                        ],
-                        "fonts": [
-                            "Arial",
-                            "Courier New",
-                            "Monospaced",
-                            "SansSerif",
-                            "Serif",
-                            "Times New Roman"
-                        ]
-                    },
-                    "editingAllowedRoles": null,
-                    "enableSetDefaultStyle": true
-                }
+            { 
+                "name": "StyleEditor"
             },
             {
                 "name": "SidebarMenu"

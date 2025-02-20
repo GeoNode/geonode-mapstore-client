@@ -520,12 +520,9 @@ export function getGeoNodeMapLayers(data) {
                 ...(layer?.extendedParams?.mapLayer && {
                     pk: layer.extendedParams.mapLayer.pk
                 }),
+                current_style: layer.style || '',
                 extra_params: {
-                    msId: layer.id,
-                    ...(layer?.availableStyles && {
-                        styles: cleanStyles(layer?.availableStyles)
-                            .map(({ canEdit, metadata, ...style }) => ({ ...style }))
-                    })
+                    msId: layer.id
                 },
                 ...(layer.type === 'wms' && { current_style: layer.style || '' }),
                 name: layer.name || '',
@@ -573,16 +570,11 @@ export function toMapStoreMapConfig(resource, baseConfig) {
         .map((layer) => {
             const mapLayer = maplayers.find(mLayer => layer.id !== undefined && mLayer?.extra_params?.msId === layer.id);
             if (mapLayer) {
-                const mapLayerDatasetStyles = layer.type === 'wms' ? cleanStyles([
-                    ...(mapLayer?.dataset?.defaul_style ? [mapLayer.dataset.defaul_style] : []),
-                    ...(mapLayer?.dataset?.styles || [])
-                ]).map(({ name }) => name) : [];
-                const template = mapLayer?.dataset?.featureinfo_custom_template || '';
+                const template = layer?.featureInfo?.template ?? mapLayer?.dataset?.featureinfo_custom_template ?? '';
                 return {
                     ...layer,
                     ...(layer.type === 'wms' && {
-                        style: mapLayer.current_style || layer.style || '',
-                        availableStyles: cleanStyles(mapLayer?.extra_params?.styles || [], mapLayerDatasetStyles)
+                        style: mapLayer.current_style || layer.style || ''
                     }),
                     featureInfo: {
                         ...layer?.featureInfo,

@@ -135,8 +135,7 @@ describe('Test Resource Utils', () => {
         expect(mapLayers[0]).toEqual({
             pk: 10,
             extra_params: {
-                msId: '03',
-                styles: [{ name: 'custom:style', title: 'My Style', format: 'css' }]
+                msId: '03'
             },
             current_style: 'geonode:style',
             name: 'geonode:layer',
@@ -248,7 +247,6 @@ describe('Test Resource Utils', () => {
                                     }
                                 }
                             },
-                            availableStyles: [],
                             featureInfo: { template: '', format: undefined }
                         }
                     ]
@@ -327,7 +325,6 @@ describe('Test Resource Utils', () => {
                                     }
                                 }
                             },
-                            availableStyles: [],
                             featureInfo: { template: '', format: FEATURE_INFO_FORMAT }
                         }
                     ]
@@ -417,7 +414,6 @@ describe('Test Resource Utils', () => {
                                     }
                                 }
                             },
-                            availableStyles: [],
                             featureInfo: { template: '', format: undefined }
                         }
                     ]
@@ -427,7 +423,7 @@ describe('Test Resource Utils', () => {
     });
 
     it('transform a resource to a mapstore map config with featureinfo template', () => {
-        const template = '<div>Test</div>';
+        const template = '<div>LAYER<div/>';
         const resource = {
             maplayers: [
                 {
@@ -438,7 +434,7 @@ describe('Test Resource Utils', () => {
                     },
                     dataset: {
                         pk: 1,
-                        featureinfo_custom_template: template
+                        featureinfo_custom_template: '<div>Test</div>'
                     }
                 }
             ],
@@ -457,7 +453,7 @@ describe('Test Resource Utils', () => {
                                 }
                             },
                             featureInfo: {
-                                template: ""
+                                template
                             }
                         }
                     ]
