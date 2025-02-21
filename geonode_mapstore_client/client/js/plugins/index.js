@@ -78,7 +78,8 @@ export const plugins = {
                     TOC: {
                         name: 'LayerDownload',
                         target: 'toolbar',
-                        Component: LayerDownloadActionButton
+                        Component: LayerDownloadActionButton,
+                        position: 11
                     },
                     ActionNavbar: {
                         name: 'LayerDownload',

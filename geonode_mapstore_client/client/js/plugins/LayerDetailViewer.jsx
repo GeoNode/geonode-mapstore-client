@@ -151,7 +151,8 @@ export default createPlugin('LayerDetailViewer', {
         TOC: {
             target: 'toolbar',
             name: 'LayerDetailViewerButton',
-            Component: ConnectedButton
+            Component: ConnectedButton,
+            position: 12
         }
     },
     reducers: {
