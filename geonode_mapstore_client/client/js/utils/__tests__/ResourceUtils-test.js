@@ -246,15 +246,14 @@ describe('Test Resource Utils', () => {
                                         pk: 1
                                     }
                                 }
-                            },
-                            featureInfo: { template: '', format: undefined }
+                            }
                         }
                     ]
                 }
             }
         );
     });
-    it('should transform a resource to a mapstore map config', () => {
+    it('should transform a resource to a mapstore map config, with featureInfo', () => {
         const resource = {
             maplayers: [
                 {
@@ -285,6 +284,7 @@ describe('Test Resource Utils', () => {
                                 }
                             },
                             featureInfo: {
+                                template: "<div>test</div>",
                                 format: FEATURE_INFO_FORMAT
                             }
                         }
@@ -325,7 +325,7 @@ describe('Test Resource Utils', () => {
                                     }
                                 }
                             },
-                            featureInfo: { template: '', format: FEATURE_INFO_FORMAT }
+                            featureInfo: { template: "<div>test</div>", format: FEATURE_INFO_FORMAT }
                         }
                     ]
                 }
@@ -413,8 +413,7 @@ describe('Test Resource Utils', () => {
                                         pk: 1
                                     }
                                 }
-                            },
-                            featureInfo: { template: '', format: undefined }
+                            }
                         }
                     ]
                 }
@@ -453,7 +452,8 @@ describe('Test Resource Utils', () => {
                                 }
                             },
                             featureInfo: {
-                                template
+                                template,
+                                format: FEATURE_INFO_FORMAT
                             }
                         }
                     ]

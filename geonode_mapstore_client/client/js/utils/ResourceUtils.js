@@ -570,17 +570,11 @@ export function toMapStoreMapConfig(resource, baseConfig) {
         .map((layer) => {
             const mapLayer = maplayers.find(mLayer => layer.id !== undefined && mLayer?.extra_params?.msId === layer.id);
             if (mapLayer) {
-                const template = layer?.featureInfo?.template ?? mapLayer?.dataset?.featureinfo_custom_template ?? '';
                 return {
                     ...layer,
                     ...(layer.type === 'wms' && {
                         style: mapLayer.current_style || layer.style || ''
                     }),
-                    featureInfo: {
-                        ...layer?.featureInfo,
-                        format: layer?.featureInfo?.format ?? (template ? FEATURE_INFO_FORMAT : undefined),
-                        template
-                    },
                     extendedParams: {
                         ...layer.extendedParams,
                         mapLayer
