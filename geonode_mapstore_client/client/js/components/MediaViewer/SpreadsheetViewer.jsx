@@ -34,7 +34,7 @@ const VirtualizedGrid = ({data}) => {
     );
 };
 
-export const SpreadsheetViewer = ({extension, title, description, src, url}) => {
+export const SpreadsheetViewer = ({extension, src, url}) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -89,8 +89,6 @@ export const SpreadsheetViewer = ({extension, title, description, src, url}) => 
     return data?.length > 0 ? (
         <div className="gn-csv-viewer">
             <div className="csv-container">
-                <span className="title">{title}</span>
-                <span className="description">{description}</span>
                 <VirtualizedGrid data={data}/>
             </div>
         </div>
