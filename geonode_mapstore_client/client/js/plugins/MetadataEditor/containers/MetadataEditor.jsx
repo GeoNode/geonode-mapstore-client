@@ -109,7 +109,8 @@ function MetadataEditor({
                     readonly={readOnly}
                     ref={initialize.current}
                     formContext={{
-                        title: metadata?.title
+                        title: metadata?.title,
+                        metadata
                     }}
                     schema={schema}
                     widgets={widgets}

@@ -13,17 +13,28 @@ import {
     getEndpointUrl
 } from './constants';
 import { isObject, isArray, castArray } from 'lodash';
+const uiKeys = (entry) => Object.keys(entry).filter(propertyKey => propertyKey.indexOf('ui:') === 0);
 
 const parseUiSchema = (properties) => {
     return Object.keys(properties).reduce((acc, key) => {
         const entry = properties[key];
-        const uiKeys = Object.keys(entry).filter(propertyKey => propertyKey.indexOf('ui:') === 0);
-        if (uiKeys.length) {
-            acc[key] = Object.fromEntries(uiKeys.map(uiKey => [uiKey, entry[uiKey]]));
+        const uiKeysRoot = uiKeys(entry);
+        if (uiKeysRoot.length) {
+            acc[key] = Object.fromEntries(uiKeysRoot.map(uiKey => [uiKey, entry[uiKey]]));
+        }
+        if (entry.type === 'array') {
+            const uiKeysNested = uiKeys(entry?.items);
+            if (uiKeysNested.length) {
+                acc[key] = Object.fromEntries(uiKeysNested.map(uiKey => [uiKey, entry?.items?.[uiKey]]));
+            }
         }
         if (entry.type === 'object') {
             const nestedProperties = parseUiSchema(entry?.properties);
             acc[key] = { ...acc[key], ...nestedProperties };
+        }
+        if (entry.type === 'array' && entry.items?.type === 'object') {
+            const nestedProperties = parseUiSchema(entry?.items?.properties);
+            acc[key] = { ...acc[key], items: {...nestedProperties} };
         }
         return acc;
     }, {});
@@ -36,7 +47,58 @@ export const getMetadataSchema = () => {
     }
     return axios.get(getEndpointUrl(METADATA, '/schema/'))
         .then(({ data }) => {
-            const schema = data;
+            // TODO test nested schema
+            const test = {
+                "cnr_sites": {
+                    "type": "array",
+                    "title": "Test nested schema",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "site": {
+                                "title": "site",
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "label": {
+                                        "type": "string"
+                                    }
+                                },
+                                "ui:options": {
+                                    "geonode-ui:autocomplete": "/api/v2/metadata/autocomplete/categories"
+                                }
+                            },
+                            "locations": {
+                                "title": "locations",
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                    "type": "object",
+                                    "title": "cnr_location",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "ui:options": {
+                                        "geonode-ui:refvalue": "cnr_sites.[${index}].site.id",
+                                        "geoode-ui:refkey": "id",
+                                        "geonode-ui:autocomplete": "/api/v2/metadata/autocomplete/categories?q=${id}"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "geonode:handler": "sparse"
+                }
+            };
+            const schema = {...data, properties: {...data.properties, ...test}};
             metadataSchemas = {
                 schema: schema,
                 uiSchema: parseUiSchema(schema?.properties || {})

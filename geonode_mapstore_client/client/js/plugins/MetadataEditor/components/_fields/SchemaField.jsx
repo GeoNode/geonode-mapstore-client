@@ -13,6 +13,7 @@ import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
 import Autocomplete from '../Autocomplete';
 import DefaultSchemaField from '@rjsf/core/lib/components/fields/SchemaField';
+import { get, template } from 'lodash';
 
 function findProperty(name, properties) {
     return Object.keys(properties || {}).some((key) => {
@@ -48,7 +49,8 @@ const SchemaField = (props) => {
         name,
         errorSchema,
         uiSchema,
-        required
+        required,
+        formContext
     } = props;
     const uiOptions = uiSchema?.['ui:options'];
     const autocomplete = uiOptions?.['geonode-ui:autocomplete'];
@@ -58,6 +60,13 @@ const SchemaField = (props) => {
         (isSchemaItemObject && !isEmpty(schema?.items?.properties))
     );
     const isSingleSelect = schema?.type === 'object' && !isEmpty(schema?.properties);
+
+    // Extract index from the ID schema
+    const match = idSchema.$id.match(/_(\d+)(_|$)/);
+    const index = match ? parseInt(match[1], 10) : null;
+    const refValue = uiOptions?.['geonode-ui:refvalue'];
+    const refKey = uiOptions?.['geonode-ui:refkey'];
+    const referenceValue = refValue ? get(formContext, `metadata.${template(refValue)({'index': index})}`) : null;
 
     if (autocomplete && (isMultiSelect || isSingleSelect)) {
         const {
@@ -87,7 +96,10 @@ const SchemaField = (props) => {
         const autocompleteOptions = isString(autocomplete)
             ? { url: autocomplete }
             : autocomplete;
-        const autocompleteUrl = autocompleteOptions?.url;
+        let autocompleteUrl = autocompleteOptions?.url;
+        if (referenceValue) {
+            autocompleteUrl = template(autocompleteUrl)({[refKey ?? 'id']: referenceValue });
+        }
         const queryKey = autocompleteOptions?.queryKey || 'q';
         const resultsKey = autocompleteOptions?.resultsKey || 'results';
         const valueKey = autocompleteOptions?.valueKey || 'id';
