@@ -16,6 +16,7 @@ import isObject from 'lodash/isObject';
 import isArray from 'lodash/isArray';
 import castArray from 'lodash/castArray';
 import isEmpty from 'lodash/isEmpty';
+
 const uiKeys = (entry) => Object.keys(entry).filter(propertyKey => propertyKey.indexOf('ui:') === 0);
 
 const parseUiSchema = (properties) => {
@@ -50,7 +51,7 @@ export const getMetadataSchema = () => {
     }
     return axios.get(getEndpointUrl(METADATA, '/schema/'))
         .then(({ data }) => {
-            // TODO test nested schema
+            // TODO remove Sample test nested schema with depedency reference
             const test = {
                 "cnr_sites": {
                     "type": "array",
