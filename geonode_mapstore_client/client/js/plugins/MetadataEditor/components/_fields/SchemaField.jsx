@@ -60,22 +60,22 @@ const SchemaField = (props) => {
         (isSchemaItemObject && !isEmpty(schema?.items?.properties))
     );
     const isSingleSelect = schema?.type === 'object' && !isEmpty(schema?.properties);
-    const refValue = uiOptions?.['geonode-ui:refvalue'];
-    const refKey = uiOptions?.['geonode-ui:refkey'];
+    const referenceValuePath = uiOptions?.['geonode-ui:referencevalue'];
+    const referenceKey = uiOptions?.['geonode-ui:referencekey'];
 
     // Extract index from the ID schema
     const match = idSchema.$id.match(/_(\d+)(_|$)/);
     const index = match ? parseInt(match[1], 10) : null;
-    const referenceValue = refValue ? get(formContext, `metadata.${template(refValue)({'index': index})}`) : null;
+    const referenceValue = referenceValuePath ? get(formContext, `metadata.${template(referenceValuePath)({'index': index})}`) : null;
     const prevReferenceValue = useRef(null);
 
     useEffect(()=> {
         // to reset the form data when the reference value changes
         // i.e when the parent field changes
-        if (refValue && referenceValue !== prevReferenceValue.current?.[name]) {
+        if (referenceValuePath && referenceValue !== prevReferenceValue.current?.[name]) {
             onChange(isMultiSelect ? [] : {});
         }
-    }, [refValue, referenceValue]);
+    }, [referenceValuePath, referenceValue]);
 
     if (autocomplete && (isMultiSelect || isSingleSelect)) {
         const {
@@ -107,7 +107,7 @@ const SchemaField = (props) => {
             : autocomplete;
         let autocompleteUrl = autocompleteOptions?.url;
         if (referenceValue) {
-            autocompleteUrl = template(autocompleteUrl)({[refKey ?? 'id']: referenceValue });
+            autocompleteUrl = template(autocompleteUrl)({[referenceKey ?? 'id']: referenceValue });
         }
         const queryKey = autocompleteOptions?.queryKey || 'q';
         const resultsKey = autocompleteOptions?.resultsKey || 'results';
@@ -154,7 +154,7 @@ const SchemaField = (props) => {
                 return onChange(_selected);
             },
             loadOptions: ({ q, config, ...params }) => {
-                if (refValue) {
+                if (referenceValuePath) {
                 // store the new reference value
                     prevReferenceValue.current = {...prevReferenceValue.current, [name]: referenceValue};
                 }

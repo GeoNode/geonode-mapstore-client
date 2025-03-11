@@ -12,7 +12,10 @@ import {
     RESOURCES,
     getEndpointUrl
 } from './constants';
-import { isObject, isArray, castArray } from 'lodash';
+import isObject from 'lodash/isObject';
+import isArray from 'lodash/isArray';
+import castArray from 'lodash/castArray';
+import isEmpty from 'lodash/isEmpty';
 const uiKeys = (entry) => Object.keys(entry).filter(propertyKey => propertyKey.indexOf('ui:') === 0);
 
 const parseUiSchema = (properties) => {
@@ -34,7 +37,7 @@ const parseUiSchema = (properties) => {
         }
         if (entry.type === 'array' && entry.items?.type === 'object') {
             const nestedProperties = parseUiSchema(entry?.items?.properties);
-            acc[key] = { ...acc[key], items: {...nestedProperties} };
+            acc[key] = { ...acc[key], ...(!isEmpty(nestedProperties) && {items: {...nestedProperties}}) };
         }
         return acc;
     }, {});
@@ -87,8 +90,8 @@ export const getMetadataSchema = () => {
                                         }
                                     },
                                     "ui:options": {
-                                        "geonode-ui:refvalue": "cnr_sites.[${index}].site.id",
-                                        "geoode-ui:refkey": "id",
+                                        "geonode-ui:referencevalue": "cnr_sites.[${index}].site.id",
+                                        "geoode-ui:referencekey": "id",
                                         "geonode-ui:autocomplete": "/api/v2/metadata/autocomplete/categories?q=${id}"
                                     }
                                 }
