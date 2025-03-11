@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import axios from '@mapstore/framework/libs/ajax';
 import castArray from 'lodash/castArray';
 import isEmpty from 'lodash/isEmpty';
@@ -60,13 +60,22 @@ const SchemaField = (props) => {
         (isSchemaItemObject && !isEmpty(schema?.items?.properties))
     );
     const isSingleSelect = schema?.type === 'object' && !isEmpty(schema?.properties);
+    const refValue = uiOptions?.['geonode-ui:refvalue'];
+    const refKey = uiOptions?.['geonode-ui:refkey'];
 
     // Extract index from the ID schema
     const match = idSchema.$id.match(/_(\d+)(_|$)/);
     const index = match ? parseInt(match[1], 10) : null;
-    const refValue = uiOptions?.['geonode-ui:refvalue'];
-    const refKey = uiOptions?.['geonode-ui:refkey'];
     const referenceValue = refValue ? get(formContext, `metadata.${template(refValue)({'index': index})}`) : null;
+    const prevReferenceValue = useRef(null);
+
+    useEffect(()=> {
+        // to reset the form data when the reference value changes
+        // i.e when the parent field changes
+        if (refValue && referenceValue !== prevReferenceValue.current?.[name]) {
+            onChange(isMultiSelect ? [] : {});
+        }
+    }, [refValue, referenceValue]);
 
     if (autocomplete && (isMultiSelect || isSingleSelect)) {
         const {
@@ -145,6 +154,10 @@ const SchemaField = (props) => {
                 return onChange(_selected);
             },
             loadOptions: ({ q, config, ...params }) => {
+                if (refValue) {
+                // store the new reference value
+                    prevReferenceValue.current = {...prevReferenceValue.current, [name]: referenceValue};
+                }
                 return axios.get(autocompleteUrl, {
                     ...config,
                     params: {
