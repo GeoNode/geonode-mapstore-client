@@ -11,9 +11,10 @@ import axios from '@mapstore/framework/libs/ajax';
 import castArray from 'lodash/castArray';
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
+import get from 'lodash/get';
+import template from 'lodash/template';
 import Autocomplete from '../Autocomplete';
 import DefaultSchemaField from '@rjsf/core/lib/components/fields/SchemaField';
-import { get, template } from 'lodash';
 
 function findProperty(name, properties) {
     return Object.keys(properties || {}).some((key) => {
