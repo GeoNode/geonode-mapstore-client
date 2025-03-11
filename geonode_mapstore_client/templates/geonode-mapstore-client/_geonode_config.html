@@ -162,17 +162,17 @@
                 useAuthenticationRules: true,
                 authenticationRules: [
                     {
-                        urlPattern: '.*geoserver.*',
+                        urlPattern: geoServerPublicLocation + '.*',
                         authkeyParamName: 'access_token',
                         method: 'authkey'
                     },
                     {
-                        urlPattern: '.*gs.*',
+                        urlPattern: siteUrl + 'gs.*',
                         authkeyParamName: 'access_token',
                         method: 'authkey'
                     },
                     {
-                        urlPattern: '.*api/v2.*',
+                        urlPattern: siteUrl + 'api/v2.*',
                         method: 'bearer'
                     }
                 ],
