@@ -51,58 +51,7 @@ export const getMetadataSchema = () => {
     }
     return axios.get(getEndpointUrl(METADATA, '/schema/'))
         .then(({ data }) => {
-            // TODO remove Sample test nested schema with depedency reference
-            const test = {
-                "cnr_sites": {
-                    "type": "array",
-                    "title": "Test nested schema",
-                    "minItems": 1,
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "site": {
-                                "title": "site",
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type": "string"
-                                    },
-                                    "label": {
-                                        "type": "string"
-                                    }
-                                },
-                                "ui:options": {
-                                    "geonode-ui:autocomplete": "/api/v2/metadata/autocomplete/categories"
-                                }
-                            },
-                            "locations": {
-                                "title": "locations",
-                                "type": "array",
-                                "minItems": 1,
-                                "items": {
-                                    "type": "object",
-                                    "title": "cnr_location",
-                                    "properties": {
-                                        "id": {
-                                            "type": "string"
-                                        },
-                                        "label": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "ui:options": {
-                                        "geonode-ui:referencevalue": "cnr_sites.[${index}].site.id",
-                                        "geoode-ui:referencekey": "id",
-                                        "geonode-ui:autocomplete": "/api/v2/metadata/autocomplete/categories?q=${id}"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "geonode:handler": "sparse"
-                }
-            };
-            const schema = {...data, properties: {...data.properties, ...test}};
+            const schema = data;
             metadataSchemas = {
                 schema: schema,
                 uiSchema: parseUiSchema(schema?.properties || {})
