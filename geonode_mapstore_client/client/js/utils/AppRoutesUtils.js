@@ -112,9 +112,9 @@ export const CATALOGUE_ROUTES = [
         shouldNotRequestResources: true
     },
     {
-        name: 'dataset_edit_style_viewer',
+        name: 'dataset_edit_layer_settings',
         path: [
-            '/dataset/:pk/edit/style'
+            '/dataset/:pk/edit/settings'
         ],
         pageConfig: {
             resourceType: ResourceTypes.DATASET

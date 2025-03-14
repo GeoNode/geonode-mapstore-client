@@ -250,7 +250,8 @@ def run_setup_hooks(*args, **kwargs):
             "ptype",
             "store",
             "has_time",
-            "attribute_set"
+            "attribute_set",
+            "data"
         ]
     }
     settings.PROXY_ALLOWED_PARAMS_NEEDLES += (

@@ -25,12 +25,6 @@
                 "emptyList": "Nessun risultato per questa richiesta. Prova a cambiare il filtro o selezionare un altro servizio nel selettore in alto a destra."
             }
         },
-        "plugins": {
-            "VisualStyleEditor": {
-                "description": "Editor di stile del set di dati",
-                "title": "Editor dello stile visivo"
-            }
-        },
         "gnhome": {
             "description": "<h1>GeoNode</h1><p>condivisione di dati geospaziali e mappe.</p>",
             "orderBy": "Ordinato da",
@@ -468,7 +462,13 @@
             "filterMetadata": "Filtra per nome...",
             "noMetadataFound": "Nessun metadato trovato...",
             "metadataGroupTitle": "Generale",
-            "noGridData": "Nessun dato da visualizzare"
+            "noGridData": "Nessun dato da visualizzare",
+            "layerSettings": {
+                "title": "Impostazioni del layer",
+                "updateSuccess": "Impostazioni del layer aggiornate",
+                "updateError": "Errore nel salvataggio delle impostazioni del layer"
+            },
+            "apply": "Applica"
         }
     }
 }

@@ -53,6 +53,23 @@ describe('Test Resource Utils', () => {
         });
         expect(newLayer.params).toEqual({ map: 'name', map_resolution: '91' });
     });
+    it('test resourceToLayerConfig with layer settings of the dataset', () => {
+        const newLayer = resourceToLayerConfig({
+            alternate: 'geonode:layer_name',
+            links: [{
+                extension: 'html',
+                link_type: 'OGC:WMS',
+                name: 'OGC WMS Service',
+                mime: 'text/html',
+                url: 'http://localhost:8080/geoserver/wms?map=name&map_resolution=91'
+            }],
+            title: 'Layer title',
+            perms: [],
+            pk: 1,
+            data: {opacity: 0.8}
+        });
+        expect(newLayer.opacity).toBe(0.8);
+    });
 
     it('should parse arcgis dataset', () => {
         const newLayer = resourceToLayerConfig({

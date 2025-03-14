@@ -143,7 +143,8 @@ export const resourceToLayerConfig = (resource) => {
         default_style: defaultStyle,
         ptype,
         subtype,
-        sourcetype
+        sourcetype,
+        data: layerSettings
     } = resource;
 
     const bbox = getExtentFromResource(resource);
@@ -239,7 +240,8 @@ export const resourceToLayerConfig = (resource) => {
             ...(fields && { fields }),
             ...(sourcetype === SOURCE_TYPES.REMOTE && !wmsUrl.includes('/geoserver/') && {
                 serverType: ServerTypes.NO_VENDOR
-            })
+            }),
+            ...layerSettings
         };
     }
 };

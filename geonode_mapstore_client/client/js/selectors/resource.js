@@ -24,7 +24,9 @@ import isEqual from 'lodash/isEqual';
 import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
+import omitBy from 'lodash/omitBy';
 import { generateContextResource } from '@mapstore/framework/selectors/contextcreator';
+import { layerSettingSelector, getSelectedLayer as getSelectedNode } from '@mapstore/framework/selectors/layers';
 
 const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys(RESOURCE_MANAGEMENT_PROPERTIES);
 
@@ -353,4 +355,36 @@ export const getGeoNodeResourceFromDashboard = (state) => get(originalDataSelect
 
 export const defaultViewerPluginsSelector = (state) => {
     return state?.gnresource?.defaultViewerPlugins ?? [];
+};
+
+const compareObjects = (obj1, obj2) => {
+    if (!isEmpty(obj1) && !isEmpty(obj2)) {
+        return Object.keys(obj1).some((key) => {
+            const val1 = obj1[key];
+            const val2 = obj2?.[key];
+            if (typeof val1 === 'boolean') return val1 !== (val2 ?? false);
+            if (typeof val1 === 'number') return val1 !== (val2 ?? 0);
+            if (isEmpty(val1) && isEmpty(val2)) return false;
+            return !isEqual(obj2?.[key], obj1[key]);
+        });
+    }
+    return false;
+};
+
+export const getLayerSettingsDirtyState = (state) => {
+    let { layerSettings: layerSettingsInitial } = getResourceData(state) || {};
+    let currentLayerSettings = layerSettingSelector(state)?.options ?? {};
+    const selectedLayer = getSelectedNode(state);
+    const resourceSelectedLayerInitialState = getSelectedLayer(state);
+
+    currentLayerSettings = omitBy(currentLayerSettings,
+        (value, key) => key === "opacity" && value === 1); // skip default value
+    layerSettingsInitial = {...resourceSelectedLayerInitialState, ...layerSettingsInitial};
+
+    const isSettingsChanged = compareObjects(currentLayerSettings, layerSettingsInitial);
+    const isAttributesChanged = !isEmpty(layerSettingsInitial)
+        && !isEmpty(selectedLayer)
+        && !isEqual(layerSettingsInitial?.fields, selectedLayer.fields);
+
+    return isSettingsChanged || isAttributesChanged;
 };

@@ -14,9 +14,11 @@ import {
     gnViewerSetNewResourceThumbnail,
     closeInfoPanelOnMapClick,
     closeDatasetCatalogPanel,
-    gnZoomToFitBounds
+    gnZoomToFitBounds,
+    gnUpdateLayerSettings
 } from '@js/epics/gnresource';
 import {
+    applyLayerSettings,
     setResourceThumbnail,
     UPDATE_RESOURCE_PROPERTIES,
     UPDATE_SINGLE_RESOURCE
@@ -195,5 +197,85 @@ describe('gnresource epics', () => {
             testState
         );
 
+    });
+    it('gnUpdateLayerSettings when update results in error', (done) => {
+        const NUM_ACTIONS = 4;
+        const testState = {};
+        testEpic(gnUpdateLayerSettings,
+            NUM_ACTIONS,
+            applyLayerSettings(),
+            (actions) => {
+                try {
+                    expect(actions.length).toBe(4);
+                    expect(actions.map(({ type }) => type))
+                        .toEqual([
+                            'GEONODE:SAVING_RESOURCE',
+                            'SHOW_NOTIFICATION',
+                            'GEONODE:SAVE_ERROR',
+                            'GEONODE:SAVE_SUCCESS' // loading ends
+                        ]);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            testState
+        );
+    });
+    it('gnUpdateLayerSettings when update results in success', (done) => {
+        const NUM_ACTIONS = 4;
+        const testState = {
+            gnresource: {
+                id: 1,
+                data: {
+                    layerSettings: {
+                        opacity: 0.9
+                    }
+                }
+            },
+            layers: {
+                flat: [{
+                    id: 'layer001',
+                    name: 'layer001',
+                    settings: {
+                        opacity: 0.8
+                    },
+                    pk: "1"
+                }],
+                settings: {
+                    node: 'layer001',
+                    opacity: 0.8
+                }
+            }
+        };
+        mockAxios.onPatch(new RegExp(`/api/v2/datasets/1`))
+            .reply(() => [200, {
+                dataset: {
+                    data: {
+                        opacity: 0.8
+                    }
+                }
+            }]);
+        testEpic(gnUpdateLayerSettings,
+            NUM_ACTIONS,
+            applyLayerSettings(),
+            (actions) => {
+                try {
+                    expect(actions.length).toBe(4);
+                    expect(actions.map(({ type }) => type))
+                        .toEqual([
+                            'GEONODE:SAVING_RESOURCE',
+                            'GEONODE:UPDATE_RESOURCE_PROPERTIES',
+                            'SHOW_NOTIFICATION',
+                            'GEONODE:SAVE_SUCCESS'
+                        ]);
+                    expect(actions[1].properties).toEqual({ layerSettings: { opacity: 0.8 } });
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            testState
+        );
     });
 });

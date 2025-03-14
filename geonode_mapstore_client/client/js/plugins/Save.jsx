@@ -24,11 +24,13 @@ import { saveDirectContent } from '@js/actions/gnsave';
 import {
     isNewResource,
     canEditResource,
-    getResourceDirtyState
+    getResourceDirtyState,
+    getLayerSettingsDirtyState
 } from '@js/selectors/resource';
 import { getCurrentResourcePermissionsLoading } from '@js/selectors/resourceservice';
 import { withRouter } from 'react-router';
 import withPrompt from '@js/plugins/save/withPrompt';
+import { applyLayerSettings } from '@js/actions/gnresource';
 
 function Save(props) {
     return props.saving ? (<div
@@ -54,7 +56,8 @@ function SaveButton({
     size,
     loading,
     className,
-    dirtyState: dirtyStateProp
+    dirtyState: dirtyStateProp,
+    saveMsgId = "gnviewer.save"
 }) {
     return (
         <Button
@@ -64,7 +67,7 @@ function SaveButton({
             disabled={loading}
             className={className}
         >
-            <Message msgId="save"/>{' '}{loading && <Spinner />}
+            <Message msgId={saveMsgId}/>{' '}{loading && <Spinner />}
         </Button>
     );
 }
@@ -90,13 +93,34 @@ const ConnectedSaveButton = connect(
     }
 )((withRouter(withPrompt(SaveButton))));
 
+const ConnectedApplyButton = connect(
+    createSelector(
+        state => state?.gnsave?.saving,
+        state => getLayerSettingsDirtyState(state),
+        (loading, dirtyState) => ({
+            loading,
+            dirtyState,
+            saveMsgId: "gnviewer.apply",
+            className: 'gn-apply-settings'
+        })
+    ),
+    {
+        onClick: applyLayerSettings
+    }
+)(SaveButton);
+
 export default createPlugin('Save', {
     component: SavePlugin,
     containers: {
-        ActionNavbar: {
-            name: 'Save',
-            Component: ConnectedSaveButton
-        }
+        ActionNavbar: [
+            {
+                name: 'Save',
+                Component: ConnectedSaveButton
+            }, {
+                name: 'ApplyLayerSettings',
+                Component: ConnectedApplyButton
+            }
+        ]
     },
     epics: {
         ...gnsaveEpics
