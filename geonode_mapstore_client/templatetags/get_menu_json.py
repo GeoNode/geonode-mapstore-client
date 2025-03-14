@@ -65,48 +65,15 @@ def get_base_left_topbar_menu():
         }
     ]
 
-
-@register.simple_tag(takes_context=True)
-def get_base_right_topbar_menu(context):
-    is_mobile = _is_mobile_device(context)
-
-    if is_mobile:
-        return []
-
-    about = {
-        "label": "About",
-        "type": "dropdown",
-        "items": [
-            {"type": "link", "href": "/people/", "label": "People"},
-            {"type": "link", "href": "/groups/", "label": "Groups"},
-        ],
-    }
-
-    user = _get_request_user(context)
-
-    if user and user.is_authenticated and not Configuration.load().read_only:
-        about["items"].extend(
-            [
-                {"type": "divider"},
-                {
-                    "type": "link",
-                    "href": "/invitations/geonode-send-invite/",
-                    "label": "Invite users",
-                },
-                {
-                    "type": "link",
-                    "href": "/admin/people/profile/add/",
-                    "label": "Add user",
-                }
-                if user.is_superuser
-                else None,
-                {"type": "link", "href": "/groups/create/", "label": "Create group"}
-                if user.is_superuser
-                else None,
-            ]
-        )
-    return [about]
-
+@register.simple_tag
+def get_base_right_topbar_menu():
+    return [
+        {
+            "type": "link",
+            "href": "/about",
+            "label": "About",
+        }
+    ]
 
 @register.simple_tag(takes_context=True)
 def get_user_menu(context):
@@ -165,7 +132,23 @@ def get_user_menu(context):
             devider,
         ],
     }
-    general = [{"type": "link", "href": "/help/", "label": "Help"}, devider, logout]
+    
+    people_groups = [
+        {"type": "link", "href": "/people/", "label": "People"},
+        {"type": "link","href": "/admin/people/profile/add/","label": "Add user"},
+        {"type": "link", "href": "/groups/", "label": "Groups"},
+        {"type": "link", "href": "/groups/create/", "label": "Create group"},
+        devider
+    ]
+    
+    general =  (
+        people_groups + [
+            {"type": "link", "href": "/help/", "label": "Help"}, 
+            devider, 
+            logout
+            ]
+    )
+
     monitoring = []
     if settings.MONITORING_ENABLED:
         monitoring = [
