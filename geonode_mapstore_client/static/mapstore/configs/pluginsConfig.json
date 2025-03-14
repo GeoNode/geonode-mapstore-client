@@ -63,14 +63,13 @@
         "FilterLayer",
         "AddGroup",
         "Swipe",
-        "VisualStyleEditor",
         "StyleEditor"
       ],
       "autoEnableChildren": [
         "FeatureEditor",
         "FilterLayer",
         "AddGroup",
-        "VisualStyleEditor"
+        "StyleEditor"
       ],
       "dependencies": [
         "DrawerMenu",
@@ -81,7 +80,10 @@
       "name": "StyleEditor",
       "glyph": "1-stilo",
       "title": "plugins.StyleEditor.title",
-      "description": "plugins.StyleEditor.description"
+      "description": "plugins.StyleEditor.description",
+      "defaultConfig": {
+        "enableEditDefaultStyle": false
+      }
     },
     {
       "name": "VisualStyleEditor",

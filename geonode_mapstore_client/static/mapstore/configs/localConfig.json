@@ -2348,7 +2348,10 @@
                 "name": "DatasetsCatalog"
             },
             { 
-                "name": "StyleEditor"
+                "name": "StyleEditor",
+                "cfg": {
+                    "enableEditDefaultStyle": false
+                }
             },
             {
                 "name": "SidebarMenu"
