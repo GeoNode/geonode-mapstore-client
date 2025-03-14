@@ -6,15 +6,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import axios from '@mapstore/framework/libs/ajax';
 import castArray from 'lodash/castArray';
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
-import get from 'lodash/get';
 import template from 'lodash/template';
 import Autocomplete from '../Autocomplete';
 import DefaultSchemaField from '@rjsf/core/lib/components/fields/SchemaField';
+import useSchemaReference from './useSchemaReference';
 
 function findProperty(name, properties) {
     return Object.keys(properties || {}).some((key) => {
@@ -50,8 +50,7 @@ const SchemaField = (props) => {
         name,
         errorSchema,
         uiSchema,
-        required,
-        formContext
+        required
     } = props;
     const uiOptions = uiSchema?.['ui:options'];
     const autocomplete = uiOptions?.['geonode-ui:autocomplete'];
@@ -61,22 +60,7 @@ const SchemaField = (props) => {
         (isSchemaItemObject && !isEmpty(schema?.items?.properties))
     );
     const isSingleSelect = schema?.type === 'object' && !isEmpty(schema?.properties);
-    const referenceValuePath = uiOptions?.['geonode-ui:referencevalue'];
-    const referenceKey = uiOptions?.['geonode-ui:referencekey'];
-
-    // Extract index from the ID schema
-    const match = idSchema.$id.match(/_(\d+)(_|$)/);
-    const index = match ? parseInt(match[1], 10) : null;
-    const referenceValue = referenceValuePath ? get(formContext, `metadata.${template(referenceValuePath)({'index': index})}`) : null;
-    const prevReferenceValue = useRef(null);
-
-    useEffect(()=> {
-        // to reset the form data when the reference value changes
-        // i.e when the parent field changes
-        if (referenceValuePath && referenceValue !== prevReferenceValue.current?.[name]) {
-            onChange(isMultiSelect ? [] : {});
-        }
-    }, [referenceValuePath, referenceValue]);
+    const { referenceValue, referenceKey } = useSchemaReference({...props, isMultiSelect });
 
     if (autocomplete && (isMultiSelect || isSingleSelect)) {
         const {
@@ -155,10 +139,6 @@ const SchemaField = (props) => {
                 return onChange(_selected);
             },
             loadOptions: ({ q, config, ...params }) => {
-                if (referenceValuePath) {
-                // store the new reference value
-                    prevReferenceValue.current = {...prevReferenceValue.current, [name]: referenceValue};
-                }
                 return axios.get(autocompleteUrl, {
                     ...config,
                     params: {
