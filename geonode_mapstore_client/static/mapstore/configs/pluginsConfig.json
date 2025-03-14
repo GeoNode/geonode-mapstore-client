@@ -86,36 +86,6 @@
       }
     },
     {
-      "name": "VisualStyleEditor",
-      "glyph": "1-stilo",
-      "title": "plugins.VisualStyleEditor.title",
-      "description": "plugins.VisualStyleEditor.description",
-      "defaultConfig": {
-        "showLayerProperties": true,
-        "styleService": {
-            "baseUrl": "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}",
-            "formats": [
-                "css",
-                "sld"
-            ],
-            "availableUrls": [
-                "{state('settings') && state('settings').geoserverUrl || '/geoserver/'}",
-                "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}"
-            ],
-            "fonts": [
-                "Arial",
-                "Courier New",
-                "Monospaced",
-                "SansSerif",
-                "Serif",
-                "Times New Roman"
-            ]
-        },
-        "editingAllowedRoles": null,
-        "enableSetDefaultStyle": true
-      }
-    },
-    {
       "name": "FeatureEditor",
       "glyph": "features-grid",
       "title": "plugins.FeatureEditor.title",

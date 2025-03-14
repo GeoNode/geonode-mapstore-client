@@ -25,12 +25,6 @@
                 "emptyList": "Keine Ergebnisse für diese Anfrage. Versuchen Sie, den Filter zu wechseln oder einen anderen Dienst aus der Eingabe in der oberen rechten Ecke auszuwählen."
             }
         },
-        "plugins": {
-            "VisualStyleEditor": {
-                "description": "Der Stileditor des Datensatzes",
-                "title": "Visueller Stil-Editor"
-            }
-        },
         "gnhome": {
             "description": "<h1>GeoNode</h1><p>Austausch von Geodaten und Karten.</p>",
             "orderBy": "Sortieren nach",
@@ -466,7 +460,13 @@
             "filterMetadata": "Nach Namen filtern...",
             "noMetadataFound": "Keine Metadaten gefunden...",
             "metadataGroupTitle": "Allgemein",
-            "noGridData": "Keine Daten zum Anzeigen"
+            "noGridData": "Keine Daten zum Anzeigen",
+            "layerSettings": {
+                "title": "Layer-Einstellungen",
+                "updateSuccess": "Layer-Einstellungen aktualisiert",
+                "updateError": "Fehler beim Speichern der Layer-Einstellungen"
+            },
+            "apply": "Anwenden"
         }
     }
 }

@@ -61,7 +61,7 @@ describe('Test App Routes Utils', () => {
             datasetSubtypeRoute,
             datasetRoute,
             datasetEditDataRoute,
-            datasetEditStyleRoute,
+            datasetEditLayerSettingsRoute,
             mapRoute,
             geoStoryRoute,
             documentRoute,
@@ -84,9 +84,9 @@ describe('Test App Routes Utils', () => {
         expect(datasetEditDataRoute.path).toEqual(['/dataset/:pk/edit/data']);
         expect(datasetEditDataRoute.name).toEqual('dataset_edit_data_viewer');
         expect(datasetEditDataRoute.shouldNotRequestResources).toEqual(true);
-        expect(datasetEditStyleRoute.path).toEqual(['/dataset/:pk/edit/style']);
-        expect(datasetEditStyleRoute.name).toEqual('dataset_edit_style_viewer');
-        expect(datasetEditStyleRoute.shouldNotRequestResources).toEqual(true);
+        expect(datasetEditLayerSettingsRoute.path).toEqual(['/dataset/:pk/edit/settings']);
+        expect(datasetEditLayerSettingsRoute.name).toEqual('dataset_edit_layer_settings');
+        expect(datasetEditLayerSettingsRoute.shouldNotRequestResources).toEqual(true);
         expect(mapRoute.path).toEqual([ '/map/:pk' ]);
         expect(mapRoute.name).toEqual('map_viewer');
         expect(mapRoute.shouldNotRequestResources).toEqual(true);

@@ -18,7 +18,8 @@ import {
     canEditPermissions,
     canManageResourcePermissions,
     isNewMapViewerResource,
-    defaultViewerPluginsSelector
+    defaultViewerPluginsSelector,
+    getLayerSettingsDirtyState
 } from '../resource';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 
@@ -104,5 +105,103 @@ describe('resource selector', () => {
         expect(defaultViewerPluginsSelector(state)).toEqual(["TOC"]);
         state.gnresource = {...state.gnresource, defaultViewerPlugins: undefined};
         expect(defaultViewerPluginsSelector(state)).toEqual([]);
+    });
+    describe('getLayerSettingsDirtyState', () => {
+        const state = {
+            gnresource: {
+                data: {
+                    layerSettings: {
+                        opacity: 0.8,
+                        style: "test:style"
+                    }
+                }
+            },
+            layers: {
+                selected: ['layer001'],
+                flat: [{
+                    id: 'layer001',
+                    name: 'layer001',
+                    settings: {
+                        opacity: 0.7
+                    }
+                }],
+                settings: {
+                    options: {
+                        opacity: 0.7
+                    }
+                }
+            }
+        };
+        it('should return true when setting is changes', () => {
+            expect(getLayerSettingsDirtyState(state)).toBe(true);
+        });
+        it('should return false when setting is unchanged', () => {
+            const _state = {
+                ...state,
+                layers: {
+                    selected: ['layer001'],
+                    flat: [{
+                        id: 'layer001',
+                        name: 'layer001',
+                        settings: {
+                            opacity: 0.8
+                        }
+                    }],
+                    settings: {
+                        options: {
+                            opacity: 0.8
+                        }
+                    }
+                }
+            };
+            expect(getLayerSettingsDirtyState(_state)).toBe(false);
+        });
+        it('should return true when field is changed', () => {
+            const _state = {
+                ...state,
+                gnresource: {
+                    data: {
+                        layerSettings: {
+                            opacity: 0.8,
+                            style: "test:style",
+                            fields: [{id: 1, label: "test1", value: "test"}]
+                        }
+                    }
+                },
+                layers: {
+                    ...state.layers,
+                    flat: [{
+                        ...state.layers.flat[0],
+                        fields: [{id: 1, label: "test", value: "test"}]
+                    }]
+                }
+            };
+            expect(getLayerSettingsDirtyState(_state)).toBe(true);
+        });
+        it('should return false when field is unchanged', () => {
+            const _state = {
+                gnresource: {
+                    data: {
+                        layerSettings: {
+                            opacity: 0.8,
+                            fields: [{id: 1, label: "test", value: "test"}]
+                        }
+                    }
+                },
+                layers: {
+                    ...state.layers,
+                    flat: [{
+                        ...state.layers.flat[0],
+                        fields: [{id: 1, label: "test", value: "test"}]
+                    }],
+                    settings: {
+                        options: {
+                            opacity: 0.8
+                        }
+                    }
+                }
+            };
+            expect(getLayerSettingsDirtyState(_state)).toBe(false);
+        });
     });
 });

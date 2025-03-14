@@ -11,6 +11,7 @@ import axios from '@mapstore/framework/libs/ajax';
 import uuid from "uuid";
 import url from "url";
 import get from 'lodash/get';
+import pick from 'lodash/pick';
 import {
     getNewMapConfiguration,
     getNewGeoStoryConfig,
@@ -26,16 +27,18 @@ import {
     setResourceThumbnail,
     setLinkedResourcesByPk,
     removeLinkedResourcesByPk,
-    getDatasetTimeSettingsByPk
+    getDatasetTimeSettingsByPk,
+    updateDataset
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import { isMapInfoOpen } from '@mapstore/framework/selectors/mapInfo';
-import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
+import { getSelectedLayer, layerSettingSelector, getLayerFromId } from '@mapstore/framework/selectors/layers';
 import { isLoggedIn } from '@mapstore/framework/selectors/security';
 import {
     browseData,
-    selectNode
+    selectNode,
+    showSettings
 } from '@mapstore/framework/actions/layers';
 import {
     updateStatus,
@@ -57,7 +60,8 @@ import {
     updateResource,
     setResourcePathParameters,
     MANAGE_LINKED_RESOURCE,
-    setMapViewerLinkedResource
+    setMapViewerLinkedResource,
+    UPDATE_DATASET_LAYER_SETTINGS
 } from '@js/actions/gnresource';
 
 import {
@@ -95,7 +99,7 @@ import { styleServiceSelector } from '@mapstore/framework/selectors/styleeditor'
 import { updateStyleService } from '@mapstore/framework/api/StyleEditor';
 import { CLICK_ON_MAP, resizeMap, CHANGE_MAP_VIEW, zoomToExtent } from '@mapstore/framework/actions/map';
 import { purgeMapInfoResults, closeIdentify, NEW_MAPINFO_REQUEST } from '@mapstore/framework/actions/mapInfo';
-import { saveError } from '@js/actions/gnsave';
+import { saveError, saveSuccess, savingResource } from '@js/actions/gnsave';
 import {
     error as errorNotification,
     success as successNotification,
@@ -145,9 +149,10 @@ const resourceTypes = {
                     .then((response) => {
                         const [mapConfig, gnLayer, timeseries] = response;
                         const newLayer = resourceToLayerConfig(gnLayer);
+                        const _gnLayer = {...gnLayer, layerSettings: gnLayer.data};
 
-                        if (!newLayer?.extendedParams?.defaultStyle || page !== 'dataset_edit_style_viewer') {
-                            return [mapConfig, {...gnLayer, timeseries}, newLayer];
+                        if (!newLayer?.extendedParams?.defaultStyle || page !== 'dataset_edit_layer_settings') {
+                            return [mapConfig, {..._gnLayer, timeseries}, newLayer];
                         }
 
                         return getStyleProperties({
@@ -156,7 +161,7 @@ const resourceTypes = {
                         }).then((updatedStyle) => {
                             return [
                                 mapConfig,
-                                {...gnLayer, timeseries},
+                                {..._gnLayer, timeseries},
                                 {
                                     ...newLayer,
                                     availableStyles: [{
@@ -204,9 +209,9 @@ const resourceTypes = {
                                 browseData(newLayer)
                             ]
                             : []),
-                        ...(page === 'dataset_edit_style_viewer'
+                        ...(page === 'dataset_edit_layer_settings'
                             ? [
-                                setControlProperty('visualStyleEditor', 'enabled', true),
+                                showSettings(newLayer.id, "layers", {opacity: newLayer.opacity ?? 1}),
                                 updateAdditionalLayer(newLayer.id, STYLE_OWNER_NAME, 'override', {}),
                                 updateStatus('edit'),
                                 resizeMap()
@@ -711,6 +716,51 @@ export const gnZoomToFitBounds = (action$) =>
                 })
         );
 
+export const gnUpdateLayerSettings = (action$, { getState = () => {} } = {}) =>
+    action$.ofType(UPDATE_DATASET_LAYER_SETTINGS)
+        .switchMap(() => {
+            const state = getState();
+            const {node, options} = layerSettingSelector(state) ?? {};
+            const layer = getLayerFromId(state, node);
+            const {layerSettings} = getResourceData(state) ?? {};
+            const initialData = state?.gnresource?.initialResource?.data ?? {};
+            const settings = {
+                ...initialData,
+                ...layerSettings,
+                ...options,
+                ...pick(layer, ['fields'])
+            };
+            const body = {...(settings.title && {title: settings.title}), data: settings};
+            return Observable.defer(() =>
+                updateDataset(layer.pk, body)
+            )
+                .switchMap((res) => {
+                    const {data, ...response} = res ?? {};
+                    const gnLayer = {...response, layerSettings: data};
+                    return Observable.of(
+                        updateResourceProperties(gnLayer),
+                        successNotification({
+                            title: "gnviewer.layerSettings.title",
+                            message: 'gnviewer.layerSettings.updateSuccess'
+                        })
+                    );
+                })
+                .let(
+                    wrapStartStop(
+                        savingResource(true),
+                        saveSuccess(),
+                        (error) => {
+                            return Observable.of(
+                                errorNotification({
+                                    title: "gnviewer.layerSettings.title",
+                                    message: 'gnviewer.layerSettings.updateError'
+                                }),
+                                saveError(error)
+                            );
+                        }
+                    )
+                );
+        });
 export default {
     gnViewerRequestNewResourceConfig,
     gnViewerRequestResourceConfig,
@@ -719,5 +769,6 @@ export default {
     closeOpenPanels,
     closeDatasetCatalogPanel,
     gnManageLinkedResource,
-    gnZoomToFitBounds
+    gnZoomToFitBounds,
+    gnUpdateLayerSettings
 };
