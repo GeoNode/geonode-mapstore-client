@@ -132,14 +132,22 @@ def get_user_menu(context):
             devider,
         ],
     }
-    
+
     people_groups = [
         {"type": "link", "href": "/people/", "label": "People"},
-        {"type": "link","href": "/admin/people/profile/add/","label": "Add user"},
         {"type": "link", "href": "/groups/", "label": "Groups"},
-        {"type": "link", "href": "/groups/create/", "label": "Create group"},
         devider
-    ]
+        ]
+        
+    if user.is_superuser: 
+        people_groups.extend(
+            [
+            {"type": "link", "href": "/invitations/geonode-send-invite/", "label": "Invite users"},
+            {"type": "link","href": "/admin/people/profile/add/","label": "Add user"},
+            {"type": "link", "href": "/groups/create/", "label": "Create group"},
+            devider
+            ]
+        )
     
     general =  (
         people_groups + [
