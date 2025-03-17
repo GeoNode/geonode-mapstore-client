@@ -65,16 +65,6 @@ def get_base_left_topbar_menu():
         }
     ]
 
-@register.simple_tag
-def get_base_right_topbar_menu():
-    return [
-        {
-            "type": "link",
-            "href": "/about",
-            "label": "About",
-        }
-    ]
-
 @register.simple_tag(takes_context=True)
 def get_user_menu(context):
     is_mobile = _is_mobile_device(context)
