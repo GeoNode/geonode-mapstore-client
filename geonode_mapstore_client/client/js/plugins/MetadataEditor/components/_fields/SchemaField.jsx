@@ -11,8 +11,10 @@ import axios from '@mapstore/framework/libs/ajax';
 import castArray from 'lodash/castArray';
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
+import template from 'lodash/template';
 import Autocomplete from '../Autocomplete';
 import DefaultSchemaField from '@rjsf/core/lib/components/fields/SchemaField';
+import useSchemaReference from './useSchemaReference';
 
 function findProperty(name, properties) {
     return Object.keys(properties || {}).some((key) => {
@@ -58,6 +60,7 @@ const SchemaField = (props) => {
         (isSchemaItemObject && !isEmpty(schema?.items?.properties))
     );
     const isSingleSelect = schema?.type === 'object' && !isEmpty(schema?.properties);
+    const { referenceValue, referenceKey } = useSchemaReference({...props, isMultiSelect });
 
     if (autocomplete && (isMultiSelect || isSingleSelect)) {
         const {
@@ -87,7 +90,10 @@ const SchemaField = (props) => {
         const autocompleteOptions = isString(autocomplete)
             ? { url: autocomplete }
             : autocomplete;
-        const autocompleteUrl = autocompleteOptions?.url;
+        let autocompleteUrl = autocompleteOptions?.url;
+        if (referenceValue) {
+            autocompleteUrl = template(autocompleteUrl)({[referenceKey ?? 'id']: referenceValue });
+        }
         const queryKey = autocompleteOptions?.queryKey || 'q';
         const resultsKey = autocompleteOptions?.resultsKey || 'results';
         const valueKey = autocompleteOptions?.valueKey || 'id';
