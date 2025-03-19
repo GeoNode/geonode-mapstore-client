@@ -17,6 +17,8 @@ import { getUploadErrorMessageFromCode } from '@js/utils/ErrorUtils';
 import { getCataloguePath } from '@js/utils/ResourceUtils';
 
 function ExecutionRequestTable({
+    viewResource = true,
+    editMetadata = true,
     titleMsgId = '',
     descriptionMsgId = '',
     iconName = '',
@@ -51,6 +53,18 @@ function ExecutionRequestTable({
         );
     }
 
+    const RenderActionButton = ({request, href, msgId}) => (
+        <Button
+            variant="primary"
+            onClick={() => handleDelete(request.exec_id)}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            <Message msgId={msgId} />
+        </Button>
+    );
+
     return (
         <div className="gn-upload-processing">
             <div className="gn-upload-processing-list">
@@ -80,15 +94,18 @@ function ExecutionRequestTable({
                                             />
                                             : null}
                                         {!onReload && request.status === 'finished' && detailUrls?.[0]
-                                            ? <Button
-                                                variant="primary"
-                                                onClick={() => handleDelete(request.exec_id)}
-                                                href={detailUrls.length === 1 ? detailUrls[0] : getCataloguePath('/catalogue/#/search/?f=dataset')}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                <Message msgId={'gnviewer.view'} />
-                                            </Button>
+                                            ? <div className="gn-upload-processing-actions">
+                                                {viewResource && <RenderActionButton
+                                                    request={request}
+                                                    msgId={'gnviewer.view'}
+                                                    href={detailUrls.length === 1 ? detailUrls[0] : getCataloguePath('/catalogue/#/search/?f=dataset')}
+                                                /> }
+                                                {editMetadata && <RenderActionButton
+                                                    request={request}
+                                                    msgId={'gnviewer.editMetadata'}
+                                                    href={detailUrls.length === 1 ? detailUrls[0].replace(/\/[^/]+\/(\d+)$/, "/metadata/$1") : getCataloguePath('/catalogue/#/search/?f=document')}
+                                                />}
+                                            </div>
                                             : null}
                                         {!onReload && request.status === 'finished' && !detailUrls?.[0]
                                             ? <FaIcon name="check" />
