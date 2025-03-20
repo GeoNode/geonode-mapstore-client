@@ -4825,6 +4825,22 @@
             {
                 "name": "MetadataViewer"
             }
-        ] 
+        ],
+        "upload_dataset": [
+            {
+                "name": "UploadOperation",
+                "cfg": {
+                    "resourceType": "dataset"
+                }
+            }
+        ],
+        "upload_document": [
+            {
+                "name": "UploadOperation",
+                "cfg": {
+                    "resourceType": "document"
+                }
+            }
+        ]
     }
 }

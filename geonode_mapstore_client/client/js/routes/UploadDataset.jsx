@@ -28,7 +28,8 @@ import {
 } from '@js/api/geonode/v2/constants';
 
 function UploadDataset({
-    refreshTime = 3000
+    refreshTime = 3000,
+    uploadConfig
 }) {
 
     const api = {
@@ -113,6 +114,7 @@ function UploadDataset({
                 descriptionMsgId="gnviewer.dragAndDropFile"
                 requests={requests}
                 onDelete={deleteRequest}
+                {...uploadConfig}
             />
         </UploadPanel>
     );

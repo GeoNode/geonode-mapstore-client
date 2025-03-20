@@ -23,7 +23,7 @@ import {
     getUploadFileName
 } from '@js/utils/UploadUtils';
 
-function UploadDocument({}) {
+function UploadDocument({uploadConfig}) {
 
     const [requests, setRequests] = useState([]);
 
@@ -104,6 +104,7 @@ function UploadDocument({}) {
                 onDelete={(deleteId) => {
                     setRequests(prevRequests => prevRequests.filter(request => request.exec_id !== deleteId));
                 }}
+                {...uploadConfig}
             />
         </UploadPanel>
     );

@@ -38,8 +38,7 @@ import context from '@mapstore/framework/reducers/context';
 // end
 
 import ViewerRoute from '@js/routes/Viewer';
-import UploadDatasetRoute from '@js/routes/UploadDataset';
-import UploadDocumentRoute from '@js/routes/UploadDocument';
+import ComponentsRoute from '@js/routes/Components';
 import CatalogueRoute from '@js/routes/Catalogue';
 import MapViewerRoute from '@js/routes/MapViewer';
 
@@ -105,8 +104,8 @@ const ConnectedRouter = connect(
 const viewers = {
     [appRouteComponentTypes.VIEWER]: ViewerRoute,
     [appRouteComponentTypes.CATALOGUE]: CatalogueRoute,
-    [appRouteComponentTypes.DATASET_UPLOAD]: UploadDatasetRoute,
-    [appRouteComponentTypes.DOCUMENT_UPLOAD]: UploadDocumentRoute,
+    [appRouteComponentTypes.DATASET_UPLOAD]: ComponentsRoute,
+    [appRouteComponentTypes.DOCUMENT_UPLOAD]: ComponentsRoute,
     [appRouteComponentTypes.MAP_VIEWER]: MapViewerRoute
 };
 

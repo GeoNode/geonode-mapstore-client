@@ -286,6 +286,10 @@
                 font-size: @font-size-lg;
             }
         }
+        .gn-upload-processing-actions {
+            display: flex;
+            gap: 10px;
+        }
     }
 
     &:has(:not(.gn-upload-processing-header)) {
@@ -314,4 +318,14 @@
 
 .gn-failed-upload {
     display: inline-block;
+}
+
+.gn-upload-container {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
