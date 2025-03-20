@@ -18,7 +18,7 @@ import { getCataloguePath } from '@js/utils/ResourceUtils';
 
 function ExecutionRequestTable({
     viewResource = true,
-    editMetadata = true,
+    editMetadata = false,
     titleMsgId = '',
     descriptionMsgId = '',
     iconName = '',
