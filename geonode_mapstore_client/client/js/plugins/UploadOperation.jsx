@@ -12,6 +12,9 @@ import UploadDocument from "@js/routes/UploadDocument";
 
 /**
  * Upload operation plugin
+ * @prop {object} cfg.resourceType the type of the resource to upload
+ * @prop {object} cfg.viewResource flag to show view resource button
+ * @prop {object} cfg.editMetadata flag to show edit metadata button of the resource
  * @name UploadOperation
  * @memberof plugins
  */
