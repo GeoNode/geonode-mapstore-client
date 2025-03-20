@@ -10,6 +10,11 @@ import { createPlugin } from "@mapstore/framework/utils/PluginsUtils";
 import UploadDataset from "@js/routes/UploadDataset";
 import UploadDocument from "@js/routes/UploadDocument";
 
+/**
+ * Upload operation plugin
+ * @name UploadOperation
+ * @memberof plugins
+ */
 const UploadOperation = ({ resourceType, ...uploadConfig }) => {
     const Component =  resourceType === "dataset" ? UploadDataset : UploadDocument;
     return (
