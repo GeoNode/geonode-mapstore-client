@@ -395,10 +395,6 @@ export const plugins = {
         'DownloadResource',
         () => import(/* webpackChunkName: 'plugins/download-resource-plugin' */ '@js/plugins/DownloadResource')
     ),
-    VisualStyleEditorPlugin: toModulePlugin(
-        'VisualStyleEditor',
-        () => import(/* webpackChunkName: 'plugins/visual-style-editor-plugin' */ '@js/plugins/VisualStyleEditor')
-    ),
     LayerDetailViewerPlugin: toModulePlugin(
         'LayerDetailViewer',
         () => import(/* webpackChunkName: 'plugins/detail-viewer-plugin' */ '@js/plugins/LayerDetailViewer')
