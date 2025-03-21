@@ -96,7 +96,9 @@ export const gnSetDatasetsPermissions = (actions$, { getState = () => {}} = {}) 
     actions$.ofType(MAP_CONFIG_LOADED, ADD_LAYER)
         .switchMap((action) => {
             if (action.type === MAP_CONFIG_LOADED) {
-                const layerNames = action.config?.map?.layers?.filter((l) => l?.group !== "background")?.map((l) => l.name) ?? [];
+                let layerNames = action.config?.map?.layers?.filter((l) =>
+                    l?.group !== "background" && !!l?.extendedParams?.pk // skip layers of non-geonode origin
+                )?.map((l) => l.name) ?? [];
                 if (layerNames.length === 0) {
                     return Rx.Observable.empty();
                 }
@@ -109,6 +111,10 @@ export const gnSetDatasetsPermissions = (actions$, { getState = () => {}} = {}) 
                         return Rx.Observable.of(...stateLayers.map((l) => updateNode(l.id, 'layer', {perms: l.perms || []}) ));
                     });
             }
+
+            // skip layers of non-geonode origin
+            if (!action.layer?.pk) return Rx.Observable.empty();
+
             return Rx.Observable.defer(() => getDatasetByName(action.layer?.name))
                 .switchMap((layer = {}) => {
                     const layerId = layersSelector(getState())?.find((la) => la.name === layer.alternate)?.id;
