@@ -113,7 +113,7 @@ export const gnSetDatasetsPermissions = (actions$, { getState = () => {}} = {}) 
             }
 
             // skip layers of non-geonode origin
-            if (!action.layer?.pk) return Rx.Observable.empty();
+            if (!action.layer?.extendedParams?.pk) return Rx.Observable.empty();
 
             return Rx.Observable.defer(() => getDatasetByName(action.layer?.name))
                 .switchMap((layer = {}) => {
