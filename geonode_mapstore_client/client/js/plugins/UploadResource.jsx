@@ -11,14 +11,14 @@ import UploadDataset from "@js/routes/UploadDataset";
 import UploadDocument from "@js/routes/UploadDocument";
 
 /**
- * Upload operation plugin
- * @prop {object} cfg.resourceType the type of the resource to upload
+ * Upload resource plugin
+ * @prop {object} cfg.resourceType the type of the resource to upload (dataset or document)
  * @prop {object} cfg.viewResource flag to show view resource button
  * @prop {object} cfg.editMetadata flag to show edit metadata button of the resource
- * @name UploadOperation
+ * @name UploadResource
  * @memberof plugins
  */
-const UploadOperation = ({ resourceType, ...uploadConfig }) => {
+const UploadResource = ({ resourceType, ...uploadConfig }) => {
     const Component =  resourceType === "dataset" ? UploadDataset : UploadDocument;
     return (
         <div className="gn-upload-container">
@@ -27,8 +27,8 @@ const UploadOperation = ({ resourceType, ...uploadConfig }) => {
     );
 };
 
-export default createPlugin('UploadOperation', {
-    component: UploadOperation,
+export default createPlugin('UploadResource', {
+    component: UploadResource,
     containers: {},
     epics: {},
     reducers: {}

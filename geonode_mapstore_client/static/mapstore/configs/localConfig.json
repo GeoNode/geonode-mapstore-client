@@ -4828,7 +4828,7 @@
         ],
         "upload_dataset": [
             {
-                "name": "UploadOperation",
+                "name": "UploadResource",
                 "cfg": {
                     "resourceType": "dataset"
                 }
@@ -4836,7 +4836,7 @@
         ],
         "upload_document": [
             {
-                "name": "UploadOperation",
+                "name": "UploadResource",
                 "cfg": {
                     "resourceType": "document"
                 }

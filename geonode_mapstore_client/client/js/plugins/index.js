@@ -467,9 +467,9 @@ export const plugins = {
         'PrintCopyright',
         () => import(/* webpackChunkName: 'plugins/print-copyright' */ '@js/plugins/Print/Copyright')
     ),
-    UploadOperationPlugin: toModulePlugin(
-        'UploadOperation',
-        () => import(/* webpackChunkName: 'plugins/upload-operation' */ '@js/plugins/UploadOperation')
+    UploadResourcePlugin: toModulePlugin(
+        'UploadResource',
+        () => import(/* webpackChunkName: 'plugins/upload-operation' */ '@js/plugins/UploadResource')
     )
 };
 
