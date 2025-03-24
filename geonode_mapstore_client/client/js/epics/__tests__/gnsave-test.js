@@ -141,7 +141,7 @@ describe('gnsave epics', () => {
         mockAxios.onGet().reply(() => [200,
             {datasets: [{perms: ['change_dataset_style', 'change_dataset_data'], alternate: "testLayer"}]}]);
         const NUM_ACTIONS = 1;
-        testEpic(gnSetDatasetsPermissions, NUM_ACTIONS, addLayer({name: "testLayer", pk: "1"}), (actions) => {
+        testEpic(gnSetDatasetsPermissions, NUM_ACTIONS, addLayer({name: "testLayer", pk: "1", extenderParams: {pk: "1"}}), (actions) => {
             try {
                 expect(actions.map(({type}) => type)).toEqual(["UPDATE_NODE"]);
                 done();
