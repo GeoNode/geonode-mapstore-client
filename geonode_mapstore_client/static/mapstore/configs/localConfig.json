@@ -2934,9 +2934,23 @@
                             ]
                         },
                         {
-                            "type": "plugin",
-                            "name": "DownloadResource",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'download_resourcebase')}"
+                            "labelId": "gnviewer.download",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'download_resourcebase')}",
+                            "type": "dropdown",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "DownloadResource"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "IsoDownload"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "DublinCoreDownload"
+                                }
+                            ]
                         }
                     ],
                     "rightMenuItems": [
@@ -2948,12 +2962,16 @@
                 }
             },
             {
-                "type": "plugin",
                 "name": "FullScreen"
             },
             {
-                "type": "plugin",
                 "name": "DownloadResource"
+            },
+            {
+                "name": "IsoDownload"
+            },
+            {
+                "name": "DublinCoreDownload"
             },
             {
                 "name": "DetailViewer",
