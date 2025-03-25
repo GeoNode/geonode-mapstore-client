@@ -600,7 +600,7 @@
                                     "type": "link",
                                     "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/settings'}",
                                     "labelId": "gnviewer.layerSettings.title",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_data')}"
+                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
                                 },
                                 {
                                     "type": "link",
@@ -1510,7 +1510,7 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "ApplyLayerSettings"
+                            "name": "Save"
                         }
                     ],
                     "rightMenuItems": [
@@ -1522,7 +1522,11 @@
                 }
             },
             {
-                "name": "Save"
+                "name": "Save",
+                "cfg": {
+                    "saveMsgId": "gnhome.apply",
+                    "className": "gn-apply-settings"
+                }
             },
             {
                 "name": "TOCItemsSettings",
@@ -1533,7 +1537,28 @@
                 }  
             },
             {
-                "name": "StyleEditor"
+                "name": "StyleEditor",
+                "cfg": {
+                    "styleService": {
+                        "baseUrl": "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}",
+                        "formats": [
+                            "css",
+                            "sld"
+                        ],
+                        "availableUrls": [
+                            "{state('settings') && state('settings').geoserverUrl || '/geoserver/'}",
+                            "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}"
+                        ],
+                        "fonts": [
+                            "Arial",
+                            "Courier New",
+                            "Monospaced",
+                            "SansSerif",
+                            "Serif",
+                            "Times New Roman"
+                        ]
+                    }
+                }
             },
             {
                 "name": "Identify",
