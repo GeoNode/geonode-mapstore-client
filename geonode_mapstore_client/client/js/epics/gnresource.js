@@ -38,7 +38,6 @@ import {
     selectNode,
     showSettings
 } from '@mapstore/framework/actions/layers';
-import { initStyleService } from '@mapstore/framework/actions/styleeditor';
 import {
     setNewResource,
     setResourceType,
@@ -88,8 +87,7 @@ import {
 } from '@js/selectors/resource';
 import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallayers';
 import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
-import { styleServiceSelector } from '@mapstore/framework/selectors/styleeditor';
-import { updateStyleService } from '@mapstore/framework/api/StyleEditor';
+import { initStyleService, resetStyleEditor } from '@mapstore/framework/actions/styleeditor';
 import { CLICK_ON_MAP, resizeMap, CHANGE_MAP_VIEW, zoomToExtent } from '@mapstore/framework/actions/map';
 import { purgeMapInfoResults, closeIdentify, NEW_MAPINFO_REQUEST } from '@mapstore/framework/actions/mapInfo';
 import { saveError } from '@js/actions/gnsave';
@@ -419,7 +417,10 @@ const getResetActions = (isSameResource) => [
     resetControls(),
     ...(!isSameResource ? [ resetResourceState() ] : []),
     setControlProperty('rightOverlay', 'enabled', false),
-    setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', null)
+    setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', null),
+    // reset style editor state to avoid persistence service configuration in between resource pages
+    initStyleService(),
+    resetStyleEditor()
 ];
 
 export const gnViewerRequestNewResourceConfig = (action$, store) =>
@@ -484,7 +485,6 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     loadingResourceConfig(false)
                 );
             }
-            const styleService = styleServiceSelector(state);
             const resourceData = getResourceData(state);
             const isSamePreviousResource = !resourceData?.['@ms-detail'] && resourceData?.pk === action.pk;
             return Observable.concat(
@@ -505,20 +505,8 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                             })
                     ]
                     : []),
-                ...(styleService?.baseUrl
-                    ? [Observable.defer(() => updateStyleService({
-                        styleService
-                    }))
-                        .switchMap((updatedStyleService) => {
-                            return Observable.of(initStyleService(updatedStyleService, {
-                                editingAllowedRoles: ['ALL'],
-                                editingAllowedGroups: []
-                            }));
-                        })]
-                    : []),
                 resourceObservable(action.pk, {
                     ...action.options,
-                    styleService: styleServiceSelector(state),
                     isSamePreviousResource,
                     resourceData,
                     selectedLayer: isSamePreviousResource && getSelectedLayer(state),
