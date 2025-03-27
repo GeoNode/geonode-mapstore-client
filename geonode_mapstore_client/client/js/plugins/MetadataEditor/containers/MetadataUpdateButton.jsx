@@ -27,7 +27,7 @@ function MetadataUpdateButton({
 
     function handleUpdate() {
         setUpdating(true);
-        setUpdateError(false);
+        setUpdateError(null);
         updateMetadata(pk, metadata)
             .then((response) => {
                 setInitialMetadata(metadata);
@@ -35,7 +35,11 @@ function MetadataUpdateButton({
             })
             .catch((error) => {
                 setExtraErrors(get(error, 'data.extraErrors', {}));
-                setUpdateError(true);
+                setUpdateError(get(error, 'data.message', null));
+                if (error?.status === 422) {
+                    // partially successful. Reinitialize metadata to allow user to correct errors
+                    setInitialMetadata(metadata);
+                }
             })
             .finally(() => {
                 setUpdating(false);

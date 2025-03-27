@@ -14,7 +14,6 @@ import { Alert } from 'react-bootstrap';
 import isEmpty from 'lodash/isEmpty';
 
 import { getMetadataByPk } from '@js/api/geonode/v2/metadata';
-import Message from '@mapstore/framework/components/I18N/Message';
 import widgets from '../components/_widgets';
 import templates from '../components/_templates';
 import fields from '../components/_fields';
@@ -78,8 +77,16 @@ function MetadataEditor({
         }
     }, [pk]);
 
+    useEffect(() => {
+        return () => {
+            // reset all errors
+            setUpdateError(null);
+            setExtraErrors({});
+        };
+    }, []);
+
     function handleChange(formData) {
-        setUpdateError(false);
+        setUpdateError(null);
         setMetadata(formData);
     }
 
@@ -98,8 +105,8 @@ function MetadataEditor({
     return (
         <div className="gn-metadata">
             <div className="gn-metadata-header">
-                {updateError && <Alert bsStyle="danger" style={{ margin: '0.25rem 0' }}>
-                    <Message msgId="gnviewer.metadataUpdateError" />
+                {!isEmpty(updateError) && <Alert bsStyle="danger" style={{ margin: '0.25rem 0' }}>
+                    {updateError}
                     {!isEmpty(rootErrors) && <ul>{rootErrors.map((_error, idx) => <li key={idx}>{_error}</li>)}</ul>}
                 </Alert>}
             </div>
