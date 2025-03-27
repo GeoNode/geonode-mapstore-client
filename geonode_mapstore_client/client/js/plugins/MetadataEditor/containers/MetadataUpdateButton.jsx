@@ -37,7 +37,7 @@ function MetadataUpdateButton({
                 setExtraErrors(get(error, 'data.extraErrors', {}));
                 setUpdateError(get(error, 'data.message', null));
                 if (error?.status === 422) {
-                    // partially successful. Reinitialize metadata to allow user to correct errors
+                    // Partially successful. So reset pending metadata changes and allow user to fix error(s)
                     setInitialMetadata(metadata);
                 }
             })
