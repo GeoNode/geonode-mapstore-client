@@ -37,7 +37,10 @@ function MetadataUpdateButton({
             })
             .catch((error) => {
                 setExtraErrors(get(error, 'data.extraErrors', {}));
-                let errorObj = { type: "danger", message: getMessageById(context.messages, 'gnviewer.metadataUpdateError') };
+                let errorObj = {
+                    type: "danger",
+                    message: getMessageById(context.messages, 'gnviewer.metadataUpdateError')
+                };
                 if (error?.status === 422) {
                     // Partially successful. So reset pending metadata changes and allow user to fix error(s)
                     setInitialMetadata(metadata);
