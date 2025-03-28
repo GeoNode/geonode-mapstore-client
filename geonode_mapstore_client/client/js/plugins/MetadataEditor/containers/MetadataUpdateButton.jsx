@@ -37,16 +37,17 @@ function MetadataUpdateButton({
             })
             .catch((error) => {
                 setExtraErrors(get(error, 'data.extraErrors', {}));
-                let errorObj = {
-                    type: "danger",
-                    message: getMessageById(context.messages, 'gnviewer.metadataUpdateError')
-                };
+                let errorType = "danger";
                 if (error?.status === 422) {
                     // Partially successful. So reset pending metadata changes and allow user to fix error(s)
                     setInitialMetadata(metadata);
-                    errorObj = { type: "warning", message: get(error, 'data.message', '') };
+                    errorType = "warning";
                 }
-                setUpdateError(errorObj);
+                setUpdateError({
+                    type: errorType,
+                    message: get(error, 'data.message',
+                        getMessageById(context.messages, 'gnviewer.metadataUpdateError'))
+                });
             })
             .finally(() => {
                 setUpdating(false);
