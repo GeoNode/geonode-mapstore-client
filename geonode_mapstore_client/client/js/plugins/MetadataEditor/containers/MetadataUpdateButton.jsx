@@ -41,7 +41,7 @@ function MetadataUpdateButton({
                 if (error?.status === 422) {
                     // Partially successful. So reset pending metadata changes and allow user to fix error(s)
                     setInitialMetadata(metadata);
-                    errorObj = { type: "warning", message: get(error, 'data.message', null) };
+                    errorObj = { type: "warning", message: get(error, 'data.message', '') };
                 }
                 setUpdateError(errorObj);
             })
