@@ -15,6 +15,8 @@ import UploadDocument from "@js/routes/UploadDocument";
  * @prop {object} cfg.resourceType the type of the resource to upload (dataset or document)
  * @prop {object} cfg.viewResource flag to show view resource button
  * @prop {object} cfg.editMetadata flag to show edit metadata button of the resource
+ * @prop {object} cfg.viewResourceLabelId label translation string for the resource button
+ * @prop {object} cfg.editMetadataLabelId label translation string for the metadata button
  * @name UploadResource
  * @memberof plugins
  */

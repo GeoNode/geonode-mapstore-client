@@ -17,14 +17,13 @@ import { getUploadErrorMessageFromCode } from '@js/utils/ErrorUtils';
 import { getCataloguePath } from '@js/utils/ResourceUtils';
 
 function ExecutionRequestTable({
-    viewResource = true,
-    editMetadata = false,
     titleMsgId = '',
     descriptionMsgId = '',
     iconName = '',
     requests: requestsProp,
     onReload,
-    onDelete
+    onDelete,
+    ...props
 }) {
 
     const [deleted, setDeleted] = useState([]);
@@ -65,6 +64,7 @@ function ExecutionRequestTable({
         </Button>
     );
 
+    const { viewResource = true, editMetadata, viewResourceLabelId, editMetadataLabelId } = props;
     return (
         <div className="gn-upload-processing">
             <div className="gn-upload-processing-list">
@@ -97,12 +97,12 @@ function ExecutionRequestTable({
                                             ? <div className="gn-upload-processing-actions">
                                                 {viewResource && <RenderActionButton
                                                     request={request}
-                                                    msgId={'gnviewer.view'}
+                                                    msgId={viewResourceLabelId ?? 'gnviewer.view'}
                                                     href={detailUrls.length === 1 ? detailUrls[0] : getCataloguePath('/catalogue/#/all')}
                                                 /> }
                                                 {editMetadata && <RenderActionButton
                                                     request={request}
-                                                    msgId={'gnviewer.editMetadata'}
+                                                    msgId={editMetadataLabelId ?? 'gnviewer.fillMetadata'}
                                                     href={detailUrls.length === 1 ? detailUrls[0].replace(/\/[^/]+\/(\d+)$/, "/metadata/$1")
                                                         : getCataloguePath('/catalogue/#/all')}
                                                 />}

@@ -172,6 +172,7 @@
             "export": "Exportation",
             "exportData": "Exporter les données",
             "editMetadata": "Modifier les Métadonnées",
+            "fillMetadata": "Remplir les métadonnées",
             "view": "Vue",
             "viewMetadata": "Afficher les métadonnées",
             "viewData":  "Afficher les données",
