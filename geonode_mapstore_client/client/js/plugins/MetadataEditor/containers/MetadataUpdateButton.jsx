@@ -8,9 +8,11 @@
 
 import React from 'react';
 import get from 'lodash/get';
+import PropTypes from "prop-types";
 import { updateMetadata } from '@js/api/geonode/v2/metadata';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@js/components/Button';
+import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 
 function MetadataUpdateButton({
     pendingChanges,
@@ -23,7 +25,7 @@ function MetadataUpdateButton({
     setUpdateError,
     setInitialMetadata,
     setExtraErrors
-}) {
+}, context) {
 
     function handleUpdate() {
         setUpdating(true);
@@ -35,11 +37,13 @@ function MetadataUpdateButton({
             })
             .catch((error) => {
                 setExtraErrors(get(error, 'data.extraErrors', {}));
-                setUpdateError(get(error, 'data.message', null));
+                let errorObj = { type: "danger", message: getMessageById(context.messages, 'gnviewer.metadataUpdateError') };
                 if (error?.status === 422) {
                     // Partially successful. So reset pending metadata changes and allow user to fix error(s)
                     setInitialMetadata(metadata);
+                    errorObj = { type: "warning", message: get(error, 'data.message', null) };
                 }
+                setUpdateError(errorObj);
             })
             .finally(() => {
                 setUpdating(false);
@@ -58,5 +62,9 @@ function MetadataUpdateButton({
         </Button>
     );
 }
+
+MetadataUpdateButton.contextTypes = {
+    messages: PropTypes.object
+};
 
 export default MetadataUpdateButton;

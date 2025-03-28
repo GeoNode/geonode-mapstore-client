@@ -105,8 +105,8 @@ function MetadataEditor({
     return (
         <div className="gn-metadata">
             <div className="gn-metadata-header">
-                {!isEmpty(updateError) && <Alert bsStyle="danger" style={{ margin: '0.25rem 0' }}>
-                    {updateError}
+                {!isEmpty(updateError) && <Alert bsStyle={updateError.type} style={{ margin: '0.25rem 0' }}>
+                    {updateError.message}
                     {!isEmpty(rootErrors) && <ul>{rootErrors.map((_error, idx) => <li key={idx}>{_error}</li>)}</ul>}
                 </Alert>}
             </div>
