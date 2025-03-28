@@ -19,7 +19,7 @@ export const gnDownloadMetaData = (action$, store) =>
         .switchMap((action) => {
             const state = store.getState();
             const url = state.gnresource?.data?.links?.find((link) => link.name === action.link).url;
-            const resourceTitle = state.gnresource?.data?.title;
+            const resourceTitle = state.gnresource?.data?.title?.replace(/[\.\s]/g, '_');
 
             return Observable
                 .defer(() => axios.get(url).then((data) => data))
