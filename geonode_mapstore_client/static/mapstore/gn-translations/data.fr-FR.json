@@ -210,8 +210,6 @@
             "filterByNameOrPermissions": "Filtrer par nom ou autorisations",
             "permissionsName": "Nom",
             "permissions": "Autorisations",
-            "anonymous": "Personne",
-            "registered-members": "Membres enregistrés",
             "permissionsEntriesNoResults": "Aucun résultat...",
             "shareThisResource": "Partager avec des personnes et des groupes",
             "embed": "Intégrer",
@@ -467,7 +465,15 @@
                 "updateSuccess": "Paramètres de la couche mis à jour",
                 "updateError": "Erreur lors de la sauvegarde des paramètres de la couche"
             },
-            "apply": "Appliquer"
+            "apply": "Appliquer",
+            "showPreview": "Afficher l'aperçu",
+            "hidePreview": "Masquer l'aperçu",
+            "columnTitle": "Titre",
+            "columnOwner": "Propriétaire"
+        },
+        "resourcesCatalog": {
+            "anonymous": "N'importe qui",
+            "registered-members": "Membres enregistrés"
         }
     }
 }

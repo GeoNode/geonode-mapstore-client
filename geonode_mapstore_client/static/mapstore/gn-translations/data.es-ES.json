@@ -210,8 +210,6 @@
             "filterByNameOrPermissions": "Filtrar por nombre o permisos",
             "permissionsName": "Nombre",
             "permissions": "Permisos",
-            "anonymous": "Cualquiera",
-            "registered-members": "Miembros registrados",
             "permissionsEntriesNoResults": "Sin resultados ...",
             "shareThisResource": "Comparte con personas y grupos",
             "embed": "Insertar",
@@ -466,7 +464,15 @@
                 "updateSuccess": "Configuración de capa actualizada",
                 "updateError": "Error al guardar la configuración de capa"
             },
-            "apply": "Aplicar"
+            "apply": "Aplicar",
+            "showPreview": "Mostrar vista previa",
+            "hidePreview": "Ocultar vista previa",
+            "columnTitle": "Título",
+            "columnOwner": "Propietario"
+        },
+        "resourcesCatalog": {
+            "anonymous": "Cualquiera",
+            "registered-members": "Miembros registrados"
         }
     }
 }
