@@ -468,9 +468,6 @@
                 "updateError": "Erreur lors de la sauvegarde des paramètres de la couche"
             },
             "apply": "Appliquer"
-        },
-        "resourcesCatalog": {
-            "emptyFilterItems": "Aucun élément à afficher"
         }
     }
 }
