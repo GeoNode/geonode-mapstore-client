@@ -468,6 +468,9 @@
                 "updateError": "Fehler beim Speichern der Layer-Einstellungen"
             },
             "apply": "Anwenden"
+        },
+        "resourcesCatalog": {
+            "emptyFilterItems": "Keine Elemente zum Anzeigen"
         }
     }
 }

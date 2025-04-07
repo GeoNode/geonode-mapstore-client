@@ -467,6 +467,9 @@
                 "updateError": "Error al guardar la configuración de capa"
             },
             "apply": "Aplicar"
+        },
+        "resourcesCatalog": {
+            "emptyFilterItems": "No hay elementos para mostrar"
         }
     }
 }

@@ -439,6 +439,9 @@
                 "updateError": "Error saving layer settings"
             },
             "apply": "Apply"
+        },
+        "resourcesCatalog": {
+            "emptyFilterItems": "No items to display"
         }
     }
 }

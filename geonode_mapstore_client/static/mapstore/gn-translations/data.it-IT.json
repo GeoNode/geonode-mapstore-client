@@ -470,6 +470,9 @@
                 "updateError": "Errore nel salvataggio delle impostazioni del layer"
             },
             "apply": "Applica"
+        },
+        "resourcesCatalog": {
+            "emptyFilterItems": "Nessun elemento da visualizzare"
         }
     }
 }
