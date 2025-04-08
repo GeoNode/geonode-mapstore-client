@@ -13,6 +13,7 @@ import { createStructuredSelector } from 'reselect';
 import PropTypes from 'prop-types';
 import { requestResource } from '@js/actions/gnresource';
 import controls from '@mapstore/framework/reducers/controls';
+import config from '@mapstore/framework/reducers/config';
 import gnresource from '@js/reducers/gnresource';
 import {
     getResourceData,
@@ -206,6 +207,13 @@ function ResourceDetailsPanel({
                     "disableIf": "{!context.getMetadataDetailUrl(state('gnResourceData'))}"
                 }
             ]
+        },
+        {
+            "type": "permissions",
+            "id": "permissions",
+            "labelId": "gnviewer.permissions",
+            "disableIf": "{!context.canAccessPermissions(state('gnResourceData'))}",
+            "items": [true]
         },
         {
             "type": "locations",
@@ -435,6 +443,7 @@ export default createPlugin('ResourceDetails', {
     },
     reducers: {
         gnresource,
-        controls
+        controls,
+        config
     }
 });

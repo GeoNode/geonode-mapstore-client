@@ -124,6 +124,7 @@ const resourceTypes = {
         resourceObservable: (pk, options) => {
             const { page, selectedLayer, map: currentMap } = options || {};
             const { subtype } = options?.params || {};
+            const skipActions = page === "catalogue";
             return Observable.defer(() =>
                 axios.all([
                     getNewMapConfiguration(),
@@ -135,7 +136,7 @@ const resourceTypes = {
                 ])
                     .then((response) => {
                         const [, gnLayer] = response ?? [];
-                        if (gnLayer?.has_time) {
+                        if (gnLayer?.has_time && !skipActions) {
                             // fetch timeseries when applicable
                             return getDatasetTimeSettingsByPk(pk)
                                 .then((timeseries) => response.concat(timeseries));
@@ -153,24 +154,7 @@ const resourceTypes = {
                     const [mapConfig, gnLayer, newLayer] = response;
                     const {minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
                     const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
-                    return Observable.of(
-                        configureMap({
-                            ...mapConfig,
-                            map: {
-                                ...mapConfig.map,
-                                ...currentMap, // keep configuration for other pages when resource id is the same (eg: center, zoom)
-                                visualizationMode: ['3dtiles'].includes(subtype) ? VisualizationModes._3D : VisualizationModes._2D,
-                                layers: [
-                                    ...mapConfig.map.layers,
-                                    {
-                                        ...selectedLayer, // keep configuration for other pages when resource id is the same (eg: filters)
-                                        ...newLayer,
-                                        isDataset: true,
-                                        _v_: Date.now()
-                                    }
-                                ]
-                            }
-                        }),
+                    const actions = skipActions ? [] : [
                         ...((extent && !currentMap)
                             ? [ setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', extent) ]
                             : []),
@@ -194,6 +178,26 @@ const resourceTypes = {
                         ...(newLayer?.bboxError
                             ? [warningNotification({ title: "gnviewer.invalidBbox", message: "gnviewer.invalidBboxMsg" })]
                             : [])
+                    ];
+                    return Observable.of(
+                        configureMap({
+                            ...mapConfig,
+                            map: {
+                                ...mapConfig.map,
+                                ...currentMap, // keep configuration for other pages when resource id is the same (eg: center, zoom)
+                                visualizationMode: ['3dtiles'].includes(subtype) ? VisualizationModes._3D : VisualizationModes._2D,
+                                layers: [
+                                    ...mapConfig.map.layers,
+                                    {
+                                        ...selectedLayer, // keep configuration for other pages when resource id is the same (eg: filters)
+                                        ...newLayer,
+                                        isDataset: true,
+                                        _v_: Date.now()
+                                    }
+                                ]
+                            }
+                        }),
+                        ...actions
                     );
                 });
         }
@@ -689,7 +693,11 @@ export const gnsSelectResourceEpic = (action$, store) =>
                     setResourceCompactPermissions(undefined)
                 );
             }
-            const user = userSelector(store.getState());
+            const state = store.getState();
+            const user = userSelector(state);
+            const resourceType = selectedResource?.resource_type;
+            const { resourceObservable } = resourceType === ResourceTypes.DATASET && resourceTypes[resourceType] || {};
+
             return Observable.defer(() => Promise.all([
                 getResourceByTypeAndByPk(selectedResource?.resource_type, selectedResource?.pk, selectedResource?.subtype),
                 user
@@ -699,13 +707,21 @@ export const gnsSelectResourceEpic = (action$, store) =>
                     : Promise.resolve(null)
             ]))
                 .switchMap(([resource, compactPermissions]) => {
-                    return Observable.of(
-                        setResource({
-                            ...resource,
-                            /* store information related to detail */
-                            '@ms-detail': true
-                        }),
-                        ...(compactPermissions ? [setResourceCompactPermissions(compactPermissions)] : [])
+                    return Observable.concat(
+                        Observable.of(
+                            setResourceType(resourceType),
+                            setResource({
+                                ...resource,
+                                /* store information related to detail */
+                                '@ms-detail': true
+                            }),
+                            ...(compactPermissions ? [setResourceCompactPermissions(compactPermissions)] : [])
+                        ),
+                        ...(resourceObservable ? [resourceObservable(selectedResource.pk, {
+                            page: "catalogue",
+                            isSamePreviousResource: false,
+                            params: { subtype: selectedResource?.subtype }
+                        })] : [])
                     );
                 })
                 .catch((error) => {
