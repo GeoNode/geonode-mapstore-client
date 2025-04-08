@@ -212,8 +212,6 @@
             "filterByNameOrPermissions": "Filtra per nome o permessi",
             "permissionsName": "Nome",
             "permissions": "Permessi",
-            "anonymous": "Chiunque",
-            "registered-members": "Membri registrati",
             "permissionsEntriesNoResults": "Nessun risultato...",
             "shareThisResource": "Condividi con utenti e gruppi",
             "embed": "Incorpora",
@@ -469,7 +467,15 @@
                 "updateSuccess": "Impostazioni del layer aggiornate",
                 "updateError": "Errore nel salvataggio delle impostazioni del layer"
             },
-            "apply": "Applica"
+            "apply": "Applica",
+            "showPreview": "Mostra Anteprima",
+            "hidePreview": "Nascondi Anteprima",
+            "columnTitle": "Titolo",
+            "columnOwner": "Proprietario"
+        },
+        "resourcesCatalog": {
+            "anonymous": "Chiunque",
+            "registered-members": "Membri registrati"
         }
     }
 }

@@ -760,9 +760,6 @@
                 "name": "Measure"
             },
             {
-                "name": "FullScreen"
-            },
-            {
                 "name": "Print",
                 "cfg": {
                     "useFixedScales": true,
@@ -1637,9 +1634,6 @@
             },
             {
                 "name": "Measure"
-            },
-            {
-                "name": "FullScreen"
             },
             {
                 "name": "Print",
