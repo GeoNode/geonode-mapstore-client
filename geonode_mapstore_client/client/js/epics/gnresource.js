@@ -155,7 +155,7 @@ const resourceTypes = {
                     const {minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
                     const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
 
-                    // in catalogue page only map config and dataset layer actions are needed
+                    // in catalogue page only map config action is needed
                     const actions = isCataloguePage ? [] : [
                         ...((extent && !currentMap)
                             ? [ setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', extent) ]
@@ -697,13 +697,13 @@ export const gnsSelectResourceEpic = (action$, store) =>
             }
             const state = store.getState();
             const user = userSelector(state);
-            const resourceType = selectedResource?.resource_type;
+            const { resource_type: resourceType, pk, subtype } = selectedResource;
             const { resourceObservable } = resourceType === ResourceTypes.DATASET && resourceTypes[resourceType] || {};
 
             return Observable.defer(() => Promise.all([
-                getResourceByTypeAndByPk(selectedResource?.resource_type, selectedResource?.pk, selectedResource?.subtype),
+                getResourceByTypeAndByPk(resourceType, pk, subtype),
                 user
-                    ? getCompactPermissionsByPk(selectedResource?.pk)
+                    ? getCompactPermissionsByPk(pk)
                         .then((compactPermissions) => compactPermissions)
                         .catch(() => null)
                     : Promise.resolve(null)
@@ -719,11 +719,10 @@ export const gnsSelectResourceEpic = (action$, store) =>
                             }),
                             ...(compactPermissions ? [setResourceCompactPermissions(compactPermissions)] : [])
                         ),
-                        ...(resourceObservable ? [resourceObservable(selectedResource.pk, {
+                        ...(resourceObservable ? [resourceObservable(pk, {
                             page: "catalogue",
                             isSamePreviousResource: true,
-                            resourceData: resource,
-                            params: { subtype: selectedResource?.subtype }
+                            resourceData: resource
                         })] : [])
                     );
                 })
