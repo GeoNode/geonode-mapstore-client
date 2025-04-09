@@ -52,6 +52,11 @@ const canManageResourceSettings = (resource) => {
     return !!(perms || []).find(perm => settingsPerms.includes(perm));
 };
 
+const canAccessPermissions = (resource) => {
+    const { perms } = resource || {};
+    return perms?.includes('change_resourcebase_permissions');
+};
+
 export const getPluginsContext = () => ({
     get,
     getMetadataUrl,
@@ -68,5 +73,6 @@ export const getPluginsContext = () => ({
     getUploadMainFile,
     getEndpointUrl,
     getSupportedFilesByResourceType,
-    getUploadProperty
+    getUploadProperty,
+    canAccessPermissions
 });

@@ -679,8 +679,7 @@
             {
                 "name": "Share",
                 "cfg": {
-                    "containerPosition": "rightOverlay",
-                    "enableGeoLimits": true
+                    "containerPosition": "rightOverlay"
                 }
             },
             {
