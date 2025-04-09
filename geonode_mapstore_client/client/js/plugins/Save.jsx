@@ -59,11 +59,11 @@ function SaveButton({
 }) {
     return (
         <Button
-            variant={dirtyStateProp ? 'warning' : (variant || "primary")}
+            variant={variant || "primary"}
             size={size}
             onClick={() => onClick()}
             disabled={loading}
-            className={className}
+            className={`${className ?? ''} ${dirtyStateProp ? 'ms-notification-circle warning' : ''}`}
         >
             <Message msgId={saveMsgId}/>{' '}{loading && <Spinner />}
         </Button>

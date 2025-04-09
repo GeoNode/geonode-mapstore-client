@@ -120,6 +120,7 @@ function SaveAsButton({
             size={size}
             disabled={disabled}
             onClick={() => onClick([ resource ])}
+            className={dirtyState ? 'ms-notification-circle warning' : ''}
         >
             <Message msgId="saveAs"/>
         </Button>

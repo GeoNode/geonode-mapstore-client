@@ -148,7 +148,8 @@ function ActionNavbarPlugin(
                 '_sticky',
                 '_corner-tl',
                 '_padding-lr-md',
-                '_padding-tb-xs'
+                '_padding-tb-xs',
+                '_border-transparent'
             ]}
             centerChildrenVertically
             gap="sm"
