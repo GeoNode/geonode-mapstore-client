@@ -124,7 +124,7 @@ const resourceTypes = {
         resourceObservable: (pk, options) => {
             const { page, selectedLayer, map: currentMap } = options || {};
             const { subtype } = options?.params || {};
-            const skipActions = page === "catalogue";
+            const isCataloguePage = page === "catalogue";
             return Observable.defer(() =>
                 axios.all([
                     getNewMapConfiguration(),
@@ -136,7 +136,7 @@ const resourceTypes = {
                 ])
                     .then((response) => {
                         const [, gnLayer] = response ?? [];
-                        if (gnLayer?.has_time && !skipActions) {
+                        if (gnLayer?.has_time && !isCataloguePage) {
                             // fetch timeseries when applicable
                             return getDatasetTimeSettingsByPk(pk)
                                 .then((timeseries) => response.concat(timeseries));
@@ -154,7 +154,9 @@ const resourceTypes = {
                     const [mapConfig, gnLayer, newLayer] = response;
                     const {minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
                     const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
-                    const actions = skipActions ? [] : [
+
+                    // in catalogue page only map config and dataset layer actions are needed
+                    const actions = isCataloguePage ? [] : [
                         ...((extent && !currentMap)
                             ? [ setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', extent) ]
                             : []),
