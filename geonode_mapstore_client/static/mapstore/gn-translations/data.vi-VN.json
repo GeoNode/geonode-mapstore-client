@@ -208,8 +208,6 @@
             "filterByNameOrPermissions": "Filter by name or permissions",
             "permissionsName": "Name",
             "permissions": "Permissions",
-            "anonymous": "Anyone",
-            "registered-members": "Registered members",
             "permissionsEntriesNoResults": "No Results...",
             "shareThisResource": "Share with people and groups",
             "embed": "Embed",

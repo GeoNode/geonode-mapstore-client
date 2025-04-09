@@ -208,8 +208,6 @@
             "filterByNameOrPermissions": "Filter by name or permissions",
             "permissionsName": "Name",
             "permissions": "Permissions",
-            "anonymous": "Anyone",
-            "registered-members": "Registered members",
             "permissionsEntriesNoResults": "No Results...",
             "shareThisResource": "Share with people and groups",
             "embed": "Embed",
@@ -437,7 +435,15 @@
                 "updateSuccess": "Layer settings updated",
                 "updateError": "Error saving layer settings"
             },
-            "apply": "Apply"
+            "apply": "Apply",
+            "showPreview": "Show Preview",
+            "hidePreview": "Hide Preview",
+            "columnTitle": "Title",
+            "columnOwner": "Owner"
+        },
+        "resourcesCatalog": {
+            "anonymous": "Anyone",
+            "registered-members": "Registered members"
         }
     }
 }
