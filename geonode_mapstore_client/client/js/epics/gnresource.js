@@ -721,7 +721,8 @@ export const gnsSelectResourceEpic = (action$, store) =>
                         ),
                         ...(resourceObservable ? [resourceObservable(selectedResource.pk, {
                             page: "catalogue",
-                            isSamePreviousResource: false,
+                            isSamePreviousResource: true,
+                            resourceData: resource,
                             params: { subtype: selectedResource?.subtype }
                         })] : [])
                     );
