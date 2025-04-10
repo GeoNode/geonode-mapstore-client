@@ -41,6 +41,9 @@ import {
     showSettings
 } from '@mapstore/framework/actions/layers';
 import {
+    setSelectedResource
+} from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
+import {
     setNewResource,
     setResourceType,
     setResourceId,
@@ -679,7 +682,12 @@ export const gnZoomToFitBounds = (action$) =>
                 })
         );
 
-export const gnsSelectResourceEpic = (action$, store) =>
+const getResourceWithDetail = (resource) => ({
+    ...resource,
+    /* store information related to detail */
+    '@ms-detail': true
+});
+export const gnSelectResourceEpic = (action$, store) =>
     action$.ofType(REQUEST_RESOURCE)
         .switchMap(action => {
             const selectedResource = action?.resource;
@@ -690,6 +698,11 @@ export const gnsSelectResourceEpic = (action$, store) =>
                 );
             }
             const user = userSelector(store.getState());
+            const _selectedResource = getResourceWithDetail(selectedResource);
+            const initialActions = !_selectedResource ? [] : [
+                setResource(_selectedResource, true),
+                setSelectedResource(_selectedResource)
+            ];
             return Observable.defer(() => Promise.all([
                 getResourceByTypeAndByPk(selectedResource?.resource_type, selectedResource?.pk, selectedResource?.subtype),
                 user
@@ -700,11 +713,7 @@ export const gnsSelectResourceEpic = (action$, store) =>
             ]))
                 .switchMap(([resource, compactPermissions]) => {
                     return Observable.of(
-                        setResource({
-                            ...resource,
-                            /* store information related to detail */
-                            '@ms-detail': true
-                        }),
+                        setResource(getResourceWithDetail(resource)),
                         ...(compactPermissions ? [setResourceCompactPermissions(compactPermissions)] : [])
                     );
                 })
@@ -713,13 +722,7 @@ export const gnsSelectResourceEpic = (action$, store) =>
                 })
                 .startWith(
                     // preload the resource if available
-                    ...(selectedResource
-                        ? [ setResource({
-                            ...selectedResource,
-                            /* store information related to detail */
-                            '@ms-detail': true
-                        }, true) ]
-                        : []),
+                    ...initialActions,
                     resourceLoading()
                 );
         });
@@ -733,5 +736,5 @@ export default {
     closeDatasetCatalogPanel,
     gnManageLinkedResource,
     gnZoomToFitBounds,
-    gnsSelectResourceEpic
+    gnSelectResourceEpic
 };
