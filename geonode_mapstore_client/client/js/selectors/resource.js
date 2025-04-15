@@ -12,7 +12,7 @@ import { compareMapChanges } from '@mapstore/framework/utils/MapUtils';
 import { currentStorySelector } from '@mapstore/framework/selectors/geostory';
 import { originalDataSelector } from '@mapstore/framework/selectors/dashboard';
 import { widgetsConfig } from '@mapstore/framework/selectors/widgets';
-import { ResourceTypes, RESOURCE_MANAGEMENT_PROPERTIES } from '@js/utils/ResourceUtils';
+import { ResourceTypes, RESOURCE_MANAGEMENT_PROPERTIES, GROUP_OWNER_PROPERTIES } from '@js/utils/ResourceUtils';
 import {
     getCurrentResourceDeleteLoading,
     getCurrentResourceCopyLoading
@@ -28,7 +28,7 @@ import omitBy from 'lodash/omitBy';
 import { generateContextResource } from '@mapstore/framework/selectors/contextcreator';
 import { layerSettingSelector, getSelectedLayer as getSelectedNode } from '@mapstore/framework/selectors/layers';
 
-const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys(RESOURCE_MANAGEMENT_PROPERTIES);
+const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys({...RESOURCE_MANAGEMENT_PROPERTIES, ...GROUP_OWNER_PROPERTIES});
 
 /**
 * @module selectors/resource
@@ -62,6 +62,10 @@ export const updatingThumbnailResource = (state) => {
 
 export const isThumbnailChanged = (state) => {
     return state?.gnresource?.data?.thumbnailChanged || false;
+};
+
+export const resourceOwnerSelector = (state) => {
+    return state?.gnresource?.data?.owner || {};
 };
 
 export const getViewedResourceType = (state) => {
