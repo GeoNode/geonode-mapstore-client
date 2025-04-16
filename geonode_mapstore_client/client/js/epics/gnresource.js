@@ -118,7 +118,7 @@ const resourceTypes = {
     [ResourceTypes.DATASET]: {
         resourceObservable: (pk, options) => {
             const { page, selectedLayer, map: currentMap } = options || {};
-            const { subtype, searchParams } = options?.params || {};
+            const { subtype, query } = options?.params || {};
             return Observable.defer(() =>
                 axios.all([
                     getNewMapConfiguration(),
@@ -183,7 +183,7 @@ const resourceTypes = {
                         ...(page === 'dataset_edit_layer_settings'
                             ? [
                                 showSettings(newLayer.id, "layers", {opacity: newLayer.opacity ?? 1}),
-                                setControlProperty("layersettings", "activeTab", searchParams.get('tab') ?? "general"),
+                                setControlProperty("layersettings", "activeTab", query.tab ?? "general"),
                                 updateAdditionalLayer(newLayer.id, STYLE_OWNER_NAME, 'override', {}),
                                 resizeMap()
                             ]
@@ -487,7 +487,7 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     loadingResourceConfig(false)
                 );
             }
-            const params = new URLSearchParams(searchSelector(state));
+            const { query = {} } = url.parse(searchSelector(state), true) || {};
             const resourceData = getResourceData(state);
             const isSamePreviousResource = !resourceData?.['@ms-detail'] && resourceData?.pk === action.pk;
             return Observable.concat(
@@ -514,7 +514,7 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     resourceData,
                     selectedLayer: isSamePreviousResource && getSelectedLayer(state),
                     map: isSamePreviousResource && mapSelector(state),
-                    params: {...action?.options?.params, searchParams: params}
+                    params: {...action?.options?.params, query}
                 }),
                 Observable.of(
                     loadingResourceConfig(false)
