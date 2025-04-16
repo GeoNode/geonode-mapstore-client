@@ -121,6 +121,12 @@ const getFeatureStyle = (type, isDrawn) => {
     };
 };
 
+const defaultInteractions = {
+    dragPan: true,
+    mouseWheelZoom: true,
+    pinchZoom: true
+};
+
 const DetailsLocations = ({ onSetExtent, fields, allowEdit: allowEditProp, resource } = {}) => {
     const extent = get(fields, 'extent.coords');
     const initialExtent = get(fields, 'initialExtent.coords');
@@ -129,7 +135,7 @@ const DetailsLocations = ({ onSetExtent, fields, allowEdit: allowEditProp, resou
     const center = !isEmpty(extent) && polygon ? turfCenter(polygon) : null;
     const isDrawn = initialExtent !== undefined && !isEqual(initialExtent, extent);
 
-    const allowEdit = onSetExtent && !['map', 'dataset'].includes(resource?.resource_type) && allowEditProp;
+    const allowEdit = !!(onSetExtent && !['map', 'dataset'].includes(resource?.resource_type) && allowEditProp);
 
     return (
         <div className="gn-viewer-extent-map">
@@ -143,7 +149,14 @@ const DetailsLocations = ({ onSetExtent, fields, allowEdit: allowEditProp, resou
                         registerHooks: false,
                         projection: "EPSG:3857"
                     }}
-                    options={{interactive: !!allowEdit}}
+                    options={{
+                        interactive: allowEdit,
+                        ...(!allowEdit && {
+                            mapOptions: {
+                                interactions: defaultInteractions
+                            }
+                        })
+                    }}
                     styleMap={{
                         height: '100%'
                     }}
