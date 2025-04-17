@@ -131,15 +131,19 @@ export const LayerDownloadActionButton = connect(
 
 export const FilterLayerActionButton = connect(
     (state) => ({
-        active: !!getSelectedLayer(state)?.layerFilter
+        layer: getSelectedLayer(state)
     }),
     { onClick: openQueryBuilder }
 )(({
     onClick,
     variant,
     size,
-    active
+    layer
 }) => {
+    const active = !!layer?.layerFilter;
+    if (!layer?.search) {
+        return null;
+    }
     return (
         <Button
             variant={variant}
