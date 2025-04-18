@@ -581,7 +581,7 @@
                                     "type": "link",
                                     "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
                                     "labelId": "gnviewer.viewData",
-                                    "disableIf": "{state('gnResourceData') && ['raster', 'remote', '3dtiles'].includes(state('gnResourceData').subtype)}"
+                                    "disableIf": "{state('gnResourceData') && ['raster', '3dtiles'].includes(state('gnResourceData').subtype)}"
                                 }
                             ]
                         },
