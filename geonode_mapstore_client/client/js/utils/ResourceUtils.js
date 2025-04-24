@@ -852,3 +852,25 @@ export const parseCatalogResource = (resource) => {
         }
     };
 };
+
+export const resourceToLayers = (resource) => {
+    if (resource?.resource_type === ResourceTypes.DATASET) {
+        return [{...resourceToLayerConfig(resource), isDataset: true}];
+    }
+    if (resource.maplayers && resource?.resource_type === ResourceTypes.MAP) {
+        return resource.maplayers
+            .map(maplayer => {
+                maplayer.dataset ? resourceToLayerConfig(maplayer.dataset) : null;
+                if (maplayer.dataset) {
+                    const layer = resourceToLayerConfig(maplayer.dataset);
+                    return {
+                        ...layer,
+                        style: maplayer.current_style
+                    };
+                }
+                return null;
+            })
+            .filter(value => value);
+    }
+    return [];
+};

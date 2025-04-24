@@ -127,7 +127,6 @@ const resourceTypes = {
         resourceObservable: (pk, options) => {
             const { page, selectedLayer, map: currentMap } = options || {};
             const { subtype } = options?.params || {};
-            const isCataloguePage = page === "catalogue";
             return Observable.defer(() =>
                 axios.all([
                     getNewMapConfiguration(),
@@ -139,7 +138,7 @@ const resourceTypes = {
                 ])
                     .then((response) => {
                         const [, gnLayer] = response ?? [];
-                        if (gnLayer?.has_time && !isCataloguePage) {
+                        if (gnLayer?.has_time) {
                             // fetch timeseries when applicable
                             return getDatasetTimeSettingsByPk(pk)
                                 .then((timeseries) => response.concat(timeseries));
@@ -157,9 +156,24 @@ const resourceTypes = {
                     const [mapConfig, gnLayer, newLayer] = response;
                     const {minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
                     const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
-
-                    // in catalogue page only map config action is needed
-                    const actions = isCataloguePage ? [] : [
+                    return Observable.of(
+                        configureMap({
+                            ...mapConfig,
+                            map: {
+                                ...mapConfig.map,
+                                ...currentMap, // keep configuration for other pages when resource id is the same (eg: center, zoom)
+                                visualizationMode: ['3dtiles'].includes(subtype) ? VisualizationModes._3D : VisualizationModes._2D,
+                                layers: [
+                                    ...mapConfig.map.layers,
+                                    {
+                                        ...selectedLayer, // keep configuration for other pages when resource id is the same (eg: filters)
+                                        ...newLayer,
+                                        isDataset: true,
+                                        _v_: Date.now()
+                                    }
+                                ]
+                            }
+                        }),
                         ...((extent && !currentMap)
                             ? [ setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', extent) ]
                             : []),
@@ -183,26 +197,6 @@ const resourceTypes = {
                         ...(newLayer?.bboxError
                             ? [warningNotification({ title: "gnviewer.invalidBbox", message: "gnviewer.invalidBboxMsg" })]
                             : [])
-                    ];
-                    return Observable.of(
-                        configureMap({
-                            ...mapConfig,
-                            map: {
-                                ...mapConfig.map,
-                                ...currentMap, // keep configuration for other pages when resource id is the same (eg: center, zoom)
-                                visualizationMode: ['3dtiles'].includes(subtype) ? VisualizationModes._3D : VisualizationModes._2D,
-                                layers: [
-                                    ...mapConfig.map.layers,
-                                    {
-                                        ...selectedLayer, // keep configuration for other pages when resource id is the same (eg: filters)
-                                        ...newLayer,
-                                        isDataset: true,
-                                        _v_: Date.now()
-                                    }
-                                ]
-                            }
-                        }),
-                        ...actions
                     );
                 });
         }
@@ -706,8 +700,6 @@ export const gnSelectResourceEpic = (action$, store) =>
             const state = store.getState();
             const user = userSelector(state);
             const { resource_type: resourceType, pk, subtype } = selectedResource;
-            const { resourceObservable } = resourceType === ResourceTypes.DATASET && resourceTypes[resourceType] || {};
-
             const _selectedResource = getResourceWithDetail(selectedResource);
             const initialActions = !_selectedResource ? [] : [
                 setResource(_selectedResource, true),
@@ -722,17 +714,10 @@ export const gnSelectResourceEpic = (action$, store) =>
                     : Promise.resolve(null)
             ]))
                 .switchMap(([resource, compactPermissions]) => {
-                    return Observable.concat(
-                        Observable.of(
-                            setResourceType(resourceType),
-                            setResource(getResourceWithDetail(resource)),
-                            ...(compactPermissions ? [setResourceCompactPermissions(compactPermissions)] : [])
-                        ),
-                        ...(resourceObservable ? [resourceObservable(pk, {
-                            page: "catalogue",
-                            isSamePreviousResource: true,
-                            resourceData: resource
-                        })] : [])
+                    return Observable.of(
+                        setResourceType(resourceType),
+                        setResource(getResourceWithDetail(resource)),
+                        ...(compactPermissions ? [setResourceCompactPermissions(compactPermissions)] : [])
                     );
                 })
                 .catch((error) => {

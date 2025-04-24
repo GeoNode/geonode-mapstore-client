@@ -20,12 +20,12 @@ import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Popover from "@mapstore/framework/components/styleeditor/Popover";
 import useIsMounted from "@mapstore/framework/hooks/useIsMounted";
-import { layersSelector } from "@mapstore/framework/selectors/layers";
-import { mapSelector } from "@mapstore/framework/selectors/map";
+import { mapInfoSelector } from "@mapstore/framework/selectors/map";
 
 import { getExtent } from '@js/utils/CoordinatesUtils';
 import { getGeoLimits } from "@js/api/geonode/security";
-import { getResourceId } from "@js/selectors/resource";
+import { getResourceData, getResourceId } from "@js/selectors/resource";
+import { resourceToLayers } from '@js/utils/ResourceUtils';
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = 'Map';
@@ -186,14 +186,19 @@ GeoLimits.defaultProps = {
 
 const ConnectedGeoLimits = connect(
     createSelector(
-        [getResourceId, mapSelector, layersSelector],
-        (resourceId, config, layers) => ({
-            resourceId: resourceId || config?.info?.id,
-            layers: layers ?? config?.layers ?? []
+        [getResourceId, mapInfoSelector, getResourceData],
+        (resourceId, mapInfo, resource) => ({
+            resourceId: resourceId || mapInfo?.id,
+            resource
         })
     )
-)(({ entry, onUpdate, resourceId, layers }) => {
+)(({ entry, onUpdate, resourceId, resource }) => {
     const isMounted = useIsMounted();
+    const defaultMap = window.overrideNewMapConfig({ map: { layers: [] } });
+    const layers = [
+        ...(defaultMap?.map?.layers || []),
+        ...resourceToLayers(resource)
+    ];
 
     function handleRequestGeoLimits(_entry) {
         if (!_entry.geoLimitsLoading) {

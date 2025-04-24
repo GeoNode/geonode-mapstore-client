@@ -20,7 +20,7 @@ import Spinner from '@mapstore/framework/components/layout/Spinner';
 import BaseMap from '@mapstore/framework/components/map/BaseMap';
 import mapTypeHOC from '@mapstore/framework/components/map/enhancers/mapType';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
-import { ResourceTypes, GXP_PTYPES, isDefaultDatasetSubtype, resourceToLayerConfig } from '@js/utils/ResourceUtils';
+import { ResourceTypes, GXP_PTYPES, isDefaultDatasetSubtype, resourceToLayers } from '@js/utils/ResourceUtils';
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = 'Map';
@@ -85,28 +85,6 @@ const MapThumbnailView = ({
         </>
     );
 };
-
-function resourceToLayers(resource) {
-    if (resource?.resource_type === ResourceTypes.DATASET) {
-        return [resourceToLayerConfig(resource)];
-    }
-    if (resource.maplayers && resource?.resource_type === ResourceTypes.MAP) {
-        return resource.maplayers
-            .map(maplayer => {
-                maplayer.dataset ? resourceToLayerConfig(maplayer.dataset) : null;
-                if (maplayer.dataset) {
-                    const layer = resourceToLayerConfig(maplayer.dataset);
-                    return {
-                        ...layer,
-                        style: maplayer.current_style
-                    };
-                }
-                return null;
-            })
-            .filter(value => value);
-    }
-    return [];
-}
 
 function DetailsThumbnail({
     icon,
