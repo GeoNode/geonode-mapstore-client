@@ -32,7 +32,7 @@ import {
     resourceToPermissionEntry,
     ResourceTypes
 } from "@js/utils/ResourceUtils";
-import GeoLimits from "@js/components/Permissions/GeoLimits";
+import GeoLimits from "./GeoLimits";
 
 const entriesTabs = [
     {

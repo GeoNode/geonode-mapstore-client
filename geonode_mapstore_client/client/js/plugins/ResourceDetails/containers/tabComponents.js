@@ -11,7 +11,7 @@ import DetailsLocations from '../components/DetailsLocations';
 import DetailsAssets from '../components/DetailsAssets';
 import DetailsAttributeTable from '../components/DetailsAttributeTable';
 import DetailsLinkedResources from '../components/DetailsLinkedResources';
-import DetailsPermissions from '../components/DetailsPermissions';
+import DetailsPermissions from './Permissions';
 import DetailsSettings from '../components/DetailsSettings';
 import { setResourceExtent, updateResourceProperties } from '@js/actions/gnresource';
 
