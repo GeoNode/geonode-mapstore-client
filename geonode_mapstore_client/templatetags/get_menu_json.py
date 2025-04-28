@@ -147,12 +147,6 @@ def get_user_menu(context):
             ]
     )
 
-    monitoring = []
-    if settings.MONITORING_ENABLED:
-        monitoring = [
-            devider,
-            {"type": "link", "href": "/monitoring/", "label": "Monitoring & Analytics"},
-        ]
     admin_only = (
         [
             {"type": "link", "href": "/admin/", "label": "Admin"},
@@ -162,7 +156,6 @@ def get_user_menu(context):
                 "label": "GeoServer",
             },
         ]
-        + monitoring
         + [devider]
         + general
     )
