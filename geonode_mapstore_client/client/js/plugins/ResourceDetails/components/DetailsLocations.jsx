@@ -154,6 +154,12 @@ const getFeatureStyle = (type, isDrawn) => {
     };
 };
 
+const defaultInteractions = {
+    dragPan: true,
+    mouseWheelZoom: true,
+    pinchZoom: true
+};
+
 const DetailsLocations = ({ onSetExtent, fields, editing: allowEditProp, resource } = {}) => {
 
     const extent = get(fields, 'extent.coords');
@@ -163,7 +169,7 @@ const DetailsLocations = ({ onSetExtent, fields, editing: allowEditProp, resourc
     const center = !isEmpty(extent) && polygon ? turfCenter(polygon) : null;
     const isDrawn = initialExtent !== undefined && !isEqual(initialExtent, extent);
 
-    const allowEdit = onSetExtent && !['map', 'dataset'].includes(resource?.resource_type) && allowEditProp;
+    const allowEdit = !!(onSetExtent && !['map', 'dataset'].includes(resource?.resource_type) && allowEditProp);
 
     return (
         <div>
@@ -178,7 +184,14 @@ const DetailsLocations = ({ onSetExtent, fields, editing: allowEditProp, resourc
                             registerHooks: false,
                             projection: "EPSG:3857"
                         }}
-                        options={{interactive: !!allowEdit}}
+                        options={{
+                            interactive: allowEdit,
+                            ...(!allowEdit && {
+                                mapOptions: {
+                                    interactions: defaultInteractions
+                                }
+                            })
+                        }}
                         styleMap={{
                             position: 'absolute',
                             width: '100%',

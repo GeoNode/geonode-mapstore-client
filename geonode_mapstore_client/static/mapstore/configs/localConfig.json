@@ -1216,7 +1216,8 @@
                         {
                             "type": "link",
                             "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk}",
-                            "labelId": "gnviewer.goBackTo"
+                            "label": "{'< Go back to ' + (state('gnResourceData') || {}).title}"
+
                         }
                     ]
                 }
@@ -1340,7 +1341,7 @@
                         {
                             "type": "link",
                             "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk}",
-                            "labelId": "gnviewer.goBackTo"
+                            "label": "{'< Go back to ' + (state('gnResourceData') || {}).title}"
                         },
                         {
                             "type": "plugin",
