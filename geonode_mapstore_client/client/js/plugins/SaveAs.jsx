@@ -14,7 +14,7 @@ import { setControlProperty } from '@mapstore/framework/actions/controls';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import { userSelector } from '@mapstore/framework/selectors/security';
-import Button from '@js/components/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 import {
     saveContent,
     clearSave
@@ -35,8 +35,6 @@ import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { canCopyResource } from '@js/utils/ResourceUtils';
 import { processResources } from '@js/actions/gnresource';
 import { getCurrentResourceCopyLoading } from '@js/selectors/resourceservice';
-import Dropdown from '@js/components/Dropdown';
-import FaIcon from '@js/components/FaIcon';
 import withPrompt from '@js/plugins/save/withPrompt';
 
 function SaveAs({
@@ -122,6 +120,7 @@ function SaveAsButton({
             size={size}
             disabled={disabled}
             onClick={() => onClick([ resource ])}
+            className={dirtyState ? 'ms-notification-circle warning' : ''}
         >
             <Message msgId="saveAs"/>
         </Button>
@@ -167,20 +166,22 @@ const ConnectedSaveAsButton = connect(
 function CopyMenuItem({
     resource,
     canCopy,
-    onCopy
+    onCopy,
+    component
 }) {
     if (!canCopy(resource)) {
         return null;
     }
+    const Component = component;
     return (
-        <Dropdown.Item
+        <Component
             onClick={() =>
                 onCopy([resource])
             }
-        >
-            <FaIcon name="copy" />{' '}
-            <Message msgId="gnviewer.clone" />
-        </Dropdown.Item>
+            labelId="gnviewer.clone"
+            glyph="duplicate"
+            iconType="glyphicon"
+        />
     );
 }
 
@@ -220,7 +221,7 @@ export default createPlugin('SaveAs', {
         },
         ResourcesGrid: {
             name: ProcessTypes.COPY_RESOURCE,
-            target: 'cardOptions',
+            target: 'card-options',
             Component: ConnectedMenuItem
         }
     },

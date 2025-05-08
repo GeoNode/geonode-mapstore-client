@@ -12,7 +12,7 @@ import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import Message from '@mapstore/framework/components/I18N/Message';
-import Button from '@js/components/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 import { getDatasets, getDatasetByPk, getResourceByPk } from '@js/api/geonode/v2';
 import { resourceToLayerConfig, isDefaultDatasetSubtype } from '@js/utils/ResourceUtils';
 import { addLayer } from '@mapstore/framework/actions/layers';

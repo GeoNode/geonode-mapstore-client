@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import Button from '@js/components/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 import { Glyphicon } from 'react-bootstrap';
 import ArrayFieldItemTemplate from './ArrayFieldItemTemplate';
 import ArrayFieldTemplate from './ArrayFieldTemplate';

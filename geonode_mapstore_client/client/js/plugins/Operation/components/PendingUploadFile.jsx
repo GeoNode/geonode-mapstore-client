@@ -7,11 +7,11 @@
  */
 
 import React from 'react';
-import Button from '@js/components/Button/Button';
-import FaIcon from '@js/components/FaIcon';
-import Badge from '@js/components/Badge';
+import Button from '@mapstore/framework/components/layout/Button';
+import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import { Badge } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
-import Spinner from '@js/components/Spinner';
+import Spinner from '@mapstore/framework/components/layout/Spinner';
 import ErrorMessageWithTooltip from './ErrorMessageWithTooltip';
 import { getSize } from '../../../utils/UploadUtils';
 
@@ -29,15 +29,15 @@ function PendingUploadFile({
     return (
         <div className="gn-upload-card">
             <div className="gn-upload-card-header">
-                {(missingExtensions.length > 0 || missingMainFile) ? <div className="gn-upload-card-error"><FaIcon name="exclamation" /></div> : null}
+                {(missingExtensions.length > 0 || missingMainFile) ? <div className="gn-upload-card-error"><Icon glyph="exclamation" /></div> : null}
                 <div className="gn-upload-card-title">{baseName}</div>
                 <div>
                     {error ? <ErrorMessageWithTooltip tooltipId={<Message msgId="gnviewer.invalidUploadMessageErrorTooltip" />} /> : null}
                     {onRemove
                         ? (!loading || !progress) ? <Button size="xs" onClick={() => onRemove(id)}>
-                            <FaIcon name="trash" />
+                            <Icon glyph="trash" />
                         </Button> : <Button size="xs" onClick={() => onCancel([id])}>
-                            <FaIcon name="stop" />
+                            <Icon glyph="stop" />
                         </Button>
                         : null}
                 </div>

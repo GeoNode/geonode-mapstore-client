@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import Message from '@mapstore/framework/components/I18N/Message';
-import Button from '@js/components/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 import { isLoggedIn } from '@mapstore/framework/selectors/security';
 import gnsyncEpics from '@js/epics/gnsync';
 import { syncResources } from '@js/actions/gnsync';

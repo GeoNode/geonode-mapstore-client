@@ -1,6 +1,6 @@
 {% load static %}
 <header class="gn-main-header">
-    {% include './brand_navbar.html'  with id='gn-brand-navbar' %}
+    {% include './brand_navbar.html' %}
 </header>
 <div class="gn-main-header-placeholder"></div>
 {% if show_hero %}
@@ -25,5 +25,30 @@
         window.addEventListener('resize', resize);
         window.addEventListener('DOMContentLoaded', resize);
         resize();
+
+
+        const menuDropdowns = document.querySelectorAll('.gn-main-header .dropdown');
+        const pathname = window.location.pathname;
+        for (var i = 0; i < menuDropdowns.length; i++) {
+            const menuDropdown = menuDropdowns[i];
+            const menuItems = menuDropdown.querySelectorAll('.dropdown-menu > li a');
+            for (var j = 0; j < menuItems.length; j++) {
+                const menuItem = menuItems[j];
+                const href = menuItem.getAttribute('href');
+                if (href === pathname) {
+                    menuItem.parentNode.classList.add('active');
+                    const toggle = menuDropdown.querySelector('.dropdown-toggle');
+                    toggle.classList.add('active');
+                }
+            }
+        }
+        const menuLinks = document.querySelectorAll('.gn-main-menu > li a');
+        for (var i = 0; i < menuLinks.length; i++) {
+            const menuLink = menuLinks[i];
+            const href = menuLink.getAttribute('href');
+            if (href === pathname) {
+                menuLink.classList.add('active');
+            }
+        }
     })();
 </script>

@@ -3,7 +3,7 @@
 // Theme
 // **************
 
-#gn-base-components-theme(@theme-vars) {
+#ms-components-theme(@theme-vars) {
     [data-ms2-container],
     body,
     .gn-theme {
@@ -66,54 +66,6 @@
     .page-header {
         .border-color-var(@theme-vars[main-border-color]);
     }
-    .gn-pending-changes-icon {
-        &::after {
-            .background-color-var(@theme-vars[warning]);
-        }
-    }
-    .gn-success-changes-icon {
-        &::after {
-            .background-color-var(@theme-vars[success]);
-        }
-    }
-    .tabs-underline {
-        > .nav > li {
-            > a {
-                .color-var(@theme-vars[main-color], true);
-                .background-color-var(@theme-vars[main-bg], true);
-            }
-            > a:hover {
-                .border-bottom-color-var(@theme-vars[main-border-color]);
-            }
-            &.active {
-                > a {
-                    .border-bottom-color-var(@theme-vars[primary]);
-                }
-            }
-        }
-    }
-    .pagination.custom {
-        &> li > a,
-        &> li > span {
-            background-color: transparent;
-        }
-        &> .disabled > span,
-        &> .disabled > span:hover,
-        &> .disabled > span:focus,
-        &> .disabled > a,
-        &> .disabled > a:hover,
-        &> .disabled > a:focus {
-            background-color: transparent;
-        }
-        &> .active > a,
-        &> .active > span,
-        &> .active > a:hover,
-        &> .active > span:hover,
-        &> .active > span:focus {
-            .color-var(@theme-vars[primary-contrast]);
-            .background-color-var(@theme-vars[primary]);
-        }
-    }
 }
 
 // **************
@@ -141,8 +93,7 @@ body {
     height: 100%;
     z-index: 99999;
 }
-.gn-embed,
-.gn-catalogue {
+.gn-embed {
     display: flex;
     position: absolute;
     overflow: auto;
@@ -267,16 +218,24 @@ div.chart-color-class-modal {
     }
 }
 
-.pagination.custom {
-    &> li > a,
-    &> li > span {
-        height: 30px;
-        min-width: 30px;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 0.25rem;
-        border: none;
-        background-color: transparent;
+.dropdown-menu .divider {
+    margin: 0.5rem 0;
+}
+
+.gn-overlay-wrapper {
+    width: 640px
+}
+
+.gn-viewer-right-overlay {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    z-index: 2000;
+    transform: all 0.3s;
+}
+
+@media screen and (max-width: 800px) {
+    .gn-overlay-wrapper {
+        width: 100vw;
     }
 }

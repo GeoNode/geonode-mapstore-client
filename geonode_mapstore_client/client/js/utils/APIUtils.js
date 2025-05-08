@@ -140,7 +140,8 @@ export const API_PRESET = {
     VIEWER_COMMON: 'viewer_common',
     DATASET: 'dataset_viewer',
     DOCUMENT: 'document_viewer',
-    MAP: 'map_viewer'
+    MAP: 'map_viewer',
+    MAP_DETAILS: 'map_details'
 };
 
 export default {

@@ -8,23 +8,15 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { FormControl as FormControlRB, Glyphicon } from 'react-bootstrap';
+import { Glyphicon } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
-import Button from '@js/components/Button';
-import ResourceCard from '@js/components/ResourceCard';
+import Button from '@mapstore/framework/components/layout/Button';
 import useInfiniteScroll from '@js/hooks/useInfiniteScroll';
-import FaIcon from '@js/components/FaIcon/FaIcon';
-import Spinner from '@js/components/Spinner';
+import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Loader from '@mapstore/framework/components/misc/Loader';
-import withDebounceOnCallback from '@mapstore/framework/components/misc/enhancers/withDebounceOnCallback';
-import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
-const FormControl = localizedProps('placeholder')(FormControlRB);
-
-function InputControl({ onChange, value, ...props }) {
-    return <FormControl {...props} value={value} onChange={event => onChange(event.target.value)} />;
-}
-
-const InputControlWithDebounce = withDebounceOnCallback('onChange', 'value')(InputControl);
+import ResourceCard from '@mapstore/framework/plugins/ResourcesCatalog/components/ResourceCard';
+import InputControl from '@mapstore/framework/plugins/ResourcesCatalog/components/InputControl';
 
 function ResourcesCompactCatalog({
     request,
@@ -122,14 +114,14 @@ function ResourcesCompactCatalog({
             </Button>
         </div>}
         <div className="gn-resources-catalog-filter">
-            <InputControlWithDebounce
+            <InputControl
                 placeholder={placeholderId}
                 value={q}
                 debounceTime={300}
                 onChange={(value) => setQ(value)}
             />
             {(q && !loading) && <Button onClick={() => setQ('')}>
-                <FaIcon name="times" />
+                <Icon glyph="times" />
             </Button>}
             {loading && <Spinner />}
         </div>
@@ -142,9 +134,17 @@ function ResourcesCompactCatalog({
                     return (
                         <li key={entry.pk}>
                             <ResourceCard
-                                data={entry}
+                                data={{
+                                    ...entry,
+                                    '@extras': {
+                                        info: {
+                                            thumbnailUrl: entry?.thumbnail_url
+                                        }
+                                    }
+                                }}
                                 readOnly
-                                layoutCardsStyle="list"
+                                layoutCardsStyle="grid"
+                                metadata={[{ path: 'title', target: 'header', width: 100 }]}
                                 onClick={() => handleSelectResource(entry)}
                             />
                         </li>

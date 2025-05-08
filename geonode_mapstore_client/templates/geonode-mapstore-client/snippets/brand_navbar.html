@@ -1,63 +1,42 @@
 {% load static %}
 {% load get_menu_json %}
 {% get_user_menu as USER_MENU %}
-
+{% get_brand_navbar_menu as BRAND_NAVBAR_MENU %}
 {% block extra_style %}
 {% endblock %}
 
-<style>
-    #{{ id|default:'' }}-bottom {
-        display: none;
-        margin-bottom: 0;
-    }
-    @media (max-width: 748px) {
-        #{{ id|default:'' }} .gn-menu-content-center > * {
-            display: none;
-        }
-        #{{ id|default:'' }}-bottom {
-            display: flex;
-            width: calc(100% - 16px);
-            margin: 8px;
-        }
-    }
-</style>
-
-<nav id="{{ id|default:'' }}" class="gn-menu gn-menu-symmetric">
-    <div class="gn-menu-container">
-        <div class="gn-menu-content">
-            <div class="gn-menu-content-left">
-                {% block left_menu %}
-                <ul class="gn-menu-list">
-                    <li>
-                        <a href="/">
-                            {% if custom_theme.logo and custom_theme.logo.url %}
-                                <img src="{{ custom_theme.logo.url }}">
-                            {% else %}
-                                <img src="{% block logo_src %}/static/mapstore/img/geonode-logo.svg{% endblock %}">
-                            {% endif %}
-                        </a>
-                    </li>
-                </ul>
-                {% endblock %}
-            </div>
-            <div class="gn-menu-content-center">
-                {% block center_menu %}
-                    {% include './search_bar.html' with search_bar_id='gn-search-bar' %}
-                {% endblock %}
-            </div>
-            <div class="gn-menu-content-right">
-                {% block right_menu %}
-                <ul class="gn-menu-list">
-                    {% for menu_item in USER_MENU %}
-                        {% include './menu_item.html' with menu_item=menu_item align_right=True %}
-                    {% endfor %}
-                </ul>
-                {% endblock %}
-            </div>
-        </div>
+<nav id="gn-brand-navbar" class="gn-brand-navbar ms-main-colors _padding-md ms-flex-box _flex">
+    <div class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
+        {% block logo %}
+        <a href="/">
+            {% if custom_theme.logo and custom_theme.logo.url %}
+                <img src="{{ custom_theme.logo.url }}">
+            {% else %}
+                <img src="{% block logo_src %}/static/mapstore/img/geonode-logo.svg{% endblock %}">
+            {% endif %}
+        </a>
+        {% endblock %}
+        <ul class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
+            {% for menu_item in BRAND_NAVBAR_MENU %}
+                {% include './menu_item.html' with menu_item=menu_item %}
+            {% endfor %}
+        </ul>
+        {% block right_menu %}
+            {% block search_bar %}
+                {% include './search_bar.html' with search_bar_id='gn-search-bar' %}
+            {% endblock %}
+            {% block language_selector %}
+                {% include './language_selector.html' with align_right=True %}
+            {% endblock %}
+            <ul class="ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                {% for menu_item in USER_MENU %}
+                    {% include './menu_item.html' with menu_item=menu_item align_right=True %}
+                {% endfor %}
+            </ul>
+        {% endblock %}
     </div>
 </nav>
-<div id="{{ id|default:'' }}-bottom">
+<div id="gn-brand-navbar-bottom">
     {% block bottom_menu %}
         {% include './search_bar.html' with search_bar_id='gn-search-bar-bottom' %}
     {% endblock %}

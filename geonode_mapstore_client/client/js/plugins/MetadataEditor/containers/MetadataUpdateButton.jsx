@@ -11,7 +11,7 @@ import get from 'lodash/get';
 import PropTypes from "prop-types";
 import { updateMetadata } from '@js/api/geonode/v2/metadata';
 import Message from '@mapstore/framework/components/I18N/Message';
-import Button from '@js/components/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 
 function MetadataUpdateButton({

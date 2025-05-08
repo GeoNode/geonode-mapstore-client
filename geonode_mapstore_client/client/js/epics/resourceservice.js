@@ -28,13 +28,15 @@ import {
     downloadResource
 } from '@js/api/geonode/v2';
 import { PROCESS_RESOURCES, DOWNLOAD_RESOURCE, downloadComplete } from '@js/actions/gnresource';
-import { reduceTotalCount } from '@js/actions/gnsearch';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import { push } from 'connected-react-router';
 import {
     error as errorNotification
 } from '@mapstore/framework/actions/notifications';
 import { getFilenameFromContentDispositionHeader } from '@js/utils/FileUtils';
+import { searchResources, updateResource } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
+import { getResourceStatuses } from '@js/utils/ResourceUtils';
+import { userSelector } from '@mapstore/framework/selectors/security';
 
 export const gnMonitorAsyncProcesses = (action$, store) => {
     return action$.ofType(START_ASYNC_PROCESS)
@@ -57,11 +59,7 @@ export const gnMonitorAsyncProcesses = (action$, store) => {
                             if (output.error || output.status === ProcessStatus.FINISHED || output.status === ProcessStatus.FAILED) {
                                 return Observable.of(
                                     stopAsyncProcess({ ...action.payload, output, completed: true }),
-                                    // reduce total count of resource if an original resource is deleted
-                                    // when cloned resources are removed, the getTotalResources selector already adjusts total count
-                                    ...(action?.payload?.processType === ProcessTypes.DELETE_RESOURCE && !action?.payload?.resource['@temporary']
-                                        ? [reduceTotalCount()]
-                                        : [])
+                                    searchResources({ refresh: true })
                                 );
                             }
                             return Observable.of(updateAsyncProcess({ ...action.payload, output }));
@@ -76,7 +74,7 @@ const processAPI = {
     [ProcessTypes.REMOVE_LINKED_RESOURCE]: deleteResource
 };
 
-export const gnProcessResources = (action$) =>
+export const gnProcessResources = (action$, store) =>
     action$.ofType(PROCESS_RESOURCES)
         // all the processes must be listened for this reason we should use flatMap instead of switchMap
         .flatMap((action) => {
@@ -89,6 +87,20 @@ export const gnProcessResources = (action$) =>
             ))
                 .switchMap((processes) => {
                     return Observable.of(
+                        ...processes.map((process) => {
+                            const executions = [
+                                ...(process.resource.executions || []),
+                                { ...process.output, func_name: process.processType }
+                            ];
+                            return updateResource({
+                                id: process.resource.id,
+                                ['@extras']: {
+                                    ...process.resource?.['@extras'],
+                                    executions,
+                                    status: getResourceStatuses({ ...process.resource, executions }, userSelector(store.getState()))
+                                }
+                            });
+                        }),
                         setControlProperty(action.processType, 'loading', false),
                         setControlProperty(action.processType, 'value', undefined),
                         ...processes.map((payload) => startAsyncProcess(payload)),

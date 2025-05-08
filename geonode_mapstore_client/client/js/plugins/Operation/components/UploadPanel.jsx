@@ -7,10 +7,10 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import Button from '@js/components/Button/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 import { Alert } from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
-import FaIcon from '@js/components/FaIcon';
+import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
 import Message from '@mapstore/framework/components/I18N/Message';
 import ViewerLayout from '@js/components/ViewerLayout';
 import uuidv1 from 'uuid/v1';
@@ -131,10 +131,10 @@ function UploadPanel({
                     <div className="gn-upload-list-header">
                         <input disabled={disabledAdd} ref={inputFile} value="" type="file" multiple onChange={(event) => handleFile([...event?.target?.files])} style={{ display: 'none' }} />
                         <Button disabled={disabledAdd} onClick={() => inputFile?.current?.click()}>
-                            <FaIcon name="plus" /><Message msgId="gnviewer.selectFiles" />
+                            <Icon glyph="plus" /><Message msgId="gnviewer.selectFiles" />
                         </Button>
                         {enableRemoteUploads && <Button disabled={disabledAdd} className={"add-url"} onClick={() => handleRemote()}>
-                            <FaIcon name="plus" /><Message msgId="gnviewer.addFromUrl" />
+                            <Icon glyph="plus" /><Message msgId="gnviewer.addFromUrl" />
                         </Button>}
                     </div>
                     {uploadsList.length > 0

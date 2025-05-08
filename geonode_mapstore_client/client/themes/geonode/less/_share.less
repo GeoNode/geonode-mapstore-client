@@ -2,34 +2,15 @@
 // Theme
 // **************
 
-#gn-components-theme(@theme-vars) {
+#ms-components-theme(@theme-vars) {
     .gn-share-panel {
         .color-var(@theme-vars[main-color]);
         .background-color-var(@theme-vars[main-bg]);
-        .gn-share-permissions-list-head,
-        .gn-share-permission-tag {
-            .background-color-var(@theme-vars[main-bg]);
-        }
-    }
-    .gn-share-permissions-head,
-    .gn-share-permissions-container,
-    .gn-share-permission-tag {
-        .border-color-var(@theme-vars[main-border-color]);
-    }
-    .gn-share-permissions-pinned {
-        .color-var(@theme-vars[main-variant-color]);
-        .background-color-var(@theme-vars[main-variant-bg]);
-        .border-color-var(@theme-vars[main-border-color]);
     }
     .gn-geo-limits {
         .color-var(@theme-vars[main-color]);
         .background-color-var(@theme-vars[main-bg]);
     }
-    .gn-add-permissions-entries-container {
-        .color-var(@theme-vars[main-color]);
-        .background-color-var(@theme-vars[main-bg]);
-    }
-
     .gn-share-link-wrapper {
         .color-var(@theme-vars[main-color]);
         .background-color-var(@theme-vars[main-bg]);
@@ -72,125 +53,6 @@
         display: inline-block;
     }
 }
-.gn-share-permissions-row {
-    display: flex;
-    align-items: center;
-}
-.gn-share-permissions-container {
-    border-width: 1px;
-    border-style: solid;
-    padding: 0.5rem;
-    margin: 0.5rem;
-    position: relative;
-}
-.gn-share-permissions-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    li + li,
-    .gn-share-permissions-row + .gn-share-permissions-row {
-        margin-top: 0.5rem;
-    }
-}
-.gn-share-permissions-list-head {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    padding-bottom: 0.5rem;
-    .input-group {
-        width: 100%;
-    }
-    .ms-popover {
-        padding: 0.5rem 0;
-        .btn {
-            font-weight: bold;
-        }
-    }
-}
-.gn-share-permissions-head {
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    padding: 0.5rem 0;
-}
-.gn-share-permissions-icon {
-    width: 2rem;
-    height: 2rem;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    img {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border-radius: 50%;
-    }
-}
-.gn-share-permissions-name {
-    flex: 1;
-    padding: 0 0.5rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.gn-share-permissions-options {
-    min-width: 200px;
-    padding: 0 0.25rem;
-    .is-open{
-        z-index: 9;
-    }
-
-}
-.gn-share-permissions-tools {
-    padding: 0 0.25rem;
-}
-
-.gn-share-permissions-pinned {
-    border-width: 1px;
-    border-style: solid;
-    padding: 0.75rem 0;
-    position: relative;
-    .gn-pin {
-        position: absolute;
-        left: 0;
-        top: 0;
-        margin: 0.5rem;
-    }
-}
-
-.gn-share-permissions-label {
-    font-weight: bold;
-    margin: 0;
-}
-
-.gn-share-permissions-owner {
-    min-width: 200px;
-    padding: 0 0.25rem;
-
-
-}
-
-.gn-share-permission-tag {
-    display: flex;
-    align-items: center;
-    max-width: calc(200px - 0.5rem);
-    border-radius: 20px;
-    border-width: 1px;
-    border-style: solid;
-    white-space: nowrap;
-    padding: .25rem;
-}
-
-.gn-share-permission-tag a {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    margin-left: 0.25rem;
-}
-
-.gn-share-permission-tag .gn-share-permissions-icon img {
-    width: unset;
-}
 
 .gn-geo-limits {
     position: relative;
@@ -219,76 +81,6 @@
     }
 }
 
-.gn-add-permissions-entries-container {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    .shadow-soft();
-    .nav {
-        padding-top: 0.25rem;
-    }
-    .gn-add-permissions-entries-body {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        flex: 1;
-        .gn-add-permissions-entries-panel {
-            position: absolute;
-        }
-    }
-}
-.gn-add-permissions-entries-panel {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    .gn-share-filter {
-        margin: 0.25rem;
-    }
-    .gn-share-permissions-list {
-        flex: 1;
-        position: relative;
-        width: 100%;
-        overflow: auto;
-        padding: 0.25rem;
-    }
-}
-
-.gn-share-filter {
-    display: flex;
-    align-items: center;
-    position: relative;
-    .form-control {
-        width: 100%;
-        padding-right: 2rem;
-    }
-    .gn-spinner,
-    .btn {
-        position: absolute;
-        right: 1px;
-        padding: 0.25rem 0.5rem;
-    }
-}
-
-.gn-permissions-alert {
-    width: 100%;
-    padding: 0.25rem;
-    padding-top: 1rem;
-    text-align: center;
-    font-style: italic;
-    position: relative;
-}
-.gn-share-panel-label {
-    padding: 0 0.5rem;
-    margin: 0 0.5rem;
-    label {
-        margin: 0;
-    }
-}
 .gn-share-link-wrapper {
     border-width: 1px;
     border-style: solid;

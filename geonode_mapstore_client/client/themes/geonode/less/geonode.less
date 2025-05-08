@@ -3,27 +3,19 @@
 @import 'ms-theme.less';
 @import '_base.less';
 
-@import '_card-grid.less';
-@import '_details-panel.less';
-@import '_filter-by-extent.less';
-@import '_filter-form.less';
+@import '_action-navbar.less';
+@import '_brand-navbar.less';
 @import '_footer.less';
 @import '_hero.less';
 @import '_legend.less';
 @import '_loader.less';
 @import '_main-event.less';
 @import '_map-viewers-catalog.less';
-@import '_menu.less';
 @import '_metadata.less';
 @import '_operation.less';
-@import '_resource-card.less';
 @import '_resources-catalog.less';
-@import '_resources-grid.less';
 @import '_search-bar.less';
 @import '_share.less';
-@import '_spinner.less';
-@import '_home-container.less';
-@import '_sub-flat-menu.less';
 @import '_upload.less';
 
 @import '_mixins.less';
@@ -39,6 +31,5 @@
 }
 
 // compose theme based on mapstore and custom components
-.write-ms-theme(@gn-theme-vars);
-#gn-base-components-theme(@gn-theme-vars);
-#gn-components-theme(@gn-theme-vars);
+.write-ms-theme(@ms-theme-vars);
+.get-root-css-variables(@ms-theme-vars);

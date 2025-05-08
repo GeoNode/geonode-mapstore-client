@@ -165,10 +165,10 @@ export const gnSaveContent = (action$, store) =>
     action$.ofType(SAVE_CONTENT)
         .switchMap((action) => {
             const state = store.getState();
-            const contentType = state.gnresource?.type || 'map';
-            const data = getDataPayload(state, contentType);
-            const extent = getExtentPayload(state, contentType);
             const currentResource = getResourceData(state);
+            const contentType = state.gnresource?.type || currentResource?.resource_type;
+            const data = !currentResource?.['@ms-detail'] ? getDataPayload(state, contentType) : null;
+            const extent = getExtentPayload(state, contentType);
             const body = {
                 'title': action.metadata.name,
                 ...(RESOURCE_MANAGEMENT_PROPERTIES_KEYS.reduce((acc, key) => {
@@ -227,9 +227,9 @@ export const gnSetMapThumbnail = (action$, store) =>
         .switchMap((action) => {
 
             const state = store.getState();
-            const contentType = state.gnresource?.data?.resource_type || 'map';
-            const resourceIDThumbnail = state?.gnresource?.id;
-            const currentResource = state.gnresource?.data || {};
+            const currentResource = getResourceData(state);
+            const contentType = currentResource?.resource_type || 'map';
+            const resourceIDThumbnail = getResourceId(state);
 
             const body = {
                 srid: action.bbox.crs,

@@ -59,7 +59,7 @@ function ViewerLayout({
                     {rightColumn}
                 </div>
                 <div
-                    className="gn-viewer-right-overlay shadow-far">
+                    className="gn-viewer-right-overlay shadow-far ms-main-colors">
                     {rightOverlay}
                 </div>
             </div>

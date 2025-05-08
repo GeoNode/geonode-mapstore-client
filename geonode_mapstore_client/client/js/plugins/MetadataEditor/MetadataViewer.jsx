@@ -14,7 +14,7 @@ import isEqual from 'lodash/isEqual';
 import Message from '@mapstore/framework/components/I18N/Message';
 import ResizableModal from '@mapstore/framework/components/misc/ResizableModal';
 import Portal from '@mapstore/framework/components/misc/Portal';
-import Button from '@js/components/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 
 import {
     setMetadataPreview

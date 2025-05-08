@@ -20,15 +20,10 @@ import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
 import castArray from 'lodash/castArray';
-import omit from 'lodash/omit';
 import get from 'lodash/get';
-import pick from 'lodash/pick';
-import isEmpty from 'lodash/isEmpty';
-import isNil from 'lodash/isNil';
 import { getUserInfo } from '@js/api/geonode/user';
 import { ResourceTypes, availableResourceTypes, setAvailableResourceTypes, getDownloadUrlInfo, isDefaultDatasetSubtype } from '@js/utils/ResourceUtils';
 import { mergeConfigsPatch } from '@mapstore/patcher';
-import { parseIcon } from '@js/utils/SearchUtils';
 import {
     RESOURCES,
     DOCUMENTS,
@@ -39,9 +34,9 @@ import {
     RESOURCE_TYPES,
     GROUPS,
     EXECUTION_REQUEST,
-    FACETS,
     getEndpoints as cGetEndpoints,
-    getEndpointUrl
+    getEndpointUrl,
+    getQueryParams
 } from './constants';
 
 
@@ -52,38 +47,6 @@ export const getEndpoints = cGetEndpoints;
  * @module api/geonode/v2
  */
 
-function mergeCustomQuery(params, customQuery) {
-    if (customQuery) {
-        return mergeWith(
-            { ...params },
-            { ...customQuery },
-            (objValue, srcValue) => {
-                if (isArray(objValue) && isArray(srcValue)) {
-                    return [...objValue, ...srcValue];
-                }
-                if (isString(objValue) && isArray(srcValue)) {
-                    return [objValue, ...srcValue];
-                }
-                if (isArray(objValue) && isString(srcValue)) {
-                    return [...objValue, srcValue];
-                }
-                if (isString(objValue) && isString(srcValue)) {
-                    return [ objValue, srcValue ];
-                }
-                return undefined; // eslint-disable-line consistent-return
-            }
-        );
-    }
-    return params;
-}
-export const getQueryParams = (params, customFilters) => {
-    const customQuery = customFilters
-        .filter(({ id }) => castArray(params?.f ?? []).indexOf(id) !== -1)
-        .reduce((acc, filter) => mergeCustomQuery(acc, filter.query || {}), {}) || {};
-    return {
-        ...mergeCustomQuery(omit(params, "f"), customQuery)
-    };
-};
 export const getResources = ({
     q,
     pageSize = 20,
@@ -91,6 +54,7 @@ export const getResources = ({
     sort,
     f,
     customFilters = [],
+    config,
     ...params
 }) => {
     const _params = {
@@ -107,6 +71,7 @@ export const getResources = ({
     };
     return axios.get(getEndpointUrl(RESOURCES), {
         params: _params,
+        ...config,
         ...paramsSerializer()
     })
         .then(({ data }) => {
@@ -385,11 +350,11 @@ export const getGeoApps = ({
 };
 
 export const updateGeoApp = (pk, body) => {
-    return axios.patch(getEndpointUrl(GEOAPPS, `/${pk}`), body, {
+    return axios.patch(getEndpointUrl(GEOAPPS, `/${pk}`), body, body?.data ? {
         params: {
             include: ['data']
         }
-    })
+    } : {})
         .then(({ data }) => data.geoapp);
 };
 
@@ -715,88 +680,18 @@ export const getResourceByTypeAndByPk = (type, pk, subtype) => {
             ? getDatasetByPk(pk)
             : getResourceByPk(pk);
     // Add type condition based on requirement
+    case "map":
+        return axios.get(getEndpointUrl(MAPS, `/${pk}/`),
+            {
+                params: {
+                    api_preset: [API_PRESET.VIEWER_COMMON, API_PRESET.MAP_DETAILS]
+                },
+                ...paramsSerializer()
+            })
+            .then(({ data }) => data?.map);
     default:
         return getResourceByPk(pk);
     }
-};
-
-export const getFacetItemsByFacetName = ({ name: facetName, style, filterKey, filters, setFilters}, { config, ...params }, customFilters) => {
-    const updatedParams = getQueryParams(params, customFilters);
-    return axios.get(getEndpointUrl(FACETS, `/${facetName}`),
-        { ...config,
-            params: updatedParams,
-            ...paramsSerializer()
-        }
-    ).then(({data}) => {
-        const {page: _page = 0, items: _items = [], total, page_size: size} = data?.topics ?? {};
-        const page = Number(_page);
-        const isNextPageAvailable = (Math.ceil(Number(total) / Number(size)) - (page + 1)) !== 0;
-
-        // Add filter values as item even when count is 0
-        const filterKeys = Object.keys(updatedParams)
-            // filter params value can be array
-            ?.map(key => Array.isArray(updatedParams[key]) ? updatedParams[key].map(v => `${key}${v}`) : `${key}${updatedParams[key]}`)?.flat()
-            ?.filter(param => param?.includes(data?.filter));
-        const filtersPresent = Object.values(pick(filters, filterKeys))?.filter(f => f.facetName === data.name);
-
-        const items = isEmpty(_items) && !isEmpty(filtersPresent)
-            ? filtersPresent.map(item => ({
-                ...(item.labelId ? {labelId: item.labelId} : {label: item.label}),
-                type: "filter",
-                count: 0,
-                filterKey: item.filterKey ?? filterKey,
-                filterValue: isNil(item.filterValue) ? String(item.key) : String(item.filterValue),
-                style,
-                icon: parseIcon(item),
-                image: item.image
-            }))
-            : _items.map(({label, is_localized: isLocalized, key, count, fa_class: icon, image} = {})=> {
-                return {
-                    type: "filter",
-                    ...(!isNil(isLocalized) && !isLocalized ? { labelId: label } : { label }), // TODO remove when api send isLocalized for all facets response
-                    count,
-                    filterKey,
-                    filterValue: String(key),
-                    style,
-                    icon: parseIcon(icon),
-                    image
-                };
-            });
-
-        // Update filters
-        setFilters(items.map((item) => ({[item.filterKey + item.filterValue]: {...item, facetName}})).reduce((f, c) => ({...f, ...c}), {}));
-
-        return {
-            page,
-            isNextPageAvailable,
-            items
-        };
-    });
-};
-
-export const getFacetsByKey = (facet, filterParams) => {
-    return axios
-        .get(getEndpointUrl(FACETS, `/${facet}`), {params: {...filterParams}, ...paramsSerializer()})
-        .then(({ data } = {}) => ({
-            ...data?.topics,
-            items: data?.topics?.items?.map(item => ({...item, facetName: facet}))
-        }));
-};
-
-export const getFacetItems = (customFilters) => {
-    return axios
-        .get(getEndpointUrl(FACETS),
-            {
-                params: {
-                    include_config: true
-                }
-            }
-        ).then(({ data } = {}) =>
-            data?.facets?.map((facet) => ({
-                ...facet,
-                loadItems: (...args) => getFacetItemsByFacetName(...args, customFilters)
-            })) || []
-        ).catch(() => []);
 };
 
 export default {
@@ -833,7 +728,5 @@ export default {
     downloadResource,
     getDatasets,
     deleteExecutionRequest,
-    getResourceByTypeAndByPk,
-    getFacetItems,
-    getFacetItemsByFacetName
+    getResourceByTypeAndByPk
 };

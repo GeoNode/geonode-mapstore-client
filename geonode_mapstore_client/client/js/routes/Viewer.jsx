@@ -111,7 +111,7 @@ function ViewerRoute({
     const loading = loadingConfig || pluginLoading;
     const parsedPlugins = useMemo(() => ({ ...loadedPlugins, ...getPlugins(plugins) }), [loadedPlugins]);
     const Loader = loaderComponent;
-    const className = `page-${resourceType || name}-viewer`;
+    const className = `page-${resourceType || name}-viewer page-viewer`;
 
     return (
         <>

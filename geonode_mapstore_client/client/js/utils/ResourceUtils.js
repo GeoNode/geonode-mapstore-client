@@ -350,7 +350,7 @@ export const isDocumentExternalSource = (resource) => {
 
 export const getResourceTypesInfo = () => ({
     [ResourceTypes.DATASET]: {
-        icon: 'database',
+        icon: { glyph: 'database' },
         canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: (resource) => resource.embed_url && parseDevHostname(updateUrlQueryParameter(resource.embed_url, {
             config: 'dataset_preview'
@@ -361,7 +361,7 @@ export const getResourceTypesInfo = () => ({
         formatMetadataDetailUrl: (resource) => `/metadata/${resource.pk}`
     },
     [ResourceTypes.MAP]: {
-        icon: 'map',
+        icon: { glyph: '1-map', type: 'glyphicon' },
         name: 'Map',
         canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: (resource) => parseDevHostname(updateUrlQueryParameter(resource.embed_url, {
@@ -372,7 +372,7 @@ export const getResourceTypesInfo = () => ({
         formatMetadataDetailUrl: (resource) => `/metadata/${resource.pk}`
     },
     [ResourceTypes.DOCUMENT]: {
-        icon: 'file',
+        icon: { glyph: 'file', type: 'glyphicon' },
         name: 'Document',
         canPreviewed: (resource) => resourceHasPermission(resource, 'download_resourcebase') && !!(determineResourceType(resource.extension) !== 'unsupported'),
         hasPermission: (resource) => resourceHasPermission(resource, 'download_resourcebase'),
@@ -383,7 +383,7 @@ export const getResourceTypesInfo = () => ({
         metadataPreviewUrl: (resource) => `/metadata/${resource.pk}/embed`
     },
     [ResourceTypes.GEOSTORY]: {
-        icon: 'book',
+        icon: { glyph: 'geostory', type: 'glyphicon' },
         name: 'GeoStory',
         canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: (resource) => resource?.embed_url && parseDevHostname(resource.embed_url),
@@ -392,7 +392,7 @@ export const getResourceTypesInfo = () => ({
         formatMetadataDetailUrl: (resource) => `/metadata/${resource.pk}`
     },
     [ResourceTypes.DASHBOARD]: {
-        icon: 'dashboard',
+        icon: { glyph: 'dashboard', type: 'glyphicon' },
         name: 'Dashboard',
         canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: (resource) => resource?.embed_url && parseDevHostname(resource.embed_url),
@@ -401,7 +401,7 @@ export const getResourceTypesInfo = () => ({
         formatMetadataDetailUrl: (resource) => `/metadata/${resource.pk}`
     },
     [ResourceTypes.VIEWER]: {
-        icon: 'cogs',
+        icon: { glyph: 'cogs' },
         name: 'MapViewer',
         canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: () => false,
@@ -427,27 +427,40 @@ export const getMetadataDetailUrl = (resource) => {
     return '';
 };
 
-export const getResourceStatuses = (resource) => {
-    const { processes } = resource || {};
-    const isProcessing = processes
-        ? !!processes.find(({ completed }) => !completed)
-        : false;
-    const deleteProcess = processes && processes.find(({ processType }) => processType === ProcessTypes.DELETE_RESOURCE);
-    const isDeleting = isProcessing && !!deleteProcess?.output?.status && !deleteProcess?.completed;
-    const isDeleted = deleteProcess?.output?.status === ProcessStatus.FINISHED;
-    const copyProcess = processes && processes.find(({ processType }) => processType === ProcessTypes.COPY_RESOURCE);
-    const isCopying = isProcessing && !!copyProcess?.output?.status && !copyProcess?.completed;
-    const isCopied = deleteProcess?.output?.status === ProcessStatus.FINISHED;
+export const getResourceStatuses = (resource, userInfo) => {
+    const { executions = [] } = resource || {};
     const isApproved = resource?.is_approved;
     const isPublished = isApproved && resource?.is_published;
+    const runningExecutions = executions.filter(({ func_name: funcName, status, user }) =>
+        [ProcessStatus.RUNNING, ProcessStatus.READY].includes(status)
+        && ['delete', 'copy', ProcessTypes.DELETE_RESOURCE, ProcessTypes.COPY_RESOURCE].includes(funcName)
+        && (user === undefined || user === userInfo?.info?.preferred_username));
+    const isProcessing = !!runningExecutions.length;
+    const isDeleting = runningExecutions.some(({ func_name: funcName }) => ['delete', ProcessTypes.DELETE_RESOURCE].includes(funcName));
+    const isCopying = runningExecutions.some(({ func_name: funcName }) => ['copy', ProcessTypes.COPY_RESOURCE].includes(funcName));
     return {
         isApproved,
         isPublished,
         isProcessing,
         isDeleting,
-        isDeleted,
         isCopying,
-        isCopied
+        items: [
+            ...(resource.advertised === false ? [{
+                type: 'icon',
+                tooltipId: 'resourcesCatalog.unadvertised',
+                glyph: 'eye-slash'
+            }] : []),
+            ...(isDeleting ? [{
+                type: 'text',
+                labelId: 'gnviewer.deleting',
+                variant: 'danger'
+            }] : []),
+            ...(isCopying ? [{
+                type: 'text',
+                labelId: 'gnviewer.cloning',
+                variant: 'primary'
+            }] : [])
+        ]
     };
 };
 
@@ -802,6 +815,62 @@ export const getResourceAdditionalProperties = (_resource = {}) => {
     };
 };
 
-export const onDeleteRedirectTo = () => {
-    return '/';
+export const parseCatalogResource = (resource) => {
+    const {
+        formatDetailUrl,
+        icon,
+        formatEmbedUrl,
+        canPreviewed,
+        hasPermission,
+        name
+    } = getResourceTypesInfo(resource)[resource.resource_type];
+    const resourceCanPreviewed = resource?.pk && canPreviewed && canPreviewed(resource);
+    const embedUrl = resourceCanPreviewed && formatEmbedUrl && resource?.embed_url && formatEmbedUrl(resource);
+    const canView = resource?.pk && hasPermission && hasPermission(resource);
+    const viewerUrl = formatDetailUrl(resource);
+    const viewerUrlParts = (viewerUrl || '').split('#');
+    const viewerPath = viewerUrlParts[viewerUrlParts.length - 1];
+    const metadataDetailUrl = resource?.pk && getMetadataDetailUrl(resource);
+    return {
+        ...resource,
+        id: resource.pk,
+        name: resource.title,
+        '@extras': {
+            info: {
+                title: resource?.title,
+                icon,
+                thumbnailUrl: resource?.thumbnail_url,
+                ...((canView || resourceCanPreviewed) && {
+                    viewerPath: viewerPath,
+                    viewerUrl: viewerUrl
+                }),
+                embedUrl,
+                metadataDetailUrl,
+                typeName: name
+            },
+            status: getResourceStatuses(resource)
+        }
+    };
+};
+
+export const resourceToLayers = (resource) => {
+    if (resource?.resource_type === ResourceTypes.DATASET) {
+        return [{...resourceToLayerConfig(resource), isDataset: true}];
+    }
+    if (resource.maplayers && resource?.resource_type === ResourceTypes.MAP) {
+        return resource.maplayers
+            .map(maplayer => {
+                maplayer.dataset ? resourceToLayerConfig(maplayer.dataset) : null;
+                if (maplayer.dataset) {
+                    const layer = resourceToLayerConfig(maplayer.dataset);
+                    return {
+                        ...layer,
+                        style: maplayer.current_style
+                    };
+                }
+                return null;
+            })
+            .filter(value => value);
+    }
+    return [];
 };

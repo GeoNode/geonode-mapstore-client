@@ -12,7 +12,7 @@ import {
     FilterLayerActionButton,
     FullScreenActionButton,
     AddWidgetActionButton
-} from '@js/plugins/actionnavbar/buttons';
+} from '@js/plugins/ActionNavbar/buttons';
 import { getPluginsContext } from '@js/utils/PluginsContextUtils';
 import { toModulePlugin as msToModulePlugin } from '@mapstore/framework/utils/ModulePluginsUtils';
 
@@ -20,6 +20,11 @@ import TOCPlugin from '@mapstore/framework/plugins/TOC';
 import OperationPlugin from '@js/plugins/Operation';
 import MetadataEditorPlugin from '@js/plugins/MetadataEditor';
 import MetadataViewerPlugin from '@js/plugins/MetadataEditor/MetadataViewer';
+import FavoritesPlugin from '@js/plugins/Favorites';
+import {
+    ResourcesGridPlugin,
+    ResourcesFiltersFormPlugin
+} from '@mapstore/framework/plugins/ResourcesCatalog';
 
 let epicsNamesToExclude = [
     'loadGeostoryEpic',
@@ -69,6 +74,9 @@ export const plugins = {
     OperationPlugin,
     MetadataEditorPlugin,
     MetadataViewerPlugin,
+    ResourcesGridPlugin,
+    FavoritesPlugin,
+    ResourcesFiltersFormPlugin,
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
         () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload'),
@@ -160,7 +168,8 @@ export const plugins = {
                     ActionNavbar: {
                         name: 'FullScreen',
                         Component: FullScreenActionButton,
-                        priority: 5
+                        priority: 5,
+                        target: 'right-menu'
                     }
                 }
             }
@@ -315,9 +324,9 @@ export const plugins = {
         'ActionNavbar',
         () => import(/* webpackChunkName: 'plugins/action-navbar-plugin' */ '@js/plugins/ActionNavbar')
     ),
-    DetailViewerPlugin: toModulePlugin(
-        'DetailViewer',
-        () => import(/* webpackChunkName: 'plugins/detail-viewer-plugin' */ '@js/plugins/DetailViewer')
+    ResourceDetailsPlugin: toModulePlugin(
+        'ResourceDetails',
+        () => import(/* webpackChunkName: 'plugins/resource-details-plugin' */ '@js/plugins/ResourceDetails')
     ),
     MediaViewerPlugin: toModulePlugin(
         'MediaViewer',
@@ -422,14 +431,6 @@ export const plugins = {
     DublinCoreDownloadPlugin: toModulePlugin(
         'DublinCoreDownload',
         () => import(/* webpackChunkName: 'plugins/iso-download-plugin' */ '@js/plugins/downloads/DublinCoreDownload')
-    ),
-    ResourcesGridPlugin: toModulePlugin(
-        'ResourcesGrid',
-        () => import(/* webpackChunkName: 'plugins/resources-grid' */ '@js/plugins/ResourcesGrid')
-    ),
-    FeaturedResourcesGridPlugin: toModulePlugin(
-        'FeaturedResourcesGrid',
-        () => import(/* webpackChunkName: 'plugins/featured-resources-grid' */ '@js/plugins/FeaturedResourcesGrid')
     ),
     MapViewersCatalogPlugin: toModulePlugin(
         'MapViewersCatalog',

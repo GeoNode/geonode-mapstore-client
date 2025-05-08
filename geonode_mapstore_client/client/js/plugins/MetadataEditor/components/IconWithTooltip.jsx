@@ -8,9 +8,9 @@
 
 import React from 'react';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
-import FaIcon from '@js/components/FaIcon/FaIcon';
+import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
 
-const IconWithTooltip = tooltip((props) => <span {...props}><FaIcon name="info-circle" /></span>);
+const IconWithTooltip = tooltip((props) => <span {...props}><Icon glyph="info-circle" /></span>);
 
 export default IconWithTooltip;
 

@@ -11,6 +11,11 @@ import {
     getApiToken,
     getGeoNodeLocalConfig
 } from '@js/utils/APIUtils';
+import mergeWith from 'lodash/mergeWith';
+import isArray from 'lodash/isArray';
+import isString from 'lodash/isString';
+import castArray from 'lodash/castArray';
+import omit from 'lodash/omit';
 
 let endpoints = {
     // default values
@@ -69,3 +74,37 @@ export const getEndpoints = () => {
             return data;
         });
 };
+
+function mergeCustomQuery(params, customQuery) {
+    if (customQuery) {
+        return mergeWith(
+            { ...params },
+            { ...customQuery },
+            (objValue, srcValue) => {
+                if (isArray(objValue) && isArray(srcValue)) {
+                    return [...objValue, ...srcValue];
+                }
+                if (isString(objValue) && isArray(srcValue)) {
+                    return [objValue, ...srcValue];
+                }
+                if (isArray(objValue) && isString(srcValue)) {
+                    return [...objValue, srcValue];
+                }
+                if (isString(objValue) && isString(srcValue)) {
+                    return [ objValue, srcValue ];
+                }
+                return undefined; // eslint-disable-line consistent-return
+            }
+        );
+    }
+    return params;
+}
+export const getQueryParams = (params, customFilters) => {
+    const customQuery = customFilters
+        .filter(({ id }) => castArray(params?.f ?? []).indexOf(id) !== -1)
+        .reduce((acc, filter) => mergeCustomQuery(acc, filter.query || {}), {}) || {};
+    return {
+        ...mergeCustomQuery(omit(params, "f"), customQuery)
+    };
+};
+

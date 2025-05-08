@@ -8,21 +8,14 @@
 
 import React from "react";
 import Select from "react-select";
-import { FormControl as FormControlRB } from 'react-bootstrap';
-import FaIcon from "@js/components/FaIcon";
-import Button from "@js/components/Button";
+import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Button from '@mapstore/framework/components/layout/Button';
 import { isValidURL } from "@mapstore/framework/utils/URLUtils";
 import Message from '@mapstore/framework/components/I18N/Message';
 import { getFileNameAndExtensionFromUrl } from "@js/utils/FileUtils";
 import { isNotSupported, getErrorMessageId  } from "@js/utils/UploadUtils";
-import withDebounceOnCallback from '@mapstore/framework/components/misc/enhancers/withDebounceOnCallback';
-import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
 import ErrorMessageWithTooltip from './ErrorMessageWithTooltip';
-const FormControl = localizedProps('placeholder')(FormControlRB);
-function InputControl({ onChange, value, debounceTime, ...props }) {
-    return <FormControl {...props} value={value} onChange={event => onChange(event.target.value)}/>;
-}
-const InputControlWithDebounce = withDebounceOnCallback('onChange', 'value')(InputControl);
+import InputControl from '@mapstore/framework/plugins/ResourcesCatalog/components/InputControl';
 
 const PendingUploadUrl = ({
     data,
@@ -68,7 +61,7 @@ const PendingUploadUrl = ({
         <div className={"gn-upload-card gn-upload-url"}>
             <div className="gn-upload-card-header">
                 <div className="gn-upload-input">
-                    <InputControlWithDebounce
+                    <InputControl
                         value={data.url || ""}
                         placeholder="gnviewer.remoteResourceURLPlaceholder"
                         debounceTime={300}
@@ -78,14 +71,14 @@ const PendingUploadUrl = ({
                         })}/>
                     {data.edited && <>
                         {!isNotSupported(data) && error ? <ErrorMessageWithTooltip tooltipId={<Message msgId="gnviewer.invalidRemoteUploadMessageErrorTooltip" />} /> : null}
-                        {isNotSupported(data) && <div className="gn-upload-error-inline"><FaIcon name="exclamation" /></div>}
+                        {isNotSupported(data) && <div className="gn-upload-error-inline"><Icon glyph="exclamation" /></div>}
                     </>}
                     {onRemove
                         ? (!loading || !(progress))
                             ? <Button size="xs" onClick={handleOnRemove}>
-                                <FaIcon name="trash" />
+                                <Icon glyph="trash" />
                             </Button> : <Button size="xs" onClick={() => onCancel([data.id])}>
-                                <FaIcon name="stop" />
+                                <Icon glyph="stop" />
                             </Button>
                         : null
                     }

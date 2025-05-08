@@ -12,25 +12,24 @@ import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { createSelector } from 'reselect';
 
-import Button from '@js/components/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { manageLinkedResource, processResources } from '@js/actions/gnresource';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Loader from '@mapstore/framework/components/misc/Loader';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
-import ResizableModal from '@mapstore/framework/components/misc/ResizableModal';
 import Portal from '@mapstore/framework/components/misc/Portal';
-import ResourceCard from '@js/components/ResourceCard/ResourceCard';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
-import FaIcon from '@js/components/FaIcon/FaIcon';
+import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
 import { getResourceData } from '@js/selectors/resource';
+import ConfirmDialog from '@mapstore/framework/components/layout/ConfirmDialog';
 
 const WarningLinkedResource = ({resourceType} = {}) => {
     if (resourceType) {
         return (
             <div className="gn-resource-delete-warning">
-                <FaIcon className="warning" name="warning"/> &nbsp;
+                <Icon className="warning" glyph="warning"/> &nbsp;
                 <Message msgId={`gnviewer.linkedResource.deleteAndUnlinkWarning.${resourceType}`}/>
             </div>
         );
@@ -72,60 +71,29 @@ function MapViewerConfigurationPlugin({
 
     return (
         <Portal>
-            <ResizableModal
-                title={<Message msgId="gnviewer.linkedResource.deleteTitle" msgParams={{ count: resources.length }}/>}
+            <ConfirmDialog
                 show={enabled}
-                fitContent
-                clickOutEnabled={false}
-                modalClassName="gn-simple-dialog"
-                buttons={loading
-                    ? []
-                    : [{
-                        text: <Message msgId="gnviewer.deleteResourceNo" msgParams={{ count: resources.length }} />,
-                        onClick: onClosePanel
-                    },
-                    {
-                        text: <Message msgId="gnviewer.deleteResourceYes" msgParams={{ count: resources.length }} />,
-                        bsStyle: 'danger',
-                        onClick: onRemoveLinkedResource
-                    }]
-                }
-                onClose={loading ? null : () => onClose()}
+                titleId="gnviewer.linkedResource.deleteTitle"
+                titleParams={{ count: resources.length }}
+                cancelId="gnviewer.deleteResourceNo"
+                cancelParams={{ count: resources.length }}
+                confirmId="gnviewer.deleteResourceYes"
+                confirmParams={{ count: resources.length }}
+                variant="danger"
+                loading={loading}
+                preventHide={false}
+                onHide={() => {
+                    onClose();
+                }}
+                onCancel={() => {
+                    onClosePanel();
+                }}
+                onConfirm={() => {
+                    onRemoveLinkedResource();
+                }}
             >
-                <ul
-                    className="gn-card-grid"
-                    style={{
-                        listStyleType: 'none',
-                        padding: '0.5rem',
-                        margin: 0
-                    }}
-                >
-                    {resources.map((data, idx) => {
-                        return (
-                            <li style={{ padding: '0.25rem 0' }} key={data.pk + '-' + idx}>
-                                <ResourceCard data={data} layoutCardsStyle="list" readOnly/>
-                            </li>
-                        );
-                    })}
-                </ul>
                 <WarningLinkedResource resourceType={resourceType}/>
-                {loading && <div
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                        zIndex: 2,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}
-                >
-                    <Loader size={70}/>
-                </div>}
-            </ResizableModal>
+            </ConfirmDialog>
         </Portal>
     );
 }

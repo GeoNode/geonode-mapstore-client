@@ -11,6 +11,7 @@ import axios from '@mapstore/framework/libs/ajax';
 import uuid from "uuid";
 import url from "url";
 import get from 'lodash/get';
+import isNil from 'lodash/isNil';
 import {
     getNewMapConfiguration,
     getNewGeoStoryConfig,
@@ -26,18 +27,22 @@ import {
     setResourceThumbnail,
     setLinkedResourcesByPk,
     removeLinkedResourcesByPk,
-    getDatasetTimeSettingsByPk
+    getDatasetTimeSettingsByPk,
+    getResourceByTypeAndByPk
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import { isMapInfoOpen } from '@mapstore/framework/selectors/mapInfo';
 import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
-import { isLoggedIn } from '@mapstore/framework/selectors/security';
+import { isLoggedIn, userSelector } from '@mapstore/framework/selectors/security';
 import {
     browseData,
     selectNode,
     showSettings
 } from '@mapstore/framework/actions/layers';
+import {
+    setSelectedResource
+} from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
 import {
     setNewResource,
     setResourceType,
@@ -54,7 +59,10 @@ import {
     updateResource,
     setResourcePathParameters,
     MANAGE_LINKED_RESOURCE,
-    setMapViewerLinkedResource
+    setMapViewerLinkedResource,
+    REQUEST_RESOURCE,
+    resourceLoading,
+    resourceError
 } from '@js/actions/gnresource';
 
 import {
@@ -83,6 +91,7 @@ import {
 import {
     canAddResource,
     getResourceData,
+    getResourceId,
     getResourceThumbnail
 } from '@js/selectors/resource';
 import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallayers';
@@ -169,7 +178,6 @@ const resourceTypes = {
                             ? [ setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', extent) ]
                             : []),
                         setControlProperty('toolbar', 'expanded', false),
-                        setControlProperty('rightOverlay', 'enabled', 'DetailViewer'),
                         forceUpdateMapLayout(),
                         selectNode(newLayer.id, 'layer', false),
                         setResource(gnLayer),
@@ -303,7 +311,6 @@ const resourceTypes = {
             Observable.defer(() => getDocumentByPk(pk))
                 .switchMap((gnDocument) => {
                     return Observable.of(
-                        setControlProperty('rightOverlay', 'enabled', 'DetailViewer'),
                         setResource(gnDocument),
                         setResourceId(pk)
                     );
@@ -530,7 +537,7 @@ export const gnViewerSetNewResourceThumbnail = (action$, store) =>
         .switchMap(() => {
             const state = store.getState();
             const newThumbnailData = getResourceThumbnail(state);
-            const resourceIDThumbnail = state?.gnresource?.id;
+            const resourceIDThumbnail = getResourceId(state);
             const currentResource = state.gnresource?.data || {};
 
             const body = {
@@ -550,7 +557,7 @@ export const gnViewerSetNewResourceThumbnail = (action$, store) =>
         });
 
 export const closeInfoPanelOnMapClick = (action$, store) => action$.ofType(CLICK_ON_MAP)
-    .filter(() => store.getState().controls?.rightOverlay?.enabled === 'DetailViewer' || store.getState().controls?.rightOverlay?.enabled === 'Share')
+    .filter(() => store.getState().controls?.rightOverlay?.enabled === 'Share')
     .switchMap(() => Observable.of(setControlProperty('rightOverlay', 'enabled', false)));
 
 
@@ -586,7 +593,7 @@ export const closeOpenPanels = (action$, store) => action$.ofType(SET_CONTROL_PR
             }
             const control = oneOfTheOther(action.control);
             if (control?.control) {
-                if (state.controls?.rightOverlay?.enabled === 'DetailViewer' || state.controls?.rightOverlay?.enabled === 'Share') {
+                if (state.controls?.rightOverlay?.enabled === 'Share') {
                     setActions.push(setControlProperty('rightOverlay', 'enabled', false));
                 } else if (!!state.controls?.[`${control.alternate}`]?.enabled) {
                     setActions.push(setControlProperty(`${control.alternate}`, 'enabled', false));
@@ -675,6 +682,54 @@ export const gnZoomToFitBounds = (action$) =>
                 })
         );
 
+const getResourceWithDetail = (resource) => ({
+    ...resource,
+    /* store information related to detail */
+    '@ms-detail': true
+});
+export const gnSelectResourceEpic = (action$, store) =>
+    action$.ofType(REQUEST_RESOURCE)
+        .switchMap(action => {
+            const selectedResource = action?.resource;
+            if (isNil(selectedResource?.pk)) {
+                return Observable.of(
+                    setResource(null),
+                    setResourceCompactPermissions(undefined)
+                );
+            }
+            const state = store.getState();
+            const user = userSelector(state);
+            const { resource_type: resourceType, pk, subtype } = selectedResource;
+            const _selectedResource = getResourceWithDetail(selectedResource);
+            const initialActions = !_selectedResource ? [] : [
+                setResource(_selectedResource, true),
+                setSelectedResource(_selectedResource)
+            ];
+            return Observable.defer(() => Promise.all([
+                getResourceByTypeAndByPk(resourceType, pk, subtype),
+                user
+                    ? getCompactPermissionsByPk(pk)
+                        .then((compactPermissions) => compactPermissions)
+                        .catch(() => null)
+                    : Promise.resolve(null)
+            ]))
+                .switchMap(([resource, compactPermissions]) => {
+                    return Observable.of(
+                        setResourceType(resourceType),
+                        setResource(getResourceWithDetail(resource)),
+                        ...(compactPermissions ? [setResourceCompactPermissions(compactPermissions)] : [])
+                    );
+                })
+                .catch((error) => {
+                    return Observable.of(resourceError(error.data || error.message));
+                })
+                .startWith(
+                    // preload the resource if available
+                    ...initialActions,
+                    resourceLoading()
+                );
+        });
+
 export default {
     gnViewerRequestNewResourceConfig,
     gnViewerRequestResourceConfig,
@@ -683,5 +738,6 @@ export default {
     closeOpenPanels,
     closeDatasetCatalogPanel,
     gnManageLinkedResource,
-    gnZoomToFitBounds
+    gnZoomToFitBounds,
+    gnSelectResourceEpic
 };

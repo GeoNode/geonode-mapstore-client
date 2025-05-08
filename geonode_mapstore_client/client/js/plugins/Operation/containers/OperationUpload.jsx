@@ -7,9 +7,9 @@
  */
 
 import React, { useState } from 'react';
-import Button from '@js/components/Button/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 import { Glyphicon } from 'react-bootstrap';
-import Spinner from '@js/components/Spinner';
+import Spinner from '@mapstore/framework/components/layout/Spinner';
 import UploadPanel from '../components/UploadPanel';
 import ExecutionRequestTable from '../components/ExecutionRequestTable';
 import useUpload from '../hooks/useUpload';

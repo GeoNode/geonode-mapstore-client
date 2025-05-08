@@ -10,7 +10,7 @@ import React, { useEffect } from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import Button from '@js/components/Button/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 import { selectOperation, reloadOperation } from './actions/operation';
 import { getResourceData } from '@js/selectors/resource';
 import operation from './reducers/operation';

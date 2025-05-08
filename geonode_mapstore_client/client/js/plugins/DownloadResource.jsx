@@ -13,10 +13,10 @@ import isEmpty from 'lodash/isEmpty';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { getDownloadUrlInfo, isDocumentExternalSource, GXP_PTYPES, SOURCE_TYPES } from '@js/utils/ResourceUtils';
 import Message from '@mapstore/framework/components/I18N/Message';
-import Button from '@js/components/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
-import Dropdown from '@js/components/Dropdown';
-import FaIcon from '@js/components/FaIcon';
+import { MenuItem } from 'react-bootstrap';
+import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
 import {
     getResourceData
 } from '@js/selectors/resource';
@@ -27,7 +27,7 @@ const ButtonWithTooltip = tooltip(Button);
 
 const RENDER_TYPE = {
     "button": ButtonWithTooltip,
-    "menuItem": Dropdown.Item
+    "menuItem": MenuItem
 };
 
 const DownloadButton = ({
@@ -69,7 +69,7 @@ const DownloadButton = ({
                 rel="noopener noreferrer"
             >
                 {showIcon
-                    ? <FaIcon name={isExternal ? "external-link" : "download"} />
+                    ? <Icon glyph={isExternal ? "external-link" : "download"} />
                     : <Message msgId={downloadMsgId} />
                 }
             </Component>
@@ -84,7 +84,7 @@ const DownloadButton = ({
             {...showIcon && { tooltipId: downloadMsgId }}
         >
             {showIcon
-                ? <FaIcon name="download" />
+                ? <Icon glyph="download" />
                 : <Message msgId={downloadMsgId} />
             }
         </Component>
@@ -131,11 +131,12 @@ export default createPlugin('DownloadResource', {
             Component: DownloadResource,
             priority: 1
         },
-        DetailViewer: {
+        ResourceDetails: {
             name: 'DownloadResource',
             target: 'toolbar',
             Component: DownloadResource,
-            priority: 1
+            priority: 1,
+            position: 1
         },
         LayerDownload: {
             name: 'DownloadResource',

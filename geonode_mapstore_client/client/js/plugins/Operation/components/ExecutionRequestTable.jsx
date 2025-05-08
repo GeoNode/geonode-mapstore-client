@@ -7,10 +7,10 @@
  */
 
 import React, { useState } from 'react';
-import Button from '@js/components/Button/Button';
-import FaIcon from '@js/components/FaIcon';
+import Button from '@mapstore/framework/components/layout/Button';
+import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
 import Message from '@mapstore/framework/components/I18N/Message';
-import Spinner from '@js/components/Spinner';
+import Spinner from '@mapstore/framework/components/layout/Spinner';
 import ErrorMessageWithTooltip from './ErrorMessageWithTooltip';
 import moment from 'moment';
 import { getUploadErrorMessageFromCode } from '@js/utils/ErrorUtils';
@@ -41,7 +41,7 @@ function ExecutionRequestTable({
                     <div className="gn-main-event-content">
                         <div className="gn-main-event-text">
                             <div className="gn-main-icon">
-                                <FaIcon name={iconName}/>
+                                <Icon glyph={iconName}/>
                             </div>
                             <h1><Message msgId={titleMsgId}/></h1>
                             <div><Message msgId={descriptionMsgId}/></div>
@@ -82,7 +82,7 @@ function ExecutionRequestTable({
                             const detailUrls = (request?.output_params?.resources || [])?.map(res=> res.detail_url);
                             return (
                                 <tr key={request.exec_id} className={request.status === 'failed' ? 'danger' : ''}>
-                                    <td><FaIcon name={iconName}/>{' '}{request.name}</td>
+                                    <td><Icon glyph={iconName}/>{' '}{request.name}</td>
                                     <td>{moment(request.created).format('MMMM Do YYYY, h:mm:ss a')}</td>
                                     <td>
                                         {request.status === 'running' ? <Spinner/> : null}
@@ -109,7 +109,7 @@ function ExecutionRequestTable({
                                             </div>
                                             : null}
                                         {!onReload && request.status === 'finished' && !detailUrls?.[0]
-                                            ? <FaIcon name="check" />
+                                            ? <Icon glyph="check" />
                                             : null}
                                         {onReload && request.status === 'finished'
                                             ? <Button variant="primary" onClick={() => onReload()}>
@@ -119,7 +119,7 @@ function ExecutionRequestTable({
                                     </td>
                                     <td>
                                         <Button onClick={() => handleDelete(request.exec_id)}>
-                                            <FaIcon name="trash" />
+                                            <Icon glyph="trash" />
                                         </Button>
                                     </td>
                                 </tr>

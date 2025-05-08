@@ -13,8 +13,8 @@ import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import Loader from '@mapstore/framework/components/misc/Loader';
-import Button from '@js/components/Button';
-import Spinner from '@js/components/Spinner';
+import Button from '@mapstore/framework/components/layout/Button';
+import Spinner from '@mapstore/framework/components/layout/Spinner';
 import { isLoggedIn } from '@mapstore/framework/selectors/security';
 import controls from '@mapstore/framework/reducers/controls';
 import gnresource from '@js/reducers/gnresource';
@@ -59,18 +59,41 @@ function SaveButton({
 }) {
     return (
         <Button
-            variant={dirtyStateProp ? 'warning' : (variant || "primary")}
+            variant={variant || "primary"}
             size={size}
             onClick={() => onClick()}
             disabled={loading}
-            className={className}
+            className={`${className ?? ''} ${dirtyStateProp ? 'ms-notification-circle warning' : ''}`}
         >
             <Message msgId={saveMsgId}/>{' '}{loading && <Spinner />}
         </Button>
     );
 }
 
-const ConnectedSaveButton = connect(
+function ResourceDetailsSaveButton({
+    component,
+    loading,
+    onClick,
+    dirtyState
+}) {
+    const Component = component;
+    return Component
+        ? (
+            <Component
+                glyph="floppy-disk"
+                iconType="glyphicon"
+                labelId="save"
+                square
+                className={dirtyState ? 'ms-notification-circle warning' : ''}
+                disabled={!dirtyState || loading}
+                onClick={() => onClick()}
+                loading={loading}
+            />
+        )
+        : null;
+}
+
+const saveConnector = connect(
     createSelector(
         isLoggedIn,
         isNewResource,
@@ -78,25 +101,34 @@ const ConnectedSaveButton = connect(
         mapInfoSelector,
         getCurrentResourcePermissionsLoading,
         getResourceDirtyState,
-        (loggedIn, isNew, canEdit, mapInfo, permissionsLoading, dirtyState) => ({
+        state => state?.gnsave?.saving,
+        (loggedIn, isNew, canEdit, mapInfo, permissionsLoading, dirtyState, saveLoading) => ({
             // we should add permList to map pages too
             // currently the canEdit is located inside the map info
             enabled: loggedIn && !isNew && (canEdit || mapInfo?.canEdit),
-            loading: permissionsLoading,
+            loading: permissionsLoading || saveLoading,
             dirtyState
         })
     ),
     {
         onClick: saveDirectContent
     }
-)((withRouter(withPrompt(SaveButton))));
+);
 
 export default createPlugin('Save', {
     component: SavePlugin,
     containers: {
         ActionNavbar: {
             name: 'Save',
-            Component: ConnectedSaveButton
+            Component: saveConnector(((withRouter(withPrompt(SaveButton))))),
+            doNotHide: true,
+            priority: 2
+        },
+        ResourceDetails: {
+            name: 'Save',
+            target: 'toolbar',
+            Component: saveConnector(ResourceDetailsSaveButton),
+            priority: 1
         }
     },
     epics: {

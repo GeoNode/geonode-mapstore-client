@@ -8,11 +8,11 @@
 */
 
 import React from 'react';
-import FaIcon from '@js/components/FaIcon';
+import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 
 function ErrorMessage({ label, ...props }) {
-    return (<div {...props} className="gn-failed-upload">{label ? <>{label}{' '}</> : null}<FaIcon name="exclamation" /></div> );
+    return (<div {...props} className="gn-failed-upload">{label ? <>{label}{' '}</> : null}<Icon glyph="exclamation" /></div> );
 }
 
 const ErrorMessageWithTooltip = tooltip(ErrorMessage);

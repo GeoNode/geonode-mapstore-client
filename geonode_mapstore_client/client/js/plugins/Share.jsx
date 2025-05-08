@@ -6,137 +6,45 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { findIndex } from 'lodash';
 import { Glyphicon } from 'react-bootstrap';
+
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import Message from '@mapstore/framework/components/I18N/Message';
 import controls from '@mapstore/framework/reducers/controls';
-import Button from '@js/components/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
-import { layersSelector } from '@mapstore/framework/selectors/layers';
 import OverlayContainer from '@js/components/OverlayContainer';
 import {
     isNewResource,
     getResourceId,
-    getCompactPermissions,
-    canManageResourcePermissions,
     getResourceData,
     getViewedResourceType
 } from '@js/selectors/resource';
-import { updateResourceCompactPermissions } from '@js/actions/gnresource';
-import Permissions from '@js/components/Permissions';
-import { getUsers, getGroups, getResourceTypes } from '@js/api/geonode/v2';
 import {
-    resourceToPermissionEntry,
-    availableResourceTypes,
-    getResourcePermissions,
     cleanUrl,
     getDownloadUrlInfo,
     getResourceTypesInfo
 } from '@js/utils/ResourceUtils';
 import SharePageLink from '@js/plugins/share/SharePageLink';
 import ShareEmbedLink from '@js/plugins/share/ShareEmbedLink';
-import { getCurrentResourcePermissionsLoading } from '@js/selectors/resourceservice';
 
 const getEmbedUrl = (resource) => {
     const { formatEmbedUrl = (_resource) => _resource?.embed_url  } = getResourceTypesInfo()[resource?.resource_type] || {};
     return formatEmbedUrl(resource) ? resource?.embed_url : null;
 };
-
-const entriesTabs = [
-    {
-        id: 'user',
-        labelId: 'gnviewer.users',
-        request: ({ entries, groups, ...params }) => {
-            const exclude = entries.filter(({ type }) => type === 'user').map(({ id }) => id);
-            return getUsers({
-                ...params,
-                'filter{-pk.in}': [...exclude, -1],
-                'filter{is_superuser}': false
-            });
-        },
-        responseToEntries: ({ response, entries }) => {
-            return response?.users.map(user => {
-                const { permissions } = entries.find(entry => entry.id === user.pk) || {};
-                return {
-                    ...resourceToPermissionEntry('user', user),
-                    permissions
-                };
-            });
-        }
-    },
-    {
-        id: 'group',
-        labelId: 'gnviewer.groups',
-        request: ({ entries, groups, ...params }) => {
-            const excludeEntries = entries.filter(({ type }) => type === 'group').map(({ id }) => id);
-            const excludeGroups = groups.map(({ id }) => id);
-            const exclude = [
-                ...(excludeEntries || []),
-                ...(excludeGroups || [])
-            ];
-            return getGroups({
-                ...params,
-                'filter{-group.pk.in}': exclude
-            });
-        },
-        responseToEntries: ({ response, entries }) => {
-            return response?.groups.map(group => {
-                const { permissions } = entries.find(entry => entry.id === group.group.pk) || {};
-                return {
-                    ...resourceToPermissionEntry('group', group),
-                    permissions
-                };
-            });
-        }
-    }
-];
 function Share({
     enabled,
-    resourceId,
-    compactPermissions,
-    layers,
-    onChangePermissions,
-    enableGeoLimits,
     onClose,
-    canEdit,
-    permissionsLoading,
     resourceType,
     embedUrl,
     downloadUrl
 }) {
-
-    const isMounted = useRef(false);
-    useEffect(() => {
-        isMounted.current = true;
-        return () => {
-            isMounted.current = false;
-        };
-    }, []);
-
-    const [permissionsObject, setPermissionsObject] = useState({});
-    useEffect(() => {
-        getResourceTypes().then((data) => {
-            const resourceIndex = findIndex(data, { name: resourceType });
-            let responseOptions;
-            if (resourceIndex !== - 1) {
-                responseOptions  = getResourcePermissions(data[resourceIndex].allowed_perms.compact);
-            } else { // set a default permission object
-                responseOptions = getResourcePermissions(data[0].allowed_perms.compact);
-            }
-            if (isMounted.current) {
-                setPermissionsObject(responseOptions);
-            }
-        });
-    }, [availableResourceTypes]);
-
     const pageUrl = cleanUrl(window.location.href);
-
 
     return (
         <OverlayContainer
@@ -156,17 +64,6 @@ function Share({
                     <SharePageLink value={pageUrl} label={<Message msgId="gnviewer.thisPage" />} />
                     {embedUrl && <ShareEmbedLink embedUrl={embedUrl} label={<Message msgId={`gnviewer.embed${resourceType}`} />} />}
                     {(resourceType === 'document' && !!downloadUrl) && <SharePageLink value={downloadUrl} label={<Message msgId={`gnviewer.directLink`} />} />}
-                    {canEdit && <>
-                        <Permissions
-                            compactPermissions={compactPermissions}
-                            layers={layers} entriesTabs={entriesTabs}
-                            onChange={onChangePermissions}
-                            enableGeoLimits={enableGeoLimits}
-                            resourceId={resourceId}
-                            loading={permissionsLoading}
-                            permissionOptions={permissionsObject}
-                        />
-                    </>}
                 </div>
             </section>
         </OverlayContainer>
@@ -188,28 +85,16 @@ Share.defaultProps = {
 const SharePlugin = connect(
     createSelector([
         state => state?.controls?.rightOverlay?.enabled === 'Share',
-        getResourceId,
-        mapInfoSelector,
-        getCompactPermissions,
-        layersSelector,
-        canManageResourcePermissions,
-        getCurrentResourcePermissionsLoading,
         getResourceData,
         getViewedResourceType
-    ], (enabled, resourceId, mapInfo, compactPermissions, layers, canEdit, permissionsLoading, resource, type) => ({
+    ], (enabled, resource, type) => ({
         enabled,
-        resourceId: resourceId || mapInfo?.id,
-        compactPermissions,
-        layers,
-        canEdit,
-        permissionsLoading,
         embedUrl: getEmbedUrl(resource),
         resourceType: type,
         downloadUrl: getDownloadUrlInfo(resource)?.url
     })),
     {
-        onClose: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),
-        onChangePermissions: updateResourceCompactPermissions
+        onClose: setControlProperty.bind(null, 'rightOverlay', 'enabled', false)
     }
 )(Share);
 

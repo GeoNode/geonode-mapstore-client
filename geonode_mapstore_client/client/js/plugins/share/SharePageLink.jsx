@@ -7,8 +7,8 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import Button from '@js/components/Button';
-import FaIcon from '@js/components/FaIcon/FaIcon';
+import Button from '@mapstore/framework/components/layout/Button';
+import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
 import CopyToClipboard from 'react-copy-to-clipboard';
 
 
@@ -40,10 +40,10 @@ function SharePageLink({label, value, children}) {
                                 size="sm"
                                 onClick={() => setCopied(true)}
                             >
-                                <FaIcon name="copy" />
+                                <Icon glyph="copy" />
                             </Button>
                         </CopyToClipboard>}
-                        {copied && <Button size="sm"><FaIcon name="check" /></Button>}</div>
+                        {copied && <Button size="sm"><Icon glyph="check" /></Button>}</div>
                     {children}
                 </div>
             </div>

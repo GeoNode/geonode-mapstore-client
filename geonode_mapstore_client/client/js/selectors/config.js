@@ -8,7 +8,7 @@
 
 import get from 'lodash/get';
 import { getConfigProp } from "@mapstore/framework/utils/ConfigUtils";
-import { getMonitoredState, handleExpression } from '@mapstore/framework/utils/PluginsUtils';
+import { handleExpression } from '@mapstore/framework/utils/PluginsUtils';
 import { mapObjectFunc } from '@js/utils/MenuUtils';
 
 
@@ -18,10 +18,9 @@ import { mapObjectFunc } from '@js/utils/MenuUtils';
 
 /**
  * return all the custom filters available in the GeoNode configuration from localConfig
- * @param {object} state redux state
+ * @param {object} monitoredState monitored state
  */
-export const getCustomMenuFilters = (state) => {
-    const monitoredState = getMonitoredState(state, getConfigProp('monitorState'));
+export const getCustomMenuFilters = (monitoredState) => {
     const geoNodeCustomFilters = getConfigProp('geoNodeCustomFilters');
     const getMonitorState = (path) => {
         return get(monitoredState, path);

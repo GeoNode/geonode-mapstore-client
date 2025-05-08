@@ -309,7 +309,7 @@ export function setupConfiguration({
             actionListeners[type] = listeners;
         },
         setGetFeatureInfoViewer: setViewer,
-        setPluginsConfig: (pluginsConfig) => { apiPluginsConfig = pluginsConfig; }
+        setPluginsConfig: (pluginsConfig) => { apiPluginsConfig = isFunction(pluginsConfig) ? pluginsConfig(localConfig) : pluginsConfig; }
     };
     const mapstoreReady = new CustomEvent('mapstore:ready', {
         detail: window.MapStoreAPI

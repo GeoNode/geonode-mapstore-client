@@ -8,7 +8,6 @@
 
 import { getResourceData } from '@js/selectors/resource';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
-import { getSearchResults, getFeaturedResults } from '@js/selectors/search';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 
 export const isProcessCompleted = (state, payload) => {
@@ -30,32 +29,6 @@ export const processingDownload = (state) => {
     );
     const downloading = isProcessingDownload ? true : false;
     return downloading;
-};
-
-export const generalResourceDownload = (state) => {
-    const generalResources = getSearchResults(state);
-    const downloads = state?.resourceservice?.downloads || [];
-    const generalDownloads = generalResources?.reduce((acc, resource) => {
-        const downloadingResources = downloads.find(download => download.pk === resource.pk);
-        if (downloadingResources) {
-            return [...acc, { ...resource }];
-        }
-        return [...acc];
-    }, []);
-    return generalDownloads;
-};
-
-export const featuredResourceDownload = (state) => {
-    const featuredResources = getFeaturedResults(state);
-    const downloads = state?.resourceservice?.downloads || [];
-    const featuredDownloads = featuredResources?.reduce((acc, resource) => {
-        const downloadingResources = downloads.find(download => download.pk === resource.pk);
-        if (downloadingResources) {
-            return [...acc, { ...resource }];
-        }
-        return [...acc];
-    }, []);
-    return featuredDownloads;
 };
 
 export const getCurrentResourcePermissionsLoading = (state) => {

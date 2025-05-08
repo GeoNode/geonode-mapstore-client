@@ -8,7 +8,10 @@
 
 import { Observable } from 'rxjs';
 import { addApi, setApi } from '@mapstore/framework/api/persistence';
-import { getMaps, getMapByPk } from '@js/api/geonode/v2';
+import { getMaps, getMapByPk, getResources as gnGetResources } from '@js/api/geonode/v2';
+import { getFacetItems } from '@js/api/geonode/v2/facets';
+import { parseCatalogResource } from '@js/utils/ResourceUtils';
+import { getCustomMenuFilters } from '@js/selectors/config';
 
 const getResource = (pk) => {
     return Observable.defer(() => {
@@ -63,7 +66,27 @@ const getResources = ({ category, options, query }) => {
 
 const persistence = {
     getResource,
-    getResources
+    getResources,
+    getCatalogResources: ({ params, config, monitoredState }) => {
+        return Observable.defer(() => {
+            const customFilters = getCustomMenuFilters(monitoredState);
+            return gnGetResources({
+                ...params,
+                config,
+                customFilters
+            }).then(({ resources, ...response }) => {
+                return {
+                    ...response,
+                    resources: resources.map(parseCatalogResource)
+                };
+            });
+        });
+    },
+    getCatalogFacets: (...args) => {
+        return Observable.defer(() => {
+            return getFacetItems(...args);
+        });
+    }
 };
 
 // register geonode api

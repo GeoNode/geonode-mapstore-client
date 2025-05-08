@@ -85,6 +85,7 @@ def run_setup_hooks(*args, **kwargs):
         ),
         re_path(r"^metadata/(?P<pk>[^/]*)$", views.metadata, name='metadata'),
         re_path(r"^metadata/(?P<pk>[^/]*)/embed$", views.metadata_embed, name='metadata'),
+        re_path(r"^(?P<resource_type>[^/]*)$", views.resource_type_catalog, name='resource_type_catalog'),
         # required, otherwise will raise no-lookup errors to be analysed
         re_path(r"^api/v2/", include(router.urls)),
     ]
@@ -120,7 +121,9 @@ def run_setup_hooks(*args, **kwargs):
             "subtype",
             "title",
             "executions",
-            "thumbnail_url"
+            "thumbnail_url",
+            "created",
+            "favorite"
         ],
     }
     settings.REST_API_PRESETS["dataset_list"] = {
@@ -229,6 +232,11 @@ def run_setup_hooks(*args, **kwargs):
             "metadata_uploaded_preserve",
             "featured"
         ],
+    }
+    settings.REST_API_PRESETS["map_details"] = {
+        "include[]": [
+            "maplayers"
+        ]
     }
     settings.REST_API_PRESETS["map_viewer"] = {
         "include[]": [

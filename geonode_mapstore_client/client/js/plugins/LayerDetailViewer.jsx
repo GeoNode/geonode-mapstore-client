@@ -7,48 +7,23 @@
  */
 
 import React from 'react';
-import { createPlugin, getMonitoredState } from '@mapstore/framework/utils/PluginsUtils';
+import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
-import DetailsPanel from '@js/components/DetailsPanel';
-import { enableMapThumbnailViewer } from '@js/actions/gnresource';
-import FaIcon from '@js/components/FaIcon/FaIcon';
+import DetailsPanel from './ResourceDetails/containers/DetailsPanel';
+import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
 import controls from '@mapstore/framework/reducers/controls';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import gnresource from '@js/reducers/gnresource';
 import { getSelectedLayerDataset } from '@js/selectors/resource';
-import GNButton from '@js/components/Button';
+import GNButton from '@mapstore/framework/components/layout/Button';
 import useDetectClickOut from '@js/hooks/useDetectClickOut';
 import OverlayContainer from '@js/components/OverlayContainer';
 import { withRouter } from 'react-router';
-import { hashLocationToHref } from '@js/utils/SearchUtils';
-import { mapSelector } from '@mapstore/framework/selectors/map';
-import { parsePluginConfigExpressions } from '@js/utils/MenuUtils';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
-import tabComponents from '@js/plugins/detailviewer/tabComponents';
+import tabComponents from '@js/plugins/ResourceDetails/containers/tabComponents';
 
 const Button = tooltip(GNButton);
-
-const ConnectedDetailsPanel = connect(
-    createSelector([
-        state => state?.gnresource?.selectedLayerDataset || null,
-        state => state?.gnresource?.loading || false,
-        mapSelector,
-        state => state?.gnresource?.showMapThumbnail || false
-    ], (resource, loading, mapData, showMapThumbnail) => ({
-        resource,
-        loading,
-        initialBbox: mapData?.bbox,
-        enableMapViewer: showMapThumbnail,
-        resourceId: resource?.pk,
-        tabComponents
-    })),
-    {
-        closePanel: setControlProperty.bind(null, 'rightOverlay', 'enabled', false),
-        onClose: enableMapThumbnailViewer
-    }
-)(DetailsPanel);
 
 const ButtonViewer = ({ onClick, layer, size, status }) => {
     const layerResourceId = layer?.pk;
@@ -61,7 +36,7 @@ const ButtonViewer = ({ onClick, layer, size, status }) => {
             size={size}
             onClick={handleClickButton}
         >
-            <FaIcon name={'info-circle'} />
+            <Icon glyph={'info-circle'} />
         </Button>
     ) : null;
 };
@@ -83,14 +58,11 @@ const ConnectedButton = connect(
 )((ButtonViewer));
 
 function LayerDetailViewer({
-    location,
     enabled,
     onClose,
-    monitoredState,
-    queryPathname = '/',
-    tabs = []
+    tabs = [],
+    resource
 }) {
-    const parsedConfig = parsePluginConfigExpressions(monitoredState, { tabs });
 
     const node = useDetectClickOut({
         disabled: !enabled,
@@ -99,28 +71,17 @@ function LayerDetailViewer({
         }
     });
 
-    const handleFormatHref = (options) => {
-        return hashLocationToHref({
-            location,
-            ...options
-        });
-    };
-
     return (
         <OverlayContainer
             enabled={enabled}
             ref={node}
             className="gn-overlay-wrapper"
         >
-            <ConnectedDetailsPanel
-                editTitle={null}
-                editAbstract={null}
-                editThumbnail={() => {}}
-                activeEditMode={false}
-                enableFavorite={false}
-                formatHref={handleFormatHref}
-                tabs={parsedConfig.tabs}
-                pathname={queryPathname}
+            <DetailsPanel
+                resource={resource}
+                onClose={onClose}
+                tabs={tabs}
+                tabComponents={tabComponents}
             />
         </OverlayContainer>
     );
@@ -129,15 +90,12 @@ function LayerDetailViewer({
 const LayerDetailViewerPlugin = connect(
     createSelector(
         [
-            (state) =>
-                state?.controls?.rightOverlay?.enabled === 'LayerDetailViewer',
-            getSelectedLayerDataset,
-            state => getMonitoredState(state, getConfigProp('monitorState'))
+            (state) => state?.controls?.rightOverlay?.enabled === 'LayerDetailViewer',
+            getSelectedLayerDataset
         ],
-        (enabled, layer, monitoredState) => ({
+        (enabled, resource) => ({
             enabled,
-            layer,
-            monitoredState
+            resource
         })
     ),
     {

@@ -11,10 +11,10 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import Message from '@mapstore/framework/components/I18N/Message';
-import Button from '@js/components/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 import { downloadMetaData } from '@js/actions/gndownload';
 import { gnDownloadMetaData } from '@js/epics/gndownload';
-import Spinner from '@js/components/Spinner';
+import Spinner from '@mapstore/framework/components/layout/Spinner';
 import gnDownload from '@js/reducers/gndownload';
 
 function DublinCoreDownload({ onDownload, resourcePk, isDownloading }) {

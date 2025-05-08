@@ -27,7 +27,7 @@ import {
 import { parseDevHostname } from '@js/utils/APIUtils';
 
 import metadataReducer from './reducers/metadata';
-import Button from '@js/components/Button';
+import Button from '@mapstore/framework/components/layout/Button';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { resourceHasPermission } from '@js/utils/ResourceUtils';
 

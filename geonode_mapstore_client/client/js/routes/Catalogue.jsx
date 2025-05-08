@@ -53,6 +53,7 @@ function getPluginsConfiguration(name, pluginsConfig) {
 
 const withRedirect = (Component) => {
     return (props) => {
+        /*
         const { pathname, search } = props.location ?? {};
         const catalogHomeRedirectsTo = getGeoNodeLocalConfig('geoNodeSettings.catalogHomeRedirectsTo');
         const defaultCatalogPage = getGeoNodeLocalConfig('geoNodeSettings.defaultCatalogPage');
@@ -64,6 +65,7 @@ const withRedirect = (Component) => {
             window.location.href = `#/${defaultCatalogPage ? defaultCatalogPage : ""}`;
             return null;
         }
+        */
         return <Component {...props}/>;
     };
 };
@@ -83,7 +85,7 @@ function CatalogueRoute({
     });
 
     const parsedPlugins = useMemo(() => ({ ...loadedPlugins, ...getPlugins(plugins) }), [loadedPlugins]);
-    const className = `gn-catalogue`;
+    const className = `gn-catalogue-page`;
 
     return (
         <>

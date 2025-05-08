@@ -523,13 +523,13 @@
                         {
                             "type": "link",
                             "size": "md",
-                            "href": "#/all",
+                            "href": "#/",
                             "labelId": "gnviewer.allResources"
                         },
                         {
                             "type": "plugin",
                             "size": "md",
-                            "name": "DetailViewerButton"
+                            "name": "ResourceDetailsButton"
                         },
                         {
                             "labelId": "gnviewer.resource",
@@ -571,7 +571,7 @@
                             "items": [
                                 {
                                     "type": "plugin",
-                                    "name": "DetailViewerButton"
+                                    "name": "ResourceDetailsButton"
                                 },
                                 {
                                     "type": "plugin",
@@ -661,12 +661,6 @@
                             "labelId": "gnviewer.createMap",
                             "disableIf": "{!(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}"
                         }
-                    ],
-                    "rightMenuItems": [
-                        {
-                            "type": "plugin",
-                            "name": "FullScreen"
-                        }
                     ]
                 }
             },
@@ -683,173 +677,16 @@
                 }
             },
             {
-                "name": "MapThumbnail"
-            },
-            {
                 "name": "Share",
                 "cfg": {
-                    "containerPosition": "rightOverlay",
-                    "enableGeoLimits": true
+                    "containerPosition": "rightOverlay"
                 }
             },
             {
-                "name": "DetailViewer",
+                "name": "ResourceDetails",
                 "cfg": {
-                    "containerPosition": "rightOverlay",
-                    "tabs": [
-                        {
-                            "type": "tab",
-                            "id": "info",
-                            "labelId": "gnviewer.info",
-                            "items": [
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.title",
-                                    "value": "{context.get(state('gnResourceData'), 'title')}"
-                                },
-                                {
-                                    "type": "link",
-                                    "labelId": "gnviewer.owner",
-                                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
-                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "{'gnviewer.'+context.get(state('gnResourceData'), 'date_type')}",
-                                    "value": "{context.get(state('gnResourceData'), 'date')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.created",
-                                    "value": "{context.get(state('gnResourceData'), 'created')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.lastModified",
-                                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.resourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
-                                    }
-                                },
-                                {
-                                    "type": "{context.isDocumentExternalSource(state('gnResourceData')) ? 'link' : 'text'}",
-                                    "labelId": "gnviewer.sourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'sourcetype', '').toLowerCase()}",
-                                    "href": "{context.get(state('gnResourceData'), 'href')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.category",
-                                    "value": "{context.get(state('gnResourceData'), 'category.gn_description')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "filter{category.identifier}": "{context.get(state('gnResourceData'), 'category.identifier')}"
-                                    }
-                                },
-                                {
-                                    "type": "link",
-                                    "labelId": "gnviewer.pointOfContact",
-                                    "value": "{context.getUserResourceNames(context.get(state('gnResourceData'), 'poc'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'poc')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.keywords",
-                                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
-                                    "valueKey": "name",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{keywords.slug.in}": "${slug}"
-                                    }
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.regions",
-                                    "value": "{context.get(state('gnResourceData'), 'regions')}",
-                                    "valueKey": "name",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{regions.code.in}": "${code}"
-                                    }
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.attribution",
-                                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.language",
-                                    "value": "{context.get(state('gnResourceData'), 'language')}"
-                                },
-                                {
-                                    "type": "html",
-                                    "labelId": "gnviewer.supplementalInformation",
-                                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.temporalExtent",
-                                    "value": {
-                                        "start": "{context.get(state('gnResourceData'), 'temporal_extent_start')}",
-                                        "end": "{context.get(state('gnResourceData'), 'temporal_extent_end')}"
-                                    }
-                                },
-                                {
-                                    "type": "link",
-                                    "style": "label",
-                                    "labelId": "gnviewer.viewFullMetadata",
-                                    "href": "{context.getMetadataDetailUrl(state('gnResourceData'))}",
-                                    "disableIf": "{!context.getMetadataDetailUrl(state('gnResourceData'))}"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "locations",
-                            "id": "locations",
-                            "labelId": "gnviewer.locations",
-                            "items": "{({extent: context.get(state('gnResourceData'), 'extent')})}"
-                        },
-                        {
-                            "type": "attribute-table",
-                            "id": "attributes",
-                            "labelId": "gnviewer.attributes",
-                            "disableIf": "{context.get(state('gnResourceData'), 'resource_type') !== 'dataset'}",
-                            "items": "{context.get(state('gnResourceData'), 'attribute_set')}"
-                        },
-                        {
-                            "type": "linked-resources",
-                            "id": "related",
-                            "labelId": "gnviewer.linkedResources.label",
-                            "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
-                        },
-                        {
-                            "type": "assets",
-                            "id": "assets",
-                            "labelId": "gnviewer.assets",
-                            "items": "{context.get(state('gnResourceData'), 'assets')}"
-                        },
-                        {
-                            "type": "settings",
-                            "id": "settings",
-                            "labelId": "gnviewer.management",
-                            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-                            "items": [
-                                true
-                            ]
-                        }
-                    ]
+                    "containerPosition": "header",
+                    "defaultOpen": true
                 }
             },
             {
@@ -920,9 +757,6 @@
             },
             {
                 "name": "Measure"
-            },
-            {
-                "name": "FullScreen"
             },
             {
                 "name": "Print",
@@ -1512,12 +1346,6 @@
                             "type": "plugin",
                             "name": "Save"
                         }
-                    ],
-                    "rightMenuItems": [
-                        {
-                            "type": "plugin",
-                            "name": "FullScreen"
-                        }
                     ]
                 }
             },
@@ -1622,9 +1450,6 @@
                 "mandatory": true
             },
             {
-                "name": "MapThumbnail"
-            },
-            {
                 "mandatory": true,
                 "name": "ActionNavbar",
                 "cfg": {
@@ -1633,13 +1458,13 @@
                         {
                             "type": "link",
                             "size": "md",
-                            "href": "#/all",
+                            "href": "#/",
                             "labelId": "gnviewer.allResources"
                         },
                         {
                             "type": "plugin",
                             "size": "md",
-                            "name": "DetailViewerButton"
+                            "name": "ResourceDetailsButton"
                         },
                         {
                             "labelId": "gnviewer.resource",
@@ -1682,7 +1507,7 @@
                             "items": [
                                 {
                                     "type": "plugin",
-                                    "name": "DetailViewerButton"
+                                    "name": "ResourceDetailsButton"
                                 },
                                 {
                                     "type": "plugin",
@@ -1735,12 +1560,6 @@
                             "name": "DatasetsCatalog",
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource')}"
                         }
-                    ],
-                    "rightMenuItems": [
-                        {
-                            "type": "plugin",
-                            "name": "FullScreen"
-                        }
                     ]
                 }
             },
@@ -1754,156 +1573,9 @@
             },
             {
                 "mandatory": true,
-                "name": "DetailViewer",
+                "name": "ResourceDetails",
                 "cfg": {
-                    "containerPosition": "rightOverlay",
-                    "tabs": [
-                        {
-                            "type": "tab",
-                            "id": "info",
-                            "labelId": "gnviewer.info",
-                            "items": [
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.title",
-                                    "value": "{context.get(state('gnResourceData'), 'title')}"
-                                },
-                                {
-                                    "type": "link",
-                                    "labelId": "gnviewer.owner",
-                                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
-                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "{'gnviewer.'+context.get(state('gnResourceData'), 'date_type')}",
-                                    "value": "{context.get(state('gnResourceData'), 'date')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.created",
-                                    "value": "{context.get(state('gnResourceData'), 'created')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.lastModified",
-                                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.resourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
-                                    }
-                                },
-                                {
-                                    "type": "{context.isDocumentExternalSource(state('gnResourceData')) ? 'link' : 'text'}",
-                                    "labelId": "gnviewer.sourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'sourcetype', '').toLowerCase()}",
-                                    "href": "{context.get(state('gnResourceData'), 'href')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.category",
-                                    "value": "{context.get(state('gnResourceData'), 'category.gn_description')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "filter{category.identifier}": "{context.get(state('gnResourceData'), 'category.identifier')}"
-                                    }
-                                },
-                                {
-                                    "type": "link",
-                                    "labelId": "gnviewer.pointOfContact",
-                                    "value": "{context.getUserResourceNames(context.get(state('gnResourceData'), 'poc'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'poc')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.keywords",
-                                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
-                                    "valueKey": "name",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{keywords.slug.in}": "${slug}"
-                                    }
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.regions",
-                                    "value": "{context.get(state('gnResourceData'), 'regions')}",
-                                    "valueKey": "code",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{regions.code.in}": "${code}"
-                                    }
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.attribution",
-                                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.language",
-                                    "value": "{context.get(state('gnResourceData'), 'language')}"
-                                },
-                                {
-                                    "type": "html",
-                                    "labelId": "gnviewer.supplementalInformation",
-                                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.temporalExtent",
-                                    "value": {
-                                        "start": "{context.get(state('gnResourceData'), 'temporal_extent_start')}",
-                                        "end": "{context.get(state('gnResourceData'), 'temporal_extent_end')}"
-                                    }
-                                },
-                                {
-                                    "type": "link",
-                                    "style": "label",
-                                    "labelId": "gnviewer.viewFullMetadata",
-                                    "href": "{context.getMetadataDetailUrl(state('gnResourceData'))}",
-                                    "disableIf": "{!context.getMetadataDetailUrl(state('gnResourceData'))}"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "locations",
-                            "id": "locations",
-                            "labelId": "gnviewer.locations",
-                            "items": "{({extent: context.get(state('gnResourceData'), 'extent')})}"
-                        },
-                        {
-                            "type": "linked-resources",
-                            "id": "related",
-                            "labelId": "gnviewer.linkedResources.label",
-                            "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
-                        },
-                        {
-                            "type": "assets",
-                            "id": "assets",
-                            "labelId": "gnviewer.assets",
-                            "items": "{context.get(state('gnResourceData'), 'assets')}"
-                        },
-                        {
-                            "type": "settings",
-                            "id": "settings",
-                            "labelId": "gnviewer.management",
-                            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-                            "items": [
-                                true
-                            ]
-                        }
-                    ]
+                    "containerPosition": "header"
                 }
             },
             {
@@ -1961,9 +1633,6 @@
             },
             {
                 "name": "Measure"
-            },
-            {
-                "name": "FullScreen"
             },
             {
                 "name": "Print",
@@ -2519,13 +2188,13 @@
                         {
                             "type": "link",
                             "size": "md",
-                            "href": "#/all",
+                            "href": "#/",
                             "labelId": "gnviewer.allResources"
                         },
                         {
                             "type": "plugin",
                             "size": "md",
-                            "name": "DetailViewerButton"
+                            "name": "ResourceDetailsButton"
                         },
                         {
                             "labelId": "gnviewer.resource",
@@ -2573,7 +2242,7 @@
                             "items": [
                                 {
                                     "type": "plugin",
-                                    "name": "DetailViewerButton"
+                                    "name": "ResourceDetailsButton"
                                 },
                                 {
                                     "type": "plugin",
@@ -2593,166 +2262,13 @@
                                 }
                             ]
                         }
-                    ],
-                    "rightMenuItems": [
-                        {
-                            "type": "plugin",
-                            "name": "FullScreen"
-                        }
                     ]
                 }
             },
             {
-                "name": "DetailViewer",
+                "name": "ResourceDetails",
                 "cfg": {
-                    "containerPosition": "rightOverlay",
-                    "tabs": [
-                        {
-                            "type": "tab",
-                            "id": "info",
-                            "labelId": "gnviewer.info",
-                            "items": [
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.title",
-                                    "value": "{context.get(state('gnResourceData'), 'title')}"
-                                },
-                                {
-                                    "type": "link",
-                                    "labelId": "gnviewer.owner",
-                                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
-                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "{'gnviewer.'+context.get(state('gnResourceData'), 'date_type')}",
-                                    "value": "{context.get(state('gnResourceData'), 'date')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.created",
-                                    "value": "{context.get(state('gnResourceData'), 'created')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.lastModified",
-                                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.resourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
-                                    }
-                                },
-                                {
-                                    "type": "{context.isDocumentExternalSource(state('gnResourceData')) ? 'link' : 'text'}",
-                                    "labelId": "gnviewer.sourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'sourcetype', '').toLowerCase()}",
-                                    "href": "{context.get(state('gnResourceData'), 'href')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.category",
-                                    "value": "{context.get(state('gnResourceData'), 'category.gn_description')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "filter{category.identifier}": "{context.get(state('gnResourceData'), 'category.identifier')}"
-                                    }
-                                },
-                                {
-                                    "type": "link",
-                                    "labelId": "gnviewer.pointOfContact",
-                                    "value": "{context.getUserResourceNames(context.get(state('gnResourceData'), 'poc'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'poc')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.keywords",
-                                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
-                                    "valueKey": "name",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{keywords.slug.in}": "${slug}"
-                                    }
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.regions",
-                                    "value": "{context.get(state('gnResourceData'), 'regions')}",
-                                    "valueKey": "name",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{regions.code.in}": "${code}"
-                                    }
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.attribution",
-                                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.language",
-                                    "value": "{context.get(state('gnResourceData'), 'language')}"
-                                },
-                                {
-                                    "type": "html",
-                                    "labelId": "gnviewer.supplementalInformation",
-                                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.temporalExtent",
-                                    "value": {
-                                        "start": "{context.get(state('gnResourceData'), 'temporal_extent_start')}",
-                                        "end": "{context.get(state('gnResourceData'), 'temporal_extent_end')}"
-                                    }
-                                },
-                                {
-                                    "type": "link",
-                                    "style": "label",
-                                    "labelId": "gnviewer.viewFullMetadata",
-                                    "href": "{context.getMetadataDetailUrl(state('gnResourceData'))}",
-                                    "disableIf": "{!context.getMetadataDetailUrl(state('gnResourceData'))}"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "locations",
-                            "id": "locations",
-                            "labelId": "gnviewer.locations",
-                            "items": "{({extent: context.get(state('gnResourceData'), 'extent'), initialExtent: context.get(state('gnResourceInitialData'), 'extent')})}"
-                        },
-                        {
-                            "type": "linked-resources",
-                            "id": "related",
-                            "labelId": "gnviewer.linkedResources.label",
-                            "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
-                        },
-                        {
-                            "type": "assets",
-                            "id": "assets",
-                            "labelId": "gnviewer.assets",
-                            "items": "{context.get(state('gnResourceData'), 'assets')}"
-                        },
-                        {
-                            "type": "settings",
-                            "id": "settings",
-                            "labelId": "gnviewer.management",
-                            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-                            "items": [
-                                true
-                            ]
-                        }
-                    ]
+                    "containerPosition": "header"
                 }
             },
             {
@@ -2864,13 +2380,13 @@
                         {
                             "type": "link",
                             "size": "md",
-                            "href": "#/all",
+                            "href": "#/",
                             "labelId": "gnviewer.allResources"
                         },
                         {
                             "type": "plugin",
                             "size": "md",
-                            "name": "DetailViewerButton"
+                            "name": "ResourceDetailsButton"
                         },
                         {
                             "labelId": "gnviewer.resource",
@@ -2912,7 +2428,7 @@
                             "items": [
                                 {
                                     "type": "plugin",
-                                    "name": "DetailViewerButton"
+                                    "name": "ResourceDetailsButton"
                                 },
                                 {
                                     "type": "plugin",
@@ -2951,12 +2467,6 @@
                                 }
                             ]
                         }
-                    ],
-                    "rightMenuItems": [
-                        {
-                            "type": "plugin",
-                            "name": "FullScreen"
-                        }
                     ]
                 }
             },
@@ -2973,156 +2483,10 @@
                 "name": "DublinCoreDownload"
             },
             {
-                "name": "DetailViewer",
+                "name": "ResourceDetails",
                 "cfg": {
-                    "containerPosition": "rightOverlay",
-                    "tabs": [
-                        {
-                            "type": "tab",
-                            "id": "info",
-                            "labelId": "gnviewer.info",
-                            "items": [
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.title",
-                                    "value": "{context.get(state('gnResourceData'), 'title')}"
-                                },
-                                {
-                                    "type": "link",
-                                    "labelId": "gnviewer.owner",
-                                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
-                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "{'gnviewer.'+context.get(state('gnResourceData'), 'date_type')}",
-                                    "value": "{context.get(state('gnResourceData'), 'date')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.created",
-                                    "value": "{context.get(state('gnResourceData'), 'created')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.lastModified",
-                                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.resourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
-                                    }
-                                },
-                                {
-                                    "type": "{context.isDocumentExternalSource(state('gnResourceData')) ? 'link' : 'text'}",
-                                    "labelId": "gnviewer.sourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'sourcetype', '').toLowerCase()}",
-                                    "href": "{context.get(state('gnResourceData'), 'href')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.category",
-                                    "value": "{context.get(state('gnResourceData'), 'category.gn_description')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "filter{category.identifier}": "{context.get(state('gnResourceData'), 'category.identifier')}"
-                                    }
-                                },
-                                {
-                                    "type": "link",
-                                    "labelId": "gnviewer.pointOfContact",
-                                    "value": "{context.getUserResourceNames(context.get(state('gnResourceData'), 'poc'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'poc')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.keywords",
-                                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
-                                    "valueKey": "name",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{keywords.slug.in}": "${slug}"
-                                    }
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.regions",
-                                    "value": "{context.get(state('gnResourceData'), 'regions')}",
-                                    "valueKey": "name",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{regions.code.in}": "${code}"
-                                    }
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.attribution",
-                                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.language",
-                                    "value": "{context.get(state('gnResourceData'), 'language')}"
-                                },
-                                {
-                                    "type": "html",
-                                    "labelId": "gnviewer.supplementalInformation",
-                                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.temporalExtent",
-                                    "value": {
-                                        "start": "{context.get(state('gnResourceData'), 'temporal_extent_start')}",
-                                        "end": "{context.get(state('gnResourceData'), 'temporal_extent_end')}"
-                                    }
-                                },
-                                {
-                                    "type": "link",
-                                    "style": "label",
-                                    "labelId": "gnviewer.viewFullMetadata",
-                                    "href": "{context.getMetadataDetailUrl(state('gnResourceData'))}",
-                                    "disableIf": "{!context.getMetadataDetailUrl(state('gnResourceData'))}"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "locations",
-                            "id": "locations",
-                            "labelId": "gnviewer.locations",
-                            "items": "{({extent: context.get(state('gnResourceData'), 'extent'), initialExtent: context.get(state('gnResourceInitialData'), 'extent')})}"
-                        },
-                        {
-                            "type": "linked-resources",
-                            "id": "related",
-                            "labelId": "gnviewer.linkedResources.label",
-                            "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
-                        },
-                        {
-                            "type": "assets",
-                            "id": "assets",
-                            "labelId": "gnviewer.assets",
-                            "items": "{context.get(state('gnResourceData'), 'assets')}"
-                        },
-                        {
-                            "type": "settings",
-                            "id": "settings",
-                            "labelId": "gnviewer.management",
-                            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-                            "items": [
-                                true
-                            ]
-                        }
-                    ]
+                    "containerPosition": "header",
+                    "defaultOpen": true
                 }
             },
             {
@@ -3156,13 +2520,13 @@
                         {
                             "type": "link",
                             "size": "md",
-                            "href": "#/all",
+                            "href": "#/",
                             "labelId": "gnviewer.allResources"
                         },
                         {
                             "type": "plugin",
                             "size": "md",
-                            "name": "DetailViewerButton"
+                            "name": "ResourceDetailsButton"
                         },
                         {
                             "labelId": "gnviewer.resource",
@@ -3210,7 +2574,7 @@
                             "items": [
                                 {
                                     "type": "plugin",
-                                    "name": "DetailViewerButton"
+                                    "name": "ResourceDetailsButton"
                                 },
                                 {
                                     "type": "plugin",
@@ -3239,12 +2603,6 @@
                             "type": "plugin",
                             "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
                         }
-                    ],
-                    "rightMenuItems": [
-                        {
-                            "type": "plugin",
-                            "name": "FullScreen"
-                        }
                     ]
                 }
             },
@@ -3253,156 +2611,9 @@
                 "name": "FullScreen"
             },
             {
-                "name": "DetailViewer",
+                "name": "ResourceDetails",
                 "cfg": {
-                    "containerPosition": "rightOverlay",
-                    "tabs": [
-                        {
-                            "type": "tab",
-                            "id": "info",
-                            "labelId": "gnviewer.info",
-                            "items": [
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.title",
-                                    "value": "{context.get(state('gnResourceData'), 'title')}"
-                                },
-                                {
-                                    "type": "link",
-                                    "labelId": "gnviewer.owner",
-                                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
-                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "{'gnviewer.'+context.get(state('gnResourceData'), 'date_type')}",
-                                    "value": "{context.get(state('gnResourceData'), 'date')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.created",
-                                    "value": "{context.get(state('gnResourceData'), 'created')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.lastModified",
-                                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.resourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
-                                    }
-                                },
-                                {
-                                    "type": "{context.isDocumentExternalSource(state('gnResourceData')) ? 'link' : 'text'}",
-                                    "labelId": "gnviewer.sourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'sourcetype', '').toLowerCase()}",
-                                    "href": "{context.get(state('gnResourceData'), 'href')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.category",
-                                    "value": "{context.get(state('gnResourceData'), 'category.gn_description')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "filter{category.identifier}": "{context.get(state('gnResourceData'), 'category.identifier')}"
-                                    }
-                                },
-                                {
-                                    "type": "link",
-                                    "labelId": "gnviewer.pointOfContact",
-                                    "value": "{context.getUserResourceNames(context.get(state('gnResourceData'), 'poc'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'poc')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.keywords",
-                                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
-                                    "valueKey": "name",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{keywords.slug.in}": "${slug}"
-                                    }
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.regions",
-                                    "value": "{context.get(state('gnResourceData'), 'regions')}",
-                                    "valueKey": "name",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{regions.code.in}": "${code}"
-                                    }
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.attribution",
-                                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.language",
-                                    "value": "{context.get(state('gnResourceData'), 'language')}"
-                                },
-                                {
-                                    "type": "html",
-                                    "labelId": "gnviewer.supplementalInformation",
-                                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.temporalExtent",
-                                    "value": {
-                                        "start": "{context.get(state('gnResourceData'), 'temporal_extent_start')}",
-                                        "end": "{context.get(state('gnResourceData'), 'temporal_extent_end')}"
-                                    }
-                                },
-                                {
-                                    "type": "link",
-                                    "style": "label",
-                                    "labelId": "gnviewer.viewFullMetadata",
-                                    "href": "{context.getMetadataDetailUrl(state('gnResourceData'))}",
-                                    "disableIf": "{!context.getMetadataDetailUrl(state('gnResourceData'))}"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "locations",
-                            "id": "locations",
-                            "labelId": "gnviewer.locations",
-                            "items": "{({extent: context.get(state('gnResourceData'), 'extent'), initialExtent: context.get(state('gnResourceInitialData'), 'extent')})}"
-                        },
-                        {
-                            "type": "linked-resources",
-                            "id": "related",
-                            "labelId": "gnviewer.linkedResources.label",
-                            "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
-                        },
-                        {
-                            "type": "assets",
-                            "id": "assets",
-                            "labelId": "gnviewer.assets",
-                            "items": "{context.get(state('gnResourceData'), 'assets')}"
-                        },
-                        {
-                            "type": "settings",
-                            "id": "settings",
-                            "labelId": "gnviewer.management",
-                            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-                            "items": [
-                                true
-                            ]
-                        }
-                    ]
+                    "containerPosition": "header"
                 }
             },
             {
@@ -3827,672 +3038,292 @@
             {
                 "name": "ResourcesGrid",
                 "cfg": {
-                    "containerSelector": "#gn-catalogue",
-                    "scrollContainerSelector": "#gn-catalogue",
-                    "enableGeoNodeCardsMenuItems": true,
-                    "detailsTabs": [
+                    "id": "catalog",
+                    "titleId": "gnviewer.allResources",
+                    "headerNodeSelector": "#gn-brand-navbar",
+                    "footerNodeSelector": ".gn-footer",
+                    "queryPage": true,
+                    "order": {
+                        "defaultLabelId": "resourcesCatalog.orderBy",
+                        "options": [
+                            {
+                                "label": "Most recent",
+                                "labelId": "resourcesCatalog.mostRecent",
+                                "value": "-created"
+                            },
+                            {
+                                "label": "Less recent",
+                                "labelId": "resourcesCatalog.lessRecent",
+                                "value": "created"
+                            },
+                            {
+                                "label": "A Z",
+                                "labelId": "resourcesCatalog.aZ",
+                                "value": "title"
+                            },
+                            {
+                                "label": "Z A",
+                                "labelId": "resourcesCatalog.zA",
+                                "value": "-title"
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "list": [
+                            {
+                                "path": "title",
+                                "width": 20,
+                                "labelId": "gnviewer.columnTitle"
+                            },
+                            {
+                                "path": "description",
+                                "width": 30,
+                                "labelId": "resourcesCatalog.columnDescription"
+                            },
+                            {
+                                "path": "created",
+                                "width": 20,
+                                "type": "date",
+                                "labelId": "resourcesCatalog.columnCreated",
+                                "format": "MMM Do YY, h:mm:ss a",
+                                "icon": { "glyph": "clock-o" },
+                                "noDataLabelId": "resourcesCatalog.emptyNA"
+                            },
+                            {
+                                "path": "owner.username",
+                                "icon": { "glyph": "user", "type": "glyphicon" },
+                                "image": { "path": "owner.avatar" },
+                                "width": 10,
+                                "labelId": "gnviewer.columnOwner",
+                                "noDataLabelId": "resourcesCatalog.emptyUnknown"
+                            }
+                        ],
+                        "grid": [
+                            {
+                                "path": "title",
+                                "target": "header"
+                            },
+                            {
+                                "path": "owner.username",
+                                "target": "footer",
+                                "icon": { "glyph": "user", "type": "glyphicon" },
+                                "image": { "path": "owner.avatar" },
+                                "noDataLabelId": "resourcesCatalog.emptyUnknown"
+                            }
+                        ]
+                    },
+                    "menuItems": [
                         {
-                            "type": "tab",
-                            "id": "info",
-                            "labelId": "gnviewer.info",
+                            "labelId": "gnhome.addResource",
+                            "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
+                            "type": "dropdown",
+                            "variant": "primary",
+                            "noCaret": true,
                             "items": [
                                 {
-                                    "type": "text",
-                                    "labelId": "gnviewer.title",
-                                    "value": "{context.get(state('gnResourceData'), 'title')}"
-                                },
-                                {
+                                    "labelId": "gnhome.uploadDataset",
+                                    "value": "layer",
                                     "type": "link",
-                                    "labelId": "gnviewer.owner",
-                                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
-                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
+                                    "href": "{context.getCataloguePath('/catalogue/#/upload/dataset')}"
                                 },
                                 {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "{'gnviewer.'+context.get(state('gnResourceData'), 'date_type')}",
-                                    "value": "{context.get(state('gnResourceData'), 'date')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.created",
-                                    "value": "{context.get(state('gnResourceData'), 'created')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.lastModified",
-                                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.resourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
-                                    }
-                                },
-                                {
-                                    "type": "{context.isDocumentExternalSource(state('gnResourceData')) ? 'link' : 'text'}",
-                                    "labelId": "gnviewer.sourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'sourcetype', '').toLowerCase()}",
-                                    "href": "{context.get(state('gnResourceData'), 'href')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.category",
-                                    "value": "{context.get(state('gnResourceData'), 'category.gn_description')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "filter{category.identifier}": "{context.get(state('gnResourceData'), 'category.identifier')}"
-                                    }
-                                },
-                                {
+                                    "labelId": "gnhome.uploadDocument",
+                                    "value": "document",
                                     "type": "link",
-                                    "labelId": "gnviewer.pointOfContact",
-                                    "value": "{context.getUserResourceNames(context.get(state('gnResourceData'), 'poc'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'poc')}"
+                                    "href": "{context.getCataloguePath('/catalogue/#/upload/document')}"
                                 },
                                 {
-                                    "type": "query",
-                                    "labelId": "gnviewer.keywords",
-                                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
-                                    "valueKey": "name",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{keywords.slug.in}": "${slug}"
-                                    }
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.regions",
-                                    "value": "{context.get(state('gnResourceData'), 'regions')}",
-                                    "valueKey": "name",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{regions.code.in}": "${code}"
-                                    }
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.attribution",
-                                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.language",
-                                    "value": "{context.get(state('gnResourceData'), 'language')}"
-                                },
-                                {
-                                    "type": "html",
-                                    "labelId": "gnviewer.supplementalInformation",
-                                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.temporalExtent",
-                                    "value": {
-                                        "start": "{context.get(state('gnResourceData'), 'temporal_extent_start')}",
-                                        "end": "{context.get(state('gnResourceData'), 'temporal_extent_end')}"
-                                    }
-                                },
-                                {
+                                    "labelId": "gnhome.createDataset",
+                                    "value": "layer",
                                     "type": "link",
-                                    "style": "label",
-                                    "labelId": "gnviewer.viewFullMetadata",
-                                    "href": "{context.getMetadataDetailUrl(state('gnResourceData'))}",
-                                    "disableIf": "{!context.getMetadataDetailUrl(state('gnResourceData'))}"
+                                    "href": "/createlayer/",
+                                    "disableIf": "{(state('settings') && state('settings').createLayer) ? false : true}"
+                                },
+                                {
+                                    "labelId": "gnhome.createMap",
+                                    "value": "map",
+                                    "type": "link",
+                                    "href": "{context.getCataloguePath('/catalogue/#/map/new')}"
+                                },
+                                {
+                                    "labelId": "gnhome.createGeostory",
+                                    "value": "geostory",
+                                    "type": "link",
+                                    "href": "{context.getCataloguePath('/catalogue/#/geostory/new')}"
+                                },
+                                {
+                                    "labelId": "gnhome.createDashboard",
+                                    "value": "dashboard",
+                                    "type": "link",
+                                    "href": "{context.getCataloguePath('/catalogue/#/dashboard/new')}"
+                                },
+                                {
+                                    "labelId": "gnhome.remoteServices",
+                                    "value": "remote",
+                                    "type": "link",
+                                    "href": "/services/?limit=5"
                                 }
                             ]
                         },
                         {
-                            "type": "locations",
-                            "id": "locations",
-                            "labelId": "gnviewer.locations",
-                            "items": "{({extent: context.get(state('gnResourceData'), 'extent')})}"
-                        },
-                        {
-                            "type": "attribute-table",
-                            "id": "attributes",
-                            "labelId": "gnviewer.attributes",
-                            "disableIf": "{context.get(state('gnResourceData'), 'resource_type') !== 'dataset'}",
-                            "items": "{context.get(state('gnResourceData'), 'attribute_set')}"
-                        },
-                        {
-                            "type": "linked-resources",
-                            "id": "related",
-                            "labelId": "gnviewer.linkedResources.label",
-                            "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
-                        },
-                        {
-                            "type": "assets",
-                            "id": "assets",
-                            "labelId": "gnviewer.assets",
-                            "items": "{context.get(state('gnResourceData'), 'assets')}"
+                            "type": "divider"
                         }
-                    ],
-                    "allPage": {},
-                    "mapsPage": {
-                        "defaultQuery": {
-                            "resource": "map"
-                        },
-                        "menuItems": [
-                            {
-                                "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource')) ? true : false}",
-                                "labelId": "gnhome.new",
-                                "value": "map",
-                                "type": "link",
-                                "variant": "primary",
-                                "href": "{context.getCataloguePath('/catalogue/#/map/new')}"
-                            }
-                        ],
-                        "filtersFormItems": [
-                            {
-                                "type": "search"
-                            },
-                            {
-                                "type": "group",
-                                "labelId": "gnhome.customFiltersTitle",
-                                "items": [
-                                    {
-                                        "id": "my-resources",
-                                        "labelId": "gnhome.myResources",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "favorite",
-                                        "labelId": "gnhome.favorites",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "featured",
-                                        "labelId": "gnhome.featuredList",
-                                        "type": "filter"
-                                    },
-                                    {
-                                        "id": "unpublished",
-                                        "labelId": "gnhome.unpublished",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "pending-approval",
-                                        "labelId": "gnhome.pendingApproval",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "divider",
-                                "disableIf": "{!state('user')}"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "category"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "keyword"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "place"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "user"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "group"
-                            },
-                            {
-                                "type": "accordion",
-                                "style": "facet",
-                                "facet": "thesaurus"
-                            },
-                            {
-                                "type": "date-range",
-                                "filterKey": "date",
-                                "labelId": "gnviewer.dateFilter"
-                            },
-                            {
-                                "labelId": "gnviewer.extent",
-                                "type": "extent"
-                            }
-                        ]
-                    },
-                    "documentsPage": {
-                        "defaultQuery": {
-                            "resource": "document"
-                        },
-                        "menuItems": [
-                            {
-                                "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource')) ? true : false}",
-                                "variant": "primary",
-                                "labelId": "gnhome.new",
-                                "value": "document",
-                                "type": "link",
-                                "href": "{context.getCataloguePath('/catalogue/#/upload/document')}"
-                            }
-                        ],
-                        "filtersFormItems": [
-                            {
-                                "type": "search"
-                            },
-                            {
-                                "type": "group",
-                                "labelId": "gnhome.customFiltersTitle",
-                                "items": [
-                                    {
-                                        "id": "my-resources",
-                                        "labelId": "gnhome.myResources",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "favorite",
-                                        "labelId": "gnhome.favorites",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "featured",
-                                        "labelId": "gnhome.featuredList",
-                                        "type": "filter"
-                                    },
-                                    {
-                                        "id": "unpublished",
-                                        "labelId": "gnhome.unpublished",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "pending-approval",
-                                        "labelId": "gnhome.pendingApproval",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "remote",
-                                        "labelId": "gnhome.remote",
-                                        "type": "filter"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "divider",
-                                "disableIf": "{!state('user')}"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "category"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "keyword"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "place"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "user"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "group"
-                            },
-                            {
-                                "type": "accordion",
-                                "style": "facet",
-                                "facet": "thesaurus"
-                            },
-                            {
-                                "type": "date-range",
-                                "filterKey": "date",
-                                "labelId": "gnviewer.dateFilter"
-                            },
-                            {
-                                "labelId": "gnviewer.extent",
-                                "type": "extent"
-                            }
-                        ]
-                    },
-                    "dashboardsPage": {
-                        "defaultQuery": {
-                            "resource": "dashboard"
-                        },
-                        "menuItems": [
-                            {
-                                "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
-                                "variant": "primary",
-                                "labelId": "gnhome.new",
-                                "value": "dashboard",
-                                "type": "link",
-                                "href": "{context.getCataloguePath('/catalogue/#/dashboard/new')}"
-                            }
-                        ],
-                        "filtersFormItems": [
-                            {
-                                "type": "search"
-                            },
-                            {
-                                "type": "group",
-                                "labelId": "gnhome.customFiltersTitle",
-                                "items": [
-                                    {
-                                        "id": "my-resources",
-                                        "labelId": "gnhome.myResources",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "favorite",
-                                        "labelId": "gnhome.favorites",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "featured",
-                                        "labelId": "gnhome.featuredList",
-                                        "type": "filter"
-                                    },
-                                    {
-                                        "id": "unpublished",
-                                        "labelId": "gnhome.unpublished",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "pending-approval",
-                                        "labelId": "gnhome.pendingApproval",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "divider",
-                                "disableIf": "{!state('user')}"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "category"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "keyword"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "place"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "user"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "group"
-                            },
-                            {
-                                "type": "accordion",
-                                "style": "facet",
-                                "facet": "thesaurus"
-                            },
-                            {
-                                "type": "date-range",
-                                "filterKey": "date",
-                                "labelId": "gnviewer.dateFilter"
-                            },
-                            {
-                                "labelId": "gnviewer.extent",
-                                "type": "extent"
-                            }
-                        ]
-                    },
-                    "datasetsPage": {
-                        "defaultQuery": {
-                            "resource": "dataset"
-                        },
-                        "menuItems": [
-                            {
-                                "labelId": "gnhome.new",
-                                "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
-                                "type": "dropdown",
-                                "variant": "primary",
-                                "responsive": true,
-                                "noCaret": true,
-                                "items": [
-                                    {
-                                        "labelId": "gnhome.uploadDataset",
-                                        "value": "layer",
-                                        "type": "link",
-                                        "href": "{context.getCataloguePath('/catalogue/#/upload/dataset')}"
-                                    },
-                                    {
-                                        "labelId": "gnhome.createDataset",
-                                        "value": "layer",
-                                        "type": "link",
-                                        "href": "/createlayer/",
-                                        "disableIf": "{!(state('settings') && state('settings').createLayer)}"
-                                    },
-                                    {
-                                        "labelId": "gnhome.remoteServices",
-                                        "value": "remote",
-                                        "type": "link",
-                                        "href": "/services/?limit=5"
-                                    }
-                                ]
-                            }
-                        ],
-                        "filtersFormItems": [
-                            {
-                                "type": "search"
-                            },
-                            {
-                                "type": "group",
-                                "labelId": "gnhome.customFiltersTitle",
-                                "items": [
-                                    {
-                                        "id": "my-resources",
-                                        "labelId": "gnhome.myResources",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "favorite",
-                                        "labelId": "gnhome.favorites",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "featured",
-                                        "labelId": "gnhome.featuredList",
-                                        "type": "filter"
-                                    },
-                                    {
-                                        "id": "unpublished",
-                                        "labelId": "gnhome.unpublished",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "pending-approval",
-                                        "labelId": "gnhome.pendingApproval",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "remote",
-                                        "labelId": "gnhome.remote",
-                                        "type": "filter"
-                                    },
-                                    {
-                                        "id": "store-vector",
-                                        "labelId": "gnhome.vector",
-                                        "type": "filter"
-                                    },
-                                    {
-                                        "id": "store-raster",
-                                        "labelId": "gnhome.raster",
-                                        "type": "filter"
-                                    },
-                                    {
-                                        "id": "store-time-series",
-                                        "labelId": "gnhome.timeSeries",
-                                        "type": "filter"
-                                    },
-                                    {
-                                        "id": "3dtiles",
-                                        "labelId": "gnhome.3dtiles",
-                                        "type": "filter"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "divider",
-                                "disableIf": "{!state('user')}"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "category"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "keyword"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "place"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "user"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "group"
-                            },
-                            {
-                                "type": "accordion",
-                                "style": "facet",
-                                "facet": "thesaurus"
-                            },
-                            {
-                                "type": "date-range",
-                                "filterKey": "date",
-                                "labelId": "gnviewer.dateFilter"
-                            },
-                            {
-                                "labelId": "gnviewer.extent",
-                                "type": "extent"
-                            }
-                        ]
-                    },
-                    "geostoriesPage": {
-                        "defaultQuery": {
-                            "resource": "geostory"
-                        },
-                        "menuItems": [
-                            {
-                                "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
-                                "variant": "primary",
-                                "labelId": "gnhome.new",
-                                "value": "geostory",
-                                "type": "link",
-                                "href": "{context.getCataloguePath('/catalogue/#/geostory/new')}"
-                            }
-                        ],
-                        "filtersFormItems": [
-                            {
-                                "type": "search"
-                            },
-                            {
-                                "type": "group",
-                                "labelId": "gnhome.customFiltersTitle",
-                                "items": [
-                                    {
-                                        "id": "my-resources",
-                                        "labelId": "gnhome.myResources",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "favorite",
-                                        "labelId": "gnhome.favorites",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "featured",
-                                        "labelId": "gnhome.featuredList",
-                                        "type": "filter"
-                                    },
-                                    {
-                                        "id": "unpublished",
-                                        "labelId": "gnhome.unpublished",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    },
-                                    {
-                                        "id": "pending-approval",
-                                        "labelId": "gnhome.pendingApproval",
-                                        "type": "filter",
-                                        "disableIf": "{!state('user')}"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "divider",
-                                "disableIf": "{!state('user')}"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "category"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "keyword"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "place"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "user"
-                            },
-                            {
-                                "type": "select",
-                                "facet": "group"
-                            },
-                            {
-                                "type": "accordion",
-                                "style": "facet",
-                                "facet": "thesaurus"
-                            },
-                            {
-                                "type": "date-range",
-                                "filterKey": "date",
-                                "labelId": "gnviewer.dateFilter"
-                            },
-                            {
-                                "labelId": "gnviewer.extent",
-                                "type": "extent"
-                            }
-                        ]
-                    }
+                    ]
                 }
+            },
+            {
+                "name": "ResourcesFiltersForm",
+                "cfg": {
+                    "resourcesGridId": "catalog",
+                    "headerNodeSelector": "#gn-brand-navbar",
+                    "footerNodeSelector": ".gn-footer",
+                    "fields": [
+                        {
+                            "type": "search"
+                        },
+                        {
+                            "type": "group",
+                            "labelId": "gnhome.customFiltersTitle",
+                            "items": [
+                                {
+                                    "id": "my-resources",
+                                    "labelId": "gnhome.myResources",
+                                    "type": "filter",
+                                    "disableIf": "{!state('user')}"
+                                },
+                                {
+                                    "id": "favorite",
+                                    "labelId": "gnhome.favorites",
+                                    "type": "filter",
+                                    "disableIf": "{!state('user')}"
+                                },
+                                {
+                                    "id": "featured",
+                                    "labelId": "gnhome.featuredList",
+                                    "type": "filter"
+                                },
+                                {
+                                    "id": "unpublished",
+                                    "labelId": "gnhome.unpublished",
+                                    "type": "filter",
+                                    "disableIf": "{!state('user')}"
+                                },
+                                {
+                                    "id": "pending-approval",
+                                    "labelId": "gnhome.pendingApproval",
+                                    "type": "filter",
+                                    "disableIf": "{!state('user')}"
+                                },
+                                {
+                                    "id": "remote",
+                                    "labelId": "gnhome.remote",
+                                    "type": "filter"
+                                },
+                                {
+                                    "id": "dataset",
+                                    "labelId": "gnhome.datasets",
+                                    "type": "filter",
+                                    "items": [
+                                        {
+                                            "id": "store-vector",
+                                            "labelId": "gnhome.vector",
+                                            "type": "filter"
+                                        },
+                                        {
+                                            "id": "store-raster",
+                                            "labelId": "gnhome.raster",
+                                            "type": "filter"
+                                        },
+                                        {
+                                            "id": "store-time-series",
+                                            "labelId": "gnhome.timeSeries",
+                                            "type": "filter"
+                                        },
+                                        {
+                                            "id": "3dtiles",
+                                            "labelId": "gnhome.3dtiles",
+                                            "type": "filter"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "document",
+                                    "labelId": "gnhome.documents",
+                                    "type": "filter"
+                                },
+                                {
+                                    "id": "map",
+                                    "labelId": "gnhome.maps",
+                                    "type": "filter"
+                                },
+                                {
+                                    "id": "mapviewer",
+                                    "labelId": "gnhome.mapviewers",
+                                    "type": "filter"
+                                },
+                                {
+                                    "id": "geostory",
+                                    "labelId": "gnhome.geostories",
+                                    "type": "filter"
+                                },
+                                {
+                                    "id": "dashboard",
+                                    "labelId": "gnhome.dashboards",
+                                    "type": "filter"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "divider",
+                            "disableIf": "{!state('user')}"
+                        },
+                        {
+                            "type": "select",
+                            "facet": "category"
+                        },
+                        {
+                            "type": "select",
+                            "facet": "keyword"
+                        },
+                        {
+                            "type": "select",
+                            "facet": "place"
+                        },
+                        {
+                            "type": "select",
+                            "facet": "user"
+                        },
+                        {
+                            "type": "select",
+                            "facet": "group"
+                        },
+                        {
+                            "type": "accordion",
+                            "style": "facet",
+                            "facet": "thesaurus"
+                        },
+                        {
+                            "type": "date-range",
+                            "filterKey": "date",
+                            "labelId": "gnviewer.dateFilter"
+                        },
+                        {
+                            "labelId": "gnviewer.extent",
+                            "type": "extent"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "ResourceDetails",
+                "cfg": {
+                    "enableFilters": true,
+                    "enablePreview": true,
+                    "editingOverlay": true
+                }
+            },
+            {
+                "name": "Save"
             },
             {
                 "name": "SaveAs",
@@ -4511,6 +3342,9 @@
             },
             {
                 "name": "Notifications"
+            },
+            {
+                "name": "Favorites"
             }
         ],
         "viewer": [
@@ -4522,7 +3356,7 @@
                         {
                             "type": "link",
                             "size": "md",
-                            "href": "#/all",
+                            "href": "#/",
                             "labelId": "gnviewer.allResources",
                             "disableIf": "{!!state('resourceParams')?.mapPk}"
                         },
@@ -4535,7 +3369,7 @@
                         {
                             "type": "plugin",
                             "size": "md",
-                            "name": "DetailViewerButton"
+                            "name": "ResourceDetailsButton"
                         },
                         {
                             "labelId": "gnviewer.resource",
@@ -4578,7 +3412,7 @@
                             "items": [
                                 {
                                     "type": "plugin",
-                                    "name": "DetailViewerButton"
+                                    "name": "ResourceDetailsButton"
                                 },
                                 {
                                     "type": "plugin",
@@ -4605,166 +3439,13 @@
                             "type": "plugin",
                             "name": "MapViewersCatalog"
                         }
-                    ],
-                    "rightMenuItems": [
-                        {
-                            "type": "plugin",
-                            "name": "FullScreen"
-                        }
                     ]
                 }
             },
             {
-                "name": "DetailViewer",
+                "name": "ResourceDetails",
                 "cfg": {
-                    "containerPosition": "rightOverlay",
-                    "tabs": [
-                        {
-                            "type": "tab",
-                            "id": "info",
-                            "labelId": "gnviewer.info",
-                            "items": [
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.title",
-                                    "value": "{context.get(state('gnResourceData'), 'title')}"
-                                },
-                                {
-                                    "type": "link",
-                                    "labelId": "gnviewer.owner",
-                                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
-                                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "{'gnviewer.'+context.get(state('gnResourceData'), 'date_type')}",
-                                    "value": "{context.get(state('gnResourceData'), 'date')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.created",
-                                    "value": "{context.get(state('gnResourceData'), 'created')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.lastModified",
-                                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.resourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
-                                    }
-                                },
-                                {
-                                    "type": "{context.isDocumentExternalSource(state('gnResourceData')) ? 'link' : 'text'}",
-                                    "labelId": "gnviewer.sourceType",
-                                    "value": "{context.get(state('gnResourceData'), 'sourcetype', '').toLowerCase()}",
-                                    "href": "{context.get(state('gnResourceData'), 'href')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.category",
-                                    "value": "{context.get(state('gnResourceData'), 'category.gn_description')}",
-                                    "pathname": "/",
-                                    "query": {
-                                        "filter{category.identifier}": "{context.get(state('gnResourceData'), 'category.identifier')}"
-                                    }
-                                },
-                                {
-                                    "type": "link",
-                                    "labelId": "gnviewer.pointOfContact",
-                                    "value": "{context.getUserResourceNames(context.get(state('gnResourceData'), 'poc'))}",
-                                    "disableIf": "{!context.get(state('gnResourceData'), 'poc')}"
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.keywords",
-                                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
-                                    "valueKey": "name",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{keywords.slug.in}": "${slug}"
-                                    }
-                                },
-                                {
-                                    "type": "query",
-                                    "labelId": "gnviewer.regions",
-                                    "value": "{context.get(state('gnResourceData'), 'regions')}",
-                                    "valueKey": "name",
-                                    "pathname": "/",
-                                    "queryTemplate": {
-                                        "filter{regions.code.in}": "${code}"
-                                    }
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.attribution",
-                                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
-                                },
-                                {
-                                    "type": "text",
-                                    "labelId": "gnviewer.language",
-                                    "value": "{context.get(state('gnResourceData'), 'language')}"
-                                },
-                                {
-                                    "type": "html",
-                                    "labelId": "gnviewer.supplementalInformation",
-                                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
-                                },
-                                {
-                                    "type": "date",
-                                    "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "gnviewer.temporalExtent",
-                                    "value": {
-                                        "start": "{context.get(state('gnResourceData'), 'temporal_extent_start')}",
-                                        "end": "{context.get(state('gnResourceData'), 'temporal_extent_end')}"
-                                    }
-                                },
-                                {
-                                    "type": "link",
-                                    "style": "label",
-                                    "labelId": "gnviewer.viewFullMetadata",
-                                    "href": "{context.getMetadataDetailUrl(state('gnResourceData'))}",
-                                    "disableIf": "{!context.getMetadataDetailUrl(state('gnResourceData'))}"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "locations",
-                            "id": "locations",
-                            "labelId": "gnviewer.locations",
-                            "items": "{({extent: context.get(state('gnResourceData'), 'extent'), initialExtent: context.get(state('gnResourceInitialData'), 'extent')})}"
-                        },
-                        {
-                            "type": "linked-resources",
-                            "id": "related",
-                            "labelId": "gnviewer.linkedResources.label",
-                            "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
-                        },
-                        {
-                            "type": "assets",
-                            "id": "assets",
-                            "labelId": "gnviewer.assets",
-                            "items": "{context.get(state('gnResourceData'), 'assets')}"
-                        },
-                        {
-                            "type": "settings",
-                            "id": "settings",
-                            "labelId": "gnviewer.management",
-                            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-                            "items": [
-                                true
-                            ]
-                        }
-                    ]
+                    "containerPosition": "header"
                 }
             },
             {

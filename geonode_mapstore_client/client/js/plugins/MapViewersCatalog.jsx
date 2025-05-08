@@ -12,8 +12,8 @@ import { connect } from 'react-redux';
 import { replace } from 'connected-react-router';
 import { createSelector } from 'reselect';
 import Message from '@mapstore/framework/components/I18N/Message';
-import Button from '@js/components/Button';
-import FaIcon from '@js/components/FaIcon';
+import Button from '@mapstore/framework/components/layout/Button';
+import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
 import { getGeoApps } from '@js/api/geonode/v2';
 import { getDefaultPluginsConfig } from '@js/api/geonode/config';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
@@ -112,7 +112,7 @@ function MapViewersCatalogPlugin({
                     <div className="gn-new-map-viewer-action-wrapper">
                         <div  className="gn-new-map-viewer-action-card">
                             <div>
-                                <FaIcon name="link" className="fa-4x"/>
+                                <Icon glyph="link" className="fa-4x"/>
                             </div>
                             <Button variant="primary" onClick={() => {
                                 setNewViewerModal('link');
@@ -123,7 +123,7 @@ function MapViewersCatalogPlugin({
                         </div>
                         <div className="gn-new-map-viewer-action-card">
                             <div >
-                                <FaIcon name="cogs" className="fa-4x"/>
+                                <Icon glyph="cogs" className="fa-4x"/>
                             </div>
                             <Button variant="primary" onClick={() => setNewViewerModal('')}>
                                 <Message msgId="gnviewer.createNewViewer" />

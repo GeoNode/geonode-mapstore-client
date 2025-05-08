@@ -65,6 +65,36 @@ def get_base_left_topbar_menu():
         }
     ]
 
+@register.simple_tag
+def get_brand_navbar_menu():
+    return [
+        {
+            "type": "link",
+            "href": "/datasets",
+            "label": "Datasets",
+        },
+        {
+            "type": "link", 
+            "href": "/maps", 
+            "label": "Maps"
+        },
+        {
+            "type": "link",
+            "href": "/documents",
+            "label": "Documents",
+        },
+        {
+            "type": "link",
+            "href": "/geostories",
+            "label": "GeoStories",
+        },
+        {
+            "type": "link",
+            "href": "/dashboards",
+            "label": "Dashboards",
+        }
+    ]
+
 @register.simple_tag(takes_context=True)
 def get_user_menu(context):
     is_mobile = _is_mobile_device(context)

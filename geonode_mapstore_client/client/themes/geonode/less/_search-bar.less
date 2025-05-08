@@ -10,11 +10,11 @@
 // Theme
 // **************
 
-#gn-components-theme(@theme-vars) {
+#ms-components-theme(@theme-vars) {
     .gn-search-bar {
         .color-var(@theme-vars[main-color]);
         .background-color-var(@theme-vars[main-bg]);
-        .border-color-var(@theme-vars[main-border-color]);
+        .border-bottom-color-var(@theme-vars[main-color]);
         &.focus {
             .outline-color-var(@theme-vars[focus-color]);
         }
@@ -30,13 +30,16 @@
 // **************
 
 .gn-search-bar {
-    .shadow-sm;
     position: relative;
     width: 100%;
     z-index: 20;
-    border-width: 2px;
-    border-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
     min-width: 100px;
+    max-width: 200px;
+    .btn {
+        border: transparent;
+    }
     .input-group {
         display: flex;
     }
