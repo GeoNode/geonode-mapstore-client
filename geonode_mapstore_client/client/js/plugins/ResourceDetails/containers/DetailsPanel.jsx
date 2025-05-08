@@ -25,7 +25,7 @@ import {
 import Message from '@mapstore/framework/components/I18N/Message';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import DetailsInfo from '@mapstore/framework/plugins/ResourcesCatalog/components/DetailsInfo';
-import { replaceResourcePaths } from '@mapstore/framework/utils/ResourcesUtils';
+import { replaceResourcePaths } from '@mapstore/framework/utils/GeostoreUtils';
 import Text from '@mapstore/framework/components/layout/Text';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
