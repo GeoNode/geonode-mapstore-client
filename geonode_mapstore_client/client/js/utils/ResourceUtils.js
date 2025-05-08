@@ -710,13 +710,6 @@ export const canCopyResource = (resource, user) => {
     return (canAdd && canCopy) ? true : false;
 };
 
-export const excludeDeletedResources = (suppliedResources) => {
-    return suppliedResources.filter((resource) => {
-        const { isDeleted } = getResourceStatuses(resource);
-        return !isDeleted && resource;
-    });
-};
-
 export const parseUploadResponse = (upload) => {
     return orderBy(uniqBy([...upload], 'id'), 'create_date', 'desc');
 };

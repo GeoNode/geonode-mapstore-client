@@ -112,7 +112,7 @@ describe('gnresource epics', () => {
         const testState = {
             controls: {
                 rightOverlay: {
-                    enabled: 'DetailViewer'
+                    enabled: 'Share'
                 }
             }
         };

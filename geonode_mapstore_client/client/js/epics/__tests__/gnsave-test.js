@@ -74,7 +74,11 @@ describe('gnsave epics', () => {
                 }
                 done();
             },
-            {}
+            {
+                gnresource: {
+                    type: "map"
+                }
+            }
         );
     });
     it('should update existing map with success (gnSaveContent)', (done) => {
@@ -104,7 +108,11 @@ describe('gnsave epics', () => {
                 }
                 done();
             },
-            {}
+            {
+                gnresource: {
+                    type: "map"
+                }
+            }
         );
     });
     it("gnCheckSelectedDatasetPermissions should trigger permission actions for style and edit", (done) => {

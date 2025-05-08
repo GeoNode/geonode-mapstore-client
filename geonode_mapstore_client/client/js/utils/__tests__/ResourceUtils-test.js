@@ -21,7 +21,6 @@ import {
     toMapStoreMapConfig,
     parseStyleName,
     canCopyResource,
-    excludeDeletedResources,
     processUploadResponse,
     parseUploadResponse,
     cleanUrl,
@@ -515,13 +514,6 @@ describe('Test Resource Utils', () => {
         expect(canCopyResource({ resource_type: 'map', perms: [] }, user)).toBe(false);
         expect(canCopyResource({ resource_type: 'geostory', perms: [] }, user)).toBe(false);
         expect(canCopyResource({ resource_type: 'dashboard', perms: [] }, user)).toBe(false);
-    });
-
-    it('should test excludeDeletedResources', () => {
-        const resources = [{ name: 'test-1', processes: [{ processType: 'deleteResource', output: { status: 'finished' } }] },
-            { name: 'test-2' }];
-
-        expect(excludeDeletedResources(resources)).toEqual([{ name: 'test-2' }]);
     });
 
     it('should test processUploadResponse', () => {

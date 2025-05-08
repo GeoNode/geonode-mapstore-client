@@ -76,8 +76,8 @@ describe('SaveModal plugin component', () => {
         const modalNode = document.querySelector('.ms-resizable-modal');
         expect(modalNode).toBeTruthy();
         const buttonNodes = document.querySelectorAll('button');
-        expect(buttonNodes.length).toBe(2);
-        const saveButtonNode = buttonNodes[1];
+        expect(buttonNodes.length).toBe(3);
+        const saveButtonNode = buttonNodes[2];
         Simulate.click(saveButtonNode);
     });
     it('should trigger onSave with id if update prop is true', (done) => {
@@ -106,8 +106,8 @@ describe('SaveModal plugin component', () => {
         const modalNode = document.querySelector('.ms-resizable-modal');
         expect(modalNode).toBeTruthy();
         const buttonNodes = document.querySelectorAll('button');
-        expect(buttonNodes.length).toBe(2);
-        const saveButtonNode = buttonNodes[1];
+        expect(buttonNodes.length).toBe(3);
+        const saveButtonNode = buttonNodes[2];
         Simulate.click(saveButtonNode);
     });
 });
