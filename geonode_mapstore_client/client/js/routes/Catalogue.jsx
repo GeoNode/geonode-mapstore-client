@@ -11,14 +11,12 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import url from 'url';
 import isArray from 'lodash/isArray';
-import isEmpty from 'lodash/isEmpty';
 import { getMonitoredState } from '@mapstore/framework/utils/PluginsUtils';
 import { getConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 import PluginsContainer from '@mapstore/framework/components/plugins/PluginsContainer';
 import { createShallowSelector } from '@mapstore/framework/utils/ReselectUtils';
 import useModulePlugins from '@mapstore/framework/hooks/useModulePlugins';
 import { getPlugins } from '@mapstore/framework/utils/ModulePluginsUtils';
-import { getGeoNodeLocalConfig } from '@js/utils/APIUtils';
 
 const urlQuery = url.parse(window.location.href, true).query;
 
