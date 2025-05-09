@@ -8,6 +8,7 @@
         const pagePath = catalogPagePath ? catalogPagePath : '/catalogue/';
         const msAPI = event.detail;
         msAPI.setPluginsConfig((localConfig) => {
+            const resourceType = '{{ resource_type }}';
             return (localConfig?.plugins?.catalogue || []).map((plugin) => {
                 if (plugin.name === 'ResourcesGrid') {
                     return {
@@ -16,10 +17,124 @@
                             ...plugin?.cfg,
                             titleId: 'gnhome.{{ title }}',
                             defaultQuery: {
-                                f: '{{ resource_type }}'
+                                f: resourceType
                             }
                         }
                     };
+                }
+                if (plugin.name === "ResourcesFiltersForm") {
+                    return {
+                        ...plugin,
+                        cfg: {
+                            ...plugin?.cfg,
+                           "fields": [
+                                {
+                                    "type": "search"
+                                },
+                                {
+                                    "type": "group",
+                                    "labelId": "gnhome.customFiltersTitle",
+                                    "items": [
+                                        {
+                                            "id": "my-resources",
+                                            "labelId": "gnhome.myResources",
+                                            "type": "filter",
+                                            "disableIf": "{!state('user')}"
+                                        },
+                                        {
+                                            "id": "favorite",
+                                            "labelId": "gnhome.favorites",
+                                            "type": "filter",
+                                            "disableIf": "{!state('user')}"
+                                        },
+                                        {
+                                            "id": "featured",
+                                            "labelId": "gnhome.featuredList",
+                                            "type": "filter"
+                                        },
+                                        {
+                                            "id": "unpublished",
+                                            "labelId": "gnhome.unpublished",
+                                            "type": "filter",
+                                            "disableIf": "{!state('user')}"
+                                        },
+                                        {
+                                            "id": "pending-approval",
+                                            "labelId": "gnhome.pendingApproval",
+                                            "type": "filter",
+                                            "disableIf": "{!state('user')}"
+                                        },
+                                        ...(resourceType === 'document' ? [{
+                                            "id": "remote",
+                                            "labelId": "gnhome.remote",
+                                            "type": "filter"
+                                        }] : []),
+                                        ...(resourceType === 'dataset' ? [
+                                                {
+                                                    "id": "store-vector",
+                                                    "labelId": "gnhome.vector",
+                                                    "type": "filter"
+                                                },
+                                                {
+                                                    "id": "store-raster",
+                                                    "labelId": "gnhome.raster",
+                                                    "type": "filter"
+                                                },
+                                                {
+                                                    "id": "store-time-series",
+                                                    "labelId": "gnhome.timeSeries",
+                                                    "type": "filter"
+                                                },
+                                                {
+                                                    "id": "3dtiles",
+                                                    "labelId": "gnhome.3dtiles",
+                                                    "type": "filter"
+                                                }
+                                            ] : []
+                                        )
+                                    ]
+                                },
+                                {
+                                    "type": "divider",
+                                    "disableIf": "{!state('user')}"
+                                },
+                                {
+                                    "type": "select",
+                                    "facet": "category"
+                                },
+                                {
+                                    "type": "select",
+                                    "facet": "keyword"
+                                },
+                                {
+                                    "type": "select",
+                                    "facet": "place"
+                                },
+                                {
+                                    "type": "select",
+                                    "facet": "user"
+                                },
+                                {
+                                    "type": "select",
+                                    "facet": "group"
+                                },
+                                {
+                                    "type": "accordion",
+                                    "style": "facet",
+                                    "facet": "thesaurus"
+                                },
+                                {
+                                    "type": "date-range",
+                                    "filterKey": "date",
+                                    "labelId": "gnviewer.dateFilter"
+                                },
+                                {
+                                    "labelId": "gnviewer.extent",
+                                    "type": "extent"
+                                }
+                            ]
+                        }
+                    }
                 }
                 return plugin;
             });

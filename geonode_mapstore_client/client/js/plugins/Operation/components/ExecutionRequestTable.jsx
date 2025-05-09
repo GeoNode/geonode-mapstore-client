@@ -98,13 +98,13 @@ function ExecutionRequestTable({
                                                 {viewResource && <RenderActionButton
                                                     request={request}
                                                     msgId={viewResourceLabelId ?? 'gnviewer.view'}
-                                                    href={detailUrls.length === 1 ? detailUrls[0] : getCataloguePath('/catalogue/#/all')}
+                                                    href={detailUrls.length === 1 ? detailUrls[0] : getCataloguePath('/catalogue/#/')}
                                                 /> }
                                                 {editMetadata && <RenderActionButton
                                                     request={request}
                                                     msgId={editMetadataLabelId ?? 'gnviewer.fillMetadata'}
                                                     href={detailUrls.length === 1 ? detailUrls[0].replace(/\/[^/]+\/(\d+)$/, "/metadata/$1")
-                                                        : getCataloguePath('/catalogue/#/all')}
+                                                        : getCataloguePath('/catalogue/#/')}
                                                 />}
                                             </div>
                                             : null}
