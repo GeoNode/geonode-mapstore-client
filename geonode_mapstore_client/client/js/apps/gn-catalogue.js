@@ -39,8 +39,8 @@ import context from '@mapstore/framework/reducers/context';
 
 import ViewerRoute from '@js/routes/Viewer';
 import ComponentsRoute from '@js/routes/Components';
-import CatalogueRoute from '@js/routes/Catalogue';
 import MapViewerRoute from '@js/routes/MapViewer';
+import RedirectRoute from '@js/routes/Redirect';
 
 import gnresource from '@js/reducers/gnresource';
 import resourceservice from '@js/reducers/resourceservice';
@@ -84,6 +84,7 @@ import * as geoNodeMediaApi from '@js/observables/media/geonode';
 registerMediaAPI('geonode', geoNodeMediaApi);
 
 import '@js/observables/persistence';
+import { getGeoNodeLocalConfig } from '@js/utils/APIUtils';
 
 const requires = {
     ReactSwipe,
@@ -98,15 +99,19 @@ const ConnectedRouter = connect(
     })
 )(Router);
 
-const viewers = {
-    [appRouteComponentTypes.VIEWER]: ViewerRoute,
-    [appRouteComponentTypes.CATALOGUE]: CatalogueRoute,
-    [appRouteComponentTypes.DATASET_UPLOAD]: ComponentsRoute,
-    [appRouteComponentTypes.DOCUMENT_UPLOAD]: ComponentsRoute,
-    [appRouteComponentTypes.MAP_VIEWER]: MapViewerRoute
+const getViewer = (component) => {
+    const useRedirect = getGeoNodeLocalConfig('geoNodeSettings.catalogHomeRedirectsTo');
+    const viewers = {
+        [appRouteComponentTypes.VIEWER]: ViewerRoute,
+        [appRouteComponentTypes.CATALOGUE]: useRedirect ? RedirectRoute : ComponentsRoute,
+        [appRouteComponentTypes.DATASET_UPLOAD]: ComponentsRoute,
+        [appRouteComponentTypes.DOCUMENT_UPLOAD]: ComponentsRoute,
+        [appRouteComponentTypes.MAP_VIEWER]: MapViewerRoute
+    };
+    return viewers[component];
 };
 
-const routes = CATALOGUE_ROUTES.map(({ component, ...config }) => ({ ...config, component: viewers[component] }));
+const routes = CATALOGUE_ROUTES.map(({ component, ...config }) => ({ ...config, component: getViewer(component) }));
 
 initializeApp();
 

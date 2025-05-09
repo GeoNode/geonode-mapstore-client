@@ -69,7 +69,6 @@
         let extensionsFolder = geoNodeSettings.EXTENSIONS_FOLDER_PATH;
         let supportedDatasetFileTypes = geoNodeSettings.SUPPORTED_DATASET_FILE_TYPES;
         let catalogHomeRedirectsTo = geoNodeSettings.CATALOG_HOME_REDIRECTS_TO;
-        let defaultCatalogPage = geoNodeSettings.DEFAULT_CATALOG_PAGE || "all";
         let catalogPagePath = geoNodeSettings.CATALOG_PAGE_PATH;
         let customFilters = geoNodeSettings.CUSTOM_FILTERS || {
             "my-resources": {
@@ -212,7 +211,6 @@
                     },
                     staticPath: "{% static '' %}",
                     catalogHomeRedirectsTo: catalogHomeRedirectsTo,
-                    defaultCatalogPage: defaultCatalogPage,
                     catalogPagePath: catalogPagePath
                 }
             },

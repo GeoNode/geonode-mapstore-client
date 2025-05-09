@@ -690,7 +690,10 @@
                 }
             },
             {
-                "name": "DeleteResource"
+                "name": "DeleteResource",
+                "cfg": {
+                    "redirectTo": "/"
+                }
             },
             {
                 "name": "DownloadResource",
@@ -1566,7 +1569,10 @@
             },
             {
                 "mandatory": true,
-                "name": "DeleteResource"
+                "name": "DeleteResource",
+                "cfg": {
+                    "redirectTo": "/"
+                }
             },
             {
                 "mandatory": true,
@@ -2277,7 +2283,11 @@
                 "name": "FullScreen"
             },
             {
-                "name": "DeleteResource"
+                "name": "DeleteResource",
+                "cfg": {
+                    "redirectTo": "/"
+                }
+                
             },
             {
                 "name": "GeoStory",
@@ -2491,7 +2501,10 @@
                 }
             },
             {
-                "name": "DeleteResource"
+                "name": "DeleteResource",
+                "cfg": {
+                    "redirectTo": "/"
+                }
             },
             {
                 "name": "Save"
@@ -2618,7 +2631,10 @@
                 }
             },
             {
-                "name": "DeleteResource"
+                "name": "DeleteResource",
+                "cfg": {
+                    "redirectTo": "/"
+                }
             },
             {
                 "name": "Save"
@@ -3453,7 +3469,10 @@
                 "name": "FullScreen"
             },
             {
-                "name": "DeleteResource"
+                "name": "DeleteResource",
+                "cfg": {
+                    "redirectTo": "/"
+                }
             },
             {
                 "name": "Notifications"
