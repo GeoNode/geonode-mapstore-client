@@ -460,9 +460,9 @@
             "metadataGroupTitle": "General",
             "noGridData": "No hay datos para mostrar",
             "layerSettings": {
-                "title": "Configuración de capa",
-                "updateSuccess": "Configuración de capa actualizada",
-                "updateError": "Error al guardar la configuración de capa"
+                "title": "Configuración de capas del mapa",
+                "updateSuccess": "Configuración de capas del mapa actualizada",
+                "updateError": "Error al actualizar la configuración de capas del mapa"
             },
             "apply": "Aplicar",
             "showPreview": "Mostrar vista previa",

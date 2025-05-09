@@ -598,6 +598,17 @@
                                 },
                                 {
                                     "type": "link",
+                                    "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/settings?tab=style'}",
+                                    "labelId": "gnviewer.editStyle",
+                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "OperationUploadStyle",
+                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
+                                },
+                                {
+                                    "type": "link",
                                     "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/settings'}",
                                     "labelId": "gnviewer.layerSettings.title",
                                     "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
@@ -606,11 +617,6 @@
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
-                                },
-                                {
-                                    "type": "plugin",
-                                    "name": "OperationUploadStyle",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
                                 },
                                 {
                                     "type": "plugin",

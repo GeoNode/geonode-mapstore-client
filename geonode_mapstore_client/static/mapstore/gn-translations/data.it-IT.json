@@ -463,9 +463,9 @@
             "metadataGroupTitle": "Generale",
             "noGridData": "Nessun dato da visualizzare",
             "layerSettings": {
-                "title": "Impostazioni del layer",
-                "updateSuccess": "Impostazioni del layer aggiornate",
-                "updateError": "Errore nel salvataggio delle impostazioni del layer"
+                "title": "Impostazioni del layer della mappa",
+                "updateSuccess": "Impostazioni del layer della mappa aggiornate",
+                "updateError": "Errore durante l'aggiornamento delle impostazioni del layer della mappa"
             },
             "apply": "Applica",
             "showPreview": "Mostra Anteprima",

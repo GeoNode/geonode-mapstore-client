@@ -461,9 +461,9 @@
             "metadataGroupTitle": "Allgemein",
             "noGridData": "Keine Daten zum Anzeigen",
             "layerSettings": {
-                "title": "Layer-Einstellungen",
-                "updateSuccess": "Layer-Einstellungen aktualisiert",
-                "updateError": "Fehler beim Speichern der Layer-Einstellungen"
+                "title": "Kartenschichteinstellungen",
+                "updateSuccess": "Kartenschichteinstellungen aktualisiert",
+                "updateError": "Fehler beim Aktualisieren der Kartenschichteinstellungen"
             },
             "apply": "Anwenden",
             "showPreview": "Vorschau anzeigen",
