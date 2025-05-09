@@ -10,6 +10,7 @@ import axios from '@mapstore/framework/libs/ajax';
 import { Observable } from 'rxjs';
 import get from 'lodash/get';
 import castArray from 'lodash/castArray';
+import isEqual from 'lodash/isEqual';
 
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import { userSelector } from '@mapstore/framework/selectors/security';
@@ -76,17 +77,18 @@ import {
     cleanCompactPermissions,
     toGeoNodeMapConfig,
     RESOURCE_MANAGEMENT_PROPERTIES,
-    getDimensions
+    getDimensions,
+    GROUP_OWNER_PROPERTIES
 } from '@js/utils/ResourceUtils';
 import {
     ProcessTypes,
     ProcessStatus
 } from '@js/utils/ResourceServiceUtils';
-import { updateDatasetTimeSeries } from '@js/api/geonode/v2/index';
+import { transferResource, updateDatasetTimeSeries } from '@js/api/geonode/v2/index';
 import { updateNode } from '@mapstore/framework/actions/layers';
 import { layersSelector } from '@mapstore/framework/selectors/layers';
 
-const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys(RESOURCE_MANAGEMENT_PROPERTIES);
+const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys({...RESOURCE_MANAGEMENT_PROPERTIES, ...GROUP_OWNER_PROPERTIES});
 
 function parseMapBody(body) {
     const geoNodeMap = toGeoNodeMapConfig(body.data);
@@ -169,11 +171,13 @@ export const gnSaveContent = (action$, store) =>
             const contentType = state.gnresource?.type || currentResource?.resource_type;
             const data = !currentResource?.['@ms-detail'] ? getDataPayload(state, contentType) : null;
             const extent = getExtentPayload(state, contentType);
+            const { compactPermissions } = getPermissionsPayload(state);
             const body = {
                 'title': action.metadata.name,
                 ...(RESOURCE_MANAGEMENT_PROPERTIES_KEYS.reduce((acc, key) => {
                     if (currentResource?.[key] !== undefined) {
-                        acc[key] = !!currentResource[key];
+                        const value = typeof currentResource[key] === 'boolean' ? !!currentResource[key] : currentResource[key];
+                        acc[key] = value;
                     }
                     return acc;
                 }, {})),
@@ -193,22 +197,34 @@ export const gnSaveContent = (action$, store) =>
                         window.location.reload();
                         return Observable.empty();
                     }
-                    return Observable.of(
-                        saveSuccess(resource),
-                        setResource({
-                            ...currentResource,
-                            ...body,
-                            ...resource
-                        }),
-                        updateResource(resource),
-                        ...(action.showNotifications
-                            ? [
-                                action.showNotifications === true
-                                    ? successNotification({title: "saveDialog.saveSuccessTitle", message: "saveDialog.saveSuccessMessage"})
-                                    : warningNotification(action.showNotifications)
-                            ]
-                            : []),
-                        ...actions // additional actions to be dispatched
+                    return Observable.merge(
+                        Observable.of(
+                            saveSuccess(resource),
+                            setResource({
+                                ...currentResource,
+                                ...body,
+                                ...resource
+                            }),
+                            updateResource(resource),
+                            ...(action.showNotifications
+                                ? [
+                                    action.showNotifications === true
+                                        ? successNotification({title: "saveDialog.saveSuccessTitle", message: "saveDialog.saveSuccessMessage"})
+                                        : warningNotification(action.showNotifications)
+                                ]
+                                : []),
+                            ...actions // additional actions to be dispatched
+                        ),
+                        ...(compactPermissions ? [
+                            Observable.defer(() =>
+                                updateCompactPermissionsByPk(action.id, cleanCompactPermissions(compactPermissions))
+                                    .then(output => ({ resource: currentResource, output, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
+                                    .catch((error) => ({ resource: currentResource, error: error?.data?.detail || error?.statusText || error?.message || true, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
+                            )
+                                .switchMap((payload) => {
+                                    return Observable.of(startAsyncProcess(payload));
+                                })
+                        ] : [])
                     );
                 })
                 .catch((error) => {
@@ -264,22 +280,35 @@ export const gnSaveDirectContent = (action$, store) =>
             const state = store.getState();
             const mapInfo = mapInfoSelector(state);
             const resourceId = mapInfo?.id || getResourceId(state);
-            const { compactPermissions, geoLimits } = getPermissionsPayload(state);
+            const { geoLimits } = getPermissionsPayload(state);
             const currentResource = getResourceData(state);
 
-            return Observable.defer(() => axios.all([
-                getResourceByPk(resourceId),
-                ...(geoLimits
-                    ? geoLimits.map((limits) =>
-                        limits.features.length === 0
-                            ? deleteGeoLimits(resourceId, limits.id, limits.type)
-                                .catch(() => ({ error: true, resourceId, limits }))
-                            : updateGeoLimits(resourceId, limits.id, limits.type, { features: limits.features })
-                                .catch(() => ({ error: true, resourceId, limits }))
-                    )
-                    : [])
-            ]))
-                .switchMap(([resource, ...geoLimitsResponses]) => {
+            const newOwner = get(currentResource, 'owner.pk', null);
+            const currentOwner = get(state, 'gnresource.initialResource.owner.pk', null);
+            const userId = userSelector(state)?.pk;
+            let transferOwnership;
+            if (newOwner && userId && !isEqual(currentOwner, newOwner)) {
+                transferOwnership = { currentOwner, newOwner, resources: [Number(resourceId)] };
+            }
+
+            // resource information should be saved in a synchronous manner
+            // i.e transfer ownership (if any) followed by resource data and finally permissions
+            return Observable.concat(
+                transferOwnership ? Observable.defer(() => transferResource(userId, transferOwnership)) : Promise.resolve(),
+                Observable.defer(() => axios.all([
+                    getResourceByPk(resourceId),
+                    ...(geoLimits
+                        ? geoLimits.map((limits) =>
+                            limits.features.length === 0
+                                ? deleteGeoLimits(resourceId, limits.id, limits.type)
+                                    .catch(() => ({ error: true, resourceId, limits }))
+                                : updateGeoLimits(resourceId, limits.id, limits.type, { features: limits.features })
+                                    .catch(() => ({ error: true, resourceId, limits }))
+                        )
+                        : [])
+                ]))).toArray()
+                .switchMap(([, responses]) => {
+                    const [resource, ...geoLimitsResponses] = responses;
                     const geoLimitsErrors = geoLimitsResponses.filter(({ error }) => error);
                     const name = getResourceName(state);
                     const description = getResourceDescription(state);
@@ -290,16 +319,6 @@ export const gnSaveDirectContent = (action$, store) =>
                         href: resource?.href
                     };
                     return Observable.concat(
-                        ...(compactPermissions ? [
-                            Observable.defer(() =>
-                                updateCompactPermissionsByPk(resourceId, cleanCompactPermissions(compactPermissions))
-                                    .then(output => ({ resource: currentResource, output, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
-                                    .catch((error) => ({ resource: currentResource, error: error?.data?.detail || error?.statusText || error?.message || true, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
-                            )
-                                .switchMap((payload) => {
-                                    return Observable.of(startAsyncProcess(payload));
-                                })
-                        ] : []),
                         Observable.of(
                             saveContent(
                                 resourceId,
@@ -313,6 +332,7 @@ export const gnSaveDirectContent = (action$, store) =>
                                     : true /* showNotification */),
                             resetGeoLimits()
                         )
+
                     );
                 })
                 .catch((error) => {

@@ -21,7 +21,8 @@ import {
 import { updateResourceCompactPermissions } from "@js/actions/gnresource";
 import {
     getCompactPermissions,
-    getViewedResourceType
+    getViewedResourceType,
+    resourceOwnerSelector
 } from "@js/selectors/resource";
 import { getCurrentResourcePermissionsLoading } from "@js/selectors/resourceservice";
 import {
@@ -34,7 +35,7 @@ import {
 } from "@js/utils/ResourceUtils";
 import GeoLimits from "./GeoLimits";
 
-const entriesTabs = [
+const getEntriesTabs = (owner) => [
     {
         id: "user",
         labelId: "gnviewer.users",
@@ -44,7 +45,7 @@ const entriesTabs = [
                 .map(({ id }) => id);
             return getUsers({
                 ...params,
-                "filter{-pk.in}": [...exclude, -1],
+                "filter{-pk.in}": [...exclude, owner.pk, -1], // exclude existing users along with owner and anonymous user
                 "filter{is_superuser}": false
             });
         },
@@ -88,6 +89,7 @@ const entriesTabs = [
 
 
 const Permissions = ({
+    owner,
     resourceType,
     permissionsLoading,
     compactPermissions,
@@ -116,7 +118,7 @@ const Permissions = ({
         <PermissionsComponent
             editing
             compactPermissions={permissionsCompactToLists(compactPermissions)}
-            entriesTabs={entriesTabs}
+            entriesTabs={getEntriesTabs(owner)}
             onChange={(value) =>
                 onChangePermissions(permissionsListsToCompact(value))
             }
@@ -137,12 +139,14 @@ export default connect(
         [
             getCompactPermissions,
             getCurrentResourcePermissionsLoading,
-            getViewedResourceType
+            getViewedResourceType,
+            resourceOwnerSelector
         ],
-        (compactPermissions, permissionsLoading, type) => ({
+        (compactPermissions, permissionsLoading, type, owner) => ({
             compactPermissions,
             permissionsLoading,
-            resourceType: type
+            resourceType: type,
+            owner
         })
     ),
     {
