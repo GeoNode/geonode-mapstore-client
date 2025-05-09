@@ -36,7 +36,7 @@
     border-bottom-width: 1px;
     border-bottom-style: solid;
     min-width: 100px;
-    max-width: 200px;
+    max-width: 300px;
     .btn {
         border: transparent;
     }
@@ -83,8 +83,13 @@
 
 }
 
-@media screen and (min-width: 768px) {
-    .gn-search-bar {
-        min-width: 500px;
+@media screen and (min-width: @screen-md) {
+    #gn-search-bar {
+        display: block;
+    }
+}
+@media screen and (max-width: @screen-sm) {
+    #gn-search-bar {
+        display: none;
     }
 }
