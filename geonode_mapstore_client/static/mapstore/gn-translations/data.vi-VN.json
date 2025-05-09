@@ -431,9 +431,9 @@
             "metadataGroupTitle": "General",
             "noGridData": "No data to display",
             "layerSettings": {
-                "title": "Layer settings",
-                "updateSuccess": "Layer settings updated",
-                "updateError": "Error saving layer settings"
+                "title": "Map layer settings",
+                "updateSuccess": "Map layer settings updated",
+                "updateError": "Error updating map layer settings"
             },
             "apply": "Apply"
         }
