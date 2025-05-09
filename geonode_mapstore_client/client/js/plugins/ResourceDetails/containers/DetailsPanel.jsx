@@ -24,6 +24,7 @@ import {
 } from '@js/selectors/resource';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { mapSelector } from '@mapstore/framework/selectors/map';
+import { userSelector } from '@mapstore/framework/selectors/security';
 import DetailsInfo from '@mapstore/framework/plugins/ResourcesCatalog/components/DetailsInfo';
 import { replaceResourcePaths } from '@mapstore/framework/utils/GeostoreUtils';
 import Text from '@mapstore/framework/components/layout/Text';
@@ -75,7 +76,8 @@ function DetailsPanel({
     resourcesGridId,
     monitoredState,
     location,
-    panelRef
+    panelRef,
+    user
 }, context) {
 
     const resource = parseCatalogResource(resourceProp);
@@ -141,6 +143,7 @@ function DetailsPanel({
                 resource={resource || {}}
                 enableFilters={enableFilters}
                 editing={editing}
+                user={user}
             /> : null}
             {(loading) ? <FlexBox centerChildren classNames={['_absolute', '_fill', '_overlay', '_corner-tl']}>
                 <Text fontSize="xxl">
@@ -158,7 +161,8 @@ DetailsPanel.contextTypes = {
 const ConnectedDetailsPanel = connect(
     createStructuredSelector({
         monitoredState: getMonitoredStateSelector,
-        location: getRouterLocation
+        location: getRouterLocation,
+        user: userSelector
     })
 )(DetailsPanel);
 
