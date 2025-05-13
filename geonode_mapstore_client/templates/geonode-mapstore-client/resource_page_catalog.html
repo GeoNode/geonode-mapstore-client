@@ -1,0 +1,39 @@
+{% extends "page.html" %} {% block container %}
+
+<script>
+    window.addEventListener("mapstore:ready", function (event) {
+        const catalogPagePath =
+            window.__GEONODE_CONFIG__.localConfig.geoNodeSettings.catalogPagePath;
+        const pagePath = catalogPagePath ? catalogPagePath : "/catalogue/";
+        const msAPI = event.detail;
+        msAPI.setPluginsConfig((localConfig) => {
+            return (localConfig?.plugins?.catalogue || []).map((plugin) => {
+                const resourcePageConfig = JSON.parse("{{ resource_page_config|escapejs|safe }}");
+                const { titleId, defaultQuery, menuItems, filterFormFields } = resourcePageConfig;
+                if (plugin.name === "ResourcesGrid") {
+                    return {
+                        ...plugin,
+                        cfg: {
+                            ...plugin?.cfg,
+                            titleId,
+                            defaultQuery,
+                            menuItems
+                        }
+                    }
+                }
+                if (plugin.name === "ResourcesFiltersForm") {
+                    return {
+                        ...plugin,
+                        cfg: {
+                            ...plugin?.cfg,
+                            fields: filterFormFields
+                        }
+                    }
+                }
+                return plugin;
+            });
+        });
+    });
+</script>
+
+{% endblock %}
