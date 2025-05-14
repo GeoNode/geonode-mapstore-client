@@ -31,7 +31,6 @@ import {
     getResourceByTypeAndByPk
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
-import { mapSelector } from '@mapstore/framework/selectors/map';
 import { isMapInfoOpen } from '@mapstore/framework/selectors/mapInfo';
 import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
 import { isLoggedIn, userSelector } from '@mapstore/framework/selectors/security';
@@ -125,7 +124,7 @@ const FIT_BOUNDS_CONTROL = 'fitBounds';
 const resourceTypes = {
     [ResourceTypes.DATASET]: {
         resourceObservable: (pk, options) => {
-            const { page, selectedLayer, map: currentMap } = options || {};
+            const { page, selectedLayer } = options || {};
             const { subtype } = options?.params || {};
             return Observable.defer(() =>
                 axios.all([
@@ -147,7 +146,9 @@ const resourceTypes = {
                     })
                     .then((response) => {
                         const [mapConfig, gnLayer, timeseries] = response;
-                        const newLayer = resourceToLayerConfig(gnLayer);
+                        const newLayer = options?.isSamePreviousResource
+                            ? selectedLayer // keep configuration for other pages when resource id is the same (eg: filters)
+                            : resourceToLayerConfig(gnLayer);
                         const _gnLayer = {...gnLayer, layerSettings: gnLayer.data};
                         return [mapConfig, {..._gnLayer, timeseries}, newLayer];
                     })
@@ -161,12 +162,10 @@ const resourceTypes = {
                             ...mapConfig,
                             map: {
                                 ...mapConfig.map,
-                                ...currentMap, // keep configuration for other pages when resource id is the same (eg: center, zoom)
                                 visualizationMode: ['3dtiles'].includes(subtype) ? VisualizationModes._3D : VisualizationModes._2D,
                                 layers: [
                                     ...mapConfig.map.layers,
                                     {
-                                        ...selectedLayer, // keep configuration for other pages when resource id is the same (eg: filters)
                                         ...newLayer,
                                         isDataset: true,
                                         _v_: Date.now()
@@ -174,13 +173,13 @@ const resourceTypes = {
                                 ]
                             }
                         }),
-                        ...((extent && !currentMap)
+                        ...(extent
                             ? [ setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', extent) ]
                             : []),
                         setControlProperty('toolbar', 'expanded', false),
                         forceUpdateMapLayout(),
                         selectNode(newLayer.id, 'layer', false),
-                        setResource(gnLayer),
+                        ...(!options?.isSamePreviousResource ? [setResource(gnLayer)] : []),
                         setResourceId(pk),
                         ...(page === 'dataset_edit_data_viewer'
                             ? [
@@ -517,7 +516,6 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     isSamePreviousResource,
                     resourceData,
                     selectedLayer: isSamePreviousResource && getSelectedLayer(state),
-                    map: isSamePreviousResource && mapSelector(state),
                     params: action?.options?.params
                 }),
                 Observable.of(

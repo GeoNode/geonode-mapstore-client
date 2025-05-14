@@ -1356,8 +1356,8 @@
             {
                 "name": "Save",
                 "cfg": {
-                    "saveMsgId": "gnhome.apply",
-                    "className": "gn-apply-settings"
+                    "className": "gn-apply-settings",
+                    "variant": "default"
                 }
             },
             {
