@@ -28,7 +28,8 @@ import {
     setLinkedResourcesByPk,
     removeLinkedResourcesByPk,
     getDatasetTimeSettingsByPk,
-    getResourceByTypeAndByPk
+    getResourceByTypeAndByPk,
+    deleteResourceThumbnail
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
 import { mapSelector } from '@mapstore/framework/selectors/map';
@@ -540,14 +541,14 @@ export const gnViewerSetNewResourceThumbnail = (action$, store) =>
             const resourceIDThumbnail = getResourceId(state);
             const currentResource = state.gnresource?.data || {};
 
-            const body = {
-                file: newThumbnailData
-            };
+            const body = { file: newThumbnailData };
+            const deleteThumbnail = !newThumbnailData;
+            const successMsgId = `gnviewer.${deleteThumbnail ? "thumbnailRemoved" : "thumbnailsaved"}`;
 
-            return Observable.defer(() => setResourceThumbnail(resourceIDThumbnail, body))
+            return Observable.defer(() => deleteThumbnail ? deleteResourceThumbnail(resourceIDThumbnail) : setResourceThumbnail(resourceIDThumbnail, body))
                 .switchMap((res) => {
                     return Observable.of(updateResourceProperties({ ...currentResource, thumbnail_url: res.thumbnail_url, thumbnailChanged: false, updatingThumbnail: false }), updateResource({ ...currentResource, thumbnail_url: res.thumbnail_url }),
-                        successNotification({ title: "gnviewer.thumbnailsaved", message: "gnviewer.thumbnailsaved" }));
+                        successNotification({ title: successMsgId, message: successMsgId }));
                 }).catch((error) => {
                     return Observable.of(
                         saveError(error.data || error.message),

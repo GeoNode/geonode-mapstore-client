@@ -190,6 +190,7 @@
             "moreinfo": "More info",
             "setMapLikeThumbnail": "Set map thumbnail",
             "thumbnailsaved": "Thumbnail saved",
+            "thumbnailRemoved": "Thumbnail removed",
             "thumbnailnotsaved": "Error thumbnail not saved",
             "info": "Info",
             "attributeName": "Attribute name",
