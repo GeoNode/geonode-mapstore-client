@@ -113,6 +113,12 @@ def get_page_filter_form(group_filter_form = None):
 
 def get_default_resource_page_config():
     DEFAULT_PAGE_FILTER_FORM = get_page_filter_form()
+    default_menu_item = {
+        "labelId": "gnhome.new",
+        "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
+        "type": "button",
+        "variant": "primary",
+    }
     page_resource_config = {
         "maps": {
             "titleId": "gnhome.map",
@@ -121,10 +127,7 @@ def get_default_resource_page_config():
             },
             "menuItems": [
                 {
-                    "labelId": "gnhome.new",
-                    "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
-                    "type": "button",
-                    "variant": "primary",
+                    **default_menu_item,
                     "value": "map",
                     "href": "{context.getCataloguePath('/catalogue/#/map/new')}"
                 }
@@ -138,11 +141,9 @@ def get_default_resource_page_config():
             },
             "menuItems": [
                 {
-                    "labelId": "gnhome.new",
-                    "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
+                    **default_menu_item,
                     "type": "dropdown",
                     "noCaret": True,
-                    "variant": "primary",
                     "items": [
                         {
                             "labelId": "gnhome.uploadDataset",
@@ -201,10 +202,7 @@ def get_default_resource_page_config():
             },
             "menuItems": [
                 {
-                    "labelId": "gnhome.new",
-                    "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
-                    "type": "button",
-                    "variant": "primary",
+                    **default_menu_item,
                     "value": "document",
                     "href": "{context.getCataloguePath('/catalogue/#/upload/document')}"
                 }
@@ -224,10 +222,7 @@ def get_default_resource_page_config():
             },
             "menuItems": [
                 {
-                    "labelId": "gnhome.new",
-                    "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
-                    "type": "button",
-                    "variant": "primary",
+                    
                     "value": "dashboard",
                     "href": "{context.getCataloguePath('/catalogue/#/dashboard/new')}"
                 }
@@ -241,10 +236,7 @@ def get_default_resource_page_config():
             },
             "menuItems": [
                 {
-                    "labelId": "gnhome.new",
-                    "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
-                    "type": "button",
-                    "variant": "primary",
+                    **default_menu_item,
                     "value": "geostory",
                     "href": "{context.getCataloguePath('/catalogue/#/geostory/new')}"
                 }

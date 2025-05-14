@@ -15,9 +15,9 @@
                         ...plugin,
                         cfg: {
                             ...plugin?.cfg,
-                            titleId,
-                            defaultQuery,
-                            menuItems
+                            ...(titleId && {titleId}),
+                            ...(defaultQuery && {defaultQuery}),
+                            ...(menuItems && {menuItems}),
                         }
                     }
                 }
@@ -26,7 +26,7 @@
                         ...plugin,
                         cfg: {
                             ...plugin?.cfg,
-                            fields: filterFormFields
+                            ...(filterFormFields && {fields: filterFormFields})
                         }
                     }
                 }

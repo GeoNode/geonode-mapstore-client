@@ -74,7 +74,7 @@ def metadata_embed(request, pk):
 
 def resource_page_catalog(request, page_id):
     from django.conf import settings
-    
-    RESOURCES_PAGE_CONFIG = getattr(settings, "RESOURCES_PAGE_CONFIG")
+
+    RESOURCES_PAGE_CONFIG = getattr(settings, "RESOURCES_PAGE_CONFIG", {})
     context = { "resource_page_config": json.dumps(RESOURCES_PAGE_CONFIG.get(page_id)) }
     return render(request, "geonode-mapstore-client/resource_page_catalog.html", context=context)
