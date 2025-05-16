@@ -11,19 +11,14 @@
     (function () {
         const mainHeader = document.querySelector('.gn-main-header');
         const mainHeaderPlaceholder = document.querySelector('.gn-main-header-placeholder');
-        const topbar = document.querySelector('#gn-topbar');
         function resize() {
             if (mainHeaderPlaceholder && mainHeader) {
                 mainHeaderPlaceholder.style.height = mainHeader.clientHeight + 'px';
-            }
-            if (topbar && mainHeader) {
-                topbar.style.top = mainHeader.clientHeight + 'px';
             }
         }
         window.addEventListener('resize', resize);
         window.addEventListener('DOMContentLoaded', resize);
         resize();
-
 
         const menuDropdowns = document.querySelectorAll('.gn-main-header .dropdown');
         const pathname = window.location.pathname;
