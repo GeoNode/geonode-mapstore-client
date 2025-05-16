@@ -3198,7 +3198,7 @@
                 "name": "ResourcesFiltersForm",
                 "cfg": {
                     "resourcesGridId": "catalog",
-                    "headerNodeSelector": "#gn-brand-navbar",
+                    "headerNodeSelector": ".gn-main-header",
                     "footerNodeSelector": ".gn-footer",
                     "fields": [
                         {
@@ -3340,6 +3340,7 @@
             {
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "enableFilters": true,
                     "enablePreview": true,
                     "editingOverlay": true

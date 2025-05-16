@@ -16,7 +16,7 @@
             {% endif %}
         </a>
         {% endblock %}
-        <ul class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
+        <ul class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v gn-brand-navbar-menu">
             {% for menu_item in BRAND_NAVBAR_MENU %}
                 {% include './menu_item.html' with menu_item=menu_item %}
             {% endfor %}
@@ -38,6 +38,26 @@
 </nav>
 <div id="gn-brand-navbar-bottom">
     {% block bottom_menu %}
+        <div class="gn-brand-navbar-menu dropdown">
+            <button
+                class="btn btn-primary dropdown-toggle"
+                type="button"
+                id="gn-brand-navbar-menu-btn"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="true"
+            >
+                <i class="fa fa-bars"> </i>
+            </button>
+            <ul
+                class="dropdown-menu"
+                aria-labelledby="gn-brand-navbar-dropdown-menu"
+            >
+                {% for menu_item in BRAND_NAVBAR_MENU %}
+                    {% include './menu_item.html' with menu_item=menu_item align_right=True %}
+                {% endfor %}
+            </ul>
+        </div>
         {% include './search_bar.html' with search_bar_id='gn-search-bar-bottom' %}
     {% endblock %}
 </div>
