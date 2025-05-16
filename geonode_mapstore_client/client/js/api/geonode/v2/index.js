@@ -382,11 +382,13 @@ export const getUsers = ({
     q,
     page = 1,
     pageSize = 20,
+    config,
     ...params
 } = {}) => {
     return axios.get(
         getEndpointUrl(USERS),
         {
+            ...config,
             params: {
                 ...params,
                 ...(q && {
@@ -411,11 +413,13 @@ export const getGroups = ({
     q,
     page = 1,
     pageSize = 20,
+    config,
     ...params
 } = {}) => {
     return axios.get(
         getEndpointUrl(GROUPS),
         {
+            ...config,
             params: {
                 ...params,
                 ...(q && {
@@ -434,6 +438,11 @@ export const getGroups = ({
                 groups: data.group_profiles
             };
         });
+};
+
+export const transferResource = (pk, body) => {
+    return axios.post(getEndpointUrl(USERS, `/${pk}/transfer_resources`), body)
+        .then(({ data }) => (data));
 };
 
 export const getUserByPk = (pk, apikey) => {

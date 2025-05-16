@@ -8,15 +8,16 @@
 
 import uuid from 'uuid';
 import url from 'url';
-import isEmpty from 'lodash/isEmpty';
-import omit from 'lodash/omit';
+import { isEmpty, uniqBy, omit, orderBy, isString, isObject } from 'lodash';
+
+import { isImageServerUrl } from '@mapstore/framework/utils/ArcGISUtils';
 import { getConfigProp, convertFromLegacy, normalizeConfig } from '@mapstore/framework/utils/ConfigUtils';
+import { excludeGoogleBackground, extractTileMatrixFromSources, ServerTypes } from '@mapstore/framework/utils/LayersUtils';
+
+import { getGroups, getUsers } from '@js/api/geonode/v2';
 import { getGeoNodeLocalConfig, parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
-import { uniqBy, orderBy, isString, isObject } from 'lodash';
-import { excludeGoogleBackground, extractTileMatrixFromSources, ServerTypes } from '@mapstore/framework/utils/LayersUtils';
 import { determineResourceType } from '@js/utils/FileUtils';
-import { isImageServerUrl } from '@mapstore/framework/utils/ArcGISUtils';
 
 /**
 * @module utils/ResourceUtils
@@ -77,6 +78,55 @@ export const RESOURCE_MANAGEMENT_PROPERTIES = {
         labelId: 'gnviewer.advertiseResource',
         tooltipId: 'gnviewer.advertiseResourceTooltip',
         disabled: (perms = []) => !perms.includes('change_resourcebase')
+    }
+};
+
+export const GROUP_OWNER_PROPERTIES = {
+    'owner': {
+        labelId: 'gnviewer.owner',
+        placeholderId: 'gnviewer.ownerPlaceholder',
+        labelKey: 'username',
+        clearable: false,
+        disabled: ({user}) => !user.is_superuser,
+        loadOptions: ({ q, ...params }, compactPermissions) => {
+            const { users = [] } = compactPermissions;
+            const exclude = users
+                .filter(({ permissions }) => permissions !== "owner")
+                .map(({ id }) => id);
+            return getUsers({
+                ...params,
+                "filter{-pk.in}": [...exclude, -1], // self assignment is not allowed along with anonymous user
+                "filter{is_superuser}": false
+            })
+                .then((response) => {
+                    return {
+                        ...response,
+                        results: (response?.users ?? [])
+                            .map((item) => ({...item, selectOption: {
+                                value: item,
+                                label: item.username
+                            }}))
+                    };
+                });
+        }
+    },
+    'group': {
+        labelId: 'gnviewer.group',
+        placeholderId: 'gnviewer.groupPlaceholder',
+        clearable: true,
+        disabled: ({perms = []}) => !perms.includes('change_resourcebase'),
+        loadOptions: ({ q, ...params }) => getGroups({q, ...params})
+            .then((response) => {
+                return {
+                    ...response,
+                    results: (response?.groups ?? [])
+                        .map((item) => ({...item, selectOption: {
+                            value: item.group,
+                            label: item.group.name
+                        }}))
+                };
+            }),
+        labelKey: 'name'
     }
 };
 
