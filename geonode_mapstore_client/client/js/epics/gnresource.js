@@ -28,7 +28,8 @@ import {
     setLinkedResourcesByPk,
     removeLinkedResourcesByPk,
     getDatasetTimeSettingsByPk,
-    getResourceByTypeAndByPk
+    getResourceByTypeAndByPk,
+    deleteResourceThumbnail
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
 import { isMapInfoOpen } from '@mapstore/framework/selectors/mapInfo';
@@ -118,6 +119,7 @@ import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { catalogClose } from '@mapstore/framework/actions/catalog';
 import { VisualizationModes } from '@mapstore/framework/utils/MapTypeUtils';
 import { forceUpdateMapLayout } from '@mapstore/framework/actions/maplayout';
+import { searchSelector } from '@mapstore/framework/selectors/router';
 
 const FIT_BOUNDS_CONTROL = 'fitBounds';
 
@@ -125,7 +127,7 @@ const resourceTypes = {
     [ResourceTypes.DATASET]: {
         resourceObservable: (pk, options) => {
             const { page, selectedLayer } = options || {};
-            const { subtype } = options?.params || {};
+            const { subtype, query } = options?.params || {};
             return Observable.defer(() =>
                 axios.all([
                     getNewMapConfiguration(),
@@ -189,6 +191,7 @@ const resourceTypes = {
                         ...(page === 'dataset_edit_layer_settings'
                             ? [
                                 showSettings(newLayer.id, "layers", {opacity: newLayer.opacity ?? 1}),
+                                setControlProperty("layersettings", "activeTab", query.tab ?? "general"),
                                 updateAdditionalLayer(newLayer.id, STYLE_OWNER_NAME, 'override', {}),
                                 resizeMap()
                             ]
@@ -491,6 +494,7 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     loadingResourceConfig(false)
                 );
             }
+            const { query = {} } = url.parse(searchSelector(state), true) || {};
             const resourceData = getResourceData(state);
             const isSamePreviousResource = !resourceData?.['@ms-detail'] && resourceData?.pk === action.pk;
             return Observable.concat(
@@ -516,7 +520,7 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     isSamePreviousResource,
                     resourceData,
                     selectedLayer: isSamePreviousResource && getSelectedLayer(state),
-                    params: action?.options?.params
+                    params: {...action?.options?.params, query}
                 }),
                 Observable.of(
                     loadingResourceConfig(false)
@@ -538,14 +542,14 @@ export const gnViewerSetNewResourceThumbnail = (action$, store) =>
             const resourceIDThumbnail = getResourceId(state);
             const currentResource = state.gnresource?.data || {};
 
-            const body = {
-                file: newThumbnailData
-            };
+            const body = { file: newThumbnailData };
+            const deleteThumbnail = !newThumbnailData;
+            const successMsgId = `gnviewer.${deleteThumbnail ? "thumbnailRemoved" : "thumbnailsaved"}`;
 
-            return Observable.defer(() => setResourceThumbnail(resourceIDThumbnail, body))
+            return Observable.defer(() => deleteThumbnail ? deleteResourceThumbnail(resourceIDThumbnail) : setResourceThumbnail(resourceIDThumbnail, body))
                 .switchMap((res) => {
                     return Observable.of(updateResourceProperties({ ...currentResource, thumbnail_url: res.thumbnail_url, thumbnailChanged: false, updatingThumbnail: false }), updateResource({ ...currentResource, thumbnail_url: res.thumbnail_url }),
-                        successNotification({ title: "gnviewer.thumbnailsaved", message: "gnviewer.thumbnailsaved" }));
+                        successNotification({ title: successMsgId, message: successMsgId }));
                 }).catch((error) => {
                     return Observable.of(
                         saveError(error.data || error.message),

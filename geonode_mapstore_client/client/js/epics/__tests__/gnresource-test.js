@@ -77,6 +77,40 @@ describe('gnresource epics', () => {
             testState
         );
     });
+    it('should remove resource thumbnail', (done) => {
+        const NUM_ACTIONS = 3;
+        const pk = 1;
+        const testState = {
+            gnresource: {
+                id: pk,
+                data: {
+                    'title': 'Map'
+                }
+            }
+        };
+        mockAxios.onPost(new RegExp(`resources/${pk}/delete_thumbnail`))
+            .reply(() => [200, { thumbnail_url: undefined }]);
+
+        testEpic(
+            gnViewerSetNewResourceThumbnail,
+            NUM_ACTIONS,
+            setResourceThumbnail(),
+            (actions) => {
+                try {
+                    expect(actions.map(({ type }) => type))
+                        .toEqual([
+                            UPDATE_RESOURCE_PROPERTIES,
+                            UPDATE_SINGLE_RESOURCE,
+                            SHOW_NOTIFICATION
+                        ]);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            testState
+        );
+    });
 
     it('should close share panels on map click', (done) => {
         const NUM_ACTIONS = 1;

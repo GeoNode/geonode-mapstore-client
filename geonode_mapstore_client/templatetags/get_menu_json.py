@@ -108,7 +108,7 @@ def get_user_menu(context):
             },
             {
                 "type": "link",
-                "href": "/catalogue/#/search/?f=favorite",
+                "href": "/catalogue/search/#/?f=favorite",
                 "label": "Favorites",
             },
             {"type": "link", "href": "/messages/inbox/", "label": "Inbox"},
