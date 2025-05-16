@@ -173,13 +173,17 @@ export const getDataPayload = (state, resourceType) => {
         currentLayerSettings = omitBy(currentLayerSettings,
             (value, key) => key === "opacity" && value === 1); // skip default value
         const selectedLayer = getSelectedNode(state);
-        const data = omit(saveLayer(selectedLayer ?? {}),
-            ['handleClickOnLayer', 'expanded', 'hidden', 'hideLoading', 'useForElevation']);
+        const omitKeys = ['extendedParams', 'availableStyles', 'infoFormats'];
+        const data = saveLayer(selectedLayer ?? {});
+        const previousDefaultStyle = getSelectedLayer(state)?.style;
+        const defaultStyle = get(selectedLayer, 'availableStyles[0].name');
+        const preserveDefaultStyle = defaultStyle !== data?.style;
         return omit({
             ...data,
             ...currentLayerSettings,
-            ...(selectedLayer && {fields: selectedLayer?.fields ?? {}})},
-        ['availableStyles', 'infoFormats']);
+            ...(selectedLayer && {fields: selectedLayer?.fields ?? {}}),
+            ...(preserveDefaultStyle && {style: previousDefaultStyle})
+        }, omitKeys);
     }
     default:
         return null;
@@ -297,15 +301,20 @@ function isResourceDataEqual(state, initialData = {}, currentData = {}) {
     }
     case ResourceTypes.DATASET: {
         const selectedLayer = getSelectedNode(state);
-        const selectedLayerInitialState = getSelectedLayer(state);
-        const layerSettingsInitial = {...selectedLayerInitialState, ...initialData};
+        const selectedLayerInitial = getSelectedLayer(state);
+        const initialLayerData = {...selectedLayerInitial, ...initialData};
 
-        const isSettingsEqual = compareObjects(currentData, layerSettingsInitial);
-        const isAttributesEqual = !isEmpty(layerSettingsInitial)
+        // Change of style is allowed if the style is the default one
+        let isStyleDefaultAndEqual = true;
+        if (currentData?.style !== initialLayerData?.style) {
+            isStyleDefaultAndEqual = get(selectedLayer, 'availableStyles[0].name') !== currentData?.style;
+        }
+        const isSettingsEqual = compareObjects(omit(currentData, ['style']), omit(initialLayerData, 'style'));
+        const isAttributesEqual = !isEmpty(initialLayerData)
             && !isEmpty(selectedLayer)
-            && isEqual(layerSettingsInitial?.fields, selectedLayer.fields);
+            && isEqual(initialLayerData?.fields, selectedLayer.fields);
 
-        return isSettingsEqual && isAttributesEqual;
+        return isSettingsEqual && isAttributesEqual && isStyleDefaultAndEqual;
     }
     default:
         return true;
