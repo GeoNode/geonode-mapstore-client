@@ -191,6 +191,7 @@
             "moreinfo": "More info",
             "setMapLikeThumbnail": "Set map thumbnail",
             "thumbnailsaved": "Thumbnail saved",
+            "thumbnailRemoved": "Thumbnail removed",
             "thumbnailnotsaved": "Error thumbnail not saved",
             "info": "Info",
             "attributeName": "Attribute name",
@@ -461,9 +462,9 @@
             "metadataGroupTitle": "General",
             "noGridData": "No data to display",
             "layerSettings": {
-                "title": "Layer settings",
-                "updateSuccess": "Layer settings updated",
-                "updateError": "Error updating layer settings"
+                "title": "Map layer settings",
+                "updateSuccess": "Map layer settings updated",
+                "updateError": "Error updating map layer settings"
             },
             "apply": "Apply",
             "showPreview": "Show Preview",

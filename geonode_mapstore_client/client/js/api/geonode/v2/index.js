@@ -202,6 +202,11 @@ export const setResourceThumbnail = (pk, body) => {
         .then(({ data }) => data);
 };
 
+export const deleteResourceThumbnail = (pk) => {
+    return axios.post(getEndpointUrl(RESOURCES, `/${pk}/delete_thumbnail`))
+        .then(({ data }) => data);
+};
+
 export const setFavoriteResource = (pk, favorite) => {
     const request = favorite ? axios.post : axios.delete;
     return request(getEndpointUrl(RESOURCES, `/${pk}/favorite`))
