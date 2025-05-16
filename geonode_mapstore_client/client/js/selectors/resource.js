@@ -25,8 +25,10 @@ import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
 import omitBy from 'lodash/omitBy';
+import isNil from 'lodash/isNil';
 import { generateContextResource } from '@mapstore/framework/selectors/contextcreator';
 import { layerSettingSelector, getSelectedLayer as getSelectedNode } from '@mapstore/framework/selectors/layers';
+import { saveLayer } from '@mapstore/framework/utils/LayersUtils';
 
 const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys(RESOURCE_MANAGEMENT_PROPERTIES);
 
@@ -171,10 +173,17 @@ export const getDataPayload = (state, resourceType) => {
         currentLayerSettings = omitBy(currentLayerSettings,
             (value, key) => key === "opacity" && value === 1); // skip default value
         const selectedLayer = getSelectedNode(state);
+        const omitKeys = ['extendedParams', 'availableStyles', 'infoFormats'];
+        const data = saveLayer(selectedLayer ?? {});
+        const previousDefaultStyle = getSelectedLayer(state)?.style;
+        const defaultStyle = get(selectedLayer, 'availableStyles[0].name');
+        const preserveDefaultStyle = defaultStyle !== data?.style;
         return omit({
+            ...data,
             ...currentLayerSettings,
-            ...(selectedLayer && {fields: selectedLayer?.fields ?? {}})},
-        ['availableStyles', 'infoFormats']);
+            ...(selectedLayer && {fields: selectedLayer?.fields ?? {}}),
+            ...(preserveDefaultStyle && {style: previousDefaultStyle})
+        }, omitKeys);
     }
     default:
         return null;
@@ -194,9 +203,10 @@ const compareObjects = (obj1, obj2) => {
         return Object.keys(obj1).every((key) => {
             const val1 = obj1[key];
             const val2 = obj2?.[key];
+            if (isNil(val2)) return true;
             if (typeof val1 === 'boolean') return val1 === (val2 ?? false);
             if (typeof val1 === 'number') return val1 === (val2 ?? 0);
-            if (isEmpty(val1) && isEmpty(val2)) return false;
+            if (isEmpty(val1) && isEmpty(val2)) return true;
             return isEqual(obj2?.[key], obj1[key]);
         });
     }
@@ -291,15 +301,20 @@ function isResourceDataEqual(state, initialData = {}, currentData = {}) {
     }
     case ResourceTypes.DATASET: {
         const selectedLayer = getSelectedNode(state);
-        const selectedLayerInitialState = getSelectedLayer(state);
-        const layerSettingsInitial = {...selectedLayerInitialState, ...initialData};
+        const selectedLayerInitial = getSelectedLayer(state);
+        const initialLayerData = {...selectedLayerInitial, ...initialData};
 
-        const isSettingsEqual = compareObjects(currentData, layerSettingsInitial);
-        const isAttributesEqual = !isEmpty(layerSettingsInitial)
+        // Change of style is allowed if the style is the default one
+        let isStyleDefaultAndEqual = true;
+        if (currentData?.style !== initialLayerData?.style) {
+            isStyleDefaultAndEqual = get(selectedLayer, 'availableStyles[0].name') !== currentData?.style;
+        }
+        const isSettingsEqual = compareObjects(omit(currentData, ['style']), omit(initialLayerData, 'style'));
+        const isAttributesEqual = !isEmpty(initialLayerData)
             && !isEmpty(selectedLayer)
-            && isEqual(layerSettingsInitial?.fields, selectedLayer.fields);
+            && isEqual(initialLayerData?.fields, selectedLayer.fields);
 
-        return isSettingsEqual && isAttributesEqual;
+        return isSettingsEqual && isAttributesEqual && isStyleDefaultAndEqual;
     }
     default:
         return true;
