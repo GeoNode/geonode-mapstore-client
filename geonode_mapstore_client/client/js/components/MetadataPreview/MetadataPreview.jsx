@@ -7,12 +7,13 @@
 */
 
 import React from 'react';
+import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 
 function MetadataPreview({
     url
 }) {
     return (
-        <div className="gn-main-event-container">
+        <FlexBox column centerChildren classNames={['gn-metadata-preview', '_corner-tl', '_absolute', '_fill']}>
             <iframe
                 frameBorder="0"
                 key={url}
@@ -21,7 +22,7 @@ function MetadataPreview({
                     width: '100%',
                     height: '100%'
                 }} />
-        </div>
+        </FlexBox>
     );
 }
 
