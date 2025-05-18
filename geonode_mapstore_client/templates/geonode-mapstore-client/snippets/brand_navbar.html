@@ -16,11 +16,13 @@
             {% endif %}
         </a>
         {% endblock %}
-        <ul class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v gn-brand-navbar-menu">
-            {% for menu_item in BRAND_NAVBAR_MENU %}
-                {% include './menu_item.html' with menu_item=menu_item %}
-            {% endfor %}
-        </ul>
+        <div class="gn-brand-navbar-menu-container ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
+            <ul class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v gn-brand-navbar-menu">
+                {% for menu_item in BRAND_NAVBAR_MENU %}
+                    {% include './menu_item.html' with menu_item=menu_item %}
+                {% endfor %}
+            </ul>
+        </div>
         {% block right_menu %}
             {% block search_bar %}
                 {% include './search_bar.html' with search_bar_id='gn-search-bar' %}
@@ -40,7 +42,7 @@
     {% block bottom_menu %}
         <div class="gn-brand-navbar-menu dropdown">
             <button
-                class="btn btn-primary dropdown-toggle"
+                class="btn dropdown-toggle"
                 type="button"
                 id="gn-brand-navbar-menu-btn"
                 data-toggle="dropdown"
@@ -78,8 +80,46 @@
                     }
                 }
             }
-            window.addEventListener('DOMContentLoaded', manageUrlChange);
-            window.addEventListener('hashchange', manageUrlChange, false);
+
+            function onResizeNavbar() {
+                const searchBar = document.querySelector('.gn-search-bar');
+                const menuContainer = document.querySelector('.gn-brand-navbar-menu-container');
+                const menuBottom = document.querySelector('#gn-brand-navbar-bottom > .gn-brand-navbar-menu.dropdown');
+                const searchBarBottom = document.querySelector('#gn-search-bar-bottom');
+                const brandNavbarBottom = document.querySelector('#gn-brand-navbar-bottom');
+
+                const menuRight = document.querySelector('.gn-brand-navbar-menu').getBoundingClientRect().right;
+                const searchBarLeft = searchBar.getBoundingClientRect().left;
+                const languageSelectorLeft = document.querySelector('.gn-language-selector').getBoundingClientRect().left;
+                
+                // Default state
+                menuContainer.style.visibility = 'visible';
+                searchBar.style.visibility = 'visible';
+                brandNavbarBottom.style.display = 'none';
+
+                // Menu overlaps with search bar
+                if (menuRight > searchBarLeft) {
+                    searchBar.style.visibility = 'hidden';
+                    brandNavbarBottom.style.display = 'block';
+                    menuBottom.style.display = 'none';
+                    searchBarBottom.style.visibility = 'visible';
+
+                    // Menu also overlaps with right menu items
+                    if (menuRight > languageSelectorLeft) {
+                        menuContainer.style.visibility = 'hidden';
+                        brandNavbarBottom.style.display = 'flex';
+                        menuBottom.style.display = 'block';
+                    }
+                }
+            }
+
+            window.addEventListener('DOMContentLoaded', function() {
+                manageUrlChange();
+                onResizeNavbar();
+            });
+
+            window.addEventListener('resize', onResizeNavbar);
+            window.addEventListener('hashchange', manageUrlChange);
         })();
     </script>
 {% endblock extra_script %}
