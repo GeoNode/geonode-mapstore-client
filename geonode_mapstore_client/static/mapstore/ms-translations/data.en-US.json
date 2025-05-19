@@ -63,16 +63,6 @@
     "showEmptyMessageGFI": "Show empty results message in GetFeatureInfo panel",
     "remove": "Delete",
     "removeThumbnail": "Remove thumbnail",
-    "securityPopup": {
-      "insertCredentials": "click to add credentials to make this a protected service",
-      "username": "Username",
-      "pwd": "Password",
-      "show": "Show",
-      "hide": "Hide",
-      "serviceUrl": "Service url",
-      "title": "Protected service",
-      "remove": "Remove protection from this service and close the modal"
-    },
     "layerProperties": {
       "windowTitle": "Layer Properties",
       "title": "Title",
@@ -2855,7 +2845,6 @@
       "clearbtn": "Clear All",
       "selectbtn": "Select All",
       "placeholders": {
-        "filter": "Filter styles...",
         "role": "Type to search Roles",
         "user": "Type to search Users",
         "service": "Type to search Services",
@@ -2863,10 +2852,9 @@
         "workspace": "Type to search Workspaces",
         "layer": "Type to search Layers",
         "access": "Type to search Access",
-        "ip": "###.###.#.#/##",
-        "ipRange": "###.###.#.#",
+        "ip": "###.###.###.###/##",
         "priority": "Select Priority",
-        "validityPeriod": "Select validity period",
+        "filter": "Filter styles...",
         "filterAny": "ANY"
       },
       "menutitle": "Manage Access Rules",
@@ -2879,9 +2867,8 @@
         "cacheT": "Clear cache",
         "save": "Save current rule",
         "close": "Exit from create rule",
-        "showAllRules": "Currently the table shows only the rules that strictly match the value specified for this field. Uncheck to include also the rules where this value is not present.",
-        "filterRuleList": "Currently the table shows all the rules applied for this condition, even those where this value is not set. Check to display only the rules that specifically apply to this value.",
-        "date": "Enter date in {format} format"
+        "showAllRules": "Show all eligible rules",
+        "filterRuleList": "Filter list using selected value"
       },
       "navItems": {
         "main": "General Rule",
@@ -2904,12 +2891,6 @@
       "request": "Request",
       "workspace": "Workspace",
       "layer": "Layer",
-      "validityPeriod": {
-        "title": "Validity Period",
-        "start": "From",
-        "end": "To"
-      },
-      "date": "Date",
       "filters": "Filters",
       "rules": "Rules",
       "access": "Access",
@@ -4332,6 +4313,7 @@
       "readLess": "Read less",
       "noPermissionsAvailable": "No permission available",
       "noAbout": "No additional information about the resource",
+      "loadingAbout": "Loading about...",
       "addResource": "Add Resource",
       "createMap": "Create map",
       "createDashboard": "Create dashboard",
