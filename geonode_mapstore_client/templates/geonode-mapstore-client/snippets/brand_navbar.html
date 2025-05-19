@@ -68,13 +68,13 @@
                 aria-labelledby="gn-brand-navbar-dropdown-menu"
             >
                 {% for menu_item in BRAND_NAVBAR_MENU %}
-                    {% include './menu_item.html' with menu_item=menu_item align_right=True %}
+                    {% include './menu_item_compact.html' with menu_item=menu_item align_right=True %}
                 {% endfor %}
                 {% for menu_item in TOPBAR_MENU %}
-                    {% include './menu_item.html' with menu_item=menu_item variant='primary' %}
+                    {% include './menu_item_compact.html' with menu_item=menu_item variant='primary' %}
                 {% endfor %}
                 {% for menu_item in TOPBAR_MENU_LEFT %}
-                    {% include './menu_item.html' with menu_item=menu_item %}
+                    {% include './menu_item_compact.html' with menu_item=menu_item %}
                 {% endfor %}
             </ul>
         </div>
