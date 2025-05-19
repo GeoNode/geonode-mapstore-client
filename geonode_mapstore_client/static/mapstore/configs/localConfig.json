@@ -691,6 +691,7 @@
             {
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "containerPosition": "header",
                     "defaultOpen": true
                 }
@@ -1588,6 +1589,7 @@
                 "mandatory": true,
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "containerPosition": "header"
                 }
             },
@@ -2281,6 +2283,7 @@
             {
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "containerPosition": "header"
                 }
             },
@@ -2502,6 +2505,7 @@
             {
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "containerPosition": "header",
                     "defaultOpen": true
                 }
@@ -2633,6 +2637,7 @@
             {
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "containerPosition": "header"
                 }
             },
@@ -3466,6 +3471,7 @@
             {
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "containerPosition": "header"
                 }
             },

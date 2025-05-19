@@ -36,17 +36,23 @@
 }
 
 #gn-brand-navbar-bottom {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    width: calc(100% - 16px);
-    margin: 8px;
-    .gn-search-bar {
-        max-width: 100%;
-    }
-    .gn-brand-navbar-menu {
-        &.dropdown {
-            display: none;
+    display: none;
+}
+
+@media (max-width: @screen-lg) {
+    #gn-brand-navbar-bottom {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        width: calc(100% - 16px);
+        margin: 8px;
+        .gn-search-bar {
+            max-width: 100%;
+        }
+        .gn-brand-navbar-menu {
+            &.dropdown {
+                display: none;
+            }
         }
     }
 }

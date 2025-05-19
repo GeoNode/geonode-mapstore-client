@@ -2,24 +2,33 @@
 {% load get_menu_json %}
 {% get_user_menu as USER_MENU %}
 {% get_brand_navbar_menu as BRAND_NAVBAR_MENU %}
+{% get_menu_json 'TOPBAR_MENU' as TOPBAR_MENU %}
+{% get_menu_json 'TOPBAR_MENU_LEFT' as TOPBAR_MENU_LEFT %}
+{% get_menu_json 'TOPBAR_MENU_RIGHT' as TOPBAR_MENU_RIGHT %}
 {% block extra_style %}
 {% endblock %}
 
 <nav id="gn-brand-navbar" class="gn-brand-navbar ms-main-colors _padding-md ms-flex-box _flex">
     <div class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
         {% block logo %}
-        <a href="/">
-            {% if custom_theme.logo and custom_theme.logo.url %}
-                <img src="{{ custom_theme.logo.url }}">
-            {% else %}
-                <img src="{% block logo_src %}/static/mapstore/img/geonode-logo.svg{% endblock %}">
-            {% endif %}
-        </a>
+            <a href="/">
+                {% if custom_theme.logo and custom_theme.logo.url %}
+                    <img src="{{ custom_theme.logo.url }}">
+                {% else %}
+                    <img src="{% block logo_src %}/static/mapstore/img/geonode-logo.svg{% endblock %}">
+                {% endif %}
+            </a>
         {% endblock %}
         <div class="gn-brand-navbar-menu-container ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
             <ul class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v gn-brand-navbar-menu">
                 {% for menu_item in BRAND_NAVBAR_MENU %}
                     {% include './menu_item.html' with menu_item=menu_item %}
+                {% endfor %}
+                {% for menu_item in TOPBAR_MENU %}
+                    {% include './menu_item.html' with menu_item=menu_item variant='primary' %}
+                {% endfor %}
+                {% for menu_item in TOPBAR_MENU_LEFT %}
+                    {% include './menu_item.html' with menu_item=menu_item variant='primary' %}
                 {% endfor %}
             </ul>
         </div>
@@ -33,6 +42,9 @@
             <ul class="ms-flex-box _flex _flex-gap-sm _flex-center-v">
                 {% for menu_item in USER_MENU %}
                     {% include './menu_item.html' with menu_item=menu_item align_right=True %}
+                {% endfor %}
+                {% for menu_item in TOPBAR_MENU_RIGHT %}
+                    {% include './menu_item.html' with menu_item=menu_item variant='primary' align_right=True %}
                 {% endfor %}
             </ul>
         {% endblock %}
@@ -57,6 +69,12 @@
             >
                 {% for menu_item in BRAND_NAVBAR_MENU %}
                     {% include './menu_item.html' with menu_item=menu_item align_right=True %}
+                {% endfor %}
+                {% for menu_item in TOPBAR_MENU %}
+                    {% include './menu_item_compact.html' with menu_item=menu_item variant='primary' %}
+                {% endfor %}
+                {% for menu_item in TOPBAR_MENU_LEFT %}
+                    {% include './menu_item_compact.html' with menu_item=menu_item %}
                 {% endfor %}
             </ul>
         </div>
@@ -84,11 +102,12 @@
             function onResizeNavbar() {
                 const searchBar = document.querySelector('.gn-search-bar');
                 const menuContainer = document.querySelector('.gn-brand-navbar-menu-container');
-                const menuBottom = document.querySelector('#gn-brand-navbar-bottom > .gn-brand-navbar-menu.dropdown');
-                const searchBarBottom = document.querySelector('#gn-search-bar-bottom');
+                const menu = menuContainer.querySelector('.gn-brand-navbar-menu');
                 const brandNavbarBottom = document.querySelector('#gn-brand-navbar-bottom');
+                const menuBottom = brandNavbarBottom.querySelector('.gn-brand-navbar-menu.dropdown');
+                const searchBarBottom = brandNavbarBottom.querySelector('#gn-search-bar-bottom');
 
-                const menuRight = document.querySelector('.gn-brand-navbar-menu')?.getBoundingClientRect()?.right;
+                const menuRight = menu?.getBoundingClientRect()?.right;
                 const searchBarLeft = searchBar?.getBoundingClientRect()?.left;
                 const contentLeft = document.querySelector('.gn-language-selector')?.getBoundingClientRect()?.left;
                 
@@ -99,6 +118,8 @@
                 menuContainer.style.visibility = 'visible';
                 searchBar.style.visibility = 'visible';
                 brandNavbarBottom.style.display = 'none';
+                menuBottom.style.display = 'none';
+                searchBarBottom.style.visibility = 'hidden';
 
                 // Menu overlaps with search bar
                 if (menuRight > searchBarLeft) {
