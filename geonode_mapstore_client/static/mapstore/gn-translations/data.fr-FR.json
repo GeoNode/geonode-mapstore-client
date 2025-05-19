@@ -191,6 +191,7 @@
             "moreinfo": "Plus d'informations",
             "setMapLikeThumbnail": "Définir la miniature de la carte",
             "thumbnailsaved": "Miniature enregistrée",
+            "thumbnailRemoved": "Miniature supprimée",
             "thumbnailnotsaved": "Miniature non enregistrée",
             "info": "Info",
             "attributeName": "Nom d'attribut",
@@ -461,9 +462,9 @@
             "metadataGroupTitle": "Général",
             "noGridData": "Aucune donnée à afficher",
             "layerSettings": {
-                "title": "Paramètres de la couche",
-                "updateSuccess": "Paramètres de la couche mis à jour",
-                "updateError": "Erreur lors de la sauvegarde des paramètres de la couche"
+                "title": "Paramètres des couches de la carte",
+                "updateSuccess": "Paramètres des couches de la carte mis à jour",
+                "updateError": "Erreur lors de la mise à jour des paramètres des couches de la carte"
             },
             "apply": "Appliquer",
             "showPreview": "Afficher l'aperçu",

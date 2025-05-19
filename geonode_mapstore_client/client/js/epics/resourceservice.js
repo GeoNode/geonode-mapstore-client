@@ -93,7 +93,7 @@ export const gnProcessResources = (action$, store) =>
                                 { ...process.output, func_name: process.processType }
                             ];
                             return updateResource({
-                                id: process.resource.id,
+                                id: process.resource.id ?? process.resource.pk,
                                 ['@extras']: {
                                     ...process.resource?.['@extras'],
                                     executions,
