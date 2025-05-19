@@ -111,7 +111,6 @@ def get_user_menu(context):
                 "href": "/catalogue/search/#/?f=favorite",
                 "label": "Favorites",
             },
-            {"type": "link", "href": "/messages/inbox/", "label": "Inbox"},
             devider,
         ],
     }
