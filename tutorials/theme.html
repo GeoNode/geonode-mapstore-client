@@ -155,7 +155,7 @@
         </nav>
         <div class="gn-row gn-home-section">
             <div class="gn-grid-container">
-                <div class="gn-card-grid">
+                <div class="gn-card-grid" style="width:100%;">
                     <div style="display: flex; width: 100%;">
                         <div style="flex: 1 1 0%; width: 100%;">
                             <div class="gn-card-grid-container" style="min-height: auto;">
@@ -512,7 +512,7 @@
             }
         }
 
-        const branch = window.location.search ? window.location.search.replace('?', '') : 'master';
+        const branch = window.location.search ? window.location.search.replace('?', '') : '4.4.x';
 
         fetch('https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/' + branch + '/geonode_mapstore_client/static/mapstore/dist/themes/geonode.css')
             .then(function (res) { return res.text(); })

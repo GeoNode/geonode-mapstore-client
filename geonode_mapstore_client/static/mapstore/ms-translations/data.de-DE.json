@@ -63,16 +63,6 @@
     "showEmptyMessageGFI": "Nachricht mit leeren Ergebnissen anzeigen",
     "remove": "Löschen",
     "removeThumbnail": "Miniaturbild entfernen",
-    "securityPopup": {
-      "insertCredentials": "Klicken Sie hier, um Anmeldeinformationen hinzuzufügen und diesen Dienst zu schützen",
-      "username": "Benutzername",
-      "pwd": "Passwort",
-      "show": "Anzeigen",
-      "hide": "Ausblenden",
-      "serviceUrl": "Dienst-URL",
-      "title": "Geschützter Dienst",
-      "remove": "Schutz für diesen Dienst entfernen und das Modalfenster schließen"
-    },
     "layerProperties": {
       "windowTitle": "Ebenen Eigenschaften",
       "title": "Titel",
@@ -2892,10 +2882,8 @@
         "workspace": "Arbeitsbereiche suchen",
         "layer": "Ebenen suchen",
         "access": "Zugriff suchen",
-        "ip": "###.###.#.#/##",
-        "ipRange": "###.###.#.#",
+        "ip": "###.###.###.###/##",
         "priority": "Priorität festlegen",
-        "validityPeriod": "Gültigkeitszeitraum auswählen",
         "filterAny": "beliebig"
       },
       "menutitle": "GeoFence-Regeln Verwalten",
@@ -2908,9 +2896,8 @@
         "cacheT": "Cache leeren",
         "save": "Aktuelle Regel speichern",
         "close": "Beenden Sie die Regelerstellung",
-        "showAllRules": "Derzeit zeigt die Tabelle nur die Regeln an, die genau mit dem für dieses Feld angegebenen Wert übereinstimmen. Deaktivieren Sie diese Option, um auch die Regeln einzuschließen, bei denen dieser Wert nicht vorhanden ist.",
-        "filterRuleList": "Derzeit zeigt die Tabelle alle Regeln an, die für diese Bedingung gelten, auch solche, bei denen dieser Wert nicht festgelegt ist. Wählen Sie diese Option, um nur die Regeln anzuzeigen, die speziell für diesen Wert gelten.",
-        "date": "Voer de datum in het formaat {format} in"
+        "showAllRules": "Toon alle in aanmerking komende regels",
+        "filterRuleList": "Filterlijst met geselecteerde waarde"
       },
       "navItems": {
         "main": "Allgemeine Regel",
@@ -2933,12 +2920,6 @@
       "request": "Anfrage",
       "workspace": "Workspace",
       "layer": "Ebene",
-      "validityPeriod": {
-        "title": "Gültigkeitsdauer",
-        "start": "Aus",
-        "end": "Zu"
-      },
-      "date": "Datum",
       "filters": "Filter",
       "rules": "Regeln",
       "access": "Zugang",
@@ -4361,6 +4342,7 @@
       "readLess": "Weniger lesen",
       "noPermissionsAvailable": "Keine Berechtigung verfügbar",
       "noAbout": "Keine zusätzlichen Informationen zur Ressource",
+      "loadingAbout": "Lädt über...",
       "addResource": "Ressource hinzufügen",
       "createMap": "Karte erstellen",
       "createDashboard": "Dashboard erstellen",
