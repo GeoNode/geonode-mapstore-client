@@ -521,12 +521,6 @@
                     "containerPosition": "header",
                     "leftMenuItems": [
                         {
-                            "type": "link",
-                            "size": "md",
-                            "href": "#/",
-                            "labelId": "gnviewer.allResources"
-                        },
-                        {
                             "type": "plugin",
                             "size": "md",
                             "name": "ResourceDetailsButton"
@@ -1467,12 +1461,6 @@
                     "containerPosition": "header",
                     "leftMenuItems": [
                         {
-                            "type": "link",
-                            "size": "md",
-                            "href": "#/",
-                            "labelId": "gnviewer.allResources"
-                        },
-                        {
                             "type": "plugin",
                             "size": "md",
                             "name": "ResourceDetailsButton"
@@ -2201,12 +2189,6 @@
                     "containerPosition": "header",
                     "leftMenuItems": [
                         {
-                            "type": "link",
-                            "size": "md",
-                            "href": "#/",
-                            "labelId": "gnviewer.allResources"
-                        },
-                        {
                             "type": "plugin",
                             "size": "md",
                             "name": "ResourceDetailsButton"
@@ -2398,12 +2380,6 @@
                     "containerPosition": "header",
                     "leftMenuItems": [
                         {
-                            "type": "link",
-                            "size": "md",
-                            "href": "#/",
-                            "labelId": "gnviewer.allResources"
-                        },
-                        {
                             "type": "plugin",
                             "size": "md",
                             "name": "ResourceDetailsButton"
@@ -2541,12 +2517,6 @@
                 "cfg": {
                     "containerPosition": "header",
                     "leftMenuItems": [
-                        {
-                            "type": "link",
-                            "size": "md",
-                            "href": "#/",
-                            "labelId": "gnviewer.allResources"
-                        },
                         {
                             "type": "plugin",
                             "size": "md",
@@ -3379,13 +3349,6 @@
                 "cfg": {
                     "containerPosition": "header",
                     "leftMenuItems": [
-                        {
-                            "type": "link",
-                            "size": "md",
-                            "href": "#/",
-                            "labelId": "gnviewer.allResources",
-                            "disableIf": "{!!state('resourceParams')?.mapPk}"
-                        },
                         {
                             "type": "link",
                             "href": "{'#/map/' + state('resourceParams')?.mapPk}",

@@ -33,18 +33,23 @@ def get_brand_navbar_menu():
     return [
         {
             "type": "link",
-            "href": "/datasets",
-            "label": "Datasets",
+            "href": "/catalogue/#",
+            "label": "All Resources",
         },
         {
-            "type": "link", 
-            "href": "/maps", 
-            "label": "Maps"
+            "type": "link",
+            "href": "/datasets",
+            "label": "Datasets",
         },
         {
             "type": "link",
             "href": "/documents",
             "label": "Documents",
+        },
+        {
+            "type": "link", 
+            "href": "/maps", 
+            "label": "Maps"
         },
         {
             "type": "link",
