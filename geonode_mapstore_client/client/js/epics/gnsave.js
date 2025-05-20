@@ -10,6 +10,7 @@ import axios from '@mapstore/framework/libs/ajax';
 import { Observable } from 'rxjs';
 import get from 'lodash/get';
 import castArray from 'lodash/castArray';
+import omit from 'lodash/omit';
 
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import { userSelector } from '@mapstore/framework/selectors/security';
@@ -163,11 +164,11 @@ const SaveAPI = {
             ...(timeseries && { has_time: timeseries?.has_time })
         };
         const { request, actions } = setDefaultStyle(state, id); // set default style, if modified
-        return (id
-            ? axios.all([request(), updateDataset(id, updatedBody), updateDatasetTimeSeries(id, timeseries)])
+        return request().then(() => (id
+            ? axios.all([updateDataset(id, updatedBody), updateDatasetTimeSeries(id, timeseries)])
             : Promise.resolve())
-            .then(() => id ? getDatasetByPk(id) : Promise.resolve()) // to get the updated resource
-            .then((resource) => {
+            .then(([_resource]) => {
+                let resource = omit(_resource, 'default_style');
                 if (timeseries) {
                     const dimensions = resource?.has_time ? getDimensions({...resource, has_time: true}) : [];
                     const layerId = layersSelector(state)?.find((l) => l.pk === resource?.pk)?.id;
@@ -175,7 +176,7 @@ const SaveAPI = {
                     return [resource, updateNode(layerId, 'layers', { dimensions: dimensions?.length > 0 ? dimensions : undefined }), ...actions];
                 }
                 return [resource, ...actions];
-            });
+            }));
     },
     [ResourceTypes.VIEWER]: (state, id, body) => {
         const user = userSelector(state);
