@@ -85,7 +85,7 @@ import {
     ProcessTypes,
     ProcessStatus
 } from '@js/utils/ResourceServiceUtils';
-import { getDatasetByPk, updateDatasetTimeSeries } from '@js/api/geonode/v2/index';
+import { updateDatasetTimeSeries } from '@js/api/geonode/v2/index';
 import { updateNode, updateSettingsParams } from '@mapstore/framework/actions/layers';
 import { layersSelector, getSelectedLayer as getSelectedNode } from '@mapstore/framework/selectors/layers';
 import { styleServiceSelector, getUpdatedLayer, selectedStyleSelector } from '@mapstore/framework/selectors/styleeditor';
