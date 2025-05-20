@@ -172,7 +172,7 @@ const SaveAPI = {
                     const dimensions = resource?.has_time ? getDimensions({...resource, has_time: true}) : [];
                     const layerId = layersSelector(state)?.find((l) => l.pk === resource?.pk)?.id;
                     // actions to be dispacted are added to response array
-                    return [resource, updateNode(layerId, 'layers', { dimensions: dimensions?.length > 0 ? dimensions : undefined })];
+                    return [resource, updateNode(layerId, 'layers', { dimensions: dimensions?.length > 0 ? dimensions : undefined }), ...actions];
                 }
                 return [resource, ...actions];
             });
