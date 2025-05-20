@@ -1375,10 +1375,7 @@
                 }  
             },
             {
-                "name": "StyleEditor",
-                "cfg": {
-                    "enableSetDefaultStyle": true
-                }
+                "name": "StyleEditor"
             },
             {
                 "name": "Identify",

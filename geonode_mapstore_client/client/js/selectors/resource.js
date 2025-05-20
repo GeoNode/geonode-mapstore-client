@@ -173,16 +173,12 @@ export const getDataPayload = (state, resourceType) => {
         currentLayerSettings = omitBy(currentLayerSettings,
             (value, key) => key === "opacity" && value === 1); // skip default value
         const selectedLayer = getSelectedNode(state);
-        const omitKeys = ['extendedParams', 'availableStyles', 'infoFormats'];
+        const omitKeys = ['extendedParams', 'availableStyles', 'infoFormats', 'style'];
         const data = saveLayer(selectedLayer ?? {});
-        const previousDefaultStyle = getSelectedLayer(state)?.style;
-        const defaultStyle = get(selectedLayer, 'availableStyles[0].name');
-        const preserveDefaultStyle = defaultStyle !== data?.style;
         return omit({
             ...data,
             ...currentLayerSettings,
-            ...(selectedLayer && {fields: selectedLayer?.fields ?? {}}),
-            ...(preserveDefaultStyle && {style: previousDefaultStyle})
+            ...(selectedLayer && {fields: selectedLayer?.fields ?? {}})
         }, omitKeys);
     }
     default:
@@ -304,17 +300,13 @@ function isResourceDataEqual(state, initialData = {}, currentData = {}) {
         const selectedLayerInitial = getSelectedLayer(state);
         const initialLayerData = {...selectedLayerInitial, ...initialData};
 
-        // Change of style is allowed if the style is the default one
-        let isStyleDefaultAndEqual = true;
-        if (currentData?.style !== initialLayerData?.style) {
-            isStyleDefaultAndEqual = get(selectedLayer, 'availableStyles[0].name') !== currentData?.style;
-        }
-        const isSettingsEqual = compareObjects(omit(currentData, ['style']), omit(initialLayerData, 'style'));
+        const isSettingsEqual = compareObjects(currentData, initialLayerData);
+        const isStyleEqual = selectedLayer?.style === initialLayerData?.style;
         const isAttributesEqual = !isEmpty(initialLayerData)
             && !isEmpty(selectedLayer)
             && isEqual(initialLayerData?.fields, selectedLayer.fields);
 
-        return isSettingsEqual && isAttributesEqual && isStyleDefaultAndEqual;
+        return isSettingsEqual && isAttributesEqual && isStyleEqual;
     }
     default:
         return true;
