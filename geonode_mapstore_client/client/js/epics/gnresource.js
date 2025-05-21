@@ -12,6 +12,7 @@ import uuid from "uuid";
 import url from "url";
 import get from 'lodash/get';
 import isNil from 'lodash/isNil';
+
 import {
     getNewMapConfiguration,
     getNewGeoStoryConfig,
@@ -33,12 +34,13 @@ import {
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
 import { isMapInfoOpen } from '@mapstore/framework/selectors/mapInfo';
-import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
 import { isLoggedIn, userSelector } from '@mapstore/framework/selectors/security';
 import {
     browseData,
     selectNode,
-    showSettings
+    showSettings,
+    updateNode,
+    hideSettings
 } from '@mapstore/framework/actions/layers';
 import {
     setSelectedResource,
@@ -64,7 +66,8 @@ import {
     setMapViewerLinkedResource,
     REQUEST_RESOURCE,
     resourceLoading,
-    resourceError
+    resourceError,
+    setSelectedLayer
 } from '@js/actions/gnresource';
 
 import {
@@ -94,7 +97,8 @@ import {
     canAddResource,
     getResourceData,
     getResourceId,
-    getResourceThumbnail
+    getResourceThumbnail,
+    getSelectedLayer
 } from '@js/selectors/resource';
 import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallayers';
 import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
@@ -425,15 +429,26 @@ const resourceTypes = {
 };
 
 // collect all the reset action needed before changing a viewer
-const getResetActions = (isSameResource) => [
-    resetControls(),
-    ...(!isSameResource ? [ resetResourceState() ] : []),
-    setControlProperty('rightOverlay', 'enabled', false),
-    setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', null),
-    // reset style editor state to avoid persistence service configuration in between resource pages
-    initStyleService(),
-    resetStyleEditor()
-];
+const getResetActions = (state, isSameResource) => {
+    const initialResource = state?.gnresource?.initialResource;
+    const initialLayer = initialResource ? resourceToLayerConfig(initialResource) : null;
+    return [
+        resetControls(),
+        ...(!isSameResource
+            ? [ resetResourceState() ]
+            : [
+                ...(initialResource ? [setResource(initialResource)] : []),
+                ...(initialLayer ? [setSelectedLayer(initialLayer), updateNode(initialLayer.layerId, 'layers', initialLayer)] : [])
+            ]
+        ),
+        setControlProperty('rightOverlay', 'enabled', false),
+        setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', null),
+        // reset style editor state to avoid persistence service configuration in between resource pages
+        initStyleService(),
+        resetStyleEditor(),
+        hideSettings()
+    ];
+};
 
 export const gnViewerRequestNewResourceConfig = (action$, store) =>
     action$.ofType(REQUEST_NEW_RESOURCE_CONFIG)
@@ -502,7 +517,7 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
             const isSamePreviousResource = !resourceData?.['@ms-detail'] && resourceData?.pk === action.pk;
             return Observable.concat(
                 Observable.of(
-                    ...getResetActions(isSamePreviousResource),
+                    ...getResetActions(state, isSamePreviousResource),
                     loadingResourceConfig(true),
                     setResourceType(action.resourceType),
                     setResourcePathParameters(action?.options?.params)
