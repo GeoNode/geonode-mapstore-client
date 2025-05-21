@@ -431,7 +431,7 @@ const resourceTypes = {
 // collect all the reset action needed before changing a viewer
 const getResetActions = (state, isSameResource) => {
     const initialResource = state?.gnresource?.initialResource;
-    const initialLayer = initialResource ? resourceToLayerConfig(initialResource) : null;
+    const initialLayer = initialResource && initialResource.resource_type === ResourceTypes.DATASET && resourceToLayerConfig(initialResource);
     return [
         resetControls(),
         ...(!isSameResource
