@@ -458,6 +458,10 @@
             "metadataNotFound": "No se encontraron metadatos para el recurso seleccionado",
             "filterMetadata": "Filtrar por nombre...",
             "noMetadataFound": "No se encontraron metadatos...",
+            "metadataUpdateTitle": "Metadatos",
+            "metadataUpdateSuccess": "Metadatos actualizados correctamente",
+            "metadataUpdatePartialSuccess": "Metadatos actualizados parcialmente correctamente",
+            "metadataUpdateFailure": "Error al actualizar los metadatos",
             "metadataGroupTitle": "General",
             "noGridData": "No hay datos para mostrar",
             "layerSettings": {

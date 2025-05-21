@@ -8,6 +8,7 @@
 
 import React from 'react';
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import PropTypes from "prop-types";
 import { updateMetadata } from '@js/api/geonode/v2/metadata';
 import Message from '@mapstore/framework/components/I18N/Message';
@@ -24,7 +25,9 @@ function MetadataUpdateButton({
     setUpdating,
     setUpdateError,
     setInitialMetadata,
-    setExtraErrors
+    setExtraErrors,
+    onSuccess,
+    onFailure
 }, context) {
 
     function handleUpdate() {
@@ -33,7 +36,12 @@ function MetadataUpdateButton({
         updateMetadata(pk, metadata)
             .then((response) => {
                 setInitialMetadata(metadata);
-                setExtraErrors(get(response, 'data.extraErrors', {}));
+                const extraErrors = get(response, 'data.extraErrors', {});
+                setExtraErrors(extraErrors);
+                onSuccess({
+                    title: "gnviewer.metadataUpdateTitle",
+                    message: `gnviewer.${isEmpty(extraErrors) ? "metadataUpdateSuccess" : "metadataUpdatePartialSuccess"}`
+                });
             })
             .catch((error) => {
                 setExtraErrors(get(error, 'data.extraErrors', {}));
@@ -47,6 +55,10 @@ function MetadataUpdateButton({
                     type: errorType,
                     message: get(error, 'data.message',
                         getMessageById(context.messages, 'gnviewer.metadataUpdateError'))
+                });
+                onFailure({
+                    title: "gnviewer.metadataUpdateTitle",
+                    message: "gnviewer.metadataUpdateFailure"
                 });
             })
             .finally(() => {

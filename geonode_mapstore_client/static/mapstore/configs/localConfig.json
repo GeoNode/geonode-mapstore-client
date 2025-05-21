@@ -3512,6 +3512,9 @@
             },
             {
                 "name": "MetadataViewer"
+            }, 
+            {
+                "name": "Notifications"
             }
         ],
         "upload_dataset": [
