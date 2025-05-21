@@ -1,6 +1,7 @@
 
 import json
 from django.shortcuts import render
+from django.http import Http404
 from django.utils.translation.trans_real import get_language_from_request
 from dateutil import parser
 
@@ -76,5 +77,9 @@ def resource_page_catalog(request, page_id):
     from django.conf import settings
 
     RESOURCES_PAGE_CONFIG = getattr(settings, "RESOURCES_PAGE_CONFIG", {})
-    context = { "resource_page_config": json.dumps(RESOURCES_PAGE_CONFIG.get(page_id)) }
+    config = RESOURCES_PAGE_CONFIG.get(page_id)
+    if config is None:
+        raise Http404(f"Resource page '{page_id}' does not exist.")
+    
+    context = { "resource_page_config": json.dumps(config) }
     return render(request, "geonode-mapstore-client/resource_page_catalog.html", context=context)

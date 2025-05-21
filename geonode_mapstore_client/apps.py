@@ -86,7 +86,7 @@ def run_setup_hooks(*args, **kwargs):
         ),
         re_path(r"^metadata/(?P<pk>[^/]*)$", views.metadata, name='metadata'),
         re_path(r"^metadata/(?P<pk>[^/]*)/embed$", views.metadata_embed, name='metadata'),
-        re_path(r"^(?P<page_id>[^/]*)$", views.resource_page_catalog, name='page_id'),
+        re_path(r"^(?P<page_id>[^/]+)/?$", views.resource_page_catalog, name='page_id'),
         # required, otherwise will raise no-lookup errors to be analysed
         re_path(r"^api/v2/", include(router.urls)),
     ]
