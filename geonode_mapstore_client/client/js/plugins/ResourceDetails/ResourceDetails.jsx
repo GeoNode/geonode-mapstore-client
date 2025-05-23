@@ -390,7 +390,9 @@ export default createPlugin('ResourceDetails', {
     containers: {
         ActionNavbar: {
             name: 'ResourceDetailsButton',
-            Component: connect(() => ({}), { onShow: setShowDetails })(({ component, resourcesGridId, onShow }) => {
+            Component: connect((state) => ({resource: getResourceData(state)}), { onShow: setShowDetails })(({ component, resourcesGridId, onShow, resource }) => {
+                if (!resource?.pk) return null;
+
                 const Component = component;
                 function handleClick() {
                     onShow(true, resourcesGridId);
