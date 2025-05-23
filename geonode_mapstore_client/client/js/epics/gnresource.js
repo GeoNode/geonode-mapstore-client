@@ -95,10 +95,10 @@ import {
 } from '@js/utils/ResourceUtils';
 import {
     canAddResource,
+    getInitialDatasetLayer,
     getResourceData,
     getResourceId,
-    getResourceThumbnail,
-    getSelectedLayer
+    getResourceThumbnail
 } from '@js/selectors/resource';
 import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallayers';
 import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
@@ -431,7 +431,7 @@ const resourceTypes = {
 // collect all the reset action needed before changing a viewer
 const getResetActions = (state, isSameResource) => {
     const initialResource = state?.gnresource?.initialResource;
-    const initialLayer = initialResource && initialResource.resource_type === ResourceTypes.DATASET && resourceToLayerConfig(initialResource);
+    const initialLayer = getInitialDatasetLayer(state);
     return [
         resetControls(),
         ...(!isSameResource
@@ -537,7 +537,7 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     ...action.options,
                     isSamePreviousResource,
                     resourceData,
-                    selectedLayer: isSamePreviousResource && getSelectedLayer(state),
+                    selectedLayer: isSamePreviousResource && getInitialDatasetLayer(state),
                     params: {...action?.options?.params, query}
                 }),
                 Observable.of(

@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import get from 'lodash/get';
 import castArray from 'lodash/castArray';
 import omit from 'lodash/omit';
+import isEmpty from 'lodash/isEmpty';
 
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import { userSelector } from '@mapstore/framework/selectors/security';
@@ -62,8 +63,7 @@ import {
     getResourceId,
     getDataPayload,
     getCompactPermissions,
-    getExtentPayload,
-    getSelectedLayer
+    getExtentPayload
 } from '@js/selectors/resource';
 
 import {
@@ -102,16 +102,18 @@ function parseMapBody(body) {
 }
 
 const setDefaultStyle = (state, id) => {
-    const {style: currentStyle} = getSelectedNode(state) ?? {};
-    const {style: initalStyle} = getSelectedLayer(state) ?? {};
-
     const layer = getUpdatedLayer(state);
     const styleName = selectedStyleSelector(state);
-    const defaultStyle = layer.availableStyles.filter(({ name }) => styleName === name);
-    const filteredStyles = layer.availableStyles.filter(({ name }) => styleName !== name);
-    const availableStyles = [...defaultStyle, ...filteredStyles];
+    let availableStyles = [];
+    if (!isEmpty(layer.availableStyles)) {
+        const defaultStyle = layer.availableStyles.filter(({ name }) => styleName === name);
+        const filteredStyles = layer.availableStyles.filter(({ name }) => styleName !== name);
+        availableStyles =  [...defaultStyle, ...filteredStyles];
+    }
+    const {style: currentStyleName} = getSelectedNode(state) ?? {};
+    const initalStyleName = layer?.availableStyles?.[0]?.name;
 
-    if (id && currentStyle !== initalStyle) {
+    if (id && initalStyleName && currentStyleName !== initalStyleName) {
         const { baseUrl = '' } = styleServiceSelector(state);
         return {
             request: () => LayersAPI.updateDefaultStyle({
