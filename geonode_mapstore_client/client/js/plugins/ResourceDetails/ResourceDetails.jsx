@@ -268,7 +268,8 @@ function ResourceDetailsPanel({
     pendingChanges,
     enablePreview,
     editingOverlay,
-    closeOnClickOut
+    closeOnClickOut,
+    showViewerButton
 }, context) {
 
     const [confirmModal, setConfirmModal] = useState(false);
@@ -341,6 +342,7 @@ function ResourceDetailsPanel({
                     tabs={tabs}
                     tabComponents={tabComponents}
                     resourcesGridId={resourcesGridId}
+                    showViewerButton={showViewerButton}
                 />
             </ResourcesPanelWrapper>
             <PendingStatePrompt

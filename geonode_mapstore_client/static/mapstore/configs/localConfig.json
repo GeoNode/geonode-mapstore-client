@@ -3312,7 +3312,8 @@
                     "headerNodeSelector": ".gn-main-header",
                     "enableFilters": true,
                     "enablePreview": true,
-                    "editingOverlay": true
+                    "editingOverlay": true,
+                    "showViewerButton": true
                 }
             },
             {
