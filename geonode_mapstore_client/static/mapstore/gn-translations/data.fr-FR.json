@@ -191,6 +191,7 @@
             "moreinfo": "Plus d'informations",
             "setMapLikeThumbnail": "Définir la miniature de la carte",
             "thumbnailsaved": "Miniature enregistrée",
+            "thumbnailRemoved": "Miniature supprimée",
             "thumbnailnotsaved": "Miniature non enregistrée",
             "info": "Info",
             "attributeName": "Nom d'attribut",
@@ -458,12 +459,16 @@
             "metadataNotFound": "Les métadonnées ne sont pas trouvées pour la ressource sélectionnée",
             "filterMetadata": "Filtrer par nom...",
             "noMetadataFound": "Aucune métadonnée trouvée...",
+            "metadataUpdateTitle": "Métadonnées",
+            "metadataUpdateSuccess": "Métadonnées mises à jour avec succès",
+            "metadataUpdatePartialSuccess": "Métadonnées mises à jour partiellement avec succès",
+            "metadataUpdateFailure": "Mise à jour des métadonnées impossible",
             "metadataGroupTitle": "Général",
             "noGridData": "Aucune donnée à afficher",
             "layerSettings": {
-                "title": "Paramètres de la couche",
-                "updateSuccess": "Paramètres de la couche mis à jour",
-                "updateError": "Erreur lors de la sauvegarde des paramètres de la couche"
+                "title": "Paramètres des couches de la carte",
+                "updateSuccess": "Paramètres des couches de la carte mis à jour",
+                "updateError": "Erreur lors de la mise à jour des paramètres des couches de la carte"
             },
             "apply": "Appliquer",
             "showPreview": "Afficher l'aperçu",

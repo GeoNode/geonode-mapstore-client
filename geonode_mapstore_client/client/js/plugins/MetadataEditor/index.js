@@ -30,6 +30,7 @@ import metadataReducer from './reducers/metadata';
 import Button from '@mapstore/framework/components/layout/Button';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { resourceHasPermission } from '@js/utils/ResourceUtils';
+import { success as successNotification, error as errorNotification } from '@mapstore/framework/actions/notifications';
 
 const MetadataEditor = lazy(() => import('./containers/MetadataEditor'));
 
@@ -68,7 +69,9 @@ const connectMetadata = connect(
         setUpdateError: setMetadataUpdateError,
         setUpdating: setMetadataUpdating,
         setResource: setMetadataResource,
-        setExtraErrors
+        setExtraErrors,
+        onSuccess: successNotification,
+        onFailure: errorNotification
     }
 );
 

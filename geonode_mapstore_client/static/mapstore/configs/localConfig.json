@@ -521,12 +521,6 @@
                     "containerPosition": "header",
                     "leftMenuItems": [
                         {
-                            "type": "link",
-                            "size": "md",
-                            "href": "#/",
-                            "labelId": "gnviewer.allResources"
-                        },
-                        {
                             "type": "plugin",
                             "size": "md",
                             "name": "ResourceDetailsButton"
@@ -598,6 +592,17 @@
                                 },
                                 {
                                     "type": "link",
+                                    "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/settings?tab=style'}",
+                                    "labelId": "gnviewer.editStyle",
+                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "OperationUploadStyle",
+                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
+                                },
+                                {
+                                    "type": "link",
                                     "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/settings'}",
                                     "labelId": "gnviewer.layerSettings.title",
                                     "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
@@ -606,11 +611,6 @@
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
-                                },
-                                {
-                                    "type": "plugin",
-                                    "name": "OperationUploadStyle",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
                                 },
                                 {
                                     "type": "plugin",
@@ -685,6 +685,7 @@
             {
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "containerPosition": "header",
                     "defaultOpen": true
                 }
@@ -1356,8 +1357,8 @@
             {
                 "name": "Save",
                 "cfg": {
-                    "saveMsgId": "gnhome.apply",
-                    "className": "gn-apply-settings"
+                    "className": "gn-apply-settings",
+                    "variant": "default"
                 }
             },
             {
@@ -1369,10 +1370,7 @@
                 }  
             },
             {
-                "name": "StyleEditor",
-                "cfg": {
-                    "enableSetDefaultStyle": true
-                }
+                "name": "StyleEditor"
             },
             {
                 "name": "Identify",
@@ -1459,12 +1457,6 @@
                 "cfg": {
                     "containerPosition": "header",
                     "leftMenuItems": [
-                        {
-                            "type": "link",
-                            "size": "md",
-                            "href": "#/",
-                            "labelId": "gnviewer.allResources"
-                        },
                         {
                             "type": "plugin",
                             "size": "md",
@@ -1582,6 +1574,7 @@
                 "mandatory": true,
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "containerPosition": "header"
                 }
             },
@@ -2193,12 +2186,6 @@
                     "containerPosition": "header",
                     "leftMenuItems": [
                         {
-                            "type": "link",
-                            "size": "md",
-                            "href": "#/",
-                            "labelId": "gnviewer.allResources"
-                        },
-                        {
                             "type": "plugin",
                             "size": "md",
                             "name": "ResourceDetailsButton"
@@ -2275,6 +2262,7 @@
             {
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "containerPosition": "header"
                 }
             },
@@ -2389,12 +2377,6 @@
                     "containerPosition": "header",
                     "leftMenuItems": [
                         {
-                            "type": "link",
-                            "size": "md",
-                            "href": "#/",
-                            "labelId": "gnviewer.allResources"
-                        },
-                        {
                             "type": "plugin",
                             "size": "md",
                             "name": "ResourceDetailsButton"
@@ -2496,6 +2478,7 @@
             {
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "containerPosition": "header",
                     "defaultOpen": true
                 }
@@ -2531,12 +2514,6 @@
                 "cfg": {
                     "containerPosition": "header",
                     "leftMenuItems": [
-                        {
-                            "type": "link",
-                            "size": "md",
-                            "href": "#/",
-                            "labelId": "gnviewer.allResources"
-                        },
                         {
                             "type": "plugin",
                             "size": "md",
@@ -2627,6 +2604,7 @@
             {
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "containerPosition": "header"
                 }
             },
@@ -3181,9 +3159,6 @@
                                     "href": "/services/?limit=5"
                                 }
                             ]
-                        },
-                        {
-                            "type": "divider"
                         }
                     ]
                 }
@@ -3192,7 +3167,7 @@
                 "name": "ResourcesFiltersForm",
                 "cfg": {
                     "resourcesGridId": "catalog",
-                    "headerNodeSelector": "#gn-brand-navbar",
+                    "headerNodeSelector": ".gn-main-header",
                     "footerNodeSelector": ".gn-footer",
                     "fields": [
                         {
@@ -3334,6 +3309,7 @@
             {
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "enableFilters": true,
                     "enablePreview": true,
                     "editingOverlay": true
@@ -3370,13 +3346,6 @@
                 "cfg": {
                     "containerPosition": "header",
                     "leftMenuItems": [
-                        {
-                            "type": "link",
-                            "size": "md",
-                            "href": "#/",
-                            "labelId": "gnviewer.allResources",
-                            "disableIf": "{!!state('resourceParams')?.mapPk}"
-                        },
                         {
                             "type": "link",
                             "href": "{'#/map/' + state('resourceParams')?.mapPk}",
@@ -3462,6 +3431,7 @@
             {
                 "name": "ResourceDetails",
                 "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
                     "containerPosition": "header"
                 }
             },
@@ -3542,6 +3512,9 @@
             },
             {
                 "name": "MetadataViewer"
+            }, 
+            {
+                "name": "Notifications"
             }
         ],
         "upload_dataset": [

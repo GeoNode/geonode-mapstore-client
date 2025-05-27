@@ -2,42 +2,90 @@
 {% load get_menu_json %}
 {% get_user_menu as USER_MENU %}
 {% get_brand_navbar_menu as BRAND_NAVBAR_MENU %}
+{% get_menu_json 'TOPBAR_MENU' as TOPBAR_MENU %}
+{% get_menu_json 'TOPBAR_MENU_LEFT' as TOPBAR_MENU_LEFT %}
+{% get_menu_json 'TOPBAR_MENU_RIGHT' as TOPBAR_MENU_RIGHT %}
 {% block extra_style %}
 {% endblock %}
 
 <nav id="gn-brand-navbar" class="gn-brand-navbar ms-main-colors _padding-md ms-flex-box _flex">
     <div class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
         {% block logo %}
-        <a href="/">
-            {% if custom_theme.logo and custom_theme.logo.url %}
-                <img src="{{ custom_theme.logo.url }}">
-            {% else %}
-                <img src="{% block logo_src %}/static/mapstore/img/geonode-logo.svg{% endblock %}">
-            {% endif %}
-        </a>
+            <a href="/">
+                {% if custom_theme.logo and custom_theme.logo.url %}
+                    <img src="{{ custom_theme.logo.url }}">
+                {% else %}
+                    <img src="{% block logo_src %}/static/mapstore/img/geonode-logo.svg{% endblock %}">
+                {% endif %}
+            </a>
         {% endblock %}
-        <ul class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
-            {% for menu_item in BRAND_NAVBAR_MENU %}
-                {% include './menu_item.html' with menu_item=menu_item %}
-            {% endfor %}
-        </ul>
+        {% block left_menu %}
+        <div class="gn-brand-navbar-right-menu-container ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
+            <ul class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v gn-brand-navbar-menu">
+                {% block default_left_menu_items %}
+                    {% for menu_item in BRAND_NAVBAR_MENU %}
+                        {% include './menu_item.html' with menu_item=menu_item %}
+                    {% endfor %}
+                {% endblock %}
+                {% for menu_item in TOPBAR_MENU %}
+                    {% include './menu_item.html' with menu_item=menu_item %}
+                {% endfor %}
+                {% for menu_item in TOPBAR_MENU_LEFT %}
+                    {% include './menu_item.html' with menu_item=menu_item %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endblock %}
         {% block right_menu %}
             {% block search_bar %}
                 {% include './search_bar.html' with search_bar_id='gn-search-bar' %}
             {% endblock %}
-            {% block language_selector %}
-                {% include './language_selector.html' with align_right=True %}
-            {% endblock %}
-            <ul class="ms-flex-box _flex _flex-gap-sm _flex-center-v">
-                {% for menu_item in USER_MENU %}
+            <ul class="gn-brand-navbar-left-menu-container ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                {% block language_selector %}
+                    {% include './language_selector.html' with align_right=True %}
+                {% endblock %}
+                {% for menu_item in TOPBAR_MENU_RIGHT %}
                     {% include './menu_item.html' with menu_item=menu_item align_right=True %}
                 {% endfor %}
+                {% block default_right_menu_items %}
+                    {% for menu_item in USER_MENU %}
+                        {% include './menu_item.html' with menu_item=menu_item align_right=True %}
+                    {% endfor %}
+                {% endblock %}
             </ul>
         {% endblock %}
     </div>
 </nav>
 <div id="gn-brand-navbar-bottom">
     {% block bottom_menu %}
+        <div class="gn-brand-navbar-menu dropdown">
+            <button
+                class="btn dropdown-toggle btn-default"
+                type="button"
+                id="gn-brand-navbar-menu-btn"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="true"
+            >
+                <i class="fa fa-bars"> </i>
+            </button>
+            <ul
+                class="dropdown-menu"
+                aria-labelledby="gn-brand-navbar-dropdown-menu"
+            >
+                {% block default_bottom_menu_items %}
+                    {% for menu_item in BRAND_NAVBAR_MENU %}
+                        {% include './menu_item_compact.html' with menu_item=menu_item align_right=True %}
+                    {% endfor %}
+                 {% endblock %}
+                {% for menu_item in TOPBAR_MENU %}
+                    {% include './menu_item_compact.html' with menu_item=menu_item %}
+                {% endfor %}
+                {% for menu_item in TOPBAR_MENU_LEFT %}
+                    {% include './menu_item_compact.html' with menu_item=menu_item %}
+                {% endfor %}
+            </ul>
+        </div>
         {% include './search_bar.html' with search_bar_id='gn-search-bar-bottom' %}
     {% endblock %}
 </div>
@@ -58,8 +106,55 @@
                     }
                 }
             }
-            window.addEventListener('DOMContentLoaded', manageUrlChange);
-            window.addEventListener('hashchange', manageUrlChange, false);
+
+            function onResizeNavbar() {
+                const searchBar = document.querySelector('.gn-search-bar');
+                const menuContainer = document.querySelector('.gn-brand-navbar-right-menu-container');
+                const menu = menuContainer.querySelector('.gn-brand-navbar-menu');
+                const brandNavbarBottom = document.querySelector('#gn-brand-navbar-bottom');
+                const menuBottom = brandNavbarBottom.querySelector('.gn-brand-navbar-menu.dropdown');
+                const searchBarBottom = brandNavbarBottom.querySelector('#gn-search-bar-bottom');
+
+                searchBar.style.visibility = 'hidden';
+                searchBar.style.display = 'block';
+
+                const menuRight = menu?.getBoundingClientRect()?.right;
+                const searchBarLeft = searchBar?.getBoundingClientRect()?.left;
+                const contentLeft = document.querySelector('.gn-brand-navbar-left-menu-container')?.getBoundingClientRect()?.left;
+
+                if (menuRight == null || searchBarLeft == null || contentLeft == null) {
+                    return;
+                }
+                // Default state
+                menuContainer.style.visibility = 'visible';
+                searchBar.style.visibility = 'visible';
+                brandNavbarBottom.style.display = 'none';
+                menuBottom.style.display = 'none';
+                searchBarBottom.style.visibility = 'hidden';
+
+                // Menu overlaps with search bar
+                if (menuRight > searchBarLeft) {
+                    searchBar.style.display = 'none';
+                    brandNavbarBottom.style.display = 'block';
+                    menuBottom.style.display = 'none';
+                    searchBarBottom.style.visibility = 'visible';
+
+                    // Menu also overlaps with right menu items
+                    if (menuRight > contentLeft) {
+                        menuContainer.style.visibility = 'hidden';
+                        brandNavbarBottom.style.display = 'flex';
+                        menuBottom.style.display = 'block';
+                    }
+                }
+            }
+
+            window.addEventListener('DOMContentLoaded', function() {
+                manageUrlChange();
+                onResizeNavbar();
+            });
+
+            window.addEventListener('resize', onResizeNavbar);
+            window.addEventListener('hashchange', manageUrlChange);
         })();
     </script>
 {% endblock extra_script %}

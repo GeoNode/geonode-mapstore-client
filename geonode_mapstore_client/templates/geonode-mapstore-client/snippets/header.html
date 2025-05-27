@@ -11,42 +11,53 @@
     (function () {
         const mainHeader = document.querySelector('.gn-main-header');
         const mainHeaderPlaceholder = document.querySelector('.gn-main-header-placeholder');
-        const topbar = document.querySelector('#gn-topbar');
         function resize() {
             if (mainHeaderPlaceholder && mainHeader) {
                 mainHeaderPlaceholder.style.height = mainHeader.clientHeight + 'px';
-            }
-            if (topbar && mainHeader) {
-                topbar.style.top = mainHeader.clientHeight + 'px';
             }
         }
         window.addEventListener('resize', resize);
         window.addEventListener('DOMContentLoaded', resize);
         resize();
 
+        function cleanHref(href) {
+            return (href || '').split('#')[0];
+        }
 
-        const menuDropdowns = document.querySelectorAll('.gn-main-header .dropdown');
-        const pathname = window.location.pathname;
-        for (var i = 0; i < menuDropdowns.length; i++) {
-            const menuDropdown = menuDropdowns[i];
-            const menuItems = menuDropdown.querySelectorAll('.dropdown-menu > li a');
-            for (var j = 0; j < menuItems.length; j++) {
-                const menuItem = menuItems[j];
-                const href = menuItem.getAttribute('href');
-                if (href === pathname) {
-                    menuItem.parentNode.classList.add('active');
+        function updateActiveMenuItems() {
+            const menuDropdowns = document.querySelectorAll('.gn-main-header .dropdown');
+            const pathname = window.location.pathname;
+            const hash = (window.location.hash || '').split('?')[0] || '#/';
+            const shouldActivate = hash === '#/';
+            for (var i = 0; i < menuDropdowns.length; i++) {
+                const menuDropdown = menuDropdowns[i];
+                const menuItems = menuDropdown.querySelectorAll('.dropdown-menu > li a');
+                for (var j = 0; j < menuItems.length; j++) {
+                    const menuItem = menuItems[j];
+                    const href = cleanHref(menuItem.getAttribute('href'));
                     const toggle = menuDropdown.querySelector('.dropdown-toggle');
-                    toggle.classList.add('active');
+                    toggle.classList.remove('active');
+                    if (href === pathname) {
+                        menuItem.parentNode.classList.add('active');
+                        if (shouldActivate && ![...menuDropdown.classList].includes('gn-brand-navbar-menu')) {
+                            toggle.classList.add('active');
+                        }
+                    }
+                }
+            }
+            const menuLinks = document.querySelectorAll('.gn-brand-navbar-menu > li a');
+            for (var i = 0; i < menuLinks.length; i++) {
+                const menuLink = menuLinks[i];
+                const href = cleanHref(menuLink.getAttribute('href'));
+                menuLink.classList.remove('active');
+                if (shouldActivate && href === pathname) {
+                    menuLink.classList.add('active');
                 }
             }
         }
-        const menuLinks = document.querySelectorAll('.gn-main-menu > li a');
-        for (var i = 0; i < menuLinks.length; i++) {
-            const menuLink = menuLinks[i];
-            const href = menuLink.getAttribute('href');
-            if (href === pathname) {
-                menuLink.classList.add('active');
-            }
-        }
+        
+        updateActiveMenuItems();
+
+        window.addEventListener("hashchange", updateActiveMenuItems);
     })();
 </script>

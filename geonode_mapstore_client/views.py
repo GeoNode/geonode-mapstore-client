@@ -1,5 +1,7 @@
 
+import json
 from django.shortcuts import render
+from django.http import Http404
 from django.utils.translation.trans_real import get_language_from_request
 from dateutil import parser
 
@@ -71,13 +73,13 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
 def metadata_embed(request, pk):
     return metadata(request, pk, template="geonode-mapstore-client/metadata_embed.html")
 
-def resource_type_catalog(request, resource_type):
-    # TODO: improve mapping method maybe externalize it and improve it
-    resource_type_map = {
-        'datasets': 'dataset',
-        'documents': 'document',
-        'maps': 'map',
-        'dashboards': 'dashboard',
-        'geostories': 'geostory'
-    }
-    return render(request, "geonode-mapstore-client/resource_type_catalog.html", context={ "title": resource_type, "resource_type": resource_type_map.get(resource_type) })
+def resource_page_catalog(request, page_id):
+    from django.conf import settings
+
+    RESOURCES_PAGE_CONFIG = getattr(settings, "RESOURCES_PAGE_CONFIG", {})
+    config = RESOURCES_PAGE_CONFIG.get(page_id)
+    if config is None:
+        raise Http404(f"Resource page '{page_id}' does not exist.")
+    
+    context = { "resource_page_config": json.dumps(config) }
+    return render(request, "geonode-mapstore-client/resource_page_catalog.html", context=context)

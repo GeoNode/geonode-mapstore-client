@@ -2599,7 +2599,6 @@
       "clearbtn": "Clear All",
       "selectbtn": "Select All",
       "placeholders": {
-        "filter": "Filter styles...",
         "role": "Type to search Roles",
         "user": "Type to search Users",
         "service": "Type to search Services",
@@ -2607,11 +2606,9 @@
         "workspace": "Type to search Workspaces",
         "layer": "Type to search Layers",
         "access": "Type to search Access",
-        "ip": "###.###.#.#/##",
-        "ipRange": "###.###.#.#",
+        "ip": "###.###.###.###/##",
         "priority": "Select Priority",
-        "validityPeriod": "Select validity period",
-        "filterAny": "ANY"
+        "filter": "Filter styles..."
       },
       "menutitle": "Manage Access Rules",
       "tooltip": {
@@ -2645,12 +2642,6 @@
       "request": "Request",
       "workspace": "Workspace",
       "layer": "Layer",
-      "validityPeriod": {
-        "title": "Validity Period",
-        "start": "From",
-        "end": "To"
-      },
-      "date": "Date",
       "filters": "Filters",
       "rules": "Rules",
       "access": "Access",
@@ -3960,6 +3951,7 @@
       "readLess": "Read less",
       "noPermissionsAvailable": "No permission available",
       "noAbout": "No additional information about the resource",
+      "loadingAbout": "Loading about...",
       "addResource": "Add Resource",
       "createMap": "Create map",
       "createDashboard": "Create dashboard",

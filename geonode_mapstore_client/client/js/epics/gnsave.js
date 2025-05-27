@@ -10,6 +10,7 @@ import axios from '@mapstore/framework/libs/ajax';
 import { Observable } from 'rxjs';
 import get from 'lodash/get';
 import castArray from 'lodash/castArray';
+import omit from 'lodash/omit';
 
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import { userSelector } from '@mapstore/framework/selectors/security';
@@ -36,7 +37,8 @@ import {
     loadingResourceConfig,
     enableMapThumbnailViewer,
     updateResource,
-    manageLinkedResource
+    manageLinkedResource,
+    setSelectedLayer
 } from '@js/actions/gnresource';
 import {
     getResourceByPk,
@@ -60,7 +62,8 @@ import {
     getResourceId,
     getDataPayload,
     getCompactPermissions,
-    getExtentPayload
+    getExtentPayload,
+    getSelectedLayer
 } from '@js/selectors/resource';
 
 import {
@@ -83,8 +86,10 @@ import {
     ProcessStatus
 } from '@js/utils/ResourceServiceUtils';
 import { updateDatasetTimeSeries } from '@js/api/geonode/v2/index';
-import { updateNode } from '@mapstore/framework/actions/layers';
-import { layersSelector } from '@mapstore/framework/selectors/layers';
+import { updateNode, updateSettingsParams } from '@mapstore/framework/actions/layers';
+import { layersSelector, getSelectedLayer as getSelectedNode } from '@mapstore/framework/selectors/layers';
+import { styleServiceSelector, getUpdatedLayer, selectedStyleSelector } from '@mapstore/framework/selectors/styleeditor';
+import LayersAPI from '@mapstore/framework/api/geoserver/Layers';
 
 const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys(RESOURCE_MANAGEMENT_PROPERTIES);
 
@@ -95,6 +100,30 @@ function parseMapBody(body) {
         ...geoNodeMap
     };
 }
+
+const setDefaultStyle = (state, id) => {
+    const {style: currentStyle} = getSelectedNode(state) ?? {};
+    const {style: initalStyle} = getSelectedLayer(state) ?? {};
+
+    const layer = getUpdatedLayer(state);
+    const styleName = selectedStyleSelector(state);
+    const defaultStyle = layer.availableStyles.filter(({ name }) => styleName === name);
+    const filteredStyles = layer.availableStyles.filter(({ name }) => styleName !== name);
+    const availableStyles = [...defaultStyle, ...filteredStyles];
+
+    if (id && currentStyle !== initalStyle) {
+        const { baseUrl = '' } = styleServiceSelector(state);
+        return {
+            request: () => LayersAPI.updateDefaultStyle({
+                baseUrl,
+                layerName: layer.name,
+                styleName
+            }),
+            actions: [updateSettingsParams({ availableStyles }, true), setSelectedLayer(layer)]
+        };
+    }
+    return {request: () => Promise.resolve(), actions: []};
+};
 
 const SaveAPI = {
     [ResourceTypes.MAP]: (state, id, body) => {
@@ -134,18 +163,20 @@ const SaveAPI = {
             ...body,
             ...(timeseries && { has_time: timeseries?.has_time })
         };
-        return (id
+        const { request, actions } = setDefaultStyle(state, id); // set default style, if modified
+        return request().then(() => (id
             ? axios.all([updateDataset(id, updatedBody), updateDatasetTimeSeries(id, timeseries)])
-            : Promise.resolve([]))
-            .then(([resource]) => {
+            : Promise.resolve())
+            .then(([_resource]) => {
+                let resource = omit(_resource, 'default_style');
                 if (timeseries) {
                     const dimensions = resource?.has_time ? getDimensions({...resource, has_time: true}) : [];
                     const layerId = layersSelector(state)?.find((l) => l.pk === resource?.pk)?.id;
                     // actions to be dispacted are added to response array
-                    return [resource, updateNode(layerId, 'layers', { dimensions: dimensions?.length > 0 ? dimensions : undefined })];
+                    return [resource, updateNode(layerId, 'layers', { dimensions: dimensions?.length > 0 ? dimensions : undefined }), ...actions];
                 }
-                return resource;
-            });
+                return [resource, ...actions];
+            }));
     },
     [ResourceTypes.VIEWER]: (state, id, body) => {
         const user = userSelector(state);
