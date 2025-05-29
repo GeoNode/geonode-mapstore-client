@@ -42,7 +42,7 @@ const parseAttributeData = (fields) => {
 const DetailsData = ({ fields, resource, onChange }) => {
     const attributeData = parseAttributeData(fields);
     return (
-        <FlexBox column gap="md" className="gn-details-data _padding-tb-md">
+        <FlexBox column gap="sm" className="gn-details-data _padding-tb-md">
             <FlexBox column className="gn-details-data-table">
                 <Text strong>
                     <Message msgId={"gnviewer.attributes"} />
