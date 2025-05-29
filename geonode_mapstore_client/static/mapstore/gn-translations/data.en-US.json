@@ -198,6 +198,7 @@
             "label": "Label",
             "description": "Description",
             "attributes": "Attributes",
+            "data": "Data",
             "filterBy": "Filter...",
             "addPermissionsEntry": "Add Users / Groups",
             "groups": "Groups",

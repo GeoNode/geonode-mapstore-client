@@ -209,24 +209,10 @@ function ResourceDetailsPanel({
             ]
         },
         {
-            "type": "permissions",
-            "id": "permissions",
-            "labelId": "gnviewer.permissions",
-            "disableIf": "{!context.canAccessPermissions(state('gnResourceData'))}",
-            "items": [true]
-        },
-        {
             "type": "locations",
             "id": "locations",
             "labelId": "gnviewer.locations",
             "items": "{({extent: context.get(state('gnResourceData'), 'extent')})}"
-        },
-        {
-            "type": "attribute-table",
-            "id": "attributes",
-            "labelId": "gnviewer.attributes",
-            "disableIf": "{context.get(state('gnResourceData'), 'resource_type') !== 'dataset'}",
-            "items": "{context.get(state('gnResourceData'), 'attribute_set')}"
         },
         {
             "type": "linked-resources",
@@ -241,13 +227,18 @@ function ResourceDetailsPanel({
             "items": "{context.get(state('gnResourceData'), 'assets')}"
         },
         {
+            "type": "data",
+            "id": "data",
+            "labelId": "gnviewer.data",
+            "disableIf": "{context.get(state('gnResourceData'), 'resource_type') !== 'dataset'}",
+            "items": "{context.get(state('gnResourceData'), 'attribute_set')}"
+        },
+        {
             "type": "settings",
             "id": "settings",
             "labelId": "gnviewer.management",
-            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-            "items": [
-                true
-            ]
+            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData')) && !context.canAccessPermissions(state('gnResourceData'))}",
+            "items": [true]
         }
     ],
     items,

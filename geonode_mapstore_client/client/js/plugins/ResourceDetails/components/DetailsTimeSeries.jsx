@@ -60,8 +60,8 @@ const TimeSeriesSettings = ({ resource, onChange }, context) => {
     const attributeFields = ['attribute', 'end_attribute'];
     const hasTime = !!timeseries?.has_time;
     return (
-        <FlexBox column gap="sm">
-            <FlexBox component={Text} fontSize="sm" gap="xs" centerChildrenVertically>
+        <FlexBox className="gn-details-time-series" column gap="sm">
+            <FlexBox component={Text} strong gap="xs" centerChildrenVertically>
                 <Message msgId={"gnviewer.timeSeriesSetting.title"} />
                 <InfoPopover
                     glyph="info-sign"

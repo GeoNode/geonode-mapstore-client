@@ -198,6 +198,7 @@
             "label": "Étiqueter",
             "description": "Description",
             "attributes": "Attributs",
+            "data": "Données",
             "filterBy": "Filtrer...",
             "addPermissionsEntry": "Ajouter des utilisateurs/groupes",
             "groups": "Groupes",

@@ -9,18 +9,16 @@
 import { connect } from 'react-redux';
 import DetailsLocations from '../components/DetailsLocations';
 import DetailsAssets from '../components/DetailsAssets';
-import DetailsAttributeTable from '../components/DetailsAttributeTable';
+import DetailsData from '../components/DetailsData';
 import DetailsLinkedResources from '../components/DetailsLinkedResources';
-import DetailsPermissions from './Permissions';
 import DetailsSettings from '../components/DetailsSettings';
 import { setResourceExtent, updateResourceProperties } from '@js/actions/gnresource';
 
 const tabComponents = {
-    'attribute-table': DetailsAttributeTable,
-    'linked-resources': DetailsLinkedResources,
-    'permissions': DetailsPermissions,
     'locations': connect(() => ({}), { onSetExtent: setResourceExtent })(DetailsLocations),
+    'linked-resources': DetailsLinkedResources,
     'assets': DetailsAssets,
+    'data': connect(() => ({}), { onChange: updateResourceProperties })(DetailsData),
     'settings': connect(() => ({}), { onChange: updateResourceProperties })(DetailsSettings)
 };
 
