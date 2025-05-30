@@ -24,7 +24,7 @@ import {
 } from '@js/selectors/resource';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { mapSelector } from '@mapstore/framework/selectors/map';
-import DetailsInfo from '@mapstore/framework/plugins/ResourcesCatalog/components/DetailsInfo';
+import DetailsInfoComp from '@mapstore/framework/plugins/ResourcesCatalog/components/DetailsInfo';
 import { replaceResourcePaths } from '@mapstore/framework/utils/ResourcesUtils';
 import Text from '@mapstore/framework/components/layout/Text';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
@@ -39,6 +39,8 @@ import { parseCatalogResource } from '@js/utils/ResourceUtils';
 import useParsePluginConfigExpressions from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useParsePluginConfigExpressions';
 import { hashLocationToHref } from '@mapstore/framework/utils/ResourcesFiltersUtils';
 import { getMonitoredStateSelector, getRouterLocation } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
+import withScrollableTabs from '@js/components/enhancers/withScrollableTabs';
+const DetailsInfo = withScrollableTabs(DetailsInfoComp);
 
 const ConnectedDetailsThumbnail = connect(
     createSelector([

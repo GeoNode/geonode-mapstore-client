@@ -239,3 +239,25 @@ div.chart-color-class-modal {
         width: 100vw;
     }
 }
+
+.gn-scrollable-tabs {
+    .left-arrow, .right-arrow {
+        background: none;
+        border: none;
+        padding: 2px;
+        font-size: @font-size-small;
+    }
+    .gn-scrollable-tabs-container {
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        white-space: nowrap;
+        padding: 0 2px;
+        
+        ul[role="tablist"] {
+            display: flex;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            white-space: nowrap;
+        }
+    }
+}
