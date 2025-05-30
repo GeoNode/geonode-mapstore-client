@@ -121,7 +121,7 @@ def get_default_resource_page_config():
     }
     page_resource_config = {
         "maps": {
-            "titleId": "gnhome.map",
+            "title": "Map",
             "defaultQuery": {
                 "f": "map"
             },
@@ -135,7 +135,7 @@ def get_default_resource_page_config():
             "filterFormFields" : DEFAULT_PAGE_FILTER_FORM
         },
         "datasets": {
-            "titleId": "gnhome.dataset",
+            "title": "Dataset",
             "defaultQuery": {
                 "f": "dataset"
             },
@@ -196,7 +196,7 @@ def get_default_resource_page_config():
             ])
         },
         "documents": {
-            "titleId": "gnhome.document",
+            "title": "Document",
             "defaultQuery": {
                 "f": "document"
             },
@@ -216,13 +216,13 @@ def get_default_resource_page_config():
             ])
         },
         "dashboards": {
-            "titleId": "gnhome.dashboard",
+            "title": "Dashboard",
             "defaultQuery": {
                 "f": "dashboard"
             },
             "menuItems": [
                 {
-                    
+                    **default_menu_item,
                     "value": "dashboard",
                     "href": "{context.getCataloguePath('/catalogue/#/dashboard/new')}"
                 }
@@ -230,7 +230,7 @@ def get_default_resource_page_config():
             "filterFormFields": DEFAULT_PAGE_FILTER_FORM
         },
         "geostories": {
-            "titleId": "gnhome.geostory",
+            "title": "GeoStory",
             "defaultQuery": {
                 "f": "geostory"
             },
