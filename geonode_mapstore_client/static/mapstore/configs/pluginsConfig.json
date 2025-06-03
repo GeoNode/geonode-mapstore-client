@@ -508,6 +508,13 @@
       ]
     },
     {
+      "name": "LongitudinalProfileTool",
+      "glyph": "1-line",
+      "title": "plugins.LongitudinalProfileTool.title",
+      "description": "plugins.LongitudinalProfileTool.description",
+      "dependencies": ["SidebarMenu"]
+    },
+    {
       "name": "GeoProcessing",
       "glyph": "globe-settings",
       "title": "plugins.GeoProcessing.title",

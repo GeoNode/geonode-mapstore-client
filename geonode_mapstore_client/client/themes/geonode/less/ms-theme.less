@@ -407,3 +407,14 @@ div#mapstore-globalspinner {
         }
     }
 }
+
+// this dropdown is not visible in some cases
+// reducing font size and margin to ensure full visibility
+#longitudinal-tool ~ ul {
+    font-size: @font-size-sm;
+    margin: 0;
+    padding: 0;
+    .divider {
+        margin: 0.25rem 0;
+    }
+}
