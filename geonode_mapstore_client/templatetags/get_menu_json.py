@@ -33,7 +33,7 @@ def get_brand_navbar_menu():
     return [
         {
             "type": "link",
-            "href": "/catalogue/#",
+            "href": "/all",
             "label": "All Resources",
         },
         {

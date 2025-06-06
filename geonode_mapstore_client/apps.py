@@ -296,9 +296,6 @@ def run_setup_hooks(*args, **kwargs):
     setattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE", MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE)
     setattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SERVICES", MAPSTORE_DASHBOARD_CATALOGUE_SERVICES)
 
-    RESOURCES_PAGE_CONFIG = getattr(settings, "RESOURCE_PAGE_CONFIG", get_default_resource_page_config())
-    setattr(settings, "RESOURCES_PAGE_CONFIG", RESOURCES_PAGE_CONFIG)
-
 
 def connect_geoserver_style_visual_mode_signal():
     from geonode.geoserver.signals import geoserver_automatic_default_style_set
