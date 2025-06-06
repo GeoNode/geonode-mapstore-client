@@ -63,7 +63,8 @@ function formatResourceLinkUrl(resource) {
 
 function DetailsToolbar({
     resource,
-    items = []
+    items = [],
+    showViewerButton = false
 }) {
 
     const {
@@ -126,7 +127,7 @@ function DetailsToolbar({
                         <Icon glyph="globe" />
                     </Button>
                 </CopyToClipboard>}
-                {info?.viewerUrl
+                {!showViewerButton ? null : info?.viewerUrl
                     ? (
                         <Button
                             variant="primary"

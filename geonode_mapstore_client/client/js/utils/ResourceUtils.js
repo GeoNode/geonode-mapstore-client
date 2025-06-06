@@ -867,3 +867,14 @@ export const resourceToLayers = (resource) => {
     }
     return [];
 };
+
+export const canManageResourceSettings = (resource) => {
+    const { perms } = resource || {};
+    const settingsPerms = ['feature_resourcebase', 'approve_resourcebase', 'publish_resourcebase'];
+    return !!(perms || []).find(perm => settingsPerms.includes(perm));
+};
+
+export const canAccessPermissions = (resource) => {
+    const { perms } = resource || {};
+    return perms?.includes('change_resourcebase_permissions');
+};

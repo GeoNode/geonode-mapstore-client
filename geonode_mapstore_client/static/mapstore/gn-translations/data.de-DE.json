@@ -198,6 +198,7 @@
             "label": "Beschriftung",
             "description": "Beschreibung",
             "attributes": "Attribute",
+            "data": "Daten",
             "filterBy": "Filtern...",
             "addPermissionsEntry": "Benutzer / Gruppen hinzufügen",
             "groups": "Gruppen",

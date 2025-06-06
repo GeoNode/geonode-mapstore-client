@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import get from 'lodash/get';
 import castArray from 'lodash/castArray';
 import omit from 'lodash/omit';
+import isEmpty from 'lodash/isEmpty';
 
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import { userSelector } from '@mapstore/framework/selectors/security';
@@ -62,8 +63,7 @@ import {
     getResourceId,
     getDataPayload,
     getCompactPermissions,
-    getExtentPayload,
-    getSelectedLayer
+    getExtentPayload
 } from '@js/selectors/resource';
 
 import {
@@ -102,16 +102,18 @@ function parseMapBody(body) {
 }
 
 const setDefaultStyle = (state, id) => {
-    const {style: currentStyle} = getSelectedNode(state) ?? {};
-    const {style: initalStyle} = getSelectedLayer(state) ?? {};
-
     const layer = getUpdatedLayer(state);
     const styleName = selectedStyleSelector(state);
-    const defaultStyle = layer.availableStyles.filter(({ name }) => styleName === name);
-    const filteredStyles = layer.availableStyles.filter(({ name }) => styleName !== name);
-    const availableStyles = [...defaultStyle, ...filteredStyles];
+    let availableStyles = [];
+    if (!isEmpty(layer.availableStyles)) {
+        const defaultStyle = layer.availableStyles.filter(({ name }) => styleName === name);
+        const filteredStyles = layer.availableStyles.filter(({ name }) => styleName !== name);
+        availableStyles =  [...defaultStyle, ...filteredStyles];
+    }
+    const {style: currentStyleName} = getSelectedNode(state) ?? {};
+    const initalStyleName = layer?.availableStyles?.[0]?.name;
 
-    if (id && currentStyle !== initalStyle) {
+    if (id && initalStyleName && currentStyleName !== initalStyleName) {
         const { baseUrl = '' } = styleServiceSelector(state);
         return {
             request: () => LayersAPI.updateDefaultStyle({
@@ -212,6 +214,7 @@ export const gnSaveContent = (action$, store) =>
                 ...(data && { 'data': JSON.parse(JSON.stringify(data)) }),
                 ...(extent && { extent })
             };
+            const { compactPermissions } = getPermissionsPayload(state);
             return Observable.defer(() => SaveAPI[contentType](state, action.id, body, action.reload))
                 .switchMap((response) => {
                     const [resource, ...actions] = castArray(response);
@@ -224,22 +227,34 @@ export const gnSaveContent = (action$, store) =>
                         window.location.reload();
                         return Observable.empty();
                     }
-                    return Observable.of(
-                        saveSuccess(resource),
-                        setResource({
-                            ...currentResource,
-                            ...body,
-                            ...resource
-                        }),
-                        updateResource(resource),
-                        ...(action.showNotifications
-                            ? [
-                                action.showNotifications === true
-                                    ? successNotification({title: "saveDialog.saveSuccessTitle", message: "saveDialog.saveSuccessMessage"})
-                                    : warningNotification(action.showNotifications)
-                            ]
-                            : []),
-                        ...actions // additional actions to be dispatched
+                    return Observable.merge(
+                        Observable.of(
+                            saveSuccess(resource),
+                            setResource({
+                                ...currentResource,
+                                ...body,
+                                ...resource
+                            }),
+                            updateResource(resource),
+                            ...(action.showNotifications
+                                ? [
+                                    action.showNotifications === true
+                                        ? successNotification({title: "saveDialog.saveSuccessTitle", message: "saveDialog.saveSuccessMessage"})
+                                        : warningNotification(action.showNotifications)
+                                ]
+                                : []),
+                            ...actions // additional actions to be dispatched
+                        ),
+                        ...(compactPermissions ? [
+                            Observable.defer(() =>
+                                updateCompactPermissionsByPk(action.id, cleanCompactPermissions(compactPermissions))
+                                    .then(output => ({ resource: currentResource, output, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
+                                    .catch((error) => ({ resource: currentResource, error: error?.data?.detail || error?.statusText || error?.message || true, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
+                            )
+                                .switchMap((payload) => {
+                                    return Observable.of(startAsyncProcess(payload));
+                                })
+                        ] : [])
                     );
                 })
                 .catch((error) => {
@@ -295,8 +310,7 @@ export const gnSaveDirectContent = (action$, store) =>
             const state = store.getState();
             const mapInfo = mapInfoSelector(state);
             const resourceId = mapInfo?.id || getResourceId(state);
-            const { compactPermissions, geoLimits } = getPermissionsPayload(state);
-            const currentResource = getResourceData(state);
+            const { geoLimits } = getPermissionsPayload(state);
 
             return Observable.defer(() => axios.all([
                 getResourceByPk(resourceId),
@@ -320,30 +334,18 @@ export const gnSaveDirectContent = (action$, store) =>
                         extension: resource?.extension,
                         href: resource?.href
                     };
-                    return Observable.concat(
-                        ...(compactPermissions ? [
-                            Observable.defer(() =>
-                                updateCompactPermissionsByPk(resourceId, cleanCompactPermissions(compactPermissions))
-                                    .then(output => ({ resource: currentResource, output, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
-                                    .catch((error) => ({ resource: currentResource, error: error?.data?.detail || error?.statusText || error?.message || true, processType: ProcessTypes.PERMISSIONS_RESOURCE }))
-                            )
-                                .switchMap((payload) => {
-                                    return Observable.of(startAsyncProcess(payload));
-                                })
-                        ] : []),
-                        Observable.of(
-                            saveContent(
-                                resourceId,
-                                metadata,
-                                false,
-                                geoLimitsErrors.length > 0
-                                    ? {
-                                        title: 'gnviewer.warningGeoLimitsSaveTitle',
-                                        message: 'gnviewer.warningGeoLimitsSaveMessage'
-                                    }
-                                    : true /* showNotification */),
-                            resetGeoLimits()
-                        )
+                    return Observable.of(
+                        saveContent(
+                            resourceId,
+                            metadata,
+                            false,
+                            geoLimitsErrors.length > 0
+                                ? {
+                                    title: 'gnviewer.warningGeoLimitsSaveTitle',
+                                    message: 'gnviewer.warningGeoLimitsSaveMessage'
+                                }
+                                : true /* showNotification */),
+                        resetGeoLimits()
                     );
                 })
                 .catch((error) => {

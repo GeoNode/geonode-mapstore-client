@@ -33,6 +33,9 @@ import {
     ResourceTypes
 } from "@js/utils/ResourceUtils";
 import GeoLimits from "./GeoLimits";
+import FlexBox from '@mapstore/framework/components/layout/FlexBox';
+import Text from '@mapstore/framework/components/layout/Text';
+import Message from '@mapstore/framework/components/I18N/Message';
 
 const entriesTabs = [
     {
@@ -113,22 +116,27 @@ const Permissions = ({
         });
     }, [availableResourceTypes]);
     return (
-        <PermissionsComponent
-            editing
-            compactPermissions={permissionsCompactToLists(compactPermissions)}
-            entriesTabs={entriesTabs}
-            onChange={(value) =>
-                onChangePermissions(permissionsListsToCompact(value))
-            }
-            showGroupsPermissions
-            tools={
-                enableGeoLimits
-                    ? [{ Component: GeoLimits, name: "GeoLimits" }]
-                    : []
-            }
-            loading={permissionsLoading}
-            permissionOptions={permissionsObject}
-        />
+        <FlexBox className="permissions-container" column gap="xs">
+            <Text strong>
+                <Message msgId={"gnviewer.permissions"} />
+            </Text>
+            <PermissionsComponent
+                editing
+                compactPermissions={permissionsCompactToLists(compactPermissions)}
+                entriesTabs={entriesTabs}
+                onChange={(value) =>
+                    onChangePermissions(permissionsListsToCompact(value))
+                }
+                showGroupsPermissions
+                tools={
+                    enableGeoLimits
+                        ? [{ Component: GeoLimits, name: "GeoLimits" }]
+                        : []
+                }
+                loading={permissionsLoading}
+                permissionOptions={permissionsObject}
+            />
+        </FlexBox>
     );
 };
 

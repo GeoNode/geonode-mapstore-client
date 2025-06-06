@@ -12,7 +12,9 @@ import {
     resourceHasPermission,
     canCopyResource,
     isDocumentExternalSource,
-    getCataloguePath
+    getCataloguePath,
+    canManageResourceSettings,
+    canAccessPermissions
 } from '@js/utils/ResourceUtils';
 import {
     getUploadMainFile,
@@ -44,17 +46,6 @@ function getUserResourceNames(users = []) {
 
 const getCreateNewMapLink = (resource) => {
     return `#/map/new?gn-dataset=${resource?.pk}:${resource?.subtype || ''}`;
-};
-
-const canManageResourceSettings = (resource) => {
-    const { perms } = resource || {};
-    const settingsPerms = ['feature_resourcebase', 'approve_resourcebase', 'publish_resourcebase'];
-    return !!(perms || []).find(perm => settingsPerms.includes(perm));
-};
-
-const canAccessPermissions = (resource) => {
-    const { perms } = resource || {};
-    return perms?.includes('change_resourcebase_permissions');
 };
 
 export const getPluginsContext = () => ({

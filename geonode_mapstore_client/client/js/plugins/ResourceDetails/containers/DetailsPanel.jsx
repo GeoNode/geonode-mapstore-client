@@ -75,7 +75,8 @@ function DetailsPanel({
     resourcesGridId,
     monitoredState,
     location,
-    panelRef
+    panelRef,
+    showViewerButton
 }, context) {
 
     const resource = parseCatalogResource(resourceProp);
@@ -100,6 +101,7 @@ function DetailsPanel({
                 tools={<DetailsToolbar
                     resource={resource}
                     items={toolbarItems}
+                    showViewerButton={showViewerButton}
                 />}
                 onClose={onClose}
                 thumbnailComponent={ConnectedDetailsThumbnail}
