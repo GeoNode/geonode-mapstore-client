@@ -23,7 +23,6 @@ def run_setup_hooks(*args, **kwargs):
     from geonode.api.urls import router
     from geonode.security.permissions import VIEW_PERMISSIONS, OWNER_PERMISSIONS
     from geonode.groups.conf import settings as groups_settings
-    from geonode_mapstore_client.utils import get_default_resource_page_config
 
     LOCAL_ROOT = os.path.abspath(os.path.dirname(__file__))
     settings.TEMPLATES[0]["DIRS"].insert(0, os.path.join(LOCAL_ROOT, "templates"))
