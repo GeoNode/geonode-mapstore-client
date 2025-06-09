@@ -116,7 +116,7 @@ const SchemaField = (props) => {
             valueKey,
             helpTitleIcon: true,
             description: helpText ?? description ?? schema.description, // Help text is preferred over description and displayed as a tooltip
-            disabled: disabled || props?.readonly,
+            disabled: disabled || props?.readonly || schema?.readOnly,
             style,
             required,
             onChange: (selected) => {
