@@ -85,9 +85,16 @@ def run_setup_hooks(*args, **kwargs):
         ),
         re_path(r"^metadata/(?P<pk>[^/]*)$", views.metadata, name='metadata'),
         re_path(r"^metadata/(?P<pk>[^/]*)/embed$", views.metadata_embed, name='metadata'),
-        re_path(r"^(?P<page_id>[^/]+)/?$", views.resource_page_catalog, name='page_id'),
         # required, otherwise will raise no-lookup errors to be analysed
         re_path(r"^api/v2/", include(router.urls)),
+        
+        # pages
+        re_path(r"^all/$", TemplateView.as_view(template_name="geonode-mapstore-client/pages/all.html")),
+        re_path(r"^datasets/$", TemplateView.as_view(template_name="geonode-mapstore-client/pages/datasets.html")),
+        re_path(r"^dashboards/$", TemplateView.as_view(template_name="geonode-mapstore-client/pages/dashboards.html")),
+        re_path(r"^maps/$", TemplateView.as_view(template_name="geonode-mapstore-client/pages/maps.html")),
+        re_path(r"^documents/$", TemplateView.as_view(template_name="geonode-mapstore-client/pages/documents.html")),
+        re_path(r"^geostories/$", TemplateView.as_view(template_name="geonode-mapstore-client/pages/geostories.html")),
     ]
 
     # adding default format for metadata schema validation

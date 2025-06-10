@@ -70,6 +70,3 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
 
 def metadata_embed(request, pk):
     return metadata(request, pk, template="geonode-mapstore-client/metadata_embed.html")
-
-def resource_page_catalog(request, page_id):
-    return render(request, f"geonode-mapstore-client/pages/{page_id}.html", context= {})
