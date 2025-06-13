@@ -16,6 +16,8 @@ import isObject from 'lodash/isObject';
 import isArray from 'lodash/isArray';
 import castArray from 'lodash/castArray';
 import isEmpty from 'lodash/isEmpty';
+import { getDefaultFormState } from '@rjsf/utils';
+import validator from '@rjsf/validator-ajv8';
 
 const uiKeys = (entry) => Object.keys(entry).filter(propertyKey => propertyKey.indexOf('ui:') === 0);
 
@@ -89,11 +91,13 @@ export const getMetadataByPk = (pk) => {
                 .then((response) => {
                     const metadataResponse = response?.[0]?.data || {};
                     const resource = response?.[1]?.data?.resource || {};
-                    const { extraErrors, ...metadata } = metadataResponse;
+                    let { extraErrors, ...metadata } = metadataResponse;
+                    metadata = removeNullValueRecursive(metadata, schema?.properties);
+                    metadata = getDefaultFormState(validator, schema, metadata);
                     return {
                         schema,
                         uiSchema,
-                        metadata: removeNullValueRecursive(metadata, schema?.properties),
+                        metadata,
                         resource,
                         extraErrors
                     };
