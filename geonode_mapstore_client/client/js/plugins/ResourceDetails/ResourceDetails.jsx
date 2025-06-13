@@ -110,7 +110,7 @@ function ResourceDetailsPanel({
                 {
                     "type": "date",
                     "format": "YYYY-MM-DD HH:mm",
-                    "labelId": "{'gnviewer.'+context.get(state('gnResourceData'), 'date_type')}",
+                    "labelId": "{'gnviewer.'+context.get(state('gnResourceData'), 'date_type').toLowerCase()}",
                     "value": "{context.get(state('gnResourceData'), 'date')}"
                 },
                 {

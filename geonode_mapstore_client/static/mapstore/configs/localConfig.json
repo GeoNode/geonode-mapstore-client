@@ -2059,7 +2059,7 @@
                                 {
                                     "type": "date",
                                     "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "{'gnviewer.'+context.get(state('gnResourceSelectedLayerDataset'), 'date_type')}",
+                                    "labelId": "{'gnviewer.'+context.get(state('gnResourceSelectedLayerDataset'), 'date_type').toLowerCase()}",
                                     "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'date')}"
                                 },
                                 {
