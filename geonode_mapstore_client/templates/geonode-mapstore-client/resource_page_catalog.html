@@ -1,39 +1,133 @@
-{% extends "page.html" %} {% block container %}
+{% extends "page.html" %} 
+{% block container %}
 
-<script>
-    window.addEventListener("mapstore:ready", function (event) {
-        const catalogPagePath =
-            window.__GEONODE_CONFIG__.localConfig.geoNodeSettings.catalogPagePath;
-        const pagePath = catalogPagePath ? catalogPagePath : "/catalogue/";
-        const msAPI = event.detail;
-        msAPI.setPluginsConfig((localConfig) => {
-            return (localConfig?.plugins?.catalogue || []).map((plugin) => {
-                const resourcePageConfig = JSON.parse("{{ resource_page_config|escapejs|safe }}");
-                const { titleId, defaultQuery, menuItems, filterFormFields } = resourcePageConfig;
-                if (plugin.name === "ResourcesGrid") {
-                    return {
-                        ...plugin,
-                        cfg: {
-                            ...plugin?.cfg,
-                            ...(titleId && {titleId}),
-                            ...(defaultQuery && {defaultQuery}),
-                            ...(menuItems && {menuItems}),
-                        }
-                    }
-                }
-                if (plugin.name === "ResourcesFiltersForm") {
-                    return {
-                        ...plugin,
-                        cfg: {
-                            ...plugin?.cfg,
-                            ...(filterFormFields && {fields: filterFormFields})
-                        }
-                    }
-                }
-                return plugin;
-            });
-        });
-    });
-</script>
+    <div class="gn-resource-page-catalog">
+        {% block content %}
+        {% endblock content %}
+    </div>
 
+    <script>
+        (function(){
+            function getPageFilterForm(filterForm) {
+                return [
+                    {
+                        "type": "search"
+                    },
+                    {
+                        "type": "group",
+                        "labelId": "gnhome.customFiltersTitle",
+                        "items": [
+                            {
+                                "id": "my-resources",
+                                "labelId": "gnhome.myResources",
+                                "type": "filter",
+                                "disableIf": "{!state('user')}"
+                            },
+                            {
+                                "id": "favorite",
+                                "labelId": "gnhome.favorites",
+                                "type": "filter",
+                                "disableIf": "{!state('user')}"
+                            },
+                            {
+                                "id": "featured",
+                                "labelId": "gnhome.featuredList",
+                                "type": "filter"
+                            },
+                            {
+                                "id": "unpublished",
+                                "labelId": "gnhome.unpublished",
+                                "type": "filter",
+                                "disableIf": "{!state('user')}"
+                            },
+                            {
+                                "id": "pending-approval",
+                                "labelId": "gnhome.pendingApproval",
+                                "type": "filter",
+                                "disableIf": "{!state('user')}"
+                            },
+                            ...(filterForm ?? []),
+                        ]
+                    },
+                    {
+                        "type": "divider",
+                        "disableIf": "{!state('user')}"
+                    },
+                    {
+                        "type": "select",
+                        "facet": "category"
+                    },
+                    {
+                        "type": "select",
+                        "facet": "keyword"
+                    },
+                    {
+                        "type": "select",
+                        "facet": "place"
+                    },
+                    {
+                        "type": "select",
+                        "facet": "user"
+                    },
+                    {
+                        "type": "select",
+                        "facet": "group"
+                    },
+                    {
+                        "type": "accordion",
+                        "style": "facet",
+                        "facet": "thesaurus"
+                    },
+                    {
+                        "type": "date-range",
+                        "filterKey": "date",
+                        "labelId": "gnviewer.dateFilter"
+                    },
+                    {
+                        "labelId": "gnviewer.extent",
+                        "type": "extent"
+                    }
+                ];
+            }
+            function getPageMenuItem(menuItems) {
+                return [{
+                    "labelId": "gnhome.new",
+                    "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
+                    "type": "button",
+                    "variant": "primary",
+                    ...menuItems
+                }]
+            }
+            let msPluginsBlocks = [];
+
+            {% block ms_plugins %}
+            {% endblock ms_plugins %}
+            if (msPluginsBlocks) {
+                window.addEventListener("mapstore:ready", function (event) {
+                    const msAPI = event.detail;
+                    const configurablePlugins = ['ResourcesGrid', 'ResourcesFiltersForm'];
+                    msAPI.setPluginsConfig((localConfig) => {
+                        const cataloguePlugins = (localConfig?.plugins?.catalogue || []);
+                        const defaultConfig = configurablePlugins.reduce((acc, key) => {
+                            acc[key] = cataloguePlugins.find(plugin => plugin.name === key)?.cfg || {};
+                            delete acc[key].titleId;
+                            return acc;
+                        }, {});
+                        return [
+                            ...cataloguePlugins.filter(plugin => !configurablePlugins.includes(plugin.name)),
+                            ...msPluginsBlocks.map(msPluginBlock => {
+                                return {
+                                    name: msPluginBlock.name,
+                                    cfg: {
+                                        ...defaultConfig[msPluginBlock.name],
+                                        ...msPluginBlock?.cfg
+                                    }
+                                };
+                            })
+                        ];
+                    });
+                });
+            }
+        })();
+    </script>
 {% endblock %}

@@ -32,11 +32,10 @@
             for (var i = 0; i < menuDropdowns.length; i++) {
                 const menuDropdown = menuDropdowns[i];
                 const menuItems = menuDropdown.querySelectorAll('.dropdown-menu > li a');
+                const toggle = menuDropdown.querySelector('.dropdown-toggle');
                 for (var j = 0; j < menuItems.length; j++) {
                     const menuItem = menuItems[j];
                     const href = cleanHref(menuItem.getAttribute('href'));
-                    const toggle = menuDropdown.querySelector('.dropdown-toggle');
-                    toggle.classList.remove('active');
                     if (href === pathname) {
                         menuItem.parentNode.classList.add('active');
                         if (shouldActivate && ![...menuDropdown.classList].includes('gn-brand-navbar-menu')) {
@@ -44,6 +43,8 @@
                         }
                     }
                 }
+                const isNotActive = !Array.from(menuItems).some(a => a.parentNode?.classList?.contains('active'))
+                if (isNotActive) { toggle.classList.remove('active'); }
             }
             const menuLinks = document.querySelectorAll('.gn-brand-navbar-menu > li a');
             for (var i = 0; i < menuLinks.length; i++) {
