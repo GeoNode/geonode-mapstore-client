@@ -1,7 +1,5 @@
 {% load static %}
 {% load get_menu_json %}
-{% get_user_menu as USER_MENU %}
-{% get_brand_navbar_menu as BRAND_NAVBAR_MENU %}
 {% get_menu_json 'TOPBAR_MENU' as TOPBAR_MENU %}
 {% get_menu_json 'TOPBAR_MENU_LEFT' as TOPBAR_MENU_LEFT %}
 {% get_menu_json 'TOPBAR_MENU_RIGHT' as TOPBAR_MENU_RIGHT %}
@@ -23,9 +21,7 @@
         <div class="gn-brand-navbar-right-menu-container ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
             <ul class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v gn-brand-navbar-menu">
                 {% block default_left_menu_items %}
-                    {% for menu_item in BRAND_NAVBAR_MENU %}
-                        {% include './menu_item.html' with menu_item=menu_item %}
-                    {% endfor %}
+                    {% include './default_left_menu_items.html' %}
                 {% endblock %}
                 {% for menu_item in TOPBAR_MENU %}
                     {% include './menu_item.html' with menu_item=menu_item %}
@@ -48,9 +44,7 @@
                     {% include './menu_item.html' with menu_item=menu_item align_right=True %}
                 {% endfor %}
                 {% block default_right_menu_items %}
-                    {% for menu_item in USER_MENU %}
-                        {% include './menu_item.html' with menu_item=menu_item align_right=True %}
-                    {% endfor %}
+                    {% include './default_right_menu_items.html' %}
                 {% endblock %}
             </ul>
         {% endblock %}
@@ -73,17 +67,6 @@
                 class="dropdown-menu"
                 aria-labelledby="gn-brand-navbar-dropdown-menu"
             >
-                {% block default_bottom_menu_items %}
-                    {% for menu_item in BRAND_NAVBAR_MENU %}
-                        {% include './menu_item_compact.html' with menu_item=menu_item align_right=True %}
-                    {% endfor %}
-                 {% endblock %}
-                {% for menu_item in TOPBAR_MENU %}
-                    {% include './menu_item_compact.html' with menu_item=menu_item %}
-                {% endfor %}
-                {% for menu_item in TOPBAR_MENU_LEFT %}
-                    {% include './menu_item_compact.html' with menu_item=menu_item %}
-                {% endfor %}
             </ul>
         </div>
         {% include './search_bar.html' with search_bar_id='gn-search-bar-bottom' %}
@@ -105,6 +88,64 @@
                         signInElement.setAttribute("href", href.concat("next=".concat(path_name)));
                     }
                 }
+            }
+
+            function onLoadNavbar() {
+                const menuContainer = document.querySelector('.gn-brand-navbar-right-menu-container');
+                const menu = menuContainer.querySelector('.gn-brand-navbar-menu');
+                const brandNavbarBottom = document.querySelector('#gn-brand-navbar-bottom');
+                const menuBottomUl = brandNavbarBottom.querySelector('.gn-brand-navbar-menu.dropdown .dropdown-menu');
+                const menuItems = Array.from(menu?.children ?? []);
+
+                // Clear existing items in bottom menu
+                menuBottomUl.innerHTML = '';
+
+                function appendDivider() {
+                    const divider = document.createElement('li');
+                    divider.className = "divider";
+                    divider.role = "separator";
+                    menuBottomUl.appendChild(divider);
+                }
+                
+                // Clone and add all menu items to bottom menu
+                menuItems.forEach(item => {
+                    const clone = item.cloneNode(true);
+                    if (clone.tagName === 'LI') {
+                        menuBottomUl.appendChild(clone);
+                    } else {
+                        const items = clone.querySelectorAll(':scope > li');
+                        items.forEach(item => {
+                            const dropdownButton = item.querySelector('.dropdown button') || item.querySelector('.dropdown-toggle');
+                            if (dropdownButton) {
+                                // Create a new span with bold text
+                                const buttonText = dropdownButton.textContent.trim();
+                                const boldSpan = document.createElement('span');
+                                boldSpan.className = "dropdown-submenu-title";
+                                boldSpan.textContent = buttonText;
+                                
+                                // Add the bold span as a list item
+                                const headerLi = document.createElement('li');
+                                headerLi.appendChild(boldSpan);
+                                appendDivider();
+                                menuBottomUl.appendChild(headerLi);
+                                appendDivider();
+                                
+                                // Get all child items from the dropdown menu
+                                const childItems = item.querySelectorAll('.dropdown-menu > li') || item.querySelectorAll('ul > li');
+                                if (childItems) {
+                                    childItems.forEach(childItem => {
+                                        const _childItem = childItem.cloneNode(true);
+                                        _childItem.className = `${_childItem.className} dropdown-submenu`;
+                                        menuBottomUl.appendChild(_childItem);
+                                    });
+                                }
+                                appendDivider();
+                            } else if (item.tagName === 'LI') {
+                                menuBottomUl.appendChild(item);
+                            }
+                        });
+                    }
+                });
             }
 
             function onResizeNavbar() {
@@ -151,6 +192,7 @@
             window.addEventListener('DOMContentLoaded', function() {
                 manageUrlChange();
                 onResizeNavbar();
+                // onLoadNavbar();
             });
 
             window.addEventListener('resize', onResizeNavbar);

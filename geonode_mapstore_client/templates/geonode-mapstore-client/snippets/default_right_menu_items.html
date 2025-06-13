@@ -1,0 +1,46 @@
+{% load get_menu_json %}
+{% load avatar_tags %}
+{% load i18n %}
+{% get_settings as settings %}
+
+{% if not request.user.is_authenticated %}
+    {% if settings.ACCOUNT_OPEN_SIGNUP and not settings.READ_ONLY %}
+        <li><a href="/account/signup/?next=/" class="nav-link btn btn-default">Register</a></li>
+    {% endif %}
+    <li><a href="/account/login/?next=/" class="nav-link btn btn-default">Sign in</a></li>
+{% else %}
+    <li>
+        <div class="dropdown gn-user-menu-dropdown">
+            <button role="button" type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown">
+                <img src="{% avatar_url request.user %}" />
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="{{ request.user.get_absolute_url }}">{% trans "Profile" %}</a></li>
+                {% if request.user_agent.is_mobile %}
+                    <li role="separator" class="divider"></li>
+                {% else %}
+                    <li><a href="/social/recent-activity">{% trans "Recent activity" %}</a></li>
+                    <li><a href="/catalogue/search/#/?f=favorite">{% trans "Favorites" %}</a></li>
+                    <li role="separator" class="divider"></li>
+                    {% if request.user.is_superuser %}
+                        <li><a href="/admin/">{% trans "Admin" %}</a></li>
+                        <li><a href="{{ settings.GEOSERVER_WEB_UI_LOCATION }}">{% trans "GeoServer" %}</a></li>
+                        <li role="separator" class="divider"></li>
+                    {% endif %}
+                    <li><a href="/people/">{% trans "People" %}</a></li>
+                    <li><a href="/groups/">{% trans "Groups" %}</a></li>
+                    <li role="separator" class="divider"></li>
+                    {% if request.user.is_superuser %}
+                        <li><a href="/invitations/geonode-send-invite/" >{% trans "Invite users" %}</a></li>
+                        <li><a href="/admin/people/profile/add/" >{% trans "Add user" %}</a></li>
+                        <li><a href="/groups/create/" >{% trans "Create group" %}</a></li>
+                        <li role="separator" class="divider"></li>
+                    {% endif %}
+                    <li><a  href="/help/">{% trans "Help" %}</a></li>
+                    <li role="separator" class="divider"></li>
+                {% endif %}
+                <li><a href="/account/logout/?next=/">{% trans "Log out" %}</a></li>
+            </ul>
+        </div>
+    </li>
+{% endif %}
