@@ -5,12 +5,13 @@ import { Checkbox, FormGroup, ControlLabel } from 'react-bootstrap';
 
 import Message from '@mapstore/framework/components/I18N/Message';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
-import { GROUP_OWNER_PROPERTIES, RESOURCE_MANAGEMENT_PROPERTIES } from '@js/utils/ResourceUtils';
+import { RESOURCE_MANAGEMENT_PROPERTIES } from '@js/utils/ResourceUtils';
 import TimeSeriesSettings from '@js/plugins/ResourceDetails/components/DetailsTimeSeries';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Text from '@mapstore/framework/components/layout/Text';
 import SelectInfiniteScroll from '@mapstore/framework/plugins/ResourcesCatalog/components/SelectInfiniteScroll';
 import { getCompactPermissions } from '@js/selectors/resource';
+import { getGroups } from '@js/api/geonode/v2';
 
 const MessageTooltip = tooltip(forwardRef(({children, msgId, ...props}, ref) => {
     return (
@@ -22,34 +23,36 @@ const MessageTooltip = tooltip(forwardRef(({children, msgId, ...props}, ref) => 
     );
 }));
 
-function DetailsSettings({ resource, user, compactPermissions, onChange }) {
+function DetailsSettings({ resource, onChange }) {
     const perms = resource?.perms || [];
     return (
         <FlexBox column gap="md" className="gn-details-settings _padding-tb-md">
             <FlexBox gap="xs" className="_row _padding-b-xs">
-                {Object.keys(GROUP_OWNER_PROPERTIES).map((key) => {
-                    const { labelId, disabled, placeholderId, labelKey, loadOptions, clearable } =
-                    GROUP_OWNER_PROPERTIES[key];
-                    return (
-                        <FlexBox.Fill key={key} gap="sm">
-                            <FormGroup>
-                                <ControlLabel><Message msgId={labelId} /></ControlLabel>
-                                <SelectInfiniteScroll
-                                    clearable={clearable}
-                                    disabled={disabled({perms, user})}
-                                    value={{label: resource?.[key]?.[labelKey], value: resource?.[key]}}
-                                    placeholder={placeholderId}
-                                    onChange={(selected) => {
-                                        onChange({
-                                            [key]: selected?.value ?? null
-                                        });
-                                    }}
-                                    loadOptions={(...args) => loadOptions(...args, compactPermissions)}
-                                />
-                            </FormGroup>
-                        </FlexBox.Fill>
-                    );
-                })}
+                <FlexBox.Fill gap="sm">
+                    <FormGroup>
+                        <ControlLabel><Message msgId={"gnviewer.group"} /></ControlLabel>
+                        <SelectInfiniteScroll
+                            clearable
+                            disabled={!perms.includes('change_resourcebase')}
+                            value={{ label: resource?.group?.name, value: resource?.group }}
+                            placeholder={"gnviewer.groupPlaceholder"}
+                            onChange={(selected) => onChange({ group: selected?.value ?? null})}
+                            loadOptions={({ q, ...params }) => getGroups({q, ...params})
+                                .then((response) => {
+                                    return {
+                                        ...response,
+                                        results: (response?.groups ?? [])
+                                            .map((item) => ({...item, selectOption: {
+                                                value: item.group,
+                                                label: item.group.name
+                                            }}))
+                                    };
+                                })
+                            }
+                        />
+                    </FormGroup>
+                </FlexBox.Fill>
+
             </FlexBox>
             <FlexBox column gap="xs">
                 <Text fontSize="sm">

@@ -435,11 +435,6 @@ export const getGroups = ({
         });
 };
 
-export const transferResource = (pk, body) => {
-    return axios.post(getEndpointUrl(USERS, `/${pk}/transfer_resources`), body)
-        .then(({ data }) => (data));
-};
-
 export const getUserByPk = (pk, apikey) => {
     return axios.get(getEndpointUrl(USERS, `/${pk}`), {
         params: {

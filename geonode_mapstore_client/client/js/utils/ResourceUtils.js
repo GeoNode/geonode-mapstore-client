@@ -81,55 +81,6 @@ export const RESOURCE_MANAGEMENT_PROPERTIES = {
     }
 };
 
-export const GROUP_OWNER_PROPERTIES = {
-    'owner': {
-        labelId: 'gnviewer.owner',
-        placeholderId: 'gnviewer.ownerPlaceholder',
-        labelKey: 'username',
-        clearable: false,
-        disabled: ({user}) => !user.is_superuser,
-        loadOptions: ({ q, ...params }, compactPermissions) => {
-            const { users = [] } = compactPermissions;
-            const exclude = users
-                .filter(({ permissions }) => permissions !== "owner")
-                .map(({ id }) => id);
-            return getUsers({
-                ...params,
-                "filter{-pk.in}": [...exclude, -1], // self assignment is not allowed along with anonymous user
-                "filter{is_superuser}": false
-            })
-                .then((response) => {
-                    return {
-                        ...response,
-                        results: (response?.users ?? [])
-                            .map((item) => ({...item, selectOption: {
-                                value: item,
-                                label: item.username
-                            }}))
-                    };
-                });
-        }
-    },
-    'group': {
-        labelId: 'gnviewer.group',
-        placeholderId: 'gnviewer.groupPlaceholder',
-        clearable: true,
-        disabled: ({perms = []}) => !perms.includes('change_resourcebase'),
-        loadOptions: ({ q, ...params }) => getGroups({q, ...params})
-            .then((response) => {
-                return {
-                    ...response,
-                    results: (response?.groups ?? [])
-                        .map((item) => ({...item, selectOption: {
-                            value: item.group,
-                            label: item.group.name
-                        }}))
-                };
-            }),
-        labelKey: 'name'
-    }
-};
-
 export const TIME_SERIES_PROPERTIES = ['attribute', 'end_attribute', 'presentation', 'precision_value', 'precision_step'];
 
 export const TIME_ATTRIBUTE_TYPES = ['xsd:date', 'xsd:dateTime', 'xsd:date-time', 'xsd:time'];
