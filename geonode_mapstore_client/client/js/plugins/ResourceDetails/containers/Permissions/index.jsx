@@ -34,8 +34,11 @@ import {
     ResourceTypes
 } from "@js/utils/ResourceUtils";
 import GeoLimits from "./GeoLimits";
+import FlexBox from '@mapstore/framework/components/layout/FlexBox';
+import Text from '@mapstore/framework/components/layout/Text';
+import Message from '@mapstore/framework/components/I18N/Message';
 
-const getEntriesTabs = (owner) => [
+const entriesTabs = [
     {
         id: "user",
         labelId: "gnviewer.users",
@@ -45,7 +48,7 @@ const getEntriesTabs = (owner) => [
                 .map(({ id }) => id);
             return getUsers({
                 ...params,
-                "filter{-pk.in}": [...exclude, owner.pk, -1], // exclude existing users along with owner and anonymous user
+                "filter{-pk.in}": [...exclude, -1],
                 "filter{is_superuser}": false
             });
         },
@@ -89,7 +92,6 @@ const getEntriesTabs = (owner) => [
 
 
 const Permissions = ({
-    owner,
     resourceType,
     permissionsLoading,
     compactPermissions,
@@ -115,22 +117,27 @@ const Permissions = ({
         });
     }, [availableResourceTypes]);
     return (
-        <PermissionsComponent
-            editing
-            compactPermissions={permissionsCompactToLists(compactPermissions)}
-            entriesTabs={getEntriesTabs(owner)}
-            onChange={(value) =>
-                onChangePermissions(permissionsListsToCompact(value))
-            }
-            showGroupsPermissions
-            tools={
-                enableGeoLimits
-                    ? [{ Component: GeoLimits, name: "GeoLimits" }]
-                    : []
-            }
-            loading={permissionsLoading}
-            permissionOptions={permissionsObject}
-        />
+        <FlexBox className="permissions-container" column gap="xs">
+            <Text strong>
+                <Message msgId={"gnviewer.permissions"} />
+            </Text>
+            <PermissionsComponent
+                editing
+                compactPermissions={permissionsCompactToLists(compactPermissions)}
+                entriesTabs={entriesTabs}
+                onChange={(value) =>
+                    onChangePermissions(permissionsListsToCompact(value))
+                }
+                showGroupsPermissions
+                tools={
+                    enableGeoLimits
+                        ? [{ Component: GeoLimits, name: "GeoLimits" }]
+                        : []
+                }
+                loading={permissionsLoading}
+                permissionOptions={permissionsObject}
+            />
+        </FlexBox>
     );
 };
 

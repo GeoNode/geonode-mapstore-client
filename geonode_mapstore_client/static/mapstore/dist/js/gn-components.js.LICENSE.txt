@@ -47,6 +47,8 @@ object-assign
  * @license  MIT
  */
 
+/*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
+
 /*! http://mths.be/fromcodepoint v0.1.0 by @mathias */
 
 /*! https://mths.be/punycode v1.3.2 by @mathias */
@@ -54,6 +56,8 @@ object-assign
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
 /*! nouislider - 9.2.0 - 2017-01-11 10:35:34 */
+
+/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */
 
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 

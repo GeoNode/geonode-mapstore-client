@@ -110,7 +110,7 @@ function ResourceDetailsPanel({
                 {
                     "type": "date",
                     "format": "YYYY-MM-DD HH:mm",
-                    "labelId": "{'gnviewer.'+context.get(state('gnResourceData'), 'date_type')}",
+                    "labelId": "{'gnviewer.'+context.get(state('gnResourceData'), 'date_type').toLowerCase()}",
                     "value": "{context.get(state('gnResourceData'), 'date')}"
                 },
                 {
@@ -209,24 +209,10 @@ function ResourceDetailsPanel({
             ]
         },
         {
-            "type": "permissions",
-            "id": "permissions",
-            "labelId": "gnviewer.permissions",
-            "disableIf": "{!context.canAccessPermissions(state('gnResourceData'))}",
-            "items": [true]
-        },
-        {
             "type": "locations",
             "id": "locations",
             "labelId": "gnviewer.locations",
             "items": "{({extent: context.get(state('gnResourceData'), 'extent')})}"
-        },
-        {
-            "type": "attribute-table",
-            "id": "attributes",
-            "labelId": "gnviewer.attributes",
-            "disableIf": "{context.get(state('gnResourceData'), 'resource_type') !== 'dataset'}",
-            "items": "{context.get(state('gnResourceData'), 'attribute_set')}"
         },
         {
             "type": "linked-resources",
@@ -241,13 +227,18 @@ function ResourceDetailsPanel({
             "items": "{context.get(state('gnResourceData'), 'assets')}"
         },
         {
+            "type": "data",
+            "id": "data",
+            "labelId": "gnviewer.data",
+            "disableIf": "{context.get(state('gnResourceData'), 'resource_type') !== 'dataset'}",
+            "items": "{context.get(state('gnResourceData'), 'attribute_set')}"
+        },
+        {
             "type": "settings",
             "id": "settings",
             "labelId": "gnviewer.management",
-            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
-            "items": [
-                true
-            ]
+            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData')) && !context.canAccessPermissions(state('gnResourceData'))}",
+            "items": [true]
         }
     ],
     items,
@@ -268,7 +259,8 @@ function ResourceDetailsPanel({
     pendingChanges,
     enablePreview,
     editingOverlay,
-    closeOnClickOut
+    closeOnClickOut,
+    showViewerButton
 }, context) {
 
     const [confirmModal, setConfirmModal] = useState(false);
@@ -341,6 +333,7 @@ function ResourceDetailsPanel({
                     tabs={tabs}
                     tabComponents={tabComponents}
                     resourcesGridId={resourcesGridId}
+                    showViewerButton={showViewerButton}
                 />
             </ResourcesPanelWrapper>
             <PendingStatePrompt
@@ -390,7 +383,9 @@ export default createPlugin('ResourceDetails', {
     containers: {
         ActionNavbar: {
             name: 'ResourceDetailsButton',
-            Component: connect(() => ({}), { onShow: setShowDetails })(({ component, resourcesGridId, onShow }) => {
+            Component: connect((state) => ({resource: getResourceData(state)}), { onShow: setShowDetails })(({ component, resourcesGridId, onShow, resource }) => {
+                if (!resource?.pk) return null;
+
                 const Component = component;
                 function handleClick() {
                     onShow(true, resourcesGridId);

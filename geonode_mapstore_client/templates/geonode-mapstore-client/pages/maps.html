@@ -1,0 +1,34 @@
+{% extends "geonode-mapstore-client/resource_page_catalog.html" %} 
+{% load i18n %}
+{% block content %}
+    <div class="gn-resource-page-catalog-section">
+        <div class="gn-resource-page-catalog-content">
+            <h4>{% trans "Maps" %}</h4>
+        </div>
+    </div>
+    <div id="map-all" class="ms-plugin ResourcesGrid"></div>
+{% endblock content %}
+
+{% block ms_plugins %}
+    msPluginsBlocks = [
+        {
+            "name": "ResourcesGrid",
+            "cfg": {
+                "id": "catalog",
+                "title": "Map",
+                "defaultQuery": {
+                    "f": "map"
+                },
+                "targetSelector": "#map-all",
+                "menuItems": getPageMenuItem({
+                    "value": "map",
+                    "href": "{context.getCataloguePath('/catalogue/#/map/new')}"
+                })
+            }
+        },
+        {
+            "name": "ResourcesFiltersForm",
+            "cfg": {"fields": getPageFilterForm()}
+        }
+    ];
+{% endblock ms_plugins %}

@@ -1,5 +1,5 @@
-
 from django.shortcuts import render
+from django.http import Http404
 from django.utils.translation.trans_real import get_language_from_request
 from dateutil import parser
 
@@ -70,14 +70,3 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
 
 def metadata_embed(request, pk):
     return metadata(request, pk, template="geonode-mapstore-client/metadata_embed.html")
-
-def resource_type_catalog(request, resource_type):
-    # TODO: improve mapping method maybe externalize it and improve it
-    resource_type_map = {
-        'datasets': 'dataset',
-        'documents': 'document',
-        'maps': 'map',
-        'dashboards': 'dashboard',
-        'geostories': 'geostory'
-    }
-    return render(request, "geonode-mapstore-client/resource_type_catalog.html", context={ "title": resource_type, "resource_type": resource_type_map.get(resource_type) })

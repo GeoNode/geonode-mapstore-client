@@ -10,6 +10,8 @@ import axios from '@mapstore/framework/libs/ajax';
 import { Observable } from 'rxjs';
 import get from 'lodash/get';
 import castArray from 'lodash/castArray';
+import omit from 'lodash/omit';
+import isEmpty from 'lodash/isEmpty';
 
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import { userSelector } from '@mapstore/framework/selectors/security';
@@ -36,7 +38,8 @@ import {
     loadingResourceConfig,
     enableMapThumbnailViewer,
     updateResource,
-    manageLinkedResource
+    manageLinkedResource,
+    setSelectedLayer
 } from '@js/actions/gnresource';
 import {
     getResourceByPk,
@@ -83,8 +86,10 @@ import {
     ProcessStatus
 } from '@js/utils/ResourceServiceUtils';
 import { updateDatasetTimeSeries } from '@js/api/geonode/v2/index';
-import { updateNode } from '@mapstore/framework/actions/layers';
-import { layersSelector } from '@mapstore/framework/selectors/layers';
+import { updateNode, updateSettingsParams } from '@mapstore/framework/actions/layers';
+import { layersSelector, getSelectedLayer as getSelectedNode } from '@mapstore/framework/selectors/layers';
+import { styleServiceSelector, getUpdatedLayer, selectedStyleSelector } from '@mapstore/framework/selectors/styleeditor';
+import LayersAPI from '@mapstore/framework/api/geoserver/Layers';
 
 const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys({...RESOURCE_MANAGEMENT_PROPERTIES});
 
@@ -95,6 +100,32 @@ function parseMapBody(body) {
         ...geoNodeMap
     };
 }
+
+const setDefaultStyle = (state, id) => {
+    const layer = getUpdatedLayer(state);
+    const styleName = selectedStyleSelector(state);
+    let availableStyles = [];
+    if (!isEmpty(layer.availableStyles)) {
+        const defaultStyle = layer.availableStyles.filter(({ name }) => styleName === name);
+        const filteredStyles = layer.availableStyles.filter(({ name }) => styleName !== name);
+        availableStyles =  [...defaultStyle, ...filteredStyles];
+    }
+    const {style: currentStyleName} = getSelectedNode(state) ?? {};
+    const initalStyleName = layer?.availableStyles?.[0]?.name;
+
+    if (id && initalStyleName && currentStyleName !== initalStyleName) {
+        const { baseUrl = '' } = styleServiceSelector(state);
+        return {
+            request: () => LayersAPI.updateDefaultStyle({
+                baseUrl,
+                layerName: layer.name,
+                styleName
+            }),
+            actions: [updateSettingsParams({ availableStyles }, true), setSelectedLayer(layer)]
+        };
+    }
+    return {request: () => Promise.resolve(), actions: []};
+};
 
 const SaveAPI = {
     [ResourceTypes.MAP]: (state, id, body) => {
@@ -134,18 +165,20 @@ const SaveAPI = {
             ...body,
             ...(timeseries && { has_time: timeseries?.has_time })
         };
-        return (id
+        const { request, actions } = setDefaultStyle(state, id); // set default style, if modified
+        return request().then(() => (id
             ? axios.all([updateDataset(id, updatedBody), updateDatasetTimeSeries(id, timeseries)])
-            : Promise.resolve([]))
-            .then(([resource]) => {
+            : Promise.resolve())
+            .then(([_resource]) => {
+                let resource = omit(_resource, 'default_style');
                 if (timeseries) {
                     const dimensions = resource?.has_time ? getDimensions({...resource, has_time: true}) : [];
                     const layerId = layersSelector(state)?.find((l) => l.pk === resource?.pk)?.id;
                     // actions to be dispacted are added to response array
-                    return [resource, updateNode(layerId, 'layers', { dimensions: dimensions?.length > 0 ? dimensions : undefined })];
+                    return [resource, updateNode(layerId, 'layers', { dimensions: dimensions?.length > 0 ? dimensions : undefined }), ...actions];
                 }
-                return resource;
-            });
+                return [resource, ...actions];
+            }));
     },
     [ResourceTypes.VIEWER]: (state, id, body) => {
         const user = userSelector(state);
@@ -169,7 +202,6 @@ export const gnSaveContent = (action$, store) =>
             const contentType = state.gnresource?.type || currentResource?.resource_type;
             const data = !currentResource?.['@ms-detail'] ? getDataPayload(state, contentType) : null;
             const extent = getExtentPayload(state, contentType);
-            const { compactPermissions } = getPermissionsPayload(state);
             const body = {
                 'title': action.metadata.name,
                 ...([...RESOURCE_MANAGEMENT_PROPERTIES_KEYS, 'group'].reduce((acc, key) => {
@@ -183,6 +215,7 @@ export const gnSaveContent = (action$, store) =>
                 ...(data && { 'data': JSON.parse(JSON.stringify(data)) }),
                 ...(extent && { extent })
             };
+            const { compactPermissions } = getPermissionsPayload(state);
             return Observable.defer(() => SaveAPI[contentType](state, action.id, body, action.reload))
                 .switchMap((response) => {
                     const [resource, ...actions] = castArray(response);
@@ -293,18 +326,18 @@ export const gnSaveDirectContent = (action$, store) =>
                                 .catch(() => ({ error: true, resourceId, limits }))
                     )
                     : [])
-            ])).switchMap(([resource, ...geoLimitsResponses]) => {
-                const geoLimitsErrors = geoLimitsResponses.filter(({ error }) => error);
-                const name = getResourceName(state);
-                const description = getResourceDescription(state);
-                const metadata = {
-                    name: (name) ? name : resource?.title,
-                    description: (description) ? description : resource?.abstract,
-                    extension: resource?.extension,
-                    href: resource?.href
-                };
-                return Observable.concat(
-                    Observable.of(
+            ]))
+                .switchMap(([resource, ...geoLimitsResponses]) => {
+                    const geoLimitsErrors = geoLimitsResponses.filter(({ error }) => error);
+                    const name = getResourceName(state);
+                    const description = getResourceDescription(state);
+                    const metadata = {
+                        name: (name) ? name : resource?.title,
+                        description: (description) ? description : resource?.abstract,
+                        extension: resource?.extension,
+                        href: resource?.href
+                    };
+                    return Observable.of(
                         saveContent(
                             resourceId,
                             metadata,
@@ -316,10 +349,8 @@ export const gnSaveDirectContent = (action$, store) =>
                                 }
                                 : true /* showNotification */),
                         resetGeoLimits()
-                    )
-
-                );
-            })
+                    );
+                })
                 .catch((error) => {
                     return Observable.of(
                         saveError(error.data || error.message),

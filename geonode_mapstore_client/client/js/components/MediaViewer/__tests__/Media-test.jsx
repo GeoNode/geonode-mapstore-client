@@ -41,7 +41,7 @@ describe('Test Media', () => {
         ReactDOM.render( <Media resource={{href: "http://example.com", thumbnail_url: 'image', resource_type: "document", extension: "docx", "abstract": "test", pk: 1, perms: [
             "download_resourcebase"
         ] }}/>, document.getElementById("container"));
-        const mediaViewer = document.querySelector('.gn-main-event-container');
+        const mediaViewer = document.querySelector('.gn-metadata-preview');
         expect(mediaViewer).toBeTruthy();
     });
 

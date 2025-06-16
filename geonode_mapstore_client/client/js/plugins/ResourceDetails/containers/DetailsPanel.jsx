@@ -26,7 +26,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import { userSelector } from '@mapstore/framework/selectors/security';
 import DetailsInfo from '@mapstore/framework/plugins/ResourcesCatalog/components/DetailsInfo';
-import { replaceResourcePaths } from '@mapstore/framework/utils/GeostoreUtils';
+import { replaceResourcePaths } from '@mapstore/framework/utils/ResourcesUtils';
 import Text from '@mapstore/framework/components/layout/Text';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
@@ -77,7 +77,7 @@ function DetailsPanel({
     monitoredState,
     location,
     panelRef,
-    user
+    showViewerButton
 }, context) {
 
     const resource = parseCatalogResource(resourceProp);
@@ -102,6 +102,7 @@ function DetailsPanel({
                 tools={<DetailsToolbar
                     resource={resource}
                     items={toolbarItems}
+                    showViewerButton={showViewerButton}
                 />}
                 onClose={onClose}
                 thumbnailComponent={ConnectedDetailsThumbnail}
@@ -143,7 +144,6 @@ function DetailsPanel({
                 resource={resource || {}}
                 enableFilters={enableFilters}
                 editing={editing}
-                user={user}
             /> : null}
             {(loading) ? <FlexBox centerChildren classNames={['_absolute', '_fill', '_overlay', '_corner-tl']}>
                 <Text fontSize="xxl">

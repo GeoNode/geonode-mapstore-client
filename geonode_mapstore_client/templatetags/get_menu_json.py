@@ -28,60 +28,28 @@ def _is_mobile_device(context):
         return req.user_agent.is_mobile
     return False
 
-
-@register.simple_tag
-def get_base_left_topbar_menu():
-
-    return [
-        {
-            "type": "link",
-            "href": "/catalogue/#/all",
-            "label": "All resources",
-        },
-        {
-            "type": "link",
-            "href": "/catalogue/#/datasets",
-            "label": "Datasets",
-        },
-        {
-            "type": "link", 
-            "href": "/catalogue/#/maps", 
-            "label": "Maps"
-        },
-        {
-            "type": "link",
-            "href": "/catalogue/#/documents",
-            "label": "Documents",
-        },
-        {
-            "type": "link",
-            "href": "/catalogue/#/geostories",
-            "label": "GeoStories",
-        },
-        {
-            "type": "link",
-            "href": "/catalogue/#/dashboards",
-            "label": "Dashboards",
-        }
-    ]
-
 @register.simple_tag
 def get_brand_navbar_menu():
     return [
+        {
+            "type": "link",
+            "href": "/all",
+            "label": "All Resources",
+        },
         {
             "type": "link",
             "href": "/datasets",
             "label": "Datasets",
         },
         {
-            "type": "link", 
-            "href": "/maps", 
-            "label": "Maps"
-        },
-        {
             "type": "link",
             "href": "/documents",
             "label": "Documents",
+        },
+        {
+            "type": "link", 
+            "href": "/maps", 
+            "label": "Maps"
         },
         {
             "type": "link",
@@ -145,10 +113,9 @@ def get_user_menu(context):
             },
             {
                 "type": "link",
-                "href": "/catalogue/#/search/?f=favorite",
+                "href": "/catalogue/search/#/?f=favorite",
                 "label": "Favorites",
             },
-            {"type": "link", "href": "/messages/inbox/", "label": "Inbox"},
             devider,
         ],
     }

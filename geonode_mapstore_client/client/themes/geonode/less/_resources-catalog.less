@@ -88,3 +88,44 @@
         position: relative;
     }
 }
+
+.gn-resource-page-catalog {
+    display: flex;
+    flex-direction: column;
+    .gn-resource-page-catalog-section {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        font-size: @font-size-base * 1; font-weight: lighter;
+        h1 { font-size: @font-size-base * 3; font-weight: lighter; }
+        h2 { font-size: @font-size-base * 2.75; font-weight: lighter; }
+        h3 { font-size: @font-size-base * 2.5; font-weight: lighter; }
+        h4 { font-size: @font-size-base * 2; font-weight: lighter; }
+        h5 { font-size: @font-size-base * 1.5; font-weight: lighter; }
+        h6 { font-size: @font-size-base * 1; font-weight: lighter; }
+        p { font-size: @font-size-base * 1; font-weight: lighter; }
+    }
+    .gn-resource-page-catalog-content {
+        margin: auto;
+        max-width: 1440px;
+    }
+    .ms-plugin {
+        .ms-plugin-placeholder {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        &.ResourcesGrid {
+            .ms-plugin-placeholder {
+                font-size: 3rem;
+                min-height: 230px;
+                display: flex;
+            }
+            &:has(.ms-resources-grid) {
+                .ms-plugin-placeholder {
+                    display: none;
+                }
+            }
+        }
+    }
+}

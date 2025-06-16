@@ -32,7 +32,9 @@ import {
     getCataloguePath,
     getResourceWithLinkedResources,
     getResourceAdditionalProperties,
-    getDimensions
+    getDimensions,
+    canManageResourceSettings,
+    canAccessPermissions
 } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
@@ -998,5 +1000,13 @@ describe('Test Resource Utils', () => {
                 }
             }]);
         });
+    });
+    it('canManageResourceSettings', () => {
+        expect(canManageResourceSettings({ perms: ['approve_resourcebase'] })).toBeTruthy();
+        expect(canManageResourceSettings({ perms: ['view_resourcebase'] })).toBeFalsy();
+    });
+    it('canAccessPermissions', () => {
+        expect(canAccessPermissions({ perms: ['change_resourcebase_permissions'] })).toBeTruthy();
+        expect(canAccessPermissions({ perms: ['view_resourcebase'] })).toBeFalsy();
     });
 });

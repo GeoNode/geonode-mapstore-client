@@ -1,0 +1,83 @@
+{% extends "geonode-mapstore-client/resource_page_catalog.html" %} 
+{% load i18n %}
+{% block content %}
+    <div class="gn-resource-page-catalog-section">
+        <div class="gn-resource-page-catalog-content">
+            <h4>{% trans "Datasets" %}</h4>
+        </div>
+    </div>
+    <div id="dataset-all" class="ms-plugin ResourcesGrid"></div>
+{% endblock content %}
+
+{% block ms_plugins %}
+    msPluginsBlocks = [
+        {
+            "name": "ResourcesGrid",
+            "cfg": {
+                "id": "catalog",
+                "title": "Dataset",
+                "defaultQuery": {
+                    "f": "dataset"
+                },
+                "targetSelector": "#dataset-all",
+                "menuItems": getPageMenuItem({
+                    "type": "dropdown",
+                    "noCaret": true,
+                    "items": [
+                        {
+                            "labelId": "gnhome.uploadDataset",
+                            "value": "layer",
+                            "type": "link",
+                            "href": "{context.getCataloguePath('/catalogue/#/upload/dataset')}"
+                        },
+                        {
+                            "labelId": "gnhome.createDataset",
+                            "value": "layer",
+                            "type": "link",
+                            "href": "/createlayer/",
+                            "disableIf": "{(state('settings') && state('settings').createLayer) ? false : true}"
+                        },
+                        {
+                            "labelId": "gnhome.remoteServices",
+                            "value": "remote",
+                            "type": "link",
+                            "href": "/services/?limit=5"
+                        }
+                    ]
+                })
+            }
+        },
+        {
+            "name": "ResourcesFiltersForm",
+            "cfg": {
+                "fields": getPageFilterForm([
+                    {
+                        "id": "remote",
+                        "labelId": "gnhome.remote",
+                        "type": "filter"
+                    },
+                    {
+                        "id": "store-vector",
+                        "labelId": "gnhome.vector",
+                        "type": "filter"
+                    },
+                    {
+                        "id": "store-raster",
+                        "labelId": "gnhome.raster",
+                        "type": "filter"
+                    },
+                    {
+                        "id": "store-time-series",
+                        "labelId": "gnhome.timeSeries",
+                        "type": "filter"
+                    },
+                    {
+                        "id": "3dtiles",
+                        "labelId": "gnhome.3dtiles",
+                        "type": "filter"
+                    }
+                ])
+            }
+        }
+    ];
+{% endblock ms_plugins %}

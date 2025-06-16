@@ -1,0 +1,36 @@
+{% extends "geonode-mapstore-client/resource_page_catalog.html" %} 
+{% load i18n %}
+{% block content %}
+    <div class="gn-resource-page-catalog-section">
+        <div class="gn-resource-page-catalog-content">
+            <h4>{% trans "Dashboards" %}</h4>
+        </div>
+    </div>
+    <div id="dashboard-all" class="ms-plugin ResourcesGrid"></div>
+{% endblock content %}
+
+{% block ms_plugins %}
+    msPluginsBlocks = [
+        {
+            "name": "ResourcesGrid",
+            "cfg": {
+                "id": "catalog",
+                "title": "Dashboard",
+                "defaultQuery": {
+                    "f": "dashboard"
+                },
+                "targetSelector": "#dashboard-all",
+                "menuItems": getPageMenuItem({
+                    "value": "dashboard",
+                    "href": "{context.getCataloguePath('/catalogue/#/dashboard/new')}"
+                })
+            }
+        },
+        {
+            "name": "ResourcesFiltersForm",
+            "cfg": {
+                "fields": getPageFilterForm()
+            }
+        }
+    ];
+{% endblock ms_plugins %}

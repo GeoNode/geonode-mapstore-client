@@ -1,0 +1,36 @@
+{% extends "geonode-mapstore-client/resource_page_catalog.html" %} 
+{% load i18n %}
+{% block content %}
+    <div class="gn-resource-page-catalog-section">
+        <div class="gn-resource-page-catalog-content">
+            <h4>{% trans "GeoStories" %}</h4>
+        </div>
+    </div>
+    <div id="geostory-all" class="ms-plugin ResourcesGrid"></div>
+{% endblock content %}
+
+{% block ms_plugins %}
+    msPluginsBlocks = [
+        {
+            "name": "ResourcesGrid",
+            "cfg": {
+                "id": "catalog",
+                "title": "GeoStory",
+                "defaultQuery": {
+                    "f": "geostory"
+                },
+                "targetSelector": "#geostory-all",
+                "menuItems": getPageMenuItem({
+                    "value": "geostory",
+                    "href": "{context.getCataloguePath('/catalogue/#/geostory/new')}"
+                })
+            }
+        },
+        {
+            "name": "ResourcesFiltersForm",
+            "cfg": {
+                "fields": getPageFilterForm()
+            }
+        }
+    ];
+{% endblock ms_plugins %}
