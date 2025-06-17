@@ -23,7 +23,7 @@ const MessageTooltip = tooltip(forwardRef(({children, msgId, ...props}, ref) => 
 function DetailsSettings({ resource, onChange }) {
     return (
         <FlexBox column gap="md" className="gn-details-settings _padding-tb-md">
-            <FlexBox.Fill gap="xs" className="_row _padding-b-xs">
+            <FlexBox.Fill gap="xs" className="_padding-b-xs">
                 <FormGroup>
                     <ControlLabel><Message msgId={"gnviewer.group"} /></ControlLabel>
                     <SelectInfiniteScroll
