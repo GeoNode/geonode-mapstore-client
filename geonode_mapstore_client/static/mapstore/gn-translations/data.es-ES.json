@@ -326,7 +326,6 @@
             "iso": "Metadatos iso",
             "dublinCore": "Metadatos de Dublin Core",
             "owner": "Propietario",
-            "ownerPlaceholder": "Seleccionar propietario",
             "creation": "Creación",
             "publication": "Publicación",
             "revision": "Revisión",

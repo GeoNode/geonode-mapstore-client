@@ -327,7 +327,6 @@
             "iso": "Métadonnées ISO",
             "dublinCore": "Métadonnées de Dublin Core",
             "owner": "Propriétaire",
-            "ownerPlaceholder": "Sélectionner le propriétaire",
             "creation": "Création",
             "publication": "Publication",
             "revision": "Révision",

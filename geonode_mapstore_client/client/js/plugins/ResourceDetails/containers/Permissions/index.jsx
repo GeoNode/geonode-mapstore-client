@@ -21,8 +21,7 @@ import {
 import { updateResourceCompactPermissions } from "@js/actions/gnresource";
 import {
     getCompactPermissions,
-    getViewedResourceType,
-    resourceOwnerSelector
+    getViewedResourceType
 } from "@js/selectors/resource";
 import { getCurrentResourcePermissionsLoading } from "@js/selectors/resourceservice";
 import {
@@ -146,14 +145,12 @@ export default connect(
         [
             getCompactPermissions,
             getCurrentResourcePermissionsLoading,
-            getViewedResourceType,
-            resourceOwnerSelector
+            getViewedResourceType
         ],
-        (compactPermissions, permissionsLoading, type, owner) => ({
+        (compactPermissions, permissionsLoading, type) => ({
             compactPermissions,
             permissionsLoading,
-            resourceType: type,
-            owner
+            resourceType: type
         })
     ),
     {

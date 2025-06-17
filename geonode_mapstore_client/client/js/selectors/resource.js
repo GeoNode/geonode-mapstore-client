@@ -30,7 +30,7 @@ import { generateContextResource } from '@mapstore/framework/selectors/contextcr
 import { layerSettingSelector, getSelectedLayer as getSelectedNode } from '@mapstore/framework/selectors/layers';
 import { saveLayer } from '@mapstore/framework/utils/LayersUtils';
 
-const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys({...RESOURCE_MANAGEMENT_PROPERTIES});
+const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys(RESOURCE_MANAGEMENT_PROPERTIES);
 
 /**
 * @module selectors/resource
@@ -64,10 +64,6 @@ export const updatingThumbnailResource = (state) => {
 
 export const isThumbnailChanged = (state) => {
     return state?.gnresource?.data?.thumbnailChanged || false;
-};
-
-export const resourceOwnerSelector = (state) => {
-    return state?.gnresource?.data?.owner || {};
 };
 
 export const getViewedResourceType = (state) => {

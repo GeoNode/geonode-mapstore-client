@@ -24,7 +24,6 @@ import {
 } from '@js/selectors/resource';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { mapSelector } from '@mapstore/framework/selectors/map';
-import { userSelector } from '@mapstore/framework/selectors/security';
 import DetailsInfo from '@mapstore/framework/plugins/ResourcesCatalog/components/DetailsInfo';
 import { replaceResourcePaths } from '@mapstore/framework/utils/ResourcesUtils';
 import Text from '@mapstore/framework/components/layout/Text';
@@ -161,8 +160,7 @@ DetailsPanel.contextTypes = {
 const ConnectedDetailsPanel = connect(
     createStructuredSelector({
         monitoredState: getMonitoredStateSelector,
-        location: getRouterLocation,
-        user: userSelector
+        location: getRouterLocation
     })
 )(DetailsPanel);
 

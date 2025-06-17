@@ -302,7 +302,6 @@
             "filterNoMatchUploadDocument": "Filter does not match an upload",
             "uploadDocument": "Upload a document",
             "owner": "Owner",
-            "ownerPlaceholder": "Select owner",
             "created": "Created",
             "published": "Published",
             "lastModified": "Last modified",

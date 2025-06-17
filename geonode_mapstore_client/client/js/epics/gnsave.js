@@ -91,7 +91,7 @@ import { layersSelector, getSelectedLayer as getSelectedNode } from '@mapstore/f
 import { styleServiceSelector, getUpdatedLayer, selectedStyleSelector } from '@mapstore/framework/selectors/styleeditor';
 import LayersAPI from '@mapstore/framework/api/geoserver/Layers';
 
-const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys({...RESOURCE_MANAGEMENT_PROPERTIES});
+const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys(RESOURCE_MANAGEMENT_PROPERTIES);
 
 function parseMapBody(body) {
     const geoNodeMap = toGeoNodeMapConfig(body.data);
@@ -314,7 +314,7 @@ export const gnSaveDirectContent = (action$, store) =>
             const { geoLimits } = getPermissionsPayload(state);
 
             // resource information should be saved in a synchronous manner
-            // i.e transfer ownership (if any) followed by resource data and finally permissions
+            // i.e update resource data followed by permissions
             return Observable.defer(() => axios.all([
                 getResourceByPk(resourceId),
                 ...(geoLimits

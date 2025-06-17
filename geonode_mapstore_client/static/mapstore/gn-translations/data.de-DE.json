@@ -327,7 +327,6 @@
             "iso": "ISO -Metadaten",
             "dublinCore": "Dublin Core Metadaten",
             "owner": "Eigentümer",
-            "ownerPlaceholder": "Eigentümer auswählen",
             "creation": "Erstellungsdatum",
             "publication": "Veröffentlichung",
             "revision": "Überarbeitung",
