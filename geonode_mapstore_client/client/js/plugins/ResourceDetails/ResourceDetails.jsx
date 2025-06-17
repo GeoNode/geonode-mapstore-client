@@ -27,7 +27,7 @@ import ResourcesPanelWrapper from '@mapstore/framework/plugins/ResourcesCatalog/
 import TargetSelectorPortal from '@mapstore/framework/plugins/ResourcesCatalog/components/TargetSelectorPortal';
 import useResourcePanelWrapper from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useResourcePanelWrapper';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
-import { setShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
+import { setShowDetails, setSelectedResource } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
 import PendingStatePrompt from '@mapstore/framework/plugins/ResourcesCatalog/containers/PendingStatePrompt';
 import DetailsPanel from './containers/DetailsPanel';
 import useDetectClickOut from '@js/hooks/useDetectClickOut';
@@ -252,6 +252,7 @@ function ResourceDetailsPanel({
     height,
     show,
     onShow,
+    onClose,
     enableFilters,
     resource,
     resourcesGridId,
@@ -280,6 +281,7 @@ function ResourceDetailsPanel({
 
     function handleConfirm() {
         onShow(false);
+        onClose(null);
     }
 
     function handleClose() {
@@ -374,7 +376,8 @@ const ResourceDetailsPlugin = connect(
         pendingChanges: getResourceDirtyState
     }),
     {
-        onShow: setShowDetails
+        onShow: setShowDetails,
+        onClose: setSelectedResource
     }
 )(ResourceDetails);
 
