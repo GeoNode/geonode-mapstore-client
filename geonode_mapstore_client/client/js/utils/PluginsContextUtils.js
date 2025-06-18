@@ -38,7 +38,7 @@ function getUserResourceNames(users = []) {
     const userArray = !Array.isArray(users) ? [users] : users;
     return userArray.map((user) => {
         return {
-            href: '/messages/create/' + user.pk,
+            href: '/people/profile/' + user.username,
             value: getUserResourceName(user)
         };
     });
