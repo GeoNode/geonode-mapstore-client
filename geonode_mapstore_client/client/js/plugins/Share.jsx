@@ -26,7 +26,7 @@ import {
     getViewedResourceType
 } from '@js/selectors/resource';
 import {
-    cleanUrl,
+    formatResourceLinkUrl,
     getDownloadUrlInfo,
     getResourceTypesInfo
 } from '@js/utils/ResourceUtils';
@@ -42,18 +42,15 @@ function Share({
     onClose,
     resourceType,
     embedUrl,
-    downloadUrl
+    downloadUrl,
+    pageUrl
 }) {
-    const pageUrl = cleanUrl(window.location.href);
-
     return (
         <OverlayContainer
             enabled={enabled}
             className="gn-overlay-wrapper"
         >
-            <section
-                className="gn-share-panel"
-            >
+            <section className="gn-share-panel">
                 <div className="gn-share-panel-head">
                     <h2><Message msgId="gnviewer.shareThisResource" /></h2>
                     <Button className="square-button" onClick={() => onClose()}>
@@ -91,7 +88,8 @@ const SharePlugin = connect(
         enabled,
         embedUrl: getEmbedUrl(resource),
         resourceType: type,
-        downloadUrl: getDownloadUrlInfo(resource)?.url
+        downloadUrl: getDownloadUrlInfo(resource)?.url,
+        pageUrl: formatResourceLinkUrl(resource)
     })),
     {
         onClose: setControlProperty.bind(null, 'rightOverlay', 'enabled', false)

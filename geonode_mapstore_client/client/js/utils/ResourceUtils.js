@@ -779,6 +779,14 @@ export const getDownloadUrlInfo = (resource) => {
     return hrefUrl;
 };
 
+export const formatResourceLinkUrl = (resource) => {
+    let href = window.location.href;
+    if (resource?.uuid) {
+        href = href.replace(/#.+$/, `uuid/${resource.uuid}`);
+    }
+    return cleanUrl(href);
+};
+
 export const getCataloguePath = (path = '') => {
     const catalogPagePath = getGeoNodeLocalConfig('geoNodeSettings.catalogPagePath');
     if (!isEmpty(catalogPagePath)) {

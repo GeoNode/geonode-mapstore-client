@@ -16,6 +16,7 @@ import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import ResourceStatus from '@mapstore/framework/plugins/ResourcesCatalog/components/ResourceStatus';
 import useIsMounted from '@mapstore/framework/hooks/useIsMounted';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
+import { formatResourceLinkUrl } from '@js/utils/ResourceUtils';
 
 const ButtonWithTooltip = tooltip(Button);
 const CopyToClipboard = tooltip(CopyToClipboardCmp);
@@ -52,13 +53,6 @@ function DetailsToolbarButton({
             {loading ? <Spinner /> : null}
         </ButtonWithTooltip>
     );
-}
-
-function formatResourceLinkUrl(resource) {
-    if (resource?.uuid) {
-        return window.location.href.replace(/#.+$/, `uuid/${resource.uuid}`);
-    }
-    return window.location.href;
 }
 
 function DetailsToolbar({
