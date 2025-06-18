@@ -31,14 +31,20 @@ function useDetectClickOut({
     const node = useRef();
     useEffect(() => {
         function handleClickOut(event) {
-            const nodeContains = !disabled && node?.current?.contains;
-            if (nodeContains && !node.current.contains(event.target)) {
+            if (disabled || !node.current) return;
+            const target = event.target;
+            const isNode = target instanceof Node;
+            if ((isNode && !node.current.contains(target))
+                || document.activeElement === document.querySelector("iframe")
+            ) {
                 onClickOut();
             }
         }
         window.addEventListener('mousedown', handleClickOut);
+        window.addEventListener('blur', handleClickOut);
         return () => {
             window.removeEventListener('mousedown', handleClickOut);
+            window.removeEventListener('blur', handleClickOut);
         };
     }, [ disabled, node, onClickOut ]);
     return node;
