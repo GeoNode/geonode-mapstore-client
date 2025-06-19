@@ -18,10 +18,10 @@
             </a>
         {% endblock %}
         {% block left_menu %}
-        <div class="gn-brand-navbar-right-menu-container ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
+        <div class="gn-brand-navbar-left-menu-container ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
             <ul class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v gn-brand-navbar-menu">
                 {% block default_left_menu_items %}
-                    {% include './default_left_menu_items.html' %}
+                    {% include './brand_navbar_default_left_menu_items.html' %}
                 {% endblock %}
                 {% for menu_item in TOPBAR_MENU %}
                     {% include './menu_item.html' with menu_item=menu_item %}
@@ -36,7 +36,7 @@
             {% block search_bar %}
                 {% include './search_bar.html' with search_bar_id='gn-search-bar' %}
             {% endblock %}
-            <ul class="gn-brand-navbar-left-menu-container ms-flex-box _flex _flex-gap-sm _flex-center-v">
+            <ul class="gn-brand-navbar-right-menu-container ms-flex-box _flex _flex-gap-sm _flex-center-v">
                 {% block language_selector %}
                     {% include './language_selector.html' with align_right=True %}
                 {% endblock %}
@@ -44,7 +44,7 @@
                     {% include './menu_item.html' with menu_item=menu_item align_right=True %}
                 {% endfor %}
                 {% block default_right_menu_items %}
-                    {% include './default_right_menu_items.html' %}
+                    {% include './brand_navbar_default_right_menu_items.html' %}
                 {% endblock %}
             </ul>
         {% endblock %}
@@ -91,7 +91,7 @@
             }
 
             function onLoadNavbar() {
-                const menuContainer = document.querySelector('.gn-brand-navbar-right-menu-container');
+                const menuContainer = document.querySelector('.gn-brand-navbar-left-menu-container');
                 const menu = menuContainer.querySelector('.gn-brand-navbar-menu');
                 const brandNavbarBottom = document.querySelector('#gn-brand-navbar-bottom');
                 const menuBottomUl = brandNavbarBottom.querySelector('.gn-brand-navbar-menu.dropdown .dropdown-menu');
@@ -150,7 +150,7 @@
 
             function onResizeNavbar() {
                 const searchBar = document.querySelector('.gn-search-bar');
-                const menuContainer = document.querySelector('.gn-brand-navbar-right-menu-container');
+                const menuContainer = document.querySelector('.gn-brand-navbar-left-menu-container');
                 const menu = menuContainer.querySelector('.gn-brand-navbar-menu');
                 const brandNavbarBottom = document.querySelector('#gn-brand-navbar-bottom');
                 const menuBottom = brandNavbarBottom.querySelector('.gn-brand-navbar-menu.dropdown');
@@ -161,7 +161,7 @@
 
                 const menuRight = menu?.getBoundingClientRect()?.right;
                 const searchBarLeft = searchBar?.getBoundingClientRect()?.left;
-                const contentLeft = document.querySelector('.gn-brand-navbar-left-menu-container')?.getBoundingClientRect()?.left;
+                const contentLeft = document.querySelector('.gn-brand-navbar-right-menu-container')?.getBoundingClientRect()?.left;
 
                 if (menuRight == null || searchBarLeft == null || contentLeft == null) {
                     return;
