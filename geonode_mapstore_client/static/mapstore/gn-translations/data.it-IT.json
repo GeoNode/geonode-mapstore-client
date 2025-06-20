@@ -479,7 +479,13 @@
             "showPreview": "Mostra Anteprima",
             "hidePreview": "Nascondi Anteprima",
             "columnTitle": "Titolo",
-            "columnOwner": "Proprietario"
+            "columnOwner": "Proprietario",
+            "dataset": "Set di dati",
+            "map": "mappa",
+            "geostory": "geostoria",
+            "document": "documento",
+            "dashboard": "dashboard",
+            "mapviewer": "visualizzatore di mappa"
         },
         "resourcesCatalog": {
             "anonymous": "Chiunque",

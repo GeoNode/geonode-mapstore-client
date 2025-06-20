@@ -476,7 +476,13 @@
             "showPreview": "Mostrar vista previa",
             "hidePreview": "Ocultar vista previa",
             "columnTitle": "Título",
-            "columnOwner": "Propietario"
+            "columnOwner": "Propietario",
+            "dataset": "conjunto de datos",
+            "map": "mapa",
+            "geostory": "geohistoria",
+            "document": "documento",
+            "dashboard": "tablero",
+            "mapviewer": "visor de mapa"
         },
         "resourcesCatalog": {
             "anonymous": "Cualquiera",

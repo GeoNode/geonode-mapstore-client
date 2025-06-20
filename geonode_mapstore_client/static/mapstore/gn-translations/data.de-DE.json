@@ -477,7 +477,13 @@
             "showPreview": "Vorschau anzeigen",
             "hidePreview": "Vorschau ausblenden",
             "columnTitle": "Titel",
-            "columnOwner": "Eigentümer"
+            "columnOwner": "Eigentümer",
+            "dataset": "Datensatz",
+            "map": "Karte",
+            "geostory": "Geostory",
+            "document": "Dokument",
+            "dashboard": "Dashboard",
+            "mapviewer": "Kartenviewer"
         },
         "resourcesCatalog": {
             "anonymous": "Jeder",

@@ -448,7 +448,13 @@
             "showPreview": "Show Preview",
             "hidePreview": "Hide Preview",
             "columnTitle": "Title",
-            "columnOwner": "Owner"
+            "columnOwner": "Owner",
+            "dataset": "dataset",
+            "map": "map",
+            "geostory": "geostory",
+            "document": "document",
+            "dashboard": "dashboard",
+            "mapviewer": "mapviewer"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",
