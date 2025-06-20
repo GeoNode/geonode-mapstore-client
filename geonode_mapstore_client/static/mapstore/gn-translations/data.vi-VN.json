@@ -443,7 +443,21 @@
                 "updateSuccess": "Map layer settings updated",
                 "updateError": "Error updating map layer settings"
             },
-            "apply": "Apply"
+            "apply": "Apply",
+            "showPreview": "Show Preview",
+            "hidePreview": "Hide Preview",
+            "columnTitle": "Title",
+            "columnOwner": "Owner",
+            "dataset": "dataset",
+            "map": "map",
+            "geostory": "geostory",
+            "document": "document",
+            "dashboard": "dashboard",
+            "mapviewer": "mapviewer"
+        },
+        "resourcesCatalog": {
+            "anonymous": "Anyone",
+            "registered-members": "Registered members"
         }
     }
 }

@@ -23,6 +23,7 @@ import {
 } from '@js/utils/UploadUtils';
 import get from 'lodash/get';
 import { getEndpointUrl } from '@js/api/geonode/v2/constants';
+import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 
 function getUserResourceName(user) {
     return user?.first_name !== '' && user?.last_name !== ''
@@ -48,6 +49,10 @@ const getCreateNewMapLink = (resource) => {
     return `#/map/new?gn-dataset=${resource?.pk}:${resource?.subtype || ''}`;
 };
 
+const getResourceTypeText = (messages, resource) => {
+    return getMessageById(messages, `gnviewer.${get(resource, 'resource_type')}`);
+};
+
 export const getPluginsContext = () => ({
     get,
     getMetadataUrl,
@@ -65,5 +70,6 @@ export const getPluginsContext = () => ({
     getEndpointUrl,
     getSupportedFilesByResourceType,
     getUploadProperty,
-    canAccessPermissions
+    canAccessPermissions,
+    getResourceTypeText
 });

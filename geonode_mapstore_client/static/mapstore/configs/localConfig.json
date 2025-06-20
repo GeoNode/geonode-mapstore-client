@@ -53,6 +53,10 @@
             "path": "security.user"
         },
         {
+            "name": "locale",
+            "path": "locale.messages"
+        },
+        {
             "name": "geoNodeResourcesInfo",
             "path": "localConfig.geoNodeResourcesInfo"
         },

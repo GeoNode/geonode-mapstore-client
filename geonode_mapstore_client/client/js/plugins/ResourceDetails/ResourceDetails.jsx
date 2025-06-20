@@ -128,7 +128,7 @@ function ResourceDetailsPanel({
                 {
                     "type": "query",
                     "labelId": "gnviewer.resourceType",
-                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
+                    "value": "{context.getResourceTypeText(state('locale'), state('gnResourceData'))}",
                     "pathname": "/",
                     "query": {
                         "f": "{context.get(state('gnResourceData'), 'resource_type')}"

@@ -477,7 +477,13 @@
             "showPreview": "Afficher l'aperçu",
             "hidePreview": "Masquer l'aperçu",
             "columnTitle": "Titre",
-            "columnOwner": "Propriétaire"
+            "columnOwner": "Propriétaire",
+            "dataset": "jeu de données",
+            "map": "carte",
+            "geostory": "géohistoire",
+            "document": "document",
+            "dashboard": "tableau de bord",
+            "mapviewer": "visionneuse de carte"
         },
         "resourcesCatalog": {
             "anonymous": "N'importe qui",
