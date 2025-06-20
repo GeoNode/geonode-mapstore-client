@@ -478,12 +478,12 @@
             "hidePreview": "Vorschau ausblenden",
             "columnTitle": "Titel",
             "columnOwner": "Eigentümer",
-            "dataset": "Datensatz",
-            "map": "Karte",
-            "geostory": "Geostory",
-            "document": "Dokument",
-            "dashboard": "Dashboard",
-            "mapviewer": "Kartenviewer"
+            "dataset": "datensatz",
+            "map": "karte",
+            "geostory": "geostory",
+            "document": "dokument",
+            "dashboard": "dashboard",
+            "mapviewer": "kartenviewer"
         },
         "resourcesCatalog": {
             "anonymous": "Jeder",
