@@ -27,10 +27,12 @@ import ResourcesPanelWrapper from '@mapstore/framework/plugins/ResourcesCatalog/
 import TargetSelectorPortal from '@mapstore/framework/plugins/ResourcesCatalog/components/TargetSelectorPortal';
 import useResourcePanelWrapper from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useResourcePanelWrapper';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
-import { setShowDetails, setSelectedResource } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
+import { setShowDetails, setSelectedResource, setDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
 import PendingStatePrompt from '@mapstore/framework/plugins/ResourcesCatalog/containers/PendingStatePrompt';
 import DetailsPanel from './containers/DetailsPanel';
 import useDetectClickOut from '@js/hooks/useDetectClickOut';
+import Button from '@mapstore/framework/components/layout/Button';
+import Message from '@mapstore/framework/components/I18N/Message';
 
 /**
 * @module ResourceDetails
@@ -384,7 +386,7 @@ const ResourceDetailsPlugin = connect(
 export default createPlugin('ResourceDetails', {
     component: ResourceDetailsPlugin,
     containers: {
-        ActionNavbar: {
+        ActionNavbar: [{
             name: 'ResourceDetailsButton',
             Component: connect((state) => ({resource: getResourceData(state)}), { onShow: setShowDetails })(({ component, resourcesGridId, onShow, resource }) => {
                 if (!resource?.pk) return null;
@@ -405,7 +407,31 @@ export default createPlugin('ResourceDetails', {
             }),
             priority: 1,
             doNotHide: true
-        },
+        }, {
+            name: 'ResourceEditPermissions',
+            Component: connect((state) => ({resource: getResourceData(state)}), { onShow: setShowDetails, onSelectTab: setDetailPanelTab })(
+                ({ resourcesGridId, onShow, resource, onSelectTab }) => {
+                    if (!resource?.pk) return null;
+
+                    function handleClick() {
+                        onShow(true, resourcesGridId);
+                        onSelectTab('settings');
+                    }
+                    return (
+                        <Button
+                            variant="default"
+                            size="md"
+                            onClick={handleClick}
+                            labelId="gnviewer.editPermissions"
+                        >
+                            <Message msgId="gnviewer.editPermissions" />
+                        </Button>
+                    );
+                }
+            ),
+            priority: 1,
+            doNotHide: true
+        }],
         ResourcesGrid: {
             priority: 2,
             target: 'card-buttons',
