@@ -2694,6 +2694,12 @@
             },
             {
                 "name": "MetadataViewer"
+            },
+            {
+                "name": "LayerDownload",
+                "cfg": {
+                  "cropDataSetVisible": false
+                }
             }
         ],
         "map_viewer_mobile": [
