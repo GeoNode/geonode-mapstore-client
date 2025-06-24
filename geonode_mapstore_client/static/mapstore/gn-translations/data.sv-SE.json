@@ -179,6 +179,7 @@
             "viewMetadata": "View Metadata",
             "viewData": "View Data",
             "viewInfo": "View information",
+            "editPermissions": "Edit Permissions",
             "backToDataset": "< Go back to the dataset",
             "goBackTo": "< Go back to { resourceName }",
             "uploadImage": "Click to upload an image",
