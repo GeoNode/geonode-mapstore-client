@@ -11,7 +11,7 @@ import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import PropTypes from 'prop-types';
-import { requestResource } from '@js/actions/gnresource';
+import { requestResource, setResource } from '@js/actions/gnresource';
 import controls from '@mapstore/framework/reducers/controls';
 import config from '@mapstore/framework/reducers/config';
 import gnresource from '@js/reducers/gnresource';
@@ -261,11 +261,13 @@ function ResourceDetailsPanel({
     enablePreview,
     editingOverlay,
     closeOnClickOut,
-    showViewerButton
+    showViewerButton,
+    onClearResource
 }, context) {
 
     const [confirmModal, setConfirmModal] = useState(false);
     const editing = canEdit && editable;
+    const isViewer = !resource?.['@ms-detail'];
 
     const {
         stickyTop,
@@ -282,10 +284,11 @@ function ResourceDetailsPanel({
     function handleConfirm() {
         onShow(false);
         onClose(null);
+        !isViewer && onClearResource(null);
     }
 
     function handleClose() {
-        if (pendingChanges) {
+        if (pendingChanges && !isViewer) {
             setConfirmModal(true);
         } else {
             handleConfirm();
@@ -305,7 +308,6 @@ function ResourceDetailsPanel({
             handleClose();
         }
     });
-
 
     const { loadedPlugins } = context;
     const configuredItems = usePluginItems({ items, loadedPlugins }, [resource?.pk]);
@@ -377,7 +379,8 @@ const ResourceDetailsPlugin = connect(
     }),
     {
         onShow: setShowDetails,
-        onClose: setSelectedResource
+        onClose: setSelectedResource,
+        onClearResource: setResource
     }
 )(ResourceDetails);
 
