@@ -780,11 +780,11 @@ export const getDownloadUrlInfo = (resource) => {
 };
 
 export const formatResourceLinkUrl = (resource) => {
-    let href = window.location.href;
+    let href = window.location.origin;
     if (resource?.uuid) {
-        href = href.replace(/#.+$/, `uuid/${resource.uuid}`);
+        href = href + `/catalogue/uuid/${resource.uuid}`;
     }
-    return cleanUrl(href);
+    return href;
 };
 
 export const getCataloguePath = (path = '') => {

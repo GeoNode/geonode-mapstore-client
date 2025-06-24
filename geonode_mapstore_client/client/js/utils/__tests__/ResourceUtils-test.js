@@ -34,7 +34,8 @@ import {
     getResourceAdditionalProperties,
     getDimensions,
     canManageResourceSettings,
-    canAccessPermissions
+    canAccessPermissions,
+    formatResourceLinkUrl
 } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
@@ -1008,5 +1009,9 @@ describe('Test Resource Utils', () => {
     it('canAccessPermissions', () => {
         expect(canAccessPermissions({ perms: ['change_resourcebase_permissions'] })).toBeTruthy();
         expect(canAccessPermissions({ perms: ['view_resourcebase'] })).toBeFalsy();
+    });
+    it('formatResourceLinkUrl', () => {
+        expect(formatResourceLinkUrl({ uuid: '123' })).toContain('/catalogue/uuid/123');
+        expect(formatResourceLinkUrl({ pk: '123' })).toNotContain('/catalogue/uuid/123');
     });
 });
