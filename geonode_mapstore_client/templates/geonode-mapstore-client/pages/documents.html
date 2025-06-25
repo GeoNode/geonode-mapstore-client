@@ -6,7 +6,6 @@
             <h4>{% trans "Documents" %}</h4>
         </div>
     </div>
-    <div id="document-all" class="ms-plugin ResourcesGrid"></div>
 {% endblock content %}
 
 {% block ms_plugins %}
@@ -19,7 +18,6 @@
                 "defaultQuery": {
                     "f": "document"
                 },
-                "targetSelector": "#document-all",
                 "menuItems": getPageMenuItem({
                     "value": "document",
                     "href": "{context.getCataloguePath('/catalogue/#/upload/document')}"

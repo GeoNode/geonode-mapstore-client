@@ -6,7 +6,6 @@
             <h4>{% trans "Datasets" %}</h4>
         </div>
     </div>
-    <div id="dataset-all" class="ms-plugin ResourcesGrid"></div>
 {% endblock content %}
 
 {% block ms_plugins %}
@@ -19,7 +18,6 @@
                 "defaultQuery": {
                     "f": "dataset"
                 },
-                "targetSelector": "#dataset-all",
                 "menuItems": getPageMenuItem({
                     "type": "dropdown",
                     "noCaret": true,

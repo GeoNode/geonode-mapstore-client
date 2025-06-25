@@ -6,7 +6,6 @@
             <h4>{% trans "GeoStories" %}</h4>
         </div>
     </div>
-    <div id="geostory-all" class="ms-plugin ResourcesGrid"></div>
 {% endblock content %}
 
 {% block ms_plugins %}
@@ -19,7 +18,6 @@
                 "defaultQuery": {
                     "f": "geostory"
                 },
-                "targetSelector": "#geostory-all",
                 "menuItems": getPageMenuItem({
                     "value": "geostory",
                     "href": "{context.getCataloguePath('/catalogue/#/geostory/new')}"
