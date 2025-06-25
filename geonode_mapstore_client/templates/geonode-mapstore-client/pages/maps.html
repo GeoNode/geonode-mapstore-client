@@ -6,7 +6,6 @@
             <h4>{% trans "Maps" %}</h4>
         </div>
     </div>
-    <div id="map-all" class="ms-plugin ResourcesGrid"></div>
 {% endblock content %}
 
 {% block ms_plugins %}
@@ -19,7 +18,6 @@
                 "defaultQuery": {
                     "f": "map"
                 },
-                "targetSelector": "#map-all",
                 "menuItems": getPageMenuItem({
                     "value": "map",
                     "href": "{context.getCataloguePath('/catalogue/#/map/new')}"
