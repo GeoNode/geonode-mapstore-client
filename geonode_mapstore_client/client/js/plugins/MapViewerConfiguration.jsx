@@ -21,7 +21,7 @@ import { ResourceTypes } from '@js/utils/ResourceUtils';
 import Portal from '@mapstore/framework/components/misc/Portal';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import { getResourceData } from '@js/selectors/resource';
 import ConfirmDialog from '@mapstore/framework/components/layout/ConfirmDialog';
 

@@ -12,7 +12,7 @@ import { Glyphicon } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@mapstore/framework/components/layout/Button';
 import useInfiniteScroll from '@js/hooks/useInfiniteScroll';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Loader from '@mapstore/framework/components/misc/Loader';
 import ResourceCard from '@mapstore/framework/plugins/ResourcesCatalog/components/ResourceCard';

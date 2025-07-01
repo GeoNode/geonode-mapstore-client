@@ -23,7 +23,7 @@ import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Button from '@mapstore/framework/components/layout/Button';
 import Menu from '@mapstore/framework/plugins/ResourcesCatalog/components/Menu';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 
 const ButtonWithTooltip = tooltip(Button);
@@ -32,7 +32,6 @@ function ActionNavbarMenuItem({
     className,
     loading,
     glyph,
-    iconType,
     labelId,
     onClick
 }) {
@@ -46,7 +45,7 @@ function ActionNavbarMenuItem({
                 onClick={onClick}
                 className={className}
             >
-                {loading ? <Spinner /> : <Icon glyph={glyph} type={iconType} />}
+                {loading ? <Spinner /> : <Icon glyph={glyph} />}
             </ButtonWithTooltip>
         </li>
     );
@@ -56,13 +55,11 @@ ActionNavbarMenuItem.propTypes = {
     className: PropTypes.string,
     loading: PropTypes.bool,
     glyph: PropTypes.string,
-    iconType: PropTypes.string,
     labelId: PropTypes.string,
     onClick: PropTypes.func
 };
 
 ActionNavbarMenuItem.defaultProps = {
-    iconType: 'glyphicon',
     onClick: () => {}
 };
 

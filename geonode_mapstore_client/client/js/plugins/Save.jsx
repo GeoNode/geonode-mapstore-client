@@ -81,7 +81,6 @@ function ResourceDetailsSaveButton({
         ? (
             <Component
                 glyph="floppy-disk"
-                iconType="glyphicon"
                 labelId="save"
                 square
                 className={dirtyState ? 'ms-notification-circle warning' : ''}

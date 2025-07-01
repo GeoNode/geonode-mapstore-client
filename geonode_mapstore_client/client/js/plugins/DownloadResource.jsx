@@ -16,7 +16,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@mapstore/framework/components/layout/Button';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import { MenuItem } from 'react-bootstrap';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import {
     getResourceData
 } from '@js/selectors/resource';
