@@ -8,7 +8,7 @@
 
 import React from 'react';
 import Button from '@mapstore/framework/components/layout/Button';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import { Badge } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Spinner from '@mapstore/framework/components/layout/Spinner';

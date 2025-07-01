@@ -180,7 +180,6 @@ function CopyMenuItem({
             }
             labelId="gnviewer.clone"
             glyph="duplicate"
-            iconType="glyphicon"
         />
     );
 }

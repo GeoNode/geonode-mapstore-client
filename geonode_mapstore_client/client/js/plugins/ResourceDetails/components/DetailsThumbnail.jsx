@@ -8,7 +8,7 @@
 
 import React, { useRef, useState } from 'react';
 import Thumbnail from '@mapstore/framework/components/misc/Thumbnail';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import Button from '@mapstore/framework/components/layout/Button';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';

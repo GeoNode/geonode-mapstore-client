@@ -24,7 +24,7 @@ import CopyToClipboardCmp from 'react-copy-to-clipboard';
 import Button from "@mapstore/framework/components/layout/Button";
 import FlexBox from "@mapstore/framework/components/layout/FlexBox";
 import Text from "@mapstore/framework/components/layout/Text";
-import Icon from "@mapstore/framework/plugins/ResourcesCatalog/components/Icon";
+import Icon from "@js/components/Icon";
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = "Map";

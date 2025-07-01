@@ -63,7 +63,6 @@ function Favorites({
         ? (
             <Component
                 glyph={isFavorite ? 'heart' : 'heart-o'}
-                iconType="glyphicon"
                 labelId={!loading || renderType === 'menuItem' ? `resourcesCatalog.${isFavorite ? 'removeFromFavorites' : 'addToFavorites'}` : undefined}
                 square
                 onClick={handleOnClick}

@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mapstore/framework/components/layout/Button';
 import { Glyphicon } from 'react-bootstrap';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import Message from '@mapstore/framework/components/I18N/Message';
 import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 import InputControl from '@mapstore/framework/plugins/ResourcesCatalog/components/InputControl';

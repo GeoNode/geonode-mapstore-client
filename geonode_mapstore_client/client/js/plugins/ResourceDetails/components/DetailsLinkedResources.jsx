@@ -12,7 +12,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Text from '@mapstore/framework/components/layout/Text';
 import { parseCatalogResource } from '@js/utils/ResourceUtils';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 
 const DetailLinkedResource = ({resources, type}) => {
     return !isEmpty(resources) && (

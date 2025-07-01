@@ -8,7 +8,7 @@
 
 import React from "react";
 import Select from "react-select";
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import Button from '@mapstore/framework/components/layout/Button';
 import { isValidURL } from "@mapstore/framework/utils/URLUtils";
 import Message from '@mapstore/framework/components/I18N/Message';

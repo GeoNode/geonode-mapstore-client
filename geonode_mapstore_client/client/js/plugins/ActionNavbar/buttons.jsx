@@ -19,13 +19,13 @@ import {
 import { Dropdown, MenuItem, Glyphicon } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@mapstore/framework/components/layout/Button';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import { openQueryBuilder } from '@mapstore/framework/actions/layerFilter';
 import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
 import { isDashboardEditing } from '@mapstore/framework/selectors/dashboard';
 import { createWidget } from '@mapstore/framework/actions/widgets';
 import { getResourceData, getSelectedLayerDataset } from '@js/selectors/resource';
+import Icon from '@js/components/Icon';
 import { GXP_PTYPES } from '@js/utils/ResourceUtils';
 
 // buttons override to use in ActionNavbar for plugin imported from mapstore
