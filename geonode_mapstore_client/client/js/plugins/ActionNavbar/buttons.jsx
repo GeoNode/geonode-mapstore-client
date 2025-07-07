@@ -8,10 +8,11 @@
 import React, { useRef } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
+import { createSelector, createStructuredSelector } from 'reselect';
 import usePluginItems from '@mapstore/framework/hooks/usePluginItems';
 import {
-    setControlProperty
+    setControlProperty,
+    toggleControl
 } from '@mapstore/framework/actions/controls';
 import {
     toggleFullscreen
@@ -27,6 +28,10 @@ import { isDashboardEditing } from '@mapstore/framework/selectors/dashboard';
 import { createWidget } from '@mapstore/framework/actions/widgets';
 import { getResourceData, getSelectedLayerDataset } from '@js/selectors/resource';
 import { GXP_PTYPES } from '@js/utils/ResourceUtils';
+import { exportDataResultsControlEnabledSelector, checkingExportDataEntriesSelector, exportDataResultsSelector } from '@mapstore/framework/selectors/layerdownload';
+import { currentLocaleSelector } from '@mapstore/framework/selectors/locale';
+import { checkExportDataEntries, removeExportDataResult } from '@mapstore/framework/actions/layerdownload';
+import ExportDataResultsComponent from '@mapstore/framework/components/data/download/ExportDataResultsComponent';
 
 // buttons override to use in ActionNavbar for plugin imported from mapstore
 
@@ -128,6 +133,17 @@ export const LayerDownloadActionButton = connect(
     ),
     { onClick: setControlProperty.bind(null, 'layerdownload', 'enabled', true, true) }
 )(LayerDownloadActionButtonComponent);
+
+export const LayerDownloadExportDataResultsComponent = connect(createStructuredSelector({
+    active: exportDataResultsControlEnabledSelector,
+    checkingExportDataEntries: checkingExportDataEntriesSelector,
+    results: exportDataResultsSelector,
+    currentLocale: currentLocaleSelector
+}), {
+    onToggle: toggleControl.bind(null, 'exportDataResults', 'enabled'),
+    onActive: checkExportDataEntries,
+    onRemoveResult: removeExportDataResult
+})(ExportDataResultsComponent);
 
 export const FilterLayerActionButton = connect(
     (state) => ({

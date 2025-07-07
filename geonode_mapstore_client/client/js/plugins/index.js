@@ -11,7 +11,8 @@ import {
     LayerDownloadActionButton,
     FilterLayerActionButton,
     FullScreenActionButton,
-    AddWidgetActionButton
+    AddWidgetActionButton,
+    LayerDownloadExportDataResultsComponent
 } from '@js/plugins/ActionNavbar/buttons';
 import { getPluginsContext } from '@js/utils/PluginsContextUtils';
 import { toModulePlugin as msToModulePlugin } from '@mapstore/framework/utils/ModulePluginsUtils';
@@ -89,10 +90,18 @@ export const plugins = {
                         Component: LayerDownloadActionButton,
                         position: 11
                     },
-                    ActionNavbar: {
-                        name: 'LayerDownload',
-                        Component: LayerDownloadActionButton
-                    }
+                    ActionNavbar: [
+                        {
+                            name: 'LayerDownload',
+                            Component: LayerDownloadActionButton
+                        },
+                        {
+                            name: 'LayerDownload',
+                            Component: LayerDownloadExportDataResultsComponent,
+                            position: 1,
+                            target: 'right-menu'
+                        }
+                    ]
                 }
             }
         }
@@ -169,6 +178,7 @@ export const plugins = {
                         name: 'FullScreen',
                         Component: FullScreenActionButton,
                         priority: 5,
+                        position: 2,
                         target: 'right-menu'
                     }
                 }
