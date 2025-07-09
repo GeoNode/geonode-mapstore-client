@@ -49,10 +49,6 @@ const getCreateNewMapLink = (resource) => {
     return `#/map/new?gn-dataset=${resource?.pk}:${resource?.subtype || ''}`;
 };
 
-const getResourceTypeText = (messages, resource) => {
-    return getMessageById(messages, `gnviewer.${get(resource, 'resource_type')}`);
-};
-
 export const getPluginsContext = () => ({
     get,
     getMetadataUrl,
@@ -70,6 +66,5 @@ export const getPluginsContext = () => ({
     getEndpointUrl,
     getSupportedFilesByResourceType,
     getUploadProperty,
-    canAccessPermissions,
-    getResourceTypeText
+    canAccessPermissions
 });
