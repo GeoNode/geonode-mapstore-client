@@ -71,7 +71,7 @@ import useDetectClickOut from '@js/hooks/useDetectClickOut';
  *                  {
  *                      "type": "query",
  *                      "labelId": "gnviewer.resourceType",
- *                      "value": "{context.get(state('gnResourceData'), 'resource_type')}",
+ *                      "valueId": "{'gnviewer.' + context.get(state('gnResourceData'), 'resource_type')}",
  *                      "pathname": "/",
  *                      "query": {
  *                          "f": "{context.get(state('gnResourceData'), 'resource_type')}"
@@ -128,7 +128,7 @@ function ResourceDetailsPanel({
                 {
                     "type": "query",
                     "labelId": "gnviewer.resourceType",
-                    "value": "{context.getResourceTypeText(state('locale'), state('gnResourceData'))}",
+                    "valueId": "{'gnviewer.' + context.get(state('gnResourceData'), 'resource_type')}",
                     "pathname": "/",
                     "query": {
                         "f": "{context.get(state('gnResourceData'), 'resource_type')}"
