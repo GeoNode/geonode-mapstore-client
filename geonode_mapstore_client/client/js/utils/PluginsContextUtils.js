@@ -23,7 +23,6 @@ import {
 } from '@js/utils/UploadUtils';
 import get from 'lodash/get';
 import { getEndpointUrl } from '@js/api/geonode/v2/constants';
-import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 
 function getUserResourceName(user) {
     return user?.first_name !== '' && user?.last_name !== ''
