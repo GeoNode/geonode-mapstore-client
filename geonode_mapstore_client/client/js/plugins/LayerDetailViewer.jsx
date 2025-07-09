@@ -65,6 +65,7 @@ function LayerDetailViewer({
 }) {
 
     const node = useDetectClickOut({
+        extraNodes: ['.ms-popover-overlay'],
         disabled: !enabled,
         onClickOut: () => {
             onClose();
