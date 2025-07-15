@@ -38,9 +38,8 @@ import ALink from '@mapstore/framework/plugins/ResourcesCatalog/components/ALink
 import { parseCatalogResource } from '@js/utils/ResourceUtils';
 import useParsePluginConfigExpressions from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useParsePluginConfigExpressions';
 import { hashLocationToHref } from '@mapstore/framework/utils/ResourcesFiltersUtils';
-import { getMonitoredStateSelector, getRouterLocation } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
+import { getMonitoredStateSelector, getRouterLocation, getDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import withScrollableTabs from '@js/components/enhancers/withScrollableTabs';
-import { getDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import { setDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
 const DetailsInfo = withScrollableTabs(DetailsInfoComp);
 
