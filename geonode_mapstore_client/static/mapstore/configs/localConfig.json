@@ -3192,12 +3192,12 @@
                                 "type": "date",
                                 "labelId": "resourcesCatalog.columnCreated",
                                 "format": "MMM Do YY, h:mm:ss a",
-                                "icon": { "glyph": "clock-o" },
+                                "icon": { "glyph": "time" },
                                 "noDataLabelId": "resourcesCatalog.emptyNA"
                             },
                             {
                                 "path": "owner.username",
-                                "icon": { "glyph": "user", "type": "glyphicon" },
+                                "icon": { "glyph": "user" },
                                 "image": { "path": "owner.avatar" },
                                 "width": 10,
                                 "labelId": "gnviewer.columnOwner",
@@ -3212,7 +3212,7 @@
                             {
                                 "path": "owner.username",
                                 "target": "footer",
-                                "icon": { "glyph": "user", "type": "glyphicon" },
+                                "icon": { "glyph": "user" },
                                 "image": { "path": "owner.avatar" },
                                 "noDataLabelId": "resourcesCatalog.emptyUnknown"
                             }

@@ -8,7 +8,7 @@
 */
 
 import React from 'react';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 
 function ErrorMessage({ label, ...props }) {

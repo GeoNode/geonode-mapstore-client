@@ -8,7 +8,7 @@
 
 import React from 'react';
 import Message from '@mapstore/framework/components/I18N/Message';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 
 function MainEventView({
     msgId,

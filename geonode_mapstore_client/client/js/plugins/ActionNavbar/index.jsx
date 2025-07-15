@@ -23,7 +23,7 @@ import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Button from '@mapstore/framework/components/layout/Button';
 import Menu from '@mapstore/framework/plugins/ResourcesCatalog/components/Menu';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 
 const ButtonWithTooltip = tooltip(Button);
