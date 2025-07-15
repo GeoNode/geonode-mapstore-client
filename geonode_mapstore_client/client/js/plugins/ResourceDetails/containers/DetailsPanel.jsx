@@ -40,6 +40,8 @@ import useParsePluginConfigExpressions from '@mapstore/framework/plugins/Resourc
 import { hashLocationToHref } from '@mapstore/framework/utils/ResourcesFiltersUtils';
 import { getMonitoredStateSelector, getRouterLocation } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import withScrollableTabs from '@js/components/enhancers/withScrollableTabs';
+import { getDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
+import { setDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
 const DetailsInfo = withScrollableTabs(DetailsInfoComp);
 
 const ConnectedDetailsThumbnail = connect(
@@ -78,7 +80,9 @@ function DetailsPanel({
     monitoredState,
     location,
     panelRef,
-    showViewerButton
+    showViewerButton,
+    selectedTab,
+    onSelectTab
 }, context) {
 
     const resource = parseCatalogResource(resourceProp);
@@ -145,6 +149,8 @@ function DetailsPanel({
                 resource={resource || {}}
                 enableFilters={enableFilters}
                 editing={editing}
+                selectedTab={selectedTab}
+                onSelectTab={onSelectTab}
             /> : null}
             {(loading) ? <FlexBox centerChildren classNames={['_absolute', '_fill', '_overlay', '_corner-tl']}>
                 <Text fontSize="xxl">
@@ -162,8 +168,12 @@ DetailsPanel.contextTypes = {
 const ConnectedDetailsPanel = connect(
     createStructuredSelector({
         monitoredState: getMonitoredStateSelector,
-        location: getRouterLocation
-    })
+        location: getRouterLocation,
+        selectedTab: getDetailPanelTab
+    }),
+    {
+        onSelectTab: setDetailPanelTab
+    }
 )(DetailsPanel);
 
 export default ConnectedDetailsPanel;
