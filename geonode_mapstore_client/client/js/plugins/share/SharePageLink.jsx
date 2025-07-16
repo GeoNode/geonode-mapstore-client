@@ -7,8 +7,9 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { Glyphicon } from 'react-bootstrap';
+
 import Button from '@mapstore/framework/components/layout/Button';
-import Icon from '@js/components/Icon';
 import CopyToClipboard from 'react-copy-to-clipboard';
 
 
@@ -40,10 +41,10 @@ function SharePageLink({label, value, children}) {
                                 size="sm"
                                 onClick={() => setCopied(true)}
                             >
-                                <Icon glyph="copy" />
+                                <Glyphicon glyph="copy" />
                             </Button>
                         </CopyToClipboard>}
-                        {copied && <Button size="sm"><Icon glyph="check" /></Button>}</div>
+                        {copied && <Button size="sm"><Glyphicon glyph="ok" /></Button>}</div>
                     {children}
                 </div>
             </div>

@@ -7,8 +7,9 @@
  */
 
 import React, { useRef, useState } from 'react';
+import { Glyphicon } from 'react-bootstrap';
+
 import Thumbnail from '@mapstore/framework/components/misc/Thumbnail';
-import Icon from '@js/components/Icon';
 import Button from '@mapstore/framework/components/layout/Button';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
@@ -79,7 +80,7 @@ const MapThumbnailView = ({
                     disabled={savingThumbnailMap}
                     onClick={() => onClose(false)}
                 >
-                    {savingThumbnailMap ? <Spinner /> : <Icon glyph="1-close" type="glyphicon" />}
+                    {savingThumbnailMap ? <Spinner /> : <Glyphicon glyph="1-close" />}
                 </ButtonWithToolTip>
             </FlexBox>
         </>
@@ -144,7 +145,7 @@ function DetailsThumbnail({
             ]}
             centerChildren
         >
-            {icon && !thumbnail ? <Text fontSize="xxl"><Icon {...icon} /></Text> : null}
+            {icon && !thumbnail ? <Text fontSize="xxl"><Glyphicon {...icon} /></Text> : null}
             {editing
                 ? enableMapViewer
                     ? <MapThumbnailView
@@ -181,7 +182,7 @@ function DetailsThumbnail({
                                 tooltipPosition={"top"}
                                 disabled={resourceThumbnailUpdating}
                             >
-                                <Icon glyph="upload" type="glyphicon"/>
+                                <Glyphicon glyph="upload"/>
                             </ButtonWithToolTip>
                             {isThumbnailChanged
                                 ? (
@@ -204,7 +205,7 @@ function DetailsThumbnail({
                                 tooltipPosition={"top"}
                                 disabled={resourceThumbnailUpdating}
                             >
-                                <Icon glyph="1-map" type="glyphicon"/>
+                                <Glyphicon glyph="1-map"/>
                             </ButtonWithToolTip> : null}
                             <ButtonWithToolTip
                                 variant="primary"
@@ -215,7 +216,7 @@ function DetailsThumbnail({
                                 tooltipPosition={"top"}
                                 disabled={resourceThumbnailUpdating}
                             >
-                                {resourceThumbnailUpdating ? <Spinner /> : <Icon glyph="trash" type="glyphicon"/>}
+                                {resourceThumbnailUpdating ? <Spinner /> : <Glyphicon glyph="trash"/>}
                             </ButtonWithToolTip>
                         </FlexBox>
                     </>

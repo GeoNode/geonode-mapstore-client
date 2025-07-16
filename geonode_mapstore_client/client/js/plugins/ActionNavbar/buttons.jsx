@@ -25,7 +25,6 @@ import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
 import { isDashboardEditing } from '@mapstore/framework/selectors/dashboard';
 import { createWidget } from '@mapstore/framework/actions/widgets';
 import { getResourceData, getSelectedLayerDataset } from '@js/selectors/resource';
-import Icon from '@js/components/Icon';
 import { GXP_PTYPES } from '@js/utils/ResourceUtils';
 
 // buttons override to use in ActionNavbar for plugin imported from mapstore
@@ -54,7 +53,7 @@ export const FullScreenActionButton = connect(createSelector([
             size={size}
             onClick={() => onClick(!enabled)}
         >
-            {showText ? label : <Icon glyph={enabled ? "expand" : "expand"} />}
+            {showText ? label : <Glyphicon glyph={"resize-full"} />}
         </FullScreenButton>
     );
 });

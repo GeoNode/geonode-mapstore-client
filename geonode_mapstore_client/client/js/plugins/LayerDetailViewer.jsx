@@ -10,8 +10,9 @@ import React from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { Glyphicon } from 'react-bootstrap';
+
 import DetailsPanel from './ResourceDetails/containers/DetailsPanel';
-import Icon from '@js/components/Icon';
 import controls from '@mapstore/framework/reducers/controls';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import gnresource from '@js/reducers/gnresource';
@@ -22,7 +23,6 @@ import OverlayContainer from '@js/components/OverlayContainer';
 import { withRouter } from 'react-router';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import tabComponents from '@js/plugins/ResourceDetails/containers/tabComponents';
-
 const Button = tooltip(GNButton);
 
 const ButtonViewer = ({ onClick, layer, size, status }) => {
@@ -36,7 +36,7 @@ const ButtonViewer = ({ onClick, layer, size, status }) => {
             size={size}
             onClick={handleClickButton}
         >
-            <Icon glyph={'info-circle'} />
+            <Glyphicon glyph={'info-sign'} />
         </Button>
     ) : null;
 };

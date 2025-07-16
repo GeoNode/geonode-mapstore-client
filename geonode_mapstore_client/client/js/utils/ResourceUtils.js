@@ -361,7 +361,7 @@ export const getResourceTypesInfo = () => ({
         formatMetadataDetailUrl: (resource) => `/metadata/${resource.pk}`
     },
     [ResourceTypes.MAP]: {
-        icon: { glyph: '1-map', type: 'glyphicon' },
+        icon: { glyph: '1-map' },
         name: 'Map',
         canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: (resource) => parseDevHostname(updateUrlQueryParameter(resource.embed_url, {

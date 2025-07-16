@@ -8,7 +8,8 @@
 
 import React from "react";
 import Select from "react-select";
-import Icon from '@js/components/Icon';
+import { Glyphicon } from 'react-bootstrap';
+
 import Button from '@mapstore/framework/components/layout/Button';
 import { isValidURL } from "@mapstore/framework/utils/URLUtils";
 import Message from '@mapstore/framework/components/I18N/Message';
@@ -71,14 +72,14 @@ const PendingUploadUrl = ({
                         })}/>
                     {data.edited && <>
                         {!isNotSupported(data) && error ? <ErrorMessageWithTooltip tooltipId={<Message msgId="gnviewer.invalidRemoteUploadMessageErrorTooltip" />} /> : null}
-                        {isNotSupported(data) && <div className="gn-upload-error-inline"><Icon glyph="exclamation" /></div>}
+                        {isNotSupported(data) && <div className="gn-upload-error-inline"><Glyphicon glyph="exclamation-sign" /></div>}
                     </>}
                     {onRemove
                         ? (!loading || !(progress))
                             ? <Button size="xs" onClick={handleOnRemove}>
-                                <Icon glyph="trash" />
+                                <Glyphicon glyph="trash" />
                             </Button> : <Button size="xs" onClick={() => onCancel([data.id])}>
-                                <Icon glyph="stop" />
+                                <Glyphicon glyph="stop" />
                             </Button>
                         : null
                     }

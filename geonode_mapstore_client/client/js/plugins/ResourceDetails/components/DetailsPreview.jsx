@@ -6,8 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React, { useState } from 'react';
+import { Glyphicon } from 'react-bootstrap';
 import Button from '@mapstore/framework/components/layout/Button';
-import Icon from '@js/components/Icon';
 import Message from '@mapstore/framework/components/I18N/Message';
 
 function DetailsPreview({
@@ -23,8 +23,8 @@ function DetailsPreview({
         <div className="_padding-sm">
             <Button size="sm" style={{ padding: 0 }} borderTransparent className="_margin-b-sm" onClick={() => setShowPreview(!showPreview)}>
                 {showPreview
-                    ? <><Icon glyph="bottom" type="glyphicon"/> {' '}<Message msgId="gnviewer.hidePreview" /></>
-                    : <><Icon glyph="next" type="glyphicon"/> {' '}<Message msgId="gnviewer.showPreview" /></>}
+                    ? <><Glyphicon glyph="bottom"/> {' '}<Message msgId="gnviewer.hidePreview" /></>
+                    : <><Glyphicon glyph="next"/> {' '}<Message msgId="gnviewer.showPreview" /></>}
             </Button>
             {showPreview ? <div style={{ width: '100%', aspectRatio: '16 / 9', position: 'relative' }} className="ms-secondary-colors">
                 <iframe

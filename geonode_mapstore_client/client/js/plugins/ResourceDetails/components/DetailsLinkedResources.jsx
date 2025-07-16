@@ -8,11 +8,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
+import { Glyphicon } from 'react-bootstrap';
+
 import Message from '@mapstore/framework/components/I18N/Message';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Text from '@mapstore/framework/components/layout/Text';
 import { parseCatalogResource } from '@js/utils/ResourceUtils';
-import Icon from '@js/components/Icon';
 
 const DetailLinkedResource = ({resources, type}) => {
     return !isEmpty(resources) && (
@@ -24,7 +25,7 @@ const DetailLinkedResource = ({resources, type}) => {
                 const icon = field?.['@extras']?.info?.icon;
                 return (
                     <FlexBox key={key} component={Text} centerChildrenVertically gap="sm" fontSize="sm" className="_row _padding-b-xs">
-                        {icon && <Icon {...icon} />}
+                        {icon && <Glyphicon {...icon} />}
                         <a key={field.pk} href={field.detail_url}>
                             {field.title}
                         </a>

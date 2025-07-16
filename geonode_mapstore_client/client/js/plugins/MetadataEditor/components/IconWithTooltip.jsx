@@ -7,10 +7,10 @@
  */
 
 import React from 'react';
+import { Glyphicon } from 'react-bootstrap';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
-import Icon from '@js/components/Icon';
 
-const IconWithTooltip = tooltip((props) => <span {...props}><Icon glyph="info-circle" /></span>);
+const IconWithTooltip = tooltip((props) => <span {...props}><Glyphicon glyph="info-sign" /></span>);
 
 export default IconWithTooltip;
 

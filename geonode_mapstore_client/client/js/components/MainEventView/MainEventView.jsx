@@ -8,8 +8,7 @@
 
 import React from 'react';
 import Message from '@mapstore/framework/components/I18N/Message';
-import Icon from '@js/components/Icon';
-
+import { Glyphicon } from 'react-bootstrap';
 function MainEventView({
     msgId,
     icon
@@ -19,7 +18,7 @@ function MainEventView({
             <div className="gn-main-event-content">
                 <div className="gn-main-event-text">
                     <div className="gn-main-icon">
-                        <Icon glyph={icon} />
+                        <Glyphicon glyph={icon} />
                     </div>
                     {msgId && <Message msgId={msgId} />}
                 </div>

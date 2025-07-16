@@ -7,9 +7,9 @@
  */
 
 import React from 'react';
+import { Badge, Glyphicon } from 'react-bootstrap';
+
 import Button from '@mapstore/framework/components/layout/Button';
-import Icon from '@js/components/Icon';
-import { Badge } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import ErrorMessageWithTooltip from './ErrorMessageWithTooltip';
@@ -29,15 +29,15 @@ function PendingUploadFile({
     return (
         <div className="gn-upload-card">
             <div className="gn-upload-card-header">
-                {(missingExtensions.length > 0 || missingMainFile) ? <div className="gn-upload-card-error"><Icon glyph="exclamation" /></div> : null}
+                {(missingExtensions.length > 0 || missingMainFile) ? <div className="gn-upload-card-error"><Glyphicon glyph="exclamation-sign" /></div> : null}
                 <div className="gn-upload-card-title">{baseName}</div>
                 <div>
                     {error ? <ErrorMessageWithTooltip tooltipId={<Message msgId="gnviewer.invalidUploadMessageErrorTooltip" />} /> : null}
                     {onRemove
                         ? (!loading || !progress) ? <Button size="xs" onClick={() => onRemove(id)}>
-                            <Icon glyph="trash" />
+                            <Glyphicon glyph="trash" />
                         </Button> : <Button size="xs" onClick={() => onCancel([id])}>
-                            <Icon glyph="stop" />
+                            <Glyphicon glyph="stop" />
                         </Button>
                         : null}
                 </div>

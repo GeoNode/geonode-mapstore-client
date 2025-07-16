@@ -1,7 +1,7 @@
 import React from 'react';
+import { Glyphicon } from 'react-bootstrap';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Text from '@mapstore/framework/components/layout/Text';
-import Icon from '@js/components/Icon';
 
 function DetailsAssets({ fields }) {
     return (
@@ -10,12 +10,12 @@ function DetailsAssets({ fields }) {
                 const asset = field?.extras?.content || {};
                 return (
                     <FlexBox gap="sm" centerChildrenVertically component={Text} key={idx} fontSize="sm" className="_row _padding-b-xs">
-                        <Icon glyph="file" />
+                        <Glyphicon glyph="file" />
                         {asset.download_url ? <a
                             download
                             href={asset.download_url}
                         >
-                            {asset.title}{' '}<Icon glyph="download" />
+                            {asset.title}{' '}<Glyphicon glyph="download" />
                         </a> : asset.title}
                     </FlexBox>
                 );

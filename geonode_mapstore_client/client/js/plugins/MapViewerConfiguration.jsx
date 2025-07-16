@@ -11,6 +11,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { createSelector } from 'reselect';
+import { Glyphicon } from 'react-bootstrap';
 
 import Button from '@mapstore/framework/components/layout/Button';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
@@ -21,7 +22,6 @@ import { ResourceTypes } from '@js/utils/ResourceUtils';
 import Portal from '@mapstore/framework/components/misc/Portal';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
-import Icon from '@js/components/Icon';
 import { getResourceData } from '@js/selectors/resource';
 import ConfirmDialog from '@mapstore/framework/components/layout/ConfirmDialog';
 
@@ -29,7 +29,7 @@ const WarningLinkedResource = ({resourceType} = {}) => {
     if (resourceType) {
         return (
             <div className="gn-resource-delete-warning">
-                <Icon className="warning" glyph="warning"/> &nbsp;
+                <Glyphicon className="warning" glyph="alert"/> &nbsp;
                 <Message msgId={`gnviewer.linkedResource.deleteAndUnlinkWarning.${resourceType}`}/>
             </div>
         );

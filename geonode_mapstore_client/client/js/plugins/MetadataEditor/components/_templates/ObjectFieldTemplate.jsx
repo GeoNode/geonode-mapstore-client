@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mapstore/framework/components/layout/Button';
 import { Glyphicon } from 'react-bootstrap';
-import Icon from '@js/components/Icon';
+
 import Message from '@mapstore/framework/components/I18N/Message';
 import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 import InputControl from '@mapstore/framework/plugins/ResourcesCatalog/components/InputControl';
@@ -42,7 +42,7 @@ function MetadataGroupList({
     return (
         <li>
             <Button className={groupError ? 'gn-metadata-error' : ''} size="xs" onClick={() => setExpanded((prevExpanded) => !prevExpanded)}>
-                <Glyphicon glyph={expanded ? "bottom" : "next"} />{' '}{title}{groupError ? <>{' '}<Icon glyph="exclamation" /></> : null}
+                <Glyphicon glyph={expanded ? "bottom" : "next"} />{' '}{title}{groupError ? <>{' '}<Glyphicon glyph="exclamation-sign" /></> : null}
             </Button>
             {expanded ? <ul>
                 {group
@@ -54,7 +54,7 @@ function MetadataGroupList({
                                     className={property.error ? 'gn-metadata-error' : ''}
                                     onClick={() => scrollIntoView(idSchema[property.name]?.$id)}>
                                     {property.title}
-                                    {property.error ? <>{' '}<Icon glyph="exclamation" /></> : null}
+                                    {property.error ? <>{' '}<Glyphicon glyph="exclamation-sign" /></> : null}
                                 </Button>
                             </li>
                         );

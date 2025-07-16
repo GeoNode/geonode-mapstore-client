@@ -10,6 +10,7 @@ import turfCenter from "@turf/center";
 import isEmpty from "lodash/isEmpty";
 import isEqual from "lodash/isEqual";
 import get from "lodash/get";
+import { Glyphicon } from 'react-bootstrap';
 import wk from 'wellknown';
 
 import BaseMap from "@mapstore/framework/components/map/BaseMap";
@@ -24,7 +25,6 @@ import CopyToClipboardCmp from 'react-copy-to-clipboard';
 import Button from "@mapstore/framework/components/layout/Button";
 import FlexBox from "@mapstore/framework/components/layout/FlexBox";
 import Text from "@mapstore/framework/components/layout/Text";
-import Icon from "@js/components/Icon";
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = "Map";
@@ -54,7 +54,7 @@ const BoundingBoxAndCenter = ({extent, center }) => {
                             <Button
                                 variant="default"
                                 onClick={()=> setCopied(true)}>
-                                <Icon glyph="copy" />
+                                <Glyphicon glyph="copy" />
                             </Button>
                         </CopyToClipboard>
                     </Text>
@@ -104,7 +104,7 @@ const BoundingBoxAndCenter = ({extent, center }) => {
                             <Button
                                 variant="default"
                                 onClick={()=> setCopied(true)}>
-                                <Icon glyph="copy" />
+                                <Glyphicon glyph="copy" />
                             </Button>
                         </CopyToClipboard>
                     </Text>

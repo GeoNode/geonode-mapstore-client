@@ -10,7 +10,8 @@ import React from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import Icon from '@js/components/Icon';
+import { Glyphicon } from 'react-bootstrap';
+
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@mapstore/framework/components/layout/Button';
 import ConfirmDialog from '@mapstore/framework/components/layout/ConfirmDialog';
@@ -38,7 +39,7 @@ const WarningLinkedResource = ({resources = []}) => {
         const [{resource_type: resourceType}] = resources;
         return (
             <div className="gn-resource-delete-warning">
-                <Icon className="warning" glyph="warning"/> &nbsp;
+                <Glyphicon className="warning" glyph="alert"/> &nbsp;
                 <Message msgId={`gnviewer.deleteResourceWarning.${resourceType}`}/>
             </div>
         );

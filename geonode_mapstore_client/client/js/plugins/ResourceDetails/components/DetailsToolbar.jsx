@@ -7,10 +7,10 @@
  */
 import React, { useState } from 'react';
 import CopyToClipboardCmp from 'react-copy-to-clipboard';
+import { Glyphicon } from 'react-bootstrap';
 
 import Message from '@mapstore/framework/components/I18N/Message';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
-import Icon from "@js/components/Icon";
 import Button from '@mapstore/framework/components/layout/Button';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import ResourceStatus from '@mapstore/framework/plugins/ResourcesCatalog/components/ResourceStatus';
@@ -46,7 +46,7 @@ function DetailsToolbarButton({
             tooltipId={square && labelId ? labelId : null}
             onClick={handleOnClick}
         >
-            {!loading && glyph ? <><Icon glyph={glyph}/></> : null}
+            {!loading && glyph ? <><Glyphicon glyph={glyph}/></> : null}
             {!loading && glyph && labelId ? ' ' : null}
             {!loading && labelId && !square ? <Message msgId={labelId} /> : null}
             {loading ? <Spinner /> : null}
@@ -102,7 +102,7 @@ function DetailsToolbar({
                     <Button
                         variant="default"
                         onClick={()=> handleCopyPermalink('resource')}>
-                        <Icon glyph="share-alt" />
+                        <Glyphicon glyph="share-alt" />
                     </Button>
                 </CopyToClipboard>
                 {resource?.dataset_ows_url && <CopyToClipboard
@@ -117,7 +117,7 @@ function DetailsToolbar({
                     <Button
                         variant="default"
                         onClick={()=> handleCopyPermalink('datasetowsurl')}>
-                        <Icon glyph="globe" />
+                        <Glyphicon glyph="globe" />
                     </Button>
                 </CopyToClipboard>}
                 {!showViewerButton ? null : info?.viewerUrl

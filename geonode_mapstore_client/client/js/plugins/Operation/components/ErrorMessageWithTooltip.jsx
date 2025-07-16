@@ -8,11 +8,11 @@
 */
 
 import React from 'react';
-import Icon from '@js/components/Icon';
+import { Glyphicon } from 'react-bootstrap';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 
 function ErrorMessage({ label, ...props }) {
-    return (<div {...props} className="gn-failed-upload">{label ? <>{label}{' '}</> : null}<Icon glyph="exclamation" /></div> );
+    return (<div {...props} className="gn-failed-upload">{label ? <>{label}{' '}</> : null}<Glyphicon glyph="exclamation-sign" /></div> );
 }
 
 const ErrorMessageWithTooltip = tooltip(ErrorMessage);

@@ -12,6 +12,8 @@ import { connect, createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { createSelector } from 'reselect';
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
+import { Glyphicon } from 'react-bootstrap';
+
 import usePluginItems from '@mapstore/framework/hooks/usePluginItems';
 import {
     getResourceData,
@@ -23,7 +25,6 @@ import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Button from '@mapstore/framework/components/layout/Button';
 import Menu from '@mapstore/framework/plugins/ResourcesCatalog/components/Menu';
-import Icon from '@js/components/Icon';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 
 const ButtonWithTooltip = tooltip(Button);
@@ -45,7 +46,7 @@ function ActionNavbarMenuItem({
                 onClick={onClick}
                 className={className}
             >
-                {loading ? <Spinner /> : <Icon glyph={glyph} />}
+                {loading ? <Spinner /> : <Glyphicon glyph={glyph} />}
             </ButtonWithTooltip>
         </li>
     );

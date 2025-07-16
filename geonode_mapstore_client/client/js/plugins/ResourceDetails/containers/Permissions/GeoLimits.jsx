@@ -10,13 +10,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { createSelector } from "reselect";
+import { Glyphicon } from 'react-bootstrap';
 
 import BaseMap from '@mapstore/framework/components/map/BaseMap';
 import mapTypeHOC from '@mapstore/framework/components/map/enhancers/mapType';
 import LocalDrawSupport from '@mapstore/framework/components/geostory/common/map/LocalDrawSupport';
 import FitBounds from '@mapstore/framework/components/geostory/common/map/FitBounds';
 import Button from '@mapstore/framework/components/layout/Button';
-import Icon from '@js/components/Icon';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Popover from "@mapstore/framework/components/styleeditor/Popover";
 import useIsMounted from "@mapstore/framework/hooks/useIsMounted";
@@ -151,14 +151,14 @@ function GeoLimits({
             </Map>
             <div  className="gn-geo-limits-tools">
                 <Button variant={draw ? 'primary' : 'default'} onClick={() => setDraw(!draw)}>
-                    <Icon glyph="pencil"/>
+                    <Glyphicon glyph="pencil"/>
                 </Button>
                 <Button disabled={draw} onClick={handleRemove}>
-                    <Icon glyph="trash"/>
+                    <Glyphicon glyph="trash"/>
                 </Button>
                 {children}
                 <Button disabled={draw} onClick={handleRefresh}>
-                    <Icon glyph="refresh"/>
+                    <Glyphicon glyph="refresh"/>
                 </Button>
             </div>
             {loading && <div className="gn-geo-limits-loader">
@@ -247,7 +247,7 @@ const ConnectedGeoLimits = connect(
             }
         >
             <Button>
-                <Icon glyph="globe" />
+                <Glyphicon glyph="globe" />
             </Button>
         </Popover>
     );

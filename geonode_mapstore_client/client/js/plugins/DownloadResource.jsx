@@ -10,19 +10,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
+import { MenuItem, Glyphicon } from 'react-bootstrap';
+
+
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { getDownloadUrlInfo, isDocumentExternalSource, GXP_PTYPES, SOURCE_TYPES } from '@js/utils/ResourceUtils';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@mapstore/framework/components/layout/Button';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
-import { MenuItem } from 'react-bootstrap';
-import Icon from '@js/components/Icon';
 import {
     getResourceData
 } from '@js/selectors/resource';
 import { downloadResource } from '@js/actions/gnresource';
 import { processingDownload } from '@js/selectors/resourceservice';
-
 const ButtonWithTooltip = tooltip(Button);
 
 const RENDER_TYPE = {
@@ -69,7 +69,7 @@ const DownloadButton = ({
                 rel="noopener noreferrer"
             >
                 {showIcon
-                    ? <Icon glyph={isExternal ? "external-link" : "download"} />
+                    ? <Glyphicon glyph={isExternal ? "new-window" : "download"} />
                     : <Message msgId={downloadMsgId} />
                 }
             </Component>
@@ -84,7 +84,7 @@ const DownloadButton = ({
             {...showIcon && { tooltipId: downloadMsgId }}
         >
             {showIcon
-                ? <Icon glyph="download" />
+                ? <Glyphicon glyph="download" />
                 : <Message msgId={downloadMsgId} />
             }
         </Component>
