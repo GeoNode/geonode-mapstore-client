@@ -2033,7 +2033,8 @@
                 }
             },
             {
-                "name": "MetadataViewer"
+                "name": "MetadataViewer",
+                "mandatory": true
             },
             {
                 "mandatory": true,
