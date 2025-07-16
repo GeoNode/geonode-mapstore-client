@@ -7,9 +7,10 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import useIsMounted from '@js/hooks/useIsMounted';
+import { Glyphicon } from 'react-bootstrap';
 import { loadFontAwesome } from '@mapstore/framework/utils/FontUtils';
+import useIsMounted from '@mapstore/framework/hooks/useIsMounted';
+import PropTypes from 'prop-types';
 
 function FaIcon({
     name,
@@ -32,18 +33,31 @@ function FaIcon({
     return <i className={`fa fa-${name}${className ? ` ${className}` : ''}`} style={style}/>;
 }
 /**
- * Icon component
- * @prop {string} glyph icon name
+ * Icon component that allows to use icon from `font-awesome` and `glyphicon`
+ * @prop {string} glyph html identifier
+ * @prop {string} type one of `font-awesome` or `glyphicon`
  */
 function Icon({
     glyph,
+    type,
     ...props
 }) {
-    return <FaIcon {...props} name={glyph} />;
+    if (type === 'font-awesome') {
+        return <FaIcon {...props} name={glyph} />;
+    }
+    if (type === 'glyphicon') {
+        return <Glyphicon {...props} glyph={glyph} />;
+    }
+    return null;
 }
 
 Icon.propTypes = {
-    glyph: PropTypes.string
+    glyph: PropTypes.string,
+    type: PropTypes.string
+};
+
+Icon.defaultProps = {
+    type: 'font-awesome'
 };
 
 export default Icon;

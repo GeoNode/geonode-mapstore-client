@@ -694,7 +694,7 @@ describe('Test Resource Utils', () => {
                 alternate: 'name:test',
                 pk: "100"
             };
-            expect(icon.glyph).toBe('database');
+            expect(icon.glyph).toBe('dataset');
             expect(canPreviewed(resource)).toBeTruthy();
             expect(name).toBe('Dataset');
 
@@ -731,7 +731,7 @@ describe('Test Resource Utils', () => {
                 pk: "100",
                 extension: "pdf"
             };
-            expect(icon.glyph).toBe('file');
+            expect(icon.glyph).toBe('document');
             expect(canPreviewed(resource)).toBeTruthy();
             expect(hasPermission(resource)).toBeTruthy();
             expect(name).toBe('Document');
