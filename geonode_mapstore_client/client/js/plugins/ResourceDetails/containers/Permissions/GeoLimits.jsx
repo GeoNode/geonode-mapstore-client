@@ -16,7 +16,7 @@ import mapTypeHOC from '@mapstore/framework/components/map/enhancers/mapType';
 import LocalDrawSupport from '@mapstore/framework/components/geostory/common/map/LocalDrawSupport';
 import FitBounds from '@mapstore/framework/components/geostory/common/map/FitBounds';
 import Button from '@mapstore/framework/components/layout/Button';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Popover from "@mapstore/framework/components/styleeditor/Popover";
 import useIsMounted from "@mapstore/framework/hooks/useIsMounted";

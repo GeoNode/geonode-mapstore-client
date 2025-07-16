@@ -8,7 +8,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Button from '@mapstore/framework/components/layout/Button';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import CopyToClipboard from 'react-copy-to-clipboard';
 
 

@@ -10,7 +10,7 @@ import CopyToClipboardCmp from 'react-copy-to-clipboard';
 
 import Message from '@mapstore/framework/components/I18N/Message';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
-import Icon from "@mapstore/framework/plugins/ResourcesCatalog/components/Icon";
+import Icon from "@js/components/Icon";
 import Button from '@mapstore/framework/components/layout/Button';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import ResourceStatus from '@mapstore/framework/plugins/ResourcesCatalog/components/ResourceStatus';

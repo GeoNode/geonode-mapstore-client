@@ -11,7 +11,7 @@ import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import DetailsPanel from './ResourceDetails/containers/DetailsPanel';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import controls from '@mapstore/framework/reducers/controls';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import gnresource from '@js/reducers/gnresource';
@@ -65,6 +65,7 @@ function LayerDetailViewer({
 }) {
 
     const node = useDetectClickOut({
+        extraNodes: ['.ms-popover-overlay'],
         disabled: !enabled,
         onClickOut: () => {
             onClose();

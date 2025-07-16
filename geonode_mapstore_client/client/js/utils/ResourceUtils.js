@@ -350,7 +350,7 @@ export const isDocumentExternalSource = (resource) => {
 
 export const getResourceTypesInfo = () => ({
     [ResourceTypes.DATASET]: {
-        icon: { glyph: 'database' },
+        icon: { glyph: 'dataset' },
         canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: (resource) => resource.embed_url && parseDevHostname(updateUrlQueryParameter(resource.embed_url, {
             config: 'dataset_preview'
@@ -372,7 +372,7 @@ export const getResourceTypesInfo = () => ({
         formatMetadataDetailUrl: (resource) => `/metadata/${resource.pk}`
     },
     [ResourceTypes.DOCUMENT]: {
-        icon: { glyph: 'file', type: 'glyphicon' },
+        icon: { glyph: 'document' },
         name: 'Document',
         canPreviewed: (resource) => resourceHasPermission(resource, 'download_resourcebase') && !!(determineResourceType(resource.extension) !== 'unsupported'),
         hasPermission: (resource) => resourceHasPermission(resource, 'download_resourcebase'),
@@ -383,7 +383,7 @@ export const getResourceTypesInfo = () => ({
         metadataPreviewUrl: (resource) => `/metadata/${resource.pk}/embed`
     },
     [ResourceTypes.GEOSTORY]: {
-        icon: { glyph: 'geostory', type: 'glyphicon' },
+        icon: { glyph: 'geostory' },
         name: 'GeoStory',
         canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: (resource) => resource?.embed_url && parseDevHostname(resource.embed_url),
@@ -392,7 +392,7 @@ export const getResourceTypesInfo = () => ({
         formatMetadataDetailUrl: (resource) => `/metadata/${resource.pk}`
     },
     [ResourceTypes.DASHBOARD]: {
-        icon: { glyph: 'dashboard', type: 'glyphicon' },
+        icon: { glyph: 'dashboard' },
         name: 'Dashboard',
         canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: (resource) => resource?.embed_url && parseDevHostname(resource.embed_url),
@@ -401,7 +401,7 @@ export const getResourceTypesInfo = () => ({
         formatMetadataDetailUrl: (resource) => `/metadata/${resource.pk}`
     },
     [ResourceTypes.VIEWER]: {
-        icon: { glyph: 'cogs' },
+        icon: { glyph: 'context' },
         name: 'MapViewer',
         canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
         formatEmbedUrl: () => false,
