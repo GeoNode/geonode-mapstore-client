@@ -38,10 +38,26 @@ import ALink from '@mapstore/framework/plugins/ResourcesCatalog/components/ALink
 import { parseCatalogResource } from '@js/utils/ResourceUtils';
 import useParsePluginConfigExpressions from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useParsePluginConfigExpressions';
 import { hashLocationToHref } from '@mapstore/framework/utils/ResourcesFiltersUtils';
-import { getMonitoredStateSelector, getRouterLocation } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
+import { getMonitoredStateSelector, getRouterLocation, getDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import withScrollableTabs from '@js/components/enhancers/withScrollableTabs';
+import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
+import { setDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
 const DetailsInfo = withScrollableTabs(DetailsInfoComp);
 
+const transformValue = (obj, messages) => {
+    if (Array.isArray(obj)) {
+        return obj.map(item => transformValue(item, messages));
+    }
+    if (obj && typeof obj === 'object') {
+        const { valueId, items, ...rest } = obj;
+        return {
+            ...rest,
+            ...(valueId ? { value: getMessageById(messages, valueId) } : {}),
+            ...(items ? { items: transformValue(items, messages) } : {})
+        };
+    }
+    return obj;
+};
 const ConnectedDetailsThumbnail = connect(
     createSelector([
         state => state?.gnresource?.showMapThumbnail || false,
@@ -78,11 +94,14 @@ function DetailsPanel({
     monitoredState,
     location,
     panelRef,
-    showViewerButton
+    showViewerButton,
+    selectedTab,
+    onSelectTab
 }, context) {
 
     const resource = parseCatalogResource(resourceProp);
     const parsedConfig = useParsePluginConfigExpressions(monitoredState, { tabs }, context?.plugins?.requires);
+    const transformedTabs = transformValue(parsedConfig?.tabs ?? [], context?.messages);
 
     const { query } = url.parse(location.search, true);
     const updatedLocation = useRef();
@@ -137,7 +156,7 @@ function DetailsPanel({
             {!loading ? <DetailsInfo
                 className="_padding-lr-md"
                 key={resource?.pk || resource?.id}
-                tabs={replaceResourcePaths(parsedConfig.tabs, resource, [])}
+                tabs={replaceResourcePaths(transformedTabs, resource, [])}
                 tabComponents={tabComponents}
                 query={query}
                 formatHref={handleFormatHref}
@@ -145,6 +164,8 @@ function DetailsPanel({
                 resource={resource || {}}
                 enableFilters={enableFilters}
                 editing={editing}
+                selectedTab={selectedTab}
+                onSelectTab={onSelectTab}
             /> : null}
             {(loading) ? <FlexBox centerChildren classNames={['_absolute', '_fill', '_overlay', '_corner-tl']}>
                 <Text fontSize="xxl">
@@ -156,14 +177,19 @@ function DetailsPanel({
 }
 
 DetailsPanel.contextTypes = {
-    plugins: PropTypes.object
+    plugins: PropTypes.object,
+    messages: PropTypes.object
 };
 
 const ConnectedDetailsPanel = connect(
     createStructuredSelector({
         monitoredState: getMonitoredStateSelector,
-        location: getRouterLocation
-    })
+        location: getRouterLocation,
+        selectedTab: getDetailPanelTab
+    }),
+    {
+        onSelectTab: setDetailPanelTab
+    }
 )(DetailsPanel);
 
 export default ConnectedDetailsPanel;

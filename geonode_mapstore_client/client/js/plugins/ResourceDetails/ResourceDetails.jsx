@@ -11,7 +11,7 @@ import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import PropTypes from 'prop-types';
-import { requestResource } from '@js/actions/gnresource';
+import { requestResource, setResource } from '@js/actions/gnresource';
 import controls from '@mapstore/framework/reducers/controls';
 import config from '@mapstore/framework/reducers/config';
 import gnresource from '@js/reducers/gnresource';
@@ -27,10 +27,12 @@ import ResourcesPanelWrapper from '@mapstore/framework/plugins/ResourcesCatalog/
 import TargetSelectorPortal from '@mapstore/framework/plugins/ResourcesCatalog/components/TargetSelectorPortal';
 import useResourcePanelWrapper from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useResourcePanelWrapper';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
-import { setShowDetails, setSelectedResource } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
+import { setShowDetails, setSelectedResource, setDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
 import PendingStatePrompt from '@mapstore/framework/plugins/ResourcesCatalog/containers/PendingStatePrompt';
 import DetailsPanel from './containers/DetailsPanel';
 import useDetectClickOut from '@js/hooks/useDetectClickOut';
+import Button from '@mapstore/framework/components/layout/Button';
+import Message from '@mapstore/framework/components/I18N/Message';
 
 /**
 * @module ResourceDetails
@@ -71,7 +73,7 @@ import useDetectClickOut from '@js/hooks/useDetectClickOut';
  *                  {
  *                      "type": "query",
  *                      "labelId": "gnviewer.resourceType",
- *                      "value": "{context.get(state('gnResourceData'), 'resource_type')}",
+ *                      "valueId": "{'gnviewer.' + context.get(state('gnResourceData'), 'resource_type')}",
  *                      "pathname": "/",
  *                      "query": {
  *                          "f": "{context.get(state('gnResourceData'), 'resource_type')}"
@@ -128,7 +130,7 @@ function ResourceDetailsPanel({
                 {
                     "type": "query",
                     "labelId": "gnviewer.resourceType",
-                    "value": "{context.get(state('gnResourceData'), 'resource_type')}",
+                    "valueId": "{'gnviewer.' + context.get(state('gnResourceData'), 'resource_type')}",
                     "pathname": "/",
                     "query": {
                         "f": "{context.get(state('gnResourceData'), 'resource_type')}"
@@ -261,11 +263,13 @@ function ResourceDetailsPanel({
     enablePreview,
     editingOverlay,
     closeOnClickOut,
-    showViewerButton
+    showViewerButton,
+    onClearResource
 }, context) {
 
     const [confirmModal, setConfirmModal] = useState(false);
     const editing = canEdit && editable;
+    const isViewer = !resource?.['@ms-detail'];
 
     const {
         stickyTop,
@@ -282,10 +286,11 @@ function ResourceDetailsPanel({
     function handleConfirm() {
         onShow(false);
         onClose(null);
+        !isViewer && onClearResource(null);
     }
 
     function handleClose() {
-        if (pendingChanges) {
+        if (pendingChanges && !isViewer) {
             setConfirmModal(true);
         } else {
             handleConfirm();
@@ -300,12 +305,12 @@ function ResourceDetailsPanel({
     }, []);
 
     const node = useDetectClickOut({
+        extraNodes: ['.ms-popover-overlay'],
         disabled: !closeOnClickOut || !show,
         onClickOut: () => {
             handleClose();
         }
     });
-
 
     const { loadedPlugins } = context;
     const configuredItems = usePluginItems({ items, loadedPlugins }, [resource?.pk]);
@@ -377,14 +382,15 @@ const ResourceDetailsPlugin = connect(
     }),
     {
         onShow: setShowDetails,
-        onClose: setSelectedResource
+        onClose: setSelectedResource,
+        onClearResource: setResource
     }
 )(ResourceDetails);
 
 export default createPlugin('ResourceDetails', {
     component: ResourceDetailsPlugin,
     containers: {
-        ActionNavbar: {
+        ActionNavbar: [{
             name: 'ResourceDetailsButton',
             Component: connect((state) => ({resource: getResourceData(state)}), { onShow: setShowDetails })(({ component, resourcesGridId, onShow, resource }) => {
                 if (!resource?.pk) return null;
@@ -405,7 +411,31 @@ export default createPlugin('ResourceDetails', {
             }),
             priority: 1,
             doNotHide: true
-        },
+        }, {
+            name: 'ResourceEditPermissions',
+            Component: connect((state) => ({resource: getResourceData(state)}), { onShow: setShowDetails, onSelectTab: setDetailPanelTab })(
+                ({ resourcesGridId, onShow, resource, onSelectTab }) => {
+                    if (!resource?.pk) return null;
+
+                    function handleClick() {
+                        onShow(true, resourcesGridId);
+                        onSelectTab('settings');
+                    }
+                    return (
+                        <Button
+                            variant="default"
+                            size="md"
+                            onClick={handleClick}
+                            labelId="gnviewer.editPermissions"
+                        >
+                            <Message msgId="gnviewer.editPermissions" />
+                        </Button>
+                    );
+                }
+            ),
+            priority: 1,
+            doNotHide: true
+        }],
         ResourcesGrid: {
             priority: 2,
             target: 'card-buttons',

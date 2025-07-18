@@ -178,6 +178,7 @@
             "viewData":  "Afficher les données",
             "viewInfo": "Afficher les informations",
             "editInfo": "Modifier les informations",
+            "editPermissions": "Modifier les permissions",
             "editStyle": "Modifier le Style",
             "editData": "Modifier les Données",
             "backToDataset": "< Retourner au jeu de données",
@@ -477,7 +478,13 @@
             "showPreview": "Afficher l'aperçu",
             "hidePreview": "Masquer l'aperçu",
             "columnTitle": "Titre",
-            "columnOwner": "Propriétaire"
+            "columnOwner": "Propriétaire",
+            "dataset": "jeu de données",
+            "map": "carte",
+            "geostory": "géohistoire",
+            "document": "document",
+            "dashboard": "tableau de bord",
+            "mapviewer": "visionneuse de carte"
         },
         "resourcesCatalog": {
             "anonymous": "N'importe qui",

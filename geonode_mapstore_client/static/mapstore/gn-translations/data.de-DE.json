@@ -180,6 +180,7 @@
             "viewMetadata": "Metadaten anzeigen",
             "viewData":  "Daten anzeigen",
             "viewInfo": "Informationen anzeigen",
+            "editPermissions": "Berechtigungen bearbeiten",
             "backToDataset": "< Zurück zum Datensatz",
             "goBackTo": "< Geh zurück zu { resourceName }",
             "uploadImage": "Klicken Sie hier, um ein Bild hochzuladen",
@@ -477,7 +478,13 @@
             "showPreview": "Vorschau anzeigen",
             "hidePreview": "Vorschau ausblenden",
             "columnTitle": "Titel",
-            "columnOwner": "Eigentümer"
+            "columnOwner": "Eigentümer",
+            "dataset": "datensatz",
+            "map": "karte",
+            "geostory": "geostory",
+            "document": "dokument",
+            "dashboard": "dashboard",
+            "mapviewer": "kartenviewer"
         },
         "resourcesCatalog": {
             "anonymous": "Jeder",

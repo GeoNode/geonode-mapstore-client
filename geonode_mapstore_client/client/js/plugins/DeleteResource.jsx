@@ -10,7 +10,7 @@ import React from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@mapstore/framework/components/layout/Button';
 import ConfirmDialog from '@mapstore/framework/components/layout/ConfirmDialog';

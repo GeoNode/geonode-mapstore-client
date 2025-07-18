@@ -180,6 +180,7 @@
             "viewData": "Visualizza i dati",
             "viewInfo": "Visualizza informazioni",
             "editInfo": "Modifica informazioni",
+            "editPermissions": "Modifica permessi",
             "editStyle": "Modifica Stile",
             "editData": "Modifica Dati",
             "backToDataset": "< Torna al dataset",
@@ -479,7 +480,13 @@
             "showPreview": "Mostra Anteprima",
             "hidePreview": "Nascondi Anteprima",
             "columnTitle": "Titolo",
-            "columnOwner": "Proprietario"
+            "columnOwner": "Proprietario",
+            "dataset": "dataset",
+            "map": "mappa",
+            "geostory": "geostory",
+            "document": "documento",
+            "dashboard": "dashboard",
+            "mapviewer": "visualizzatore di mappa"
         },
         "resourcesCatalog": {
             "anonymous": "Chiunque",

@@ -34,7 +34,8 @@ import {
     getResourceAdditionalProperties,
     getDimensions,
     canManageResourceSettings,
-    canAccessPermissions
+    canAccessPermissions,
+    formatResourceLinkUrl
 } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
@@ -694,7 +695,7 @@ describe('Test Resource Utils', () => {
                 alternate: 'name:test',
                 pk: "100"
             };
-            expect(icon.glyph).toBe('database');
+            expect(icon.glyph).toBe('dataset');
             expect(canPreviewed(resource)).toBeTruthy();
             expect(name).toBe('Dataset');
 
@@ -731,7 +732,7 @@ describe('Test Resource Utils', () => {
                 pk: "100",
                 extension: "pdf"
             };
-            expect(icon.glyph).toBe('file');
+            expect(icon.glyph).toBe('document');
             expect(canPreviewed(resource)).toBeTruthy();
             expect(hasPermission(resource)).toBeTruthy();
             expect(name).toBe('Document');
@@ -1008,5 +1009,9 @@ describe('Test Resource Utils', () => {
     it('canAccessPermissions', () => {
         expect(canAccessPermissions({ perms: ['change_resourcebase_permissions'] })).toBeTruthy();
         expect(canAccessPermissions({ perms: ['view_resourcebase'] })).toBeFalsy();
+    });
+    it('formatResourceLinkUrl', () => {
+        expect(formatResourceLinkUrl({ uuid: '123' })).toContain('/catalogue/uuid/123');
+        expect(formatResourceLinkUrl({ pk: '123' })).toNotContain('/catalogue/uuid/123');
     });
 });

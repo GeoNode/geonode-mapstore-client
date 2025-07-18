@@ -179,6 +179,7 @@
             "viewMetadata": "View Metadata",
             "viewData": "View Data",
             "viewInfo": "View information",
+            "editPermissions": "Edit Permissions",
             "backToDataset": "< Go back to the dataset",
             "goBackTo": "< Go back to { resourceName }",
             "uploadImage": "Click to upload an image",
@@ -448,7 +449,13 @@
             "showPreview": "Show Preview",
             "hidePreview": "Hide Preview",
             "columnTitle": "Title",
-            "columnOwner": "Owner"
+            "columnOwner": "Owner",
+            "dataset": "dataset",
+            "map": "map",
+            "geostory": "geostory",
+            "document": "document",
+            "dashboard": "dashboard",
+            "mapviewer": "mapviewer"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

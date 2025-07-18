@@ -13,7 +13,7 @@ import { replace } from 'connected-react-router';
 import { createSelector } from 'reselect';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@mapstore/framework/components/layout/Button';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import { getGeoApps } from '@js/api/geonode/v2';
 import { getDefaultPluginsConfig } from '@js/api/geonode/config';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
