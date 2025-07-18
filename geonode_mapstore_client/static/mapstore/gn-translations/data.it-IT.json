@@ -480,9 +480,9 @@
             "hidePreview": "Nascondi Anteprima",
             "columnTitle": "Titolo",
             "columnOwner": "Proprietario",
-            "dataset": "Set di dati",
+            "dataset": "dataset",
             "map": "mappa",
-            "geostory": "geostoria",
+            "geostory": "geostory",
             "document": "documento",
             "dashboard": "dashboard",
             "mapviewer": "visualizzatore di mappa"
