@@ -86,7 +86,7 @@ function ExecutionRequestTable({
                                     <td><Glyphicon glyph={iconName}/>{' '}{request.name}</td>
                                     <td>{moment(request.created).format('MMMM Do YYYY, h:mm:ss a')}</td>
                                     <td>
-                                        {request.status === 'running' ? <Spinner/> : null}
+                                        {request.status === 'running' ? <Spinner className="gn-upload-loader-spinner"/> : null}
                                         {request.status === 'failed'
                                             ? <ErrorMessageWithTooltip
                                                 label={<Message msgId="gnviewer.invalidUploadMessageError" />}

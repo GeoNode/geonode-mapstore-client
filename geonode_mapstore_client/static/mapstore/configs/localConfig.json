@@ -28,7 +28,7 @@
                 "lg": 600
             },
             "right": {
-                "md": 550
+                "md": 420
             },
             "bottom": {
                 "sm": 30
@@ -606,6 +606,10 @@
                                     "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/settings'}",
                                     "labelId": "gnviewer.layerSettings.title",
                                     "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "ResourceEditPermissions"
                                 },
                                 {
                                     "type": "link",
@@ -1518,6 +1522,10 @@
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
+                                    "type": "plugin",
+                                    "name": "ResourceEditPermissions"
+                                },
+                                {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
@@ -2033,7 +2041,8 @@
                 }
             },
             {
-                "name": "MetadataViewer"
+                "name": "MetadataViewer",
+                "mandatory": true
             },
             {
                 "mandatory": true,
@@ -2252,6 +2261,10 @@
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
+                                    "type": "plugin",
+                                    "name": "ResourceEditPermissions"
+                                },
+                                {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
@@ -2438,6 +2451,10 @@
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
+                                    "type": "plugin",
+                                    "name": "ResourceEditPermissions"
+                                },
+                                {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
@@ -2582,6 +2599,10 @@
                             "type": "dropdown",
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "ResourceEditPermissions"
+                                },
                                 {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
@@ -3523,6 +3544,10 @@
                             "type": "dropdown",
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "ResourceEditPermissions"
+                                },
                                 {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
