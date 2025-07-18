@@ -146,3 +146,11 @@
         }
     }
 }
+:has(.gn-resource-page-catalog) {
+    // ensure ms-container has higher z-index to correctly the overlay components (filters and details)
+    // if rendered inside the gn-resource-page-catalog page
+    #ms-container {
+        position: relative;
+        z-index: 15;
+    }
+}

@@ -6,6 +6,7 @@
             <h4>{% trans "All Resources" %}</h4>
         </div>
     </div>
+    <div id="resources-all" class="ms-plugin ResourcesGrid"></div>
 {% endblock content %}
 
 {% block ms_plugins %}
@@ -15,6 +16,7 @@
             "cfg": {
                 "id": "catalog",
                 "title": "All Resources",
+                "targetSelector": "#resources-all"
             }
         },
         {
