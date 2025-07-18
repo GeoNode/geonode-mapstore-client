@@ -27,6 +27,7 @@ import { setResource as setContextCreatorResource } from '@mapstore/framework/ac
 import { manageLinkedResource, setDefaultViewerPlugins } from '@js/actions/gnresource';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
+import Text from '@mapstore/framework/components/layout/Text';
 
 function MapViewersCatalogPlugin({
     enabled,
@@ -113,7 +114,9 @@ function MapViewersCatalogPlugin({
                     <div className="gn-new-map-viewer-action-wrapper">
                         <div  className="gn-new-map-viewer-action-card">
                             <div>
-                                <Glyphicon glyph="link" className="fa-4x"/>
+                                <Text fontSize="xxl" >
+                                    <Glyphicon glyph="link"/>
+                                </Text>
                             </div>
                             <Button variant="primary" onClick={() => {
                                 setNewViewerModal('link');
@@ -124,7 +127,9 @@ function MapViewersCatalogPlugin({
                         </div>
                         <div className="gn-new-map-viewer-action-card">
                             <div >
-                                <Glyphicon glyph="context" className="fa-4x"/>
+                                <Text fontSize="xxl" >
+                                    <Glyphicon glyph="context"/>
+                                </Text>
                             </div>
                             <Button variant="primary" onClick={() => setNewViewerModal('')}>
                                 <Message msgId="gnviewer.createNewViewer" />

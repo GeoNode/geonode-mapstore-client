@@ -109,7 +109,7 @@ function UploadDataset({
             remoteTypeErrorMessageId="gnviewer.unsupportedUrlServiceType"
         >
             <ExecutionRequestTable
-                iconName="database"
+                iconName="dataset"
                 titleMsgId="gnviewer.uploadDataset"
                 descriptionMsgId="gnviewer.dragAndDropFile"
                 requests={requests}

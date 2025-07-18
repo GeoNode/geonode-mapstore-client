@@ -29,7 +29,7 @@ function MainEventView({
 
 MainEventView.defaultProps = {
     msgId: '',
-    icon: 'exclamation'
+    icon: 'exclamation-sign'
 };
 
 export default MainEventView;
