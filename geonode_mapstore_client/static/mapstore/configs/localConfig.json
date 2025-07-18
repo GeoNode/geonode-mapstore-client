@@ -1098,7 +1098,7 @@
                     "labelId": "gnviewer.styleUpload",
                     "containerPosition": "header",
                     "blocking": true,
-                    "iconName": "paint-brush",
+                    "iconName": "dropper",
                     "titleMsgId": "gnviewer.uploadDatasetStyle",
                     "action": "resource_style_upload",
                     "api": {
@@ -1136,7 +1136,7 @@
                     "id": "upload-metadata",
                     "labelId": "gnviewer.metadataUpload",
                     "containerPosition": "header",
-                    "iconName": "file-code-o",
+                    "iconName": "code",
                     "titleMsgId": "gnviewer.uploadDatasetMetadata",
                     "blocking": true,
                     "action": "resource_metadata_upload",
