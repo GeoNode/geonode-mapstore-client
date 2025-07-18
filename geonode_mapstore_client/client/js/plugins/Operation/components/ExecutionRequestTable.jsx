@@ -8,7 +8,7 @@
 
 import React, { useState } from 'react';
 import Button from '@mapstore/framework/components/layout/Button';
-import Icon from '@mapstore/framework/plugins/ResourcesCatalog/components/Icon';
+import Icon from '@js/components/Icon';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import ErrorMessageWithTooltip from './ErrorMessageWithTooltip';
@@ -85,7 +85,7 @@ function ExecutionRequestTable({
                                     <td><Icon glyph={iconName}/>{' '}{request.name}</td>
                                     <td>{moment(request.created).format('MMMM Do YYYY, h:mm:ss a')}</td>
                                     <td>
-                                        {request.status === 'running' ? <Spinner/> : null}
+                                        {request.status === 'running' ? <Spinner className="gn-upload-loader-spinner"/> : null}
                                         {request.status === 'failed'
                                             ? <ErrorMessageWithTooltip
                                                 label={<Message msgId="gnviewer.invalidUploadMessageError" />}

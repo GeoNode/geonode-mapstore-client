@@ -28,7 +28,7 @@
                 "lg": 600
             },
             "right": {
-                "md": 550
+                "md": 420
             },
             "bottom": {
                 "sm": 30
@@ -2033,7 +2033,8 @@
                 }
             },
             {
-                "name": "MetadataViewer"
+                "name": "MetadataViewer",
+                "mandatory": true
             },
             {
                 "mandatory": true,
@@ -2694,6 +2695,112 @@
             },
             {
                 "name": "MetadataViewer"
+            },
+            {
+                "name": "LayerDownload",
+                "cfg": {
+                  "cropDataSetVisible": false,
+                  "hideServiceSelector": true,
+                  "defaultSelectedService": "wps",
+                  "formats": [
+                      {
+                          "name": "application/json",
+                          "label": "GeoJSON",
+                          "type": "vector",
+                          "validServices": [
+                              "wps"
+                          ]
+                      },
+                      {
+                          "name": "application/arcgrid",
+                          "label": "ArcGrid",
+                          "type": "raster",
+                          "validServices": [
+                              "wps"
+                          ]
+                      },
+                      {
+                          "name": "image/tiff",
+                          "label": "TIFF",
+                          "type": "raster",
+                          "validServices": [
+                              "wps"
+                          ]
+                      },
+                      {
+                          "name": "image/png",
+                          "label": "PNG",
+                          "type": "raster",
+                          "validServices": [
+                              "wps"
+                          ]
+                      },
+                      {
+                          "name": "image/jpeg",
+                          "label": "JPEG",
+                          "type": "raster",
+                          "validServices": [
+                              "wps"
+                          ]
+                      },
+                      {
+                          "name": "application/wfs-collection-1.0",
+                          "label": "GML (FeatureCollection)",
+                          "type": "vector",
+                          "validServices": [
+                              "wps"
+                          ]
+                      },
+                      {
+                          "name": "application/wfs-collection-1.1",
+                          "label": "GML (WFS 1.1.0 FeatureCollection)",
+                          "type": "vector",
+                          "validServices": [
+                              "wps"
+                          ]
+                      },
+                      {
+                          "name": "application/zip",
+                          "label": "Shapefile",
+                          "type": "vector",
+                          "validServices": [
+                              "wps"
+                          ]
+                      },
+                      {
+                          "name": "text/csv",
+                          "label": "CSV",
+                          "type": "vector",
+                          "validServices": [
+                              "wps"
+                          ]
+                      },
+                      {
+                          "name": "application/geopackage+sqlite3",
+                          "label": "GeoPackage",
+                          "type": "vector",
+                          "validServices": [
+                              "wps"
+                          ]
+                      },
+                      {
+                          "name": "application/geopackage+sqlite3",
+                          "label": "GeoPackage",
+                          "type": "raster",
+                          "validServices": [
+                              "wps"
+                          ]
+                      },
+                      {
+                          "name": "application/vnd.google-earth.kml+xml",
+                          "label": "KML",
+                          "type": "vector",
+                          "validServices": [
+                              "wps"
+                          ]
+                      }
+                  ]
+                }
             }
         ],
         "map_viewer_mobile": [
@@ -3086,12 +3193,12 @@
                                 "type": "date",
                                 "labelId": "resourcesCatalog.columnCreated",
                                 "format": "MMM Do YY, h:mm:ss a",
-                                "icon": { "glyph": "clock-o" },
+                                "icon": { "glyph": "time" },
                                 "noDataLabelId": "resourcesCatalog.emptyNA"
                             },
                             {
                                 "path": "owner.username",
-                                "icon": { "glyph": "user", "type": "glyphicon" },
+                                "icon": { "glyph": "user" },
                                 "image": { "path": "owner.avatar" },
                                 "width": 10,
                                 "labelId": "gnviewer.columnOwner",
@@ -3106,7 +3213,7 @@
                             {
                                 "path": "owner.username",
                                 "target": "footer",
-                                "icon": { "glyph": "user", "type": "glyphicon" },
+                                "icon": { "glyph": "user" },
                                 "image": { "path": "owner.avatar" },
                                 "noDataLabelId": "resourcesCatalog.emptyUnknown"
                             }
