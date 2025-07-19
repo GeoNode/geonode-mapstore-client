@@ -17,6 +17,7 @@
   },
   "scripts": {
     "compile": "mapstore-project compile && node postCompile",
+    "compiledev": "MAPSTORE_DEV=true mapstore-project compile && node postCompile",
     "start": "mapstore-project start",
     "test": "mapstore-project test",
     "test:watch": "mapstore-project test:watch",
