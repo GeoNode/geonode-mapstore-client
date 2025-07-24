@@ -9,10 +9,10 @@
 import React from 'react';
 
 const TitleFieldTemplate = (props) => {
-    const { id, required, title, description } = props;
+    const { id, required, title, description, formContext } = props;
     return (
         <div id={id}>
-            <label>
+            <label className={formContext?.capitalizeTitle ? 'capitalize' : ''}>
                 {title}
                 {required && <span className="required">{' '}*</span>}
                 {description ? <>{' '}{description}</> : null}

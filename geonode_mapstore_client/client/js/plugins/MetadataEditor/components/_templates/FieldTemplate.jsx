@@ -13,7 +13,7 @@ import {
 } from '@rjsf/utils';
 
 function FieldTemplate(props) {
-    const { id, label, children, errors, help, description, hidden, required, displayLabel, registry, uiSchema } = props;
+    const { id, label, children, errors, help, description, hidden, required, displayLabel, registry, uiSchema, formContext } = props;
     const uiOptions = getUiOptions(uiSchema);
     const WrapIfAdditionalTemplate = getTemplate(
         'WrapIfAdditionalTemplate',
@@ -26,7 +26,7 @@ function FieldTemplate(props) {
     return (
         <WrapIfAdditionalTemplate {...props}>
             {displayLabel &&
-                <label className="control-label" htmlFor={id}>
+                <label className={`control-label${formContext?.capitalizeTitle ? ' capitalize' : ''}`} htmlFor={id}>
                     {label}
                     {required && <span className="required">{' '}*</span>}
                     {description ? <>{' '}{description}</> : null}

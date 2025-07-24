@@ -9,3 +9,26 @@
         {% include 'geonode-mapstore-client/snippets/metadata_field_value.html' with name=name value=property.value schema=property.schema %}
     </div>
 </dd>
+<script>
+    function setCapitalizeTitle() {
+        const params = new URLSearchParams(window.location.search);
+        const propString = params.get('props');
+        if (propString) {
+            try {
+                const props = JSON.parse(decodeURIComponent(propString));
+                const capitalizeTitle = props.capitalizeTitle;
+                if (capitalizeTitle) {
+                    const label = document.getElementById('{{prefix}}_{{name}}__label');
+                    if (label) {
+                        label.classList.add('capitalize');
+                    }
+                }
+            } catch (e) {
+                console.warn('Failed to parse props:', e);
+            }
+        }
+    }
+    {% if metadata.items|length > 1 %}
+        setCapitalizeTitle();
+    {% endif %}
+</script>

@@ -50,7 +50,8 @@ const SchemaField = (props) => {
         name,
         errorSchema,
         uiSchema,
-        required
+        required,
+        formContext
     } = props;
     const uiOptions = uiSchema?.['ui:options'];
     const autocomplete = uiOptions?.['geonode-ui:autocomplete'];
@@ -102,7 +103,7 @@ const SchemaField = (props) => {
         const placeholder = autoCompletePlaceholder ?? ' ';
 
         let autoCompleteProps = {
-            className: `field${classNames ? ' ' + classNames : ''}`,
+            className: `field${classNames ? ' ' + classNames : ''} ${formContext?.capitalizeTitle ? 'capitalize' : ''}`,
             clearable: !required,
             creatable,
             id: idSchema.$id,

@@ -34,14 +34,15 @@ function MetadataGroupList({
     idSchema,
     title,
     group,
-    expanded: expandedProp
+    expanded: expandedProp,
+    capitalizeTitle
 }) {
     const [_expanded, setExpanded] = useState(false);
     const groupError = group.some(property => property.error);
     const expanded = expandedProp === undefined ? _expanded : expandedProp;
     return (
         <li>
-            <Button className={groupError ? 'gn-metadata-error' : ''} size="xs" onClick={() => setExpanded((prevExpanded) => !prevExpanded)}>
+            <Button className={`${groupError ? 'gn-metadata-error' : ''}${capitalizeTitle ? ' capitalize' : ''}`} size="xs" onClick={() => setExpanded((prevExpanded) => !prevExpanded)}>
                 <Glyphicon glyph={expanded ? "bottom" : "next"} />{' '}{title}{groupError ? <>{' '}<Glyphicon glyph="exclamation-sign" /></> : null}
             </Button>
             {expanded ? <ul>
@@ -51,7 +52,7 @@ function MetadataGroupList({
                             <li key={property.name}>
                                 <Button
                                     size="xs"
-                                    className={property.error ? 'gn-metadata-error' : ''}
+                                    className={`${property.error ? 'gn-metadata-error' : ''}${capitalizeTitle ? ' capitalize' : ''}`}
                                     onClick={() => scrollIntoView(idSchema[property.name]?.$id)}>
                                     {property.title}
                                     {property.error ? <>{' '}<Glyphicon glyph="exclamation-sign" /></> : null}
@@ -73,7 +74,8 @@ function RootMetadata({
     formContext
 }, context) {
     const {
-        title: metadataTitle
+        title: metadataTitle,
+        capitalizeTitle
     } = formContext;
     const [filterText, setFilterText] = useState('');
 
@@ -118,6 +120,7 @@ function RootMetadata({
                                 title={groupKey}
                                 group={group}
                                 expanded={filterText ? true : undefined}
+                                capitalizeTitle={capitalizeTitle}
                             />
                         );
                     })}
@@ -166,7 +169,8 @@ function ObjectFieldTemplate(props) {
         required,
         schema,
         title,
-        uiSchema
+        uiSchema,
+        formContext
     } = props;
     const options = getUiOptions(uiSchema);
     const TitleFieldTemplate = getTemplate('TitleFieldTemplate', registry, options);
@@ -188,6 +192,7 @@ function ObjectFieldTemplate(props) {
                     schema={schema}
                     uiSchema={uiSchema}
                     registry={registry}
+                    formContext={formContext}
                     description={<DescriptionFieldTemplate
                         id={descriptionId(idSchema)}
                         description={description}

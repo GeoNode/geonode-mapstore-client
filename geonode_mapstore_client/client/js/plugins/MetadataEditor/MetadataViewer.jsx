@@ -40,10 +40,12 @@ const MetadataViewer = ({
     match,
     preview,
     setPreview,
-    labelId = 'gnviewer.viewMetadata'
+    labelId = 'gnviewer.viewMetadata',
+    capitalizeFieldTitle = true
 }) => {
     const { params } = match || {};
     const pk = params?.pk;
+    const customProp = encodeURIComponent(JSON.stringify({capitalizeTitle: capitalizeFieldTitle}));
     return (
         <Portal>
             <ResizableModal
@@ -54,7 +56,7 @@ const MetadataViewer = ({
                 modalClassName="gn-simple-dialog"
                 onClose={() => setPreview(false)}
             >
-                <iframe style={{ border: 'none', position: 'absolute', width: '100%', height: '100%' }} src={`/metadata/${pk}/embed`} />
+                <iframe style={{ border: 'none', position: 'absolute', width: '100%', height: '100%' }} src={`/metadata/${pk}/embed?props=${customProp}`} />
             </ResizableModal>
         </Portal>
     );

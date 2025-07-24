@@ -30,6 +30,7 @@ function MetadataEditor({
     schema,
     uiSchema,
     updateError,
+    capitalizeFieldTitle,
     setLoading,
     setError,
     setUISchema,
@@ -117,7 +118,8 @@ function MetadataEditor({
                     ref={initialize.current}
                     formContext={{
                         title: metadata?.title,
-                        metadata
+                        metadata,
+                        capitalizeTitle: capitalizeFieldTitle
                     }}
                     schema={schema}
                     widgets={widgets}
@@ -160,6 +162,10 @@ function MetadataEditor({
 
 MetadataEditor.contextTypes = {
     messages: PropTypes.object
+};
+
+MetadataEditor.defaultProps = {
+    capitalizeFieldTitle: true
 };
 
 export default MetadataEditor;
