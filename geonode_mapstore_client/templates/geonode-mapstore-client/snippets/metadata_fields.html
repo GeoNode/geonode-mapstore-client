@@ -5,3 +5,27 @@
     {% endblock property %}
 {% endfor %}
 </dl>
+<script>
+    // execute the function only when items are loaded
+    {% if metadata.items|length > 1 %}
+        // capitalize the title of the metadata fields based on config
+        (function () {
+            const params = new URLSearchParams(window.location.search);
+            const propString = params.get('props');
+            if (propString) {
+                try {
+                    const props = JSON.parse(decodeURIComponent(propString));
+                    const capitalizeTitle = props.capitalizeTitle;
+                    const labels = document.querySelectorAll('.control-label');
+                    if (labels.length ) {
+                        labels.forEach(label => {
+                            label.classList.add('capitalize');
+                        });
+                    }
+                } catch (e) {
+                    console.warn('Failed to parse metadata viewer props:', e);
+                }
+            }
+        })();
+    {% endif %}
+</script>
