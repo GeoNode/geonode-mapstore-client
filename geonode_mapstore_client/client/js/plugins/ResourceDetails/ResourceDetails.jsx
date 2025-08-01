@@ -321,7 +321,7 @@ function ResourceDetailsPanel({
     return (
         <TargetSelectorPortal targetSelector={targetSelector}>
             <ResourcesPanelWrapper
-                className="ms-resource-detail shadow-md"
+                className="ms-resource-detail shadow-xl"
                 top={stickyTop}
                 bottom={stickyBottom}
                 show={show}
