@@ -1102,14 +1102,22 @@
                     "titleMsgId": "gnviewer.uploadDatasetStyle",
                     "action": "resource_style_upload",
                     "api": {
+                        "uploadActions": [
+                            {
+                                "label": "gnviewer.upload",
+                                "action": "resource_style_upload",
+                                "danger": false
+                            }
+                        ],
                         "upload": {
+                            "bodyExtra": {
+                            },
                             "url": "{context.getEndpointUrl('uploads', '/upload')}",
                             "maxParallelUploads": 1,
                             "body": {
                                 "file": {
                                     "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
-                                    "base_file": "{context.getUploadMainFile}",
-                                    "action": "resource_style_upload"
+                                    "base_file": "{context.getUploadMainFile}"                              
                                 }
                             },
                             "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['resource_style_upload'] })}"
@@ -1142,14 +1150,22 @@
                     "action": "resource_metadata_upload",
                     "pageReload": true,
                     "api": {
+                        "uploadActions": [
+                            {
+                                "label": "gnviewer.upload",
+                                "action": "resource_metadata_upload",
+                                "danger": false
+                            }
+                        ],
                         "upload": {
+                            "bodyExtra": {
+                            },
                             "url": "{context.getEndpointUrl('uploads', '/upload')}",
                             "maxParallelUploads": 1,
                             "body": {
                                 "file": {
                                     "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
-                                    "base_file": "{context.getUploadMainFile}",
-                                    "action": "resource_metadata_upload"
+                                    "base_file": "{context.getUploadMainFile}"
                                 }
                             },
                             "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['resource_metadata_upload'] })}"
@@ -1174,32 +1190,47 @@
                 "name": "Operation",
                 "cfg": {
                     "id": "replace-dataset",
-                    "labelId": "gnviewer.replaceDataset",
+                    "labelId": "gnviewer.updateDataset",
                     "containerPosition": "header",
                     "iconName": "refresh",
-                    "titleMsgId": "gnviewer.replaceDatasetTitle",
-                    "blocking": true,
+                    "titleMsgId": "gnviewer.updateDatasetTitle",
                     "action": "replace",
                     "pageReload": true,
                     "api": {
+                        "uploadActions": [
+                            {
+                                "label": "gnviewer.update",
+                                "action": "upsert",
+                                "danger": false
+                            },{
+                                "label": "gnviewer.replace",
+                                "action": "replace",
+                                "danger": true
+                            }
+                        ],
                         "upload": {
+                            "bodyExtra": {
+                                "replace": {
+                                    "file": {
+                                        "store_spatial_files": true,
+                                        "overwrite_existing_layer": true
+                                    }
+                                }
+                            },
                             "url": "{context.getEndpointUrl('uploads', '/upload')}",
                             "maxParallelUploads": 1,
                             "body": {
                                 "file": {
                                     "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
-                                    "base_file": "{context.getUploadMainFile}",
-                                    "store_spatial_files": true,
-                                    "overwrite_existing_layer": true,
-                                    "action": "replace"
+                                    "base_file": "{context.getUploadMainFile}"
                                 }
                             },
-                            "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['replace'] })}"
+                            "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['replace', 'upsert'] })}"
                         },
                         "executionRequest": {
                             "url": "{context.getEndpointUrl('executionrequest')}",
                             "params": {
-                                "filter{action}": "replace",
+                                "filter{action.in}": ["replace", "upsert"],
                                 "sort[]": "-created",
                                 "filter{geonode_resource}": "{context.get(state('gnResourceData'), 'pk')}"
                             }
