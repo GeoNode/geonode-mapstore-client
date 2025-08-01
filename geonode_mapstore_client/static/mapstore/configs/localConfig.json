@@ -1194,6 +1194,7 @@
                     "containerPosition": "header",
                     "iconName": "refresh",
                     "titleMsgId": "gnviewer.updateDatasetTitle",
+                    "blocking": true,
                     "action": "replace",
                     "pageReload": true,
                     "api": {
