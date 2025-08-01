@@ -107,6 +107,7 @@ function UploadDataset({
                 { value: '3dtiles', label: '3D Tiles' }
             ]}
             remoteTypeErrorMessageId="gnviewer.unsupportedUrlServiceType"
+            uploadActions={[{"label": "gnviewer.upload", "danger": false , "action": "upload"}]}
         >
             <ExecutionRequestTable
                 iconName="dataset"
