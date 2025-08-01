@@ -29,7 +29,7 @@ function UploadDocument({uploadConfig}) {
 
     const api = {
         upload: {
-            uploadActions: [{"label": "gnviewer.upload", "danger": false }],
+            uploadActions: [{"label": "gnviewer.upload", "danger": false , "action":""}],
             url: '/documents/upload?no__redirect=true',
             body: {
                 file: {
