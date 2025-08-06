@@ -30,19 +30,17 @@ function SharePageLink({label, value, collapsible = true, children}) {
         <div className="gn-share-link-pad">
             <div className="gn-share-link-wrapper">
                 <div className="gn-share-page-link">
-                    {label && (
-                        <FlexBox
-                            centerChildrenVertically
-                            className="gn-share-title-header"
-                            {...(collapsible && {
-                                onClick: () => setIsExpanded(!isExpanded),
-                                style: { cursor: 'pointer' }
-                            })}
-                        >
-                            <label className="gn-share-title">{label}</label>
-                            {collapsible && <Glyphicon glyph={isExpanded ? "chevron-down" : "chevron-right"}/>}
-                        </FlexBox>
-                    )}
+                    <FlexBox
+                        centerChildrenVertically
+                        className="gn-share-title-header"
+                        {...(collapsible && {
+                            onClick: () => setIsExpanded(!isExpanded),
+                            style: { cursor: 'pointer' }
+                        })}
+                    >
+                        <label className="gn-share-title">{label}</label>
+                        {collapsible && <Glyphicon glyph={isExpanded ? "chevron-down" : "chevron-right"}/>}
+                    </FlexBox>
                     {(!collapsible || isExpanded) && (
                         <div className="gn-share-content">
                             <div className="gn-share-link">
