@@ -116,7 +116,7 @@ const Permissions = ({
         });
     }, [availableResourceTypes]);
     return (
-        <FlexBox className="permissions-container" column gap="xs">
+        <FlexBox className="gn-permissions-container" column gap="xs">
             <Text strong>
                 <Message msgId={"gnviewer.permissions"} />
             </Text>

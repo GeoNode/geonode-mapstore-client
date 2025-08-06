@@ -7,8 +7,7 @@ import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Text from '@mapstore/framework/components/layout/Text';
 import SelectInfiniteScroll from '@mapstore/framework/plugins/ResourcesCatalog/components/SelectInfiniteScroll';
 import { getGroups } from '@js/api/geonode/v2';
-import { canAccessPermissions, canManageResourceSettings, RESOURCE_MANAGEMENT_PROPERTIES } from '@js/utils/ResourceUtils';
-import DetailsPermissions from '@js/plugins/ResourceDetails/containers/Permissions';
+import { canManageResourceSettings, RESOURCE_MANAGEMENT_PROPERTIES } from '@js/utils/ResourceUtils';
 
 const MessageTooltip = tooltip(forwardRef(({children, msgId, ...props}, ref) => {
     return (
@@ -47,7 +46,6 @@ function DetailsSettings({ resource, onChange }) {
                     />
                 </FormGroup>
             </FlexBox.Fill>
-            {canAccessPermissions(resource) && <DetailsPermissions resource={resource} />}
             {canManageResourceSettings(resource) && (
                 <FlexBox column gap="xs">
                     <Text strong>
