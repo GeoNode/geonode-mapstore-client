@@ -10,8 +10,8 @@ import expect from 'expect';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { getPluginForTest } from '@mapstore/framework/plugins/__tests__/pluginsTestUtils';
-import Share from '../Share';
 import gnresource from '../../reducers/gnresource';
+import Share from '../Share';
 
 
 describe('Share Plugin', () => {
