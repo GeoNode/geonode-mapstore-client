@@ -18,6 +18,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import controls from '@mapstore/framework/reducers/controls';
 import Button from '@mapstore/framework/components/layout/Button';
 import { mapInfoSelector } from '@mapstore/framework/selectors/map';
+
 import OverlayContainer from '@js/components/OverlayContainer';
 import {
     isNewResource,
@@ -26,12 +27,14 @@ import {
     getViewedResourceType
 } from '@js/selectors/resource';
 import {
-    formatResourceLinkUrl,
+    canAccessPermissions,
     getDownloadUrlInfo,
     getResourceTypesInfo
 } from '@js/utils/ResourceUtils';
-import SharePageLink from '@js/plugins/share/SharePageLink';
-import ShareEmbedLink from '@js/plugins/share/ShareEmbedLink';
+import SharePageLink from '@js/plugins/Share/SharePageLink';
+import ShareEmbedLink from '@js/plugins/Share/ShareEmbedLink';
+import Permissions from '@js/plugins/Share/components/Permissions';
+import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 
 const getEmbedUrl = (resource) => {
     const { formatEmbedUrl = (_resource) => _resource?.embed_url  } = getResourceTypesInfo()[resource?.resource_type] || {};
@@ -40,11 +43,11 @@ const getEmbedUrl = (resource) => {
 function Share({
     enabled,
     onClose,
-    resourceType,
-    embedUrl,
-    downloadUrl,
-    pageUrl
+    resource,
+    resourceType
 }) {
+    const embedUrl = getEmbedUrl(resource);
+    const downloadUrl = getDownloadUrlInfo(resource)?.url;
     return (
         <OverlayContainer
             enabled={enabled}
@@ -53,15 +56,15 @@ function Share({
             <section className="gn-share-panel">
                 <div className="gn-share-panel-head">
                     <h2><Message msgId="gnviewer.shareThisResource" /></h2>
-                    <Button className="square-button" onClick={() => onClose()}>
+                    <Button className="square-button gn-share-panel-close" onClick={() => onClose()}>
                         <Glyphicon glyph="1-close" />
                     </Button>
                 </div>
-                <div className="gn-share-panel-body">
-                    <SharePageLink value={pageUrl} label={<Message msgId="gnviewer.thisPage" />} />
+                <FlexBox column gap="xs" className="gn-share-panel-body">
+                    {canAccessPermissions(resource) && <Permissions resource={resource} />}
+                    {(resourceType === 'document' && !!downloadUrl) && <SharePageLink value={downloadUrl} label={<Message msgId={`gnviewer.directLink`} />} collapsible={false} />}
                     {embedUrl && <ShareEmbedLink embedUrl={embedUrl} label={<Message msgId={`gnviewer.embed${resourceType}`} />} />}
-                    {(resourceType === 'document' && !!downloadUrl) && <SharePageLink value={downloadUrl} label={<Message msgId={`gnviewer.directLink`} />} />}
-                </div>
+                </FlexBox>
             </section>
         </OverlayContainer>
     );
@@ -86,10 +89,8 @@ const SharePlugin = connect(
         getViewedResourceType
     ], (enabled, resource, type) => ({
         enabled,
-        embedUrl: getEmbedUrl(resource),
-        resourceType: type,
-        downloadUrl: getDownloadUrlInfo(resource)?.url,
-        pageUrl: formatResourceLinkUrl(resource)
+        resource,
+        resourceType: type
     })),
     {
         onClose: setControlProperty.bind(null, 'rightOverlay', 'enabled', false)

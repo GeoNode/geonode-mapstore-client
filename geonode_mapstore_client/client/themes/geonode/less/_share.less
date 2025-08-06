@@ -11,7 +11,9 @@
         .color-var(@theme-vars[main-color]);
         .background-color-var(@theme-vars[main-bg]);
     }
-    .gn-share-link-wrapper {
+    .gn-share-content, 
+    .gn-share-title-header, 
+    .gn-permissions-container {
         .color-var(@theme-vars[main-color]);
         .background-color-var(@theme-vars[main-bg]);
         .border-color-var(@theme-vars[main-border-color]);
@@ -41,13 +43,34 @@
             margin: 0;
             font-size: 1.4rem;
         }
-        margin: 0 0.5rem;
+        margin: 0.5rem;
+        .gn-share-panel-close {
+            width: 2rem;
+            height: 2rem;
+            border: none;
+        }
     }
     .gn-share-panel-body {
         flex: 1;
         overflow: auto;
         position: relative;
         width: 100%;
+        padding: 5px 10px;
+
+        .gn-permissions-container {
+            padding: 5px 10px;
+            max-height: 600px;
+            overflow-y: auto;
+            border-width: 1px;
+            border-style: solid;
+
+            .ms-permissions {
+                width: 100%;
+            }
+            .ms-permissions * {
+                font-size: @font-size-small;
+            }
+        }
     }
     .ms-popover {
         display: inline-block;
@@ -81,14 +104,7 @@
     }
 }
 
-.gn-share-link-wrapper {
-    border-width: 1px;
-    border-style: solid;
-}
-
 .gn-share-link-pad {
-    padding: 5px 10px;
-
     .gn-share-link {
         display: flex;
         align-items: center;
@@ -111,8 +127,7 @@
     }
     
     .gn-share-page-link {
-        padding: 0.2rem 0.5rem;
-
+        padding: 0.2rem 0;
         .gn-share-title {
             margin-bottom: 0;
             font-size: 0.8rem;
@@ -120,6 +135,18 @@
         }
         .checkbox {
             font-size: @font-size-sm;
+        }
+        .gn-share-title-header {
+            padding: 0.5rem 0.75rem;
+            border-width: 1px;
+            border-style: solid;
+            justify-content: space-between;
+        }
+        .gn-share-content {
+            padding: 0.75rem;
+            border-width: 1px;
+            border-style: solid;
+            border-top: none;
         }
     }
 }
