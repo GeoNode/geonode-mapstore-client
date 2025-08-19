@@ -180,7 +180,6 @@
             "viewMetadata": "Metadaten anzeigen",
             "viewData":  "Daten anzeigen",
             "viewInfo": "Informationen anzeigen",
-            "editPermissions": "Berechtigungen bearbeiten",
             "backToDataset": "< Zurück zum Datensatz",
             "goBackTo": "< Geh zurück zu { resourceName }",
             "uploadImage": "Klicken Sie hier, um ein Bild hochzuladen",

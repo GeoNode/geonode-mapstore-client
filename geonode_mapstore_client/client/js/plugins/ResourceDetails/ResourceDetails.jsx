@@ -390,7 +390,7 @@ const ResourceDetailsPlugin = connect(
 export default createPlugin('ResourceDetails', {
     component: ResourceDetailsPlugin,
     containers: {
-        ActionNavbar: [{
+        ActionNavbar: {
             name: 'ResourceDetailsButton',
             Component: connect((state) => ({resource: getResourceData(state)}), { onShow: setShowDetails })(({ component, resourcesGridId, onShow, resource }) => {
                 if (!resource?.pk) return null;
@@ -410,31 +410,7 @@ export default createPlugin('ResourceDetails', {
             }),
             priority: 1,
             doNotHide: true
-        }, {
-            name: 'ResourceEditPermissions',
-            Component: connect((state) => ({resource: getResourceData(state)}), { onShow: setShowDetails, onSelectTab: setDetailPanelTab })(
-                ({ resourcesGridId, onShow, resource, onSelectTab }) => {
-                    if (!resource?.pk) return null;
-
-                    function handleClick() {
-                        onShow(true, resourcesGridId);
-                        onSelectTab('settings');
-                    }
-                    return (
-                        <Button
-                            variant="default"
-                            size="md"
-                            onClick={handleClick}
-                            labelId="gnviewer.editPermissions"
-                        >
-                            <Message msgId="gnviewer.editPermissions" />
-                        </Button>
-                    );
-                }
-            ),
-            priority: 1,
-            doNotHide: true
-        }],
+        },
         ResourcesGrid: {
             priority: 2,
             target: 'card-buttons',

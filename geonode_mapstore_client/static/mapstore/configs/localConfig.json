@@ -608,10 +608,6 @@
                                     "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
                                 },
                                 {
-                                    "type": "plugin",
-                                    "name": "ResourceEditPermissions"
-                                },
-                                {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
@@ -1522,10 +1518,6 @@
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
-                                    "type": "plugin",
-                                    "name": "ResourceEditPermissions"
-                                },
-                                {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
@@ -2261,10 +2253,6 @@
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
-                                    "type": "plugin",
-                                    "name": "ResourceEditPermissions"
-                                },
-                                {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
@@ -2451,10 +2439,6 @@
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
                                 {
-                                    "type": "plugin",
-                                    "name": "ResourceEditPermissions"
-                                },
-                                {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
@@ -2599,10 +2583,6 @@
                             "type": "dropdown",
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
-                                {
-                                    "type": "plugin",
-                                    "name": "ResourceEditPermissions"
-                                },
                                 {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
@@ -3544,10 +3524,6 @@
                             "type": "dropdown",
                             "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
                             "items": [
-                                {
-                                    "type": "plugin",
-                                    "name": "ResourceEditPermissions"
-                                },
                                 {
                                     "type": "link",
                                     "href": "{context.getMetadataUrl(state('gnResourceData'))}",
