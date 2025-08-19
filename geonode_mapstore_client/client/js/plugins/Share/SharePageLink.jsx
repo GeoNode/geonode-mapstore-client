@@ -32,7 +32,7 @@ function SharePageLink({label, value, collapsible = true, children}) {
                 <div className="gn-share-page-link">
                     <FlexBox
                         centerChildrenVertically
-                        className="gn-share-title-header"
+                        className={`gn-share-title-header ${collapsible ? 'collapsible' : ''}`}
                         {...(collapsible && {
                             onClick: () => setIsExpanded(!isExpanded),
                             style: { cursor: 'pointer' }
@@ -42,7 +42,7 @@ function SharePageLink({label, value, collapsible = true, children}) {
                         {collapsible && <Glyphicon glyph={isExpanded ? "chevron-down" : "chevron-right"}/>}
                     </FlexBox>
                     {(!collapsible || isExpanded) && (
-                        <div className="gn-share-content">
+                        <div className={`gn-share-content ${collapsible ? 'collapsible' : ''}`}>
                             <div className="gn-share-link">
                                 <input
                                     readOnly

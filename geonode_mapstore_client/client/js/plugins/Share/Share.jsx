@@ -60,7 +60,7 @@ function Share({
                         <Glyphicon glyph="1-close" />
                     </Button>
                 </div>
-                <FlexBox column gap="xs" className="gn-share-panel-body">
+                <FlexBox column gap="md" className="gn-share-panel-body">
                     {canAccessPermissions(resource) && <Permissions resource={resource} />}
                     {(resourceType === 'document' && !!downloadUrl) && <SharePageLink value={downloadUrl} label={<Message msgId={`gnviewer.directLink`} />} collapsible={false} />}
                     {embedUrl && <ShareEmbedLink embedUrl={embedUrl} label={<Message msgId={`gnviewer.embed${resourceType}`} />} />}
