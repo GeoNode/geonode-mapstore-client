@@ -27,12 +27,10 @@ import ResourcesPanelWrapper from '@mapstore/framework/plugins/ResourcesCatalog/
 import TargetSelectorPortal from '@mapstore/framework/plugins/ResourcesCatalog/components/TargetSelectorPortal';
 import useResourcePanelWrapper from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useResourcePanelWrapper';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
-import { setShowDetails, setSelectedResource, setDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
+import { setShowDetails, setSelectedResource } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
 import PendingStatePrompt from '@mapstore/framework/plugins/ResourcesCatalog/containers/PendingStatePrompt';
 import DetailsPanel from './containers/DetailsPanel';
 import useDetectClickOut from '@js/hooks/useDetectClickOut';
-import Button from '@mapstore/framework/components/layout/Button';
-import Message from '@mapstore/framework/components/I18N/Message';
 
 /**
 * @module ResourceDetails
