@@ -100,6 +100,7 @@ function OperationUpload({
                 </div>}
                 onCancel={cancelRequest}
                 onUpload={uploadRequest}
+                uploadActions={api.uploadActions}
             >
                 <ExecutionRequestTable
                     iconName={iconName}
