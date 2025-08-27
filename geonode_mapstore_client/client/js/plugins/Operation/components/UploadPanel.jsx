@@ -57,14 +57,13 @@ function UploadPanel({
     remoteTypeErrorMessageId,
     remoteTypeFromUrl,
     isRemoteTypesDisabled,
-    uploadActions = [],
+    uploadActions=[{ labelId: 'gnviewer.upload' }],
 }) {
 
     const inputFile = useRef();
 
     const [uploads, setUploads] = useState([]);
     const [showConfirm, setShowConfirm] = useState(false);
-    const [pendingAction, setPendingAction] = useState(null);
 
     useEffect(() => {
         setUploads(prevUploads =>
@@ -124,10 +123,9 @@ function UploadPanel({
     const disabledAdd = disabled || loading || readyUploads.length === maxParallelUploads;
 
 
-    const handleUpload = (action) => {
-        if (action === 'replace') {
+    const handleUpload = (showConfirm, action) => {
+        if (showConfirm) {
             setShowConfirm(true);
-            setPendingAction(action);
             return;
         }
         onUpload(readyUploads, action);
@@ -145,7 +143,7 @@ function UploadPanel({
                     setShowConfirm(false);
                 }}
                 onConfirm={() => {
-                    onUpload(readyUploads, pendingAction);
+                    onUpload(readyUploads);
                     setShowConfirm(false);
                 }}
             >
@@ -227,15 +225,15 @@ function UploadPanel({
                                     :
                                     !loading ? (
                                     <>
-                                        {uploadActions?.map(({ label, action, danger }, id) => (
+                                        {uploadActions?.map(({ labelId, variant, action, showConfirm}, id) => (
                                             <Button
-                                                key={action}
-                                                variant={danger ? "danger" : "primary"}
+                                                key={id}
+                                                variant={variant ? variant : "primary"}
                                                 disabled={readyUploads.length === 0 || disabled}
                                                 style={{ marginRight: id < uploadActions.length - 1 ? 8 : 0 }}
-                                                onClick={() => handleUpload(action)}
+                                                onClick={() => handleUpload(showConfirm, action)}
                                             >
-                                                <Message msgId={label} />
+                                                <Message msgId={labelId} />
                                             </Button>
                                         ))}
                                         </>

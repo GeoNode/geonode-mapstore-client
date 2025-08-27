@@ -29,7 +29,6 @@ function UploadDocument({uploadConfig}) {
 
     const api = {
         upload: {
-            uploadActions: [{"label": "gnviewer.upload", "danger": false , "action":""}],
             url: '/documents/upload?no__redirect=true',
             body: {
                 file: {
@@ -96,7 +95,6 @@ function UploadDocument({uploadConfig}) {
             isRemoteTypesDisabled={(data) => {
                 return !data?.validation?.isValidRemoteUrl || hasExtensionInUrl(data);
             }}
-            uploadActions={api.upload.uploadActions}
         >
             <ExecutionRequestTable
                 iconName="file"

@@ -23,9 +23,11 @@ const useUpload = ({
     const [completed, setCompleted] = useState({});
     const [progress, setProgress] = useState({});
 
-    const getUploadRequestPayload = (upload,action) => {
+    const getUploadRequestPayload = (upload, action) => {
+        console.log(upload);
         const bodyConfig = api?.body?.[upload?.type];
-        const payload = Object.keys(bodyConfig).reduce((acc, key) => {
+        console.log(api);
+        let payload = Object.keys(bodyConfig).reduce((acc, key) => {
             return {
                 ...acc,
                 [key]: isFunction(bodyConfig[key])
@@ -33,11 +35,14 @@ const useUpload = ({
                     : bodyConfig[key]
             };
         }, {});
-        if(action) {
-            payload['action'] = action;
-        }
+        console.log(payload);
         const extraBody = api?.bodyExtra?.[action]?.[upload?.type] || {};
-        Object.assign(payload, extraBody);
+        payload = {
+            ...payload,
+            ...extraBody,
+            action: action || payload?.action
+        };
+        console.log(payload, 'final');
         if (upload.files) {
             Object.keys(upload.files).forEach((ext) => {
                 payload[`${ext}_file`] = upload.files[ext];
@@ -69,7 +74,7 @@ const useUpload = ({
             }));
             uploadIds.forEach((uploadId) => sources[uploadId].cancel());
         },
-        uploadRequest: (uploads,action) => {
+        uploadRequest: (uploads, action) => {
             if (!loading) {
                 setLoading(true);
                 setErrors({});
@@ -81,7 +86,7 @@ const useUpload = ({
                         onUploadProgress: onUploadProgress(upload.id),
                         cancelToken: sources[upload.id].token
                     };
-                    const payload = getUploadRequestPayload(upload,action);
+                    const payload = getUploadRequestPayload(upload, action);
                     return axios[api.method || 'post'](api.url, payload, config)
                         .then(({ data }) => ({ status: 'success', data, id: upload.id, upload }))
                         .catch((error) => {

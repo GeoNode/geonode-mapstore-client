@@ -1102,22 +1102,14 @@
                     "titleMsgId": "gnviewer.uploadDatasetStyle",
                     "action": "resource_style_upload",
                     "api": {
-                        "uploadActions": [
-                            {
-                                "label": "gnviewer.upload",
-                                "action": "resource_style_upload",
-                                "danger": false
-                            }
-                        ],
                         "upload": {
-                            "bodyExtra": {
-                            },
                             "url": "{context.getEndpointUrl('uploads', '/upload')}",
                             "maxParallelUploads": 1,
                             "body": {
                                 "file": {
                                     "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
-                                    "base_file": "{context.getUploadMainFile}"                              
+                                    "base_file": "{context.getUploadMainFile}",
+                                    "action": "resource_style_upload"                              
                                 }
                             },
                             "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['resource_style_upload'] })}"
@@ -1150,22 +1142,14 @@
                     "action": "resource_metadata_upload",
                     "pageReload": true,
                     "api": {
-                        "uploadActions": [
-                            {
-                                "label": "gnviewer.upload",
-                                "action": "resource_metadata_upload",
-                                "danger": false
-                            }
-                        ],
                         "upload": {
-                            "bodyExtra": {
-                            },
                             "url": "{context.getEndpointUrl('uploads', '/upload')}",
                             "maxParallelUploads": 1,
                             "body": {
                                 "file": {
                                     "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
-                                    "base_file": "{context.getUploadMainFile}"
+                                    "base_file": "{context.getUploadMainFile}",
+                                    "action": "resource_metadata_upload"
                                 }
                             },
                             "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['resource_metadata_upload'] })}"
@@ -1200,13 +1184,14 @@
                     "api": {
                         "uploadActions": [
                             {
-                                "label": "gnviewer.update",
-                                "action": "upsert",
-                                "danger": false
-                            },{
-                                "label": "gnviewer.replace",
+                                "labelId": "gnviewer.update",
+                                "action": "upsert"
+                            },
+                            {
+                                "labelId": "gnviewer.replace",
                                 "action": "replace",
-                                "danger": true
+                                "variant": "danger",
+                                "showConfirm": true
                             }
                         ],
                         "upload": {
@@ -1223,7 +1208,8 @@
                             "body": {
                                 "file": {
                                     "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
-                                    "base_file": "{context.getUploadMainFile}"
+                                    "base_file": "{context.getUploadMainFile}",
+                                    "action": "replace"
                                 }
                             },
                             "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['replace', 'upsert'] })}"
