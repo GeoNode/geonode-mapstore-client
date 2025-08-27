@@ -123,8 +123,8 @@ function UploadPanel({
     const disabledAdd = disabled || loading || readyUploads.length === maxParallelUploads;
 
 
-    const handleUpload = (showConfirm, action) => {
-        if (showConfirm) {
+    const handleUpload = (confirmDialog, action) => {
+        if (confirmDialog) {
             setShowConfirm(true);
             return;
         }
