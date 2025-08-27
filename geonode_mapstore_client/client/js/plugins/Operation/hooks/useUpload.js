@@ -24,9 +24,7 @@ const useUpload = ({
     const [progress, setProgress] = useState({});
 
     const getUploadRequestPayload = (upload, action) => {
-        console.log(upload);
         const bodyConfig = api?.body?.[upload?.type];
-        console.log(api);
         let payload = Object.keys(bodyConfig).reduce((acc, key) => {
             return {
                 ...acc,
@@ -35,14 +33,12 @@ const useUpload = ({
                     : bodyConfig[key]
             };
         }, {});
-        console.log(payload);
         const extraBody = api?.bodyExtra?.[action]?.[upload?.type] || {};
         payload = {
             ...payload,
             ...extraBody,
             action: action || payload?.action
         };
-        console.log(payload, 'final');
         if (upload.files) {
             Object.keys(upload.files).forEach((ext) => {
                 payload[`${ext}_file`] = upload.files[ext];
