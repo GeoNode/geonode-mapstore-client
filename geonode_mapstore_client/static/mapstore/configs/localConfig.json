@@ -1109,7 +1109,7 @@
                                 "file": {
                                     "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
                                     "base_file": "{context.getUploadMainFile}",
-                                    "action": "resource_style_upload"                              
+                                    "action": "resource_style_upload"
                                 }
                             },
                             "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['resource_style_upload'] })}"
