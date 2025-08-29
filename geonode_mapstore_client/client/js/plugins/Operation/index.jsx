@@ -17,7 +17,7 @@ import operation from './reducers/operation';
 import epics from './epics/operation';
 import OperationUpload from './containers/OperationUpload';
 import Message from '@mapstore/framework/components/I18N/Message';
-import Api from '@mapstore/framework/api/GeoStoreDAO';
+
 
 /**
 * @module Operation

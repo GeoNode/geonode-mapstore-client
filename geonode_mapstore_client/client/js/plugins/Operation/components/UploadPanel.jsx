@@ -225,13 +225,13 @@ function UploadPanel({
                                     :
                                     !loading ? (
                                     <>
-                                        {uploadActions?.map(({ labelId, variant, action, showConfirm }, id) => (
+                                        {uploadActions?.map(({ labelId, variant, action, showConfirm: shouldConfirm }, id) => (
                                             <Button
                                                 key={id}
                                                 variant={variant ? variant : "primary"}
                                                 disabled={readyUploads.length === 0 || disabled}
                                                 style={{ marginRight: id < uploadActions.length - 1 ? 8 : 0 }}
-                                                onClick={() => handleUpload(showConfirm, action)}
+                                                onClick={() => handleUpload(shouldConfirm, action)}
                                             >
                                                 <Message msgId={labelId} />
                                             </Button>
