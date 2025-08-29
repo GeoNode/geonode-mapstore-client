@@ -33,11 +33,12 @@ const useUpload = ({
                     : bodyConfig[key]
             };
         }, {});
-        const extraBody = api?.bodyExtra?.[action]?.[upload?.type] || {};
+        const actionToUse = action ? action : payload?.action;
+        const extraBody = api?.bodyExtra?.[actionToUse]?.[upload?.type] || {};
         payload = {
             ...payload,
             ...extraBody,
-            action: action || payload?.action
+            action: actionToUse
         };
         if (upload.files) {
             Object.keys(upload.files).forEach((ext) => {

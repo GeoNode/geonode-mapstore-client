@@ -225,7 +225,7 @@ function UploadPanel({
                                     :
                                     !loading ? (
                                     <>
-                                        {uploadActions?.map(({ labelId, variant, action, showConfirm}, id) => (
+                                        {uploadActions?.map(({ labelId, variant, action, showConfirm }, id) => (
                                             <Button
                                                 key={id}
                                                 variant={variant ? variant : "primary"}

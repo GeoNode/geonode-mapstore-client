@@ -17,6 +17,7 @@ import operation from './reducers/operation';
 import epics from './epics/operation';
 import OperationUpload from './containers/OperationUpload';
 import Message from '@mapstore/framework/components/I18N/Message';
+import Api from '@mapstore/framework/api/GeoStoreDAO';
 
 /**
 * @module Operation
@@ -107,15 +108,19 @@ function Operation({
     // open the import ui if a blocking execution is still running
     const executions = resource?.executions;
     useEffect(() => {
-        if (executions && action && blocking) {
+        const actionsToCheck = api?.uploadActions 
+            ? api.uploadActions.map(actionObj => actionObj.action) 
+            : [action];
+
+        if (executions && blocking && actionsToCheck) {
             const runningExecution = executions
                 .find((execution) => execution.status === 'running'
-                && execution?.input_params?.action === action);
+                && actionsToCheck.includes(execution?.input_params?.action));
             if (runningExecution) {
                 onSelect(id);
             }
         }
-    }, [id, blocking, action, executions]);
+    }, [id, blocking, action, executions, api]);
 
     if (selected !== id) {
         return null;
