@@ -42,7 +42,6 @@ function MoveUpButton({
             disabled={disabled}
             className="square-button-md"
             onClick={onClick}
-            style={ disabled ? { visibility: 'hidden' } : {}}
         >
             <Glyphicon glyph="arrow-up" />
         </Button>
@@ -58,7 +57,6 @@ function MoveDownButton({
             disabled={disabled}
             className="square-button-md"
             onClick={onClick}
-            style={ disabled ? { visibility: 'hidden' } : {}}
         >
             <Glyphicon glyph="arrow-down" />
         </Button>

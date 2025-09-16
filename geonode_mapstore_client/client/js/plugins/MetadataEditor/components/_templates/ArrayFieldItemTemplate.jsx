@@ -31,7 +31,7 @@ function ArrayFieldItemTemplate(props) {
         <div className={className}>
             {children}
             {hasToolbar && (
-                <>
+                <div className={'field-item-toolbar'}>
                     {(hasMoveUp || hasMoveDown) && (
                         <MoveUpButton
                             disabled={disabled || readonly || !hasMoveUp}
@@ -64,7 +64,7 @@ function ArrayFieldItemTemplate(props) {
                             registry={registry}
                         />
                     )}
-                </>
+                </div>
             )}
         </div>
     );
