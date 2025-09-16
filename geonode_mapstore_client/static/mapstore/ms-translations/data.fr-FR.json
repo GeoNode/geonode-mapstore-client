@@ -533,7 +533,8 @@
           "sunlightOption": "Lumière du soleil",
           "dateTimeOption": "Date-heure UTC spécifique",
           "dateTimePlaceholder": "Sélectionnez la date et l'heure"
-        }
+        },
+        "collisionDetection": "Activer la détection de collisions"
       },
       "thumbnailError": {
         "error403": "Une erreur est survenue lors de la suppression de la vignette",
@@ -4284,6 +4285,10 @@
         "noContentYetContent": "Ce catalogue n'a pas encore de contenu en vedette publié. <br/> Nous travaillons à le remplir avec de bonnes ressources. <br/><br/>Restez à l'écoute!",
         "noPublicContentTitle": "Ressources en vedette",
         "noPublicContentContent": "Ce catalogue n'a pas de ressources en vedette."
+      },
+      "groupsSection": {
+        "noContentYetTitle": "Aucun groupe trouvé",
+        "noContentYetContent": "Il n'y a pas de groupes d'utilisateurs. Cliquez sur « Nouveau groupe » pour en créer un."
       },
       "mapsFilter": "Cartes",
       "dashboardsFilter": "Tableaux de bord",
