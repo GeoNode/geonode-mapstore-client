@@ -22,6 +22,7 @@ import OperationPlugin from '@js/plugins/Operation';
 import MetadataEditorPlugin from '@js/plugins/MetadataEditor';
 import MetadataViewerPlugin from '@js/plugins/MetadataEditor/MetadataViewer';
 import FavoritesPlugin from '@js/plugins/Favorites';
+import CreateDatasetPlugin from '@js/plugins/CreateDataset';
 import {
     ResourcesGridPlugin,
     ResourcesFiltersFormPlugin
@@ -78,6 +79,7 @@ export const plugins = {
     ResourcesGridPlugin,
     FavoritesPlugin,
     ResourcesFiltersFormPlugin,
+    CreateDatasetPlugin,
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
         () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload'),
