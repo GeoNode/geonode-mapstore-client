@@ -489,7 +489,16 @@
             "geostory": "geostory",
             "document": "document",
             "dashboard": "dashboard",
-            "mapviewer": "mapviewer"
+            "mapviewer": "mapviewer",
+            "none": "None",
+            "options": "Options",
+            "range": "Range",
+            "points": "Points",
+            "lines": "Lines",
+            "polygons": "Polygons",
+            "string": "String",
+            "integer": "Integer",
+            "float": "Float"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",
