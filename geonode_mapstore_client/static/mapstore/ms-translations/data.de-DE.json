@@ -571,7 +571,8 @@
           "sunlightOption": "Sonnenlicht",
           "dateTimeOption": "Spezifisches UTC-Datum-Uhrzeit",
           "dateTimePlaceholder": "Wählen Sie Datum und Uhrzeit"
-        }
+        },
+        "collisionDetection": "Geländekollisionserkennung aktivieren"
       },
       "thumbnailError": {
         "error403": "Sie haben keine Berechtigung um Miniaturansichten hochzuladen",
@@ -4322,6 +4323,10 @@
         "noContentYetContent": "Dieser Katalog hat noch keine veröffentlichten ausgewählten Inhalte. <br/> Wir arbeiten daran, ihn mit tollen Ressourcen zu füllen. <br/><br/>Bleiben Sie dran!",
         "noPublicContentTitle": "Ausgewählte Ressourcen",
         "noPublicContentContent": "Dieser Katalog enthält keine ausgewählten Ressourcen."
+      },
+      "groupsSection": {
+        "noContentYetTitle": "Keine Gruppen vorhanden",
+        "noContentYetContent": "Es sind keine Benutzergruppen vorhanden. Klicken Sie auf \"Neue Gruppe\", um eine zu erstellen"
       },
       "mapsFilter": "Karten",
       "dashboardsFilter": "Dashboards",

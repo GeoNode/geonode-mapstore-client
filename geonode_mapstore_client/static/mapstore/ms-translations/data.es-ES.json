@@ -533,7 +533,8 @@
           "sunlightOption": "Luz solar",
           "dateTimeOption": "Fecha-Hora UTC específica",
           "dateTimePlaceholder": "Seleccione la fecha y hora"
-        }
+        },
+        "collisionDetection": "Activar detección de colisiones"
       },
       "thumbnailError": {
         "error403": "Error al modificar la miniatura",
@@ -4283,6 +4284,10 @@
         "noContentYetContent": "Este catálogo aún no tiene contenidos destacados publicados. <br/> Estamos trabajando para llenarlo con excelentes recursos. <br/><br/>¡Esté atento!",
         "noPublicContentTitle": "Recursos destacados",
         "noPublicContentContent": "Este catálogo no tiene recursos destacados."
+      },
+      "groupsSection": {
+        "noContentYetTitle": "No hay grupos",
+        "noContentYetContent": "No hay grupos de usuarios. Haz clic en \"Nuevo grupo\" para crear uno"
       },
       "mapsFilter": "Mapas",
       "dashboardsFilter": "Paneles de control",
