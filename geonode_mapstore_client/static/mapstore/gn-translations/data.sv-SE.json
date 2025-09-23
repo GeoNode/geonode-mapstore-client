@@ -487,7 +487,8 @@
             "minValueRequired": "Input value cannot be empty",
             "strValueRequired": "Must be a valid string",
             "integerValueRequired": "Must be a valid integer",
-            "numberValueRequired": "Must be a valid number"
+            "numberValueRequired": "Must be a valid number",
+            "duplicateAttributeNameError": "Attribute name must be unique"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",
