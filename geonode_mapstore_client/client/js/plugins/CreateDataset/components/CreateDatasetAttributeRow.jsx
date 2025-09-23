@@ -51,13 +51,21 @@ const CreateDatasetAttributeRow = ({
             { value: AttributeTypes.Date, labelId: 'gnviewer.date' }
         ];
 
-    const restrictionsOptions = [AttributeTypes.Integer, AttributeTypes.Float, AttributeTypes.String].includes(data?.type)
+    const restrictionsOptions = [
+        AttributeTypes.Integer,
+        AttributeTypes.Float,
+        AttributeTypes.String
+    ].includes(data?.type)
         ? [
             { value: RestrictionsTypes.None, labelId: 'gnviewer.none' },
-            ...(data?.type !== AttributeTypes.String ? [{ value: RestrictionsTypes.Range, labelId: 'gnviewer.range' }] : []),
+            ...(data?.type !== AttributeTypes.String
+                ? [{ value: RestrictionsTypes.Range, labelId: 'gnviewer.range' }]
+                : []
+            ),
             { value: RestrictionsTypes.Options, labelId: 'gnviewer.options' }
         ]
         : [{ value: RestrictionsTypes.None, labelId: 'gnviewer.none' }];
+
     const getControlId = (suffix) => `attribute-${data?.id}-${suffix}`;
 
     function handleOnChange(properties) {
@@ -67,92 +75,201 @@ const CreateDatasetAttributeRow = ({
         });
     }
 
+    function handleTypeChange(event) {
+        const newType = event.target.value;
+        const currentType = data?.type;
+
+        // If type is changing, clear restrictions and set to default
+        if (newType !== currentType) {
+            onChange({
+                ...data,
+                type: newType,
+                restrictionsType: RestrictionsTypes.None,
+                restrictionsRangeMin: null,
+                restrictionsRangeMax: null,
+                restrictionsOptions: []
+            });
+        } else {
+            handleOnChange({ type: newType });
+        }
+    }
+
     return (
-        <tr>
-            <td style={{ width: 300 }}>
-                <FormGroup controlId={getControlId('name')} validationState={errors?.name ? 'error' : undefined}>
-                    <FormControl type="text" value={data?.name || ''} disabled={!!geometryAttribute} onChange={(event) => handleOnChange({ name: event.target.value })}/>
-                    {errors?.name ? <HelpBlock>{errors.name}</HelpBlock> : null}
+        <tr className="gn-dataset-attribute">
+            <td className="gn-attribute-name">
+                <FormGroup
+                    controlId={getControlId('name')}
+                    validationState={errors?.name ? 'error' : undefined}
+                >
+                    <FormControl
+                        type="text"
+                        value={data?.name || ''}
+                        disabled={!!geometryAttribute}
+                        onChange={(event) => handleOnChange({ name: event.target.value })}
+                    />
+                    {errors?.name ? <HelpBlock><Message msgId={errors.name} /></HelpBlock> : null}
                 </FormGroup>
             </td>
-            <td style={{ width: 80 }}>
+            <td className="gn-attribute-type">
                 <FormGroup controlId={getControlId('type')}>
-                    <FormControl value={data?.type || ''} componentClass="select" placeholder="select" onChange={(event) => handleOnChange({ type: event.target.value })}>
-                        {typesOptions.map(({ labelId, value }) => <option key={value} value={value}>{getMessageById(context.messages, labelId)}</option>)}
+                    <FormControl
+                        value={data?.type || ''}
+                        componentClass="select"
+                        placeholder="select"
+                        onChange={handleTypeChange}
+                    >
+                        {typesOptions.map(({ labelId, value }) =>
+                            <option key={value} value={value}>
+                                {getMessageById(context.messages, labelId)}
+                            </option>
+                        )}
                     </FormControl>
                 </FormGroup>
             </td>
-            <td style={{ width: 80 }}>
+            <td className="gn-attribute-nillable">
                 <FormGroup controlId={getControlId('nillable')}>
-                    <Checkbox checked={!!data?.nillable} disabled={!!geometryAttribute} onChange={(event) => handleOnChange({ nillable: event.target.checked })}/>
+                    <Checkbox
+                        style={{ paddingTop: 6 }}
+                        checked={!!data?.nillable}
+                        disabled={!!geometryAttribute}
+                        onChange={(event) =>
+                            handleOnChange({ nillable: event.target.checked })
+                        }
+                    />
                 </FormGroup>
             </td>
             <td>
                 <FlexBox column gap="sm">
-                    <FormGroup controlId={getControlId('restrictions')} validationState={errors?.restrictionsType ? 'error' : undefined}>
-                        <FormControl value={data?.restrictionsType} componentClass="select" placeholder="select" disabled={!!geometryAttribute} onChange={(event) => handleOnChange({ restrictionsType: event.target.value })}>
-                            {restrictionsOptions.map(({ labelId, value }) => <option key={value} value={value}>{getMessageById(context.messages, labelId)}</option>)}
+                    <FormGroup
+                        controlId={getControlId('restrictions')}
+                        validationState={errors?.restrictionsType ? 'error' : undefined}>
+                        <FormControl
+                            value={data?.restrictionsType}
+                            componentClass="select"
+                            placeholder="select"
+                            disabled={!!geometryAttribute}
+                            onChange={(event) =>
+                                handleOnChange({ restrictionsType: event.target.value })
+                            }
+                        >
+                            {restrictionsOptions.map(({ labelId, value }) =>
+                                <option key={value} value={value}>
+                                    {getMessageById(context.messages, labelId)}
+                                </option>
+                            )}
                         </FormControl>
                         {errors?.restrictionsType ? <HelpBlock>{errors.restrictionsType}</HelpBlock> : null}
                     </FormGroup>
-                    {data?.restrictionsType === RestrictionsTypes.Range ? <FlexBox centerChildrenVertically wrap gap="sm">
-                        <FlexBox.Fill flexBox component={FormGroup} validationState={errors?.restrictionsRangeMin ? 'error' : undefined} gap="sm" centerChildrenVertically controlId={getControlId('restrictions-min')}>
-                            <ControlLabel>Min</ControlLabel>
-                            <FormControl type="number" value={data?.restrictionsRangeMin} onChange={(event) => handleOnChange({ restrictionsRangeMin: parseNumber(event.target.value) })} />
-                            {errors?.restrictionsRangeMin ? <HelpBlock>{errors.restrictionsRangeMin}</HelpBlock> : null}
-                        </FlexBox.Fill>
-                        <FlexBox.Fill flexBox component={FormGroup} validationState={errors?.restrictionsRangeMax ? 'error' : undefined} gap="sm" centerChildrenVertically controlId={getControlId('restrictions-max')}>
-                            <ControlLabel>Max</ControlLabel>
-                            <FormControl type="number" value={data?.restrictionsRangeMax} onChange={(event) => handleOnChange({ restrictionsRangeMax: parseNumber(event.target.value) })} />
-                            {errors?.restrictionsRangeMax ? <HelpBlock>{errors.restrictionsRangeMax}</HelpBlock> : null}
-                        </FlexBox.Fill>
-                    </FlexBox> : null}
-                    {data?.restrictionsType === RestrictionsTypes.Options ? <FlexBox column wrap gap="sm">
-                        <FlexBox gap="sm" column component="ul">
-                            {(data?.restrictionsOptions || []).map((option, idx) => {
-                                const optionsError = {
-                                    value: getErrorByPath(`/attributes/${index}/restrictionsOptions/${idx}/value`)
-                                };
-                                return (
-                                    <FlexBox component="li" centerChildrenVertically gap="sm" key={option.id}>
-                                        <Text>●</Text>
-                                        <FlexBox.Fill component={FormGroup} key={option.id} validationState={optionsError?.value ? 'error' : undefined} controlId={getControlId(`option-${option.id}`)}>
-                                            <FormControl type={data?.type === AttributeTypes.String ? "text" : "number"} value={option.value} onChange={(event) => handleOnChange({
-                                                restrictionsOptions: (data?.restrictionsOptions || []).map((opt) => {
-                                                    return opt.id !== option.id ? opt : {
-                                                        ...option,
-                                                        value: data?.type === AttributeTypes.String ? event.target.value : parseNumber(event.target.value)
-                                                    };
-                                                })
-                                            })}/>
-                                            {optionsError?.value ? <HelpBlock>{optionsError.value}</HelpBlock> : null}
-                                        </FlexBox.Fill>
-                                        <Button square onClick={() => handleOnChange({
-                                            restrictionsOptions: (data?.restrictionsOptions || []).filter(opt => opt.id !== option.id)
-                                        })}>
-                                            <Glyphicon glyph="trash" />
-                                        </Button>
-                                    </FlexBox>
-                                );
-                            })}
-                            <div>
-                                <Button size="sm" onClick={() => handleOnChange({
-                                    restrictionsOptions: [
-                                        ...(data?.restrictionsOptions || []),
-                                        {
-                                            id: uuid(),
-                                            value: ''
-                                        }
-                                    ]
-                                })}>
-                                    <Glyphicon glyph="plus" />{' '}<Message msgId="gnviewer.addOption" />
-                                </Button>
-                            </div>
-                        </FlexBox>
-                    </FlexBox> : null}
+                    {data?.restrictionsType === RestrictionsTypes.Range ?
+                        <FlexBox centerChildrenVertically wrap gap="sm">
+                            <FlexBox.Fill
+                                flexBox
+                                component={FormGroup}
+                                validationState={errors?.restrictionsRangeMin ? 'error' : undefined}
+                                controlId={getControlId('restrictions-min')}
+                                centerChildrenVertically
+                                gap="sm"
+                            >
+                                <ControlLabel><Message msgId="gnviewer.min" /></ControlLabel>
+                                <FormControl
+                                    type="number"
+                                    value={data?.restrictionsRangeMin}
+                                    onChange={(event) => handleOnChange({
+                                        restrictionsRangeMin: parseNumber(event.target.value)
+                                    })}
+                                />
+                                {errors?.restrictionsRangeMin ?
+                                    <HelpBlock>
+                                        <Message msgId={errors.restrictionsRangeMin} />
+                                    </HelpBlock> : null}
+                            </FlexBox.Fill>
+                            <FlexBox.Fill
+                                flexBox
+                                component={FormGroup}
+                                validationState={errors?.restrictionsRangeMax ? 'error' : undefined}
+                                controlId={getControlId('restrictions-max')}
+                                gap="sm"
+                                centerChildrenVertically
+                            >
+                                <ControlLabel><Message msgId="gnviewer.max" /></ControlLabel>
+                                <FormControl
+                                    type="number"
+                                    value={data?.restrictionsRangeMax}
+                                    onChange={(event) => handleOnChange({
+                                        restrictionsRangeMax: parseNumber(event.target.value)
+                                    })}
+                                />
+                                {errors?.restrictionsRangeMax
+                                    ? <HelpBlock>
+                                        <Message msgId={errors.restrictionsRangeMax} />
+                                    </HelpBlock> : null}
+                            </FlexBox.Fill>
+                        </FlexBox> : null}
+                    {data?.restrictionsType === RestrictionsTypes.Options
+                        ? <FlexBox column wrap gap="sm">
+                            <FlexBox gap="sm" column component="ul">
+                                {(data?.restrictionsOptions || []).map((option, idx) => {
+                                    const optionsError = {
+                                        value: getErrorByPath(`/attributes/${index}/restrictionsOptions/${idx}/value`)
+                                    };
+                                    return (
+                                        <FlexBox component="li" gap="sm" key={option.id}>
+                                            <Text style={{ paddingTop: 6 }}>●</Text>
+                                            <FlexBox.Fill
+                                                component={FormGroup}
+                                                key={option.id}
+                                                validationState={optionsError?.value ? 'error' : undefined}
+                                                controlId={getControlId(`option-${option.id}`)}
+                                            >
+                                                <FormControl
+                                                    type={data?.type === AttributeTypes.String ? "text" : "number"}
+                                                    value={option.value}
+                                                    onChange={(event) => handleOnChange({
+                                                        restrictionsOptions: (data?.restrictionsOptions || [])
+                                                            .map((opt) => {
+                                                                return opt.id !== option.id
+                                                                    ? opt : {
+                                                                        ...option,
+                                                                        value: data?.type === AttributeTypes.String
+                                                                            ? event.target.value
+                                                                            : parseNumber(event.target.value)
+                                                                    };
+                                                            })
+                                                    })}
+                                                />
+                                                {optionsError?.value ? <HelpBlock>
+                                                    <Message msgId={optionsError.value} />
+                                                </HelpBlock> : null}
+                                            </FlexBox.Fill>
+                                            <Button square
+                                                onClick={() => handleOnChange({
+                                                    restrictionsOptions: (data?.restrictionsOptions || [])
+                                                        .filter(opt => opt.id !== option.id)
+                                                })}>
+                                                <Glyphicon glyph="trash" />
+                                            </Button>
+                                        </FlexBox>
+                                    );
+                                })}
+                                <div>
+                                    <Button size="sm" onClick={() => handleOnChange({
+                                        restrictionsOptions: [
+                                            ...(data?.restrictionsOptions || []),
+                                            {
+                                                id: uuid(),
+                                                value: ''
+                                            }
+                                        ]
+                                    })}>
+                                        <Glyphicon glyph="plus" />
+                                        <Message msgId="gnviewer.addOption" />
+                                    </Button>
+                                </div>
+                            </FlexBox>
+                        </FlexBox> : null}
                 </FlexBox>
             </td>
-            <td style={{ width: 40 }}>
+            <td className="gn-attribute-tools">
                 {tools}
             </td>
         </tr>
