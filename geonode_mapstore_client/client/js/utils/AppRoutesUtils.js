@@ -186,17 +186,17 @@ export const CATALOGUE_ROUTES = [
         hash: "#/upload/dataset"
     },
     {
-        name: 'create_dataset',
-        path: ['/create/dataset'],
-        component: appRouteComponentTypes.COMPONENTS,
-        protectedRoute: true,
-        hash: "#/create/dataset"
-    },
-    {
         name: 'upload_document',
         path: ['/upload/document'],
         component: appRouteComponentTypes.COMPONENTS,
         protectedRoute: true,
         hash: "#/upload/document"
+    },
+    {
+        name: 'create_dataset',
+        path: ['/create/dataset'],
+        component: appRouteComponentTypes.COMPONENTS,
+        protectedRoute: true,
+        hash: "#/create/dataset"
     }
 ];
