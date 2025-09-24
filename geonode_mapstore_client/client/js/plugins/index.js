@@ -18,6 +18,10 @@ import { getPluginsContext } from '@js/utils/PluginsContextUtils';
 import { toModulePlugin as msToModulePlugin } from '@mapstore/framework/utils/ModulePluginsUtils';
 
 import TOCPlugin from '@mapstore/framework/plugins/TOC';
+import Itinerary from "@mapstore/framework/plugins/Itinerary";
+import SecurityPopup from "@mapstore/framework/plugins/SecurityPopup";
+import Isochrone from "@mapstore/framework/plugins/Isochrone";
+
 import OperationPlugin from '@js/plugins/Operation';
 import MetadataEditorPlugin from '@js/plugins/MetadataEditor';
 import MetadataViewerPlugin from '@js/plugins/MetadataEditor/MetadataViewer';
@@ -78,6 +82,9 @@ export const plugins = {
     ResourcesGridPlugin,
     FavoritesPlugin,
     ResourcesFiltersFormPlugin,
+    ItineraryPlugin: Itinerary,
+    IsochronePlugin: Isochrone,
+    SecurityPopupPlugin: SecurityPopup,
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
         () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload'),
