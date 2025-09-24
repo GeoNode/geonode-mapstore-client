@@ -63,6 +63,17 @@
     "showEmptyMessageGFI": "Mostra il messaggio: Nessuna feature per gli altri layer",
     "remove": "Rimuovi",
     "removeThumbnail": "Rimuovi anteprima",
+    "securityPopup": {
+      "insertCredentials": "Clicca per aggiungere le credenziali per rendere questo servizio protetto",
+      "updateCredentials": "Clicca per aggiornare le credenziali di questo servizio protetto",
+      "username": "Nome utente",
+      "pwd": "Password",
+      "show": "Mostra",
+      "hide": "Nascondi",
+      "serviceUrl": "URL del servizio",
+      "title": "Servizio protetto",
+      "remove": "Rimuovi la protezione da questo servizio e chiudi la finestra modale"
+    },
     "layerProperties": {
       "windowTitle": "Proprietà del livello",
       "title": "Titolo",
@@ -249,7 +260,6 @@
         "incompatibleFilterWarning": "I filtri della legenda sono incompatibili con il filtro del layer attivo, oppure non ci sono feature visibili all'interno della vista della mappa. Clicca su reset per cancellare i filtri della legenda",
         "resetLegendFilter": "Reset",
         "incompatibleWFSFilterWarning": "I filtri della legenda sono incompatibili con il filtro del layer attivo. Clicca su reset per cancellare i filtri della legenda",
-        "resetLegendFilter": "Reset",
         "noLegendData": "Nessun elemento della legenda da mostrare"
       }
     },
@@ -409,7 +419,8 @@
       "locales_combo": "Lingua:",
       "featuredMaps": "In Evidenza",
       "groupmanagerTab": "Gruppi",
-      "usermanagerTab": "Utenti"
+      "usermanagerTab": "Utenti",
+      "tagsmanagerTab": "Tags"
     },
     "newMap": "Nuova Mappa",
     "newMapEmpty": "Mappa vuota",
@@ -975,7 +986,11 @@
         "showTooltipActive": "Mostra filtri avanzati (attivo)",
         "hideTooltip": "Nascondi filtri avanzati",
         "hideTooltipActive": "Nascondi filtri avanzati (attivo)"
-      }
+      },
+      "addDestination": "Aggiungi destinazione",
+      "searching": "Ricerca in corso...",
+      "noResultsFound": "Nessun risultato trovato",
+      "searchByLocationName": "Cerca per nome della posizione..."
     },
     "draw": {
       "fill": "Riempimento",
@@ -1414,6 +1429,7 @@
       "inactive": "Inattivo"
     },
     "usergroups": {
+      "title": "Gestisci Gruppi",
       "searchGroups": "Cerca gruppi...",
       "nameLimit": "La massima lunghezza del nome del gruppo è prevista in 255 caratteri.",
       "descLimit": "La massima lunghezza della descrizione del gruppo è prevista in 255 caratteri.",
@@ -2349,7 +2365,8 @@
           "category": "Categoria",
           "log": "Logaritmo",
           "date": "Data"
-        }
+        },
+        "showCurrentTime": "Mostra l'ora corrente sull'asse"
       },
       "tray": {
         "title": "widget",
@@ -2757,7 +2774,8 @@
       "minSourceValue": "Valore minimo dei dati di origine",
       "maxSourceValue": "Valore massimo dei dati di origine",
       "customParams": "Parametri personalizzati",
-      "wrongFormatMsg": "La configurazione immessa è in formato sbagliato !!"
+      "wrongFormatMsg": "La configurazione immessa è in formato sbagliato !!",
+      "style": "Stile"
     },
     "playback": {
       "settings": {
@@ -2851,53 +2869,96 @@
       "avstyle": "Stili Disponibili",
       "clearbtn": "Rimuovi Tutti",
       "selectbtn": "Seleziona Tutti",
+      "gsInstanceGrid": {
+        "name": "Nome GS",
+        "description": "Descrizione",
+        "url": "URL GS"
+      },
+      "tabs": {
+        "rules": "Regole",
+        "gsInstances": "Istanze GS"
+      },
       "placeholders": {
         "filter": "Ricerca...",
         "role": "Cerca Gruppo",
+        "gsInstances": "Seleziona l'istanza GS",
         "user": "Cerca Utenti",
         "service": "Cerca Servizi",
         "request": "Cerca Richieste",
         "workspace": "Cerca Workspacs",
         "layer": "Cerca Layers",
         "access": "Cerca Permesso",
-        "ip": "###.###.###.###/##",
+        "ip": "###.###.#.#/##",
+        "ipRange": "###.###.#.#",
         "priority": "Seleziona Priorità",
-        "filterAny": "Qualsiasi"
+        "validityPeriod": "Seleziona il periodo di validità",
+        "filterAny": "Qualsiasi",
+        "gsInstanceName": "Inserisci il nome dell'istanza GS",
+        "gsInstanceDescription": "Inserisci la descrizione dell'istanza GS",
+        "gsInstanceURL": "Inserisci l'URL dell'istanza GS",
+        "gsInstanceUsername": "Inserisci il nome utente dell'istanza GS",
+        "gsInstancePassword": "Inserisci la password dell'istanza GS",
+        "clearValueText": "Cancella selezione",
+        "noResultsText": "Nessun risultato trovato"
       },
       "menutitle": "Configura Regole di Accesso",
       "tooltip": {
         "addT": "Crea regola",
+        "addGSInstance": "Aggiungi un'istanza GS",
         "editT": "Modifica regola selezionata",
+        "editGSInstance": "Modifica un'istanza GS",
         "addBeT": "Crea regola prima di quella selezionata",
         "addAfT": "Crea regola dopo quella selezionata",
         "deleteT": "Rimuovi regole selezionate",
+        "deleteGSInstance": "Rimuovi le istanze GS selezionate",
         "cacheT": "Pulisci la cache",
         "save": "Salva regola corrente",
+        "saveGSInstance": "Salva l'istanza GS corrente",
         "close": "Esci da modifica regola",
+        "closeGSInstance": "Esci dalla creazione dell'istanza GS",
         "showAllRules": "Mostra tutte le regole applicabili",
-        "filterRuleList": "Filtra la lista usando il valore selezionato"
+        "filterRuleList": "Filtra la lista usando il valore selezionato",
+        "date": "Inserisci la data nel formato {format}"
       },
       "navItems": {
         "main": "Regola Generica",
+        "mainGSInstance": "Istanza GS generale",
         "style": "Stile",
         "filter": "Filtri",
         "attribute": "Attributi"
+      },
+      "gsInstanceInputs": {
+        "name": "Nome GS",
+        "description": "Descrizione GS",
+        "url": "URL GS",
+        "username": "Nome utente",
+        "password": "Password"
       },
       "rule": "Regola",
       "cachetitle": "Pulisci Cache",
       "cachemsg": "Sei sicuro di voler rimuovere la cache di Geofance?",
       "deltitle": "Rimuovi Regola",
+      "delGSInstancetitle": "Elimina istanza GS",
+      "saveGSInstancetitle": "Salva istanza GS",
       "delmsg": "Sei sicuro di voler rimuovere la regola?",
+      "delGSInstancemsg": "Vuoi davvero eliminare questa istanza gs?",
       "invalidForm": "I campi inseriti non sono validi, controlla la form",
       "ip": "IP",
       "title": "Regole Di Accesso",
       "role": "Ruolo",
+      "gsInstance": "Istanza GS",
       "user": "Utente",
       "priority": "Priorità",
       "service": "Servizio",
       "request": "Richiesta",
       "workspace": "Workspace",
       "layer": "Layer",
+      "validityPeriod": {
+        "title": "Periodo di validità",
+        "start": "Da",
+        "end": "A"
+      },
+      "date": "Date",
       "filters": "Filtri",
       "rules": "Regole",
       "access": "Accesso",
@@ -2918,10 +2979,17 @@
       "errorLoadingLayers": "Errore durante il caricamento dei layers.",
       "errorLoadingRules": "Errore durante il caricamento delle regole.",
       "errorMovingRules": "Errore durante il caricamento delle regole.",
+      "errorLoadingGSInstances": "Errore durante il caricamento delle istanze GS.",
       "errorDeletingRules": "Errore durante la cancellazione della regola.",
       "errorAddingRule": "Errore durante la creazione della regola.",
       "errorUpdatingRule": "Errore durante l'aggiornamento della regola.",
       "errorDuplicateRule": "Regola duplicata",
+      "errorUpdatingGSInstance": "Errore durante il salvataggio dell'istanza GS.",
+      "errorDuplicateGSInstance": "Istanza GS duplicata.",
+      "errorDeleteGSInstance": "Errore durante l'eliminazione delle istanze GS.",
+      "errorDeleteGSInstanceWithExistRelRules": "Errore: ci sono regole correlate all'istanza GS \"{gsInstanceTitle}\". Eliminale prima.",
+      "successDeleteGSInstance": "{successfulNum} {successItemLabel} eliminati con successo {failureMsg}",
+      "successSavedGSInstance": "L'istanza GS è stata salvata correttamente.",
       "errorLoading": "Errore caricamento",
       "deleteModal": "Elimina Regola",
       "selectedRulesDelete": "Vuoi eliminare le regole selezionate?",
@@ -3240,7 +3308,44 @@
       "addTooltip": "Aggiungi nuovo sfondo",
       "editTooltip": "Modifica sfondo",
       "deleteTooltip": "Elimina lo sfondo",
-      "confirmDelete": "Sei sicuro di voler eliminare lo sfondo \"{title}\"?"
+      "addTerrainTooltip": "Aggiungi nuovo terreno",
+      "editTerrainTooltip": "Modifica terreno",
+      "deleteTerrainTooltip": "Elimina terreno",
+      "confirmDelete": "Sei sicuro di voler eliminare lo sfondo \"{title}\"?",
+      "backgroundIncompatibleTooltip": "Questo livello di sfondo non è compatibile con la proiezione cartografica corrente",
+      "terrain": {
+        "placeholders": {
+          "titleLabel": "Inserisci titolo...",
+          "urlLabel": "Inserisci URL...",
+          "assetId": "Inserisci ID risorsa...",
+          "accessToken": "Inserisci token di accesso...",
+          "server": "Inserisci server...",
+          "layernameLabel": "Inserisci nome del layer..."
+        },
+        "invalidUrl": "L'URL fornito non è valido",
+        "mainTitle": "Terreni",
+        "title": "Aggiungi nuovo terreno",
+        "providerLabel": "Fornitore",
+        "titleLabel": "Titolo",
+        "cesiumProvider": {
+          "urlLabel": "URL",
+          "label": "Cesium"
+        },
+        "cesiumIonProvider": {
+          "label": "Cesium Ion",
+          "assetId": "ID risorsa",
+          "accessToken": "Token di accesso",
+          "server": "Server"
+        },
+        "wmsProvider": {
+          "label": "WMS",
+          "urlLabel": "URL",
+          "layernameLabel": "Nome del layer",
+          "projectionLabel": "Proiezione",
+          "wmsVersionLabel": "Versione WMS"
+        },
+        "add": "Aggiungi"
+      }
     },
     "stepper": {
       "back": "Indietro",
@@ -3468,6 +3573,14 @@
       "Language": {
         "description": "Questo plugin consente di cambiare la lingua dell'applicazione",
         "title": "Lingua"
+      },
+      "Itinerary": {
+        "description": "Questo plugin consente di creare itinerari sulla mappa",
+        "title": "Itinerari"
+      },
+      "Isochrone": {
+        "description": "Questo plugin consente di calcolare isocroni e isodistanze",
+        "title": "Isochrone"
       }
     },
     "contextCreator": {
@@ -4400,7 +4513,7 @@
       "tagName": "Nome",
       "tagDescription": "Descrizione",
       "tagColor": "Colore",
-      "manageTags": "Gestisci tag",
+      "manageTags": "Gestisci Tag",
       "errorLoadingTags": "Impossibile caricare i tag",
       "errorUpdatingTag": "Impossibile aggiornare il tag",
       "errorTagNameAlreadyExist": "Il tag che stai tentando di creare esiste già",
@@ -4411,6 +4524,80 @@
       "documentation": "Documentazione",
       "filterApplied": "Filtro applicato",
       "emptyFilterItems": "Nessun elemento da visualizzare"
+    },
+    "itinerary": {
+      "title": "Itinerario",
+      "tooltip": "Itinerario",
+      "mode": "Modalità di viaggio",
+      "modeTooltip": "Scegli una modalità di viaggio per l'itinerario",
+      "optimize": "Ottimizza",
+      "optimizeRoute": "Ottimizza percorso",
+      "optimizeTooltip": "Abilita per riordinare i punti per il percorso più veloce (limitato dall'API di Ottimizzazione di Percorsi)",
+      "avoid": "Evita",
+      "avoidTooltip": "Attiva/disattiva le opzioni per evitare determinate strade",
+      "motorway": "Autostrade e superstrade",
+      "trunk": "Strade principali e arterie",
+      "ferry": "Attraversamenti in traghetto",
+      "tunnel": "Tunnel e passaggi sotterranei",
+      "bridge": "Ponti e strade sopraelevate",
+      "run": "Esegui",
+      "viaRoute": "via {routeName}",
+      "clickOnMap": "Clicca sulla mappa per selezionare una posizione",
+      "exportAsGeoJSON": "Esporta come GeoJSON",
+      "addAsLayer": "Aggiungi come layer",
+      "routeItineraries": "Itinerari di percorso",
+      "goThroughRoundabout": "Attraversa le rotatorie",
+      "reset": "Ripristina",
+      "notification": {
+        "error": "Errore itinerario",
+        "errorItineraryError": "Si è verificato un errore durante il calcolo dell'itinerario. Riprova...",
+        "infoLayerAdded": "Itinerario aggiunto come layer"
+      },
+      "togglePointTooltip": "Attiva/disattiva editor di coordinate",
+      "toggleSearchTooltip": "Attiva/disattiva ricerca per nome di posizione",
+      "removeWaypointTooltip": "Rimuovi punto"
+    },
+    "isochrone": {
+      "title": "Isochrone",
+      "tooltip": "Isochrone",
+      "modeTooltip": "Scegli un modo di viaggio per l'Isochrone/Isodistanza",
+      "rangeByTooltip": "Scegli <i>distanza</i> per <b>Isodistanza</b> o <i>tempo</i> per <b>Isochrone</b> come base per l'intervallo",
+      "clickOnMap": "Clicca sulla mappa per selezionare una posizione",
+      "coordinateTooltip": "Attiva/disattiva editor coordinate",
+      "searchTooltip": "Cerca per nome del luogo",
+      "searching": "Ricerca...",
+      "newSearch": "Nuova ricerca",
+      "bucketsTooltip": "Definisce il numero di intervalli da calcolare all'interno dell'intervallo scelto. Il massimo è 4.",
+      "noResultsFound": "Nessun risultato trovato",
+      "searchByLocationName": "Cerca per nome del luogo...",
+      "mode": "Modo di Viaggio",
+      "rangeBy": "Intervallo per",
+      "departure": "Partenza",
+      "arrival": "Arrivo",
+      "direction": "Direzione",
+      "reset": "Ripristina",
+      "run": "Esegui",
+      "buckets": "Secchi",
+      "exportAsGeoJSON": "Esporta come GeoJSON",
+      "addAsLayer": "Aggiungi come layer",
+      "deleteResult": "Elimina risultato",
+      "distance": "Distanza",
+      "time": "Tempo",
+      "useRunParameters": "Usa parametri di esecuzione",
+      "notification": {
+        "error": "Errore Isochrone",
+        "errorIsochroneError": "Si è verificato un errore durante il calcolo dell'isochrone. Riprova...",
+        "infoLayerAdded": "Layer isochrone aggiunto"
+      },
+      "colors": "Colori",
+      "rampTooltip": "Scegli la palette di colori per i secchi",
+      "colorTooltip": "Scegli il colore per il secchio",
+      "confirmDialog": {
+        "title": "Chiudi il pannello Isochrone",
+        "description": "Hai dati Isochrone esistenti. Chiudere il pannello cancellerà tutti i dati dell'esecuzione corrente. Sei sicuro di voler continuare?",
+        "confirm": "Conferma",
+        "cancel": "Annulla"
+      }
     }
   }
 }
