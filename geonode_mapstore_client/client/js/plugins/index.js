@@ -82,8 +82,8 @@ export const plugins = {
     ResourcesGridPlugin,
     FavoritesPlugin,
     ResourcesFiltersFormPlugin,
-    ItineraryPlugin: Itinerary,
     IsochronePlugin: Isochrone,
+    ItineraryPlugin: Itinerary,
     SecurityPopupPlugin: SecurityPopup,
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
