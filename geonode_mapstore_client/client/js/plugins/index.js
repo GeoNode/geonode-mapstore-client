@@ -18,9 +18,9 @@ import { getPluginsContext } from '@js/utils/PluginsContextUtils';
 import { toModulePlugin as msToModulePlugin } from '@mapstore/framework/utils/ModulePluginsUtils';
 
 import TOCPlugin from '@mapstore/framework/plugins/TOC';
+import Isochrone from "@mapstore/framework/plugins/Isochrone";
 import Itinerary from "@mapstore/framework/plugins/Itinerary";
 import SecurityPopup from "@mapstore/framework/plugins/SecurityPopup";
-import Isochrone from "@mapstore/framework/plugins/Isochrone";
 
 import OperationPlugin from '@js/plugins/Operation';
 import MetadataEditorPlugin from '@js/plugins/MetadataEditor';
