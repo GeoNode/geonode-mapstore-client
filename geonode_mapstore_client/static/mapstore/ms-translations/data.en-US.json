@@ -63,6 +63,17 @@
     "showEmptyMessageGFI": "Show empty results message in GetFeatureInfo panel",
     "remove": "Delete",
     "removeThumbnail": "Remove thumbnail",
+    "securityPopup": {
+      "insertCredentials": "Click to add credentials to make this a protected service",
+      "updateCredentials": "Click to update credentials for this protected service",
+      "username": "Username",
+      "pwd": "Password",
+      "show": "Show",
+      "hide": "Hide",
+      "serviceUrl": "Service url",
+      "title": "Protected service",
+      "remove": "Remove protection from this service and close the modal"
+    },
     "layerProperties": {
       "windowTitle": "Layer Properties",
       "title": "Title",
@@ -408,7 +419,8 @@
       "locales_combo": "Language:",
       "featuredMaps": "Featured",
       "groupmanagerTab": "Groups",
-      "usermanagerTab": "Users"
+      "usermanagerTab": "Users",
+      "tagsmanagerTab": "Tags"
     },
     "newMap": "New map",
     "newMapEmpty": "Empty map",
@@ -974,7 +986,11 @@
         "showTooltipActive": "Show advanced filters (active)",
         "hideTooltip": "Hide advanced filters",
         "hideTooltipActive": "Hide advanced filters (active)"
-      }
+      },
+      "searching": "Searching...",
+      "noResultsFound": "No results found",
+      "searchByLocationName": "Search by location name...",
+      "addDestination": "Add Destination"
     },
     "draw": {
       "fill": "Fill",
@@ -1413,6 +1429,7 @@
       "inactive": "Inactive"
     },
     "usergroups": {
+      "title": "Manage Groups",
       "searchGroups": "Search groups...",
       "groups": "Groups",
       "nameLimit": "The name is limited to 255 characters.",
@@ -2346,7 +2363,8 @@
           "category": "Category",
           "log": "Log",
           "date": "Date"
-        }
+        },
+        "showCurrentTime": "Show current time on the axis"
       },
       "tray": {
         "title": "Widgets",
@@ -2764,7 +2782,8 @@
       "minSourceValue": "Minimum source data value",
       "maxSourceValue": "Maximum source data value",
       "customParams": "Custom Parameters",
-      "wrongFormatMsg": "The entered configuration is in wrong format !!"
+      "wrongFormatMsg": "The entered configuration is in wrong format !!",
+      "style": "Style"
     },
     "playback": {
       "settings": {
@@ -2858,7 +2877,18 @@
       "avstyle": "Available Styles",
       "clearbtn": "Clear All",
       "selectbtn": "Select All",
+      "gsInstanceGrid": {
+        "name": "GS Name",
+        "description": "Description",
+        "url": "GS URL"
+      },
+      "tabs": {
+        "rules": "Rules",
+        "gsInstances": "GS Instances"
+      },
       "placeholders": {
+        "filter": "Filter styles...",
+        "gsInstances": "Select GS instance",
         "role": "Type to search Roles",
         "user": "Type to search Users",
         "service": "Type to search Services",
@@ -2866,45 +2896,77 @@
         "workspace": "Type to search Workspaces",
         "layer": "Type to search Layers",
         "access": "Type to search Access",
-        "ip": "###.###.###.###/##",
+        "ip": "###.###.#.#/##",
+        "ipRange": "###.###.#.#",
         "priority": "Select Priority",
-        "filter": "Filter styles...",
-        "filterAny": "ANY"
+        "validityPeriod": "Select validity period",
+        "filterAny": "ANY",
+        "gsInstanceName": "Enter GS instance Name",
+        "gsInstanceDescription": "Enter GS instance Description",
+        "gsInstanceURL": "Enter GS instance URL",
+        "gsInstanceUsername": "Enter GS instance Username",
+        "gsInstancePassword": "Enter GS instance Password",
+        "clearValueText": "Clear selection",
+        "noResultsText": "No Result"
       },
       "menutitle": "Manage Access Rules",
       "tooltip": {
         "addT": "Add a rule",
+        "addGSInstance": "Add a GS Instance",
         "editT": "Edit selected rule",
+        "editGSInstance": "Edit a GS Instance",
         "addBeT": "Add new rule before selected",
         "addAfT": "Add new rule after selected",
         "deleteT": "Remove selected rules",
+        "deleteGSInstance": "Remove selected GS Instances",
         "cacheT": "Clear cache",
         "save": "Save current rule",
+        "saveGSInstance": "Save current GS instance",
         "close": "Exit from create rule",
-        "showAllRules": "Show all eligible rules",
-        "filterRuleList": "Filter list using selected value"
+        "closeGSInstance": "Exit from create GS instance",
+        "showAllRules": "Currently the table shows only the rules that strictly match the value specified for this field. Uncheck to include also the rules where this value is not present.",
+        "filterRuleList": "Currently the table shows all the rules applied for this condition, even those where this value is not set. Check to display only the rules that specifically apply to this value.",
+        "date": "Enter date in {format} format"
       },
       "navItems": {
         "main": "General Rule",
+        "mainGSInstance": "General GS Instance",
         "style": "Style",
         "filter": "Filters",
         "attribute": "Attributes Rule"
+      },
+      "gsInstanceInputs": {
+        "name": "GS Name",
+        "description": "GS Description",
+        "url": "GS URL",
+        "username": "Username",
+        "password": "Password"
       },
       "rule": "Rule",
       "cachetitle": "Clear Cache",
       "cachemsg": "Are you sure to clear the rules cache?",
       "deltitle": "Delete Rule",
+      "delGSInstancetitle": "Delete GS Instance",
+      "saveGSInstancetitle": "Save GS Instance",
       "delmsg": "Do you really want to delete this rule?",
+      "delGSInstancemsg": "Do you really want to delete this gs instance?",
       "invalidForm": "The form is invalid check fields values",
       "ip": "IP",
       "title": "Access Rules",
       "role": "Role",
+      "gsInstance": "GS Instance",
       "user": "User",
       "priority": "Priority",
       "service": "Service",
       "request": "Request",
       "workspace": "Workspace",
       "layer": "Layer",
+      "validityPeriod": {
+        "title": "Validity Period",
+        "start": "From",
+        "end": "To"
+      },
+      "date": "Date",
       "filters": "Filters",
       "rules": "Rules",
       "access": "Access",
@@ -2924,11 +2986,18 @@
       "errorLoadingWorkspaces": "Error loading workspaces.",
       "errorLoadingLayers": "Error loading layers.",
       "errorLoadingRules": "Error loading rules.",
+      "errorLoadingGSInstances": "Error loading GS instances.",
       "errorMovingRules": "Error moving rules.",
       "errorDeletingRules": "Error deleting rules.",
       "errorAddingRule": "Error adding rule.",
       "errorUpdatingRule": "Error saving rule.",
       "errorDuplicateRule": "Duplicated rule.",
+      "errorUpdatingGSInstance": "Error saving GS Instance.",
+      "errorDuplicateGSInstance": "Duplicated GS instance.",
+      "errorDeleteGSInstance": "Error deleting GS instances.",
+      "errorDeleteGSInstanceWithExistRelRules": "Error as there are some related rules to GS instance \"{gsInstanceTitle}\" need to be deleted first.",
+      "successDeleteGSInstance": "{successfulNum} {successItemLabel} deleted successfully {failureMsg}",
+      "successSavedGSInstance": "GS instance has been saved successfully.",
       "errorLoading": "Error loading",
       "deleteModal": "Delete Rules",
       "selectedRulesDelete": "Delete selected rules ?",
@@ -3247,7 +3316,44 @@
       "addTooltip": "Add new background",
       "editTooltip": "Edit background",
       "deleteTooltip": "Delete background",
-      "confirmDelete": "Are you sure you want to delete \"{title}\" background?"
+      "addTerrainTooltip": "Add new terrain",
+      "editTerrainTooltip": "Edit terrain",
+      "deleteTerrainTooltip": "Delete terrain",
+      "confirmDelete": "Are you sure you want to delete \"{title}\" background?",
+      "backgroundIncompatibleTooltip": "This background layer is not compatible with the current map projection",
+      "terrain": {
+        "placeholders": {
+          "titleLabel": "Enter title ...",
+          "urlLabel": "Enter URL ...",
+          "assetId": "Enter asset ID ...",
+          "accessToken": "Enter access token ...",
+          "server": "Enter server ...",
+          "layernameLabel": "Enter Layer name ..."
+        },
+        "invalidUrl": "The provided url is invalid",
+        "mainTitle": "Terrains",
+        "title": "Add new terrain",
+        "providerLabel": "Provider",
+        "titleLabel": "Title",
+        "cesiumProvider": {
+          "urlLabel": "URL",
+          "label": "Cesium"
+        },
+        "cesiumIonProvider": {
+          "label": "Cesium Ion",
+          "assetId": "Asset ID",
+          "accessToken": "Access Token",
+          "server": "Server"
+        },
+        "wmsProvider": {
+          "label": "WMS",
+          "urlLabel": "URL",
+          "layernameLabel": "Layer Name",
+          "projectionLabel": "Projection",
+          "wmsVersionLabel": "WMS Version"
+        },
+        "add": "Add"
+      }
     },
     "stepper": {
       "back": "Back",
@@ -3475,6 +3581,14 @@
       "Language": {
         "description": "This plugin allows to change the language of the app",
         "title": "Language"
+      },
+      "Itinerary": {
+        "description": "This plugin allows to create itineraries on the map",
+        "title": "Itinerary"
+      },
+      "Isochrone": {
+        "description": "This plugin allows to calculate isochrones and isodistances",
+        "title": "Isochrone"
       }
     },
     "contextCreator": {
@@ -4407,7 +4521,7 @@
       "tagName": "Name",
       "tagDescription": "Description",
       "tagColor": "Color",
-      "manageTags": "Manage tags",
+      "manageTags": "Manage Tags",
       "errorLoadingTags": "It is not possible to load tags",
       "errorUpdatingTag": "It is not possible to update the tag",
       "errorTagNameAlreadyExist": "The tag you are trying to create already exists",
@@ -4418,6 +4532,80 @@
       "documentation": "Documentation",
       "filterApplied": "Filter applied",
       "emptyFilterItems": "No items to display"
+    },
+    "itinerary": {
+      "title": "Itinerary",
+      "tooltip": "Itinerary",
+      "mode": "Travel Mode",
+      "modeTooltip": "Choose a travel mode for the itinerary",
+      "optimize": "Optimize",
+      "optimizeRoute": "Optimize Route",
+      "optimizeTooltip": "Enable to reorder points for the fastest route (limited by Route Optimization API)",
+      "avoid": "Avoid",
+      "avoidTooltip": "Toggle options to avoid certain roads",
+      "motorway": "Motorways & Highways",
+      "trunk": "Trunk Roads & Major Arterials",
+      "ferry": "Ferry Crossings",
+      "tunnel": "Tunnels & Underground Passages",
+      "bridge": "Bridges & Elevated Roads",
+      "run": "Run",
+      "viaRoute": "via {routeName}",
+      "clickOnMap": "Click on map to select a location",
+      "exportAsGeoJSON": "Export as GeoJSON",
+      "addAsLayer": "Add as layer",
+      "routeItineraries": "Route Itineraries",
+      "goThroughRoundabout": "Go through roundabout(s)",
+      "reset": "Reset",
+      "notification": {
+        "error": "Itinerary Error",
+        "errorItineraryError": "An error occurred while calculating the itinerary. Please try again...",
+        "infoLayerAdded": "Itinerary added as layer"
+      },
+      "togglePointTooltip": "Toggle coordinates editor",
+      "toggleSearchTooltip": "Toggle search by location name",
+      "removeWaypointTooltip": "Remove waypoint"
+    },
+    "isochrone": {
+      "title": "Isochrone",
+      "tooltip": "Isochrone",
+      "modeTooltip": "Choose a travel mode for the Isochrone/Isodistance",
+      "rangeByTooltip": "Choose <i>distance</i> for <b>Isodistance</b> or <i>time</i> for <b>Isochrone</b> as the basis for the range",
+      "clickOnMap": "Click on map to select a location",
+      "coordinateTooltip": "Toggle coordinates editor",
+      "searchTooltip": "Search by location name",
+      "searching": "Searching...",
+      "newSearch": "New search",
+      "bucketsTooltip": "Defines the number of intervals to calculate within the chosen range. Max is 4.",
+      "noResultsFound": "No results found",
+      "searchByLocationName": "Search by location name...",
+      "mode": "Travel Mode",
+      "rangeBy": "Range by",
+      "departure": "Departure",
+      "arrival": "Arrival",
+      "direction": "Direction",
+      "reset": "Reset",
+      "run": "Run",
+      "buckets": "Buckets",
+      "exportAsGeoJSON": "Export as GeoJSON",
+      "addAsLayer": "Add as layer",
+      "deleteResult": "Delete result",
+      "distance": "Distance",
+      "time": "Time",
+      "useRunParameters": "Use run parameters",
+      "notification": {
+        "error": "Isochrone Error",
+        "errorIsochroneError": "An error occurred while calculating the isochrone. Please try again...",
+        "infoLayerAdded": "Isochrone layer added"
+      },
+      "colors": "Colors",
+      "rampTooltip": "Choose the color ramp for the buckets",
+      "colorTooltip": "Choose the color for the bucket",
+      "confirmDialog": {
+        "title": "Close Isochrone Panel",
+        "description": "You have existing isochrone data. Closing the panel will clear all current run data. Are you sure you want to continue?",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
     }
   }
 }
