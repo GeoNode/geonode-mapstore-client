@@ -17,7 +17,7 @@ import HTML from '@mapstore/framework/components/I18N/HTML';
 import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 import InfoPopover from '@mapstore/framework/components/widgets/widget/InfoPopover';
 
-import { TIME_SERIES_PROPERTIES, TIME_ATTRIBUTE_TYPES, TIME_PRECISION_STEPS } from '@js/utils/ResourceUtils';
+import { TIME_SERIES_PROPERTIES, TIME_ATTRIBUTE_TYPES, TIME_PRECISION_STEPS, resourceHasPermission } from '@js/utils/ResourceUtils';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Text from '@mapstore/framework/components/layout/Text';
 
@@ -25,11 +25,12 @@ const TimeSeriesSettings = ({ resource, onChange }, context) => {
     const timeAttributes = (resource?.attribute_set ?? [])
         .filter((attribute) => TIME_ATTRIBUTE_TYPES.includes(attribute.attribute_type))
         .map((attribute)=> ({value: attribute.pk, label: attribute.attribute}));
+    const canChangeResourcebase = resourceHasPermission(resource, 'change_resourcebase');
 
     const [timeseries, setTimeSeries] = useState(resource.timeseries);
     const [error, setError] = useState();
 
-    if (isEmpty(timeAttributes)) return null;
+    if (!canChangeResourcebase || isEmpty(timeAttributes)) return null;
 
     const onChangeTimeSettings = (key, value) => {
         const _timeseries = {
