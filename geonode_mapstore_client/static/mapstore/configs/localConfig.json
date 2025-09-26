@@ -3668,6 +3668,9 @@
         "create_dataset": [
             {
                 "name": "CreateDataset"
+            },
+            {
+                "name": "Notifications"
             }
         ]
     }

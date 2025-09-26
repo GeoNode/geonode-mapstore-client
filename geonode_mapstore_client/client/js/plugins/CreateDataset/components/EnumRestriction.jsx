@@ -79,7 +79,7 @@ const EnumRestriction = ({
                         ]
                     })}>
                         <Glyphicon glyph="plus" />
-                        <Message msgId="gnviewer.addOption" />
+                        {' '}<Message msgId="gnviewer.addOption" />
                     </Button>
                 </div>
             </FlexBox>

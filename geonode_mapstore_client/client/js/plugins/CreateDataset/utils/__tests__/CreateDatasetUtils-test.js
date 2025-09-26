@@ -12,6 +12,8 @@ import {
     getErrorByPath,
     parseNumber,
     getAttributeControlId,
+    parseJSONSchema,
+    AttributeTypes,
     RestrictionsTypes
 } from '../CreateDatasetUtils';
 
@@ -448,6 +450,592 @@ describe('Test CreateDatasetUtils', () => {
             const data = { id: 'test-123_abc.def' };
             const suffix = 'name';
             expect(getAttributeControlId(data, suffix)).toBe('attribute-test-123_abc.def-name');
+        });
+    });
+
+    describe('parseJSONSchema', () => {
+        describe('Basic validation', () => {
+            it('should return error for null schema', () => {
+                const result = parseJSONSchema(null);
+                expect(result.dataset).toBe(null);
+                expect(result.errors).toEqual(['gnviewer.invalidSchemaStructure']);
+                expect(result.warnings).toEqual([]);
+            });
+
+            it('should return error for undefined schema', () => {
+                const result = parseJSONSchema(undefined);
+                expect(result.dataset).toBe(null);
+                expect(result.errors).toEqual(['gnviewer.invalidSchemaStructure']);
+                expect(result.warnings).toEqual([]);
+            });
+
+            it('should return error for non-object schema', () => {
+                const result = parseJSONSchema('not an object');
+                expect(result.dataset).toBe(null);
+                expect(result.errors).toEqual(['gnviewer.invalidSchemaStructure']);
+                expect(result.warnings).toEqual([]);
+            });
+
+            it('should return error for schema without type object', () => {
+                const schema = { type: 'string', properties: {} };
+                const result = parseJSONSchema(schema);
+                expect(result.dataset).toBe(null);
+                expect(result.errors).toEqual(['gnviewer.schemaMustBeObject']);
+                expect(result.warnings).toEqual([]);
+            });
+
+            it('should return error for schema without properties', () => {
+                const schema = { type: 'object' };
+                const result = parseJSONSchema(schema);
+                expect(result.dataset).toBe(null);
+                expect(result.errors).toEqual(['gnviewer.schemaMustHaveProperties']);
+                expect(result.warnings).toEqual([]);
+            });
+
+            it('should return error for schema with non-object properties', () => {
+                const schema = { type: 'object', properties: 'not an object' };
+                const result = parseJSONSchema(schema);
+                expect(result.dataset).toBe(null);
+                expect(result.errors).toEqual(['gnviewer.schemaMustHaveProperties']);
+                expect(result.warnings).toEqual([]);
+            });
+        });
+
+        describe('Successful parsing', () => {
+            it('should parse basic schema with string properties', () => {
+                const schema = {
+                    type: 'object',
+                    title: 'Test Dataset',
+                    properties: {
+                        name: { type: 'string' },
+                        age: { type: 'integer' },
+                        height: { type: 'number' }
+                    },
+                    required: ['name']
+                };
+
+                const result = parseJSONSchema(schema);
+                expect(result.errors).toEqual([]);
+                expect(result.warnings.length).toBe(1); // noGeometryProperty warning
+                expect(result.warnings[0].msgId).toBe('gnviewer.noGeometryProperty');
+                expect(result.dataset.title).toBe('Test Dataset');
+                expect(result.dataset.geometry_type).toBe(AttributeTypes.Point);
+                expect(result.dataset.attributes.length).toBe(3);
+
+                const nameAttr = result.dataset.attributes.find(attr => attr.name === 'name');
+                expect(nameAttr.type).toBe(AttributeTypes.String);
+                expect(nameAttr.nillable).toBe(false); // required
+
+                const ageAttr = result.dataset.attributes.find(attr => attr.name === 'age');
+                expect(ageAttr.type).toBe(AttributeTypes.Integer);
+                expect(ageAttr.nillable).toBe(true); // not required
+            });
+
+            it('should use default title when not provided', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        name: { type: 'string' }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                expect(result.dataset.title).toBe('Untitled Dataset');
+            });
+
+            it('should handle empty properties object', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {}
+                };
+
+                const result = parseJSONSchema(schema);
+                expect(result.dataset.attributes).toEqual([]);
+                expect(result.warnings.length).toBe(1); // noGeometryProperty warning
+            });
+        });
+
+        describe('Geometry handling', () => {
+            it('should handle valid geometry types', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        geom: { "const": AttributeTypes.Point },
+                        name: { type: 'string' }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                expect(result.dataset.geometry_type).toBe(AttributeTypes.Point);
+                expect(result.warnings.length).toBe(0);
+            });
+
+            it('should handle LineString geometry', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        geom: { "const": AttributeTypes.LineString }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                expect(result.dataset.geometry_type).toBe(AttributeTypes.LineString);
+            });
+
+            it('should handle Polygon geometry', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        geom: { "const": AttributeTypes.Polygon }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                expect(result.dataset.geometry_type).toBe(AttributeTypes.Polygon);
+            });
+
+            it('should warn for invalid geometry type', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        geom: { "const": 'InvalidType' }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                expect(result.dataset.geometry_type).toBe(AttributeTypes.Point);
+                expect(result.warnings.length).toBe(1);
+                expect(result.warnings[0].msgId).toBe('gnviewer.invalidGeometryType');
+            });
+
+            it('should warn when no geometry property', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        name: { type: 'string' }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                expect(result.warnings.length).toBe(1);
+                expect(result.warnings[0].msgId).toBe('gnviewer.noGeometryProperty');
+            });
+        });
+
+        describe('Attribute type mapping', () => {
+            it('should map string type correctly', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        text: { type: 'string' }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const textAttr = result.dataset.attributes.find(attr => attr.name === 'text');
+                expect(textAttr.type).toBe(AttributeTypes.String);
+            });
+
+            it('should map integer type correctly', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        count: { type: 'integer' }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const countAttr = result.dataset.attributes.find(attr => attr.name === 'count');
+                expect(countAttr.type).toBe(AttributeTypes.Integer);
+            });
+
+            it('should map number type to float', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        value: { type: 'number' }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const valueAttr = result.dataset.attributes.find(attr => attr.name === 'value');
+                expect(valueAttr.type).toBe(AttributeTypes.Float);
+            });
+
+            it('should handle date format', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        created: { type: 'string', format: 'date' }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const createdAttr = result.dataset.attributes.find(attr => attr.name === 'created');
+                expect(createdAttr.type).toBe(AttributeTypes.Date);
+            });
+
+            it('should warn for unsupported property type', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        unsupported: { type: 'array' }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                expect(result.warnings.length).toBe(2); // noGeometryProperty + unsupportedPropertyType
+                const warning = result.warnings.find(w => w.msgId === 'gnviewer.unsupportedPropertyType');
+                expect(warning.msgParams).toEqual({ propName: 'unsupported', propType: 'array' });
+            });
+        });
+
+        describe('Enum restrictions', () => {
+            it('should handle string enum restrictions', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        status: {
+                            type: 'string',
+                            "enum": ['active', 'inactive', 'pending']
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const statusAttr = result.dataset.attributes.find(attr => attr.name === 'status');
+                expect(statusAttr.restrictionsType).toBe(RestrictionsTypes.Options);
+                expect(statusAttr.restrictionsOptions.length).toBe(3);
+                expect(statusAttr.restrictionsOptions.map(opt => opt.value)).toEqual(['active', 'inactive', 'pending']);
+            });
+
+            it('should handle integer enum restrictions', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        priority: {
+                            type: 'integer',
+                            "enum": [1, 2, 3, 4, 5]
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const priorityAttr = result.dataset.attributes.find(attr => attr.name === 'priority');
+                expect(priorityAttr.restrictionsType).toBe(RestrictionsTypes.Options);
+                expect(priorityAttr.restrictionsOptions.map(opt => opt.value)).toEqual([1, 2, 3, 4, 5]);
+            });
+
+            it('should warn for enum with mixed types in string field', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        mixed: {
+                            type: 'string',
+                            "enum": ['text', 123, true]
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const warning = result.warnings.find(w => w.msgId === 'gnviewer.enumMustBeString');
+                expect(warning.msgParams).toEqual({ propName: 'mixed' });
+            });
+
+            it('should warn for enum on date field', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        date: {
+                            type: 'string',
+                            format: 'date',
+                            "enum": ['2023-01-01', '2023-01-02']
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const warning = result.warnings.find(w => w.msgId === 'gnviewer.enumNotSupportedForDate');
+                expect(warning.msgParams).toEqual({ propName: 'date' });
+            });
+
+            it('should handle null values in enum', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        nullable: {
+                            type: 'string',
+                            "enum": ['value1', null, 'value2']
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const nullableAttr = result.dataset.attributes.find(attr => attr.name === 'nullable');
+                expect(nullableAttr.restrictionsOptions.map(opt => opt.value)).toEqual(['value1', null, 'value2']);
+            });
+        });
+
+        describe('Range restrictions', () => {
+            it('should handle numeric range restrictions', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        score: {
+                            type: 'number',
+                            minimum: 0,
+                            maximum: 100
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const scoreAttr = result.dataset.attributes.find(attr => attr.name === 'score');
+                expect(scoreAttr.restrictionsType).toBe(RestrictionsTypes.Range);
+                expect(scoreAttr.restrictionsRangeMin).toBe(0);
+                expect(scoreAttr.restrictionsRangeMax).toBe(100);
+            });
+
+            it('should handle integer range restrictions', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        age: {
+                            type: 'integer',
+                            minimum: 0,
+                            maximum: 120
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const ageAttr = result.dataset.attributes.find(attr => attr.name === 'age');
+                expect(ageAttr.restrictionsType).toBe(RestrictionsTypes.Range);
+                expect(ageAttr.restrictionsRangeMin).toBe(0);
+                expect(ageAttr.restrictionsRangeMax).toBe(120);
+            });
+
+            it('should handle only minimum range', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        positive: {
+                            type: 'number',
+                            minimum: 0
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const positiveAttr = result.dataset.attributes.find(attr => attr.name === 'positive');
+                expect(positiveAttr.restrictionsType).toBe(RestrictionsTypes.Range);
+                expect(positiveAttr.restrictionsRangeMin).toBe(0);
+                expect(positiveAttr.restrictionsRangeMax).toBe(null);
+            });
+
+            it('should handle only maximum range', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        limited: {
+                            type: 'number',
+                            maximum: 1000
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const limitedAttr = result.dataset.attributes.find(attr => attr.name === 'limited');
+                expect(limitedAttr.restrictionsType).toBe(RestrictionsTypes.Range);
+                expect(limitedAttr.restrictionsRangeMin).toBe(null);
+                expect(limitedAttr.restrictionsRangeMax).toBe(1000);
+            });
+
+            it('should warn for range on string field', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        text: {
+                            type: 'string',
+                            minimum: 5,
+                            maximum: 10
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const warning = result.warnings.find(w => w.msgId === 'gnviewer.rangeNotSupportedForString');
+                expect(warning.msgParams).toEqual({ propName: 'text' });
+            });
+
+            it('should warn for range on date field', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        date: {
+                            type: 'string',
+                            format: 'date',
+                            minimum: '2023-01-01',
+                            maximum: '2023-12-31'
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const warning = result.warnings.find(w => w.msgId === 'gnviewer.rangeNotSupportedForDate');
+                expect(warning.msgParams).toEqual({ propName: 'date' });
+            });
+
+            it('should warn for string range values', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        value: {
+                            type: 'number',
+                            minimum: '0',
+                            maximum: '100'
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const warning = result.warnings.find(w => w.msgId === 'gnviewer.rangeMustBeNumeric');
+                expect(warning.msgParams).toEqual({ propName: 'value' });
+            });
+
+            it('should warn when both min and max are empty', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        emptyRange: {
+                            type: 'number',
+                            minimum: null,
+                            maximum: undefined
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                const warning = result.warnings.find(w => w.msgId === 'gnviewer.rangeCannotBeEmpty');
+                expect(warning.msgParams).toEqual({ propName: 'emptyRange' });
+            });
+        });
+
+        describe('Required fields', () => {
+            it('should mark required fields as non-nillable', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        required: { type: 'string' },
+                        optional: { type: 'string' }
+                    },
+                    required: ['required']
+                };
+
+                const result = parseJSONSchema(schema);
+                const requiredAttr = result.dataset.attributes.find(attr => attr.name === 'required');
+                const optionalAttr = result.dataset.attributes.find(attr => attr.name === 'optional');
+
+                expect(requiredAttr.nillable).toBe(false);
+                expect(optionalAttr.nillable).toBe(true);
+            });
+
+            it('should handle empty required array', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        field: { type: 'string' }
+                    },
+                    required: []
+                };
+
+                const result = parseJSONSchema(schema);
+                const fieldAttr = result.dataset.attributes.find(attr => attr.name === 'field');
+                expect(fieldAttr.nillable).toBe(true);
+            });
+        });
+
+        describe('Error handling', () => {
+            it('should handle parsing errors gracefully', () => {
+                // Mock a function that throws an error
+                const originalConsole = console.error;
+                console.error = () => {}; // Suppress console.error for test
+
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        // This will cause an error when trying to access properties
+                        get test() {
+                            throw new Error('Test error');
+                        }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                expect(result.dataset).toBe(null);
+                expect(result.errors).toEqual(['gnviewer.schemaParseError']);
+
+                console.error = originalConsole;
+            });
+        });
+
+        describe('Complex scenarios', () => {
+            it('should handle complete schema with all features', () => {
+                const schema = {
+                    type: 'object',
+                    title: 'Complete Dataset',
+                    properties: {
+                        geom: { "const": AttributeTypes.Polygon },
+                        name: {
+                            type: 'string',
+                            "enum": ['Type A', 'Type B', 'Type C']
+                        },
+                        score: {
+                            type: 'number',
+                            minimum: 1.1,
+                            maximum: 100.2
+                        },
+                        age: {
+                            type: 'integer',
+                            minimum: 0,
+                            maximum: 120
+                        },
+                        created: {
+                            type: 'string',
+                            format: 'date'
+                        },
+                        description: { type: 'string' }
+                    },
+                    required: ['name', 'score']
+                };
+
+                const result = parseJSONSchema(schema);
+                expect(result.errors).toEqual([]);
+                expect(result.warnings).toEqual([]);
+                expect(result.dataset.title).toBe('Complete Dataset');
+                expect(result.dataset.geometry_type).toBe(AttributeTypes.Polygon);
+                expect(result.dataset.attributes.length).toBe(5); // geom is excluded
+
+                const nameAttr = result.dataset.attributes.find(attr => attr.name === 'name');
+                expect(nameAttr.restrictionsType).toBe(RestrictionsTypes.Options);
+                expect(nameAttr.nillable).toBe(false);
+
+                const scoreAttr = result.dataset.attributes.find(attr => attr.name === 'score');
+                expect(scoreAttr.restrictionsType).toBe(RestrictionsTypes.Range);
+                expect(scoreAttr.nillable).toBe(false);
+                expect(scoreAttr.restrictionsRangeMin).toBe(1.1);
+                expect(scoreAttr.restrictionsRangeMax).toBe(100.2);
+
+                const ageAttr = result.dataset.attributes.find(attr => attr.name === 'age');
+                expect(ageAttr.restrictionsType).toBe(RestrictionsTypes.Range);
+                expect(ageAttr.nillable).toBe(true);
+                expect(ageAttr.restrictionsRangeMin).toBe(0);
+                expect(ageAttr.restrictionsRangeMax).toBe(120);
+
+                const createdAttr = result.dataset.attributes.find(attr => attr.name === 'created');
+                expect(createdAttr.type).toBe(AttributeTypes.Date);
+                expect(createdAttr.restrictionsType).toBe(RestrictionsTypes.None);
+            });
         });
     });
 });

@@ -5,6 +5,8 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { v4 as uuid } from 'uuid';
+import isNil from 'lodash/isNil';
 
 export const AttributeTypes = {
     Point: "Point",
@@ -102,12 +104,6 @@ export const validateSchema = {
                                     "type": "string",
                                     "enum": [RestrictionsTypes.None, RestrictionsTypes.Range, RestrictionsTypes.Options]
                                 },
-                                "restrictionsRangeMin": {
-                                    "type": "integer"
-                                },
-                                "restrictionsRangeMax": {
-                                    "type": "integer"
-                                },
                                 "restrictionsOptions": {
                                     "type": "array",
                                     "items": {
@@ -131,12 +127,24 @@ export const validateSchema = {
                             "then": {
                                 "properties": {
                                     "restrictionsRangeMin": {
-                                        "type": "integer"
+                                        "type": ["integer", "null"]
                                     },
                                     "restrictionsRangeMax": {
-                                        "type": "integer"
+                                        "type": ["integer", "null"]
                                     }
-                                }
+                                },
+                                "anyOf": [
+                                    {
+                                        "properties": {
+                                            "restrictionsRangeMin": { "type": "integer" }
+                                        }
+                                    },
+                                    {
+                                        "properties": {
+                                            "restrictionsRangeMax": { "type": "integer" }
+                                        }
+                                    }
+                                ]
                             }
                         }
                     },
@@ -151,12 +159,6 @@ export const validateSchema = {
                                 "restrictionsType": {
                                     "type": "string",
                                     "enum": [RestrictionsTypes.None, RestrictionsTypes.Range, RestrictionsTypes.Options]
-                                },
-                                "restrictionsRangeMin": {
-                                    "type": "number"
-                                },
-                                "restrictionsRangeMax": {
-                                    "type": "number"
                                 },
                                 "restrictionsOptions": {
                                     "type": "array",
@@ -181,12 +183,24 @@ export const validateSchema = {
                             "then": {
                                 "properties": {
                                     "restrictionsRangeMin": {
-                                        "type": "number"
+                                        "type": ["number", "null"]
                                     },
                                     "restrictionsRangeMax": {
-                                        "type": "number"
+                                        "type": ["number", "null"]
                                     }
-                                }
+                                },
+                                "anyOf": [
+                                    {
+                                        "properties": {
+                                            "restrictionsRangeMin": { "type": "number" }
+                                        }
+                                    },
+                                    {
+                                        "properties": {
+                                            "restrictionsRangeMax": { "type": "number" }
+                                        }
+                                    }
+                                ]
                             }
                         }
                     },
@@ -313,4 +327,134 @@ export const getErrorByPath = (path, allErrors) => {
         }
     }
     return error?.message;
+};
+
+const JSON_SCHEMA_TYPE_TO_ATTRIBUTE_TYPE = {
+    [AttributeTypes.String]: AttributeTypes.String,
+    [AttributeTypes.Integer]: AttributeTypes.Integer,
+    number: AttributeTypes.Float
+};
+
+/**
+ * Parse JSON Schema and convert it to dataset attributes
+ * @param {Object} schema - The JSON Schema object
+ * @returns {Object} - Parsed result with dataset data and any errors
+ */
+export const parseJSONSchema = (schema) => {
+    const errors = [];
+    const warnings = [];
+
+    const fail = (errorId) => ({ dataset: null, errors: [...errors, errorId], warnings });
+    const addWarning = (msgId, msgParams) => warnings.push({ msgId, msgParams });
+
+    try {
+        // Basic validations with early returns
+        if (!schema || typeof schema !== 'object') return fail('gnviewer.invalidSchemaStructure');
+        if (schema.type !== 'object') return fail('gnviewer.schemaMustBeObject');
+        if (!schema.properties || typeof schema.properties !== 'object') {
+            return fail('gnviewer.schemaMustHaveProperties');
+        }
+
+        const { title = 'Untitled Dataset', properties, required = [] } = schema;
+        const requiredSet = new Set(required);
+
+        // Geometry type extraction
+        const geomProp = properties.geom;
+        let geometryType = AttributeTypes.Point;
+        if (geomProp) {
+            if (geomProp.const
+                && [
+                    AttributeTypes.Point,
+                    AttributeTypes.LineString,
+                    AttributeTypes.Polygon
+                ].includes(geomProp.const)
+            ) {
+                geometryType = geomProp.const;
+            } else {
+                addWarning('gnviewer.invalidGeometryType');
+            }
+        } else {
+            addWarning('gnviewer.noGeometryProperty');
+        }
+
+        // Attribute extraction with optimized processing
+        const attributes = [];
+        for (const [propName, prop] of Object.entries(properties)) {
+            if (propName === 'geom') continue;
+
+            // Determine attribute type
+            const baseType = JSON_SCHEMA_TYPE_TO_ATTRIBUTE_TYPE[prop.type];
+            if (!baseType) {
+                addWarning('gnviewer.unsupportedPropertyType',
+                    { propName, propType: prop.type ?? 'unknown' });
+                continue;
+            }
+
+            const attribute = {
+                id: uuid(),
+                name: propName,
+                type: prop.format === 'date' ? AttributeTypes.Date : baseType,
+                restrictionsType: RestrictionsTypes.None,
+                nillable: !requiredSet.has(propName)
+            };
+
+            // Handle enum restrictions
+            if (Array.isArray(prop.enum)) {
+                if (prop.format === 'date') {
+                    addWarning('gnviewer.enumNotSupportedForDate', { propName });
+                } else {
+                    const isString = attribute.type === AttributeTypes.String;
+                    const isInteger = attribute.type === AttributeTypes.Integer;
+                    if (isString && prop.enum.some(value => typeof value !== 'string')) {
+                        addWarning('gnviewer.enumMustBeString', { propName });
+                    }
+                    attribute.restrictionsType = RestrictionsTypes.Options;
+                    attribute.restrictionsOptions = prop.enum.map(value => ({
+                        id: uuid(),
+                        value: isNil(value) ? null
+                            : isString
+                                ? String(value)
+                                : isInteger
+                                    ? Number(value)
+                                    : parseNumber(value)
+                    }));
+                }
+                // Handle range restrictions
+            } else if (prop.minimum !== undefined || prop.maximum !== undefined) {
+                if (attribute.type === AttributeTypes.String) {
+                    addWarning('gnviewer.rangeNotSupportedForString', { propName });
+                } else if (prop.format === 'date') {
+                    addWarning('gnviewer.rangeNotSupportedForDate', { propName });
+                } else {
+                    const min = prop.minimum;
+                    const max = prop.maximum;
+
+                    // Validate that both min and max are not empty/undefined
+                    if (isNil(min) && isNil(max)) {
+                        addWarning('gnviewer.rangeCannotBeEmpty', { propName });
+                    } else {
+                        if (typeof min === 'string' || typeof max === 'string') {
+                            addWarning('gnviewer.rangeMustBeNumeric', { propName });
+                        }
+
+                        const isInteger = attribute.type === AttributeTypes.Integer;
+                        attribute.restrictionsType = RestrictionsTypes.Range;
+                        attribute.restrictionsRangeMin = isNil(min) ? null : isInteger ? Number(min) : parseNumber(min);
+                        attribute.restrictionsRangeMax = isNil(max) ? null : isInteger ? Number(max) : parseNumber(max);
+                    }
+                }
+            }
+
+            attributes.push(attribute);
+        }
+
+        return {
+            dataset: { title, geometry_type: geometryType, attributes },
+            errors,
+            warnings
+        };
+    } catch (err) {
+        errors.push('gnviewer.schemaParseError');
+        return { dataset: null, errors, warnings };
+    }
 };
