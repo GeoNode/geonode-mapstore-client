@@ -107,6 +107,10 @@ export const getSelectedLayerDataset = (state) => {
     return state?.gnresource?.selectedLayerDataset;
 };
 
+export const isResourceDetail = (state) => {
+    return get(state, 'gnresource.data["@ms-detail"]', false);
+};
+
 export const getCompactPermissions = (state) => {
     const compactPermissions = state?.gnresource?.compactPermissions || {};
     return compactPermissions;
@@ -338,7 +342,8 @@ export const getResourceDirtyState = (state) => {
     if (resourceType === ResourceTypes.DATASET) {
         metadataKeys = metadataKeys.concat('timeseries');
     }
-    const { data: initialData = {}, ...resource } = pick(state?.gnresource?.initialResource || {}, metadataKeys);
+    let { data: initialData = {}, ...resource } = pick(state?.gnresource?.initialResource || {}, metadataKeys);
+    if (isResourceDetail(state)) initialData = {}; // detail page allows only metadata editing. Data is not editable.
     const { compactPermissions, geoLimits } = getPermissionsPayload(state);
     const currentData = JSON.parse(JSON.stringify(getDataPayload(state) || {})); // JSON stringify is needed to remove undefined values
     // omitting data on thumbnail
