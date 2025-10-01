@@ -18,8 +18,6 @@ describe('Test App Routes Utils', () => {
         expect(componentTypes).toEqual({
             VIEWER: 'ViewerRoute',
             CATALOGUE: 'CatalogueRoute',
-            DATASET_UPLOAD: 'UploadDatasetRoute',
-            DOCUMENT_UPLOAD: 'UploadDocumentRoute',
             COMPONENTS: 'ComponentsRoute',
             MAP_VIEWER: 'MapViewerRoute'
         });
@@ -70,7 +68,8 @@ describe('Test App Routes Utils', () => {
             mapViewerRoute,
             catalogueRoute,
             uploadDatasetRoute,
-            uploadDocumentRoute
+            uploadDocumentRoute,
+            createDatasetRoute
         ] = routeUtils.CATALOGUE_ROUTES;
         expect(metadataRoute.path).toEqual(['/metadata/:pk']);
         expect(metadataRoute.name).toEqual('metadata');
@@ -100,5 +99,7 @@ describe('Test App Routes Utils', () => {
         expect(uploadDatasetRoute.name).toEqual('upload_dataset');
         expect(uploadDocumentRoute.path).toEqual(['/upload/document']);
         expect(uploadDocumentRoute.name).toEqual('upload_document');
+        expect(createDatasetRoute.path).toEqual(['/create/dataset']);
+        expect(createDatasetRoute.name).toEqual('create_dataset');
     });
 });
