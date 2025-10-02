@@ -495,7 +495,7 @@
             "supportedFileTypes": "Unterstützte Dateitypen",
             "assetUpload": "Asset hochladen",
             "assetUploadSuccessMessage": "Asset(s) hochgeladen erfolgreich",
-            "assetDeleteSuccessMessage": "Asset has been deleted successfully",
+            "assetDeleteSuccessMessage": "Asset wurde erfolgreich gelöscht",
             "assetUploadErrorMessage": "Fehler beim Hochladen der Asset(s)",
             "assetUploadPartialErrorMessage": "Fehler beim Hochladen einiger Asset(s)",
             "assetUploadUnsupportedFormatError": "Nicht unterstützter Dateityp(s) '{ext}', kann die Datei(en) nicht hochladen",

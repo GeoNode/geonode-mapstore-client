@@ -497,7 +497,7 @@
             "supportedFileTypes": "Tipi di file supportati",
             "assetUpload": "Carica Asset",
             "assetUploadSuccessMessage": "Asset(s) caricati con successo",
-            "assetDeleteSuccessMessage": "Asset(s) eliminati con successo",
+            "assetDeleteSuccessMessage": "Asset eliminato con successo",
             "assetUploadErrorMessage": "Errore durante il caricamento dell'Asset(s)",
             "assetUploadPartialErrorMessage": "Errore durante il caricamento di alcuni Asset(s)",
             "assetUploadUnsupportedFormatError": "Tipo di file non supportato(s) '{ext}', non è possibile caricare il file(s)",

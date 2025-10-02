@@ -63,7 +63,7 @@ const AssetUploadWidget = ({
 
     const allowedDocumentTypes = getSupportedDocumentTypes();
     const maxParallelUploads = getMaxParallelUploads() || 5; // default to 5
-    const maxAllowedSize = getMaxAllowedSizeByResourceType() || 104857600; // default to 100MB
+    const maxAllowedSize = getMaxAllowedSizeByResourceType() || 100; // default to 100MB
 
     const validateFiles = useCallback((files) => {
         // Check parallel upload limit

@@ -495,7 +495,7 @@
             "supportedFileTypes": "Types de fichiers pris en charge",
             "assetUpload": "Téléchargement d'Asset",
             "assetUploadSuccessMessage": "Asset(s) téléchargés avec succès",
-            "assetDeleteSuccessMessage": "Asset(s) supprimés avec succès",
+            "assetDeleteSuccessMessage": "Asset supprimé avec succès",
             "assetUploadErrorMessage": "Erreur lors du téléchargement des Asset(s)",
             "assetUploadPartialErrorMessage": "Erreur lors du téléchargement d'un Asset(s)",
             "assetUploadUnsupportedFormatError": "Format de fichier non pris en charge(s) '{ext}', impossible de télécharger le(s) fichier(s)",

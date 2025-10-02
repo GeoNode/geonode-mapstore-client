@@ -195,7 +195,7 @@ export const getMaxAllowedSizeByResourceType = (resourceType) => {
 };
 
 export const getSupportedDocumentTypes = () => {
-    const { allowedDocumentTypes } = getConfigProp('geoNodeSettings') || {};
+    const { allowedDocumentTypes = [] } = getConfigProp('geoNodeSettings') || {};
     return allowedDocumentTypes;
 };
 

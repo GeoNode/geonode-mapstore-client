@@ -494,7 +494,7 @@
             "supportedFileTypes": "Tipos de archivos admitidos",
             "assetUpload": "Carga de Asset",
             "assetUploadSuccessMessage": "Asset(s) cargados correctamente",
-            "assetDeleteSuccessMessage": "Asset(s) eliminados correctamente",
+            "assetDeleteSuccessMessage": "Asset eliminado correctamente",
             "assetUploadErrorMessage": "Error al cargar el Asset(s)",
             "assetUploadPartialErrorMessage": "Error al cargar algunos de los Asset(s)",
             "assetUploadUnsupportedFormatError": "Tipo de archivo no admitido(s) '{ext}', no se puede cargar el archivo(s)",
