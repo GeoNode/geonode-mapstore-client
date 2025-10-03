@@ -38,7 +38,7 @@ def validate_zip_file(file):
     file.seek(0)
     with zipfile.ZipFile(file, 'r') as zip_ref:
         filenames = zip_ref.namelist()
-        required_files = ['index.js', 'index.json']
-        if not all(f in filenames for f in required_files):
+        required_files = {'index.js', 'index.json'}
+        if not required_files.issubset(filenames):
             raise ValidationError("The zip file must contain index.js and index.json at its root.")
     file.seek(0)
