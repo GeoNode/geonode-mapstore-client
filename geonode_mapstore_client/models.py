@@ -1,3 +1,6 @@
+import os
+import shutil
+import zipfile
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.fields import ArrayField
@@ -9,7 +12,10 @@ from geonode_mapstore_client.utils import validate_zip_file
 from geonode_mapstore_client.templatetags.get_search_services import (
     populate_search_service_options,
 )
+from django.conf import settings
 
+# Define the target directory for static extensions
+EXTENSIONS_STATIC_DIR = os.path.join(settings.STATIC_ROOT, 'extensions')
 
 class SearchService(models.Model):
     class Meta:
@@ -106,7 +112,52 @@ class Extension(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if self.uploaded_file:
+            self.name = os.path.splitext(os.path.basename(self.uploaded_file.name))[0]
+        super().save(*args, **kwargs)
+
     class Meta:
         ordering = ('name',)
         verbose_name = "MapStore Extension"
         verbose_name_plural = "MapStore Extensions"
+
+
+@receiver(signals.post_save, sender=Extension)
+def handle_extension_upload(sender, instance, created, **kwargs):
+    """
+    Unzips the extension file to the static directory after it's saved.
+    This now uses the 'instance.name' field, which is guaranteed to be correct.
+    """
+    # Ensure the base static extensions directory exists
+    os.makedirs(EXTENSIONS_STATIC_DIR, exist_ok=True)
+
+    extension_name = instance.name
+    target_path = os.path.join(EXTENSIONS_STATIC_DIR, extension_name)
+
+    # If the directory already exists (e.g., on update), remove it first
+    if os.path.exists(target_path):
+        shutil.rmtree(target_path)
+
+    # Unzip the file
+    try:
+        with zipfile.ZipFile(instance.uploaded_file.path, 'r') as zip_ref:
+            zip_ref.extractall(target_path)
+    except FileNotFoundError:
+        pass
+
+
+@receiver(signals.post_delete, sender=Extension)
+def handle_extension_delete(sender, instance, **kwargs):
+    """
+    Removes the extension's static files and the uploaded zip file
+    when the model instance is deleted.
+    """
+    if instance.name:
+        extension_path = os.path.join(EXTENSIONS_STATIC_DIR, instance.name)
+        if os.path.exists(extension_path):
+            shutil.rmtree(extension_path)
+
+    if instance.uploaded_file:
+        if os.path.exists(instance.uploaded_file.path):
+             os.remove(instance.uploaded_file.path)
