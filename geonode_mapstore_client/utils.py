@@ -1,6 +1,7 @@
 import os
 import json
-
+import zipfile
+from django.core.exceptions import ValidationError
 from geoserver.catalog import FailedRequestError
 from geonode.geoserver.helpers import gs_catalog
 from geonode.layers.models import Dataset
@@ -25,3 +26,19 @@ def set_default_style_to_open_in_visual_mode(instance, **kwargs):
                         style.name, resp.status_code, resp.text
                     )
                 )
+
+
+def validate_zip_file(file):
+    """
+    Validates that the uploaded file is a zip and contains the required structure.
+    """
+    if not zipfile.is_zipfile(file):
+        raise ValidationError("File is not a valid zip archive.")
+
+    file.seek(0)
+    with zipfile.ZipFile(file, 'r') as zip_ref:
+        filenames = zip_ref.namelist()
+        required_files = ['index.js', 'index.json']
+        if not all(f in filenames for f in required_files):
+            raise ValidationError("The zip file must contain index.js and index.json at its root.")
+    file.seek(0)

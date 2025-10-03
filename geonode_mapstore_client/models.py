@@ -4,7 +4,8 @@ from django.contrib.postgres.fields import ArrayField
 from django.dispatch import receiver
 from django.db.models import signals
 from django.core.cache import caches
-
+from django.db import models
+from geonode_mapstore_client.utils import validate_zip_file
 from geonode_mapstore_client.templatetags.get_search_services import (
     populate_search_service_options,
 )
@@ -73,3 +74,39 @@ def post_save_search_service(instance, sender, created, **kwargs):
         services_cache.delete("search_services")
 
     services_cache.set("search_services", populate_search_service_options(), 300)
+
+
+
+def extension_upload_path(instance, filename):
+    return f'mapstore_extensions/{filename}'
+
+class Extension(models.Model):
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        blank=True, # Will be populated from the zip filename
+        help_text="Name of the extension, derived from the zip file name. Must be unique."
+    )
+    uploaded_file = models.FileField(
+        upload_to=extension_upload_path,
+        validators=[validate_zip_file],
+        help_text="Upload the MapStore extension as a zip folder."
+    )
+    active = models.BooleanField(
+        default=True,
+        help_text="Whether the extension is active and should be included in the index."
+    )
+    is_map_extension = models.BooleanField(
+        default=False,
+        help_text="Check if this extension is a map-specific plugin for Map Viewers."
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name = "MapStore Extension"
+        verbose_name_plural = "MapStore Extensions"
