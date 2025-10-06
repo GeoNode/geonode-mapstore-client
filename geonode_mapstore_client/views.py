@@ -138,9 +138,7 @@ class PluginsConfigView(APIView):
 
         cached_data = cache.get(MAPSTORE_PLUGINS_CACHE_KEY)
         if cached_data:
-            print("Using cached plugins config")
             return Response(cached_data)
-
 
         base_config_path = os.path.join(
             settings.PROJECT_ROOT, 'static', 'mapstore', 'configs', 'pluginsConfig.json'
