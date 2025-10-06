@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from django.db.models import signals
 from django.core.cache import caches
 from django.db import models
-from geonode_mapstore_client.utils import validate_zip_file
+from geonode_mapstore_client.utils import validate_zip_file, clear_extension_caches
 from geonode_mapstore_client.templatetags.get_search_services import (
     populate_search_service_options,
 )
@@ -84,27 +84,28 @@ def post_save_search_service(instance, sender, created, **kwargs):
 
 
 def extension_upload_path(instance, filename):
-    return f'mapstore_extensions/{filename}'
+    return f"mapstore_extensions/{filename}"
+
 
 class Extension(models.Model):
     name = models.CharField(
         max_length=255,
         unique=True,
-        blank=True, # Will be populated from the zip filename
-        help_text="Name of the extension, derived from the zip file name. Must be unique."
+        blank=True,  # Will be populated from the zip filename
+        help_text="Name of the extension, derived from the zip file name. Must be unique.",
     )
     uploaded_file = models.FileField(
         upload_to=extension_upload_path,
         validators=[validate_zip_file],
-        help_text="Upload the MapStore extension as a zip folder."
+        help_text="Upload the MapStore extension as a zip folder.",
     )
     active = models.BooleanField(
         default=True,
-        help_text="Whether the extension is active and should be included in the index."
+        help_text="Whether the extension is active and should be included in the index.",
     )
     is_map_extension = models.BooleanField(
         default=False,
-        help_text="Check if this extension is a map-specific plugin for Map Viewers."
+        help_text="Check if this extension is a map-specific plugin for Map Viewers.",
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -118,46 +119,42 @@ class Extension(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        ordering = ('name',)
+        ordering = ("name",)
         verbose_name = "MapStore Extension"
         verbose_name_plural = "MapStore Extensions"
 
 
 @receiver(signals.post_save, sender=Extension)
-def handle_extension_upload(sender, instance, created, **kwargs):
+def handle_extension_upload(sender, instance, **kwargs):
     """
-    Unzips the extension file to the static directory after it's saved.
-    This now uses the 'instance.name' field, which is guaranteed to be correct.
+    Unzips the extension file and clears the API cache after saving.
     """
-    # Ensure the base static extensions directory exists
     os.makedirs(EXTENSIONS_STATIC_DIR, exist_ok=True)
+    target_path = os.path.join(EXTENSIONS_STATIC_DIR, instance.name)
 
-    extension_name = instance.name
-    target_path = os.path.join(EXTENSIONS_STATIC_DIR, extension_name)
-
-    # If the directory already exists (e.g., on update), remove it first
     if os.path.exists(target_path):
         shutil.rmtree(target_path)
 
-    # Unzip the file
     try:
-        with zipfile.ZipFile(instance.uploaded_file.path, 'r') as zip_ref:
+        with zipfile.ZipFile(instance.uploaded_file.path, "r") as zip_ref:
             zip_ref.extractall(target_path)
     except FileNotFoundError:
         pass
+
+    clear_extension_caches()
 
 
 @receiver(signals.post_delete, sender=Extension)
 def handle_extension_delete(sender, instance, **kwargs):
     """
-    Removes the extension's static files and the uploaded zip file
-    when the model instance is deleted.
+    Removes the extension's files and clears the API cache on deletion.
     """
     if instance.name:
         extension_path = os.path.join(EXTENSIONS_STATIC_DIR, instance.name)
         if os.path.exists(extension_path):
             shutil.rmtree(extension_path)
 
-    if instance.uploaded_file:
-        if os.path.exists(instance.uploaded_file.path):
-             os.remove(instance.uploaded_file.path)
+    if instance.uploaded_file and os.path.exists(instance.uploaded_file.path):
+        os.remove(instance.uploaded_file.path)
+
+    clear_extension_caches()

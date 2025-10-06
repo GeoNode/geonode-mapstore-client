@@ -5,6 +5,11 @@ from django.core.exceptions import ValidationError
 from geoserver.catalog import FailedRequestError
 from geonode.geoserver.helpers import gs_catalog
 from geonode.layers.models import Dataset
+from django.core.cache import cache
+
+MAPSTORE_PLUGINS_CACHE_KEY = "mapstore_plugins_config"
+MAPSTORE_EXTENSIONS_CACHE_KEY = "mapstore_extensions_index"
+MAPSTORE_EXTENSION_CACHE_TIMEOUT = 60 * 60 * 24 * 1  # 1 day
 
 
 def set_default_style_to_open_in_visual_mode(instance, **kwargs):
@@ -42,3 +47,10 @@ def validate_zip_file(file):
         if not required_files.issubset(filenames):
             raise ValidationError("The zip file must contain index.js and index.json at its root.")
     file.seek(0)
+
+
+def clear_extension_caches():
+    """A helper function to clear all MapStore Extension caches."""
+    cache.delete(MAPSTORE_EXTENSIONS_CACHE_KEY)
+    cache.delete(MAPSTORE_PLUGINS_CACHE_KEY)
+    print("MapStore extension caches cleared.")

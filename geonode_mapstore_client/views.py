@@ -8,6 +8,7 @@ from dateutil import parser
 from django.conf import settings
 from django.templatetags.static import static
 from rest_framework.response import Response
+from django.core.cache import cache
 
 
 def _parse_value(value, schema):
@@ -79,33 +80,50 @@ def metadata_embed(request, pk):
     return metadata(request, pk, template="geonode-mapstore-client/metadata_embed.html")
 
 
+
 class ExtensionsView(APIView):
     permission_classes = []
 
     def get(self, request, *args, **kwargs):
         from geonode_mapstore_client.models import Extension
-        extensions = {}
+        from geonode_mapstore_client.utils import (
+            MAPSTORE_EXTENSIONS_CACHE_KEY,
+            MAPSTORE_EXTENSION_CACHE_TIMEOUT,
+        )
 
-        legacy_file_path = os.path.join(settings.PROJECT_ROOT, 'static', 'mapstore', 'extensions', 'index.json')
+        cached_data = cache.get(MAPSTORE_EXTENSIONS_CACHE_KEY)
+        if cached_data:
+            return Response(cached_data)
+
+        final_extensions = {}
+        legacy_file_path = os.path.join(
+            settings.STATIC_ROOT, "geonode", "js", "extensions.json"
+        )
 
         try:
-            with open(legacy_file_path, 'r') as f:
-                extensions = json.load(f)
+            with open(legacy_file_path, "r") as f:
+                final_extensions = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             pass
 
         active_extensions = Extension.objects.filter(active=True)
         dynamic_extensions = {}
-
         for ext in active_extensions:
             dynamic_extensions[ext.name] = {
-                "bundle": static(f'extensions/{ext.name}/index.js'),
-                "translations": static(f'extensions/{ext.name}/translations'),
-                "assets": static(f'extensions/{ext.name}/assets'),
+                "bundle": static(f"extensions/{ext.name}/index.js"),
+                "translations": static(f"extensions/{ext.name}/translations"),
+                "assets": static(f"extensions/{ext.name}/assets"),
             }
 
-        extensions.update(dynamic_extensions)
-        return Response(extensions)
+        final_extensions.update(dynamic_extensions)
+
+        cache.set(
+            MAPSTORE_EXTENSIONS_CACHE_KEY,
+            final_extensions,
+            timeout=MAPSTORE_EXTENSION_CACHE_TIMEOUT,
+        )
+
+        return Response(final_extensions)
 
 
 class PluginsConfigView(APIView):
@@ -113,6 +131,16 @@ class PluginsConfigView(APIView):
 
     def get(self, request, *args, **kwargs):
         from geonode_mapstore_client.models import Extension
+        from geonode_mapstore_client.utils import (
+            MAPSTORE_PLUGINS_CACHE_KEY,
+            MAPSTORE_EXTENSION_CACHE_TIMEOUT,
+        )
+
+        cached_data = cache.get(MAPSTORE_PLUGINS_CACHE_KEY)
+        if cached_data:
+            print("Using cached plugins config")
+            return Response(cached_data)
+
 
         base_config_path = os.path.join(
             settings.PROJECT_ROOT, 'static', 'mapstore', 'configs', 'pluginsConfig.json'
@@ -139,5 +167,11 @@ class PluginsConfigView(APIView):
                     "translations": static(f'extensions/{ext.name}/translations'),
                     "assets": static(f'extensions/{ext.name}/assets'),
                 })
+
+        cache.set(
+            MAPSTORE_PLUGINS_CACHE_KEY,
+            config_data,
+            timeout=MAPSTORE_EXTENSION_CACHE_TIMEOUT,
+        )
 
         return Response({"plugins": plugins})
