@@ -113,7 +113,7 @@ class Extension(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if self.uploaded_file:
+        if not self.name and self.uploaded_file:
             self.name = os.path.splitext(os.path.basename(self.uploaded_file.name))[0]
         super().save(*args, **kwargs)
 
