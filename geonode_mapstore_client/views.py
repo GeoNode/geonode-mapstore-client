@@ -97,7 +97,7 @@ class ExtensionsView(APIView):
 
         final_extensions = {}
         legacy_file_path = os.path.join(
-            settings.STATIC_ROOT, "geonode", "js", "extensions.json"
+            settings.PROJECT_ROOT, "static", "mapstore", "extensions", "index.json"
         )
 
         try:
@@ -141,13 +141,13 @@ class PluginsConfigView(APIView):
             return Response(cached_data)
 
         base_config_path = os.path.join(
-            settings.PROJECT_ROOT, 'static', 'mapstore', 'configs', 'pluginsConfig.json'
+            settings.PROJECT_ROOT, "static", "mapstore", "configs", "pluginsConfig.json"
         )
 
         config_data = {"plugins": []}
 
         try:
-            with open(base_config_path, 'r') as f:
+            with open(base_config_path, "r") as f:
                 config_data = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             pass
@@ -161,9 +161,9 @@ class PluginsConfigView(APIView):
             if ext.name not in existing_plugin_names:
                 plugins.append({
                     "name": ext.name,
-                    "bundle": static(f'extensions/{ext.name}/index.js'),
-                    "translations": static(f'extensions/{ext.name}/translations'),
-                    "assets": static(f'extensions/{ext.name}/assets'),
+                    "bundle": static(f"extensions/{ext.name}/index.js"),
+                    "translations": static(f"extensions/{ext.name}/translations"),
+                    "assets": static(f"extensions/{ext.name}/assets"),
                 })
 
         cache.set(
