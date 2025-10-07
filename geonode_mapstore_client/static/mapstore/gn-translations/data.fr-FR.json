@@ -500,7 +500,8 @@
             "assetUploadPartialErrorMessage": "Erreur lors du téléchargement d'un Asset(s)",
             "assetUploadUnsupportedFormatError": "Format de fichier non pris en charge(s) '{ext}', impossible de télécharger le(s) fichier(s)",
             "assetDelete": "Supprimer l'Asset",
-            "assetDeleteErrorMessage": "Erreur lors de la suppression de l'Asset"
+            "assetDeleteErrorMessage": "Erreur lors de la suppression de l'Asset",
+            "noAssets": "Aucun asset trouvé"
         },
         "resourcesCatalog": {
             "anonymous": "N'importe qui",

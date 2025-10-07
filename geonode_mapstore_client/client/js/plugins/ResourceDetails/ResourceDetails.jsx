@@ -224,7 +224,8 @@ function ResourceDetailsPanel({
             "type": "assets",
             "id": "assets",
             "labelId": "gnviewer.assets",
-            "items": "{context.get(state('gnResourceData'), 'assets')}"
+            "items": "{context.get(state('gnResourceData'), 'assets')}",
+            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
         },
         {
             "type": "data",
@@ -303,7 +304,7 @@ function ResourceDetailsPanel({
     }, []);
 
     const node = useDetectClickOut({
-        extraNodes: ['.ms-popover-overlay', '.ms-resources-panel-wrapper'],
+        extraNodes: ['.ms-popover-overlay'],
         disabled: !closeOnClickOut || !show,
         onClickOut: () => {
             handleClose();
@@ -325,9 +326,9 @@ function ResourceDetailsPanel({
                 show={show}
                 enabled={show}
                 editing={editingOverlay && pendingChanges}
+                ref={node}
             >
                 <DetailsPanel
-                    panelRef={node}
                     resource={resource}
                     loading={loading}
                     toolbarItems={toolbarItems}

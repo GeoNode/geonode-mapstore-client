@@ -206,6 +206,10 @@ const DetailsAssets = ({
     const [loading, setLoading] = useState(false);
     const [deletingAsset, setDeletingAsset] = useState(null);
 
+    const getValidFields = (_fields) => {
+        return (_fields ?? []).filter(field => !field?._showEmptyState);
+    };
+
     const onAssetsUploaded = useCallback((assets) => {
         // Create the asset entry in the format expected by the resource
         const newAssets = assets.map(asset => {
@@ -223,7 +227,7 @@ const DetailsAssets = ({
         });
 
         // Update the resource with the new asset
-        const updatedAssets = [...newAssets, ...(fields || [])];
+        const updatedAssets = [...newAssets, ...getValidFields(fields)];
         onChange({ assets: updatedAssets });
     }, [fields, onChange]);
 
@@ -233,8 +237,10 @@ const DetailsAssets = ({
         setDeletingAsset(assetIndex);
         deleteAsset(resource.pk, assetId)
             .then(() => {
-                const updatedAssets = [...(fields || [])]
+                let updatedAssets = getValidFields(fields)
                     .filter((_, index) => index !== assetIndex);
+                // add empty state flag to show assets section if no assets are left
+                updatedAssets = updatedAssets.length ? updatedAssets : [{_showEmptyState: true}];
                 onChange({ assets: updatedAssets });
                 onNotify({
                     title: 'gnviewer.assetDelete',
@@ -263,6 +269,20 @@ const DetailsAssets = ({
             </div> }
             <FlexBox column className={`gn-details-assets-list ${!allowUpload ? 'full-height' : ''}`}>
                 {fields.map((field, idx) => {
+                    if (field?._showEmptyState) {
+                        return (
+                            <FlexBox
+                                key={idx}
+                                column
+                                centerChildrenVertically
+                                className="gn-details-assets-empty"
+                            >
+                                <Text fontSize="sm" strong>
+                                    <Message msgId="gnviewer.noAssets" />
+                                </Text>
+                            </FlexBox>
+                        );
+                    }
                     const asset = get(field, 'extras.content', {});
                     const isDeletable = get(field, 'extras.deletable', false);
                     const assetId = extractAssetIdFromUrl(asset.download_url);

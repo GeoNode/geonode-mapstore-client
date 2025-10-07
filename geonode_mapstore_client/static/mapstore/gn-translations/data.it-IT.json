@@ -502,7 +502,8 @@
             "assetUploadPartialErrorMessage": "Errore durante il caricamento di alcuni Asset(s)",
             "assetUploadUnsupportedFormatError": "Tipo di file non supportato(s) '{ext}', non è possibile caricare il file(s)",
             "assetDelete": "Elimina Asset",
-            "assetDeleteErrorMessage": "Errore durante l'eliminazione dell'Asset"
+            "assetDeleteErrorMessage": "Errore durante l'eliminazione dell'Asset",
+            "noAssets": "Nessun asset trovato"
         },
         "resourcesCatalog": {
             "anonymous": "Chiunque",

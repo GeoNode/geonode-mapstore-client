@@ -500,7 +500,8 @@
             "assetUploadPartialErrorMessage": "Fehler beim Hochladen einiger Asset(s)",
             "assetUploadUnsupportedFormatError": "Nicht unterstützter Dateityp(s) '{ext}', kann die Datei(en) nicht hochladen",
             "assetDelete": "Asset löschen",
-            "assetDeleteErrorMessage": "Fehler beim Löschen des Assets"
+            "assetDeleteErrorMessage": "Fehler beim Löschen des Assets",
+            "noAssets": "Keine Assets gefunden"
         },
         "resourcesCatalog": {
             "anonymous": "Jeder",
