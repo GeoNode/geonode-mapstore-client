@@ -303,7 +303,7 @@ function ResourceDetailsPanel({
     }, []);
 
     const node = useDetectClickOut({
-        extraNodes: ['.ms-popover-overlay'],
+        extraNodes: ['.ms-popover-overlay', '.ms-resources-panel-wrapper'],
         disabled: !closeOnClickOut || !show,
         onClickOut: () => {
             handleClose();
