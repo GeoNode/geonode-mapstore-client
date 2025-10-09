@@ -91,7 +91,8 @@ import {
     ResourceTypes,
     toMapStoreMapConfig,
     getCataloguePath,
-    isDefaultDatasetSubtype
+    isDefaultDatasetSubtype,
+    resourceHasPermission
 } from '@js/utils/ResourceUtils';
 import {
     canAddResource,
@@ -146,7 +147,7 @@ const resourceTypes = {
                 ])
                     .then((response) => {
                         const [, gnLayer] = response ?? [];
-                        if (gnLayer?.has_time) {
+                        if (gnLayer?.has_time && resourceHasPermission(gnLayer, 'change_resourcebase')) {
                             // fetch timeseries when applicable
                             return getDatasetTimeSettingsByPk(pk)
                                 .then((timeseries) => response.concat(timeseries));
@@ -743,7 +744,7 @@ export const gnSelectResourceEpic = (action$, store) =>
             ])
                 .then((response) => {
                     const [resource] = response ?? [];
-                    if (resource?.has_time) {
+                    if (resource?.has_time && resourceHasPermission(resource, 'change_resourcebase')) {
                         return getDatasetTimeSettingsByPk(pk)
                             .then((timeseries) => response.concat(timeseries));
                     }
