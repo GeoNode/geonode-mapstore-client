@@ -460,7 +460,19 @@
             "geostory": "geostory",
             "document": "document",
             "dashboard": "dashboard",
-            "mapviewer": "mapviewer"
+            "mapviewer": "mapviewer",
+            "dragDropAsset": "Drag and drop files here <br/> or",
+            "browseFile": "Browse Files",
+            "supportedFileTypes": "Supported file types",
+            "assetUpload": "Asset upload",
+            "assetUploadSuccessMessage": "Asset(s) uploaded successfully",
+            "assetDeleteSuccessMessage": "Asset has been deleted successfully",
+            "assetUploadErrorMessage": "Failed to upload the asset(s)",
+            "assetUploadPartialErrorMessage": "Failed to upload some of the assets(s)",
+            "assetUploadUnsupportedFormatError": "Unsupported file format(s) '{ext}', cannot upload the file(s)",
+            "assetDelete": "Asset delete",
+            "assetDeleteErrorMessage": "Failed to delete asset",
+            "noAssets": "No assets found"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

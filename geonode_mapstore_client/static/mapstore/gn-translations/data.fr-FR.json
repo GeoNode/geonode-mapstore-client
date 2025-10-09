@@ -489,7 +489,19 @@
             "geostory": "géohistoire",
             "document": "document",
             "dashboard": "tableau de bord",
-            "mapviewer": "visionneuse de carte"
+            "mapviewer": "visionneuse de carte",
+            "dragDropAsset": "Glisser et déposer des fichiers ici <br/> ou",
+            "browseFile": "Parcourir les fichiers",
+            "supportedFileTypes": "Types de fichiers pris en charge",
+            "assetUpload": "Téléchargement d'Asset",
+            "assetUploadSuccessMessage": "Asset(s) téléchargés avec succès",
+            "assetDeleteSuccessMessage": "Asset supprimé avec succès",
+            "assetUploadErrorMessage": "Erreur lors du téléchargement des Asset(s)",
+            "assetUploadPartialErrorMessage": "Erreur lors du téléchargement d'un Asset(s)",
+            "assetUploadUnsupportedFormatError": "Format de fichier non pris en charge(s) '{ext}', impossible de télécharger le(s) fichier(s)",
+            "assetDelete": "Supprimer l'Asset",
+            "assetDeleteErrorMessage": "Erreur lors de la suppression de l'Asset",
+            "noAssets": "Aucun asset trouvé"
         },
         "resourcesCatalog": {
             "anonymous": "N'importe qui",

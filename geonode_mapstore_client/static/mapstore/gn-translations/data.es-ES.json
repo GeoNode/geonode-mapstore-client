@@ -488,7 +488,19 @@
             "geostory": "geohistoria",
             "document": "documento",
             "dashboard": "tablero",
-            "mapviewer": "visor de mapa"
+            "mapviewer": "visor de mapa",
+            "dragDropAsset": "Arrastra y suelta archivos aquí <br/> o",
+            "browseFile": "Buscar archivos",
+            "supportedFileTypes": "Tipos de archivos admitidos",
+            "assetUpload": "Carga de Asset",
+            "assetUploadSuccessMessage": "Asset(s) cargados correctamente",
+            "assetDeleteSuccessMessage": "Asset eliminado correctamente",
+            "assetUploadErrorMessage": "Error al cargar el Asset(s)",
+            "assetUploadPartialErrorMessage": "Error al cargar algunos de los Asset(s)",
+            "assetUploadUnsupportedFormatError": "Tipo de archivo no admitido(s) '{ext}', no se puede cargar el archivo(s)",
+            "assetDelete": "Eliminar Asset",
+            "assetDeleteErrorMessage": "Error al eliminar el Asset",
+            "noAssets": "No se encontraron assets"
         },
         "resourcesCatalog": {
             "anonymous": "Cualquiera",

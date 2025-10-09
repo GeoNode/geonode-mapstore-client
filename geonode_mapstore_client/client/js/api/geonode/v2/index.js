@@ -703,6 +703,26 @@ export const getResourceByTypeAndByPk = (type, pk, subtype) => {
     }
 };
 
+export const uploadAsset = (pk, file) => {
+    const formData = new FormData();
+    formData.append('files', file);
+    formData.append('title', file.name);
+    return axios.post(getEndpointUrl(RESOURCES) + `/${pk}/assets/`,
+        formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            ...paramsSerializer()
+        })
+        .then(({ data }) => data);
+};
+
+export const deleteAsset = (pk, assetId) => {
+    return axios.delete(getEndpointUrl(RESOURCES) + `/${pk}/assets/${assetId}`, {
+        ...paramsSerializer()
+    });
+};
+
 export default {
     getEndpoints,
     getResources,
@@ -718,6 +738,8 @@ export default {
     getMaps,
     getDocumentsByDocType,
     getUserByPk,
+    uploadAsset,
+    deleteAsset,
     getUsers,
     getAccountInfo,
     getConfiguration,

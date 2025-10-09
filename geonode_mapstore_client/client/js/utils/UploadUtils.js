@@ -194,9 +194,14 @@ export const getMaxAllowedSizeByResourceType = (resourceType) => {
     return maxAllowedSize;
 };
 
+export const getSupportedDocumentTypes = () => {
+    const { allowedDocumentTypes = [] } = getConfigProp('geoNodeSettings') || {};
+    return allowedDocumentTypes;
+};
+
 export const getSupportedFilesByResourceType = (resourceType, { actions } = {}) => {
     if (resourceType === 'document') {
-        const { allowedDocumentTypes } = getConfigProp('geoNodeSettings') || [];
+        const allowedDocumentTypes = getSupportedDocumentTypes();
         return allowedDocumentTypes.map((ext) => {
             return {
                 id: ext,

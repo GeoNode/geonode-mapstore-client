@@ -626,7 +626,6 @@
                         },
                         {
                             "labelId": "gnviewer.download",
-                            "disableIf": "{!state('selectedLayerPermissions').includes('download_resourcebase') || context.isDocumentExternalSource(state('gnResourceData'))}",
                             "type": "dropdown",
                             "items": [
                                 {
@@ -2465,7 +2464,6 @@
                         },
                         {
                             "labelId": "gnviewer.download",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'download_resourcebase')}",
                             "type": "dropdown",
                             "items": [
                                 {

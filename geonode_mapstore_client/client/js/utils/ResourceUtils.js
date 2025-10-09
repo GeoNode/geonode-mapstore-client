@@ -812,7 +812,7 @@ export const getResourceAdditionalProperties = (_resource = {}) => {
     const assets = links.filter(link => link?.extras?.type === 'asset' && link?.extras?.content?.title);
     return {
         ...resource,
-        ...(assets?.length && { assets })
+        assets: assets.length ? assets : [{_showEmptyState: true}] // add empty state flag to show assets section
     };
 };
 
