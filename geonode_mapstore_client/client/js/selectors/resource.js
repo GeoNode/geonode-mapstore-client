@@ -309,7 +309,8 @@ function isResourceDataEqual(state, initialData = {}, currentData = {}) {
         const selectedLayerInitial = getSelectedLayer(state);
         const initialLayerData = {...selectedLayerInitial, ...initialData};
 
-        const isSettingsEqual = compareObjects(omit(currentData, ['style', 'fields']), omit(initialLayerData, ['style', 'fields']));
+        const isSettingsEqual = compareObjects(omit(currentData, ['style', 'fields']),
+            omit(initialLayerData, ['style', 'fields', 'extendedParams', 'pk', '_v_', 'isDataset', 'perms']));
         const isStyleEqual = isEmpty(selectedLayer?.availableStyles) || isEmpty(selectedLayer?.style) ? true
             : selectedLayer?.style === selectedLayer?.availableStyles?.[0]?.name;
         const isAttributesEqual = isEmpty(selectedLayer) ? true : !isEmpty(initialLayerData) && isEqual(initialLayerData?.fields, selectedLayer.fields);
