@@ -170,10 +170,13 @@ const SaveAPI = {
             ...(timeseries && { has_time: timeseries?.has_time })
         };
         const { request, actions } = setDefaultStyle(state, id); // set default style, if modified
+
         return request().then(() => (id
-            ? axios.all([updateDataset(id, updatedBody), updateDatasetTimeSeries(id, timeseries)])
-            : Promise.resolve())
-            .then(([_resource]) => {
+            // perform dataset and timeseries updates sequentially to avoid race conditions
+            ? updateDataset(id, updatedBody).then((resource) =>
+                updateDatasetTimeSeries(id, timeseries).then(() => resource)
+            ) : Promise.resolve())
+            .then((_resource) => {
                 let resource = omit(_resource, 'default_style');
                 if (timeseries) {
                     const layerId = layersSelector(state)?.find((l) => l.pk === resource?.pk)?.id;
