@@ -968,6 +968,14 @@
                             ]
                         },
                         {
+                            "name": "application/vnd.ms-excel",
+                            "label": "Excel",
+                            "type": "vector",
+                            "validServices": [
+                                "wps"
+                            ]
+                        },
+                        {
                             "name": "application/geopackage+sqlite3",
                             "label": "GeoPackage",
                             "type": "vector",
@@ -1855,6 +1863,14 @@
                         {
                             "name": "text/csv",
                             "label": "CSV",
+                            "type": "vector",
+                            "validServices": [
+                                "wps"
+                            ]
+                        },
+                        {
+                            "name": "application/vnd.ms-excel",
+                            "label": "Excel",
                             "type": "vector",
                             "validServices": [
                                 "wps"
@@ -2786,6 +2802,14 @@
                       {
                           "name": "text/csv",
                           "label": "CSV",
+                          "type": "vector",
+                          "validServices": [
+                              "wps"
+                          ]
+                      },
+                      {
+                         "name": "application/vnd.ms-excel",
+                          "label": "Excel",
                           "type": "vector",
                           "validServices": [
                               "wps"
