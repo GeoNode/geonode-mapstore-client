@@ -536,7 +536,19 @@
             "rangeCannotBeEmpty": "L'intervallo non può essere vuoto: {propName}",
             "createDatasetErrorTitle": "Creazione del dataset",
             "createDatasetErrorDefault": "Si è verificato un errore durante la creazione del dataset. Si prega di riprovare",
-            "clearWarnings": "Elimina le avvertenze"
+            "clearWarnings": "Elimina le avvertenze",
+            "dragDropAsset": "Trascina e rilascia file qui <br/> o",
+            "browseFile": "Sfoglia file",
+            "supportedFileTypes": "Tipi di file supportati",
+            "assetUpload": "Carica Asset",
+            "assetUploadSuccessMessage": "Asset(s) caricati con successo",
+            "assetDeleteSuccessMessage": "Asset eliminato con successo",
+            "assetUploadErrorMessage": "Errore durante il caricamento dell'Asset(s)",
+            "assetUploadPartialErrorMessage": "Errore durante il caricamento di alcuni Asset(s)",
+            "assetUploadUnsupportedFormatError": "Tipo di file non supportato(s) '{ext}', non è possibile caricare il file(s)",
+            "assetDelete": "Elimina Asset",
+            "assetDeleteErrorMessage": "Errore durante l'eliminazione dell'Asset",
+            "noAssets": "Nessun asset trovato"
         },
         "resourcesCatalog": {
             "anonymous": "Chiunque",

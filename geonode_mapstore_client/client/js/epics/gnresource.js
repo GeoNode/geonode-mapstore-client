@@ -91,7 +91,8 @@ import {
     ResourceTypes,
     toMapStoreMapConfig,
     getCataloguePath,
-    isDefaultDatasetSubtype
+    isDefaultDatasetSubtype,
+    resourceHasPermission
 } from '@js/utils/ResourceUtils';
 import {
     canAddResource,
@@ -146,7 +147,7 @@ const resourceTypes = {
                 ])
                     .then((response) => {
                         const [, gnLayer] = response ?? [];
-                        if (gnLayer?.has_time) {
+                        if (gnLayer?.has_time && resourceHasPermission(gnLayer, 'change_resourcebase')) {
                             // fetch timeseries when applicable
                             return getDatasetTimeSettingsByPk(pk)
                                 .then((timeseries) => response.concat(timeseries));
@@ -740,11 +741,20 @@ export const gnSelectResourceEpic = (action$, store) =>
                         .then((compactPermissions) => compactPermissions)
                         .catch(() => null)
                     : Promise.resolve(null)
-            ]))
-                .switchMap(([resource, compactPermissions]) => {
+            ])
+                .then((response) => {
+                    const [resource] = response ?? [];
+                    if (resource?.has_time && resourceHasPermission(resource, 'change_resourcebase')) {
+                        return getDatasetTimeSettingsByPk(pk)
+                            .then((timeseries) => response.concat(timeseries));
+                    }
+                    return response;
+                }))
+                .switchMap((response) => {
+                    const [resource, compactPermissions, timeseries] = response ?? [];
                     return Observable.of(
                         setResourceType(resourceType),
-                        setResource(getResourceWithDetail(resource)),
+                        setResource(getResourceWithDetail({...resource, timeseries})),
                         ...(compactPermissions ? [setResourceCompactPermissions(compactPermissions)] : [])
                     );
                 })

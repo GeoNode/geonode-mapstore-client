@@ -843,10 +843,10 @@ describe('Test Resource Utils', () => {
             .toEqual({linkedResources: {linkedBy: ["1"], linkedTo: ["1"]}});
     });
     it('getResourceAdditionalProperties', () => {
-        expect(getResourceAdditionalProperties({})).toEqual({});
-        expect(getResourceAdditionalProperties()).toEqual({});
+        expect(getResourceAdditionalProperties({})).toEqual({assets: [ { _showEmptyState: true } ]});
+        expect(getResourceAdditionalProperties()).toEqual({assets: [ { _showEmptyState: true } ]});
         expect(getResourceAdditionalProperties({pk: 1, linked_resources: {linked_to: ["1"], linked_by: ["1"]}}))
-            .toEqual({pk: 1, linkedResources: {linkedBy: ["1"], linkedTo: ["1"]}});
+            .toEqual({pk: 1, linkedResources: {linkedBy: ["1"], linkedTo: ["1"]}, assets: [ { _showEmptyState: true } ]});
         expect(getResourceAdditionalProperties({
             pk: 1,
             links: [
@@ -953,6 +953,13 @@ describe('Test Resource Utils', () => {
                     }
                 ]
             });
+    });
+    it('getResourceAdditionalProperties - return empty state flag if no assets', () => {
+        expect(getResourceAdditionalProperties({
+            pk: 1,
+            links: [{}]
+        }))
+            .toEqual({pk: 1, links: [{}], assets: [{_showEmptyState: true}]});
     });
     describe('getDimensions', () => {
         it('should return empty array if no links and has_time is false', () => {

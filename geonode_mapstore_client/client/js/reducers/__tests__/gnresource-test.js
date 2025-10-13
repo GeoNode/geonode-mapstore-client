@@ -30,13 +30,14 @@ describe('gnresource reducer', () => {
         });
     });
     it('should test setResource', () => {
-        const resource = {
+        let resource = {
             'pk': 1,
             'title': 'Title',
             'abstract': 'Description',
             'thumbnail_url': 'thumbnail.jpeg'
         };
         const state = gnresource({}, setResource(resource));
+        resource.assets = [ { _showEmptyState: true } ];
         expect(state).toEqual({
             error: null,
             isNew: false,
@@ -131,7 +132,10 @@ describe('gnresource reducer', () => {
         const state = gnresource({}, setMapViewerLinkedResource({id: "test"}));
 
         expect(state).toEqual({
-            viewerLinkedResource: {id: "test"}
+            viewerLinkedResource: {
+                id: "test",
+                assets: [ { _showEmptyState: true } ]
+            }
         });
     });
 });

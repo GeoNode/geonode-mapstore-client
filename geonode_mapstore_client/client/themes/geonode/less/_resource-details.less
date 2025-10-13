@@ -1,4 +1,35 @@
 // **************
+// Theme
+// **************
+
+#ms-components-theme(@theme-vars) {
+    .gn-details-assets {
+        .gn-upload-area {
+            .border-color-var(@theme-vars[main-border-color]);
+            .background-color-var(@theme-vars[main-bg]);
+        }
+
+        .gn-upload-area-disabled {
+            .background-color-var(@theme-vars[main-bg]);
+        }
+
+        .gn-details-assets-upload {
+            .gn-upload-area {
+                .gn-upload-area-supported-file-types {
+                    .color-var(@theme-vars[placeholder-color]);
+                }
+
+                .gn-assets-upload-button {
+                    .border-color-var(@theme-vars[primary]);
+                    .color-var(@theme-vars[primary]);
+                    .background-color-var(@theme-vars[main-bg]);
+                }
+            }
+        }
+    }
+}
+
+// **************
 // Layout
 // **************
 .ms-resource-detail {
@@ -13,6 +44,80 @@
     .gn-details-time-series {
         .form-group * {
             font-size: @font-size-small;
+        }
+    }
+
+    .gn-details-assets {
+        .gn-details-assets-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gn-details-assets-list {
+            max-height: 300px;
+            overflow-y: auto;
+
+            &.full-height {
+                max-height: 100%;
+            }
+
+            .gn-details-assets-empty {
+                padding: 10px;
+            }
+        }
+
+        .gn-details-assets-item {
+            justify-content: space-between;
+
+            .gn-details-assets-delete {
+                margin: 2px;
+                padding: 2px 4px;
+                width: 24px;
+                height: 24px;
+
+                .gn-details-assets-delete-loader {
+                    margin-left: 2px;
+                }
+            }
+        }
+
+        .gn-details-assets-upload {
+            .gn-upload-area {
+                border-width: 2px;
+                border-style: dashed;
+                border-radius: 4px;
+                padding: 20px;
+                text-align: center;
+                cursor: pointer;
+                opacity: 1;
+
+                &.gn-upload-area-disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                }
+
+                .gn-upload-area-icon {
+                    font-size: 24px;
+                    margin-bottom: 10px;
+                }
+
+                .gn-upload-area-supported-file-types {
+                    font-size: 12px;
+                    margin-top: 5px;
+                    text-wrap: wrap;
+                }
+                .gn-assets-upload-button {
+                    font-weight: bold;
+                }
+            }
         }
     }
 }

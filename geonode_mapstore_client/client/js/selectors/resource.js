@@ -107,6 +107,10 @@ export const getSelectedLayerDataset = (state) => {
     return state?.gnresource?.selectedLayerDataset;
 };
 
+export const isResourceDetail = (state) => {
+    return get(state, 'gnresource.data["@ms-detail"]', false);
+};
+
 export const getCompactPermissions = (state) => {
     const compactPermissions = state?.gnresource?.compactPermissions || {};
     return compactPermissions;
@@ -305,7 +309,8 @@ function isResourceDataEqual(state, initialData = {}, currentData = {}) {
         const selectedLayerInitial = getSelectedLayer(state);
         const initialLayerData = {...selectedLayerInitial, ...initialData};
 
-        const isSettingsEqual = compareObjects(omit(currentData, ['style', 'fields']), omit(initialLayerData, ['style', 'fields']));
+        const isSettingsEqual = compareObjects(omit(currentData, ['style', 'fields']),
+            omit(initialLayerData, ['style', 'fields', 'extendedParams', 'pk', '_v_', 'isDataset', 'perms']));
         const isStyleEqual = isEmpty(selectedLayer?.availableStyles) || isEmpty(selectedLayer?.style) ? true
             : selectedLayer?.style === selectedLayer?.availableStyles?.[0]?.name;
         const isAttributesEqual = isEmpty(selectedLayer) ? true : !isEmpty(initialLayerData) && isEqual(initialLayerData?.fields, selectedLayer.fields);
@@ -338,7 +343,8 @@ export const getResourceDirtyState = (state) => {
     if (resourceType === ResourceTypes.DATASET) {
         metadataKeys = metadataKeys.concat('timeseries');
     }
-    const { data: initialData = {}, ...resource } = pick(state?.gnresource?.initialResource || {}, metadataKeys);
+    let { data: initialData = {}, ...resource } = pick(state?.gnresource?.initialResource || {}, metadataKeys);
+    if (isResourceDetail(state)) initialData = {}; // detail page allows only metadata editing. Data is not editable.
     const { compactPermissions, geoLimits } = getPermissionsPayload(state);
     const currentData = JSON.parse(JSON.stringify(getDataPayload(state) || {})); // JSON stringify is needed to remove undefined values
     // omitting data on thumbnail
