@@ -20,6 +20,7 @@ import EnumRestriction from './EnumRestriction';
 const CreateDatasetAttributeRow = ({
     data,
     geometryAttribute,
+    disabled,
     tools,
     onChange,
     getErrorByPath = () => undefined,
@@ -96,7 +97,7 @@ const CreateDatasetAttributeRow = ({
                     <FormControl
                         type="text"
                         value={data?.name || ''}
-                        disabled={!!geometryAttribute}
+                        disabled={!!geometryAttribute || disabled}
                         onChange={(event) => handleOnChange({ name: event.target.value })}
                     />
                     {errors?.name ? <HelpBlock><Message msgId={errors.name} /></HelpBlock> : null}
@@ -109,6 +110,7 @@ const CreateDatasetAttributeRow = ({
                         componentClass="select"
                         placeholder="select"
                         onChange={handleTypeChange}
+                        disabled={disabled}
                     >
                         {typesOptions.map(({ labelId, value }) =>
                             <option key={value} value={value}>
@@ -123,7 +125,7 @@ const CreateDatasetAttributeRow = ({
                     <Checkbox
                         style={{ paddingTop: 6 }}
                         checked={!!data?.nillable}
-                        disabled={!!geometryAttribute}
+                        disabled={!!geometryAttribute || disabled}
                         onChange={(event) =>
                             handleOnChange({ nillable: event.target.checked })
                         }
@@ -139,7 +141,7 @@ const CreateDatasetAttributeRow = ({
                             value={data?.restrictionsType}
                             componentClass="select"
                             placeholder="select"
-                            disabled={!!geometryAttribute}
+                            disabled={!!geometryAttribute || disabled}
                             onChange={(event) =>
                                 handleOnChange({ restrictionsType: event.target.value })
                             }
@@ -157,6 +159,7 @@ const CreateDatasetAttributeRow = ({
                             errors={errors}
                             data={data}
                             handleOnChange={handleOnChange}
+                            disabled={disabled}
                         /> : null}
                     {data?.restrictionsType === RestrictionsTypes.Options
                         ? <EnumRestriction
@@ -164,6 +167,7 @@ const CreateDatasetAttributeRow = ({
                             data={data}
                             handleOnChange={handleOnChange}
                             getErrorByPath={getErrorByPath}
+                            disabled={disabled}
                         /> : null}
                 </FlexBox>
             </td>

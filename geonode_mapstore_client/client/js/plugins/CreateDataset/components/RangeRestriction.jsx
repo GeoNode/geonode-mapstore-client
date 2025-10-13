@@ -16,7 +16,8 @@ import { getAttributeControlId, parseNumber } from "../utils/CreateDatasetUtils"
 const RangeRestriction = ({
     errors = {},
     data = {},
-    handleOnChange = () => {}
+    handleOnChange = () => {},
+    disabled
 }) => {
     return (
         <FlexBox centerChildrenVertically wrap gap="sm">
@@ -32,6 +33,7 @@ const RangeRestriction = ({
                 <FormControl
                     type="number"
                     value={data?.restrictionsRangeMin}
+                    disabled={disabled}
                     onChange={(event) => handleOnChange({
                         restrictionsRangeMin: parseNumber(event.target.value)
                     })}
@@ -53,6 +55,7 @@ const RangeRestriction = ({
                 <FormControl
                     type="number"
                     value={data?.restrictionsRangeMax}
+                    disabled={disabled}
                     onChange={(event) => handleOnChange({
                         restrictionsRangeMax: parseNumber(event.target.value)
                     })}

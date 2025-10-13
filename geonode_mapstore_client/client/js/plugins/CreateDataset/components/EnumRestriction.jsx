@@ -20,7 +20,8 @@ const EnumRestriction = ({
     index,
     data = {},
     handleOnChange = () => {},
-    getErrorByPath = () => {}
+    getErrorByPath = () => {},
+    disabled
 }) => {
     return (
         <FlexBox column wrap gap="sm">
@@ -41,6 +42,7 @@ const EnumRestriction = ({
                                 <FormControl
                                     type={data?.type === AttributeTypes.String ? "text" : "number"}
                                     value={option.value}
+                                    disabled={disabled}
                                     onChange={(event) => handleOnChange({
                                         restrictionsOptions: (data?.restrictionsOptions || [])
                                             .map((opt) => {
@@ -62,7 +64,8 @@ const EnumRestriction = ({
                                 onClick={() => handleOnChange({
                                     restrictionsOptions: (data?.restrictionsOptions || [])
                                         .filter(opt => opt.id !== option.id)
-                                })}>
+                                })}
+                                disabled={disabled}>
                                 <Glyphicon glyph="trash" />
                             </Button>
                         </FlexBox>
@@ -77,7 +80,8 @@ const EnumRestriction = ({
                                 value: ''
                             }
                         ]
-                    })}>
+                    })}
+                    disabled={disabled}>
                         <Glyphicon glyph="plus" />
                         {' '}<Message msgId="gnviewer.addOption" />
                     </Button>

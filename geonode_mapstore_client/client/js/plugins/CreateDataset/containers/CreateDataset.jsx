@@ -5,15 +5,15 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import isNil from 'lodash/isNil';
 import isString from 'lodash/isString';
 import get from 'lodash/get';
 import { v4 as uuid } from 'uuid';
 import validator from '@rjsf/validator-ajv8';
-
 import axios from '@mapstore/framework/libs/ajax';
+
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Text from '@mapstore/framework/components/layout/Text';
 import { FormGroup, FormControl, ControlLabel, Glyphicon, HelpBlock, Alert } from 'react-bootstrap';
@@ -34,15 +34,19 @@ import {
     DEFAULT_GEOMETRY_ATTRIBUTE
 } from '../utils/CreateDatasetUtils';
 import CreateDatasetAttributeRow from '../components/CreateDatasetAttributeRow';
+import { createDataset } from '@js/api/geonode/v2';
+import { getEndpointUrl, EXECUTION_REQUEST } from '@js/api/geonode/v2/constants';
 
 /**
  * Create Dataset component.
  * It allows to create a new dataset by uploading a JSON schema file or by manually adding attributes.
  * @param {Object} props - The component props
  * @param {Function} props.onError - The function to handle errors
+ * @param {number} props.refreshTime - The time in milliseconds to refresh the execution status
  */
 const CreateDataset = ({
-    onError = () => {}
+    onError = () => {},
+    refreshTime = 3000
 }) => {
     const inputFile = useRef();
     const [dataset, setDataset] = useState({ ...DEFAULT_ATTRIBUTE });
@@ -50,6 +54,8 @@ const CreateDataset = ({
     const [loading, setLoading] = useState(false);
     const [schemaErrors, setSchemaErrors] = useState([]);
     const [schemaWarnings, setSchemaWarnings] = useState([]);
+    const [executionId, setExecutionId] = useState(null);
+    const pollingInterval = useRef(null);
 
     const { errors = [] } = validator.rawValidation(validateSchema, dataset) || {};
     const attributeValidationErrors = validateAttributes(dataset);
@@ -111,17 +117,64 @@ const CreateDataset = ({
         event.target.value = '';
     }
 
-    const handleError = (message) => {
+    const handleError = useCallback((message) => {
         onError({
             title: "gnviewer.createDatasetErrorTitle",
             message: message || "gnviewer.createDatasetErrorDefault"
         });
-    };
+    }, [onError]);
+
+    const clearPollingInterval = useCallback(() => {
+        if (pollingInterval.current) {
+            clearInterval(pollingInterval.current);
+            pollingInterval.current = null;
+        }
+    }, []);
+
+    const stopPolling = useCallback((shouldResetLoading = true) => {
+        clearPollingInterval();
+        if (shouldResetLoading) {
+            setLoading(false);
+        }
+        setExecutionId(null);
+    }, [clearPollingInterval]);
+
+    useEffect(() => {
+        if (executionId) {
+            const pollExecutionStatus = () => {
+                axios.get(getEndpointUrl(EXECUTION_REQUEST, `/${executionId}`))
+                    .then(({ data }) => {
+                        const request = data?.request;
+                        const status = request?.status;
+
+                        if (status === 'finished') {
+                            const detailUrl = get(request, 'output_params.resources[0].detail_url');
+                            stopPolling(false); // Don't reset loading as we're redirecting
+                            if (detailUrl) {
+                                setLoading(false);
+                                window.location.href = detailUrl;
+                            }
+                        } else if (status === 'failed') {
+                            handleError(get(request, 'log'));
+                            stopPolling();
+                        }
+                    })
+                    .catch((err) => {
+                        handleError(get(err, 'data.detail', get(err, 'originalError.message')));
+                        stopPolling();
+                    });
+            };
+
+            // Start polling immediately and then at intervals
+            pollExecutionStatus();
+            pollingInterval.current = setInterval(pollExecutionStatus, refreshTime);
+        }
+
+        // Cleanup function
+        return clearPollingInterval;
+    }, [executionId, refreshTime, handleError, stopPolling, clearPollingInterval]);
 
     function handleCreate() {
-        const formData = new FormData();
-        formData.append('title', dataset.title);
-        formData.append('geometry_type', dataset.geometry_type);
         const attributes = dataset.attributes.reduce((acc, attribute) => {
             const restrictionsType = attribute.restrictionsType || RestrictionsTypes.None;
             acc[attribute.name] = {
@@ -145,21 +198,30 @@ const CreateDataset = ({
         }, {});
 
         setLoading(true);
-        formData.append('attributes', JSON.stringify(attributes));
-        axios.post('/createlayer/?f=json', formData)
-            .then((response) => {
-                if (response?.data?.error) {
-                    handleError();
+        createDataset({
+            action: "create",
+            title: dataset.title,
+            geom: dataset.geometry_type,
+            attributes: attributes
+        })
+            .then((data) => {
+                if (data?.error) {
+                    handleError(data.error);
+                    setLoading(false);
                     return;
                 }
-                if (response?.data?.detail_url) {
-                    window.location.href = response.data.detail_url;
+                if (data?.execution_id) {
+                    // Start polling for execution status
+                    setExecutionId(data.execution_id);
                 }
             })
             .catch((err) => {
-                handleError(get(err, 'data.detail', get(err, 'originalError.message', get(err, 'message'))));
-            })
-            .finally(() => setLoading(false));
+                const errorMessage = get(err, 'data.detail')
+                    || get(err, 'data.message')
+                    || get(err, 'originalError.message');
+                handleError(errorMessage);
+                setLoading(false);
+            });
     }
 
     return (
@@ -193,6 +255,7 @@ const CreateDataset = ({
                         type="text"
                         autoComplete="off"
                         value={dataset?.title}
+                        disabled={loading}
                         onChange={(event) =>
                             setDataset({
                                 ...dataset,
@@ -215,7 +278,7 @@ const CreateDataset = ({
                         </FlexBox>
                         <FlexBox gap="sm">
                             {(schemaErrors.length > 0 || schemaWarnings.length > 0) && (
-                                <Button variant="default" onClick={() => {setSchemaErrors([]); setSchemaWarnings([]);}}>
+                                <Button variant="default" disabled={loading} onClick={() => {setSchemaErrors([]); setSchemaWarnings([]);}}>
                                     <Message msgId="gnviewer.clearWarnings" />
                                 </Button>
                             )}
@@ -225,9 +288,10 @@ const CreateDataset = ({
                                     accept=".json"
                                     onChange={handleFileInput}
                                     ref={inputFile}
+                                    disabled={loading}
                                     style={{ display: 'none' }}
                                 />
-                                <Button variant="primary" onClick={() => inputFile?.current?.click()}>
+                                <Button variant="primary" disabled={loading} onClick={() => inputFile?.current?.click()}>
                                     <Message msgId="gnviewer.loadAttributesFromJSONSchema" />
                                 </Button>
                             </div>
@@ -272,6 +336,7 @@ const CreateDataset = ({
                                     });
                                 }}
                                 geometryAttribute
+                                disabled={loading}
                             />
                             {dataset.attributes.map((attribute, idx) => {
                                 return (
@@ -283,6 +348,7 @@ const CreateDataset = ({
                                         tools={
                                             <Button
                                                 className="square-button-md"
+                                                disabled={loading}
                                                 onClick={() =>
                                                     handleRemoveAttribute(attribute.id)
                                                 }
@@ -291,12 +357,13 @@ const CreateDataset = ({
                                             </Button>
                                         }
                                         onChange={handleUpdateAttribute}
+                                        disabled={loading}
                                     />
                                 );
                             })}
                             <tr>
                                 <td colSpan={4}>
-                                    <Button className="gn-attribute-button" size="sm" onClick={handleAddAttribute}>
+                                    <Button className="gn-attribute-button" size="sm" disabled={loading} onClick={handleAddAttribute}>
                                         <Glyphicon glyph="plus"/>
                                         <Message msgId="gnviewer.addAttribute" />
                                     </Button>
