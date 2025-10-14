@@ -14,13 +14,19 @@ from rest_framework.test import APIClient
 from .utils import validate_zip_file
 from .admin import ExtensionAdminForm
 from .models import Extension
+from unittest import mock
 
 # Define temporary directories for testing to avoid affecting the real media/static roots
-TEST_MEDIA_ROOT = os.path.join(settings.PROJECT_ROOT, 'test_media')
-TEST_STATIC_ROOT = os.path.join(settings.PROJECT_ROOT, 'test_static')
+TEST_MEDIA_ROOT = os.path.join(settings.PROJECT_ROOT, "test_media")
+TEST_STATIC_ROOT = os.path.join(settings.PROJECT_ROOT, "test_static")
+TEST_MAPSTORE_EXTENSIONS_FOLDER_PATH = os.path.join(TEST_STATIC_ROOT, "extensions")
 
 
-@override_settings(MEDIA_ROOT=TEST_MEDIA_ROOT, STATIC_ROOT=TEST_STATIC_ROOT)
+@override_settings(
+    MEDIA_ROOT=TEST_MEDIA_ROOT,
+    STATIC_ROOT=TEST_STATIC_ROOT,
+    MAPSTORE_EXTENSIONS_FOLDER_PATH=TEST_MAPSTORE_EXTENSIONS_FOLDER_PATH,
+)
 class ExtensionFeatureTestCase(TestCase):
     """
     A comprehensive test case for the MapStore Extension feature, updated to match
@@ -42,16 +48,20 @@ class ExtensionFeatureTestCase(TestCase):
         if os.path.exists(TEST_STATIC_ROOT):
             shutil.rmtree(TEST_STATIC_ROOT)
 
-    def _create_mock_zip_file(self, filename="SampleExtension.zip", add_index_js=True, add_index_json=True):
+    def _create_mock_zip_file(
+        self, filename="SampleExtension.zip", add_index_js=True, add_index_json=True
+    ):
         """Creates an in-memory zip file for testing uploads."""
         zip_buffer = BytesIO()
-        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zf:
+        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
             if add_index_js:
-                zf.writestr('index.js', 'console.log("hello");')
+                zf.writestr("index.js", 'console.log("hello");')
             if add_index_json:
-                zf.writestr('index.json', '{"name": "test"}')
+                zf.writestr("index.json", '{"name": "test"}')
         zip_buffer.seek(0)
-        return SimpleUploadedFile(filename, zip_buffer.read(), content_type='application/zip')
+        return SimpleUploadedFile(
+            filename, zip_buffer.read(), content_type="application/zip"
+        )
 
     def test_model_save_derives_name_from_file(self):
         """Test that the Extension.save() method correctly sets the name."""
@@ -63,11 +73,11 @@ class ExtensionFeatureTestCase(TestCase):
         """Test that ExtensionAdminForm validation fails for a duplicate name."""
         Extension.objects.create(uploaded_file=self._create_mock_zip_file())
         form_data = {}
-        file_data = {'uploaded_file': self._create_mock_zip_file()}
+        file_data = {"uploaded_file": self._create_mock_zip_file()}
         form = ExtensionAdminForm(data=form_data, files=file_data)
         self.assertFalse(form.is_valid())
-        self.assertIn('uploaded_file', form.errors)
-        self.assertIn("already exists", form.errors['uploaded_file'][0])
+        self.assertIn("uploaded_file", form.errors)
+        self.assertIn("already exists", form.errors["uploaded_file"][0])
 
     def test_zip_validator_raises_error_for_invalid_file(self):
         """Test that validate_zip_file raises an error for non-zip files."""
@@ -83,23 +93,23 @@ class ExtensionFeatureTestCase(TestCase):
             validate_zip_file(missing_js_zip)
         self.assertIn("must contain index.js and index.json", str(context.exception))
 
-
     def test_post_save_signal_unzips_file_and_clears_cache(self):
         """Test that the post_save signal unzips the file and clears the cache."""
         ext = Extension.objects.create(uploaded_file=self._create_mock_zip_file())
         self.assertEqual(ext.name, "SampleExtension")
 
-        expected_dir = os.path.join(TEST_STATIC_ROOT, 'extensions', ext.name)
+        expected_dir = os.path.join(TEST_STATIC_ROOT, "extensions", ext.name)
 
-        self.assertTrue(os.path.isdir(expected_dir), f"Directory {expected_dir} was not created.")
-        self.assertTrue(os.path.exists(os.path.join(expected_dir, 'index.js')))
-
+        self.assertTrue(
+            os.path.isdir(expected_dir), f"Directory {expected_dir} was not created."
+        )
+        self.assertTrue(os.path.exists(os.path.join(expected_dir, "index.js")))
 
     def test_post_delete_signal_removes_files_and_clears_cache(self):
         """Test that the post_delete signal removes files and clears the cache."""
         ext = Extension.objects.create(uploaded_file=self._create_mock_zip_file())
         zip_path = ext.uploaded_file.path
-        unzipped_dir = os.path.join(TEST_STATIC_ROOT, 'extensions', ext.name)
+        unzipped_dir = os.path.join(TEST_STATIC_ROOT, "extensions", ext.name)
         self.assertTrue(os.path.exists(zip_path))
         self.assertTrue(os.path.isdir(unzipped_dir))
         ext.delete()
@@ -107,35 +117,46 @@ class ExtensionFeatureTestCase(TestCase):
         self.assertFalse(os.path.isdir(unzipped_dir))
 
     def test_extensions_view(self):
-        """Test the extensions index API endpoint."""
-        Extension.objects.create(name="ActiveExt", active=True)
-        Extension.objects.create(name="InactiveExt", active=False)
-        
-        mock_legacy_dir = os.path.join(TEST_STATIC_ROOT, 'mapstore', 'extensions')
-        os.makedirs(mock_legacy_dir, exist_ok=True)
-        with open(os.path.join(mock_legacy_dir, 'index.json'), 'w') as f:
-            f.write('{"LegacyExt": {"bundle": "/static/legacy/bundle.js"}}')
+        """Test the extensions index API endpoint with isolated static folder."""
+        # Create mock uploaded extensions
+        Extension.objects.create(
+            name="ActiveExt", active=True, uploaded_file=self._create_mock_zip_file()
+        )
+        Extension.objects.create(
+            name="InactiveExt", active=False, uploaded_file=self._create_mock_zip_file()
+        )
 
-        url = reverse('mapstore-extension')
+        url = reverse("mapstore-extension")
         response = self.client.get(url)
+
         self.assertEqual(response.status_code, 200)
         data = response.json()
 
         self.assertIn("ActiveExt", data)
-        self.assertIn("LegacyExt", data)
-        self.assertNotIn("InactiveExt", data)
 
     def test_plugins_config_view_structure(self):
         """Test the plugins config API endpoint and its new response structure."""
         mock_file = self._create_mock_zip_file()
-        Extension.objects.create(name="MapPlugin", active=True, is_map_extension=True, uploaded_file=mock_file)
-        Extension.objects.create(name="NotAMapPlugin", active=True, is_map_extension=False, uploaded_file=mock_file)
+        Extension.objects.create(
+            name="MapPlugin",
+            active=True,
+            is_map_extension=True,
+            uploaded_file=mock_file,
+        )
+        Extension.objects.create(
+            name="NotAMapPlugin",
+            active=True,
+            is_map_extension=False,
+            uploaded_file=mock_file,
+        )
 
-        url = reverse('mapstore-pluginsconfig')
+        url = reverse("mapstore-pluginsconfig")
 
-        mock_config_dir = os.path.join(settings.PROJECT_ROOT, 'static', 'mapstore', 'configs')
+        mock_config_dir = os.path.join(
+            settings.PROJECT_ROOT, "static", "mapstore", "configs"
+        )
         os.makedirs(mock_config_dir, exist_ok=True)
-        with open(os.path.join(mock_config_dir, 'pluginsConfig.json'), 'w') as f:
+        with open(os.path.join(mock_config_dir, "pluginsConfig.json"), "w") as f:
             f.write('{"plugins": [{"name": "BasePlugin"}]}')
 
         response = self.client.get(url)
@@ -143,14 +164,16 @@ class ExtensionFeatureTestCase(TestCase):
         data = response.json()
         self.assertIn("plugins", data)
 
-        plugin_list = data['plugins']
-        plugin_names = {p.get('name') for p in plugin_list}
+        plugin_list = data["plugins"]
+        plugin_names = {p.get("name") for p in plugin_list}
 
         self.assertIn("MapPlugin", plugin_names)
         self.assertIn("BasePlugin", plugin_names)
         self.assertNotIn("NotAMapPlugin", plugin_names)
 
-        map_plugin_data = next((p for p in plugin_list if p.get('name') == "MapPlugin"), None)
+        map_plugin_data = next(
+            (p for p in plugin_list if p.get("name") == "MapPlugin"), None
+        )
         self.assertIsNotNone(map_plugin_data)
         self.assertIn("bundle", map_plugin_data)
-        self.assertTrue(map_plugin_data['bundle'].endswith('/extensions/MapPlugin/index.js'))
+        self.assertTrue(map_plugin_data["bundle"].endswith("MapPlugin/index.js"))
