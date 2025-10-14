@@ -14,8 +14,6 @@ from geonode_mapstore_client.templatetags.get_search_services import (
 )
 from django.conf import settings
 
-# Define the target directory for static extensions
-EXTENSIONS_STATIC_DIR = os.path.join(settings.STATIC_ROOT, 'extensions')
 
 class SearchService(models.Model):
     class Meta:
@@ -150,7 +148,7 @@ def handle_extension_delete(sender, instance, **kwargs):
     Removes the extension's files and clears the API cache on deletion.
     """
     if instance.name:
-        extension_path = os.path.join(EXTENSIONS_STATIC_DIR, instance.name)
+        extension_path = os.path.join(settings.MAPSTORE_EXTENSIONS_FOLDER_PATH, instance.name)
         if os.path.exists(extension_path):
             shutil.rmtree(extension_path)
 
