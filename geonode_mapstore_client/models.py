@@ -129,8 +129,8 @@ def handle_extension_upload(sender, instance, **kwargs):
     """
     Unzips the extension file and clears the API cache after saving.
     """
-    os.makedirs(EXTENSIONS_STATIC_DIR, exist_ok=True)
-    target_path = os.path.join(EXTENSIONS_STATIC_DIR, instance.name)
+    os.makedirs(settings.MAPSTORE_EXTENSIONS_FOLDER_PATH, exist_ok=True)
+    target_path = os.path.join(settings.MAPSTORE_EXTENSIONS_FOLDER_PATH, instance.name)
 
     if os.path.exists(target_path):
         shutil.rmtree(target_path)

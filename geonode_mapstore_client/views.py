@@ -110,9 +110,9 @@ class ExtensionsView(APIView):
         dynamic_extensions = {}
         for ext in active_extensions:
             dynamic_extensions[ext.name] = {
-                "bundle": static(f"extensions/{ext.name}/index.js"),
-                "translations": static(f"extensions/{ext.name}/translations"),
-                "assets": static(f"extensions/{ext.name}/assets"),
+                "bundle": f"{ext.name}/index.js",
+                "translations": f"{ext.name}/translations",
+                "assets": f"{ext.name}/assets",
             }
 
         final_extensions.update(dynamic_extensions)
@@ -161,9 +161,9 @@ class PluginsConfigView(APIView):
             if ext.name not in existing_plugin_names:
                 plugins.append({
                     "name": ext.name,
-                    "bundle": static(f"extensions/{ext.name}/index.js"),
-                    "translations": static(f"extensions/{ext.name}/translations"),
-                    "assets": static(f"extensions/{ext.name}/assets"),
+                    "bundle": f"{ext.name}/index.js",
+                    "translations": f"{ext.name}/translations",
+                    "assets": f"{ext.name}/assets",
                 })
 
         cache.set(
