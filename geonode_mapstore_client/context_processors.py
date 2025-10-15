@@ -55,9 +55,9 @@ def resource_urls(request):
         "PLUGINS_CONFIG_PATCH_RULES": getattr(
             settings, "MAPSTORE_PLUGINS_CONFIG_PATCH_RULES", []
         ),
-        "EXTENSIONS_FOLDER_PATH": getattr(
-            settings, "MAPSTORE_EXTENSIONS_FOLDER_PATH", "/static/mapstore/extensions/"
-        ),
+        "EXTENSIONS_FOLDER_PATH": settings.STATIC_ROOT + getattr(
+                    settings, "MAPSTORE_EXTENSIONS_FOLDER_PATH", "mapstore/extensions/"
+                ),
         "CUSTOM_FILTERS": getattr(settings, "MAPSTORE_CUSTOM_FILTERS", None),
         "TIME_ENABLED": getattr(settings, "UPLOADER", dict())
         .get("OPTIONS", dict())
