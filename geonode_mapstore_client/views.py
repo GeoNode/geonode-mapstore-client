@@ -97,7 +97,7 @@ class ExtensionsView(APIView):
 
         final_extensions = {}
         legacy_file_path = os.path.join(
-            settings.PROJECT_ROOT, "static", "mapstore", "extensions", "index.json"
+            settings.STATIC_ROOT, "mapstore", "extensions", "index.json"
         )
 
         try:
@@ -141,7 +141,7 @@ class PluginsConfigView(APIView):
             return Response(cached_data)
 
         base_config_path = os.path.join(
-            settings.PROJECT_ROOT, "static", "mapstore", "configs", "pluginsConfig.json"
+            settings.STATIC_ROOT, "mapstore", "configs", "pluginsConfig.json"
         )
 
         config_data = {"plugins": []}

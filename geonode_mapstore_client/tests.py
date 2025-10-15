@@ -19,13 +19,11 @@ from unittest import mock
 # Define temporary directories for testing to avoid affecting the real media/static roots
 TEST_MEDIA_ROOT = os.path.join(settings.PROJECT_ROOT, "test_media")
 TEST_STATIC_ROOT = os.path.join(settings.PROJECT_ROOT, "test_static")
-TEST_MAPSTORE_EXTENSIONS_FOLDER_PATH = os.path.join(TEST_STATIC_ROOT, "extensions")
 
 
 @override_settings(
     MEDIA_ROOT=TEST_MEDIA_ROOT,
     STATIC_ROOT=TEST_STATIC_ROOT,
-    MAPSTORE_EXTENSIONS_FOLDER_PATH=TEST_MAPSTORE_EXTENSIONS_FOLDER_PATH,
 )
 class ExtensionFeatureTestCase(TestCase):
     """
@@ -98,7 +96,7 @@ class ExtensionFeatureTestCase(TestCase):
         ext = Extension.objects.create(uploaded_file=self._create_mock_zip_file())
         self.assertEqual(ext.name, "SampleExtension")
 
-        expected_dir = os.path.join(TEST_STATIC_ROOT, "extensions", ext.name)
+        expected_dir = os.path.join(TEST_STATIC_ROOT, settings.MAPSTORE_EXTENSIONS_FOLDER_PATH, ext.name)
 
         self.assertTrue(
             os.path.isdir(expected_dir), f"Directory {expected_dir} was not created."
@@ -109,7 +107,7 @@ class ExtensionFeatureTestCase(TestCase):
         """Test that the post_delete signal removes files and clears the cache."""
         ext = Extension.objects.create(uploaded_file=self._create_mock_zip_file())
         zip_path = ext.uploaded_file.path
-        unzipped_dir = os.path.join(TEST_STATIC_ROOT, "extensions", ext.name)
+        unzipped_dir = os.path.join(TEST_STATIC_ROOT, settings.MAPSTORE_EXTENSIONS_FOLDER_PATH, ext.name)
         self.assertTrue(os.path.exists(zip_path))
         self.assertTrue(os.path.isdir(unzipped_dir))
         ext.delete()
@@ -133,6 +131,8 @@ class ExtensionFeatureTestCase(TestCase):
         data = response.json()
 
         self.assertIn("ActiveExt", data)
+        self.assertNotIn("InactiveExt", data)
+
 
     def test_plugins_config_view_structure(self):
         """Test the plugins config API endpoint and its new response structure."""
@@ -153,7 +153,7 @@ class ExtensionFeatureTestCase(TestCase):
         url = reverse("mapstore-pluginsconfig")
 
         mock_config_dir = os.path.join(
-            settings.PROJECT_ROOT, "static", "mapstore", "configs"
+            settings.STATIC_ROOT, "mapstore", "configs"
         )
         os.makedirs(mock_config_dir, exist_ok=True)
         with open(os.path.join(mock_config_dir, "pluginsConfig.json"), "w") as f:
