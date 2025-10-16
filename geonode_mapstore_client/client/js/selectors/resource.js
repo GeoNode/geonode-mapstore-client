@@ -244,7 +244,7 @@ export const getInitialDatasetLayer = (state) => {
 
 export const getInitialDatasetLayerStyle = (state) => {
     const initialResource = getInitialDatasetResource(state);
-    return resourceToLayerConfig(initialResource)?.style || "";
+    return initialResource ? resourceToLayerConfig(initialResource)?.style : null;
 };
 
 function isResourceDataEqual(state, initialData = {}, currentData = {}) {
