@@ -112,9 +112,9 @@ const setDefaultStyle = (state, id) => {
         availableStyles =  [...defaultStyle, ...filteredStyles];
     }
     const {style: currentStyleName} = getSelectedNode(state) ?? {};
-    const initalStyleName = getInitialDatasetLayerStyle(state);
+    const initialStyleName = getInitialDatasetLayerStyle(state);
 
-    if (id && initalStyleName && currentStyleName !== initalStyleName) {
+    if (id && initialStyleName && currentStyleName !== initialStyleName) {
         const { baseUrl = '' } = styleServiceSelector(state);
         return {
             request: () => LayersAPI.updateDefaultStyle({
