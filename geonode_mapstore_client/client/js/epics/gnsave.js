@@ -63,7 +63,8 @@ import {
     getResourceId,
     getDataPayload,
     getCompactPermissions,
-    getExtentPayload
+    getExtentPayload,
+    getInitialDatasetLayerStyle
 } from '@js/selectors/resource';
 
 import {
@@ -111,7 +112,7 @@ const setDefaultStyle = (state, id) => {
         availableStyles =  [...defaultStyle, ...filteredStyles];
     }
     const {style: currentStyleName} = getSelectedNode(state) ?? {};
-    const initalStyleName = layer?.availableStyles?.[0]?.name;
+    const initalStyleName = getInitialDatasetLayerStyle(state);
 
     if (id && initalStyleName && currentStyleName !== initalStyleName) {
         const { baseUrl = '' } = styleServiceSelector(state);
@@ -224,7 +225,7 @@ export const gnSaveContent = (action$, store) =>
             const { compactPermissions } = getPermissionsPayload(state);
             return Observable.defer(() => SaveAPI[contentType](state, action.id, body, action.reload))
                 .switchMap((response) => {
-                    const [resource, ...actions] = castArray(response);
+                    let [resource, ...actions] = castArray(response);
                     if (action.reload) {
                         if (contentType === ResourceTypes.VIEWER) {
                             const sourcepk = get(state, 'router.location.pathname', '').split('/').pop();
@@ -234,6 +235,11 @@ export const gnSaveContent = (action$, store) =>
                         window.location.reload();
                         return Observable.empty();
                     }
+                    const selectedLayer = getSelectedNode(state);
+                    const currentStyle = selectedLayer?.availableStyles?.find(({ name }) => selectedLayer?.style?.includes(name));
+                    // adding default style upon saving resource for correct style comparison
+                    const defaultStyle =  currentStyle ? { sld_title: currentStyle.title, name: selectedLayer?.style } : null;
+                    resource = {...resource, default_style: defaultStyle};
                     return Observable.merge(
                         Observable.of(
                             saveSuccess(resource),
