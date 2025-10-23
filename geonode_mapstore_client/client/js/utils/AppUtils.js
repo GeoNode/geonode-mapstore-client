@@ -176,7 +176,7 @@ export function setupConfiguration({
     const { query } = url.parse(window.location.href, true);
     // set the extensions path before get the localConfig
     // so it's possible to override in a custom project
-    setConfigProp('extensionsRegistry', '/static/mapstore/extensions/index.json');
+    setConfigProp('extensionsRegistry', '/client/extensions');
     const {
         supportedLocales: defaultSupportedLocales,
         ...config

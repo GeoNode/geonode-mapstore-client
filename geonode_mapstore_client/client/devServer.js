@@ -49,7 +49,13 @@ module.exports = (devServerDefault, projectConfig) => {
             {
                 context: [
                     '**',
-                    '!**/static/mapstore/**',
+                    '!**/static/mapstore/configs/**',
+                    '!**/static/mapstore/dist/**',
+                    '!**/static/mapstore/gn-translations/**',
+                    '!**/static/mapstore/img/**',
+                    '!**/static/mapstore/ms-translations/**',
+                    '!**/static/mapstore/symbols/**',
+                    '!**/static/mapstore/version.txt',
                     '!**/MapStore2/**',
                     '!**/node_modules/**',
                     '!**/docs/**'
