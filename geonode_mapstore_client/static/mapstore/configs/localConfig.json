@@ -639,10 +639,6 @@
                                 {
                                     "type": "plugin",
                                     "name": "IsoDownload"
-                                },
-                                {
-                                    "type": "plugin",
-                                    "name": "DublinCoreDownload"
                                 }
                             ]
                         },
@@ -884,9 +880,6 @@
             },
             {
                 "name": "IsoDownload"
-            },
-            {
-                "name": "DublinCoreDownload"
             },
             {
                 "name": "LayerDownload",
@@ -2489,10 +2482,6 @@
                                 {
                                     "type": "plugin",
                                     "name": "IsoDownload"
-                                },
-                                {
-                                    "type": "plugin",
-                                    "name": "DublinCoreDownload"
                                 }
                             ]
                         }
@@ -2507,9 +2496,6 @@
             },
             {
                 "name": "IsoDownload"
-            },
-            {
-                "name": "DublinCoreDownload"
             },
             {
                 "name": "ResourceDetails",

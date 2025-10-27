@@ -723,6 +723,10 @@ export const deleteAsset = (pk, assetId) => {
     });
 };
 
+export const getMetadataDownloadLinkByPk = (pk) => {
+    return getEndpointUrl(RESOURCES, `/${pk}/iso_metadata_xml`);
+}
+
 export default {
     getEndpoints,
     getResources,
@@ -759,5 +763,6 @@ export default {
     downloadResource,
     getDatasets,
     deleteExecutionRequest,
-    getResourceByTypeAndByPk
+    getResourceByTypeAndByPk,
+    getMetadataDownloadLinkByPk
 };

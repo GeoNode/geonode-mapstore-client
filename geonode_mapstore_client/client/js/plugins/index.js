@@ -445,10 +445,6 @@ export const plugins = {
         'IsoDownload',
         () => import(/* webpackChunkName: 'plugins/iso-download-plugin' */ '@js/plugins/downloads/IsoDownload')
     ),
-    DublinCoreDownloadPlugin: toModulePlugin(
-        'DublinCoreDownload',
-        () => import(/* webpackChunkName: 'plugins/iso-download-plugin' */ '@js/plugins/downloads/DublinCoreDownload')
-    ),
     MapViewersCatalogPlugin: toModulePlugin(
         'MapViewersCatalog',
         () => import(/* webpackChunkName: 'plugins/map-viewers-catalog' */ '@js/plugins/MapViewersCatalog')

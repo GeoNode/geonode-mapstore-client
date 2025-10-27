@@ -13,6 +13,7 @@ import { gnDownloadMetaData } from '@js/epics/gndownload';
 
 describe('gnDownloadMetaData epic', () => {
     beforeEach(done => {
+        global.__DEVTOOLS__ = true;
         setTimeout(done);
     });
     afterEach(done => {
