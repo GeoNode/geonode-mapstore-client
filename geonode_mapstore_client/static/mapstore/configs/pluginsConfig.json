@@ -109,7 +109,10 @@
     {
       "name": "MapFooter",
       "mandatory": true,
-      "hidden": true
+      "hidden": true,
+      "defaultConfig": {
+        "containerPosition": "footer"
+      }
     },
     {
       "name": "Widgets",
