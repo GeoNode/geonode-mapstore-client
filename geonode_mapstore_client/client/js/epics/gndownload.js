@@ -13,7 +13,7 @@ import { DOWNLOAD_METADATA, downloadMetaDataComplete } from '@js/actions/gndownl
 import {
     error as errorNotification
 } from '@mapstore/framework/actions/notifications';
-import { getMetadataDownloadLinkByPk } from '@js/api/geonode/v2/index';
+import { getMetadataDownloadLinkByPk } from '@js/api/geonode/v2';
 
 
 export const gnDownloadMetaData = (action$, store) =>
