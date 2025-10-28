@@ -17,6 +17,7 @@ describe('gnDownloadMetaData epic', () => {
         setTimeout(done);
     });
     afterEach(done => {
+        delete global.__DEVTOOLS__;
         setTimeout(done);
     });
     it('should download metadata', (done) => {
