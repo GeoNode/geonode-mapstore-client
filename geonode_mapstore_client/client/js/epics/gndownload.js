@@ -20,7 +20,7 @@ export const gnDownloadMetaData = (action$, store) =>
     action$.ofType(DOWNLOAD_METADATA)
         .switchMap((action) => {
             const state = store.getState();
-            const url = getMetadataDownloadLinkByPk(action.pk)
+            const url = getMetadataDownloadLinkByPk(action.pk);
             const resourceTitle = state.gnresource?.data?.title?.replace(/[\.\s]/g, '_');
 
             return Observable
