@@ -3299,7 +3299,7 @@
                                     "labelId": "gnhome.createDataset",
                                     "value": "layer",
                                     "type": "link",
-                                    "href": "/createlayer/",
+                                    "href": "{context.getCataloguePath('/catalogue/#/create/dataset')}",
                                     "disableIf": "{(state('settings') && state('settings').createLayer) ? false : true}"
                                 },
                                 {
@@ -3701,6 +3701,14 @@
                 "cfg": {
                     "resourceType": "document"
                 }
+            }
+        ],
+        "create_dataset": [
+            {
+                "name": "CreateDataset"
+            },
+            {
+                "name": "Notifications"
             }
         ]
     }

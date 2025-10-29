@@ -36,7 +36,8 @@ import {
     EXECUTION_REQUEST,
     getEndpoints as cGetEndpoints,
     getEndpointUrl,
-    getQueryParams
+    getQueryParams,
+    UPLOADS
 } from './constants';
 
 
@@ -723,6 +724,11 @@ export const deleteAsset = (pk, assetId) => {
     });
 };
 
+export const createDataset = (body) => {
+    return axios.post(getEndpointUrl(UPLOADS) + '/upload', body)
+        .then(({ data }) => data);
+};
+
 export const getMetadataDownloadLinkByPk = (pk) => {
     return getEndpointUrl(RESOURCES, `/${pk}/iso_metadata_xml`);
 }
@@ -764,5 +770,6 @@ export default {
     getDatasets,
     deleteExecutionRequest,
     getResourceByTypeAndByPk,
+    createDataset,
     getMetadataDownloadLinkByPk
 };
