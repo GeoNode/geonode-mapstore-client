@@ -31,7 +31,7 @@
                 "md": 420
             },
             "bottom": {
-                "sm": 30
+                "sm": 0
             }
         }
     },
@@ -180,7 +180,10 @@
                 }
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Notifications"
@@ -246,7 +249,10 @@
                 }
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Timeline"
@@ -326,7 +332,10 @@
                 "name": "Expander"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Notifications"
@@ -409,7 +418,10 @@
                 "name": "Expander"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "TOC",
@@ -639,10 +651,6 @@
                                 {
                                     "type": "plugin",
                                     "name": "IsoDownload"
-                                },
-                                {
-                                    "type": "plugin",
-                                    "name": "DublinCoreDownload"
                                 }
                             ]
                         },
@@ -757,7 +765,10 @@
                 "name": "Expander"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Measure"
@@ -886,9 +897,6 @@
                 "name": "IsoDownload"
             },
             {
-                "name": "DublinCoreDownload"
-            },
-            {
                 "name": "LayerDownload",
                 "cfg": {
                     "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
@@ -962,6 +970,14 @@
                         {
                             "name": "text/csv",
                             "label": "CSV",
+                            "type": "vector",
+                            "validServices": [
+                                "wps"
+                            ]
+                        },
+                        {
+                            "name": "application/vnd.ms-excel",
+                            "label": "Excel",
                             "type": "vector",
                             "validServices": [
                                 "wps"
@@ -1348,7 +1364,10 @@
                 "name": "ScaleBox"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Notifications"
@@ -1408,7 +1427,10 @@
                 }
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Map",
@@ -1648,7 +1670,10 @@
                 "name": "Expander"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Measure"
@@ -1855,6 +1880,14 @@
                         {
                             "name": "text/csv",
                             "label": "CSV",
+                            "type": "vector",
+                            "validServices": [
+                                "wps"
+                            ]
+                        },
+                        {
+                            "name": "application/vnd.ms-excel",
+                            "label": "Excel",
                             "type": "vector",
                             "validServices": [
                                 "wps"
@@ -2473,10 +2506,6 @@
                                 {
                                     "type": "plugin",
                                     "name": "IsoDownload"
-                                },
-                                {
-                                    "type": "plugin",
-                                    "name": "DublinCoreDownload"
                                 }
                             ]
                         }
@@ -2491,9 +2520,6 @@
             },
             {
                 "name": "IsoDownload"
-            },
-            {
-                "name": "DublinCoreDownload"
             },
             {
                 "name": "ResourceDetails",
@@ -2792,6 +2818,14 @@
                           ]
                       },
                       {
+                         "name": "application/vnd.ms-excel",
+                          "label": "Excel",
+                          "type": "vector",
+                          "validServices": [
+                              "wps"
+                          ]
+                      },
+                      {
                           "name": "application/geopackage+sqlite3",
                           "label": "GeoPackage",
                           "type": "vector",
@@ -2908,7 +2942,10 @@
                 "name": "Expander"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "TOC",
@@ -3037,7 +3074,10 @@
                 "name": "Expander"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Legend"

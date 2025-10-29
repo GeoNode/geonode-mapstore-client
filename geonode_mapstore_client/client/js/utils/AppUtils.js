@@ -151,15 +151,6 @@ function setupLocale(locale) {
         .then((localeDataMod) => {
             const localeData = localeDataMod.default;
             addLocaleData([...localeData]);
-            if (!global.Intl) {
-                return import('intl')
-                    .then((intlMod) => {
-                        global.Intl = intlMod.default;
-                        return import(`intl/locale-data/jsonp/${locale}.js`).then(() => {
-                            return locale;
-                        });
-                    });
-            }
             // setup locale for moment
             moment.locale(locale);
             return locale;
@@ -176,7 +167,7 @@ export function setupConfiguration({
     const { query } = url.parse(window.location.href, true);
     // set the extensions path before get the localConfig
     // so it's possible to override in a custom project
-    setConfigProp('extensionsRegistry', '/static/mapstore/extensions/index.json');
+    setConfigProp('extensionsRegistry', '/client/extensions');
     const {
         supportedLocales: defaultSupportedLocales,
         ...config
