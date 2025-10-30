@@ -94,7 +94,9 @@ const Permissions = ({
     resourceType,
     permissionsLoading,
     compactPermissions,
-    onChangePermissions
+    onChangePermissions,
+    manageAnonymousPermissions,
+    manageRegisteredMemberPermissions
 }) => {
     const enableGeoLimits = resourceType === ResourceTypes.DATASET;
     const isMounted = useIsMounted();
@@ -106,11 +108,11 @@ const Permissions = ({
             let responseOptions;
             if (resourceIndex !== -1) {
                 responseOptions = getResourcePermissions(
-                    data[resourceIndex].allowed_perms.compact
+                    data[resourceIndex].allowed_perms.compact , compactPermissions?.groups ,manageAnonymousPermissions, manageRegisteredMemberPermissions
                 );
             } else {
                 // set a default permission object
-                responseOptions = getResourcePermissions(data[0].allowed_perms.compact);
+                responseOptions = getResourcePermissions(data[0].allowed_perms.compact, compactPermissions?.groups ,manageAnonymousPermissions, manageRegisteredMemberPermissions);
             }
             isMounted(() => setPermissionsObject(responseOptions));
         });

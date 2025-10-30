@@ -111,7 +111,8 @@ describe('Test Resource Utils', () => {
                 }
             }
         }];
-        const permissionOptions = getResourcePermissions(data[0].allowed_perms.compact);
+        const groups = [];
+        const permissionOptions = getResourcePermissions(data[0].allowed_perms.compact, groups);
         expect(permissionOptions).toEqual({
             test1: [
                 { value: 'none', labelId: `gnviewer.nonePermission`, label: 'None' },

@@ -28,6 +28,8 @@ import {
 } from '@js/selectors/resource';
 import {
     canAccessPermissions,
+    canManageAnonymousPermissions,
+    canManageRegisteredMemberPermissions,
     getDownloadUrlInfo,
     getResourceTypesInfo
 } from '@js/utils/ResourceUtils';
@@ -43,11 +45,13 @@ const getEmbedUrl = (resource) => {
 function Share({
     enabled,
     onClose,
-    resource,
+    resource,   
     resourceType
 }) {
     const embedUrl = getEmbedUrl(resource);
     const downloadUrl = getDownloadUrlInfo(resource)?.url;
+    const manageAnonymousPermissions = canManageAnonymousPermissions(resource);
+    const manageRegisteredMemberPermissions = canManageRegisteredMemberPermissions(resource);
     return (
         <OverlayContainer
             enabled={enabled}
@@ -61,7 +65,7 @@ function Share({
                     </Button>
                 </div>
                 <FlexBox column gap="md" className="gn-share-panel-body">
-                    {canAccessPermissions(resource) && <Permissions resource={resource} />}
+                    {canAccessPermissions(resource) && <Permissions resource={resource} manageAnonymousPermissions={manageAnonymousPermissions} manageRegisteredMemberPermissions={manageRegisteredMemberPermissions} />}
                     {(resourceType === 'document' && !!downloadUrl) && <SharePageLink value={downloadUrl} label={<Message msgId={`gnviewer.directLink`} />} collapsible={false} />}
                     {embedUrl && <ShareEmbedLink embedUrl={embedUrl} label={<Message msgId={`gnviewer.embed${resourceType}`} />} />}
                 </FlexBox>

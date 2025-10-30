@@ -8,7 +8,7 @@
 
 import uuid from 'uuid';
 import url from 'url';
-import { isEmpty, uniqBy, omit, orderBy, isString, isObject } from 'lodash';
+import { isEmpty, uniqBy, omit, orderBy, isString, isObject, has } from 'lodash';
 
 import { isImageServerUrl } from '@mapstore/framework/utils/ArcGISUtils';
 import { getConfigProp, convertFromLegacy, normalizeConfig } from '@mapstore/framework/utils/ConfigUtils';
@@ -474,13 +474,51 @@ export const setAvailableResourceTypes = (value) => {
     availableResourceTypes = value;
 };
 
+export const canManageAnonymousPermissions = (resource) => {
+    return resourceHasPermission(resource, 'can_manage_anonymous_permissions');
+};
+
+export const canManageRegisteredMemberPermissions = (resource) => {
+    return resourceHasPermission(resource, 'can_manage_registered_member_permissions');
+}
+
+/**
+ * Get the current permission for a specific group.
+ * @param {*} groupName
+ * @param {*} groups
+ */
+export const getPermissionForGroup = (groupName, groups) => {
+    const group = groups?.find(g => g.name === groupName);
+    return group?.permissions;
+};
+
+/**
+ * Filters permission options for a group if management is disabled.
+ * If management is disabled, it restricts the options to only the current permission.
+ * @param {object} options The permissions options object.
+ * @param {array} groups The list of groups with their current permissions.
+ * @param {string} groupName The name of the group to filter ('anonymous' or 'registered-members').
+ * @param {boolean} canManage The flag indicating if the user can manage permissions.
+ */
+const filterGroupPermissions = (options, groups, groupName, canManage) => {
+    if (!canManage && options[groupName]) {
+        const permissionValue = getPermissionForGroup(groupName, groups);
+        const currentPermission = options[groupName].find(p => p.name === permissionValue);
+        if (currentPermission) {
+            options[groupName] = [currentPermission];
+        }
+    }
+};
+
 /**
  * Extracts lists of permissions into an object for use in the Share plugin select elements
  * @param {Object} options Permission Object to extract permissions from
  * @returns An object containing permissions for each type of user/group
  */
-export const getResourcePermissions = (options) => {
-    const permissionsOptions = {};
+export const getResourcePermissions = (options , groups, manageAnonymousPermissions=false, manageRegisteredMemberPermissions=false) => {
+    filterGroupPermissions(options, groups, 'anonymous', manageAnonymousPermissions);
+    filterGroupPermissions(options, groups, 'registered-members', manageRegisteredMemberPermissions);
+    let permissionsOptions = {};
     Object.keys(options).forEach((key) => {
         const permissions = options[key];
         let selectOptions = [];
