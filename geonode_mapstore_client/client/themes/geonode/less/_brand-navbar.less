@@ -137,7 +137,9 @@
     }
 }
 
-.gn-catalogue:has(.page-viewer) {
+.gn-catalogue:has(.page-viewer),
+.gn-catalogue:has(.gn-upload-container),
+.gn-catalogue:has(.gn-create-dataset) {
     display: flex;
     position: absolute;
     overflow: auto;
@@ -162,6 +164,14 @@
     #gn-brand-navbar {
         > .ms-flex-fill {
             max-width: 100%;
+        }
+    }
+}
+
+.gn-catalogue:has(.gn-create-dataset) {
+    #gn-brand-navbar {
+        > .ms-flex-fill {
+            max-width: 1440px;
         }
     }
 }

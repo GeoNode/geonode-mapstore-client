@@ -11,8 +11,6 @@ import { ResourceTypes } from '@js/utils/ResourceUtils';
 export const appRouteComponentTypes = {
     VIEWER: 'ViewerRoute',
     CATALOGUE: 'CatalogueRoute',
-    DATASET_UPLOAD: 'UploadDatasetRoute',
-    DOCUMENT_UPLOAD: 'UploadDocumentRoute',
     COMPONENTS: 'ComponentsRoute',
     MAP_VIEWER: 'MapViewerRoute'
 };
@@ -183,15 +181,22 @@ export const CATALOGUE_ROUTES = [
     {
         name: 'upload_dataset',
         path: ['/upload/dataset'],
-        component: appRouteComponentTypes.DATASET_UPLOAD,
+        component: appRouteComponentTypes.COMPONENTS,
         protectedRoute: true,
         hash: "#/upload/dataset"
     },
     {
         name: 'upload_document',
         path: ['/upload/document'],
-        component: appRouteComponentTypes.DOCUMENT_UPLOAD,
+        component: appRouteComponentTypes.COMPONENTS,
         protectedRoute: true,
         hash: "#/upload/document"
+    },
+    {
+        name: 'create_dataset',
+        path: ['/create/dataset'],
+        component: appRouteComponentTypes.COMPONENTS,
+        protectedRoute: true,
+        hash: "#/create/dataset"
     }
 ];

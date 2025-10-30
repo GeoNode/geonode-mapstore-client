@@ -104,8 +104,7 @@ const getViewer = (component) => {
     const viewers = {
         [appRouteComponentTypes.VIEWER]: ViewerRoute,
         [appRouteComponentTypes.CATALOGUE]: useRedirect ? RedirectRoute : ComponentsRoute,
-        [appRouteComponentTypes.DATASET_UPLOAD]: ComponentsRoute,
-        [appRouteComponentTypes.DOCUMENT_UPLOAD]: ComponentsRoute,
+        [appRouteComponentTypes.COMPONENTS]: ComponentsRoute,
         [appRouteComponentTypes.MAP_VIEWER]: MapViewerRoute
     };
     return viewers[component];

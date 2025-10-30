@@ -31,7 +31,7 @@
                 "md": 420
             },
             "bottom": {
-                "sm": 30
+                "sm": 0
             }
         }
     },
@@ -180,7 +180,10 @@
                 }
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Notifications"
@@ -246,7 +249,10 @@
                 }
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Timeline"
@@ -326,7 +332,10 @@
                 "name": "Expander"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Notifications"
@@ -409,7 +418,10 @@
                 "name": "Expander"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "TOC",
@@ -753,7 +765,10 @@
                 "name": "Expander"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Measure"
@@ -1349,7 +1364,10 @@
                 "name": "ScaleBox"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Notifications"
@@ -1409,7 +1427,10 @@
                 }
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Map",
@@ -1649,7 +1670,10 @@
                 "name": "Expander"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Measure"
@@ -2918,7 +2942,10 @@
                 "name": "Expander"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "TOC",
@@ -3047,7 +3074,10 @@
                 "name": "Expander"
             },
             {
-                "name": "MapFooter"
+                "name": "MapFooter",
+                "cfg": {
+                    "containerPosition": "footer"
+                }
             },
             {
                 "name": "Legend"
@@ -3269,7 +3299,7 @@
                                     "labelId": "gnhome.createDataset",
                                     "value": "layer",
                                     "type": "link",
-                                    "href": "/createlayer/",
+                                    "href": "{context.getCataloguePath('/catalogue/#/create/dataset')}",
                                     "disableIf": "{(state('settings') && state('settings').createLayer) ? false : true}"
                                 },
                                 {
@@ -3671,6 +3701,14 @@
                 "cfg": {
                     "resourceType": "document"
                 }
+            }
+        ],
+        "create_dataset": [
+            {
+                "name": "CreateDataset"
+            },
+            {
+                "name": "Notifications"
             }
         ]
     }
