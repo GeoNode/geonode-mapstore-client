@@ -8,7 +8,7 @@
 
 import uuid from 'uuid';
 import url from 'url';
-import { isEmpty, uniqBy, omit, orderBy, isString, isObject, has } from 'lodash';
+import { isEmpty, uniqBy, omit, orderBy, isString, isObject } from 'lodash';
 
 import { isImageServerUrl } from '@mapstore/framework/utils/ArcGISUtils';
 import { getConfigProp, convertFromLegacy, normalizeConfig } from '@mapstore/framework/utils/ConfigUtils';
