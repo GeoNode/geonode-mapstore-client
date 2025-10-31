@@ -374,6 +374,11 @@ export const updateDataset = (pk, body) => {
         .then(({ data }) => (data.dataset));
 };
 
+export const updateResource = (pk, body) => {
+    return axios.patch(getEndpointUrl(RESOURCES, `/${pk}`), body)
+        .then(({ data }) => (data.resource));
+};
+
 export const updateDocument = (pk, body) => {
     return axios.patch(getEndpointUrl(DOCUMENTS, `/${pk}`), body)
         .then(({ data }) => data.document);
@@ -731,7 +736,7 @@ export const createDataset = (body) => {
 
 export const getMetadataDownloadLinkByPk = (pk) => {
     return getEndpointUrl(RESOURCES, `/${pk}/iso_metadata_xml`);
-}
+};
 
 export default {
     getEndpoints,
@@ -771,5 +776,6 @@ export default {
     deleteExecutionRequest,
     getResourceByTypeAndByPk,
     createDataset,
-    getMetadataDownloadLinkByPk
+    getMetadataDownloadLinkByPk,
+    updateResource
 };
