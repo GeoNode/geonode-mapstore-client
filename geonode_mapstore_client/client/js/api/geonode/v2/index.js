@@ -440,7 +440,7 @@ export const updateDocument = (pk, body) => {
 
 export const updateResource = (pk, body) => {
     return axios.patch(parseDevHostname(`${endpoints[RESOURCES]}/${pk}`), body)
-        .then(({ data }) => (data.resource));
+        .then(({ data }) => data.resource);
 };
 
 export const getUsers = ({
