@@ -172,21 +172,23 @@ const SaveAPI = {
             ...(timeseries && { has_time: timeseries?.has_time })
         };
         const { request, actions } = setDefaultStyle(state, id); // set default style, if modified
-        const requestDataset = !isDefaultDatasetSubtype(currentResource?.subtype) ? updateResourceAPI : updateDataset;
-        return request().then(() => (id
+        return request().then(() => {
+            const patchResource = !isDefaultDatasetSubtype(currentResource?.subtype) ? updateResourceAPI : updateDataset;
+            return (id
             // perform dataset and timeseries updates sequentially to avoid race conditions
-            ? requestDataset(id, updatedBody).then((resource) =>
-                timeseries ? updateDatasetTimeSeries(id, timeseries).then(() => resource) : Promise.resolve(resource)
-            ) : Promise.resolve())
-            .then((_resource) => {
-                let resource = omit(_resource, 'default_style');
-                if (timeseries) {
-                    const layerId = layersSelector(state)?.find((l) => l.pk === resource?.pk)?.id;
-                    // actions to be dispacted are added to response array
-                    return [resource, updateNode(layerId, 'layers', { dimensions: get(resource, 'data.dimensions', []) }), ...actions];
-                }
-                return [resource, ...actions];
-            }));
+                ? patchResource(id, updatedBody).then((resource) =>
+                    timeseries ? updateDatasetTimeSeries(id, timeseries).then(() => resource) : Promise.resolve(resource)
+                ) : Promise.resolve())
+                .then((_resource) => {
+                    let resource = omit(_resource, 'default_style');
+                    if (timeseries) {
+                        const layerId = layersSelector(state)?.find((l) => l.pk === resource?.pk)?.id;
+                        // actions to be dispacted are added to response array
+                        return [resource, updateNode(layerId, 'layers', { dimensions: get(resource, 'data.dimensions', []) }), ...actions];
+                    }
+                    return [resource, ...actions];
+                });
+        });
     },
     [ResourceTypes.VIEWER]: (state, id, body) => {
         const user = userSelector(state);
