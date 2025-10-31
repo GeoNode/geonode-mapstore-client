@@ -51,7 +51,9 @@ import {
     updateDocument,
     setMapThumbnail,
     updateCompactPermissionsByPk,
-    getResourceByUuid
+    getResourceByUuid,
+    updateDatasetTimeSeries,
+    updateResource as updateResourceAPI
 } from '@js/api/geonode/v2';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import uuid from 'uuid';
@@ -79,13 +81,13 @@ import {
     cleanCompactPermissions,
     toGeoNodeMapConfig,
     RESOURCE_MANAGEMENT_PROPERTIES,
-    getDimensions
+    getDimensions,
+    isDefaultDatasetSubtype
 } from '@js/utils/ResourceUtils';
 import {
     ProcessTypes,
     ProcessStatus
 } from '@js/utils/ResourceServiceUtils';
-import { updateDatasetTimeSeries } from '@js/api/geonode/v2/index';
 import { updateNode, updateSettingsParams } from '@mapstore/framework/actions/layers';
 import { layersSelector, getSelectedLayer as getSelectedNode } from '@mapstore/framework/selectors/layers';
 import { styleServiceSelector, getUpdatedLayer, selectedStyleSelector } from '@mapstore/framework/selectors/styleeditor';
@@ -170,11 +172,11 @@ const SaveAPI = {
             ...(timeseries && { has_time: timeseries?.has_time })
         };
         const { request, actions } = setDefaultStyle(state, id); // set default style, if modified
-
+        const requestDataset = !isDefaultDatasetSubtype(currentResource?.subtype) ? updateResourceAPI : updateDataset;
         return request().then(() => (id
             // perform dataset and timeseries updates sequentially to avoid race conditions
-            ? updateDataset(id, updatedBody).then((resource) =>
-                updateDatasetTimeSeries(id, timeseries).then(() => resource)
+            ? requestDataset(id, updatedBody).then((resource) =>
+                timeseries ? updateDatasetTimeSeries(id, timeseries).then(() => resource) : Promise.resolve(resource)
             ) : Promise.resolve())
             .then((_resource) => {
                 let resource = omit(_resource, 'default_style');
