@@ -77,6 +77,9 @@ def run_setup_hooks(*args, **kwargs):
         pass
 
     urlpatterns += [
+        re_path("/client/extensions", views.ExtensionsView.as_view(), name="mapstore-extension"),
+        re_path("/client/pluginsconfig", views.PluginsConfigView.as_view(), name="mapstore-pluginsconfig"),
+
         re_path(
             r"^catalogue/",
             TemplateView.as_view(
