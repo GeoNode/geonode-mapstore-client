@@ -232,10 +232,20 @@ function isMapCenterEqual(initialCenter = {}, currentCenter = {}) {
     return initialCenter.crs === currentCenter.crs && Math.abs(initialCenter.x - currentCenter.x) < CENTER_EPS && Math.abs(initialCenter.y - currentCenter.y) < CENTER_EPS;
 }
 
-export function getInitialDatasetLayer(state) {
+export const getInitialDatasetResource = (state) => {
     const initialResource = state?.gnresource?.initialResource;
-    return initialResource && initialResource.resource_type === ResourceTypes.DATASET && resourceToLayerConfig(omit(initialResource, ['default_style']));
-}
+    return initialResource && initialResource.resource_type === ResourceTypes.DATASET ? initialResource : null;
+};
+
+export const getInitialDatasetLayer = (state) => {
+    const initialResource = getInitialDatasetResource(state);
+    return initialResource && resourceToLayerConfig(omit(initialResource, ['default_style']));
+};
+
+export const getInitialDatasetLayerStyle = (state) => {
+    const initialResource = getInitialDatasetResource(state);
+    return initialResource ? resourceToLayerConfig(initialResource)?.style : null;
+};
 
 function isResourceDataEqual(state, initialData = {}, currentData = {}) {
     const resourceType = state?.gnresource?.type;
@@ -308,12 +318,17 @@ function isResourceDataEqual(state, initialData = {}, currentData = {}) {
         const selectedLayer = getSelectedNode(state);
         const selectedLayerInitial = getSelectedLayer(state);
         const initialLayerData = {...selectedLayerInitial, ...initialData};
+        const initialStyle = getInitialDatasetLayerStyle(state);
 
         const isSettingsEqual = compareObjects(omit(currentData, ['style', 'fields']),
             omit(initialLayerData, ['style', 'fields', 'extendedParams', 'pk', '_v_', 'isDataset', 'perms']));
-        const isStyleEqual = isEmpty(selectedLayer?.availableStyles) || isEmpty(selectedLayer?.style) ? true
-            : selectedLayer?.style === selectedLayer?.availableStyles?.[0]?.name;
-        const isAttributesEqual = isEmpty(selectedLayer) ? true : !isEmpty(initialLayerData) && isEqual(initialLayerData?.fields, selectedLayer.fields);
+        const isStyleEqual = isEmpty(initialStyle) || isEmpty(selectedLayer?.style) ? true
+            : selectedLayer?.style === initialStyle;
+        const isAttributesEqual = isEmpty(selectedLayer) ? true
+            : !isEmpty(initialLayerData) && isEqual(
+                isEmpty(initialLayerData?.fields) ? {} : initialLayerData?.fields,
+                isEmpty(selectedLayer?.fields) ? {} : selectedLayer?.fields
+            );
 
         return isSettingsEqual && isAttributesEqual && isStyleEqual;
     }
