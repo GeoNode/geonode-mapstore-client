@@ -89,7 +89,6 @@ const entriesTabs = [
     }
 ];
 
-
 const Permissions = ({
     resourceType,
     permissionsLoading,
@@ -116,7 +115,7 @@ const Permissions = ({
         });
     }, [availableResourceTypes]);
     return (
-        <FlexBox className="gn-permissions-container" column gap="xs">
+        <FlexBox className="gn-permissions-container _padding-tb-md" column gap="xs">
             <Text strong>
                 <Message msgId={"gnviewer.permissions"} />
             </Text>

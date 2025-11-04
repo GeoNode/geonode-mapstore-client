@@ -52,17 +52,7 @@ export const GXP_PTYPES = {
     'GN_WMS': 'gxp_geonodecataloguesource'
 };
 
-export const RESOURCE_MANAGEMENT_PROPERTIES = {
-    'metadata_uploaded_preserve': {
-        labelId: 'gnviewer.preserveUploadedMetadata',
-        tooltipId: 'gnviewer.preserveUploadedMetadataTooltip',
-        disabled: (perms = []) => !perms.includes('change_resourcebase')
-    },
-    'is_approved': {
-        labelId: 'gnviewer.approveResource',
-        tooltipId: 'gnviewer.approveResourceTooltip',
-        disabled: (perms = []) => !perms.includes('approve_resourcebase')
-    },
+export const RESOURCE_PUBLISHING_PROPERTIES = {
     'is_published': {
         labelId: 'gnviewer.publishResource',
         tooltipId: 'gnviewer.publishResourceTooltip',
@@ -80,6 +70,18 @@ export const RESOURCE_MANAGEMENT_PROPERTIES = {
     }
 };
 
+export const RESOURCE_OPTIONS_PROPERTIES = {
+    'metadata_uploaded_preserve': {
+        labelId: 'gnviewer.preserveUploadedMetadata',
+        tooltipId: 'gnviewer.preserveUploadedMetadataTooltip',
+        disabled: (perms = []) => !perms.includes('change_resourcebase')
+    },
+    'is_approved': {
+        labelId: 'gnviewer.approveResource',
+        tooltipId: 'gnviewer.approveResourceTooltip',
+        disabled: (perms = []) => !perms.includes('approve_resourcebase')
+    }
+};
 export const TIME_SERIES_PROPERTIES = ['attribute', 'end_attribute', 'presentation', 'precision_value', 'precision_step'];
 
 export const TIME_ATTRIBUTE_TYPES = ['xsd:date', 'xsd:dateTime', 'xsd:date-time', 'xsd:time'];
@@ -876,10 +878,20 @@ export const resourceToLayers = (resource) => {
     return [];
 };
 
-export const canManageResourceSettings = (resource) => {
+export const canManageResourcePublishing = (resource) => {
     const { perms } = resource || {};
-    const settingsPerms = ['feature_resourcebase', 'approve_resourcebase', 'publish_resourcebase'];
+    const settingsPerms = ['feature_resourcebase', 'change_resourcebase', 'publish_resourcebase'];
     return !!(perms || []).find(perm => settingsPerms.includes(perm));
+};
+
+export const canManageResourceOptions = (resource) => {
+    const { perms } = resource || {};
+    const settingsPerms = ['change_resourcebase', 'approve_resourcebase'];
+    return !!(perms || []).find(perm => settingsPerms.includes(perm));
+};
+
+export const canManageResourceSettings = (resource) => {
+    return canManageResourcePublishing(resource) && canManageResourceOptions(resource);
 };
 
 export const canAccessPermissions = (resource) => {

@@ -9,28 +9,35 @@
 import React, { useEffect, useState } from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import { createStructuredSelector, createSelector } from 'reselect';
 import PropTypes from 'prop-types';
-import { requestResource, setResource } from '@js/actions/gnresource';
+
 import controls from '@mapstore/framework/reducers/controls';
 import config from '@mapstore/framework/reducers/config';
-import gnresource from '@js/reducers/gnresource';
-import {
-    getResourceData,
-    getResourceLoading,
-    getResourceDirtyState,
-    canEditPermissions
-} from '@js/selectors/resource';
 import usePluginItems from '@mapstore/framework/hooks/usePluginItems';
-import tabComponents from './containers/tabComponents';
+import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import ResourcesPanelWrapper from '@mapstore/framework/plugins/ResourcesCatalog/components/ResourcesPanelWrapper';
 import TargetSelectorPortal from '@mapstore/framework/plugins/ResourcesCatalog/components/TargetSelectorPortal';
 import useResourcePanelWrapper from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useResourcePanelWrapper';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
-import { setShowDetails, setSelectedResource } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
+import { setShowDetails, setSelectedResource, setDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
 import PendingStatePrompt from '@mapstore/framework/plugins/ResourcesCatalog/containers/PendingStatePrompt';
-import DetailsPanel from './containers/DetailsPanel';
+import Button from '@mapstore/framework/components/layout/Button';
+import Message from '@mapstore/framework/components/I18N/Message';
+
+import {
+    getResourceData,
+    getResourceLoading,
+    getResourceDirtyState,
+    canEditPermissions,
+    isNewResource,
+    getResourceId
+} from '@js/selectors/resource';
+import { requestResource, setResource } from '@js/actions/gnresource';
+import gnresource from '@js/reducers/gnresource';
 import useDetectClickOut from '@js/hooks/useDetectClickOut';
+import tabComponents from '@js/plugins/ResourceDetails/containers/tabComponents';
+import DetailsPanel from '@js/plugins/ResourceDetails/containers/DetailsPanel';
 
 /**
 * @module ResourceDetails
@@ -215,7 +222,7 @@ function ResourceDetailsPanel({
             "items": "{({extent: context.get(state('gnResourceData'), 'extent')})}"
         },
         {
-            "type": "linked-resources",
+            "type": "relations",
             "id": "related",
             "labelId": "gnviewer.linkedResources.label",
             "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
@@ -235,9 +242,16 @@ function ResourceDetailsPanel({
             "items": "{context.get(state('gnResourceData'), 'attribute_set')}"
         },
         {
+            "type": "share",
+            "id": "share",
+            "labelId": "gnviewer.share",
+            "disableIf": "{!context.canAccessPermissions(state('gnResourceData'))}",
+            "items": [true]
+        },
+        {
             "type": "settings",
             "id": "settings",
-            "labelId": "gnviewer.management",
+            "labelId": "gnviewer.settings",
             "disableIf": "{!context.canManageResourceSettings(state('gnResourceData')) && !context.canAccessPermissions(state('gnResourceData'))}",
             "items": [true]
         }
@@ -389,7 +403,7 @@ const ResourceDetailsPlugin = connect(
 export default createPlugin('ResourceDetails', {
     component: ResourceDetailsPlugin,
     containers: {
-        ActionNavbar: {
+        ActionNavbar: [{
             name: 'ResourceDetailsButton',
             Component: connect((state) => ({resource: getResourceData(state)}), { onShow: setShowDetails })(({ component, resourcesGridId, onShow, resource }) => {
                 if (!resource?.pk) return null;
@@ -409,7 +423,37 @@ export default createPlugin('ResourceDetails', {
             }),
             priority: 1,
             doNotHide: true
-        },
+        }, {
+            name: 'ShareActionButton',
+            Component: connect(
+                createSelector(
+                    isNewResource,
+                    getResourceId,
+                    mapInfoSelector,
+                    (isNew, resourceId, mapInfo) => ({
+                        enabled: !isNew && (resourceId || mapInfo?.id)
+                    })
+                ),
+                {
+                    onSelectTab: setDetailPanelTab,
+                    onShowDetails: setShowDetails
+                }
+            )(({ enabled, size, onSelectTab, onShowDetails }) => {
+                return enabled
+                    ? <Button
+                        size={size}
+                        onClick={() => {
+                            onShowDetails(true);
+                            onSelectTab('share');
+                        }}
+                    >
+                        <Message msgId="share.title"/>
+                    </Button>
+                    : null;
+            }),
+            priority: 1,
+            doNotHide: true
+        }],
         ResourcesGrid: {
             priority: 2,
             target: 'card-buttons',

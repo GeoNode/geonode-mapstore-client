@@ -731,7 +731,7 @@ export const createDataset = (body) => {
 
 export const getMetadataDownloadLinkByPk = (pk) => {
     return getEndpointUrl(RESOURCES, `/${pk}/iso_metadata_xml`);
-}
+};
 
 export default {
     getEndpoints,
