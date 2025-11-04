@@ -1055,23 +1055,16 @@ describe('Test Resource Utils', () => {
     });
     it('canManageResourceSettings', () => {
         expect(canManageResourceSettings({ perms: ['change_resourcebase'] })).toBeTruthy();
-
+        expect(canManageResourceSettings({ perms: ['change_resourcebase', 'view_resourcebase'] })).toBeTruthy();
         expect(canManageResourceSettings({ perms: ['approve_resourcebase', 'publish_resourcebase'] })).toBeTruthy();
         expect(canManageResourceSettings({ perms: ['approve_resourcebase', 'feature_resourcebase'] })).toBeTruthy();
-
-        expect(canManageResourceSettings({ perms: ['approve_resourcebase'] })).toBeFalsy();
-
-        expect(canManageResourceSettings({ perms: ['publish_resourcebase'] })).toBeFalsy();
-        expect(canManageResourceSettings({ perms: ['feature_resourcebase'] })).toBeFalsy();
+        expect(canManageResourceSettings({ perms: ['approve_resourcebase', 'change_resourcebase'] })).toBeTruthy();
+        expect(canManageResourceSettings({ perms: ['publish_resourcebase', 'change_resourcebase'] })).toBeTruthy();
 
         expect(canManageResourceSettings({ perms: ['view_resourcebase'] })).toBeFalsy();
-
         expect(canManageResourceSettings({ perms: [] })).toBeFalsy();
-
         expect(canManageResourceSettings({})).toBeFalsy();
-
         expect(canManageResourceSettings(undefined)).toBeFalsy();
-
         expect(canManageResourceSettings(null)).toBeFalsy();
     });
     it('canAccessPermissions', () => {

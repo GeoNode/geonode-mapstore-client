@@ -252,7 +252,7 @@ function ResourceDetailsPanel({
             "type": "settings",
             "id": "settings",
             "labelId": "gnviewer.settings",
-            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData')) && !context.canAccessPermissions(state('gnResourceData'))}",
+            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
             "items": [true]
         }
     ],

@@ -891,7 +891,7 @@ export const canManageResourceOptions = (resource) => {
 };
 
 export const canManageResourceSettings = (resource) => {
-    return canManageResourcePublishing(resource) && canManageResourceOptions(resource);
+    return !!(canManageResourcePublishing(resource) || canManageResourceOptions(resource));
 };
 
 export const canAccessPermissions = (resource) => {
