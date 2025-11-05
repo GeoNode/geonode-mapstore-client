@@ -81,7 +81,8 @@ import {
     ResourceTypes,
     cleanCompactPermissions,
     toGeoNodeMapConfig,
-    RESOURCE_MANAGEMENT_PROPERTIES,
+    RESOURCE_PUBLISHING_PROPERTIES,
+    RESOURCE_OPTIONS_PROPERTIES,
     getDimensions,
     isDefaultDatasetSubtype
 } from '@js/utils/ResourceUtils';
@@ -94,7 +95,7 @@ import { layersSelector, getSelectedLayer as getSelectedNode } from '@mapstore/f
 import { styleServiceSelector, getUpdatedLayer, selectedStyleSelector } from '@mapstore/framework/selectors/styleeditor';
 import LayersAPI from '@mapstore/framework/api/geoserver/Layers';
 
-const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys(RESOURCE_MANAGEMENT_PROPERTIES);
+const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys({...RESOURCE_PUBLISHING_PROPERTIES, ...RESOURCE_OPTIONS_PROPERTIES});
 
 function parseMapBody(body) {
     const geoNodeMap = toGeoNodeMapConfig(body.data);

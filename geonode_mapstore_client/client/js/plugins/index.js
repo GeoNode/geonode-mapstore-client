@@ -242,10 +242,6 @@ export const plugins = {
         'Search',
         () => import(/* webpackChunkName: 'plugins/search-plugin' */ '@mapstore/framework/plugins/Search')
     ),
-    SharePlugin: toModulePlugin(
-        'Share',
-        () => import(/* webpackChunkName: 'plugins/share-plugin' */ '@js/plugins/Share')
-    ),
     IdentifyPlugin: toModulePlugin(
         'Identify',
         () => import(/* webpackChunkName: 'plugins/identify-plugin' */ '@mapstore/framework/plugins/Identify')

@@ -33,6 +33,8 @@ import {
     getResourceWithLinkedResources,
     getResourceAdditionalProperties,
     getDimensions,
+    canManageResourcePublishing,
+    canManageResourceOptions,
     canManageResourceSettings,
     canAccessPermissions,
     formatResourceLinkUrl
@@ -1009,9 +1011,61 @@ describe('Test Resource Utils', () => {
             }]);
         });
     });
+    it('canManageResourcePublishing', () => {
+        expect(canManageResourcePublishing({ perms: ['publish_resourcebase'] })).toBeTruthy();
+
+        expect(canManageResourcePublishing({ perms: ['feature_resourcebase'] })).toBeTruthy();
+
+        expect(canManageResourcePublishing({ perms: ['change_resourcebase'] })).toBeTruthy();
+
+        expect(canManageResourcePublishing({ perms: ['publish_resourcebase', 'feature_resourcebase', 'change_resourcebase'] })).toBeTruthy();
+
+        expect(canManageResourcePublishing({ perms: ['view_resourcebase', 'publish_resourcebase', 'download_resourcebase'] })).toBeTruthy();
+
+        expect(canManageResourcePublishing({ perms: ['view_resourcebase'] })).toBeFalsy();
+
+        expect(canManageResourcePublishing({ perms: [] })).toBeFalsy();
+
+        expect(canManageResourcePublishing({})).toBeFalsy();
+
+        expect(canManageResourcePublishing(undefined)).toBeFalsy();
+
+        expect(canManageResourcePublishing(null)).toBeFalsy();
+    });
+    it('canManageResourceOptions', () => {
+        expect(canManageResourceOptions({ perms: ['change_resourcebase'] })).toBeTruthy();
+
+        expect(canManageResourceOptions({ perms: ['approve_resourcebase'] })).toBeTruthy();
+
+        expect(canManageResourceOptions({ perms: ['change_resourcebase', 'approve_resourcebase'] })).toBeTruthy();
+
+        expect(canManageResourceOptions({ perms: ['view_resourcebase', 'change_resourcebase', 'download_resourcebase'] })).toBeTruthy();
+
+        expect(canManageResourceOptions({ perms: ['view_resourcebase'] })).toBeFalsy();
+
+        expect(canManageResourceOptions({ perms: ['publish_resourcebase', 'feature_resourcebase'] })).toBeFalsy();
+
+        expect(canManageResourceOptions({ perms: [] })).toBeFalsy();
+
+        expect(canManageResourceOptions({})).toBeFalsy();
+
+        expect(canManageResourceOptions(undefined)).toBeFalsy();
+
+        expect(canManageResourceOptions(null)).toBeFalsy();
+    });
     it('canManageResourceSettings', () => {
-        expect(canManageResourceSettings({ perms: ['approve_resourcebase'] })).toBeTruthy();
+        expect(canManageResourceSettings({ perms: ['change_resourcebase'] })).toBeTruthy();
+        expect(canManageResourceSettings({ perms: ['change_resourcebase', 'view_resourcebase'] })).toBeTruthy();
+        expect(canManageResourceSettings({ perms: ['approve_resourcebase', 'publish_resourcebase'] })).toBeTruthy();
+        expect(canManageResourceSettings({ perms: ['approve_resourcebase', 'feature_resourcebase'] })).toBeTruthy();
+        expect(canManageResourceSettings({ perms: ['approve_resourcebase', 'change_resourcebase'] })).toBeTruthy();
+        expect(canManageResourceSettings({ perms: ['publish_resourcebase', 'change_resourcebase'] })).toBeTruthy();
+
         expect(canManageResourceSettings({ perms: ['view_resourcebase'] })).toBeFalsy();
+        expect(canManageResourceSettings({ perms: [] })).toBeFalsy();
+        expect(canManageResourceSettings({})).toBeFalsy();
+        expect(canManageResourceSettings(undefined)).toBeFalsy();
+        expect(canManageResourceSettings(null)).toBeFalsy();
     });
     it('canAccessPermissions', () => {
         expect(canAccessPermissions({ perms: ['change_resourcebase_permissions'] })).toBeTruthy();

@@ -12,7 +12,7 @@ import { compareMapChanges } from '@mapstore/framework/utils/MapUtils';
 import { currentStorySelector } from '@mapstore/framework/selectors/geostory';
 import { originalDataSelector } from '@mapstore/framework/selectors/dashboard';
 import { widgetsConfig } from '@mapstore/framework/selectors/widgets';
-import { ResourceTypes, RESOURCE_MANAGEMENT_PROPERTIES, resourceToLayerConfig } from '@js/utils/ResourceUtils';
+import { ResourceTypes, RESOURCE_PUBLISHING_PROPERTIES, RESOURCE_OPTIONS_PROPERTIES, resourceToLayerConfig } from '@js/utils/ResourceUtils';
 import {
     getCurrentResourceDeleteLoading,
     getCurrentResourceCopyLoading
@@ -30,7 +30,7 @@ import { generateContextResource } from '@mapstore/framework/selectors/contextcr
 import { layerSettingSelector, getSelectedLayer as getSelectedNode } from '@mapstore/framework/selectors/layers';
 import { saveLayer } from '@mapstore/framework/utils/LayersUtils';
 
-const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys(RESOURCE_MANAGEMENT_PROPERTIES);
+const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys({...RESOURCE_PUBLISHING_PROPERTIES, ...RESOURCE_OPTIONS_PROPERTIES});
 
 /**
 * @module selectors/resource
