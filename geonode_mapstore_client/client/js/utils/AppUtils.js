@@ -98,7 +98,7 @@ export function initializeApp() {
         }
     );
     // Set proxy and authentication from geonode config
-    ['proxyUrl', 'useAuthenticationRules', 'authenticationRules'].forEach(key=> {
+    ['proxyUrl', 'useAuthenticationRules', 'authenticationRules', 'requestsConfigurationRules'].forEach(key=> {
         setConfigProp(key, getGeoNodeLocalConfig(key));
     });
 }
