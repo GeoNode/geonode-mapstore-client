@@ -97,6 +97,7 @@ import {
 import {
     canAddResource,
     getInitialDatasetLayer,
+    getInitialDatasetLayerStyle,
     getResourceData,
     getResourceId,
     getResourceThumbnail
@@ -538,7 +539,7 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     ...action.options,
                     isSamePreviousResource,
                     resourceData,
-                    selectedLayer: isSamePreviousResource && getInitialDatasetLayer(state),
+                    selectedLayer: isSamePreviousResource && {...getInitialDatasetLayer(state), style: getInitialDatasetLayerStyle(state)},
                     params: {...action?.options?.params, query}
                 }),
                 Observable.of(

@@ -7,7 +7,7 @@ import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Text from '@mapstore/framework/components/layout/Text';
 import SelectInfiniteScroll from '@mapstore/framework/plugins/ResourcesCatalog/components/SelectInfiniteScroll';
 import { getGroups } from '@js/api/geonode/v2';
-import { canManageResourceSettings, RESOURCE_MANAGEMENT_PROPERTIES } from '@js/utils/ResourceUtils';
+import { canManageResourcePublishing, canManageResourceOptions, RESOURCE_PUBLISHING_PROPERTIES, RESOURCE_OPTIONS_PROPERTIES } from '@js/utils/ResourceUtils';
 
 const MessageTooltip = tooltip(forwardRef(({children, msgId, ...props}, ref) => {
     return (
@@ -46,13 +46,35 @@ function DetailsSettings({ resource, onChange }) {
                     />
                 </FormGroup>
             </FlexBox.Fill>
-            {canManageResourceSettings(resource) && (
+            {canManageResourcePublishing(resource) && (
                 <FlexBox column gap="xs">
                     <Text strong>
-                        <Message msgId={"gnviewer.resourceManagement"} />
+                        <Message msgId={"gnviewer.publishing"} />
                     </Text>
-                    {Object.keys(RESOURCE_MANAGEMENT_PROPERTIES).map((key) => {
-                        const { labelId, disabled, tooltipId } = RESOURCE_MANAGEMENT_PROPERTIES[key];
+                    {Object.keys(RESOURCE_PUBLISHING_PROPERTIES).map((key) => {
+                        const { labelId, disabled, tooltipId } = RESOURCE_PUBLISHING_PROPERTIES[key];
+                        return (
+                            <Text key={key} fontSize="sm" className="_row _padding-b-xs">
+                                <Checkbox
+                                    style={{ margin: 0 }}
+                                    disabled={disabled(resource?.perms || [])}
+                                    checked={!!resource?.[key]}
+                                    onChange={(event) => onChange({ [key]: !!event.target.checked })}
+                                >
+                                    <MessageTooltip msgId={labelId} tooltipId={tooltipId}/>
+                                </Checkbox>
+                            </Text>
+                        );
+                    })}
+                </FlexBox>
+            )}
+            {canManageResourceOptions(resource) && (
+                <FlexBox column gap="xs">
+                    <Text strong>
+                        <Message msgId={"gnviewer.options"} />
+                    </Text>
+                    {Object.keys(RESOURCE_OPTIONS_PROPERTIES).map((key) => {
+                        const { labelId, disabled, tooltipId } = RESOURCE_OPTIONS_PROPERTIES[key];
                         return (
                             <Text key={key} fontSize="sm" className="_row _padding-b-xs">
                                 <Checkbox

@@ -361,7 +361,7 @@
             "readMore": "Leggi di più",
             "readLess": "Leggi di meno",
             "linkedResources": {
-                "label": "Risorse collegate",
+                "label": "Relazioni",
                 "linkedBy": "Collegato da",
                 "linkedTo": "Collegato a",
                 "uses": "Usi",
@@ -420,10 +420,10 @@
                     }
                 }
             },
-            "allResources": "All resources",
-            "assets": "Assets",
-            "management": "Gestione",
-            "resourceManagement": "Gestione della risorsa",
+            "allResources": "Tutte le risorse",
+            "assets": "Asset",
+            "settings": "Impostazioni",
+            "publishing": "Pubblicazione",
             "timeSeriesSetting": {
                 "title": "Impostazioni serie temporali",
                 "hasTime": "Ha tempo?",

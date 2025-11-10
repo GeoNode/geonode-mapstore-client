@@ -3,21 +3,9 @@
 // **************
 
 #ms-components-theme(@theme-vars) {
-    .gn-share-panel {
-        .color-var(@theme-vars[main-color]);
-        .background-color-var(@theme-vars[main-bg]);
-    }
     .gn-geo-limits {
         .color-var(@theme-vars[main-color]);
         .background-color-var(@theme-vars[main-bg]);
-    }
-    .gn-share-content, 
-    .gn-share-title-header {
-        &.collapsible {
-            .color-var(@theme-vars[main-color]);
-            .background-color-var(@theme-vars[main-bg]);
-            .border-color-var(@theme-vars[main-border-color]);
-        }
     }
     .gn-geo-limits-loader {
         .color-var(@theme-vars[main-color]);
@@ -29,48 +17,12 @@
 // Layout
 // **************
 
-.gn-share-panel {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    .gn-share-panel-head {
-        display: flex;
-        align-items: center;
-        h2 {
-            flex: 1;
-            word-break: break-all;
-            margin: 0;
-            font-size: 1.4rem;
-        }
-        margin: 0.5rem;
-        .gn-share-panel-close {
-            width: 2rem;
-            height: 2rem;
-            border: none;
-        }
-    }
-    .gn-share-panel-body {
-        flex: 1;
-        overflow: auto;
-        position: relative;
+.gn-permissions-container {
+    height: 550px;
+    max-height: 600px;
+    overflow-y: auto;
+    .ms-permissions {
         width: 100%;
-        padding: 0 0.75rem;
-
-        .gn-permissions-container {
-            max-height: 600px;
-            overflow-y: auto;
-            .ms-permissions {
-                width: 100%;
-            }
-            .ms-permissions * {
-                font-size: @font-size-small;
-            }
-        }
-    }
-    .ms-popover {
-        display: inline-block;
     }
 }
 
@@ -98,57 +50,5 @@
         justify-content: center;
         font-size: 4rem;
         opacity: 0.6;
-    }
-}
-
-.gn-share-link-pad {
-    .gn-share-link {
-        display: flex;
-        align-items: center;
-        margin-bottom: 0;
-        
-        textarea {
-            resize: none;
-            flex: 1;
-            border: none;
-            background: transparent;
-            font-family: @font-family-monospace;
-        }
-        input {
-            flex: 1;
-            border: none;
-            font-family: @font-family-monospace;
-            text-overflow: ellipsis;
-        }
-
-    }
-    
-    .gn-share-page-link {
-        padding: 0.2rem 0;
-        .gn-share-title {
-            margin-bottom: 0;
-            font-size: 0.8rem;
-            text-transform: capitalize;
-        }
-        .checkbox {
-            font-size: @font-size-sm;
-        }
-        .gn-share-title-header {
-            justify-content: space-between;
-            padding: 0.5rem 0;
-            &.collapsible {
-                padding: 0.5rem 0.75rem;
-                border-width: 1px;
-                border-style: solid;
-            }
-        }
-        .gn-share-content {
-            &.collapsible {
-                padding: 0.5rem 0.75rem;
-                border-width: 1px;
-                border-style: solid;
-                border-top: none;
-            }
-        }
     }
 }
