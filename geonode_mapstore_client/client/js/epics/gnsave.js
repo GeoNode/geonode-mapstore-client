@@ -46,7 +46,8 @@ import {
     updateDocument,
     setMapThumbnail,
     updateCompactPermissionsByPk,
-    getResourceByUuid
+    getResourceByUuid,
+    updateResource as updateResourceAPI
 } from '@js/api/geonode/v2';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import uuid from 'uuid';
@@ -72,6 +73,7 @@ import {
 import {
     ResourceTypes,
     cleanCompactPermissions,
+    isDefaultDatasetSubtype,
     toGeoNodeMapConfig
 } from '@js/utils/ResourceUtils';
 import {
@@ -119,7 +121,9 @@ const SaveAPI = {
         return id ? updateDocument(id, body) : false;
     },
     [ResourceTypes.DATASET]: (state, id, body) => {
-        return id ? updateDataset(id, body) : false;
+        const currentResource = getResourceData(state);
+        const request = isDefaultDatasetSubtype(currentResource?.subtype) ? updateDataset : updateResourceAPI;
+        return id ? request(id, body) : false;
     },
     [ResourceTypes.VIEWER]: (state, id, body) => {
         const user = userSelector(state);

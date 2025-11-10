@@ -438,6 +438,11 @@ export const updateDocument = (pk, body) => {
         .then(({ data }) => data.document);
 };
 
+export const updateResource = (pk, body) => {
+    return axios.patch(parseDevHostname(`${endpoints[RESOURCES]}/${pk}`), body)
+        .then(({ data }) => data.resource);
+};
+
 export const getUsers = ({
     q,
     page = 1,
@@ -967,5 +972,6 @@ export default {
     deleteExecutionRequest,
     getResourceByTypeAndByPk,
     getFacetItems,
-    getFacetItemsByFacetName
+    getFacetItemsByFacetName,
+    updateResource
 };
