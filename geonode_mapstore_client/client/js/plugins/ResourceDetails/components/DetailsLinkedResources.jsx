@@ -61,7 +61,7 @@ const DetailsLinkedResources = ({ fields }) => {
     ];
 
     return (
-        <FlexBox column gap="xs" className="gn-details-linked-resources _padding-tb-md">
+        <FlexBox column gap="xs" className="gn-details-relations _padding-tb-md">
             {linkedResources.map(({resources, type})=> <DetailLinkedResource resources={resources} type={type}/>)}
         </FlexBox>
     );
