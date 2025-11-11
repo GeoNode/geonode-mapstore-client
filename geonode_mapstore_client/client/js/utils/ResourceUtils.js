@@ -476,13 +476,48 @@ export const setAvailableResourceTypes = (value) => {
     availableResourceTypes = value;
 };
 
+export const canManageAnonymousPermissions = (resource) => {
+    return resourceHasPermission(resource, 'can_manage_anonymous_permissions');
+};
+
+export const canManageRegisteredMemberPermissions = (resource) => {
+    return resourceHasPermission(resource, 'can_manage_registered_member_permissions');
+}
+
+/**
+ * Filters permission options for a group if management is disabled.
+ * If management is disabled, it restricts the options to only the current permission.
+ * @param {object} options The permissions options object.
+ * @param {array} groups The list of groups with their current permissions.
+ * @param {array} groupNames Array of group names to filter ('anonymous' or 'registered-members').
+ * @returns {object} Filtered permissions options
+ */
+const filterGroupPermissions = (options, groups, groupNames) => {
+    return groupNames.length
+        ? Object.fromEntries(Object.keys(options)
+        .map((key) => {
+            if (groupNames.some(name => name === key)) {
+                const group = groups?.find(g => g.name === key);
+                const permissionValue = group?.permissions;
+                const currentPermission = options[key].find(p => p.name === permissionValue);
+                return currentPermission ? [key, [currentPermission]] : [key, options[key]];
+            }
+            return [key, options[key]];
+        }))
+        : options;
+};
+
 /**
  * Extracts lists of permissions into an object for use in the Share plugin select elements
  * @param {Object} options Permission Object to extract permissions from
  * @returns An object containing permissions for each type of user/group
  */
-export const getResourcePermissions = (options) => {
-    const permissionsOptions = {};
+export const getResourcePermissions = (_options , groups, manageAnonymousPermissions=false, manageRegisteredMemberPermissions=false) => {
+    const options = filterGroupPermissions(_options, groups, [
+        ...(manageAnonymousPermissions ? [] : ['anonymous']),
+        ...(manageRegisteredMemberPermissions? [] : ['registered-members']),
+    ]);
+    let permissionsOptions = {};
     Object.keys(options).forEach((key) => {
         const permissions = options[key];
         let selectOptions = [];

@@ -21,7 +21,8 @@ import {
 import { updateResourceCompactPermissions } from "@js/actions/gnresource";
 import {
     getCompactPermissions,
-    getViewedResourceType
+    getViewedResourceType,
+    getResourceData,
 } from "@js/selectors/resource";
 import { getCurrentResourcePermissionsLoading } from "@js/selectors/resourceservice";
 import {
@@ -30,6 +31,8 @@ import {
     permissionsCompactToLists,
     permissionsListsToCompact,
     resourceToPermissionEntry,
+    canManageAnonymousPermissions,
+    canManageRegisteredMemberPermissions,
     ResourceTypes
 } from "@js/utils/ResourceUtils";
 import GeoLimits from "./GeoLimits";
@@ -93,11 +96,14 @@ const Permissions = ({
     resourceType,
     permissionsLoading,
     compactPermissions,
-    onChangePermissions
+    onChangePermissions,
+    resource
 }) => {
     const enableGeoLimits = resourceType === ResourceTypes.DATASET;
     const isMounted = useIsMounted();
     const [permissionsObject, setPermissionsObject] = useState({});
+    const manageAnonymousPermissions = canManageAnonymousPermissions(resource);
+    const manageRegisteredMemberPermissions = canManageRegisteredMemberPermissions(resource);
 
     useEffect(() => {
         getResourceTypes().then((data) => {
@@ -105,11 +111,11 @@ const Permissions = ({
             let responseOptions;
             if (resourceIndex !== -1) {
                 responseOptions = getResourcePermissions(
-                    data[resourceIndex].allowed_perms.compact
+                    data[resourceIndex].allowed_perms.compact , compactPermissions?.groups ,manageAnonymousPermissions, manageRegisteredMemberPermissions
                 );
             } else {
                 // set a default permission object
-                responseOptions = getResourcePermissions(data[0].allowed_perms.compact);
+                responseOptions = getResourcePermissions(data[0].allowed_perms.compact, compactPermissions?.groups ,manageAnonymousPermissions, manageRegisteredMemberPermissions);
             }
             isMounted(() => setPermissionsObject(responseOptions));
         });
@@ -144,12 +150,14 @@ export default connect(
         [
             getCompactPermissions,
             getCurrentResourcePermissionsLoading,
-            getViewedResourceType
+            getViewedResourceType,
+            getResourceData,
         ],
-        (compactPermissions, permissionsLoading, type) => ({
+        (compactPermissions, permissionsLoading, type, resource) => ({
             compactPermissions,
             permissionsLoading,
-            resourceType: type
+            resourceType: type,
+            resource
         })
     ),
     {
