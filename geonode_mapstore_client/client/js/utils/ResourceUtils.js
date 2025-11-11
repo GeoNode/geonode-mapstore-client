@@ -500,7 +500,7 @@ const filterGroupPermissions = (options, groups, groupNames) => {
                 const group = groups?.find(g => g.name === key);
                 const permissionValue = group?.permissions;
                 const currentPermission = options[key].find(p => p.name === permissionValue);
-                return currentPermission ? [key, currentPermission] : [key, options[key]];
+                return currentPermission ? [key, [currentPermission]] : [key, options[key]];
             }
             return [key, options[key]];
         }))
