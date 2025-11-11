@@ -145,7 +145,8 @@
             "na": "N/A",
             "emptyFilterItems": "Não há itens a mostrar",
             "loadingItems": "Carregando items...",
-            "3dtiles": "3D Tiles"
+            "3dtiles": "3D Tiles",
+            "unApprovedunPublished": "Não aprovado e não publicado"
         },
         "viewer": {
             "document": {
@@ -164,6 +165,7 @@
             "dublinCore": "Metadado Dublin Core",
             "edit": "Alterar",
             "export": "Exportar",
+            "exportData": "Exportar Dados",
             "editInfo": "Alterar Informações",
             "editMetadata": "Alterar Metadados",
             "editStyle": "Alterar Estilo",
