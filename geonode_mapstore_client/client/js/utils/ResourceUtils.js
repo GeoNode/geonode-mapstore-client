@@ -485,31 +485,26 @@ export const canManageRegisteredMemberPermissions = (resource) => {
 }
 
 /**
- * Get the current permission for a specific group.
- * @param {*} groupName
- * @param {*} groups
- */
-export const getPermissionForGroup = (groupName, groups) => {
-    const group = groups?.find(g => g.name === groupName);
-    return group?.permissions;
-};
-
-/**
  * Filters permission options for a group if management is disabled.
  * If management is disabled, it restricts the options to only the current permission.
  * @param {object} options The permissions options object.
  * @param {array} groups The list of groups with their current permissions.
- * @param {string} groupName The name of the group to filter ('anonymous' or 'registered-members').
- * @param {boolean} canManage The flag indicating if the user can manage permissions.
+ * @param {array} groupNames Array of group names to filter ('anonymous' or 'registered-members').
+ * @returns {object} Filtered permissions options
  */
-const filterGroupPermissions = (options, groups, groupName, canManage) => {
-    if (!canManage && options[groupName]) {
-        const permissionValue = getPermissionForGroup(groupName, groups);
-        const currentPermission = options[groupName].find(p => p.name === permissionValue);
-        if (currentPermission) {
-            options[groupName] = [currentPermission];
-        }
-    }
+const filterGroupPermissions = (options, groups, groupNames) => {
+    return groupNames.length
+        ? Object.fromEntries(Object.keys(options)
+        .map((key) => {
+            if (groupNames.some(name => name === key)) {
+                const group = groups?.find(g => g.name === key);
+                const permissionValue = group?.permissions;
+                const currentPermission = options[key].find(p => p.name === permissionValue);
+                return currentPermission ? [key, currentPermission] : [key, options[key]];
+            }
+            return [key, options[key]];
+        }))
+        : options;
 };
 
 /**
@@ -517,9 +512,11 @@ const filterGroupPermissions = (options, groups, groupName, canManage) => {
  * @param {Object} options Permission Object to extract permissions from
  * @returns An object containing permissions for each type of user/group
  */
-export const getResourcePermissions = (options , groups, manageAnonymousPermissions=false, manageRegisteredMemberPermissions=false) => {
-    filterGroupPermissions(options, groups, 'anonymous', manageAnonymousPermissions);
-    filterGroupPermissions(options, groups, 'registered-members', manageRegisteredMemberPermissions);
+export const getResourcePermissions = (_options , groups, manageAnonymousPermissions=false, manageRegisteredMemberPermissions=false) => {
+    const options = filterGroupPermissions(_options, groups, [
+        ...(manageAnonymousPermissions ? [] : ['anonymous']),
+        ...(manageRegisteredMemberPermissions? [] : ['registered-members']),
+    ]);
     let permissionsOptions = {};
     Object.keys(options).forEach((key) => {
         const permissions = options[key];

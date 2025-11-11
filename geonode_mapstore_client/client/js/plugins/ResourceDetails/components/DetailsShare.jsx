@@ -21,7 +21,8 @@ import {
 import { updateResourceCompactPermissions } from "@js/actions/gnresource";
 import {
     getCompactPermissions,
-    getViewedResourceType
+    getViewedResourceType,
+    getResourceData,
 } from "@js/selectors/resource";
 import { getCurrentResourcePermissionsLoading } from "@js/selectors/resourceservice";
 import {
@@ -30,6 +31,8 @@ import {
     permissionsCompactToLists,
     permissionsListsToCompact,
     resourceToPermissionEntry,
+    canManageAnonymousPermissions,
+    canManageRegisteredMemberPermissions,
     ResourceTypes
 } from "@js/utils/ResourceUtils";
 import GeoLimits from "./GeoLimits";
@@ -94,12 +97,14 @@ const Permissions = ({
     permissionsLoading,
     compactPermissions,
     onChangePermissions,
-    manageAnonymousPermissions,
-    manageRegisteredMemberPermissions
+    resource
 }) => {
+    console.log(resource,'resource in permission');
     const enableGeoLimits = resourceType === ResourceTypes.DATASET;
     const isMounted = useIsMounted();
     const [permissionsObject, setPermissionsObject] = useState({});
+    const manageAnonymousPermissions = canManageAnonymousPermissions(resource);
+    const manageRegisteredMemberPermissions = canManageRegisteredMemberPermissions(resource);
 
     useEffect(() => {
         getResourceTypes().then((data) => {
@@ -146,12 +151,14 @@ export default connect(
         [
             getCompactPermissions,
             getCurrentResourcePermissionsLoading,
-            getViewedResourceType
+            getViewedResourceType,
+            getResourceData,
         ],
-        (compactPermissions, permissionsLoading, type) => ({
+        (compactPermissions, permissionsLoading, type, resource) => ({
             compactPermissions,
             permissionsLoading,
-            resourceType: type
+            resourceType: type,
+            resource
         })
     ),
     {
