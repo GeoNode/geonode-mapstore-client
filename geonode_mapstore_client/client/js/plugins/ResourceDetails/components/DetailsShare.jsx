@@ -99,7 +99,6 @@ const Permissions = ({
     onChangePermissions,
     resource
 }) => {
-    console.log(resource,'resource in permission');
     const enableGeoLimits = resourceType === ResourceTypes.DATASET;
     const isMounted = useIsMounted();
     const [permissionsObject, setPermissionsObject] = useState({});
