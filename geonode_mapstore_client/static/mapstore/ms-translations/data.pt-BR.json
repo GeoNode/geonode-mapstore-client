@@ -281,6 +281,70 @@
             "saveSuccessTitle": "Successo",
             "saveSuccessMessage": "Salvo com sucesso"
         },
+        "mediaEditor": {
+            "modalTitle": "Mídia",
+            "images": "Imagens",
+            "videos": "Vídeos",
+            "maps": "Mapas",
+            "preview": "Previsão",
+            "apply": "Aplicar",
+            "confirmExitTitle": "Fechar Editor de Mídia",
+            "confirmExitContent": "Descartar mudanças pendentes?",
+            "mediaPicker": {
+                "services": "Serviços: ",
+                "clean": "Limpar resultados",
+                "noResults": "Nenhum resultado",
+                "selectService": "Selecione um serviço",
+                "add": "Adicionar",
+                "back": "Voltar",
+                "save": "Salvar",
+                "edit": "Alterar",
+                "sourcePlaceholder": "Entre com uma fonte",
+                "source": "Fonte",
+                "titlePlaceholder": "EEntre com um título",
+                "title": "Título",
+                "altTextPlaceholder": "Entre com um texto alternativo",
+                "altText": "Texto alternativo",
+                "descriptionPlaceholder": "Entre com uma descrição",
+                "description": "Descrição",
+                "creditsPlaceholder": "Entre com créditos",
+                "credits": "Créditos",
+                "mapFilter": "Filtrar mapas",
+                "videoFilter": "Filtrar vídeos",
+                "imageFilter": "Filtrar imagens",
+                "import": "Importar recurso para o armazenamento local",
+                "trash": "Remover recurso",
+                "videoUrl": "URL do vídeo",
+                "videoUrlPlaceholder": "Entre vom a URL do vídeo",
+                "thumbnail": "Adicionar miniatura (tamanho máximo 500kb)",
+                "createVideoThumbnail": "Criar uma miniatura a partir de um vídeo",
+                "thumbnailCreateError": "Não é possível criar uma miniatura com este vídeo. Clique ou deposite uma imagem de miniatura para carregá-la manualmente"
+            },
+            "mediaform": {
+                "confirmExitTitle": "Fechar Formulário de Mídia",
+                "confirmExitContent": "Descartar alterações pendentes?"
+            },
+            "mapForm": {
+                "thumbnailMessage": "Tamanho das imagens deverá ser um quadrado de 98px x 98px, máximo de 100kb",
+                "confirmMapSaveTitle": "Atualizar Mapa",
+                "confirmMapSaveContent": "A atualização deste mapa irá redefinir todos os mapas dependentes da história previamente personalizados através do editor embutido, confirmar?"
+            },
+            "mediaList": {
+                "removeResourceTitle": "Tem certeza?",
+                "confirmRemoveResource": "Você gostaria de remover este recurso de mídia do GeoStory?",
+                "confirmRemoveUsedResource": "Este recurso também será removido de todas as seções/conteúdos onde é utilizado, deixando-os vazios. Deseja removê-lo do GeoStory?",                
+                "resultsCount": "{count} de {total} {total, plural, one {Result} other {Results}}"
+            },
+            "imageList": {
+                "emptyList": "Clique no botão de adição para adicionar uma nova imagem. Consulte o <a href='https://mapstore.readthedocs.io/en/latest/user-guide/media-editor-window/#images' target='_blank'/>guia do usuário</a>."
+            },
+            "mapList": {
+                "emptyList": "Clique no botão de adição para criar um mapa ou selecione um serviço de mapas diferente. Consulte o <a href='https://mapstore.readthedocs.io/en/latest/user-guide/media-editor-window/#maps' target='_blank'/>guia do usuário</a>."
+            },
+            "videoList": {
+                "emptyList": "Clique no botão de adição para adicionar um novo vídeo. Consulte o <a href='https://mapstore.readthedocs.io/en/latest/user-guide/media-editor-window/#videos' target='_blank'/>guia do usuário</a>."
+            }
+        },
         "addgroup": {
             "groupName": "Nome do grupo",
             "addbtn": "Adicionar"
