@@ -165,7 +165,7 @@
         "mousePositionElevation": "Elev.:",
         "mousePositionNoElevation": "N/A",
         "elevationLoading": "Inicializar...",
-        "elevationLoadingError": "Error",
+        "elevationLoadingError": "Erro",
         "elevationNotAvailable": "N/A",
         "mapScale": "Escala:",
         "showMousePositionCoordinates": "Mostrar coordenadas",
@@ -415,7 +415,7 @@
             }
         },
         "map": {
-            "errorLoadingFont": "The font family {family} is not correctly loaded. Some elements (like symbols in markers) can have rendering problems",
+            "errorLoadingFont": "A fonte {family} não foi carregada corretamente. Alguns elementos (como símbolos em marcadores) podem apresentar problemas de renderização",
             "loading": "Carregando...",
             "loadingSpinner": "Carregando Mapa",
             "loadingerror": "Erro ao carregar",
@@ -630,7 +630,7 @@
             "tooltip": "Pesquisar objetos no mapa"
         },
         "expandtoolbar": {
-            "tooltip": "Expandir / Colapsar"
+            "tooltip": "Expandir/Colapsar"
         },
         "getFeatureInfoTitle": "Informação do elemento",
         "identifyTitle": "Informação do elemento",
@@ -674,30 +674,30 @@
             "lengthLabel": "Comprimento",
             "areaLabel": "Área",
             "bearingLabel": "Azimute",
-            "trueBearingLabel": "Verdadeira Azimute",
+            "trueBearingLabel": "Verdadeiro Azimute",
             "formula": "Fórmula para cálculo de distância",
             "showLabel": "Mostrar etiqueta de distância",
-            "addAsAnnotation": "Add as annotation",
-            "newMeasure": "New annotation",
-            "selectTool": "Select a measurement tool",
-            "polylineDistance3DMeasure": "Measure distance in 3D space",
-            "area3DMeasure": "Measure area in 3D space",
-            "pointCoordinatesMeasure": "Measure point coordinates",
-            "heightFromTerrainMeasure": "Measure height from terrain",
-            "angle3DMeasure": "Measure angle in 3D space",
-            "slopeMeasure": "Measure slope",
+            "addAsAnnotation": "Adicionar como anotação",
+            "newMeasure": "Nova anotação",
+            "selectTool": "Selecione uma ferramenra de medição",
+            "polylineDistance3DMeasure": "Medir distância no espaço 3D",
+            "area3DMeasure": "Medir área no espaço 3D",
+            "pointCoordinatesMeasure": "Medir coordenadas de ponto",
+            "heightFromTerrainMeasure": "Medir altitude do terreno",
+            "angle3DMeasure": "Medir ângulo no espaço 3D",
+            "slopeMeasure": "Medir inclinação",
             "addAsLayer": "Adicionar como camada",
             "resetTooltip": "Redefinir",
             "exportToGeoJSON": "Exportar para GeoJSON",
-            "tooltipPolylineDistance3DStart": "Click to start measurement",
-            "tooltipPolylineDistance3DEnd": "Single click to add a segment\nor double click to end",
-            "tooltipArea3DStart": "Click to start measurement",
-            "tooltipArea3DMissingVertex": "Area needs at least 3 vertices, \nsingle click to add a vertex",
-            "tooltipArea3DEnd": "Single click to add a vertex\nor double click to end",
-            "tooltipPointCoordinatesStart": "Click to add an altitude point measurement",
-            "tooltipHeightFromTerrainStart": "Click to add the distance value from terrain surface",
-            "tooltipAngle3DStart": "Single click to draw 3 points that represent the angle vertices",
-            "tooltipSlopeStart": "Single click to draw 3 points that represent a triangle surface.\nThe slope value is computed based on the drawn triangle surface",
+            "tooltipPolylineDistance3DStart": "Clique para iniciar a medição",
+            "tooltipPolylineDistance3DEnd": "Um clique para adicionar um segmento\nou clique duplo para finalizar",
+            "tooltipArea3DStart": "Clique para iniciar a medição",
+            "tooltipArea3DMissingVertex": "A área precisa de pelo menos 3 vértices, \nClique para adicionar um vértice",
+            "tooltipArea3DEnd": "Um clique para adicionar um vértice\nou clique duplo para finalizar",
+            "tooltipPointCoordinatesStart": "Clique para adicionar uma medição de altitude",
+            "tooltipHeightFromTerrainStart": "Clique para adicionar o valor da distância da superfície do terreno",
+            "tooltipAngle3DStart": "Um único clique para desenhar 3 pontos que representam os vértices do ângulo",
+            "tooltipSlopeStart": "Um único clique para desenhar 3 pontos que representam uma superfície triangular.\nO valor da inclinação é calculado com base na superfície triangular desenhada",
             "altitude": "Altitude",
             "latitude": "Latitude",
             "longitude": "Longitude"
@@ -735,48 +735,48 @@
             "s_max_features": "Max feições",
             "s_wfs_props_label": "Propriedades do serviço WFS",
             "s_wfs_opt_props_label": "Propriedades opcionais",
-            "s_result_props_label": "Result display properties",
-            "s_priority_info": "Used to sort search results, higher values first. Nominatim results have priority = 5",
-            "serviceslistempty": "No custom services defined",
-            "service_missing": "{serviceType} service is not configured",
-            "generic_error": "An error occurred during search. Error details: {message}",
+            "s_result_props_label": "Propriedades de exibição de resultados",
+            "s_priority_info": "Utilizado para ordenar os resultados da pesquisa, com valores mais altos primeiro. Os resultados do Nominatim têm prioridade = 5",
+            "serviceslistempty": "Nenhum serviço personalizado definido",
+            "service_missing": "O Serviço {serviceType} não está configurado",
+            "generic_error": "Ocorreu um erro durante a pesquisa. Detalhes do erro: {message}",
             "errors": {
-                "nonQueriableLayers": "The layer provided in the url is not queriable or not visible in map",
-                "serverError": "The server has return an error when performing the GetFeatureInfo request. Check if the params are correct"
+                "nonQueriableLayers": "A camada fornecida no URL não pode ser consultada ou não está visível no mapa",
+                "serverError": "O servidor retornou um erro ao executar a solicitação GetFeatureInfo. Verifique se os parâmetros estão corretos"
             },
             "s_launch_info_panel": {
-                "label": "Launch Info panel",
-                "no_info": "No Info",
-                "all_layers": "All Layers",
-                "single_layer": "Search Layer",
-                "no_info_description": "Identify panel will not show up on search",
-                "all_layers_description": "Identify panel will show up displaying information of all layers visible in map",
-                "single_layer_description": "Identify panel will show up with the data already available through the WFS search"
+                "label": "Lançar painel de informações",
+                "no_info": "Sem informação",
+                "all_layers": "Todas as camadas",
+                "single_layer": "Buscar Camada",
+                "no_info_description": "O painel de identificação não aparecerá na pesquisa",
+                "all_layers_description": "O painel de identificação será exibido, mostrando informações de todas as camadas visíveis no mapa",
+                "single_layer_description": "O painel de identificação será exibido com os dados já disponíveis por meio da pesquisa WFS"
             }
         },
         "draw": {
-            "fill": "Fill",
-            "text": "Text",
-            "fontTitle": "Font",
-            "color": "Color",
-            "lineDash": "LineDash",
-            "stroke": "Stroke",
-            "opacity": "Opacity",
-            "width": "Width",
+            "fill": "Preenchimento",
+            "text": "Texto",
+            "fontTitle": "Fonte",
+            "color": "Cor",
+            "lineDash": "Linha Tracejada",
+            "stroke": "Traço",
+            "opacity": "Opacidade",
+            "width": "Comprimento",
             "font": {
-                "textColor": "Color",
-                "family": "Family",
-                "size": "Size",
-                "style": "Style",
-                "weight": "Weight",
-                "textAlign": "Align"
+                "textColor": "Cor",
+                "family": "Família",
+                "size": "Tamanho",
+                "style": "Estilo",
+                "weight": "Altura",
+                "textAlign": "Alinhamento"
             },
             "marker": {
                 "layout": "Layout",
-                "shape": "Shape",
-                "size": "Size",
-                "type": "Type",
-                "icon": "Icon"
+                "shape": "Forma",
+                "size": "Tamanho",
+                "type": "Tipo",
+                "icon": "Ícone"
             }
         },
         "drawLocal": {
@@ -858,13 +858,13 @@
                 "handlers": {
                     "edit": {
                         "tooltip": {
-                            "text": "Drag handles or marker to edit feature.",
-                            "subtext": "Click cancel to undo changes."
+                            "text": "Arraste as alças ou o marcador para editar o recurso.",
+                            "subtext": "Clique em Cancelar para desfazer as alterações."
                         }
                     },
                     "remove": {
                         "tooltip": {
-                            "text": "Click on a feature to remove it"
+                            "text": "Clique em uma feição para removê-la"
                         }
                     }
                 }
@@ -888,27 +888,27 @@
             "viewLargerMap": "Ver mapa mais largo"
         },
         "helptexts": {
-            "scaleBox": "This is the helptext for the ScaleBox",
-            "zoomToMaxExtentButton": "This is the helptext for the ZoomToMaxExtentButton",
-            "zoomIn": "This is the helptext for the ZoomIn",
-            "zoomOut": "This is the helptext for the ZoomOut",
-            "searchBar": "Write the address of a place to find. e.g.  '1st avenue, new york'. You can even insert coordinates in this format: 43.87,10.20",
-            "metadataexplorer": "This is the helptext for the MetadataExplorer",
-            "settingsPanel": "This is the helptext for the SettingsPanel",
-            "gohome": "This is the helptext for Home",
-            "measureComponent": "This is the helptext for the MeasureComponent",
-            "layerSwitcher": "This is the helptext for the LayerSwitcher",
-            "infoButton": "This is the helptext for the InfoButton",
-            "locateBtn": "This is the helptext for the LocateBtn",
-            "snapshot": "This is the helptext for the Snapshot",
-            "print": "This is the helptext for Print",
-            "shapefile": "This is the helptext for the Shapefile",
-            "rasterstyler": "Define min value, max value, number of classes and color ramp to generate a new classification for the selected raster layer",
-            "expandToolbar": "This is the helptext for Expand / Collapse",
-            "historyundo": "Use this button to go to the previous map zoom and location",
-            "historyredo": "Use this button to go to the next map zoom and location",
-            "vectorstyler": "Add rule and generate a new styled vector layer",
-            "styler": "Add rule and generate a new styled layer"
+            "scaleBox": "Este é o texto de ajuda para ScaleBox",
+            "zoomToMaxExtentButton": "Este é o texto de ajuda para ZoomToMaxExtentButton",
+            "zoomIn": "Este é o texto de ajuda para ZoomIn",
+            "zoomOut": "Este é o texto de ajuda para ZoomOut",
+            "searchBar": "Escreva o endereço de um lugar para encontrar, p. ex. '1st avenue, new york'. Você pode até mesmo inserir coordenadas nesse formato: 43.87,10.20",
+            "metadataexplorer": "Este é o texto de ajuda para MetadataExplorer",
+            "settingsPanel": "Este é o texto de ajuda para SettingsPanel",
+            "gohome": "Este é o texto de ajuda para Home",
+            "measureComponent": "Este é o texto de ajuda para MeasureComponent",
+            "layerSwitcher": "Este é o texto de ajuda para LayerSwitcher",
+            "infoButton": "Este é o texto de ajuda para InfoButton",
+            "locateBtn": "Este é o texto de ajuda para LocateBtn",
+            "snapshot": "Este é o texto de ajuda para Snapshot",
+            "print": "Este é o texto de ajuda para Print",
+            "shapefile": "Este é o texto de ajuda para Shapefile",
+            "rasterstyler": "Defina o valor mínimo, o valor máximo, o número de classes e a rampa de cores para gerar uma nova classificação para a camada raster selecionada",
+            "expandToolbar": "Este é o texto de ajuda para Expand/Collapse",
+            "historyundo": "Use este botão para voltar ao zoom e localização anteriores do mapa",
+            "historyredo": "Use este botão para ir para o próximo nível de zoom e localização do mapa",
+            "vectorstyler": "Adicione uma regra e gere uma nova camada vetorial estilizada",
+            "styler": "Adicione uma regra e gere uma nova camada estilizada"
         },
         "queryform": {
             "title": "Advanced Search",
