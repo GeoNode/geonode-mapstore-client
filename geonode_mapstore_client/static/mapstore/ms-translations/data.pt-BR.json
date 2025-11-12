@@ -137,9 +137,9 @@
             "success": "Sucesso",
             "backgroundLayerNotSupported": "O fundo escolhido anteriormente não é suportado por este tipo de mapa. O primeiro disponível será usado.",
             "noBackgroundLayerSupported": "Não existem temas base suportados para este tipo de mapa.",
-            "updateOldMap": "Este é um mapa activo, logo nem todas as funcionalidades poderão ser activadas. Clique no botão para actualizar o mapa ou ignore esta notificação se não pretender actualizar.",
-            "warningSaveUpdatedMap": "Alguns temas não foram actualizados correctamente",
-            "saveUpdatedMap": "Todos os temas foram actualizados com sucesso",
+            "updateOldMap": "Este é um mapa ativo, logo nem todas as funcionalidades poderão ser ativadas. Clique no botão para atualizar o mapa ou ignore esta notificação se não pretender atualizar.",
+            "warningSaveUpdatedMap": "Alguns temas não foram atualizados corretamente",
+            "saveUpdatedMap": "Todos os temas foram atualizados com sucesso",
             "incompatibleBackgroundAndProjection": "The Projection you selected is not compatible with background, switch to a compatible -or an empty- background, then select this projection!",
             "incompatibleDataAndProjection": "the current layer and map projection are not completely compatible. Parts or all of the data might not appear in the map"
         },
@@ -292,24 +292,24 @@
             "removeFromFeaturedMaps": "Remover de mapas favoritos",
             "feedback": {
                 "noDetailsAvailable": "Detalhes não disponíveis",
-                "successSavedMap": "O mapa foi criado correctamente",
+                "successSavedMap": "O mapa foi criado corretamente",
                 "errorDeletingMap": "Erro ao apagar este mapa",
                 "errorDeletingThumbnailOfMap": "Erro ao apagar o thumbnail para este mapa",
                 "errorDeletingDetailsOfMap": "Erro ao apagar os detalhes para este mapa",
-                "allResDeleted": "Todos os recursos associados a este mapa foram apagados correctamente",
+                "allResDeleted": "Todos os recursos associados a este mapa foram apagados corretamente",
                 "errorFetchingDetailsOfMap": "Erro ao pedir os detalhes para este mapa",
                 "details": {
-                    "deletedSuccesfully": "Os detalhes foram removidos correctamente",
-                    "savedSuccesfully": "Os detalhes foram gravados correctamente",
-                    "updatedSuccesfully": "Os detalhes foram actualizados correctamente"
+                    "deletedSuccesfully": "Os detalhes foram removidos corretamente",
+                    "savedSuccesfully": "Os detalhes foram gravados corretamente",
+                    "updatedSuccesfully": "Os detalhes foram atualizados corretamente"
                 },
                 "thumbnail": {
-                    "deletedSuccesfully": "A thumbnail foi removida correctamente",
-                    "savedSuccesfully": "A thumbnail foi gravada correctamente",
-                    "updatedSuccesfully": "A thumbnail foi actualizada correctamente"
+                    "deletedSuccesfully": "A thumbnail foi removida corretamente",
+                    "savedSuccesfully": "A thumbnail foi gravada corretamente",
+                    "updatedSuccesfully": "A thumbnail foi atualizada corretamente"
                 },
                 "errorWhenSaving": "Ocorreu um erro durante o processo de gravação",
-                "errorWhenUpdating": "Ocorreu um erro durante o processo de actualização",
+                "errorWhenUpdating": "Ocorreu um erro durante o processo de atualização",
                 "errorWhenDeleting": "Ocorreu um erro durante o processo de remoção",
                 "errorSizeExceeded": "Por favor, reduza a quantidade dos detalhes ou a qualidade das imagens"
             },
@@ -368,16 +368,16 @@
             "errorSize": "Tamanho máximo permitido: 500kb",
             "error": "A imagem fornecida é inválida",
             "savedMapTitle": "Mapa Gravado",
-            "savedMapMessage": "Mapa foi salvo correctamente",
+            "savedMapMessage": "Mapa foi salvo corretamente",
             "thumbnailError": {
-                "error403": "Você não está autorizado a actualizar a miniatura",
+                "error403": "Você não está autorizado a atualizar a miniatura",
                 "error404": "Um erro ocorreu ao criar a miniatura",
                 "error409": "Uma miniatura com o mesmo nome já existe",
                 "errorDefault": "Erro de rede"
             },
             "mapError": {
                 "errorTitle": "Não é possível salvar o mapa",
-                "error403": "Você não está autorizado a actualizar o mapa",
+                "error403": "Você não está autorizado a atualizar o mapa",
                 "error404": "Um erro ocorreu ao criar o mapa",
                 "error409": "Um mapa com o mesmo nome já existe",
                 "error500": "Erro interno. Verifique se o tamanho do ficheiro de configuração excede o limite fixado.",
@@ -447,7 +447,7 @@
             "statusIconClose": "Abrir grupo",
             "grabLayerIcon": "Arrastar e organizar tema",
             "grabGroupIcon": "Arrastar e organizar grupo",
-            "toggleLayerVisibilityWarning": "Ajuste visibilidade do tema, Aviso: tema não carregou correctamente",
+            "toggleLayerVisibilityWarning": "Ajuste visibilidade do tema, Aviso: tema não carregou corretamente",
             "createWidget": "Criar um widget para o tema seleccionado",
             "editLayerProperties": "Editar propriedades do tema",
             "browseData": "Abrir tabela de atributos",
@@ -729,7 +729,7 @@
                     "buttons": {
                         "polyline": "Desenhar uma polilinha",
                         "polygon": "Desenhar um polígono",
-                        "rectangle": "Desenhar um rectângulo",
+                        "rectangle": "Desenhar um retângulo",
                         "circle": "Desenhar um círculo",
                         "marker": "Desenhar um marcador"
                     }
@@ -762,7 +762,7 @@
                     },
                     "rectangle": {
                         "tooltip": {
-                            "start": "Clicar e arrastar para desenhar um rectângulo."
+                            "start": "Clicar e arrastar para desenhar um retângulo."
                         }
                     },
                     "simpleshape": {
