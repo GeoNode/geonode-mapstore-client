@@ -33,6 +33,7 @@ import ReactSwipe from 'react-swipeable-views';
 import SwipeHeader from '@mapstore/framework/components/data/identify/SwipeHeader';
 import { requestResourceConfig } from '@js/actions/gnresource';
 import gnresourceEpics from '@js/epics/gnresource';
+import securityEpics from '@js/epics/security';
 const requires = {
     ReactSwipe,
     SwipeHeader
@@ -76,7 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         const appEpics = cleanEpics({
                             ...configEpics,
-                            ...gnresourceEpics
+                            ...gnresourceEpics,
+                            ...securityEpics
                         });
 
                         storeEpicsNamesToExclude(appEpics);

@@ -64,6 +64,7 @@ import {
 
 import timelineEpics from '@mapstore/framework/epics/timeline';
 import gnresourceEpics from '@js/epics/gnresource';
+import securityEpics from '@js/epics/security';
 import maplayout from '@mapstore/framework/reducers/maplayout';
 import 'react-widgets/dist/css/react-widgets.css';
 import 'react-select/dist/react-select.css';
@@ -130,7 +131,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             ...gnresourceEpics,
                             ...pluginsDefinition.epics,
                             // needed to initialize the correct time range
-                            ...timelineEpics
+                            ...timelineEpics,
+                            ...securityEpics
                         });
 
                         storeEpicsNamesToExclude(appEpics);

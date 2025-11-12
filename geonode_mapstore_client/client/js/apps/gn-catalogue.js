@@ -72,6 +72,7 @@ import {
 
 import timelineEpics from '@mapstore/framework/epics/timeline';
 import gnresourceEpics from '@js/epics/gnresource';
+import securityEpics from '@js/epics/security';
 import resourceServiceEpics from '@js/epics/resourceservice';
 import maplayout from '@mapstore/framework/reducers/maplayout';
 
@@ -149,7 +150,8 @@ getEndpoints()
                         ...resourceServiceEpics,
                         updateMapLayoutEpic,
                         // needed to initialize the correct time range
-                        ...timelineEpics
+                        ...timelineEpics,
+                        ...securityEpics
                     });
 
                     storeEpicsNamesToExclude(appEpics);
