@@ -911,93 +911,93 @@
             "styler": "Adicione uma regra e gere uma nova camada estilizada"
         },
         "queryform": {
-            "title": "Advanced Search",
-            "query": "Search",
-            "reset": "Reset",
-            "query_request_exception": "Request Error",
+            "title": "Busca Avançada",
+            "query": "Buscar",
+            "reset": "Redefinir",
+            "query_request_exception": "Erro de solicitação",
             "config": {
-                "load_config_exception": "Error Loading Configuration"
+                "load_config_exception": "Erro ao carregar configuração"
             },
             "comboField": {
                 "default_placeholder": "Selecione...",
-                "drop_down": "Open Dropdown"
+                "drop_down": "Abrir menu suspenso"
             },
             "form": {
-                "header": "Find in the dataset",
-                "dataset_header": "Dataset"
+                "header": "Encontre no conjunto de dados",
+                "dataset_header": "Conjunto de Dados"
             },
-            "emptyfilter": "No filter set. Searching could timeout if pagination is not supported by the server.",
+            "emptyfilter": "Nenhum filtro definido. A pesquisa pode expirar se a paginação não for suportada pelo servidor.",
             "attributefilter": {
-                "add_condition": " Add Condition",
-                "delete": " Delete",
-                "add_group": " Add Group",
-                "group_label_a": "Match",
-                "group_label_b": "of the following conditions:",
-                "combo_placeholder": "Attribute",
-                "text_placeholder": "Type text to search",
+                "add_condition": " Adicionar condição",
+                "delete": " Excluir",
+                "add_group": " Adicionar Grupo",
+                "group_label_a": "Correspondência",
+                "group_label_b": "das seguintes condições:",
+                "combo_placeholder": "Atributo",
+                "text_placeholder": "Digite o texto para pesquisar",
                 "attribute_filter_header": "Filtro de Atributos",
                 "tooltipTextField": "use <b>*</b> for any number of any char</br>use <b>.</b> for a single char</br>use <b>!</b> to escape the above two (* and .)</br>",
                 "groupField": {
-                    "any": "any",
-                    "all": "all",
-                    "none": "none"
+                    "any": "qualquer",
+                    "all": "todos",
+                    "none": "nenhum"
                 },
                 "numberfield": {
-                    "isRequired": "Field value required",
-                    "wrong_range": "Lower boundary must be lower than the upper boundary"
+                    "isRequired": "Valor do campo obrigatório",
+                    "wrong_range": "O limite inferior deve ser inferior ao limite superior"
                 },
                 "datefield": {
-                    "wrong_date_range": "Start date must be earlier than end date"
+                    "wrong_date_range": "A data de início deve ser anterior à data de término"
                 },
                 "autocomplete": {
-                    "emptyList": "No results",
-                    "emptyFilter": "The filter returned no results",
-                    "open": "Open combobox"
+                    "emptyList": "Nenhum resultado",
+                    "emptyFilter": "O filtro não retornou resultados",
+                    "open": "Abrir caixa de combinação"
                 }
             },
             "spatialfilter": {
                 "filterType": "Tipo de filtro",
                 "geometric_operation": "Operação geométrica",
-                "combo_placeholder": "Select...",
-                "spatial_filter_header": "Region of interest",
-                "remove": "Remove",
-                "draw_start_label": "Draw the region of interest on the map",
-                "dwithin_label": "meters",
+                "combo_placeholder": "Selecionar...",
+                "spatial_filter_header": "Região de interesse",
+                "remove": "Remover",
+                "draw_start_label": "Desenhe a região de interesse no mapa",
+                "dwithin_label": "metros",
                 "details": {
-                    "detail_button_label": "Details",
-                    "details_header": "Selection Details",
-                    "details_bbox_label": "Edit the coordinates to modify the area",
-                    "details_circle_label": "Edit the numeric fields to modify the radius and center of the circle",
-                    "reset_bbox": "Reset",
-                    "save_bbox": "Save BBOX modifications",
-                    "save_radius": "Save the radius/center modifications",
-                    "radius": "Radius(m)"
+                    "detail_button_label": "Detalhes",
+                    "details_header": "Detalhes da seleção",
+                    "details_bbox_label": "Edite as coordenadas para modificar a área.",
+                    "details_circle_label": "Edite os campos numéricos para modificar o raio e o centro do círculo",
+                    "reset_bbox": "Redefinir",
+                    "save_bbox": "Salvar modificações de BBOX",
+                    "save_radius": "Salve as modificações de raio/centro",
+                    "radius": "Raio (m)"
                 },
                 "methods": {
-                    "zone": "Zone",
+                    "zone": "Zona",
                     "viewport": "Viewport",
-                    "regions": "Regions",
+                    "regions": "Regioes",
                     "box": "Rectangle",
                     "buffer": "Buffer",
-                    "circle": "Circle",
-                    "poly": "Polygon",
+                    "circle": "Círculo",
+                    "poly": "Polígono",
                     "cql": "CQL"
                 },
                 "operations": {
-                    "intersects": "Intersects",
+                    "intersects": "Intersecta",
                     "bbox": "BoundingBox",
-                    "contains": "Is contained",
-                    "dwithin": "Distance from",
-                    "within": "Contains"
+                    "contains": "Está contido",
+                    "dwithin": "Distância de",
+                    "within": "Contém"
                 }
             },
             "crossLayerFilter": {
-                "title": "Layer filter",
-                "targetLayer": "Target layer",
+                "title": "Camada filtro",
+                "targetLayer": "Camada alvo",
                 "clear": "Clear filter",
-                "operation": "Operation",
+                "operation": "Operação",
                 "errors": {
-                    "noCrossLayerAvailable": "Cross Layer Filtering is not available for the selected layer",
+                    "noCrossLayerAvailable": "A filtragem entre camadas não está disponível para a camada selecionada",
                     "layersExcluded": "Apenas as camadas provenientes da mesma origem podem ser selecionadas como camada de destino para este filtro de camada"
                 }
             }
@@ -1005,32 +1005,32 @@
         "user": {
             "login": "Login",
             "logout": "Logout",
-            "info": " Account Info",
-            "details": " User Details",
-            "noAttributesMessage": "There is no information related to your account",
-            "changePwd": "Change Password",
-            "newPwd": "New Password",
-            "retypePwd": "Retype Password",
-            "passwordMinlenght": "Your password must be at least {data} character",
-            "passwordCheckFail": "Passwords do not match!",
-            "passwordInvalid": "Invalid password",
-            "username": "Username",
-            "password": "Password",
-            "passwordMessage": "Password must contain at least 6 characters",
-            "passwordChanged": "Password changed",
-            "passwordError": "Error changing password",
-            "signIn": "Sign-in",
-            "loginFail": "Login Fail",
+            "info": " Informações da conta",
+            "details": " Detalhes do usuário",
+            "noAttributesMessage": "Não há informações relacionadas à sua conta",
+            "changePwd": "Alterar Senha",
+            "newPwd": "Nova senha",
+            "retypePwd": "Redigite a senha",
+            "passwordMinlenght": "Sua senha deve ter pelo menos {data} caracteres",
+            "passwordCheckFail": "As senhas não coincidem!",
+            "passwordInvalid": "Senha inválida",
+            "username": "Nome de usuário",
+            "password": "Senha",
+            "passwordMessage": "A senha deve conter pelo menos 6 caracteres",
+            "passwordChanged": "Senha alterada",
+            "passwordError": "Erro ao alterar a senha",
+            "signIn": "Entrar",
+            "loginFail": "Falha no login",
             "loginFailedStatusMessages": {
-                "usernamePwdInsert": "Please insert username and password",
-                "usernamePwdIncorrect": "Username or password incorrect"
+                "usernamePwdInsert": "Por favor, insira o nome de usuário e a senha",
+                "usernamePwdIncorrect": "Nome de usuário ou senha incorretos"
             },
-            "detailsName": "Name",
-            "detailsRole": "Role",
-            "detailsGroups": "Groups",
+            "detailsName": "Nome",
+            "detailsRole": "Papel",
+            "detailsGroups": "Grupos",
             "detailsEmail": "E-mail",
-            "detailsCompany": "Company",
-            "detailsNotes": "Notes"
+            "detailsCompany": "Empresa",
+            "detailsNotes": "Notas"
         },
         "annotations": {
             "errorLoadingSymbols": "Houve um problema ao carregar a lista de símbolos. Por favor, contate o administrador para solicitar a verificação das opções de configuração",
