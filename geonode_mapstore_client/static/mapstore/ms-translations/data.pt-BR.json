@@ -1920,36 +1920,36 @@
         },
         "vectorstyler": {
             "tooltip": "Create and edit vector layer style",
-            "paneltitle": "Vector Styler",
-            "layerlabel": "Layer",
-            "rulelabel": "Rules",
-            "namelabel": "Rule Name",
-            "symboltitle": "Symbol",
-            "labeltitle": "Label",
-            "conditiontitle": "Conditions",
-            "applybtn": "Apply Style",
-            "addrulebtn": "Add Rule",
-            "removerulebtn": "Remove Rule"
+            "paneltitle": "Estilizador de Vetor",
+            "layerlabel": "Camada",
+            "rulelabel": "Regras",
+            "namelabel": "Nome da Regra",
+            "symboltitle": "Símbolo",
+            "labeltitle": "Rótulo",
+            "conditiontitle": "Condições",
+            "applybtn": "Aplicar Estilo",
+            "addrulebtn": "Adicionar Regra",
+            "removerulebtn": "Remover regra"
         },
         "scaledenominator": {
-            "minlabel": "Min Scale Denominator",
-            "maxlabel": "Max Scale Denominator",
-            "maxerror": "Max value must be greater than min value",
-            "minerror": "Min value must be less than max value",
-            "none": "None"
+            "minlabel": "Denominador de escala mínima",
+            "maxlabel": "Denominador de escala máxima",
+            "maxerror": "O valor máximo deve ser maior que o valor mínimo",
+            "minerror": "O valor mínimo deve ser menor que o valor máximo",
+            "none": "Nenhum"
         },
         "markNameSelector": {
-            "circle": "Circle",
-            "square": "Square",
-            "triangle": "Triangle",
-            "star": "Star",
-            "cross": "Cross",
+            "circle": "Círculo",
+            "square": "Quadrado",
+            "triangle": "Triângulo",
+            "star": "Estrela",
+            "cross": "Cruz",
             "x": "X"
         },
         "styler": {
-            "tooltip": "Create and edit layer style",
-            "paneltitle": "Styler",
-            "layerlabel": "Layer"
+            "tooltip": "Criar e modificar estilo de camada",
+            "paneltitle": "Estilizador",
+            "layerlabel": "Camada"
         },
         "styleeditor": {
             "styleListfilterPlaceholder": "Filtrar estilos por nome, título ou resumo",
