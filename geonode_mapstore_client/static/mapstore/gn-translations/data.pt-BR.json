@@ -268,10 +268,13 @@
             "syncErrorMessage": "Falha em sincronizar reecursos",
             "syncWarningMessage": "O processo de sincronização atualizou os seguintes recursos: {successTitles}. Os seguintes recursos não foram atualizados: {errorTitles}. Isto pode ocorrer porque os recursos foram excluídos do banco de dados",
             "applyStyle": "Aplicar",
+            "addMainFiles": "Adicionar arquivos principais",
+            "cancelUpload": "Cancelar Upload",
             "resourceOrigin": {
                 "a": "a",
                 "from": "from"
             },
+            "syncSuccessdashboardTitle": "Painel sincronizado com sucesso",
             "styleEditorCloseTitle": "Alterações pendentes",
             "styleEditorCloseMessage": "Você tem certeza em fechar o editor de estilos, sem aplicar as mudanças??",
             "styleEditorCloseCancel": "Não, voltar para o editor de estilos",
