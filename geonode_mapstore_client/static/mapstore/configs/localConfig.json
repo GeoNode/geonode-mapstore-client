@@ -1276,7 +1276,8 @@
                 "name": "FeatureEditor",
                 "cfg": {
                     "hideCloseButton": true,
-                    "hideLayerTitle": true
+                    "hideLayerTitle": true,
+                    "primaryKeyAttributes": ["fid"]
                 }
             },
             {
@@ -1920,7 +1921,10 @@
                 "name": "ScaleBox"
             },
             {
-                "name": "FeatureEditor"
+                "name": "FeatureEditor",
+                "cfg": {
+                    "primaryKeyAttributes": ["fid"]
+                }
             },
             {
                 "name": "QueryPanel",
