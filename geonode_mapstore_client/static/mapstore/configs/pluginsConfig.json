@@ -558,7 +558,6 @@
           { "name": "3dtiles", "label": "3D Tiles" }, 
           { "name": "model", "label": "IFC Model" }, 
           { "name": "arcgis", "label": "ArcGIS" }, 
-          { "name": "wps", "label": "WPS" },
           { "name": "cog", "label": "COG" }
         ]
       }
