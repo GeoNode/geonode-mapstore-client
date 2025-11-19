@@ -42,7 +42,7 @@ export const gnUpdateRequestConfigurationRulesEpic = (action$, store) =>
 
 /**
  * Helper function to check if a rule has expired or is about to expire
- * @param {string} expires - ISO date string
+ * @param {string|number} expires - ISO date string or Unix timestamp (in seconds)
  * @param {number} warningThreshold - Milliseconds before expiration to trigger warning (default: 5 minutes)
  * @returns {boolean}
  */
@@ -50,7 +50,10 @@ const isRuleExpiredOrExpiring = (expires, warningThreshold = 300000) => {
     if (!expires) {
         return false;
     }
-    const expirationDate = new Date(expires);
+    // Handle Unix timestamp (in seconds) - convert to milliseconds
+    const expirationDate = typeof expires === 'number'
+        ? new Date(expires * 1000)
+        : new Date(expires);
     const now = new Date();
     const timeUntilExpiration = expirationDate.getTime() - now.getTime();
     return timeUntilExpiration <= warningThreshold;
