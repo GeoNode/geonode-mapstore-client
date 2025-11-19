@@ -22,6 +22,8 @@ import { userSelector, requestsRulesSelector } from '@mapstore/framework/selecto
 * @module epics/security
 */
 
+const RULE_EXPIRATION_CHECK_INTERVAL = 60 * 1000;
+
 /**
  * Epic to fetch request configuration rules and update the store
  */
@@ -61,39 +63,25 @@ const isRuleExpiredOrExpiring = (expires, warningThreshold = 300000) => {
 
 /**
  * Epic to check if request configuration rules have expired or are about to expire
- * Monitors rules when they're updated and sets up periodic checks
+ * Periodically checks every minute when rules are expired and triggers API refresh
  */
 export const gnRuleExpiredEpic = (action$, store) => {
-    // Check rules immediately when they're updated
-    const checkOnUpdate$ = action$
-        .ofType(UPDATE_REQUESTS_RULES)
-        .map(({ rules: rulesData }) => {
-            const rules = rulesData?.rules || (Array.isArray(rulesData) ? rulesData : []);
-            const hasExpiredRule = rules.some((rule) => isRuleExpiredOrExpiring(rule.expires));
-            return hasExpiredRule;
-        })
-        .filter((hasExpired) => hasExpired)
-        .map(() => ruleExpired());
-
-    // Set up periodic check every minute to catch expiring rules
-    const periodicCheck$ = action$
-        .ofType(UPDATE_REQUESTS_RULES)
+    let lastRefreshTime = 0;
+    return action$.ofType(UPDATE_REQUESTS_RULES)
         .switchMap(() => {
-            return Observable.interval(60 * 1000) // Check every minute
-                .startWith(0) // Check immediately
-                .map(() => {
-                    const state = store.getState();
-                    const rulesData = requestsRulesSelector(state);
-                    const rules = rulesData?.rules || (Array.isArray(rulesData) ? rulesData : []);
-                    return rules.some((rule) => isRuleExpiredOrExpiring(rule.expires));
+            lastRefreshTime = Date.now();
+            return Observable.interval(60 * 1000)
+                .startWith(0)
+                .filter(() => {
+                    const rules = requestsRulesSelector(store.getState());
+                    const expired = rules.some((rule) => isRuleExpiredOrExpiring(rule.expires));
+                    const now = Date.now();
+                    const ready = expired && (now - lastRefreshTime >= RULE_EXPIRATION_CHECK_INTERVAL);
+                    return ready;
                 })
-                .distinctUntilChanged() // Only emit when value changes
-                .filter((hasExpired) => hasExpired)
                 .map(() => ruleExpired())
-                .takeUntil(action$.ofType(UPDATE_REQUESTS_RULES)); // Stop when rules are updated
+                .takeUntil(action$.ofType(UPDATE_REQUESTS_RULES));
         });
-
-    return Observable.merge(checkOnUpdate$, periodicCheck$);
 };
 
 export default {
