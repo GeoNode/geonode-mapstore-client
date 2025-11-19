@@ -181,7 +181,9 @@
           "eyeDomeLighting": "Activer l'éclairage",
           "eyeDomeLightingStrength": "Force d'éclairage",
           "eyeDomeLightingRadius": "Rayon d'éclairage"
-        }
+        },
+        "enableImageryOverlay": "Activer la superposition des couches d’images",
+        "enableImageryOverlayInfo": "Remarque : Active les couches d’images telles que WMS, TMS ou WMTS pour qu’elles soient rendues au-dessus de la couche 3D Tiles et affichées séquentiellement selon leur ordre défini."
       },
       "modelLayer": {
         "modelCenterLat": "Latitude du centre (DD)",
@@ -420,7 +422,8 @@
       "featuredMaps": "Cartes à la une",
       "groupmanagerTab": "Groupes",
       "usermanagerTab": "Utilisateurs",
-      "tagsmanagerTab": "Balises"
+      "tagsmanagerTab": "Balises",
+      "ipmanagerTab": "Plages IP"
     },
     "newMap": "Nouvelle carte",
     "newMapEmpty": "Carte vide",
@@ -1253,6 +1256,8 @@
         "targetLayer": "Couche cible",
         "clear": "Effacer le filtre",
         "operation": "Opération",
+        "areaOfInterest": "Zone d'Intérêt",
+        "areaOfInterestTooltip": "Utiliser la même zone d'intérêt de la couche",
         "placeholder": "Sélectionner une couche",
         "errors": {
           "noCrossLayerAvailable": "Le filtrage croisé n'est pas disponible pour la couche sélectionné",
@@ -1263,7 +1268,7 @@
       "changedFilterAlert": "Il y a des modifications non enregistrées. Voulez-vous les sauver ?",
       "resetFilter": "Supprimer le filtre",
       "confirmReset": "Confirmer",
-      "loadingError": "Le filtre actuel a posé un problème de rendu pour la couche sur la carte. Vérifiez la configuration de la couche sur le serveur ou corrigez le filtre.",
+      "loadingError": "<div><p><strong>Problème de rendu : Le filtre actuel pourrait en être la cause.</strong></p><p>Causes possibles :</p><ul><li>Problèmes de connectivité ou paramètres de filtre non valides.</li><li><strong>Limite de mémoire atteinte :</strong> Si vous utilisez le filtre de couche, l'opération a peut-être dépassé l'utilisation de la mémoire autorisée.</li></ul><p><strong>Ce que vous pouvez faire :</strong></p><ul><li>Vérifiez votre connexion et les paramètres de filtre.</li><li><strong>Si vous utilisez le filtre de couche :</strong> Essayez de réduire le nombre ou la complexité des géométries impliquées dans le filtre, par exemple en réduisant la zone d'intérêt et en vous assurant d'activer la zone d'intérêt également sur l'outil de filtre de couche.</li></ul></div>",
       "changedFilterWithErrorAlert": "Le filtre cause une erreur de rendu de la couche. Voulez-vous quand même l'enregistrer ?"
     },
     "annotations": {
@@ -1991,7 +1996,19 @@
           "loadingStrategy": "Stratégie de chargement"
         },
         "disableViewportFilter": "Ne pas filtrer les données par la fenêtre actuelle",
-        "enableViewportFilter": "Filtrer les données par la fenêtre actuelle"
+        "enableViewportFilter": "Filtrer les données par la fenêtre actuelle",
+        "validationError": "Il y a des erreurs de validation sur les modifications appliquées. Veuillez vérifier les valeurs modifiées avant de sauvegarder."
+      },
+      "primaryKey": {
+        "tooltip": "Ce champ est une clé primaire et ne peut pas être modifié"
+      },
+      "restrictions": {
+        "required": "Cet attribut est requis.",
+        "range": "Le valeur doit être supérieure ou égale à {minimum} et inférieure ou égale à {maximum}.",
+        "greaterEqualThan": "Le valeur doit être supérieure ou égale à {minimum}.",
+        "lessEqualThan": "Le valeur doit être inférieure ou égale à {maximum}.",
+        "options": "Le valeur doit être un des suivants: {options}.",
+        "nillable": "Le valeur peut être null."
       }
     },
     "layerdownload": {
@@ -2340,6 +2357,14 @@
         "traceAxes": "Haches de trace",
         "traceData": "Données de trace",
         "traceLegendOptions": "Options de légende de trace",
+        "nullManagement": "Gestion des valeurs nulles",
+        "groupByNullHandlingStrategyTitle": "Pour le champ '{groupByAttribute}'",
+        "nullHandlingStrategy": "Stratégie",
+        "nullHandlingStrategyHelp": "<p>Choisissez comment gérer les valeurs nulles :</p><ul><li><strong>Ignorer (Par défaut) :</strong> Gardez les valeurs nulles inchangées dans vos données</li><li><strong>Exclure :</strong> Supprimez tous les enregistrements où la valeur est nulle</li><li><strong>Utiliser un espace réservé :</strong> Remplacez les valeurs nulles par une valeur personnalisée de votre choix</li></ul>",
+        "nullHandlingPlaceholder": "Valeur d'espace réservé",
+        "nullHandlingStrategyDefault": "Ignorer (Par défaut)",
+        "nullHandlingStrategyExclude": "Exclure",
+        "nullHandlingStrategyPlaceholder": "Utiliser un espace réservé",
         "traces": "Traces",
         "axes": "Haches",
         "traceStyle": "Style de trace",
@@ -4404,6 +4429,10 @@
         "noContentYetTitle": "Aucun groupe trouvé",
         "noContentYetContent": "Il n'y a pas de groupes d'utilisateurs. Cliquez sur « Nouveau groupe » pour en créer un."
       },
+      "ipmanagerSection": {
+        "noContentYetTitle": "Aucune plage IP enregistrée pour le moment",
+        "noContentYetContent": " "
+      },
       "mapsFilter": "Cartes",
       "dashboardsFilter": "Tableaux de bord",
       "geostoriesFilter": "Géostories",
@@ -4430,6 +4459,7 @@
       "editPermission": "Modifier",
       "ownerPermission": "Propriétaire",
       "groups": "Groupes",
+      "ip": "Plages IP",
       "filterBy": "Filtrer...",
       "about": "À propos",
       "readMore": "Lire la suite",
@@ -4478,6 +4508,9 @@
         "error500": "Erreur interne du serveur. Vérifiez si la taille du fichier de configuration de la ressource dépasse la limite fixée",
         "errorDefault": "Erreur réseau"
       },
+      "resourceIssues": {
+        "dependencyMissing": "Cette ressource ne peut pas être ouverte. Autorisations manquantes sur une ressource associée."
+      },
       "deleteError": {
         "error403": "Vous n'êtes pas autorisé à supprimer la ressource",
         "error404": "Une erreur s'est produite lors de la suppression de la ressource sur le serveur",
@@ -4513,6 +4546,7 @@
       "tagDescription": "Description",
       "tagColor": "Couleur",
       "manageTags": "Gérer les Tags",
+      "manageIPs": "Gérer les Plages IP",
       "errorLoadingTags": "Il n'est pas possible de charger des balises",
       "errorUpdatingTag": "Il n'est pas possible de mettre à jour la balise",
       "errorTagNameAlreadyExist": "La balise que vous essayez de créer existe déjà",
@@ -4523,6 +4557,42 @@
       "documentation": "Documentation",
       "filterApplied": "Filtre appliqué",
       "emptyFilterItems": "Aucun élément à afficher"
+    },
+    "ipManager": {
+      "newIP": "Nouvelle Plage IP",
+      "editTitle": "Modifier la plage IP",
+      "editTooltip": "Modifier la plage IP",
+      "deleteTitle": "Supprimer la plage IP",
+      "deleteTooltip": "Supprimer la plage IP",
+      "deleteButton": "Supprimer",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette plage IP ?",
+      "ipAddress": "Plage IP (format CIDR)",
+      "description": "Description",
+      "search": "Rechercher des plages IP...",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "ipsFound": "{count, plural, =0 {0 plage IP trouvée} =1 {1 plage IP trouvée} other {# plages IP trouvées}}",
+      "validation": {
+        "ipRequired": "La plage IP est obligatoire",
+        "cidrRequired": "Notation CIDR requise (ex., 192.168.1.1/32 ou 192.168.1.0/24)",
+        "invalidMask": "Le masque de sous-réseau doit être entre 0 et 32",
+        "invalidFormat": "Format de plage IP invalide",
+        "invalidOctet": "Chaque octet doit être entre 0 et 255"
+      },
+      "notification": {
+        "createSuccessTitle": "Succès",
+        "createSuccessMessage": "Plage IP créée avec succès",
+        "createErrorTitle": "Erreur",
+        "createErrorMessage": "Échec de la création de la plage IP",
+        "updateSuccessTitle": "Succès",
+        "updateSuccessMessage": "Plage IP mise à jour avec succès",
+        "updateErrorTitle": "Erreur",
+        "updateErrorMessage": "Échec de la mise à jour de la plage IP",
+        "deleteSuccessTitle": "Succès",
+        "deleteSuccessMessage": "Plage IP supprimée avec succès",
+        "deleteErrorTitle": "Erreur",
+        "deleteErrorMessage": "Échec de la suppression de la plage IP"
+      }
     },
     "itinerary": {
       "title": "Itinéraire",

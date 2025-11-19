@@ -52,17 +52,7 @@ export const GXP_PTYPES = {
     'GN_WMS': 'gxp_geonodecataloguesource'
 };
 
-export const RESOURCE_MANAGEMENT_PROPERTIES = {
-    'metadata_uploaded_preserve': {
-        labelId: 'gnviewer.preserveUploadedMetadata',
-        tooltipId: 'gnviewer.preserveUploadedMetadataTooltip',
-        disabled: (perms = []) => !perms.includes('change_resourcebase')
-    },
-    'is_approved': {
-        labelId: 'gnviewer.approveResource',
-        tooltipId: 'gnviewer.approveResourceTooltip',
-        disabled: (perms = []) => !perms.includes('approve_resourcebase')
-    },
+export const RESOURCE_PUBLISHING_PROPERTIES = {
     'is_published': {
         labelId: 'gnviewer.publishResource',
         tooltipId: 'gnviewer.publishResourceTooltip',
@@ -80,6 +70,18 @@ export const RESOURCE_MANAGEMENT_PROPERTIES = {
     }
 };
 
+export const RESOURCE_OPTIONS_PROPERTIES = {
+    'metadata_uploaded_preserve': {
+        labelId: 'gnviewer.preserveUploadedMetadata',
+        tooltipId: 'gnviewer.preserveUploadedMetadataTooltip',
+        disabled: (perms = []) => !perms.includes('change_resourcebase')
+    },
+    'is_approved': {
+        labelId: 'gnviewer.approveResource',
+        tooltipId: 'gnviewer.approveResourceTooltip',
+        disabled: (perms = []) => !perms.includes('approve_resourcebase')
+    }
+};
 export const TIME_SERIES_PROPERTIES = ['attribute', 'end_attribute', 'presentation', 'precision_value', 'precision_step'];
 
 export const TIME_ATTRIBUTE_TYPES = ['xsd:date', 'xsd:dateTime', 'xsd:date-time', 'xsd:time'];
@@ -474,13 +476,48 @@ export const setAvailableResourceTypes = (value) => {
     availableResourceTypes = value;
 };
 
+export const canManageAnonymousPermissions = (resource) => {
+    return resourceHasPermission(resource, 'can_manage_anonymous_permissions');
+};
+
+export const canManageRegisteredMemberPermissions = (resource) => {
+    return resourceHasPermission(resource, 'can_manage_registered_member_permissions');
+}
+
+/**
+ * Filters permission options for a group if management is disabled.
+ * If management is disabled, it restricts the options to only the current permission.
+ * @param {object} options The permissions options object.
+ * @param {array} groups The list of groups with their current permissions.
+ * @param {array} groupNames Array of group names to filter ('anonymous' or 'registered-members').
+ * @returns {object} Filtered permissions options
+ */
+const filterGroupPermissions = (options, groups, groupNames) => {
+    return groupNames.length
+        ? Object.fromEntries(Object.keys(options)
+        .map((key) => {
+            if (groupNames.some(name => name === key)) {
+                const group = groups?.find(g => g.name === key);
+                const permissionValue = group?.permissions;
+                const currentPermission = options[key].find(p => p.name === permissionValue);
+                return currentPermission ? [key, [currentPermission]] : [key, options[key]];
+            }
+            return [key, options[key]];
+        }))
+        : options;
+};
+
 /**
  * Extracts lists of permissions into an object for use in the Share plugin select elements
  * @param {Object} options Permission Object to extract permissions from
  * @returns An object containing permissions for each type of user/group
  */
-export const getResourcePermissions = (options) => {
-    const permissionsOptions = {};
+export const getResourcePermissions = (_options , groups, manageAnonymousPermissions=false, manageRegisteredMemberPermissions=false) => {
+    const options = filterGroupPermissions(_options, groups, [
+        ...(manageAnonymousPermissions ? [] : ['anonymous']),
+        ...(manageRegisteredMemberPermissions? [] : ['registered-members']),
+    ]);
+    let permissionsOptions = {};
     Object.keys(options).forEach((key) => {
         const permissions = options[key];
         let selectOptions = [];
@@ -876,10 +913,20 @@ export const resourceToLayers = (resource) => {
     return [];
 };
 
-export const canManageResourceSettings = (resource) => {
+export const canManageResourcePublishing = (resource) => {
     const { perms } = resource || {};
-    const settingsPerms = ['feature_resourcebase', 'approve_resourcebase', 'publish_resourcebase'];
+    const settingsPerms = ['feature_resourcebase', 'change_resourcebase', 'publish_resourcebase'];
     return !!(perms || []).find(perm => settingsPerms.includes(perm));
+};
+
+export const canManageResourceOptions = (resource) => {
+    const { perms } = resource || {};
+    const settingsPerms = ['change_resourcebase', 'approve_resourcebase'];
+    return !!(perms || []).find(perm => settingsPerms.includes(perm));
+};
+
+export const canManageResourceSettings = (resource) => {
+    return !!(canManageResourcePublishing(resource) || canManageResourceOptions(resource));
 };
 
 export const canAccessPermissions = (resource) => {

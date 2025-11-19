@@ -26,6 +26,7 @@ import OperationPlugin from '@js/plugins/Operation';
 import MetadataEditorPlugin from '@js/plugins/MetadataEditor';
 import MetadataViewerPlugin from '@js/plugins/MetadataEditor/MetadataViewer';
 import FavoritesPlugin from '@js/plugins/Favorites';
+import CreateDatasetPlugin from '@js/plugins/CreateDataset';
 import {
     ResourcesGridPlugin,
     ResourcesFiltersFormPlugin
@@ -82,6 +83,7 @@ export const plugins = {
     ResourcesGridPlugin,
     FavoritesPlugin,
     ResourcesFiltersFormPlugin,
+    CreateDatasetPlugin,
     IsochronePlugin: Isochrone,
     ItineraryPlugin: Itinerary,
     SecurityPopupPlugin: SecurityPopup,
@@ -239,10 +241,6 @@ export const plugins = {
     SearchPlugin: toModulePlugin(
         'Search',
         () => import(/* webpackChunkName: 'plugins/search-plugin' */ '@mapstore/framework/plugins/Search')
-    ),
-    SharePlugin: toModulePlugin(
-        'Share',
-        () => import(/* webpackChunkName: 'plugins/share-plugin' */ '@js/plugins/Share')
     ),
     IdentifyPlugin: toModulePlugin(
         'Identify',
@@ -444,10 +442,6 @@ export const plugins = {
     IsoDownloadPlugin: toModulePlugin(
         'IsoDownload',
         () => import(/* webpackChunkName: 'plugins/iso-download-plugin' */ '@js/plugins/downloads/IsoDownload')
-    ),
-    DublinCoreDownloadPlugin: toModulePlugin(
-        'DublinCoreDownload',
-        () => import(/* webpackChunkName: 'plugins/iso-download-plugin' */ '@js/plugins/downloads/DublinCoreDownload')
     ),
     MapViewersCatalogPlugin: toModulePlugin(
         'MapViewersCatalog',
