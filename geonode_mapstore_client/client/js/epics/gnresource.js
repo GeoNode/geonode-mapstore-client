@@ -121,6 +121,7 @@ import {
     setCreationStep
 } from '@mapstore/framework/actions/contextcreator';
 import { setContext } from '@mapstore/framework/actions/context';
+import { REDUCERS_LOADED } from '@mapstore/framework/actions/storemanager';
 import { wrapStartStop } from '@mapstore/framework/observables/epics';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
@@ -231,22 +232,34 @@ const resourceTypes = {
             ]))
                 .switchMap(([baseConfig, resource]) => {
                     const [mapResource, mapViewerResource] = resource ?? [];
+                    const viewerData = mapViewerResource?.data ?? null;
+                    const viewerPk = mapViewerResource?.pk;
                     const mapConfig = options.data
                         ? options.data
                         : toMapStoreMapConfig(mapResource, baseConfig);
-                    return Observable.of(
-                        configureMap(mapConfig),
-                        setControlProperty('toolbar', 'expanded', false),
-                        setContext(mapViewerResource ? mapViewerResource.data : null),
-                        setResource(mapResource),
+
+                    const initialActions = Observable.of(
+                        setContext(viewerData),
                         setResourceId(pk),
+                        setResource(mapResource),
                         setMapViewerLinkedResource(mapViewerResource),
                         setResourcePathParameters({
                             ...options?.params,
-                            appPk: mapViewerResource?.pk,
-                            hasViewer: !!mapViewerResource?.pk
-                        })
+                            appPk: viewerPk,
+                            hasViewer: !!viewerPk
+                        }),
+                        setControlProperty("toolbar", "expanded", false)
                     );
+
+                    // Wait for module plugin reducers to load before configuring map
+                    // This ensures dynamic plugin reducers are ready to restore state
+                    const waitForReducers$ = viewerData && options?.action$
+                        ? Observable.race(
+                            options.action$.ofType(REDUCERS_LOADED).take(1),
+                            Observable.timer(5000) // timeout as safety fallback only
+                        ) : Observable.of(null);
+
+                    return Observable.concat(initialActions, waitForReducers$.map(() => configureMap(mapConfig)));
                 }),
         newResourceObservable: (options) => {
             const queryDatasetParts = (options?.query?.['gn-dataset'] || '').split(':');
@@ -540,7 +553,8 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     isSamePreviousResource,
                     resourceData,
                     selectedLayer: isSamePreviousResource && {...getInitialDatasetLayer(state), style: getInitialDatasetLayerStyle(state)},
-                    params: {...action?.options?.params, query}
+                    params: {...action?.options?.params, query},
+                    action$
                 }),
                 Observable.of(
                     loadingResourceConfig(false)
