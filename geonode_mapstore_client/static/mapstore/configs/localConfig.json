@@ -700,6 +700,7 @@
                 "name": "DownloadResource",
                 "cfg": {
                     "downloadMsgId": "gnhome.dataset",
+                    "tooltipId": "gnviewer.download",
                     "allowedSources": ["LOCAL"]
                 }
             },
