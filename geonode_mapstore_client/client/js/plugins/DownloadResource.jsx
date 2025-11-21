@@ -39,7 +39,7 @@ const DownloadButton = ({
     renderType = "button",
     showIcon,
     downloadMsgId = "gnviewer.download",
-    tooltipId = downloadMsgId,
+    tooltipId = downloadMsgId, // for backward compatibility
     allowedSources = [SOURCE_TYPES.LOCAL, SOURCE_TYPES.REMOTE],
     downloading
 }) => {
