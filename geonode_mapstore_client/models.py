@@ -20,8 +20,15 @@ class SearchService(models.Model):
         verbose_name = _("Search Service")
 
     def __str__(self):
-        return f"{self.display_name} - {self.url}"
+        return f"{self.name} - {self.url}"
 
+    name = models.CharField(
+        max_length=250,
+        null=False,
+        verbose_name="Service Name",
+        help_text="The name of Search Service",
+        default="",
+    )
     display_name = models.CharField(
         max_length=250,
         null=False,

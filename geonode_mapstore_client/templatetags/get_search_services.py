@@ -1,6 +1,7 @@
 from django import template
 from django.core.cache import caches
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 register = template.Library()
 
@@ -32,8 +33,9 @@ def populate_search_service_options():
         return_val.append(
             {
                 "type": "wfs",
+                "name": _(f"{item.name}"),
                 "priority": item.priority,
-                "displayName": f"{item.display_name}",
+                "displayName": _(f"{item.display_name}"),
                 "options": {
                     "url": f"{item.url}",
                     "typeName": f"{item.typename}",
