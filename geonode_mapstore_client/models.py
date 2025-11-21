@@ -27,6 +27,7 @@ class SearchService(models.Model):
         null=False,
         verbose_name="Service Name",
         help_text="The name of Search Service",
+        default="",
     )
     display_name = models.CharField(
         max_length=250,

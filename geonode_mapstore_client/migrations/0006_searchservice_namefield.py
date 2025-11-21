@@ -18,6 +18,7 @@ class Migration(migrations.Migration):
                 null=False,
                 verbose_name="Service Name",
                 help_text="The name of Search Service",
+                default="",
             ),
         ),
     ]
