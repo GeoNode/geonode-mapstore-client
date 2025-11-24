@@ -36,6 +36,7 @@ def populate_search_service_options():
                 "name": _(f"{item.name}"),
                 "priority": item.priority,
                 "displayName": _(f"{item.display_name}"),
+                "subTitle": _(f"{item.sub_title}"),
                 "options": {
                     "url": f"{item.url}",
                     "typeName": f"{item.typename}",
