@@ -52,7 +52,7 @@ export const GXP_PTYPES = {
     'GN_WMS': 'gxp_geonodecataloguesource'
 };
 
-export const RESOURCE_PUBLISHING_PROPERTIES = {
+const RESOURCE_PUBLISHING_PROPERTIES_BASE = {
     'is_published': {
         labelId: 'gnviewer.publishResource',
         tooltipId: 'gnviewer.publishResourceTooltip',
@@ -70,7 +70,7 @@ export const RESOURCE_PUBLISHING_PROPERTIES = {
     }
 };
 
-export const RESOURCE_OPTIONS_PROPERTIES = {
+const RESOURCE_OPTIONS_PROPERTIES_BASE = {
     'metadata_uploaded_preserve': {
         labelId: 'gnviewer.preserveUploadedMetadata',
         tooltipId: 'gnviewer.preserveUploadedMetadataTooltip',
@@ -82,6 +82,31 @@ export const RESOURCE_OPTIONS_PROPERTIES = {
         disabled: (perms = []) => !perms.includes('approve_resourcebase')
     }
 };
+
+export const filterResourcePublishingProperties = () => {
+    const { isPublishedOptionEnabled = false } = getConfigProp('geoNodeSettings') || {};
+
+    // Remove is_published if RESOURCE_PUBLISHING is disabled
+    if (!isPublishedOptionEnabled) {
+        return omit(RESOURCE_PUBLISHING_PROPERTIES_BASE, 'is_published');
+    }
+
+    return RESOURCE_PUBLISHING_PROPERTIES_BASE;
+};
+
+export const filterResourceOptionsProperties = () => {
+    const { isApprovedOptionEnabled = false } = getConfigProp('geoNodeSettings') || {};
+
+    // Remove is_approved if ADMIN_MODERATE_UPLOADS is disabled
+    if (!isApprovedOptionEnabled) {
+        return omit(RESOURCE_OPTIONS_PROPERTIES_BASE, 'is_approved');
+    }
+
+    return RESOURCE_OPTIONS_PROPERTIES_BASE;
+};
+
+export const RESOURCE_PUBLISHING_PROPERTIES = filterResourcePublishingProperties();
+export const RESOURCE_OPTIONS_PROPERTIES = filterResourceOptionsProperties();
 export const TIME_SERIES_PROPERTIES = ['attribute', 'end_attribute', 'presentation', 'precision_value', 'precision_step'];
 
 export const TIME_ATTRIBUTE_TYPES = ['xsd:date', 'xsd:dateTime', 'xsd:date-time', 'xsd:time'];
@@ -482,7 +507,7 @@ export const canManageAnonymousPermissions = (resource) => {
 
 export const canManageRegisteredMemberPermissions = (resource) => {
     return resourceHasPermission(resource, 'can_manage_registered_member_permissions');
-}
+};
 
 /**
  * Filters permission options for a group if management is disabled.
@@ -495,15 +520,15 @@ export const canManageRegisteredMemberPermissions = (resource) => {
 const filterGroupPermissions = (options, groups, groupNames) => {
     return groupNames.length
         ? Object.fromEntries(Object.keys(options)
-        .map((key) => {
-            if (groupNames.some(name => name === key)) {
-                const group = groups?.find(g => g.name === key);
-                const permissionValue = group?.permissions;
-                const currentPermission = options[key].find(p => p.name === permissionValue);
-                return currentPermission ? [key, [currentPermission]] : [key, options[key]];
-            }
-            return [key, options[key]];
-        }))
+            .map((key) => {
+                if (groupNames.some(name => name === key)) {
+                    const group = groups?.find(g => g.name === key);
+                    const permissionValue = group?.permissions;
+                    const currentPermission = options[key].find(p => p.name === permissionValue);
+                    return currentPermission ? [key, [currentPermission]] : [key, options[key]];
+                }
+                return [key, options[key]];
+            }))
         : options;
 };
 
@@ -512,10 +537,10 @@ const filterGroupPermissions = (options, groups, groupNames) => {
  * @param {Object} options Permission Object to extract permissions from
  * @returns An object containing permissions for each type of user/group
  */
-export const getResourcePermissions = (_options , groups, manageAnonymousPermissions=false, manageRegisteredMemberPermissions=false) => {
+export const getResourcePermissions = (_options, groups, manageAnonymousPermissions = false, manageRegisteredMemberPermissions = false) => {
     const options = filterGroupPermissions(_options, groups, [
         ...(manageAnonymousPermissions ? [] : ['anonymous']),
-        ...(manageRegisteredMemberPermissions? [] : ['registered-members']),
+        ...(manageRegisteredMemberPermissions ? [] : ['registered-members'])
     ]);
     let permissionsOptions = {};
     Object.keys(options).forEach((key) => {
