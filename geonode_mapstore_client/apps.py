@@ -98,6 +98,7 @@ def run_setup_hooks(*args, **kwargs):
         re_path(r"^maps$", TemplateView.as_view(template_name="geonode-mapstore-client/pages/maps.html")),
         re_path(r"^documents$", TemplateView.as_view(template_name="geonode-mapstore-client/pages/documents.html")),
         re_path(r"^geostories$", TemplateView.as_view(template_name="geonode-mapstore-client/pages/geostories.html")),
+        re_path("reqparams/", views.RequestConfigurationView.as_view(), name="request-params"),
     ]
 
     # adding default format for metadata schema validation
@@ -304,6 +305,9 @@ def run_setup_hooks(*args, **kwargs):
 
     setattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE", MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE)
     setattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SERVICES", MAPSTORE_DASHBOARD_CATALOGUE_SERVICES)
+    setattr(settings, "REQUEST_CONFIGURATION_RULES_HANDLERS", [
+        "geonode_mapstore_client.handlers.BaseConfigurationRuleHandler",
+    ])
 
 
 def connect_geoserver_style_visual_mode_signal():
@@ -324,4 +328,8 @@ class AppConfig(BaseAppConfig):
         if not apps.ready:
             run_setup_hooks()
             connect_geoserver_style_visual_mode_signal()
+            
+            from geonode_mapstore_client.registry import request_configuration_rules_registry
+            request_configuration_rules_registry.init_registry()
+            
         super(AppConfig, self).ready()

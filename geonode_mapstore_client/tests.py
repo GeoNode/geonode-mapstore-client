@@ -11,10 +11,13 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from rest_framework.test import APIClient
 
+from geonode.tests.base import GeoNodeBaseTestSupport
+
 from .utils import validate_zip_file
 from .admin import ExtensionAdminForm
 from .models import Extension
 from unittest import mock
+
 
 # Define temporary directories for testing to avoid affecting the real media/static roots
 TEST_MEDIA_ROOT = os.path.join(settings.PROJECT_ROOT, "test_media")
@@ -177,3 +180,315 @@ class ExtensionFeatureTestCase(TestCase):
         self.assertIsNotNone(map_plugin_data)
         self.assertIn("bundle", map_plugin_data)
         self.assertTrue(map_plugin_data["bundle"].endswith("MapPlugin/index.js"))
+
+
+class RequestConfigurationViewTestCase(GeoNodeBaseTestSupport):
+    """
+    Test cases for RequestConfigurationView.
+    """
+
+    def setUp(self):
+        """Set up test environment."""
+        from django.contrib.auth import get_user_model
+        from geonode_mapstore_client.registry import RequestConfigurationRulesRegistry
+        
+        User = get_user_model()
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.client = APIClient()
+        
+        # Reset registry to clean state
+        RequestConfigurationRulesRegistry.REGISTRY = []
+
+    def tearDown(self):
+        """Clean up after tests."""
+        from geonode_mapstore_client.registry import RequestConfigurationRulesRegistry
+        RequestConfigurationRulesRegistry.REGISTRY = []
+
+    def test_view_returns_rules_from_all_handlers(self):
+        """Test that the view collects and returns rules from all registered handlers."""
+        from geonode_mapstore_client.registry import RequestConfigurationRulesRegistry, BaseRequestConfigurationRuleHandler
+        
+        # Create mock handlers
+        class MockHandler1(BaseRequestConfigurationRuleHandler):
+            def get_rules(self, request):
+                return [{"urlPattern": "http://example1.com/.*", "params": {"key1": "value1"}}]
+        
+        class MockHandler2(BaseRequestConfigurationRuleHandler):
+            def get_rules(self, request):
+                return [{"urlPattern": "http://example2.com/.*", "params": {"key2": "value2"}}]
+        
+        # Register handlers
+        RequestConfigurationRulesRegistry.REGISTRY = []
+        RequestConfigurationRulesRegistry.REGISTRY.append(MockHandler1)
+        RequestConfigurationRulesRegistry.REGISTRY.append(MockHandler2)
+        
+        # Make request
+        url = reverse("request-params")
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("rules", data)
+        
+        rules = data["rules"]
+        self.assertEqual(len(rules), 2)
+        
+        # Verify both handlers' rules are present
+        patterns = [rule["urlPattern"] for rule in rules]
+        self.assertIn("http://example1.com/.*", patterns)
+        self.assertIn("http://example2.com/.*", patterns)
+
+    def test_view_returns_user_specific_token(self):
+        """Test that authenticated users receive rules with their own token."""
+        from geonode_mapstore_client.handlers import BaseConfigurationRuleHandler
+        from geonode_mapstore_client.registry import RequestConfigurationRulesRegistry
+        from geonode.base.auth import get_or_create_token
+        
+        # Register the default handler
+        RequestConfigurationRulesRegistry.REGISTRY = []
+        RequestConfigurationRulesRegistry.REGISTRY.append(BaseConfigurationRuleHandler)
+        
+        self.client.force_authenticate(user=self.user)
+        
+        # Get expected token
+        expected_token = get_or_create_token(self.user).token
+        
+        # Make request
+        url = reverse("request-params")
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        rules = data["rules"]
+        
+        # Verify token is present in rules
+        self.assertTrue(len(rules) > 0)
+        
+        # Check that the token appears in the rules
+        token_found = False
+        for rule in rules:
+            if "params" in rule and "access_token" in rule["params"]:
+                self.assertEqual(rule["params"]["access_token"], expected_token)
+                token_found = True
+            elif "headers" in rule and "Authorization" in rule["headers"]:
+                self.assertIn(expected_token, rule["headers"]["Authorization"])
+                token_found = True
+        
+        self.assertTrue(token_found, "User token should be present in rules")
+
+    def test_only_get_allowed(self):
+        """Test that only GET requests are allowed."""
+        url = reverse("request-params")
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        
+        # Test POST
+        response = self.client.post(url, {})
+        self.assertEqual(response.status_code, 405)
+        
+        # Test PUT
+        response = self.client.put(url, {})
+        self.assertEqual(response.status_code, 405)
+        
+        # Test DELETE
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 405)
+
+
+class RequestConfigurationRulesRegistryTestCase(GeoNodeBaseTestSupport):
+    """
+    Test cases for RequestConfigurationRulesRegistry.
+    """
+
+    def setUp(self):
+        """Set up test environment."""
+        from geonode_mapstore_client.registry import RequestConfigurationRulesRegistry
+        self.registry = RequestConfigurationRulesRegistry()
+        self.registry.reset()
+
+    def tearDown(self):
+        """Clean up after tests."""
+        self.registry.reset()
+
+    def test_add_handler_to_registry(self):
+        """Test adding a handler to the registry."""
+        from geonode_mapstore_client.registry import BaseRequestConfigurationRuleHandler
+        
+        class TestHandler(BaseRequestConfigurationRuleHandler):
+            def get_rules(self, request):
+                return [{"test": "rule"}]
+        
+        initial_count = len(self.registry.REGISTRY)
+        self.registry.REGISTRY.append(TestHandler)
+        
+        self.assertEqual(len(self.registry.REGISTRY), initial_count + 1)
+        self.assertIn(TestHandler, self.registry.REGISTRY)
+
+    def test_remove_handler_from_registry(self):
+        """Test removing a handler from the registry."""
+        from geonode_mapstore_client.registry import BaseRequestConfigurationRuleHandler
+        
+        class TestHandler(BaseRequestConfigurationRuleHandler):
+            def get_rules(self, request):
+                return [{"test": "rule"}]
+        
+        self.registry.REGISTRY.append(TestHandler)
+        self.assertIn(TestHandler, self.registry.REGISTRY)
+        
+        self.registry.REGISTRY.remove(TestHandler)
+        self.assertNotIn(TestHandler, self.registry.REGISTRY)
+
+    def test_get_rules_collects_from_all_handlers(self):
+        """Test that get_rules aggregates rules from all registered handlers."""
+        from geonode_mapstore_client.registry import BaseRequestConfigurationRuleHandler
+        from django.test import RequestFactory
+        
+        class Handler1(BaseRequestConfigurationRuleHandler):
+            def get_rules(self, request):
+                return [{"urlPattern": "pattern1"}]
+        
+        class Handler2(BaseRequestConfigurationRuleHandler):
+            def get_rules(self, request):
+                return [{"urlPattern": "pattern2"}, {"urlPattern": "pattern3"}]
+        
+        self.registry.REGISTRY.append(Handler1)
+        self.registry.REGISTRY.append(Handler2)
+        
+        factory = RequestFactory()
+        request = factory.get("/")
+        
+        result = self.registry.get_rules(request)
+        
+        self.assertIn("rules", result)
+        rules = result["rules"]
+        self.assertEqual(len(rules), 3)
+        
+        patterns = [rule["urlPattern"] for rule in rules]
+        self.assertIn("pattern1", patterns)
+        self.assertIn("pattern2", patterns)
+        self.assertIn("pattern3", patterns)
+
+    def test_sanity_check_rejects_invalid_handler(self):
+        """Test that sanity checks reject non-subclass handlers."""
+        class InvalidHandler:
+            """Not a subclass of BaseRequestConfigurationRuleHandler"""
+            pass
+        
+        with self.assertRaises(TypeError) as context:
+            self.registry._RequestConfigurationRulesRegistry__check_item(InvalidHandler)
+        
+        self.assertIn("must be a subclass of BaseRequestConfigurationRuleHandler", str(context.exception))
+
+    @override_settings(REQUEST_CONFIGURATION_RULES_HANDLERS=[
+        "geonode_mapstore_client.handlers.BaseConfigurationRuleHandler"
+    ])
+    def test_init_registry_loads_from_settings(self):
+        """Test that init_registry loads handlers from settings."""
+        from geonode_mapstore_client.handlers import BaseConfigurationRuleHandler
+        
+        self.registry.reset()
+        self.registry.init_registry()
+        
+        self.assertIn(BaseConfigurationRuleHandler, self.registry.REGISTRY)
+
+
+class BaseConfigurationRuleHandlerTestCase(GeoNodeBaseTestSupport):
+    """
+    Test cases for BaseConfigurationRuleHandler.
+    """
+
+    def setUp(self):
+        """Set up test environment."""
+        from django.contrib.auth import get_user_model
+        
+        User = get_user_model()
+        self.user1 = User.objects.create_user(username="user1", password="pass1")
+        self.user2 = User.objects.create_user(username="user2", password="pass2")
+
+    def test_authenticated_user_gets_rules(self):
+        """Test that authenticated users receive configuration rules."""
+        from geonode_mapstore_client.handlers import BaseConfigurationRuleHandler
+        from django.test import RequestFactory
+        
+        handler = BaseConfigurationRuleHandler()
+        factory = RequestFactory()
+        request = factory.get("/")
+        request.user = self.user1
+        
+        rules = handler.get_rules(request)
+        
+        self.assertIsInstance(rules, list)
+        self.assertTrue(len(rules) > 0)
+
+    def test_anonymous_user_gets_empty_rules(self):
+        """Test that anonymous users receive empty rules list."""
+        from geonode_mapstore_client.handlers import BaseConfigurationRuleHandler
+        from django.test import RequestFactory
+        from django.contrib.auth.models import AnonymousUser
+        
+        handler = BaseConfigurationRuleHandler()
+        factory = RequestFactory()
+        request = factory.get("/")
+        request.user = AnonymousUser()
+        
+        rules = handler.get_rules(request)
+        
+        self.assertIsInstance(rules, list)
+        self.assertEqual(len(rules), 0)
+
+    def test_rules_contain_correct_structure(self):
+        """Test that rules have the correct structure with urlPattern and params/headers."""
+        from geonode_mapstore_client.handlers import BaseConfigurationRuleHandler
+        from django.test import RequestFactory
+        
+        handler = BaseConfigurationRuleHandler()
+        factory = RequestFactory()
+        request = factory.get("/")
+        request.user = self.user1
+        
+        rules = handler.get_rules(request)
+        
+        # Verify each rule has required fields
+        for rule in rules:
+            self.assertIn("urlPattern", rule)
+            self.assertTrue("params" in rule or "headers" in rule)
+
+    def test_different_users_get_different_tokens(self):
+        """Test that different users receive different tokens in their rules."""
+        from geonode_mapstore_client.handlers import BaseConfigurationRuleHandler
+        from django.test import RequestFactory
+        from geonode.base.auth import get_or_create_token
+        
+        handler = BaseConfigurationRuleHandler()
+        factory = RequestFactory()
+        
+        # Get rules for user1
+        request1 = factory.get("/")
+        request1.user = self.user1
+        rules1 = handler.get_rules(request1)
+        token1 = get_or_create_token(self.user1).token
+        
+        # Get rules for user2
+        request2 = factory.get("/")
+        request2.user = self.user2
+        rules2 = handler.get_rules(request2)
+        token2 = get_or_create_token(self.user2).token
+        
+        # Verify tokens are different
+        self.assertNotEqual(token1, token2)
+        
+        # Verify each user's rules contain their own token
+        token1_found = any(
+            rule.get("params", {}).get("access_token") == token1 or
+            token1 in rule.get("headers", {}).get("Authorization", "")
+            for rule in rules1
+        )
+        token2_found = any(
+            rule.get("params", {}).get("access_token") == token2 or
+            token2 in rule.get("headers", {}).get("Authorization", "")
+            for rule in rules2
+        )
+        
+        self.assertTrue(token1_found, "User1's token should be in their rules")
+        self.assertTrue(token2_found, "User2's token should be in their rules")
