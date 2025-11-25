@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}GeoNode admin{% endblock %}
+
+{% block branding %}
+<img id="logo" src="{% static 'mapstore/img/geonode-logo.svg' %}">
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ _('GeoNode administration') }}</a></h1>
+{% endblock %}
+
+{% block extrahead %}
+{% include 'geonode-mapstore-client/snippets/custom_theme.html' %}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/theme.css' %}"/>
+{% endblock %}
