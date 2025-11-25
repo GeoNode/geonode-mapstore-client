@@ -204,20 +204,20 @@ export const ResourceCloningIndicator = connect(
     })
 )(({ isCopying, clonedResourceUrl }) => {
     const className = 'text-primary ms-text _font-size-sm _strong';
-    if (!isCopying && clonedResourceUrl) {
-        return (
-            <a href={clonedResourceUrl} className={className}>
-                <Message msgId="gnviewer.navigateToClonedResource" />
-            </a>
-        );
-    }
-
     if (isCopying) {
         return (
             <FlexBox centerChildrenVertically gap="xs" className={className}>
                 <Spinner />
                 <Message msgId="gnviewer.cloning" />
             </FlexBox>
+        );
+    }
+
+    if (clonedResourceUrl) {
+        return (
+            <a href={clonedResourceUrl} className={className}>
+                <Message msgId="gnviewer.navigateToClonedResource" />
+            </a>
         );
     }
 

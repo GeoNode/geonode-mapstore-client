@@ -426,6 +426,9 @@ export const gnWatchStopCopyProcessOnSave = (action$, store) =>
                     };
                     return Observable.of(updateAsyncProcess(updatedPayload));
                 })
+                .catch(() => {
+                    return Observable.of(loadingResourceConfig(false));
+                })
                 .let(wrapStartStop(
                     loadingResourceConfig(true),
                     loadingResourceConfig(false)
