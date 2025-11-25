@@ -117,7 +117,6 @@
                         const dropdownButton = clone.querySelector('.dropdown button') || clone.querySelector('.dropdown-toggle');
                         if (dropdownButton) {
                             dropdownButton.addEventListener('click', function(e) {
-                                console.log('.dropdown button');
                                 e.preventDefault();
                                 e.stopPropagation();
                                 const parentElement = dropdownButton.closest('.dropdown');
@@ -132,11 +131,6 @@
                     //     items.forEach(item => {
                     //         const dropdownButton = item.querySelector('.dropdown button') || item.querySelector('.dropdown-toggle');
                     //         if (dropdownButton) {
-                    //             dropdownButton.addEventListener('click', function(e) {
-                    //                 console.log('click dropdown');
-                    //                 e.preventDefault();
-                    //                 dropdownButton.classList.toggle('open');
-                    //             });
                     //             // Create a new span with bold text
                     //             const buttonText = dropdownButton.textContent.trim();
                     //             const boldSpan = document.createElement('span');
