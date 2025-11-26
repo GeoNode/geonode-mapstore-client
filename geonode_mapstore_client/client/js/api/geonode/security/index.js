@@ -10,7 +10,7 @@ import axios from '@mapstore/framework/libs/ajax';
 import WKT from 'ol/format/WKT';
 import GeoJSON from 'ol/format/GeoJSON';
 import uuid from 'uuid';
-import { getEndpointUrl, USERS } from '../v2/constants';
+import { getEndpointUrl, RULES } from '../v2/constants';
 
 const wktFormat = new WKT();
 const geoJSONFormat = new GeoJSON();
@@ -80,7 +80,7 @@ export const deleteGeoLimits = (resourceId, id, type = 'user') => {
         .then(({ data }) => data);
 };
 
-export const getRequestConfigurationRulesByUserPK = (pk) => {
-    return axios.get(getEndpointUrl(USERS, `/${pk}/rules`))
+export const getRequestRules = () => {
+    return axios.get(getEndpointUrl(RULES))
         .then(({ data }) => data);
 };

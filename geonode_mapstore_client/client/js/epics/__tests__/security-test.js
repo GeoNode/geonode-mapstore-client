@@ -38,9 +38,8 @@ describe('security epics', () => {
     });
 
     describe('gnUpdateRequestConfigurationRulesEpic', () => {
-        it('should fetch and update rules when LOAD_REQUESTS_RULES is dispatched with valid user', (done) => {
+        it('should fetch and update rules when LOAD_REQUESTS_RULES is dispatched', (done) => {
             const NUM_ACTIONS = 1;
-            const userPk = 1;
             const futureDate = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour from now
             const mockRules = {
                 rules: [
@@ -60,15 +59,9 @@ describe('security epics', () => {
                 ]
             };
 
-            const testState = {
-                security: {
-                    user: {
-                        pk: userPk
-                    }
-                }
-            };
+            const testState = {};
 
-            mockAxios.onGet(new RegExp(`/api/v2/users/${userPk}/rules`)).reply(200, mockRules);
+            mockAxios.onGet(new RegExp('/api/v2/reqrules')).reply(200, mockRules);
 
             testEpic(
                 gnUpdateRequestConfigurationRulesEpic,
@@ -90,7 +83,6 @@ describe('security epics', () => {
 
         it('should fetch and update rules when RULE_EXPIRED is dispatched', (done) => {
             const NUM_ACTIONS = 1;
-            const userPk = 1;
             const mockRules = {
                 rules: [
                     {
@@ -102,15 +94,9 @@ describe('security epics', () => {
                 ]
             };
 
-            const testState = {
-                security: {
-                    user: {
-                        pk: userPk
-                    }
-                }
-            };
+            const testState = {};
 
-            mockAxios.onGet(new RegExp(`/api/v2/users/${userPk}/rules`)).reply(200, mockRules);
+            mockAxios.onGet(new RegExp('/api/v2/reqrules')).reply(200, mockRules);
 
             testEpic(
                 gnUpdateRequestConfigurationRulesEpic,
@@ -130,13 +116,26 @@ describe('security epics', () => {
             );
         });
 
-        it('should return empty observable when userPk is not available', (done) => {
-            const NUM_ACTIONS = 0;
+        it('should fetch and update rules even without user in state', (done) => {
+            const NUM_ACTIONS = 1;
+            const mockRules = {
+                rules: [
+                    {
+                        urlPattern: 'http://localhost/geoserver//.*',
+                        params: {
+                            access_token: 'token123'
+                        }
+                    }
+                ]
+            };
+
             const testState = {
                 security: {
                     user: null
                 }
             };
+
+            mockAxios.onGet(new RegExp('/api/v2/reqrules')).reply(200, mockRules);
 
             testEpic(
                 gnUpdateRequestConfigurationRulesEpic,
@@ -144,7 +143,9 @@ describe('security epics', () => {
                 { type: LOAD_REQUESTS_RULES },
                 (actions) => {
                     try {
-                        expect(actions.length).toBe(0);
+                        expect(actions.length).toBe(1);
+                        expect(actions[0].type).toBe(UPDATE_REQUESTS_RULES);
+                        expect(actions[0].rules).toEqual(mockRules.rules);
                         done();
                     } catch (e) {
                         done(e);
@@ -156,16 +157,9 @@ describe('security epics', () => {
 
         it('should handle API error and dispatch loadRequestsRulesError', (done) => {
             const NUM_ACTIONS = 1;
-            const userPk = 1;
-            const testState = {
-                security: {
-                    user: {
-                        pk: userPk
-                    }
-                }
-            };
+            const testState = {};
 
-            mockAxios.onGet(new RegExp(`/api/v2/users/${userPk}/rules`)).reply(500, { error: 'Server error' });
+            mockAxios.onGet(new RegExp('/api/v2/reqrules')).reply(500, { error: 'Server error' });
 
             testEpic(
                 gnUpdateRequestConfigurationRulesEpic,
@@ -187,7 +181,6 @@ describe('security epics', () => {
 
         it('should deduplicate rules by urlPattern', (done) => {
             const NUM_ACTIONS = 1;
-            const userPk = 1;
             const mockRules = {
                 rules: [
                     {
@@ -211,15 +204,9 @@ describe('security epics', () => {
                 ]
             };
 
-            const testState = {
-                security: {
-                    user: {
-                        pk: userPk
-                    }
-                }
-            };
+            const testState = {};
 
-            mockAxios.onGet(new RegExp(`/api/v2/users/${userPk}/rules`)).reply(200, mockRules);
+            mockAxios.onGet(new RegExp('/api/v2/reqrules')).reply(200, mockRules);
 
             testEpic(
                 gnUpdateRequestConfigurationRulesEpic,
@@ -244,20 +231,13 @@ describe('security epics', () => {
 
         it('should handle empty rules array', (done) => {
             const NUM_ACTIONS = 1;
-            const userPk = 1;
             const mockRules = {
                 rules: []
             };
 
-            const testState = {
-                security: {
-                    user: {
-                        pk: userPk
-                    }
-                }
-            };
+            const testState = {};
 
-            mockAxios.onGet(new RegExp(`/api/v2/users/${userPk}/rules`)).reply(200, mockRules);
+            mockAxios.onGet(new RegExp('/api/v2/reqrules')).reply(200, mockRules);
 
             testEpic(
                 gnUpdateRequestConfigurationRulesEpic,
