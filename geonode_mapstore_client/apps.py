@@ -98,7 +98,7 @@ def run_setup_hooks(*args, **kwargs):
         re_path(r"^maps$", TemplateView.as_view(template_name="geonode-mapstore-client/pages/maps.html")),
         re_path(r"^documents$", TemplateView.as_view(template_name="geonode-mapstore-client/pages/documents.html")),
         re_path(r"^geostories$", TemplateView.as_view(template_name="geonode-mapstore-client/pages/geostories.html")),
-        re_path("reqparams/", views.RequestConfigurationView.as_view(), name="request-params"),
+        re_path("/reqrules", views.RequestConfigurationView.as_view(), name="request-rules"),
     ]
 
     # adding default format for metadata schema validation

@@ -223,7 +223,7 @@ class RequestConfigurationViewTestCase(GeoNodeBaseTestSupport):
         RequestConfigurationRulesRegistry.REGISTRY.append(MockHandler2)
         
         # Make request
-        url = reverse("request-params")
+        url = reverse("request-rules")
         response = self.client.get(url)
         
         self.assertEqual(response.status_code, 200)
@@ -254,7 +254,7 @@ class RequestConfigurationViewTestCase(GeoNodeBaseTestSupport):
         expected_token = get_or_create_token(self.user).token
         
         # Make request
-        url = reverse("request-params")
+        url = reverse("request-rules")
         response = self.client.get(url)
         
         self.assertEqual(response.status_code, 200)
@@ -278,7 +278,7 @@ class RequestConfigurationViewTestCase(GeoNodeBaseTestSupport):
 
     def test_only_get_allowed(self):
         """Test that only GET requests are allowed."""
-        url = reverse("request-params")
+        url = reverse("request-rules")
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
