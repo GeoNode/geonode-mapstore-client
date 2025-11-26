@@ -11,7 +11,7 @@ class BaseConfigurationRuleHandler(BaseRequestConfigurationRuleHandler):
 
     def get_rules(self, request):
         user = request.user
-        if user.is_anonymous:
+        if not user.is_authenticated:
             return []
         rules = []
         token_obj = get_or_create_token(user)
