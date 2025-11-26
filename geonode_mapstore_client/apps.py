@@ -305,9 +305,11 @@ def run_setup_hooks(*args, **kwargs):
 
     setattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE", MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE)
     setattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SERVICES", MAPSTORE_DASHBOARD_CATALOGUE_SERVICES)
-    setattr(settings, "REQUEST_CONFIGURATION_RULES_HANDLERS", [
+    handlers = getattr(settings, "REQUEST_CONFIGURATION_RULES_HANDLERS", [])
+    handlers.extend([
         "geonode_mapstore_client.handlers.BaseConfigurationRuleHandler",
     ])
+    setattr(settings, "REQUEST_CONFIGURATION_RULES_HANDLERS", handlers)
 
 
 def connect_geoserver_style_visual_mode_signal():
