@@ -76,3 +76,14 @@ div.breadcrumbs {
     position: sticky;
     bottom: 0;
 }
+
+.module caption, .inline-group h2 {
+    background-color: var(--ms-primary);
+    color: var(--ms-primary-contrast);
+    --header-link-color: var(--ms-primary-contrast);
+    --header-color: var(--ms-primary-contrast);
+}
+
+
+
+
