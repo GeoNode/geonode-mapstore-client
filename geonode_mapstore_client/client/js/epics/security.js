@@ -14,9 +14,9 @@ import {
     updateRequestsRules,
     loadRequestsRulesError
 } from '@mapstore/framework/actions/security';
-import { getRequestConfigurationRulesByUserPK } from '@js/api/geonode/security';
+import { getRequestRules } from '@js/api/geonode/security';
 import { RULE_EXPIRED, ruleExpired } from '@js/actions/gnsecurity';
-import { userSelector, requestsRulesSelector } from '@mapstore/framework/selectors/security';
+import { requestsRulesSelector } from '@mapstore/framework/selectors/security';
 
 /**
 * @module epics/security
@@ -27,14 +27,10 @@ const RULE_EXPIRATION_CHECK_INTERVAL = 60 * 1000;
 /**
  * Epic to fetch request configuration rules and update the store
  */
-export const gnUpdateRequestConfigurationRulesEpic = (action$, store) =>
+export const gnUpdateRequestConfigurationRulesEpic = (action$) =>
     action$.ofType(LOAD_REQUESTS_RULES, RULE_EXPIRED)
         .switchMap(() => {
-            const userPk = userSelector(store.getState())?.pk;
-            if (!userPk) {
-                return Observable.empty();
-            }
-            return Observable.defer(() => getRequestConfigurationRulesByUserPK(userPk))
+            return Observable.defer(() => getRequestRules())
                 .switchMap((data) => {
                     const uniqRules = uniqBy(data.rules ?? [], 'urlPattern');
                     return Observable.of(updateRequestsRules(uniqRules));
