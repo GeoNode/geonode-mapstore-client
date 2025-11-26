@@ -36,6 +36,7 @@ import { canCopyResource } from '@js/utils/ResourceUtils';
 import { processResources } from '@js/actions/gnresource';
 import { getCurrentResourceCopyLoading } from '@js/selectors/resourceservice';
 import withPrompt from '@js/plugins/save/withPrompt';
+import { ResourceCloningIndicator } from './ActionNavbar/buttons';
 
 function SaveAs({
     resources,
@@ -214,10 +215,15 @@ const ConnectedMenuItem = connect(
 export default createPlugin('SaveAs', {
     component: SaveAsPlugin,
     containers: {
-        ActionNavbar: {
+        ActionNavbar: [{
             name: 'SaveAs',
             Component: ConnectedSaveAsButton
-        },
+        }, {
+            name: 'ResourceCloningIndicator',
+            Component: ResourceCloningIndicator,
+            target: 'right-menu',
+            position: 1
+        }],
         ResourcesGrid: {
             name: ProcessTypes.COPY_RESOURCE,
             target: 'card-options',
