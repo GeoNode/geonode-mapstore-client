@@ -106,44 +106,25 @@
                     divider.role = "separator";
                     menuBottomUl.appendChild(divider);
                 }
-                
+
                 // Clone and add all menu items to bottom menu
                 menuItems.forEach(item => {
                     const clone = item.cloneNode(true);
+                    
                     if (clone.tagName === 'LI') {
                         menuBottomUl.appendChild(clone);
-                    } else {
-                        const items = clone.querySelectorAll(':scope > li');
-                        items.forEach(item => {
-                            const dropdownButton = item.querySelector('.dropdown button') || item.querySelector('.dropdown-toggle');
-                            if (dropdownButton) {
-                                // Create a new span with bold text
-                                const buttonText = dropdownButton.textContent.trim();
-                                const boldSpan = document.createElement('span');
-                                boldSpan.className = "dropdown-submenu-title";
-                                boldSpan.textContent = buttonText;
-                                
-                                // Add the bold span as a list item
-                                const headerLi = document.createElement('li');
-                                headerLi.appendChild(boldSpan);
-                                appendDivider();
-                                menuBottomUl.appendChild(headerLi);
-                                appendDivider();
-                                
-                                // Get all child items from the dropdown menu
-                                const childItems = item.querySelectorAll('.dropdown-menu > li') || item.querySelectorAll('ul > li');
-                                if (childItems) {
-                                    childItems.forEach(childItem => {
-                                        const _childItem = childItem.cloneNode(true);
-                                        _childItem.className = `${_childItem.className} dropdown-submenu`;
-                                        menuBottomUl.appendChild(_childItem);
-                                    });
+
+                        const dropdownButton = clone.querySelector('.dropdown button') || clone.querySelector('.dropdown-toggle');
+                        if (dropdownButton) {
+                            dropdownButton.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                const parentElement = dropdownButton.closest('.dropdown');
+                                if (parentElement) {
+                                    parentElement.classList.toggle('open');
                                 }
-                                appendDivider();
-                            } else if (item.tagName === 'LI') {
-                                menuBottomUl.appendChild(item);
-                            }
-                        });
+                            });
+                        }
                     }
                 });
             }
