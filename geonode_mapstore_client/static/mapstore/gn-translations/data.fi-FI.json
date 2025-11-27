@@ -224,6 +224,7 @@
             "deleting": "Deleting...",
             "cloning": "Cloning...",
             "clone": "Clone",
+            "navigateToClonedResource": "Navigate to cloned resource",
             "stylesFirstClone": "Changes made to the styles will only apply to the current layer in your map, and not the original dataset.",
             "title": "Title",
             "titlePlaceholder": "Type a title...",
@@ -329,7 +330,7 @@
             "readMore": "Read more",
             "readLess": "Read less",
             "linkedResources": {
-                "label": "Linked Resources",
+                "label": "Relations",
                 "linkedBy": "Linked By",
                 "linkedTo": "Linked To",
                 "uses": "Uses",
@@ -390,8 +391,8 @@
             },
             "allResources": "All resources",
             "assets": "Assets",
-            "management": "Management",
-            "resourceManagement": "Resource management",
+            "settings": "Settings",
+            "publishing": "Publishing",
             "timeSeriesSetting": {
                 "title": "Time series settings",
                 "hasTime": "Has time?",

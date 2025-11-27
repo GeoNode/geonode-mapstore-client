@@ -12,14 +12,16 @@ import DetailsAssets from '../components/DetailsAssets';
 import DetailsData from '../components/DetailsData';
 import DetailsLinkedResources from '../components/DetailsLinkedResources';
 import DetailsSettings from '../components/DetailsSettings';
+import DetailsShare from '../components/DetailsShare';
 import { setResourceExtent, updateResourceProperties } from '@js/actions/gnresource';
 import { show } from '@mapstore/framework/actions/notifications';
 
 const tabComponents = {
     'locations': connect(() => ({}), { onSetExtent: setResourceExtent })(DetailsLocations),
-    'linked-resources': DetailsLinkedResources,
+    'relations': DetailsLinkedResources,
     'assets': connect(() => ({}), { onNotify: show, onChange: updateResourceProperties })(DetailsAssets),
     'data': connect(() => ({}), { onChange: updateResourceProperties })(DetailsData),
+    'share': DetailsShare,
     'settings': connect(() => ({}), { onChange: updateResourceProperties })(DetailsSettings)
 };
 

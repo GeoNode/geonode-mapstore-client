@@ -31,6 +31,9 @@ import { exportDataResultsControlEnabledSelector, checkingExportDataEntriesSelec
 import { currentLocaleSelector } from '@mapstore/framework/selectors/locale';
 import { checkExportDataEntries, removeExportDataResult } from '@mapstore/framework/actions/layerdownload';
 import ExportDataResultsComponent from '@mapstore/framework/components/data/download/ExportDataResultsComponent';
+import FlexBox from '@mapstore/framework/components/layout/FlexBox';
+import Spinner from '@mapstore/framework/components/layout/Spinner';
+import { getCurrentResourceCopyLoading, getCurrentResourceClonedUrl } from '@js/selectors/resourceservice';
 
 // buttons override to use in ActionNavbar for plugin imported from mapstore
 
@@ -192,4 +195,31 @@ export const AddWidgetActionButton = connect(
             <Message msgId="gnviewer.addWidget" />
         </Button>
     );
+});
+
+export const ResourceCloningIndicator = connect(
+    (state) => ({
+        isCopying: getCurrentResourceCopyLoading(state),
+        clonedResourceUrl: getCurrentResourceClonedUrl(state)
+    })
+)(({ isCopying, clonedResourceUrl }) => {
+    const className = 'text-primary ms-text _font-size-sm _strong';
+    if (isCopying) {
+        return (
+            <FlexBox centerChildrenVertically gap="xs" className={className}>
+                <Spinner />
+                <Message msgId="gnviewer.cloning" />
+            </FlexBox>
+        );
+    }
+
+    if (clonedResourceUrl) {
+        return (
+            <a href={clonedResourceUrl} className={className}>
+                <Message msgId="gnviewer.navigateToClonedResource" />
+            </a>
+        );
+    }
+
+    return null;
 });

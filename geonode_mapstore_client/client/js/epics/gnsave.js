@@ -75,13 +75,15 @@ import {
 } from '@js/api/geonode/security';
 import {
     STOP_ASYNC_PROCESS,
-    startAsyncProcess
+    startAsyncProcess,
+    updateAsyncProcess
 } from '@js/actions/resourceservice';
 import {
     ResourceTypes,
     cleanCompactPermissions,
     toGeoNodeMapConfig,
-    RESOURCE_MANAGEMENT_PROPERTIES,
+    RESOURCE_PUBLISHING_PROPERTIES,
+    RESOURCE_OPTIONS_PROPERTIES,
     getDimensions,
     isDefaultDatasetSubtype
 } from '@js/utils/ResourceUtils';
@@ -93,8 +95,9 @@ import { updateNode, updateSettingsParams } from '@mapstore/framework/actions/la
 import { layersSelector, getSelectedLayer as getSelectedNode } from '@mapstore/framework/selectors/layers';
 import { styleServiceSelector, getUpdatedLayer, selectedStyleSelector } from '@mapstore/framework/selectors/styleeditor';
 import LayersAPI from '@mapstore/framework/api/geoserver/Layers';
+import { wrapStartStop } from '@mapstore/framework/observables/epics';
 
-const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys(RESOURCE_MANAGEMENT_PROPERTIES);
+const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys({...RESOURCE_PUBLISHING_PROPERTIES, ...RESOURCE_OPTIONS_PROPERTIES});
 
 function parseMapBody(body) {
     const geoNodeMap = toGeoNodeMapConfig(body.data);
@@ -115,8 +118,9 @@ const setDefaultStyle = (state, id) => {
     }
     const {style: currentStyleName} = getSelectedNode(state) ?? {};
     const initialStyleName = getInitialDatasetLayerStyle(state);
+    const layers = layersSelector(state);
 
-    if (id && initialStyleName && currentStyleName !== initialStyleName) {
+    if (id && !isEmpty(layers) && initialStyleName && currentStyleName !== initialStyleName) {
         const { baseUrl = '' } = styleServiceSelector(state);
         return {
             request: () => LayersAPI.updateDefaultStyle({
@@ -417,10 +421,19 @@ export const gnWatchStopCopyProcessOnSave = (action$, store) =>
             }
             return Observable.defer(() => getResourceByUuid(newResourceUuid))
                 .switchMap((resource) => {
-                    window.location.href = parseDevHostname(resource?.detail_url);
-                    return Observable.empty();
+                    const updatedPayload = {
+                        ...action.payload,
+                        clonedResourceUrl: parseDevHostname(resource?.detail_url)
+                    };
+                    return Observable.of(updateAsyncProcess(updatedPayload));
                 })
-                .startWith(loadingResourceConfig(true));
+                .catch(() => {
+                    return Observable.of(loadingResourceConfig(false));
+                })
+                .let(wrapStartStop(
+                    loadingResourceConfig(true),
+                    loadingResourceConfig(false)
+                ));
         });
 
 export default {

@@ -226,6 +226,7 @@
             "deleting": "Löschen...",
             "cloning": "Klonen...",
             "clone": "Klon",
+            "navigateToClonedResource": "Zum geklonten Ressource navigieren",
             "stylesFirstClone": "An den Stilen vorgenommene Änderungen gelten nur für den aktuellen Layer in Ihrer Karte und nicht für den ursprünglichen Datensatz.",
             "title": "Titel",
             "titlePlaceholder": "Titel eingeben...",
@@ -359,7 +360,7 @@
             "readMore": "Weiterlesen",
             "readLess": "Weniger lesen",
             "linkedResources": {
-                "label": "Verknüpfte Ressourcen",
+                "label": "Beziehungen",
                 "linkedBy": "Verbunden von",
                 "linkedTo": "Verbunden mit",
                 "uses": "Verwendet",
@@ -418,10 +419,10 @@
                     }
                 }
             },
-            "allResources": "All resources",
+            "allResources": "Alle Ressourcen",
             "assets": "Assets",
-            "management": "Verwaltung",
-            "resourceManagement": "Ressourcenverwaltung",
+            "settings": "Einstellungen",
+            "publishing": "Veröffentlichung",
             "timeSeriesSetting": {
                 "title": "Zeitreiheneinstellungen",
                 "hasTime": "Hat Zeit?",

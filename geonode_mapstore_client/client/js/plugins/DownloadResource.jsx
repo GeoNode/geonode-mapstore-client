@@ -39,6 +39,7 @@ const DownloadButton = ({
     renderType = "button",
     showIcon,
     downloadMsgId = "gnviewer.download",
+    tooltipId = downloadMsgId, // for backward compatibility
     allowedSources = [SOURCE_TYPES.LOCAL, SOURCE_TYPES.REMOTE],
     downloading
 }) => {
@@ -62,7 +63,7 @@ const DownloadButton = ({
         return downloadInfo.url ? (
             <Component
                 {...isButton && { variant, size }}
-                {...showIcon && { tooltipId: downloadMsgId }}
+                {...showIcon && { tooltipId }}
                 download
                 href={ downloadInfo.url }
                 target="_blank"
@@ -81,7 +82,7 @@ const DownloadButton = ({
             disabled={!!downloading}
             onClick={() => downloading ? null : onAction(_resource)}
             {...isButton && { variant, size}}
-            {...showIcon && { tooltipId: downloadMsgId }}
+            {...showIcon && { tooltipId }}
         >
             {showIcon
                 ? <Glyphicon glyph="download" />

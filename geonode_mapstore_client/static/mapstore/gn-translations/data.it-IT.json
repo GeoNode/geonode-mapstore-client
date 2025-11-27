@@ -228,6 +228,7 @@
             "deleting": "Eliminazione in corso...",
             "cloning": "Copia in corso...",
             "clone": "Clona",
+            "navigateToClonedResource": "Naviga alla risorsa clonata",
             "stylesFirstClone": "Le modifiche apportate agli stili verranno applicate solo al livello corrente nella mappa e non al set di dati originale.",
             "title": "Titolo",
             "titlePlaceholder": "Aggiungi un titolo...",
@@ -361,7 +362,7 @@
             "readMore": "Leggi di più",
             "readLess": "Leggi di meno",
             "linkedResources": {
-                "label": "Risorse collegate",
+                "label": "Relazioni",
                 "linkedBy": "Collegato da",
                 "linkedTo": "Collegato a",
                 "uses": "Usi",
@@ -420,10 +421,10 @@
                     }
                 }
             },
-            "allResources": "All resources",
-            "assets": "Assets",
-            "management": "Gestione",
-            "resourceManagement": "Gestione della risorsa",
+            "allResources": "Tutte le risorse",
+            "assets": "Asset",
+            "settings": "Impostazioni",
+            "publishing": "Pubblicazione",
             "timeSeriesSetting": {
                 "title": "Impostazioni serie temporali",
                 "hasTime": "Ha tempo?",
