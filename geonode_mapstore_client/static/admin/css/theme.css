@@ -1,0 +1,89 @@
+html[data-theme="light"],
+:root {
+    --primary: var(--ms-primary);
+    --secondary: var(--ms-main-bg);
+    --accent: var(--ms-main-color);
+    --primary-fg: var(--ms-primary-contrast);
+    --body-fg: var(--ms-main-color);
+    --body-bg: var(--ms-main-bg);
+
+    --body-quiet-color: var(--ms-main-color);
+    --body-medium-color: var(--ms-main-color);
+    --body-loud-color: var(--ms-main-color);
+
+    --header-color: var(--ms-main-color);
+    --header-branding-color: var(--ms-main-color);
+    --header-bg: var(--ms-main-bg);
+    --header-link-color: var(--ms-link-color);
+
+    --breadcrumbs-fg: var(--ms-main-color);
+    --breadcrumbs-link-fg: var(--ms-link-color);
+    --breadcrumbs-bg: var(--ms-main-bg);
+
+    --link-fg: var(--ms-link-color);
+    --link-hover-color: var(--ms-link-hover-color);
+    --link-selected-fg: var(--ms-link-hover-color);
+
+    --hairline-color: var(--ms-main-border-color);
+    --border-color: var(--ms-main-border-color);
+
+    --error-fg: var(--ms-danger);
+    --message-success-bg: rgb(from var(--ms-success) r g b / 15%);
+    --message-warning-bg: rgb(from var(--ms-warning) r g b / 15%);
+    --message-error-bg: rgb(from var(--ms-danger) r g b / 15%);
+
+    --darkened-bg: var(--ms-main-variant-bg);
+    --selected-bg: var(--ms-selected-bg);
+    --selected-row: var(--ms-selected-bg);
+
+    --button-fg: var(--ms-button-primary-color);
+    --button-bg: var(--ms-button-primary-bg);
+    --button-hover-bg: var(--ms-button-primary-hover-bg);
+
+    --default-button-bg: var(--ms-button-primary-bg);
+    --default-button-hover-bg: var(--ms-button-primary-hover-bg);
+
+    --close-button-bg: var(--ms-button-primary-bg);
+    --close-button-hover-bg: var(--ms-button-primary-hover-bg);
+
+    --delete-button-bg: var(--ms-button-danger-bg);
+    --delete-button-hover-bg: var(--ms-button-danger-hover-bg);
+
+    --object-tools-fg: var(--ms-button-primary-color);
+    --object-tools-bg: var(--ms-button-primary-bg);
+    --object-tools-hover-bg: var(--ms-button-primary-hover-bg);
+}
+
+#header,
+div.breadcrumbs {
+    border-bottom: 1px solid var(--ms-main-border-color);
+}
+
+#logo {
+    max-height: 2rem;
+    display: inline;
+    margin-right: 10px
+}
+
+#nav-filter {
+    background-color: var(--ms-main-bg);
+    margin: 0.5rem;
+    width: calc(100% - 1rem);
+}
+
+.submit-row,
+.paginator {
+    position: sticky;
+    bottom: 0;
+}
+
+.module caption, .inline-group h2 {
+    background-color: var(--ms-primary);
+    color: var(--ms-primary-contrast);
+    --header-link-color: var(--ms-primary-contrast);
+    --header-color: var(--ms-primary-contrast);
+}
+
+
+
+
