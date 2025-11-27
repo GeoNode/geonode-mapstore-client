@@ -70,6 +70,8 @@
         let supportedDatasetFileTypes = geoNodeSettings.SUPPORTED_DATASET_FILE_TYPES;
         let catalogHomeRedirectsTo = geoNodeSettings.CATALOG_HOME_REDIRECTS_TO;
         let catalogPagePath = geoNodeSettings.CATALOG_PAGE_PATH;
+        let isPublishedOptionEnabled = geoNodeSettings.RESOURCE_PUBLISHING || false;
+        let isApprovedOptionEnabled = geoNodeSettings.ADMIN_MODERATE_UPLOADS || false;
         let customFilters = geoNodeSettings.CUSTOM_FILTERS || {
             "my-resources": {
                 "filter{owner.pk}": "{state('user') && state('user').pk}"
@@ -210,7 +212,9 @@
                     },
                     staticPath: "{% static '' %}",
                     catalogHomeRedirectsTo: catalogHomeRedirectsTo,
-                    catalogPagePath: catalogPagePath
+                    catalogPagePath: catalogPagePath,
+                    isPublishedOptionEnabled: isPublishedOptionEnabled,
+                    isApprovedOptionEnabled: isApprovedOptionEnabled
                 }
             },
         };

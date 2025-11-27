@@ -20,13 +20,26 @@ class SearchService(models.Model):
         verbose_name = _("Search Service")
 
     def __str__(self):
-        return f"{self.display_name} - {self.url}"
+        return f"{self.name} - {self.url}"
 
+    name = models.CharField(
+        max_length=250,
+        null=False,
+        verbose_name="Service Name",
+        help_text="Name of the Search Service",
+        default="",
+    )
     display_name = models.CharField(
         max_length=250,
         null=False,
         verbose_name="Result string",
-        help_text="String to be returned as result, Ex. 'UNESCO - {properties.site}'",
+        help_text="Literal template to be returned as result, Ex. 'UNESCO - ${properties.site}'",
+    )
+    sub_title = models.CharField(
+        max_length=250,
+        null=True,
+        verbose_name="Service SubTitle",
+        help_text="Sub title of the Search Service",
     )
     priority = models.IntegerField(null=False, verbose_name="Priority", default=3)
     url = models.CharField(
