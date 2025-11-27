@@ -384,7 +384,7 @@
                 "message": {
                     "success": {
                         "removeLinkedResource": "Recurso vinculado removido com sucesso",
-                        "linkResource": "Recurso vinculado salvo cum sucesso"
+                        "linkResource": "Recurso vinculado salvo com sucesso"
                     },
                     "failure": {
                         "removeLinkedResource": "Falha na remoção do recurso vinculado",
