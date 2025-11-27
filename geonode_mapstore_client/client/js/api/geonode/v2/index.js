@@ -160,7 +160,7 @@ export const getDocuments = ({
     q,
     pageSize = 20,
     page = 1,
-    sort,
+    sort
 }) => {
     return axios
         .get(
@@ -173,7 +173,7 @@ export const getDocuments = ({
                     }),
                     ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
                     page,
-                    page_size: pageSize,
+                    page_size: pageSize
                     // api_preset: API_PRESET.DOCUMENTS
                 },
                 ...paramsSerializer()

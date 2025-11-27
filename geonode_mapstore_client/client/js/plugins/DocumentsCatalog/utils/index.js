@@ -28,7 +28,7 @@ const calculateBbox = (coordinates) => {
 
 export const documentsToLayerConfig = (documents) => {
     const documentPromises = documents.map(doc => getDocumentByPk(doc.pk));
-    const unId= uuid();
+    const unId = uuid();
 
     return Promise.all(documentPromises).then(fullDocs => {
         const extendedParams = {};
@@ -47,10 +47,10 @@ export const documentsToLayerConfig = (documents) => {
                     properties: {
                         pk: doc.pk,
                         title: doc.title,
-                        abstract: doc.abstract,
+                        "abstract": doc.abstract,
                         detail_url: doc.detail_url,
                         embed_url: doc.embed_url,
-                        uuid: doc.uuid,
+                        uuid: doc.uuid
                     },
                     geometry: {
                         type: "Point",
@@ -82,7 +82,7 @@ export const documentsToLayerConfig = (documents) => {
                     rules: [
                         {
                             name: "Default Point Style",
-                            ruleId:'documents:' + unId,
+                            ruleId: 'documents:' + unId,
                             symbolizers: [
                                 {
                                     kind: "Mark",

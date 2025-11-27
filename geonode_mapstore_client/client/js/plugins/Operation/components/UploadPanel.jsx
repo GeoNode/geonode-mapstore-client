@@ -57,7 +57,7 @@ function UploadPanel({
     remoteTypeErrorMessageId,
     remoteTypeFromUrl,
     isRemoteTypesDisabled,
-    uploadActions=[{ labelId: 'gnviewer.upload' }],
+    uploadActions = [{ labelId: 'gnviewer.upload' }]
 }) {
 
     const inputFile = useRef();
@@ -113,7 +113,6 @@ function UploadPanel({
         return handleAdd([getDefaultRemoteResource({ id: uuidv1(), type: 'remote', url: '' })]);
     };
 
-    
 
     const supportedLabels = uniq(supportedFiles.map(supportedFile => supportedFile.label)).join(', ');
     const uploadsList = uploads.filter(upload => upload.type === 'file' ? upload.supported : true);
@@ -224,20 +223,20 @@ function UploadPanel({
                                     </ButtonWithTooltip>
                                     :
                                     !loading ? (
-                                    <>
-                                        {uploadActions?.map(({ labelId, variant, action, showConfirm: shouldConfirm }, id) => (
-                                            <Button
-                                                key={id}
-                                                variant={variant ? variant : "primary"}
-                                                disabled={readyUploads.length === 0 || disabled}
-                                                style={{ marginRight: id < uploadActions.length - 1 ? 8 : 0 }}
-                                                onClick={() => handleUpload(shouldConfirm, action)}
-                                            >
-                                                <Message msgId={labelId} />
-                                            </Button>
-                                        ))}
+                                        <>
+                                            {uploadActions?.map(({ labelId, variant, action, showConfirm: shouldConfirm }, id) => (
+                                                <Button
+                                                    key={id}
+                                                    variant={variant ? variant : "primary"}
+                                                    disabled={readyUploads.length === 0 || disabled}
+                                                    style={{ marginRight: id < uploadActions.length - 1 ? 8 : 0 }}
+                                                    onClick={() => handleUpload(shouldConfirm, action)}
+                                                >
+                                                    <Message msgId={labelId} />
+                                                </Button>
+                                            ))}
                                         </>
-                                        ) : <Button
+                                    ) : <Button
                                         variant="primary"
                                         onClick={() => onCancel(readyUploads.map((upload) => upload.id))}
                                     >
@@ -251,7 +250,7 @@ function UploadPanel({
                 </ViewerLayout>
             </Dropzone>
         </>
-        
+
     );
 }
 

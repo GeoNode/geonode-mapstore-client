@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useRef, useState, useEffect, Component } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FormGroup, Glyphicon, Checkbox } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
@@ -46,7 +46,6 @@ function DocumentsCompactCatalog({
     const [isNextPageAvailable, setIsNextPageAvailable] = useState(false);
     const [q, setQ] = useState('');
     const [selectedDocuments, setSelectedDocuments] = useState([]);
-    const [values, setValues] = useState({});
     const isMounted = useRef();
 
     const handleToggleDocument = (entry, checked) => {
@@ -68,7 +67,7 @@ function DocumentsCompactCatalog({
 
 
     // Not finalized yet - mock data for filters
-    // Need to use facets from API response to build this 
+    // Need to use facets from API response to build this
     const fields = [
         {
             id: "type",
@@ -77,10 +76,10 @@ function DocumentsCompactCatalog({
             style: undefined,
             key: "filter{extension}",
             label: "Type",
-            placeholderId: 'Select Type',
+            placeholder: 'Select Type',
             options: [
                 { value: 'jpg', label: 'jpg' },
-                { value: 'png', label: 'png' },
+                { value: 'png', label: 'png' }
             ]
         },
         {
@@ -93,7 +92,7 @@ function DocumentsCompactCatalog({
             label: "Category",
             description: 'Filter by category',
             options: [
-                { value: 'boundaries', label: 'Boundaries' },
+                { value: 'boundaries', label: 'Boundaries' }
             ]
         },
         {
@@ -105,9 +104,9 @@ function DocumentsCompactCatalog({
             label: "Keyword",
             facet: 'keyword',
             labelId: "Keyword",
-            placeholderId: 'Select Keyword',
+            placeholder: 'Select Keyword',
             options: [
-                { value: 'dsc-wx220', label: 'dsc-wx220' },
+                { value: 'dsc-wx220', label: 'dsc-wx220' }
             ]
         }
     ];
@@ -175,14 +174,9 @@ function DocumentsCompactCatalog({
         updateRequest.current({ page: 1, reset: true });
     }, [q]);
 
-    useEffect(() => {
-        setPage(1);
-        setSelectedDocuments([]);
-        updateRequest.current({ page: 1, reset: true });
-    }, [values]);
 
-    function handleSelectResource(entries) {
-        onSelect(entries);
+    function handleSelectResource(selectedEntries) {
+        onSelect(selectedEntries);
     }
 
     const formgroup = fields.map((field, id) => {
@@ -191,18 +185,18 @@ function DocumentsCompactCatalog({
                 id: formId,
                 labelId,
                 label,
-                placeholderId,
+                placeholder,
                 options: optionsField
             } = field;
 
             const key = `${id}-${formId}`;
-            const filterKey = field.key;
+            // const filterKey = field.key;
 
-            const currentValues = values[filterKey] || [];
+            const currentValues = [];
             const options = (optionsField);
             const getFilterLabelById = (value) => options.find(option => option.value === value)?.label;
 
-            // Need to change this after using facets 
+            // Need to change this after using facets
 
             return (
                 <FormGroup
@@ -213,7 +207,7 @@ function DocumentsCompactCatalog({
                     <SelectSync
                         value={currentValues.map((value) => ({ value, label: getFilterLabelById(value) || value }))}
                         multi
-                        placeholder={placeholderId}
+                        placeholder={placeholder}
                         onChange={() => {
                             //  we need to use // updateRequest
                         }}
@@ -251,7 +245,6 @@ function DocumentsCompactCatalog({
         <div className="gn-resources-catalog-filter-form" >
             {formgroup}
         </div>
-
 
 
         <div className="gn-resources-catalog-add-layer">

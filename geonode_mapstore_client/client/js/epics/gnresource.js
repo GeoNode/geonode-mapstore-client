@@ -600,7 +600,7 @@ export const closeInfoPanelOnMapClick = (action$, store) => action$.ofType(CLICK
 // Check which control is enabled between annotations, datasetsCatalog and documentsCatalog
 const oneOfTheOther = (control) => {
     if (control === 'rightOverlay') return null;
-    
+
     // Handle three-way alternates
     if (control === 'annotations') {
         return {
@@ -620,7 +620,7 @@ const oneOfTheOther = (control) => {
             alternates: ['annotations', 'datasetsCatalog']
         };
     }
-    
+
     return {
         control,
         alternates: []
@@ -681,22 +681,22 @@ export const closeOpenPanels = (action$, store) => action$.ofType(SET_CONTROL_PR
 export const closeDatasetCatalogPanel = (action$, store) => action$.ofType(NEW_MAPINFO_REQUEST)
     .filter(() => {
         const state = store.getState();
-        return isMapInfoOpen(state) && 
-               (get(state, "controls.datasetsCatalog.enabled") || 
+        return isMapInfoOpen(state) &&
+               (get(state, "controls.datasetsCatalog.enabled") ||
                 get(state, "controls.documentsCatalog.enabled"));
     })
     .switchMap(() => {
         const state = store.getState();
         const actions = [];
-        
+
         if (get(state, "controls.datasetsCatalog.enabled")) {
             actions.push(setControlProperty('datasetsCatalog', 'enabled', false));
         }
-        
+
         if (get(state, "controls.documentsCatalog.enabled")) {
             actions.push(setControlProperty('documentsCatalog', 'enabled', false));
         }
-        
+
         return Observable.of(...actions);
     });
 

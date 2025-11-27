@@ -97,11 +97,11 @@ const ConnectedDocumentsCatalogPlugin = connect(
         enabled,
         existingLayers
     })), {
-    onAdd: addLayer,
-    onUpdate: updateNode,
-    onClose: setControlProperty.bind(null, 'documentsCatalog', 'enabled', false),
-    onZoomTo: zoomToExtent
-}
+        onAdd: addLayer,
+        onUpdate: updateNode,
+        onClose: setControlProperty.bind(null, 'documentsCatalog', 'enabled', false),
+        onZoomTo: zoomToExtent
+    }
 )(DocumentsCatalogPlugin);
 
 const DocumentsCatalogButton = ({

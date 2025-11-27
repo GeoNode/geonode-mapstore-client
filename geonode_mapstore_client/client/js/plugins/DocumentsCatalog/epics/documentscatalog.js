@@ -44,7 +44,7 @@ export const gnUpdateDocumentsCatalogMapLayout = (action$, store) =>
                     ...layout?.boundingSidebarRect
                 }
             });
-            return { ...action, source: LayoutSections.PANEL }; 
+            return { ...action, source: LayoutSections.PANEL };
         });
 
 export default {
