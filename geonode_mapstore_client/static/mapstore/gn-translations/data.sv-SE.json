@@ -517,7 +517,13 @@
             "assetUploadUnsupportedFormatError": "Unsupported file format(s) '{ext}', cannot upload the file(s)",
             "assetDelete": "Asset delete",
             "assetDeleteErrorMessage": "Failed to delete asset",
-            "noAssets": "No assets found"
+            "noAssets": "No assets found",
+            "addDocument": "Add documents layer",
+            "addSearchAsLayer": "Add Search as Layer",
+            "documentsCatalogTitle": "Documents catalog",
+            "documentsCatalogFilterPlaceholder": "Filter documents by title or abstract...",
+            "documentsCatalogEntriesNoResults": "No results match your search",
+            "selectAll": "Select All"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

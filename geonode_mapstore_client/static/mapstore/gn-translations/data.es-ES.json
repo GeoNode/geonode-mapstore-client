@@ -251,7 +251,12 @@
             "applyCurrentStyleToLayer": "Aplicar el estilo actual a la capa",
             "deleteCurrentStyle": "Eliminar estilo actual",
             "createNewStyle": "Crear nuevo estilo",
-
+            "addDocument": "Agregar capa de documentos",
+            "addSearchAsLayer": "Agregar búsqueda como capa",
+            "documentsCatalogTitle": "Catálogo de documentos",
+            "documentsCatalogFilterPlaceholder": "Filtrar documentos por título o resumen...",
+            "documentsCatalogEntriesNoResults": "No hay resultados que coincidan con su búsqueda",
+            "selectAll": "Seleccionar todo",
             "createStyleTitle": "Agregar nuevo estilo",
             "createStyleTitleInput": "Título:",
             "createStyleClose": "Cerrar",

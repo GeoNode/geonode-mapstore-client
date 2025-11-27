@@ -247,6 +247,12 @@
             "datasetsCatalogFilterPlaceholder": "Filter datasets by title or abstract...",
             "datasetsCatalogEntriesNoResults": "No results match your search",
             "legend": "Legend",
+            "addDocument": "Add documents layer",
+            "addSearchAsLayer": "Add Search as Layer",
+            "documentsCatalogTitle": "Documents catalog",
+            "documentsCatalogFilterPlaceholder": "Filter documents by title or abstract...",
+            "documentsCatalogEntriesNoResults": "No results match your search",
+            "selectAll": "Select All",
 
             "zoomToLayer": "Zoom to layer extent",
             "applyCurrentStyleToLayer": "Apply current style to layer",

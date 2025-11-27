@@ -156,6 +156,40 @@ export const getDatasets = ({
         });
 };
 
+export const getDocuments = ({
+    q,
+    pageSize = 20,
+    page = 1,
+    sort,
+}) => {
+    return axios
+        .get(
+            getEndpointUrl(DOCUMENTS), {
+                params: {
+                    'filter{resource_type.in}': 'document',
+                    ...(q && {
+                        search: q,
+                        search_fields: ['title', 'abstract']
+                    }),
+                    ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
+                    page,
+                    page_size: pageSize,
+                    // api_preset: API_PRESET.DOCUMENTS
+                },
+                ...paramsSerializer()
+            })
+        .then(({ data }) => {
+            return {
+                totalCount: data.total,
+                isNextPageAvailable: !!data.links.next,
+                resources: (data.documents || [])
+                    .map((resource) => {
+                        return resource;
+                    })
+            };
+        });
+};
+
 export const getDocumentsByDocType = (docType = 'image', {
     q,
     pageSize = 20,
