@@ -173,3 +173,15 @@ class PluginsConfigView(APIView):
         )
 
         return Response({"plugins": plugins})
+
+
+
+class RequestConfigurationView(APIView):
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        from geonode_mapstore_client.registry import RequestConfigurationRulesRegistry
+
+        registry = RequestConfigurationRulesRegistry()
+        rules = registry.get_rules(request)
+        return Response(rules)
