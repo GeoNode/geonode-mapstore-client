@@ -51,6 +51,16 @@ export const getCurrentResourceCopyLoading = (state) => {
     return isLoading;
 };
 
+export const getCurrentResourceClonedUrl = (state) => {
+    const resource = getResourceData(state);
+    const copyProcess = resource && state?.resourceservice?.processes?.find(process =>
+        process?.resource?.pk === resource?.pk
+            && process?.processType === ProcessTypes.COPY_RESOURCE
+            && process?.completed === true
+    );
+    return copyProcess?.clonedResourceUrl || null;
+};
+
 export const getCurrentResourceDeleteLoading = (state) => {
     const resource = getResourceData(state);
     const permissionsProcess = resource && state?.resourceservice?.processes?.find(process =>

@@ -226,6 +226,7 @@
             "deleting": "Löschen...",
             "cloning": "Klonen...",
             "clone": "Klon",
+            "navigateToClonedResource": "Zum geklonten Ressource navigieren",
             "stylesFirstClone": "An den Stilen vorgenommene Änderungen gelten nur für den aktuellen Layer in Ihrer Karte und nicht für den ursprünglichen Datensatz.",
             "title": "Titel",
             "titlePlaceholder": "Titel eingeben...",
