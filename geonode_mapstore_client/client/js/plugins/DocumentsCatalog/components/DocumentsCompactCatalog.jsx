@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, GeoSolutions Sas.
+ * Copyright 2025, GeoSolutions Sas.
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
@@ -26,7 +26,7 @@ function DocumentsCompactCatalog({
     noResultId,
     loading: resourceLoading,
     selectAll,
-    fields,
+    fields
 }) {
 
     const scrollContainer = useRef();
@@ -154,7 +154,7 @@ function DocumentsCompactCatalog({
                 id={'documents-catalog-filter-form'}
                 fields={fields}
                 query={params}
-                onChange={(params) => onSearch(params)}
+                onChange={(newParams) => onSearch(newParams)}
                 onClear={() => onSearch({ clear: true })}
                 selectAll={selectAll}
                 handleSelectAll={handleSelectAll}

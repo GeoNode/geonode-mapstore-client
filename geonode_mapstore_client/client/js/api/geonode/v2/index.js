@@ -175,7 +175,7 @@ export const getDocuments = ({
         ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
         page,
         page_size: pageSize,
-        'filter{resource_type.in}': 'document',
+        'filter{resource_type.in}': 'document'
     };
     return axios
         .get(

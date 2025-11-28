@@ -67,9 +67,9 @@ function DocumentsFiltersForm({
         extent,
         fields: fieldsProp
     }, context?.plugins?.requires,
-        {
-            filterFunc: item => isMenuItemSupportedSupported(item, availableResourceTypes, user)
-        });
+    {
+        filterFunc: item => isMenuItemSupportedSupported(item, availableResourceTypes, user)
+    });
 
     const {
         fields

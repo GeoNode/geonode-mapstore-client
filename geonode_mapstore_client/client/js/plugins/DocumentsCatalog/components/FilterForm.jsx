@@ -71,8 +71,8 @@ function FiltersForm({
                 />
             </FlexBox>
             <FlexBox style={{
-                padding: '0.5rem  0rem',
-             }} classNames={['ms-main-colors', '_corner-tl']} centerChildrenVertically gap="sm">
+                padding: '0.5rem  0rem'
+            }} classNames={['ms-main-colors', '_corner-tl']} centerChildrenVertically gap="sm">
                 <FlexBox.Fill>
                     <Checkbox
                         checked={isAllSelected}
