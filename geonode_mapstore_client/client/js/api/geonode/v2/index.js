@@ -160,27 +160,33 @@ export const getDocuments = ({
     q,
     pageSize = 20,
     page = 1,
-    sort
+    sort,
+    f,
+    customFilters = [],
+    config,
+    ...params
 }) => {
+    const _params = {
+        ...getQueryParams({...params, f}, customFilters),
+        ...(q && {
+            search: q,
+            search_fields: ['title', 'abstract']
+        }),
+        ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
+        page,
+        page_size: pageSize,
+        'filter{resource_type.in}': 'document',
+    };
     return axios
         .get(
             getEndpointUrl(DOCUMENTS), {
-                params: {
-                    'filter{resource_type.in}': 'document',
-                    ...(q && {
-                        search: q,
-                        search_fields: ['title', 'abstract']
-                    }),
-                    ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
-                    page,
-                    page_size: pageSize
-                    // api_preset: API_PRESET.DOCUMENTS
-                },
+                params: _params,
+                ...config,
                 ...paramsSerializer()
             })
         .then(({ data }) => {
             return {
-                totalCount: data.total,
+                total: data.total,
                 isNextPageAvailable: !!data.links.next,
                 resources: (data.documents || [])
                     .map((resource) => {

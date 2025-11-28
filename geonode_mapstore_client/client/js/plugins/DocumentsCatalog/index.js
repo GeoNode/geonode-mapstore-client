@@ -54,6 +54,7 @@ function DocumentsCatalog({
         {...props}
         loading={loading}
         onSelect={handleSelectResource}
+        fields={props.fields}
     />);
 }
 
@@ -66,7 +67,8 @@ DocumentsCatalog.propTypes = {
     placeholderId: PropTypes.string,
     onClose: PropTypes.func,
     onZoomTo: PropTypes.func,
-    existingLayers: PropTypes.array
+    existingLayers: PropTypes.array,
+    fields: PropTypes.array
 };
 
 DocumentsCatalog.defaultProps = {
@@ -80,7 +82,13 @@ DocumentsCatalog.defaultProps = {
     noResultId: 'gnviewer.documentsCatalogEntriesNoResults',
     onZoomTo: () => { },
     onClose: () => { },
-    existingLayers: []
+    existingLayers: [],
+    fields: [
+        { type: "search" },
+        { type: "select", facet: "category" },
+        { type: "select", facet: "keyword" },
+        { type: "select", facet: "extension" }
+    ]
 };
 
 function DocumentsCatalogPlugin({ enabled, ...props }) {

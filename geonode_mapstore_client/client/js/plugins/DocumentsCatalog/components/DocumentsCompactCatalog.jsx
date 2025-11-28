@@ -8,27 +8,17 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { FormGroup, Glyphicon, Checkbox } from 'react-bootstrap';
+import { Glyphicon, Checkbox } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@mapstore/framework/components/layout/Button';
-import useInfiniteScroll from '@js/hooks/useInfiniteScroll';
-import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Loader from '@mapstore/framework/components/misc/Loader';
 import ResourceCard from '@mapstore/framework/plugins/ResourcesCatalog/components/ResourceCard';
-import InputControl from '@mapstore/framework/plugins/ResourcesCatalog/components/InputControl';
-import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
-import ReactSelect from 'react-select';
-
-
-const SelectSync = localizedProps('placeholder')(ReactSelect);
-
+import FiltersForm from '../containers/DocumentsFiltersForm';
 
 function DocumentsCompactCatalog({
     request,
     responseToEntries,
-    pageSize,
     style,
-    placeholderId,
     addSearchAsLayer,
     onSelect,
     onClose,
@@ -36,15 +26,17 @@ function DocumentsCompactCatalog({
     noResultId,
     loading: resourceLoading,
     selectAll,
-    params
+    fields,
 }) {
 
     const scrollContainer = useRef();
     const [entries, setEntries] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(1);
     const [isNextPageAvailable, setIsNextPageAvailable] = useState(false);
-    const [q, setQ] = useState('');
+    const [params, setParams] = useState({
+        page_size: 20,
+        page: 1
+    });
     const [selectedDocuments, setSelectedDocuments] = useState([]);
     const isMounted = useRef();
 
@@ -65,66 +57,11 @@ function DocumentsCompactCatalog({
         }
     };
 
-
-    // Not finalized yet - mock data for filters
-    // Need to use facets from API response to build this
-    const fields = [
-        {
-            id: "type",
-            labelId: "Type",
-            type: "select",
-            style: undefined,
-            key: "filter{extension}",
-            label: "Type",
-            placeholder: 'Select Type',
-            options: [
-                { value: 'jpg', label: 'jpg' },
-                { value: 'png', label: 'png' }
-            ]
-        },
-        {
-            id: "category",
-            labelId: "Category",
-            filter: "filter{category.identifier.in}",
-            type: "select",
-            style: undefined,
-            key: "filter{category.identifier.in}",
-            label: "Category",
-            description: 'Filter by category',
-            options: [
-                { value: 'boundaries', label: 'Boundaries' }
-            ]
-        },
-        {
-            id: "keyword",
-            type: "select",
-            style: undefined,
-            filter: "filter{keywords.slug.in}",
-            key: "filter{keywords.slug.in}",
-            label: "Keyword",
-            facet: 'keyword',
-            labelId: "Keyword",
-            placeholder: 'Select Keyword',
-            options: [
-                { value: 'dsc-wx220', label: 'dsc-wx220' }
-            ]
-        }
-    ];
-
-
     const loadingActive = loading
         ? loading
         : !!resourceLoading;
 
-    useInfiniteScroll({
-        scrollContainer: scrollContainer.current,
-        shouldScroll: () => !loading && isNextPageAvailable,
-        onLoad: () => {
-            setPage(page + 1);
-        }
-    });
 
-    const isAllSelected = entries.length > 0 && selectedDocuments.length === entries.length;
 
     const updateRequest = useRef();
     updateRequest.current = (options) => {
@@ -134,12 +71,7 @@ function DocumentsCompactCatalog({
             }
 
             setLoading(true);
-            request({
-                ...params,
-                q,
-                page: options.page,
-                pageSize
-            })
+            request(options)
                 .then((response) => {
                     if (isMounted.current) {
                         const newEntries = responseToEntries(response);
@@ -162,62 +94,33 @@ function DocumentsCompactCatalog({
         };
     }, []);
 
-    useEffect(() => {
-        if (page > 1) {
-            updateRequest.current({ page });
-        }
-    }, [page]);
 
     useEffect(() => {
-        setPage(1);
         setSelectedDocuments([]);
-        updateRequest.current({ page: 1, reset: true });
-    }, [q]);
+        updateRequest.current({ ...params, page: 1, reset: true });
+    }, [JSON.stringify(params)]);
 
 
     function handleSelectResource(selectedEntries) {
         onSelect(selectedEntries);
     }
 
-    const formgroup = fields.map((field, id) => {
-        if (field.type === 'select') {
-            const {
-                id: formId,
-                labelId,
-                label,
-                placeholder,
-                options: optionsField
-            } = field;
-
-            const key = `${id}-${formId}`;
-            // const filterKey = field.key;
-
-            const currentValues = [];
-            const options = (optionsField);
-            const getFilterLabelById = (value) => options.find(option => option.value === value)?.label;
-
-            // Need to change this after using facets
-
-            return (
-                <FormGroup
-                    key={key}
-                    controlId={key}
-                >
-                    <label><strong>{labelId}</strong></label>
-                    <SelectSync
-                        value={currentValues.map((value) => ({ value, label: getFilterLabelById(value) || value }))}
-                        multi
-                        placeholder={placeholder}
-                        onChange={() => {
-                            //  we need to use // updateRequest
-                        }}
-                        options={options}
-                    />
-                </FormGroup>
-            );
+    const onSearch = (newParams = {}) => {
+        const { clear, ...rest } = newParams;
+        if (clear) {
+            setSelectedDocuments([]);
+            setParams({
+                page_size: 20,
+                page: 1
+            });
+            return;
         }
-        return null;
-    });
+        setParams(prev => ({
+            ...prev,
+            ...rest,
+            page: 1
+        }));
+    };
 
     return (<div
         className="gn-resources-catalog"
@@ -229,24 +132,19 @@ function DocumentsCompactCatalog({
                 <Glyphicon glyph="1-close" />
             </Button>
         </div>}
-        <div className="gn-resources-catalog-filter">
-            <InputControl
-                placeholder={placeholderId}
-                value={q}
-                debounceTime={300}
-                onChange={(value) => setQ(value)}
-            />
-            {(q && !loading) && <Button onClick={() => setQ('')}>
-                <Glyphicon glyph="remove" />
-            </Button>}
-            {loading && <Spinner />}
-        </div>
-
         <div className="gn-resources-catalog-filter-form" >
-            {formgroup}
+            <FiltersForm
+                id={'documents-catalog-filter-form'}
+                fields={fields}
+                query={params}
+                onChange={(params) => onSearch(params)}
+                onClear={() => onSearch({ clear: true })}
+                selectAll={selectAll}
+                handleSelectAll={handleSelectAll}
+                entries={entries}
+                selectedDocuments={selectedDocuments}
+            />
         </div>
-
-
         <div className="gn-resources-catalog-add-layer">
             <Button
                 variant="primary"
@@ -256,17 +154,6 @@ function DocumentsCompactCatalog({
                 <Message msgId={addSearchAsLayer} />
                 {selectedDocuments.length > 0 && ` (${selectedDocuments.length})`}
             </Button>
-        </div>
-
-        <div className="gn-resources-catalog-select-all">
-            <Checkbox
-                checked={isAllSelected}
-                onChange={(event) => handleSelectAll(event.target.checked)}
-                disabled={entries.length === 0}
-            >
-                <Message msgId={selectAll} />
-            </Checkbox>
-
         </div>
 
         <div
@@ -360,7 +247,10 @@ DocumentsCompactCatalog.propTypes = {
     onClose: PropTypes.func,
     onSelect: PropTypes.func,
     titleId: PropTypes.string,
-    noResultId: PropTypes.string
+    noResultId: PropTypes.string,
+    fields: PropTypes.array,
+    loading: PropTypes.bool,
+    style: PropTypes.object
 };
 
 DocumentsCompactCatalog.defaultProps = {
@@ -371,7 +261,13 @@ DocumentsCompactCatalog.defaultProps = {
     noResultId: 'gnviewer.resourcesCatalogEntriesNoResults',
     addSearchAsLayer: 'gnviewer.addSearchAsLayer',
     selectAll: 'gnviewer.selectAll',
-    onSelect: () => { }
+    onSelect: () => { },
+    fields: [
+        { type: "search" },
+        { type: "select", facet: "category" },
+        { type: "select", facet: "keyword" },
+        { type: "select", facet: "extension" }
+    ]
 };
 
 export default DocumentsCompactCatalog;
