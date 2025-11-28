@@ -323,9 +323,10 @@ const resourceTypes = {
         newResourceObservable: (options) =>
             Observable.defer(() => getNewGeoStoryConfig())
                 .switchMap((gnGeoStory) => {
+                    const currentStory = options.data || {...gnGeoStory, sections: [{...gnGeoStory.sections[0], id: uuid(),
+                        contents: [{...gnGeoStory.sections[0].contents[0], id: uuid()}]}]};
                     return Observable.of(
-                        setCurrentStory(options.data || {...gnGeoStory, sections: [{...gnGeoStory.sections[0], id: uuid(),
-                            contents: [{...gnGeoStory.sections[0].contents[0], id: uuid()}]}]}),
+                        setCurrentStory({...currentStory, defaultGeoStoryConfig: currentStory}),
                         setEditing(true),
                         setGeoStoryResource({
                             canEdit: true
