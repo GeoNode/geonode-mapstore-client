@@ -112,6 +112,7 @@ export const documentsToLayerConfig = (documents) => {
                             src="\${properties['embed_url']}" 
                             style="width: 100%; height: 500px; border: 1px solid #ddd; border-radius: 4px;"
                             frameborder="0"
+                            sandbox="allow-scripts allow-same-origin"
                             allowfullscreen>
                         </iframe>
                     </div>
@@ -121,3 +122,4 @@ export const documentsToLayerConfig = (documents) => {
     });
 };
 
+                  

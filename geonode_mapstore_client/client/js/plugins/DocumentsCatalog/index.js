@@ -26,9 +26,7 @@ import { documentsToLayerConfig } from '@js/plugins/DocumentsCatalog/utils';
 
 function DocumentsCatalog({
     onAdd,
-    onUpdate,
     onZoomTo,
-    existingLayers,
     ...props
 }) {
     const isMounted = useIsMounted();
@@ -63,11 +61,9 @@ DocumentsCatalog.propTypes = {
     responseToEntries: PropTypes.func,
     pageSize: PropTypes.number,
     onAdd: PropTypes.func,
-    onUpdate: PropTypes.func,
     placeholderId: PropTypes.string,
     onClose: PropTypes.func,
     onZoomTo: PropTypes.func,
-    existingLayers: PropTypes.array,
     fields: PropTypes.array
 };
 
@@ -76,13 +72,11 @@ DocumentsCatalog.defaultProps = {
     responseToEntries: res => res.resources,
     pageSize: 10,
     onAdd: () => { },
-    onUpdate: () => { },
     placeholderId: 'gnviewer.documentsCatalogFilterPlaceholder',
     titleId: 'gnviewer.documentsCatalogTitle',
     noResultId: 'gnviewer.documentsCatalogEntriesNoResults',
     onZoomTo: () => { },
     onClose: () => { },
-    existingLayers: [],
     fields: [
         { type: "search" },
         { type: "select", facet: "category" },
@@ -99,14 +93,11 @@ const ConnectedDocumentsCatalogPlugin = connect(
     createSelector([
         state => mapLayoutValuesSelector(state, { height: true }),
         state => state?.controls?.documentsCatalog?.enabled,
-        layersSelector
-    ], (style, enabled, existingLayers) => ({
+    ], (style, enabled) => ({
         style,
         enabled,
-        existingLayers
     })), {
         onAdd: addLayer,
-        onUpdate: updateNode,
         onClose: setControlProperty.bind(null, 'documentsCatalog', 'enabled', false),
         onZoomTo: zoomToExtent
     }
