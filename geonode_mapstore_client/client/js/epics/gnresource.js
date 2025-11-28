@@ -326,7 +326,7 @@ const resourceTypes = {
                     const currentStory = options.data || {...gnGeoStory, sections: [{...gnGeoStory.sections[0], id: uuid(),
                         contents: [{...gnGeoStory.sections[0].contents[0], id: uuid()}]}]};
                     return Observable.of(
-                        setCurrentStory({...currentStory, defaultGeoStoryConfig: currentStory}),
+                        setCurrentStory({...currentStory, defaultGeoStoryConfig: {...currentStory}}),
                         setEditing(true),
                         setGeoStoryResource({
                             canEdit: true
