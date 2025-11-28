@@ -14,7 +14,7 @@ import Button from '@mapstore/framework/components/layout/Button';
 import Loader from '@mapstore/framework/components/misc/Loader';
 import ResourceCard from '@mapstore/framework/plugins/ResourcesCatalog/components/ResourceCard';
 import FiltersForm from '../containers/DocumentsFiltersForm';
-
+import useInfiniteScroll from '@js/hooks/useInfiniteScroll';
 function DocumentsCompactCatalog({
     request,
     responseToEntries,
@@ -32,6 +32,7 @@ function DocumentsCompactCatalog({
     const scrollContainer = useRef();
     const [entries, setEntries] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [page, setPage] = useState(1);
     const [isNextPageAvailable, setIsNextPageAvailable] = useState(false);
     const [params, setParams] = useState({
         page_size: 20,
@@ -61,7 +62,13 @@ function DocumentsCompactCatalog({
         ? loading
         : !!resourceLoading;
 
-
+    useInfiniteScroll({
+        scrollContainer: scrollContainer.current,
+        shouldScroll: () => !loading && isNextPageAvailable,
+        onLoad: () => {
+            setPage(page + 1);
+        }
+    });
 
     const updateRequest = useRef();
     updateRequest.current = (options) => {
@@ -76,7 +83,10 @@ function DocumentsCompactCatalog({
                     if (isMounted.current) {
                         const newEntries = responseToEntries(response);
                         setIsNextPageAvailable(response.isNextPageAvailable);
-                        setEntries(options.page === 1 ? newEntries : [...entries, ...newEntries]);
+                        setEntries(options.page === 1
+                            ? newEntries
+                            : [...entries, ...newEntries.filter(e => !entries.some(en => en.pk === e.pk))]
+                        );
                         setLoading(false);
                     }
                 })
@@ -96,9 +106,16 @@ function DocumentsCompactCatalog({
 
 
     useEffect(() => {
+        setPage(1);
         setSelectedDocuments([]);
         updateRequest.current({ ...params, page: 1, reset: true });
     }, [JSON.stringify(params)]);
+
+    useEffect(() => {
+        if (page > 1) {
+            updateRequest.current({ ...params, page });
+        }
+    }, [page]);
 
 
     function handleSelectResource(selectedEntries) {
