@@ -26,6 +26,7 @@ import {
 import { updateGeoNodeSettings } from '@js/actions/gnsettings';
 import { requestResourceConfig } from '@js/actions/gnresource';
 import gnresourceEpics from '@js/epics/gnresource';
+import securityEpics from '@js/epics/security';
 import {
     setupConfiguration,
     initializeApp,
@@ -84,7 +85,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         const appEpics = cleanEpics({
                             ...configEpics,
-                            ...gnresourceEpics
+                            ...gnresourceEpics,
+                            ...securityEpics
                         });
 
                         storeEpicsNamesToExclude(appEpics);

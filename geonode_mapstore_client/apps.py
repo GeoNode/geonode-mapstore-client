@@ -88,6 +88,7 @@ def run_setup_hooks(*args, **kwargs):
         ),
         re_path(r"^metadata/(?P<pk>[^/]*)$", views.metadata, name='metadata'),
         re_path(r"^metadata/(?P<pk>[^/]*)/embed$", views.metadata_embed, name='metadata'),
+        re_path(r"^api/v2/reqrules$", views.RequestConfigurationView.as_view(), name="request-rules"),
         # required, otherwise will raise no-lookup errors to be analysed
         re_path(r"^api/v2/", include(router.urls)),
         
@@ -304,6 +305,11 @@ def run_setup_hooks(*args, **kwargs):
 
     setattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE", MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE)
     setattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SERVICES", MAPSTORE_DASHBOARD_CATALOGUE_SERVICES)
+    handlers = getattr(settings, "REQUEST_CONFIGURATION_RULES_HANDLERS", [])
+    handlers.extend([
+        "geonode_mapstore_client.handlers.BaseConfigurationRuleHandler",
+    ])
+    setattr(settings, "REQUEST_CONFIGURATION_RULES_HANDLERS", handlers)
 
 
 def connect_geoserver_style_visual_mode_signal():
@@ -324,4 +330,8 @@ class AppConfig(BaseAppConfig):
         if not apps.ready:
             run_setup_hooks()
             connect_geoserver_style_visual_mode_signal()
+            
+            from geonode_mapstore_client.registry import request_configuration_rules_registry
+            request_configuration_rules_registry.init_registry()
+            
         super(AppConfig, self).ready()
