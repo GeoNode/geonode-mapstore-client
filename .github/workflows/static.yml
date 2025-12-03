@@ -62,12 +62,18 @@ jobs:
           npm install jsdoc@4.0.0 -g
           npm install @jsdoc/salty@0.2.1 -g
 
+      - uses: actions/download-artifact@v5
+        with:
+          name: github-pages
+          path: ../gh-pages
+
       - name: Build master documentation
         run: |
           cd ./geonode_mapstore_client/client/
           npm run docs
           cd ../../
           cp -a ./geonode_mapstore_client/static/fonts/. ./docs/fonts/
+          rm -rf ../gh-pages/master
           mv ./docs ../gh-pages/master
 
       - name: Setup Pages
@@ -77,6 +83,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
+          name: github-pages
           path: '../gh-pages'
 
       - name: Deploy to GitHub Pages
