@@ -46,7 +46,7 @@ jobs:
 
       - name: Restore previous github-pages artifact
         run: |
-          wget ${{ steps.deployment.outputs.page_url }}artifact.zip
+          wget https://geonode.org/geonode-mapstore-client/artifact.zip
           unzip artifact.zip
           mv gh-pages/ ../gh-pages
 
