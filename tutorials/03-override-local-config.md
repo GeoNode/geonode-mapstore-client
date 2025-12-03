@@ -49,17 +49,67 @@ Note: not all configuration can be applied to the geonode-mapstore-client becaus
 <script>
     window.__GEONODE_CONFIG__.overrideLocalConfig = function(localConfig) {
         // an example on how you can apply configuration to existing plugins
-        // example: How to change configuration of visible properties in all DetailViewer panels including the one in the catalog (ResourcesGrid)
-
+        // example: How to change configuration of visible properties in all ResourceDetails
         Object.keys(localConfig.plugins).forEach((pageName) => {
             localConfig.plugins[pageName].forEach((plugin) => {
-                if (['DetailViewer', 'ResourcesGrid'].includes(plugin.name) && plugin.cfg && (plugin.cfg.tabs || plugin.cfg.detailsTabs)) {
-                    (plugin.cfg.tabs || plugin.cfg.detailsTabs).forEach((tab) => {
-                        if (Array.isArray(tab.items)) {
-                            // eg. remove the language row
-                            tab.items = tab.items.filter((item) => !['gnviewer.language'].includes(item.labelId));
-                        }
-                    });
+                if (['ResourceDetails'].includes(plugin.name)) {
+                    plugin.cfg = {
+                        ...plugin.cfg,
+                        "tabs": [
+                            {
+                                "type": "tab",
+                                "id": "info",
+                                "labelId": "gnviewer.info",
+                                "items": [
+                                    {
+                                        "type": "text",
+                                        "labelId": "gnviewer.title",
+                                        "value": "{context.get(state('gnResourceData'), 'title')}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "locations",
+                                "id": "locations",
+                                "labelId": "gnviewer.locations",
+                                "items": "{({extent: context.get(state('gnResourceData'), 'extent')})}"
+                            },
+                            {
+                                "type": "relations",
+                                "id": "related",
+                                "labelId": "gnviewer.linkedResources.label",
+                                "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
+                            },
+                            {
+                                "type": "assets",
+                                "id": "assets",
+                                "labelId": "gnviewer.assets",
+                                "items": "{context.get(state('gnResourceData'), 'assets')}",
+                                "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                            },
+                            {
+                                "type": "data",
+                                "id": "data",
+                                "labelId": "gnviewer.data",
+                                "disableIf": "{context.get(state('gnResourceData'), 'resource_type') !== 'dataset'}",
+                                "items": "{context.get(state('gnResourceData'), 'attribute_set')}"
+                            },
+                            {
+                                "type": "share",
+                                "id": "share",
+                                "labelId": "gnviewer.share",
+                                "disableIf": "{!context.canAccessPermissions(state('gnResourceData'))}",
+                                "items": [true]
+                            },
+                            {
+                                "type": "settings",
+                                "id": "settings",
+                                "labelId": "gnviewer.settings",
+                                "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
+                                "items": [true]
+                            }
+                        ]
+                    }
                 }
             });
         });

@@ -25,10 +25,12 @@ const ConnectedFavorites = connect(
 )(Favorites);
 
 /**
- * renders a button inside the resource card to add/remove a resource to user favorites
+* @module Favorites
+*/
+
+/**
+ * Renders a button inside the resource card to add/remove a resource to user favorites
  * @name Favorites
- * @class
- * @memberof plugins
  */
 export default createPlugin('Favorites', {
     component: () => null,

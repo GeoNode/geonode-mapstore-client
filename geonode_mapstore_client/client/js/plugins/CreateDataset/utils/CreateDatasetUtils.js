@@ -41,6 +41,7 @@ export const DEFAULT_ATTRIBUTE = {
  * Parse a number string to a number
  * @param {string} value - The value to parse
  * @returns {number} The parsed number
+ * @ignore
  */
 export const parseNumber = (value) => {
     if (value === '') {
@@ -54,6 +55,7 @@ export const parseNumber = (value) => {
  * @param {Object} data - The data to get the attribute control id from
  * @param {string} suffix - The suffix to add to the attribute control id
  * @returns {string} The attribute control id
+ * @ignore
  */
 export const getAttributeControlId = (data, suffix) =>
     `attribute-${data?.id ?? ''}-${suffix}`;
@@ -61,6 +63,7 @@ export const getAttributeControlId = (data, suffix) =>
 /**
  * The JSON schema for the dataset
  * @type {Object}
+ * @ignore
  */
 export const validateSchema = {
     "type": "object",
@@ -260,6 +263,7 @@ export const validateSchema = {
  * Validate attribute data including range values and unique names
  * @param {Object} data - The data to validate
  * @returns {Array} The array of errors
+ * @ignore
  */
 export const validateAttributes = (data = {}) => {
     const errors = [];
@@ -308,6 +312,7 @@ export const validateAttributes = (data = {}) => {
  * @param {string} path - The path to the error
  * @param {Array} allErrors - The array of errors
  * @returns {string} The error message
+ * @ignore
  */
 export const getErrorByPath = (path, allErrors) => {
     const error = allErrors?.find(err => err.instancePath === path);
@@ -339,6 +344,7 @@ const JSON_SCHEMA_TYPE_TO_ATTRIBUTE_TYPE = {
  * Parse JSON Schema and convert it to dataset attributes
  * @param {Object} schema - The JSON Schema object
  * @returns {Object} - Parsed result with dataset data and any errors
+ * @ignore
  */
 export const parseJSONSchema = (schema) => {
     const errors = [];
