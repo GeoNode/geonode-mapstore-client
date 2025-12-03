@@ -41,9 +41,14 @@ jobs:
 
       - name: Install build dependencies
         run: |
-          mkdir ../gh-pages
           npm install jsdoc@4.0.0 -g
           npm install @jsdoc/salty@0.2.1 -g
+
+      - name: Restore previous github-pages artifact
+        run: |
+          wget ${{ url }}artifact.zip
+          unzip artifact.zip
+          mv gh-pages/ ../gh-pages
 
       - name: Build master documentation
         run: |
@@ -51,6 +56,7 @@ jobs:
           npm run docs
           cd ../../
           cp -a ./geonode_mapstore_client/static/fonts/. ./docs/fonts/
+          rm -rf ../gh-pages/master
           mv ./docs ../gh-pages/master
           cd ../
           zip -r artifact.zip gh-pages/
