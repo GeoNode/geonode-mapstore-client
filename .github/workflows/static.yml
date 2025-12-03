@@ -46,7 +46,7 @@ jobs:
 
       - name: Restore previous github-pages artifact
         run: |
-          wget ${{ url }}artifact.zip
+          wget ${{ env.url }}artifact.zip
           unzip artifact.zip
           mv gh-pages/ ../gh-pages
 
