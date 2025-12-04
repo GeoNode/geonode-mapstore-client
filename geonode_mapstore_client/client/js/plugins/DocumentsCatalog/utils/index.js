@@ -1,3 +1,12 @@
+/*
+ * Copyright 2025, GeoSolutions Sas.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
 import uuid from 'uuid';
 import { getDocumentByPk } from '@js/api/geonode/v2';
 import isEmpty from "lodash/isEmpty";
@@ -69,7 +78,6 @@ export const documentsToLayerConfig = (documents) => {
             visibility: true,
             id: 'documents:' + unId,
             name: "Documents",
-            hideLoading: true,
             ...(bbox && { bbox }),
             extendedParams: extendedParams,
             features,
@@ -105,12 +113,13 @@ export const documentsToLayerConfig = (documents) => {
             featureInfo: {
                 format: "TEMPLATE",
                 template: `
-                    <div style="width: 100%;">
+                    <div style="width: 100%; aspect-ratio: 16/9;">
                         <h3>\${properties['title']}</h3>
                         <p>\${properties['abstract']}</p>
                         <iframe 
+                            key="\${properties['embed_url']}"
                             src="\${properties['embed_url']}" 
-                            style="width: 100%; height: 500px; border: 1px solid #ddd; border-radius: 4px;"
+                            style="width: 100%; height: 100%;"
                             frameborder="0"
                             sandbox="allow-scripts allow-same-origin"
                             allowfullscreen>

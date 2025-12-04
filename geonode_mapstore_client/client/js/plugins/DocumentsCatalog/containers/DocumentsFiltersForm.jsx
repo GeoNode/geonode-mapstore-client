@@ -10,7 +10,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import FiltersForm from '../components/FilterForm';
+import FiltersForm from '@mapstore/framework/plugins/ResourcesCatalog/components/FiltersForm';
 import useParsePluginConfigExpressions from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useParsePluginConfigExpressions';
 import useFilterFacets from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useFilterFacets';
 import { getMonitoredStateSelector } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
@@ -32,6 +32,7 @@ import { isMenuItemSupportedSupported } from '@mapstore/framework/utils/Resource
 function DocumentsFiltersForm({
     id = 'ms-filter-form',
     onChange: onSearch,
+    onClear,
     query,
     extent = {
         layers: [
@@ -52,15 +53,25 @@ function DocumentsFiltersForm({
             weight: 4
         }
     },
-    fields: fieldsProp = [],
+    fields: fieldsProp =  [
+        { type: "select", facet: "category" },
+        { type: "select", facet: "keyword" },
+        { type: "select", facet: "place" },
+        {
+            type: "date-range",
+            filterKey: "date",
+            labelId: "gnviewer.dateFilter"
+        },
+        {
+            labelId: "gnviewer.extent",
+            type: "extent"
+        }
+    ],
     monitoredState,
     show = true,
     user,
     availableResourceTypes = ['MAP', 'DASHBOARD', 'GEOSTORY', 'CONTEXT'],
-    selectAll,
-    handleSelectAll,
-    entries,
-    selectedDocuments
+    onClose
 }, context) {
 
     const parsedConfig = useParsePluginConfigExpressions(monitoredState, {
@@ -88,11 +99,8 @@ function DocumentsFiltersForm({
             fields={fields}
             query={query}
             onChange={(params) => onSearch(params)}
-            onClear={() => onSearch({ clear: true })}
-            selectAll={selectAll}
-            handleSelectAll={handleSelectAll}
-            entries={entries}
-            selectedDocuments={selectedDocuments}
+            onClear={onClear}
+            onClose={onClose}
         />
     );
 }

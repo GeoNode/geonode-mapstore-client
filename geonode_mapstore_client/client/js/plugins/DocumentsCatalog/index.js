@@ -6,89 +6,61 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Button from '@mapstore/framework/components/layout/Button';
-import { getDocuments } from '@js/api/geonode/v2';
 import { addLayer } from '@mapstore/framework/actions/layers';
 import { zoomToExtent } from '@mapstore/framework/actions/map';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import documentscatalogEpics from '@js/plugins/DocumentsCatalog/epics';
 import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
-import DocumentsCompactCatalog from '@js/plugins/DocumentsCatalog/components/DocumentsCompactCatalog';
-import useIsMounted from "@js/hooks/useIsMounted";
-import { documentsToLayerConfig } from '@js/plugins/DocumentsCatalog/utils';
+import ConnectedDocumentsCatalog from '@js/plugins/DocumentsCatalog/containers/DocumentsCatalog';
 
-function DocumentsCatalog({
-    onAdd,
-    onZoomTo,
-    ...props
-}) {
-    const isMounted = useIsMounted();
-    const [loading, setLoading] = useState(false);
+function DocumentsCatalog({ 
+    enabled,
+    items = [],
+    order= {
+        defaultLabelId: 'resourcesCatalog.orderBy',
+        options: [
+            {
+                label: 'Most recent',
+                labelId: 'resourcesCatalog.mostRecent',
+                value: '-created'
+            },
+            {
+                label: 'Less recent',
+                labelId: 'resourcesCatalog.lessRecent',
+                value: 'created'
+            },
+            {
+                label: 'A Z',
+                labelId: 'resourcesCatalog.aZ',
+                value: 'title'
+            },
+            {
+                label: 'Z A',
+                labelId: 'resourcesCatalog.zA',
+                value: '-title'
+            }
+        ]
+    },
+    metadata={
+        grid: [
+            { path: 'title', labelId: 'catalog.title', width: 40 },
+            { path: 'date', labelId: 'catalog.date', width: 30 },
+            { path: 'owner', labelId: 'catalog.owner', width: 30 }
+        ]
+    },
+    resourceTypes = ['MAP', 'DASHBOARD', 'GEOSTORY', 'CONTEXT'],
+    ...props }) {
 
-    function handleSelectResource(entries) {
-        setLoading(true);
-        documentsToLayerConfig(entries)
-            .then((layer) => {
-                onAdd(layer);
-                const { minx, miny, maxx, maxy } = layer?.bbox?.bounds || {};
-                const extent = layer?.bbox?.bounds && [minx, miny, maxx, maxy];
-                if (extent) {
-                    onZoomTo(extent, layer?.bbox?.crs);
-                }
-            })
-            .finally(() => {
-                isMounted(() => setLoading(false));
-            });
-    }
-
-    return (<DocumentsCompactCatalog
-        {...props}
-        loading={loading}
-        onSelect={handleSelectResource}
-        fields={props.fields}
-    />);
+    return enabled ? <ConnectedDocumentsCatalog items={items} order={order} metadata={metadata} resourceTypes={resourceTypes} {...props} /> : null;
 }
 
-DocumentsCatalog.propTypes = {
-    request: PropTypes.func,
-    responseToEntries: PropTypes.func,
-    pageSize: PropTypes.number,
-    onAdd: PropTypes.func,
-    placeholderId: PropTypes.string,
-    onClose: PropTypes.func,
-    onZoomTo: PropTypes.func,
-    fields: PropTypes.array
-};
-
-DocumentsCatalog.defaultProps = {
-    request: getDocuments,
-    responseToEntries: res => res.resources,
-    pageSize: 10,
-    onAdd: () => { },
-    placeholderId: 'gnviewer.documentsCatalogFilterPlaceholder',
-    titleId: 'gnviewer.documentsCatalogTitle',
-    noResultId: 'gnviewer.documentsCatalogEntriesNoResults',
-    onZoomTo: () => { },
-    onClose: () => { },
-    fields: [
-        { type: "search" },
-        { type: "select", facet: "category" },
-        { type: "select", facet: "keyword" },
-        { type: "select", facet: "extension" }
-    ]
-};
-
-function DocumentsCatalogPlugin({ enabled, ...props }) {
-    return enabled ? <DocumentsCatalog {...props} /> : null;
-}
-
-const ConnectedDocumentsCatalogPlugin = connect(
+const DocumentsCatalogPlugin = connect(
     createSelector([
         state => mapLayoutValuesSelector(state, { height: true }),
         state => state?.controls?.documentsCatalog?.enabled,
@@ -96,11 +68,12 @@ const ConnectedDocumentsCatalogPlugin = connect(
         style,
         enabled,
     })), {
-        onAdd: addLayer,
-        onClose: setControlProperty.bind(null, 'documentsCatalog', 'enabled', false),
-        onZoomTo: zoomToExtent
-    }
-)(DocumentsCatalogPlugin);
+    onAdd: addLayer,
+    onClose: setControlProperty.bind(null, 'documentsCatalog', 'enabled', false),
+    onZoomTo: zoomToExtent
+}
+)(DocumentsCatalog);
+
 
 const DocumentsCatalogButton = ({
     onClick,
@@ -129,8 +102,9 @@ const ConnectedDocumentsCatalogButton = connect(
     }
 )((DocumentsCatalogButton));
 
+
 export default createPlugin('DocumentsCatalog', {
-    component: ConnectedDocumentsCatalogPlugin,
+    component: DocumentsCatalogPlugin,
     containers: {
         ActionNavbar: {
             name: 'DocumentsCatalog',
