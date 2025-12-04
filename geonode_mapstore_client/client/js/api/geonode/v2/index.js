@@ -58,14 +58,6 @@ export const getResources = ({
     config,
     ...params
 }) => {
-    console.log(q,'q')
-    console.log(pageSize,'pageSize')
-    console.log(page,'page')
-    console.log(sort,'sort')
-    console.log(f,'f')
-    console.log(customFilters,'customFilters')
-    console.log(config,'config')
-    console.log(params,'params')
     const _params = {
         ...getQueryParams({...params, f}, customFilters),
         ...(q && {
