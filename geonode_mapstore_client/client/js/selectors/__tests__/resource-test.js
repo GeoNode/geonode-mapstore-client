@@ -10,6 +10,7 @@ import expect from 'expect';
 import {
     getViewedResourceType,
     isNewResource,
+    isNewResourcePk,
     getGeoNodeResourceDataFromGeoStory,
     getGeoNodeResourceFromDashboard,
     getResourceThumbnail,
@@ -17,7 +18,9 @@ import {
     isThumbnailChanged,
     canEditPermissions,
     canManageResourcePermissions,
-    isNewMapViewerResource,
+    isNewMapDirty,
+    isNewDashboardDirty,
+    isNewGeoStoryDirty,
     defaultViewerPluginsSelector
 } from '../resource';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
@@ -62,6 +65,16 @@ describe('resource selector', () => {
     it('is new resource', () => {
         expect(isNewResource(testState)).toBeTruthy();
     });
+
+    it('is new resource by pk', () => {
+        let state = {...testState, gnresource: {...testState.gnresource, params: {pk: "new"}}};
+        expect(isNewResourcePk(state)).toBeTruthy();
+        state.gnresource.params.pk = '1';
+        expect(isNewResourcePk(state)).toBeFalsy();
+        state.gnresource.params = undefined;
+        expect(isNewResourcePk(state)).toBeFalsy();
+    });
+
     it('getGeoNodeResourceDataFromGeoStory', () => {
         expect(getGeoNodeResourceDataFromGeoStory(testState)).toEqual({ maps: [300], documents: [200, 100] });
     });
@@ -92,17 +105,266 @@ describe('resource selector', () => {
         expect(canManageResourcePermissions(state)).toBeFalsy();
         state.gnresource.data.perms = undefined;
     });
-    it('test isNewMapViewerResource', () => {
-        let state = {...testState, gnresource: {...testState.gnresource, type: ResourceTypes.VIEWER, params: {pk: "new"}}};
-        expect(isNewMapViewerResource(state)).toBeTruthy();
-        state.gnresource.params.pk = '1';
-        expect(isNewMapViewerResource(state)).toBeFalsy();
-    });
     it('test defaultViewerPluginsSelector', () => {
         let state = {...testState};
         state.gnresource = {...state.gnresource, defaultViewerPlugins: ["TOC"]};
         expect(defaultViewerPluginsSelector(state)).toEqual(["TOC"]);
         state.gnresource = {...state.gnresource, defaultViewerPlugins: undefined};
         expect(defaultViewerPluginsSelector(state)).toEqual([]);
+    });
+
+    it('test isNewMapDirty returns false when no mapConfigRawData exists', () => {
+        const state = {
+            gnresource: {
+                type: ResourceTypes.MAP
+            },
+            map: {
+                present: {
+                    zoom: 5,
+                    center: { x: 0, y: 0, crs: 'EPSG:4326' }
+                }
+            }
+            // No mapConfigRawData
+        };
+        expect(isNewMapDirty(state)).toBeFalsy();
+    });
+
+    it('test isNewMapDirty returns false when map has not changed from initial config', () => {
+        const initialConfig = {
+            version: 2,
+            map: {
+                zoom: 5,
+                center: { x: 0, y: 0, crs: 'EPSG:4326' },
+                layers: [
+                    { id: 'layer1', type: 'osm', group: 'background', visibility: true }
+                ]
+            }
+        };
+        const state = {
+            gnresource: {
+                type: ResourceTypes.MAP
+            },
+            map: {
+                present: {
+                    zoom: 5,
+                    center: { x: 0, y: 0, crs: 'EPSG:4326' },
+                    layers: [
+                        { id: 'layer1', type: 'osm', group: 'background', visibility: true }
+                    ]
+                }
+            },
+            layers: {
+                flat: [
+                    { id: 'layer1', type: 'osm', group: 'background', visibility: true }
+                ]
+            },
+            mapConfigRawData: initialConfig
+        };
+        expect(isNewMapDirty(state)).toBeFalsy();
+    });
+
+    it('test isNewMapDirty returns true when layers are added', () => {
+        const initialConfig = {
+            version: 2,
+            map: {
+                zoom: 5,
+                center: { x: 0, y: 0, crs: 'EPSG:4326' },
+                layers: [
+                    { id: 'layer1', type: 'osm', group: 'background', visibility: true }
+                ]
+            }
+        };
+        const state = {
+            gnresource: {
+                type: ResourceTypes.MAP
+            },
+            map: {
+                present: {
+                    zoom: 5,
+                    center: { x: 0, y: 0, crs: 'EPSG:4326' },
+                    layers: [
+                        { id: 'layer1', type: 'osm', group: 'background', visibility: true },
+                        { id: 'layer2', type: 'wms', name: 'newLayer', visibility: true }
+                    ]
+                }
+            },
+            layers: {
+                flat: [
+                    { id: 'layer1', type: 'osm', group: 'background', visibility: true },
+                    { id: 'layer2', type: 'wms', name: 'newLayer', visibility: true }
+                ]
+            },
+            mapConfigRawData: initialConfig
+        };
+        expect(isNewMapDirty(state)).toBeTruthy();
+    });
+
+    it('test isNewMapDirty ignores ellipsoid terrain layer', () => {
+        const initialConfig = {
+            version: 2,
+            map: {
+                zoom: 5,
+                center: { x: 0, y: 0, crs: 'EPSG:4326' },
+                layers: [
+                    { id: 'layer1', type: 'osm', group: 'background', visibility: true }
+                ]
+            }
+        };
+        const state = {
+            gnresource: {
+                type: ResourceTypes.MAP
+            },
+            map: {
+                present: {
+                    zoom: 5,
+                    center: { x: 0, y: 0, crs: 'EPSG:4326' },
+                    layers: [
+                        { id: 'layer1', type: 'osm', group: 'background', visibility: true },
+                        { id: 'ellipsoid', type: 'terrain', provider: 'ellipsoid', group: 'background' }
+                    ]
+                }
+            },
+            layers: {
+                flat: [
+                    { id: 'layer1', type: 'osm', group: 'background', visibility: true },
+                    { id: 'ellipsoid', type: 'terrain', provider: 'ellipsoid', group: 'background' }
+                ]
+            },
+            mapConfigRawData: initialConfig
+        };
+        // Should be false because ellipsoid terrain is filtered out by compareMapChanges
+        expect(isNewMapDirty(state)).toBeFalsy();
+    });
+
+    it('test isNewDashboardDirty returns true when dashboard has widgets', () => {
+        const state = {
+            gnresource: {
+                type: ResourceTypes.DASHBOARD
+            },
+            widgets: {
+                containers: {
+                    floating: {
+                        widgets: [
+                            { id: 'widget1', widgetType: 'text' }
+                        ]
+                    }
+                }
+            }
+        };
+        expect(isNewDashboardDirty(state)).toBeTruthy();
+    });
+
+    it('test isNewDashboardDirty returns false when dashboard has no widgets', () => {
+        const state = {
+            gnresource: {
+                type: ResourceTypes.DASHBOARD
+            },
+            widgets: {
+                containers: {
+                    floating: {
+                        widgets: []
+                    }
+                }
+            }
+        };
+        expect(isNewDashboardDirty(state)).toBeFalsy();
+    });
+
+    it('test isNewGeoStoryDirty returns false for default geostory', () => {
+        const defaultConfig = {
+            sections: [{ title: 'Default Title', contents: [{ html: '' }] }],
+            settings: {}
+        };
+        const state = {
+            gnresource: {
+                type: ResourceTypes.GEOSTORY
+            },
+            geostory: {
+                currentStory: {
+                    ...defaultConfig,
+                    defaultGeoStoryConfig: defaultConfig,
+                    resources: []
+                }
+            }
+        };
+        expect(isNewGeoStoryDirty(state)).toBeFalsy();
+    });
+
+    it('test isNewGeoStoryDirty returns true when geostory has multiple sections', () => {
+        const defaultConfig = {
+            sections: [{ title: 'Default Title', contents: [{ html: '' }] }],
+            settings: {}
+        };
+        const state = {
+            gnresource: {
+                type: ResourceTypes.GEOSTORY
+            },
+            geostory: {
+                currentStory: {
+                    sections: [
+                        { title: 'Section 1', contents: [{ html: '' }] },
+                        { title: 'Section 2', contents: [{ html: '' }] }
+                    ],
+                    defaultGeoStoryConfig: defaultConfig,
+                    resources: [],
+                    settings: {}
+                }
+            }
+        };
+        expect(isNewGeoStoryDirty(state)).toBeTruthy();
+    });
+
+    it('test isNewGeoStoryDirty returns true when geostory has resources', () => {
+        const defaultConfig = {
+            sections: [{ title: 'Default Title', contents: [{ html: '' }] }],
+            settings: {}
+        };
+        const state = {
+            gnresource: {
+                type: ResourceTypes.GEOSTORY
+            },
+            geostory: {
+                currentStory: {
+                    sections: [{ title: 'Default Title', contents: [{ html: '' }] }],
+                    defaultGeoStoryConfig: defaultConfig,
+                    resources: [{ id: 1, type: 'map' }],
+                    settings: {}
+                }
+            }
+        };
+        expect(isNewGeoStoryDirty(state)).toBeTruthy();
+    });
+
+    it('test isNewGeoStoryDirty returns true when title section has content', () => {
+        const defaultConfig = {
+            sections: [{ title: 'Default Title', contents: [{ html: '' }] }],
+            settings: {}
+        };
+        const state = {
+            gnresource: {
+                type: ResourceTypes.GEOSTORY
+            },
+            geostory: {
+                currentStory: {
+                    sections: [{ title: 'Default Title', contents: [{ html: 'Some content here' }] }],
+                    defaultGeoStoryConfig: defaultConfig,
+                    resources: [],
+                    settings: {}
+                }
+            }
+        };
+        expect(isNewGeoStoryDirty(state)).toBeTruthy();
+    });
+
+    it('test isNewGeoStoryDirty returns false when currentData is null', () => {
+        const state = {
+            gnresource: {
+                type: ResourceTypes.GEOSTORY
+            },
+            geostory: {
+                currentStory: null
+            }
+        };
+        expect(isNewGeoStoryDirty(state)).toBeFalsy();
     });
 });
