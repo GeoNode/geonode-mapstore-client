@@ -49,7 +49,7 @@ import DetailsPanel from '@js/plugins/ResourceDetails/containers/DetailsPanel';
  * @prop {array} tabs array of tab object representing the structure of the displayed info properties
  * @example
  * {
- *  "name": "DetailViewer",
+ *  "name": "ResourceDetails",
  *  "cfg": {
  *      "tabs": [
  *          {
