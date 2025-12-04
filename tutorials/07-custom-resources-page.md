@@ -22,6 +22,17 @@ geonode-project-name/
 {% extends "geonode-mapstore-client/resource_page_catalog.html" %} 
 {% load i18n %}
 {% block content %}
+    {% comment %}
+        The i18n template tag allows to import functionality needed to support translations.
+        It is also possible to access information about the current language in use with:
+
+            {% get_current_language as LANG %}
+
+        then the LANG variable can be used inside the template, e.g.:
+
+            <div>{{ LANG }}</div>
+
+    {% endcomment %}
     <div class="gn-resource-page-catalog-section">
         <div class="gn-resource-page-catalog-content">
             <h4>{% trans "My GeoStories" %}</h4>

@@ -50,6 +50,9 @@ Note: not all configuration can be applied to the geonode-mapstore-client becaus
     window.__GEONODE_CONFIG__.overrideLocalConfig = function(localConfig) {
         // an example on how you can apply configuration to existing plugins
         // example: How to change configuration of visible properties in all ResourceDetails
+        // in this example the configuration is using expression to provide value,
+        // learn more about MapStore dynamic configuration at:
+        // https://docs.mapstore.geosolutionsgroup.com/en/latest/developer-guide/plugins-documentation/#dynamic-configuration
         Object.keys(localConfig.plugins).forEach((pageName) => {
             localConfig.plugins[pageName].forEach((plugin) => {
                 if (['ResourceDetails'].includes(plugin.name)) {
