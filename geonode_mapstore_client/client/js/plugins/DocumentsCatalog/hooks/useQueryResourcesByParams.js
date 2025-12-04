@@ -62,7 +62,7 @@ const useQueryResourcesByParams = ({
     defaultQuery,
     pageSize,
     user,
-    queryPage = true,
+    queryPage = true
 }) => {
 
     const [query, setQuery] = useState(defaultQuery);
@@ -186,7 +186,7 @@ const useQueryResourcesByParams = ({
 
 
     function handleClear() {
-        const { q, sort, 'filter{extension.in}': extension, ...filtersToRemove } = query;
+        const { q, sort, 'filter{extension.in}': extension } = query;
         const clearedQuery = {
             ...defaultQuery,
             ...(q && { q }),

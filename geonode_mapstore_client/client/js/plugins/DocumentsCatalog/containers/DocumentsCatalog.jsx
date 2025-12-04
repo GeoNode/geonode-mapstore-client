@@ -34,7 +34,7 @@ import { documentsToLayerConfig } from '@js/plugins/DocumentsCatalog/utils';
 
 const SelectSync = localizedProps('placeholder')(ReactSelect);
 
-const checkbox_style = {
+const checkboxStyle = {
     position: 'absolute',
     top: '10px',
     left: '10px',
@@ -43,10 +43,10 @@ const checkbox_style = {
     padding: '4px',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
 };
 
-const extension_field = {
+const extensionField = {
     type: "select",
     facet: "extension",
     labelId: "Extension",
@@ -74,7 +74,7 @@ const FilterButton = ({ onClick, active, hasActiveFilters }) => (
 
 const DocumentResourceItem = ({ entry, isChecked, onToggle }) => (
     <li key={entry.pk} style={{ position: 'relative' }}>
-        <div style={checkbox_style} onClick={(e) => e.stopPropagation()}>
+        <div style={checkboxStyle} onClick={(e) => e.stopPropagation()}>
             <Checkbox
                 checked={isChecked}
                 onChange={(event) => {
@@ -103,7 +103,6 @@ const DocumentResourceItem = ({ entry, isChecked, onToggle }) => (
 
 
 function DocumentsCatalog({
-    id = 'documents-catalog',
     user,
     defaultQuery = {},
     order,
@@ -118,13 +117,13 @@ function DocumentsCatalog({
     page: pageProp = 1,
     theme = 'main',
     metadata: metadataProp,
-    noResultId = 'gnviewer.documentsCatalogNoResults',
+    noResultId = 'No results found',
     openInNewTab = false,
     resourcesFoundMsgId = 'Documents found',
     resourceTypes: availableResourceTypes = [],
     onClose,
     onAdd,
-    onZoomTo,
+    onZoomTo
 }, context) {
 
     const prevSearchRef = React.useRef(null);
@@ -134,11 +133,10 @@ function DocumentsCatalog({
     const [error, setError] = useState(false);
     const [selectedDocuments, setSelectedDocuments] = useState([]);
     const [showFilter, setShowFilter] = useState(false);
-    const [resourcesMetadata, setResourcesMetadata] = useState({});
 
     const handleSetLoading = (isLoading) => {
         setLoading(isLoading);
-    }
+    };
 
     const handleSetResources = (newResources) => {
         setResources(newResources);
@@ -146,7 +144,6 @@ function DocumentsCatalog({
 
 
     const handleSetResourcesMetadata = (metadata) => {
-        setResourcesMetadata(metadata);
         if (metadata.total !== undefined) {
             setTotalResources(metadata.total);
         }
@@ -179,7 +176,7 @@ function DocumentsCatalog({
 
     const menuItemsLeft = useMemo(() => {
         const hasActiveFilters = Object.keys(query).some(key =>
-            !['page', 'sort', 'q', extension_field.filterKey].includes(key) &&
+            !['page', 'sort', 'q', extensionField.filterKey].includes(key) &&
             query[key] !== undefined &&
             query[key] !== null &&
             query[key] !== ''
@@ -195,7 +192,7 @@ function DocumentsCatalog({
                 ),
                 name: 'filter'
             }
-        ]
+        ];
     }, [showFilter]);
 
     const [metadataColumns, setMetadataColumns] = useState({});
@@ -328,24 +325,24 @@ function DocumentsCatalog({
 
             <FlexBox gap="sm" centerChildrenVertically classNames={['_padding-sm']}>
                 <FlexBox.Fill>
-                    <FormGroup controlId={extension_field.label} style={{ marginBottom: 0 }}>
+                    <FormGroup controlId={extensionField.label} style={{ marginBottom: 0 }}>
                         <SelectSync
                             value={(() => {
-                                const filterValue = query[extension_field.filterKey];
+                                const filterValue = query[extensionField.filterKey];
                                 if (!filterValue) return [];
                                 const values = Array.isArray(filterValue) ? filterValue : [filterValue];
                                 return values.map((v) => ({ value: v, label: v }));
                             })()}
                             multi
-                            placeholder={extension_field.placeholderId}
+                            placeholder={extensionField.placeholderId}
                             onChange={(selected) => {
                                 const values = selected?.map(({ value }) => value) || [];
                                 setLocalPage(1);
                                 handleUpdate({
-                                    [extension_field.filterKey]: values.length > 0 ? values : undefined
+                                    [extensionField.filterKey]: values.length > 0 ? values : undefined
                                 });
                             }}
-                            options={extension_field.options}
+                            options={extensionField.options}
                         />
                     </FormGroup>
                 </FlexBox.Fill>
@@ -378,7 +375,7 @@ function DocumentsCatalog({
                 target={defaultTarget}
                 resourcesFoundMsgId={totalResources + " " + resourcesFoundMsgId}
                 onSortChange={(sortValue) => {
-                    handleUpdate({ sort: sortValue, page: currentPage })
+                    handleUpdate({ sort: sortValue, page: currentPage });
                 }}
             />
 
@@ -392,7 +389,7 @@ function DocumentsCatalog({
                     id={'documents-catalog-filter-form'}
                     extentProps={parsedConfig.extent}
                     query={(() => {
-                        const { [extension_field.filterKey]: _, ...filteredQuery } = query;
+                        const { [extensionField.filterKey]: _, ...filteredQuery } = query;
                         return filteredQuery;
                     })()}
                     onChange={(newParams) => {

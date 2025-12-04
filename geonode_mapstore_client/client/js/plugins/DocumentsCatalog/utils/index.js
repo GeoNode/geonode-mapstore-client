@@ -131,4 +131,3 @@ export const documentsToLayerConfig = (documents) => {
     });
 };
 
-                  

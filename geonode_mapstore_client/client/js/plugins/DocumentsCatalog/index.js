@@ -19,10 +19,10 @@ import documentscatalogEpics from '@js/plugins/DocumentsCatalog/epics';
 import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
 import ConnectedDocumentsCatalog from '@js/plugins/DocumentsCatalog/containers/DocumentsCatalog';
 
-function DocumentsCatalog({ 
+function DocumentsCatalog({
     enabled,
     items = [],
-    order= {
+    order = {
         defaultLabelId: 'resourcesCatalog.orderBy',
         options: [
             {
@@ -47,7 +47,7 @@ function DocumentsCatalog({
             }
         ]
     },
-    metadata={
+    metadata = {
         grid: [
             { path: 'title', labelId: 'catalog.title', width: 40 },
             { path: 'date', labelId: 'catalog.date', width: 30 },
@@ -63,15 +63,15 @@ function DocumentsCatalog({
 const DocumentsCatalogPlugin = connect(
     createSelector([
         state => mapLayoutValuesSelector(state, { height: true }),
-        state => state?.controls?.documentsCatalog?.enabled,
+        state => state?.controls?.documentsCatalog?.enabled
     ], (style, enabled) => ({
         style,
-        enabled,
+        enabled
     })), {
-    onAdd: addLayer,
-    onClose: setControlProperty.bind(null, 'documentsCatalog', 'enabled', false),
-    onZoomTo: zoomToExtent
-}
+        onAdd: addLayer,
+        onClose: setControlProperty.bind(null, 'documentsCatalog', 'enabled', false),
+        onZoomTo: zoomToExtent
+    }
 )(DocumentsCatalog);
 
 
