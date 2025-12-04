@@ -49,331 +49,633 @@
     }
 </style>
 <div class="msgapi ms2" data-ms2-container="ms2">
-    <div class="gn-page-wrapper gn-theme" style="display: none;">
-        <header class="gn-main-header">
-            <nav id="gn-brand-navbar" class="gn-menu gn-menu-symmetric">
-                <div class="gn-menu-container">
-                    <div class="gn-menu-content">
-                        <div class="gn-menu-content-left">
-                            <ul class="gn-menu-list">
+    <div class="gn-page-wrapper gn-desktop">
+        <div class="gn-theme gn-homepage">
+            <header class="gn-main-header">
+                <nav id="gn-brand-navbar" class="gn-brand-navbar ms-main-colors _padding-md ms-flex-box _flex" style="width:100%;">
+                    <div class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                        <a>
+                            <img src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg">
+                        </a>
+                        <div class="gn-brand-navbar-left-menu-container ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v"
+                            style="visibility: visible;">
+                            <ul class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v gn-brand-navbar-menu">
                                 <li>
-                                    <a href="/">
-                                        <img src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg">
+                                    <a id="all-resources" target="" class="nav-link btn btn-default">
+                                        All Resources
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id="datasets" target="" class="nav-link btn btn-default">
+                                        Datasets
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a id="documents" target="" class="nav-link btn btn-default">
+                                        Documents
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id="maps" target="" class="nav-link btn btn-default">
+                                        Maps
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id="geostories" target="" class="nav-link btn btn-default">
+                                        GeoStories
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id="dashboards" target="" class="nav-link btn btn-default">
+                                        Dashboards
                                     </a>
                                 </li>
                             </ul>
                         </div>
-                        <div class="gn-menu-content-center">
-                            <div id="gn-search-bar" class="gn-search-bar">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button id="gn-search-bar-clear" type="button" class="btn btn-default"
-                                            style="display: none;">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                        <button id="gn-search-bar-apply" type="button" class="btn btn-default">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </div>
-                                    <input placeholder="Placeholder..." class="form-control" value=""
-                                        style="outline: none; box-shadow: none;">
-                                    <div class="input-group-append">
-                                        <div id="gn-search-bar-loading" class="gn-spinner" style="visibility: hidden;">
-                                            <div></div>
+                        <ul class="gn-brand-navbar-right-menu-container ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                            <li><a class="nav-link btn btn-default">Register</a></li>
+                            <li><a class="nav-link btn btn-default">Sign in</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+            <div class="gn-main-header-placeholder" style="height: 56px;"></div>
+            <div id="gn-hero" class="gn-hero">
+                <div class="jumbotron">
+                    <div class="gn-hero-description">
+                        <h1>GeoNode</h1>
+                        <p>sharing geospatial data and maps.</p>
+                    </div>
+                    <p class="gn-hero-tools">
+                    </p>
+                </div>
+            </div>
+            <div id="ms-container">
+                <div id="ms-app" class="app-router fill">
+                    <div id="gn-components" class="gn-components">
+                        <div class="ms-resources-grid">
+                            <div class="ms-resources-container ms-main-colors _padding-lr-md">
+                                <div class="_relative _margin-auto">
+                                    <div class="ms-resources-menu _sticky _corner-tl ms-main-colors _padding-tb-sm ms-flex-box _flex _flex-column _flex-gap-sm"
+                                        style="position: sticky; top: 56px;">
+                                        <div class="ms-text _font-size-lg"><span>All resources</span></div>
+                                        <div class="ms-flex-box _flex _flex-gap-xs _flex-center-v">
+                                            <div class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v"><button
+                                                    type="button"
+                                                    class="btn btn-sm btn-primary"><span>Filter</span></button>
+                                                <div class="ms-text _font-size-sm _ellipsis"><span>2,424 Resources
+                                                        found</span></div>
+                                            </div>
+                                            <ul containerclass="ms-menu-list"
+                                                class="ms-flex-box _flex _flex-gap-sm _flex-center-v"></ul><button
+                                                type="button" class="square-button-md btn btn-default"><span
+                                                    class="glyphicon glyphicon-th-list"></span></button>
+                                            <div class="dropdown btn-group"><button id="sort-dropdown" role="button"
+                                                    aria-haspopup="true" aria-expanded="false" type="button"
+                                                    class="dropdown-toggle btn btn-sm btn-default"><span>Order
+                                                        by</span></button>
+                                                <ul role="menu" class="dropdown-menu dropdown-menu-right"
+                                                    aria-labelledby="sort-dropdown">
+                                                    <li role="presentation" class=""><a
+                                                            role="menuitem" tabindex="-1"><span>Most recent</span></a></li>
+                                                    <li role="presentation" class=""><a
+                                                            role="menuitem" tabindex="-1"><span>Less recent</span></a></li>
+                                                    <li role="presentation" class=""><a role="menuitem"
+                                                            tabindex="-1"><span>A Z</span></a></li>
+                                                    <li role="presentation" class=""><a
+                                                            role="menuitem" tabindex="-1"><span>Z A</span></a></li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="gn-suggestions">
-                                    <div class="gn-suggestions-header">
-                                        <button id="gn-search-bar-clear-suggestions" type="button"
-                                            class="btn btn-default">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                    </div>
-                                    <div class="list-group">
-                                        <button class="list-group-item list-group-item-action">Main hover (on mouse hover)</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="gn-menu-content-right">
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </header>
-        <div class="gn-main-header-placeholder" style="height: 56px;"></div>
-        <div id="gn-hero" class="gn-hero">
-            <div class="jumbotron">
-                <div class="gn-hero-description">
-                    <h1>GeoNode Theme</h1>
-                    <p>Jumbotron</p>
-                </div>
-                <p class="gn-hero-tools">
-                </p>
-            </div>
-        </div>
-        <nav id="gn-topbar" class="gn-menu gn-primary" data-gn-menu-resize="true" style="top: 56px;">
-            <div class="gn-menu-container">
-                <div class="gn-menu-content">
-                    <div class="gn-menu-content-side gn-menu-content-left">
-                        <ul class="gn-menu-list"
-                            style="position: absolute; top: 50%; transform: translateY(-50%); visibility: visible;">
-                            <li>
-                                <button type="button" class="btn btn-sm btn-primary gn-pending-changes-icon"><span>Primary</span></button>
-                            </li>
-                            <li>
-                                <button type="button" class="btn btn-sm btn-info"><span>Info</span></button>
-                            </li>
-                            <li>
-                                <button type="button" class="btn btn-sm btn-success"><span>Success</span></button>
-                            </li>
+                                    <ul
+                                        class="_relative _padding-tb-lg ms-resources-container-grid ms-flex-box _flex _flex-gap-lg _flex-wrap">
+                                        <li>
+                                            <div
+                                                class="_relative _interactive ms-resource-card ms-resource-card-type-grid ms-main-colors ms-flex-box _flex _flex-column">
 
-                            <li>
-                                <button type="button" class="btn btn-sm btn-warning"><span>Warning</span></button>
-                            </li>
-                            <li>
-                                <button type="button" class="btn btn-sm btn-danger"><span>Danger</span></button>
-                            </li>
-                            <li>
-                                <button type="button" class="btn btn-sm btn-default" disabled><span>Disabled</span></button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="gn-menu-content-center"></div>
-                    <div class="gn-menu-content-right">
-                        <ul class="gn-menu-list">
-                            <li>
-                                <a id="home" href="#" target="" class="nav-link btn btn-primary">
-                                    Primary
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </nav>
-        <div class="gn-row gn-home-section">
-            <div class="gn-grid-container">
-                <div class="gn-card-grid" style="width:100%;">
-                    <div style="display: flex; width: 100%;">
-                        <div style="flex: 1 1 0%; width: 100%;">
-                            <div class="gn-card-grid-container" style="min-height: auto;">
-                                <ul style="padding-left: 12px; padding-bottom: 0px;">
-                                    <li style="width: 333px; margin-right: 24px; margin-top: 8px;">
-                                        <div class="gn-resource-card gn-card-type-grid ">
-                                            <div class="card-resource-grid"><div class="card-img-top card-img-placeholder"></div>
-                                                <div class="gn-resource-card-body-wrapper">
-                                                    <div class="card-body">
-                                                        <div class="card-title">
-                                                            <div><i class="fa fa-file"></i><a class="gn-featured-card-title">Main</a>
-                                                            </div>
-                                                            <div>
-                                                                <p class="gn-resource-status-text"></p>
+                                                <div
+                                                    class="ms-resource-card-body ms-flex-fill ms-flex-box _flex _flex-column">
+                                                    <div
+                                                        class="pointer_events_none ms-resource-card-img ms-image-colors ms-flex-box _flex _flex-center-h _flex-center-v">
+                                                        <div class="ms-text _font-size-xxl"><span
+                                                                class="glyphicon glyphicon-dataset"></span></div>
+                                                    </div>
+                                                    <div
+                                                        class="_padding-sm ms-flex-fill ms-flex-box _flex _flex-column _flex-gap-sm">
+                                                        <div
+                                                            class="ms-resource-card-body-header ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-md _ellipsis"><span
+                                                                        class="glyphicon glyphicon-dataset"></span>
+                                                                    Dataset</div>
                                                             </div>
                                                         </div>
-                                                        <p class="card-text gn-card-description">...</p>
-                                                    </div>
-                                                    <div class="gn-footer-wrapper">
-                                                        <div class="gn-card-footer" style="padding: 0px 0.25rem 0px 0.5rem;">
-                                                            <p class="card-text gn-card-user">
-                                                                <img
-                                                                    src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg"
-                                                                    alt="admin"
-                                                                    class="gn-card-author-image"
-                                                                >
-                                                                <a >Link</a>
-                                                            </p>
-                                                            <div class="gn-card-actions">
-                                                                <div class="gn-card-view-editor-right"><a class="btn btn-primary"><span>View</span></a>
-                                                                </div>
+                                                        <div
+                                                            class="ms-resource-card-body-footer ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-sm _ellipsis"><img
+                                                                        class="ms-resource-icon-logo"
+                                                                        src="https://development.demo.geonode.org/static/geonode/img/avatar.png">
+                                                                    admin</div>
                                                             </div>
+                                                            <div
+                                                                class="_relative ms-resource-card-buttons ms-flex-box _flex _flex-gap-xs">
+                                                                <button type="button"
+                                                                    class="square-button-md btn btn-default"><span
+                                                                        class="glyphicon glyphicon-details"></span>
+                                                                </button></div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                    <li style="width: 333px; margin-right: 24px; margin-top: 8px;">
-                                        <div class="gn-resource-card gn-card-type-grid ">
-                                            <div class="card-resource-grid"><div class="card-img-top card-img-placeholder"></div>
-                                                <div class="gn-resource-card-body-wrapper">
-                                                    <div class="card-body">
-                                                        <div class="card-title">
-                                                            <div><i class="fa fa-database"></i><a class="gn-featured-card-title">Main</a>
-                                                            </div>
-                                                            <div>
-                                                                <p class="gn-resource-status-text"></p>
+                                        </li>
+                                        <li>
+                                            <div
+                                                class="_relative _interactive ms-resource-card ms-resource-card-type-grid ms-main-colors ms-flex-box _flex _flex-column">
+
+                                                <div
+                                                    class="ms-resource-card-body ms-flex-fill ms-flex-box _flex _flex-column">
+                                                    <div
+                                                        class="pointer_events_none ms-resource-card-img ms-image-colors ms-flex-box _flex _flex-center-h _flex-center-v">
+                                                        <div class="ms-text _font-size-xxl"><span
+                                                                class="glyphicon glyphicon-dataset"></span></div>
+                                                    </div>
+                                                    <div
+                                                        class="_padding-sm ms-flex-fill ms-flex-box _flex _flex-column _flex-gap-sm">
+                                                        <div
+                                                            class="ms-resource-card-body-header ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-md _ellipsis"><span
+                                                                        class="glyphicon glyphicon-dataset"></span>
+                                                                    Dataset</div>
                                                             </div>
                                                         </div>
-                                                        <p class="card-text gn-card-description">...</p>
-                                                    </div>
-                                                    <div class="gn-footer-wrapper">
-                                                        <div class="gn-card-footer" style="padding: 0px 0.25rem 0px 0.5rem;">
-                                                            <p class="card-text gn-card-user">
-                                                                <img
-                                                                    src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg"
-                                                                    alt="admin"
-                                                                    class="gn-card-author-image"
-                                                                >
-                                                                <a >Link</a>
-                                                            </p>
-                                                            <div class="gn-card-actions">
-                                                                <div class="gn-card-view-editor-right"><a class="btn btn-primary"><span>View</span></a>
-                                                                </div>
+                                                        <div
+                                                            class="ms-resource-card-body-footer ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-sm _ellipsis"><img
+                                                                        class="ms-resource-icon-logo"
+                                                                        src="https://development.demo.geonode.org/static/geonode/img/avatar.png">
+                                                                    admin</div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li style="width: 333px; margin-right: 24px; margin-top: 8px;">
-                                        <div class="gn-resource-card gn-card-type-grid ">
-                                            <div class="card-resource-grid"><div class="card-img-top card-img-placeholder"></div>
-                                                <div class="gn-resource-card-body-wrapper">
-                                                    <div class="card-body">
-                                                        <div class="card-title">
-                                                            <div><i class="fa fa-map"></i><a class="gn-featured-card-title">Main</a>
-                                                            </div>
-                                                            <div>
-                                                                <p class="gn-resource-status-text"></p>
-                                                            </div>
-                                                        </div>
-                                                        <p class="card-text gn-card-description">...</p>
-                                                    </div>
-                                                    <div class="gn-footer-wrapper">
-                                                        <div class="gn-card-footer" style="padding: 0px 0.25rem 0px 0.5rem;">
-                                                            <p class="card-text gn-card-user">
-                                                                <img
-                                                                    src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg"
-                                                                    alt="admin"
-                                                                    class="gn-card-author-image"
-                                                                >
-                                                                <a >Link</a>
-                                                            </p>
-                                                            <div class="gn-card-actions">
-                                                                <div class="gn-card-view-editor-right"><a class="btn btn-primary"><span>View</span></a>
-                                                                </div>
-                                                            </div>
+                                                            <div
+                                                                class="_relative ms-resource-card-buttons ms-flex-box _flex _flex-gap-xs">
+                                                                <button type="button"
+                                                                    class="square-button-md btn btn-default"><span
+                                                                        class="glyphicon glyphicon-details"></span>
+                                                                </button></div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                    <li style="width: 333px; margin-right: 24px; margin-top: 8px;">
-                                        <div class="gn-resource-card gn-card-type-grid ">
-                                            <div class="card-resource-grid"><div class="card-img-top card-img-placeholder"></div>
-                                                <div class="gn-resource-card-body-wrapper">
-                                                    <div class="card-body">
-                                                        <div class="card-title">
-                                                            <div><i class="fa fa-dashboard"></i><a class="gn-featured-card-title">Main</a>
-                                                            </div>
-                                                            <div>
-                                                                <p class="gn-resource-status-text"></p>
+                                        </li>
+                                        <li>
+                                            <div
+                                                class="_relative _interactive ms-resource-card ms-resource-card-type-grid ms-main-colors ms-flex-box _flex _flex-column">
+
+                                                <div
+                                                    class="ms-resource-card-body ms-flex-fill ms-flex-box _flex _flex-column">
+                                                    <div
+                                                        class="pointer_events_none ms-resource-card-img ms-image-colors ms-flex-box _flex _flex-center-h _flex-center-v">
+                                                        <div class="ms-text _font-size-xxl"><span
+                                                                class="glyphicon glyphicon-dataset"></span></div>
+                                                    </div>
+                                                    <div
+                                                        class="_padding-sm ms-flex-fill ms-flex-box _flex _flex-column _flex-gap-sm">
+                                                        <div
+                                                            class="ms-resource-card-body-header ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-md _ellipsis"><span
+                                                                        class="glyphicon glyphicon-dataset"></span>
+                                                                    Dataset</div>
                                                             </div>
                                                         </div>
-                                                        <p class="card-text gn-card-description">...</p>
-                                                    </div>
-                                                    <div class="gn-footer-wrapper">
-                                                        <div class="gn-card-footer" style="padding: 0px 0.25rem 0px 0.5rem;">
-                                                            <p class="card-text gn-card-user">
-                                                                <img
-                                                                    src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg"
-                                                                    alt="admin"
-                                                                    class="gn-card-author-image"
-                                                                >
-                                                                <a >Link</a>
-                                                            </p>
-                                                            <div class="gn-card-actions">
-                                                                <div class="gn-card-view-editor-right"><a class="btn btn-primary"><span>View</span></a>
-                                                                </div>
+                                                        <div
+                                                            class="ms-resource-card-body-footer ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-sm _ellipsis"><img
+                                                                        class="ms-resource-icon-logo"
+                                                                        src="https://development.demo.geonode.org/static/geonode/img/avatar.png">
+                                                                    admin</div>
                                                             </div>
+                                                            <div
+                                                                class="_relative ms-resource-card-buttons ms-flex-box _flex _flex-gap-xs">
+                                                                <button type="button"
+                                                                    class="square-button-md btn btn-default"><span
+                                                                        class="glyphicon glyphicon-details"></span>
+                                                                </button></div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="gn-row">
-            <div class="gn-grid-container">
-                <div class="gn-card-grid">
-                    <div style="display: flex; width: 100%;">
-                        <div style="flex: 1 1 0%; width: 100%;">
-                            <div class="gn-card-grid-container">
-                                <div class="gn-filters-menu gn-menu gn-default">
-                                    <div class="gn-menu-container">
-                                        <div class="gn-menu-content">
-                                            <div class="gn-menu-fill">
-                                                <button type="button"class="btn btn-sm btn-primary gn-success-changes-icon"><span>Primary</span></button>
+                                        </li>
+                                        <li>
+                                            <div
+                                                class="_relative _interactive ms-resource-card ms-resource-card-type-grid ms-main-colors ms-flex-box _flex _flex-column">
+
+                                                <div
+                                                    class="ms-resource-card-body ms-flex-fill ms-flex-box _flex _flex-column">
+                                                    <div
+                                                        class="pointer_events_none ms-resource-card-img ms-image-colors ms-flex-box _flex _flex-center-h _flex-center-v">
+                                                        <div class="ms-text _font-size-xxl"><span
+                                                                class="glyphicon glyphicon-dataset"></span></div>
+                                                    </div>
+                                                    <div
+                                                        class="_padding-sm ms-flex-fill ms-flex-box _flex _flex-column _flex-gap-sm">
+                                                        <div
+                                                            class="ms-resource-card-body-header ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-md _ellipsis"><span
+                                                                        class="glyphicon glyphicon-dataset"></span>
+                                                                    Dataset</div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="ms-resource-card-body-footer ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-sm _ellipsis"><img
+                                                                        class="ms-resource-icon-logo"
+                                                                        src="https://development.demo.geonode.org/static/geonode/img/avatar.png">
+                                                                    admin</div>
+                                                            </div>
+                                                            <div
+                                                                class="_relative ms-resource-card-buttons ms-flex-box _flex _flex-gap-xs">
+                                                                <button type="button"
+                                                                    class="square-button-md btn btn-default"><span
+                                                                        class="glyphicon glyphicon-details"></span>
+                                                                </button></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <ul class="gn-menu-list"></ul>
-                                        </div>
+                                        </li>
+                                        <li>
+                                            <div
+                                                class="_relative _interactive ms-resource-card ms-resource-card-type-grid ms-main-colors ms-flex-box _flex _flex-column">
+
+                                                <div
+                                                    class="ms-resource-card-body ms-flex-fill ms-flex-box _flex _flex-column">
+                                                    <div
+                                                        class="pointer_events_none ms-resource-card-img ms-image-colors ms-flex-box _flex _flex-center-h _flex-center-v">
+                                                        <div class="ms-text _font-size-xxl"><span
+                                                                class="glyphicon glyphicon-dataset"></span></div>
+                                                    </div>
+                                                    <div
+                                                        class="_padding-sm ms-flex-fill ms-flex-box _flex _flex-column _flex-gap-sm">
+                                                        <div
+                                                            class="ms-resource-card-body-header ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-md _ellipsis"><span
+                                                                        class="glyphicon glyphicon-dataset"></span>
+                                                                    Dataset</div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="ms-resource-card-body-footer ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-sm _ellipsis"><img
+                                                                        class="ms-resource-icon-logo"
+                                                                        src="https://development.demo.geonode.org/static/geonode/img/avatar.png">
+                                                                    admin</div>
+                                                            </div>
+                                                            <div
+                                                                class="_relative ms-resource-card-buttons ms-flex-box _flex _flex-gap-xs">
+                                                                <button type="button"
+                                                                    class="square-button-md btn btn-default"><span
+                                                                        class="glyphicon glyphicon-details"></span>
+                                                                </button></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div
+                                                class="_relative _interactive ms-resource-card ms-resource-card-type-grid ms-main-colors ms-flex-box _flex _flex-column">
+
+                                                <div
+                                                    class="ms-resource-card-body ms-flex-fill ms-flex-box _flex _flex-column">
+                                                    <div
+                                                        class="pointer_events_none ms-resource-card-img ms-image-colors ms-flex-box _flex _flex-center-h _flex-center-v">
+                                                        <div class="ms-text _font-size-xxl"><span
+                                                                class="glyphicon glyphicon-dataset"></span></div>
+                                                    </div>
+                                                    <div
+                                                        class="_padding-sm ms-flex-fill ms-flex-box _flex _flex-column _flex-gap-sm">
+                                                        <div
+                                                            class="ms-resource-card-body-header ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-md _ellipsis"><span
+                                                                        class="glyphicon glyphicon-dataset"></span>
+                                                                    Dataset</div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="ms-resource-card-body-footer ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-sm _ellipsis"><img
+                                                                        class="ms-resource-icon-logo"
+                                                                        src="https://development.demo.geonode.org/static/geonode/img/avatar.png">
+                                                                    admin</div>
+                                                            </div>
+                                                            <div
+                                                                class="_relative ms-resource-card-buttons ms-flex-box _flex _flex-gap-xs">
+                                                                <button type="button"
+                                                                    class="square-button-md btn btn-default"><span
+                                                                        class="glyphicon glyphicon-details"></span>
+                                                                </button></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div
+                                                class="_relative _interactive ms-resource-card ms-resource-card-type-grid ms-main-colors ms-flex-box _flex _flex-column">
+
+                                                <div
+                                                    class="ms-resource-card-body ms-flex-fill ms-flex-box _flex _flex-column">
+                                                    <div
+                                                        class="pointer_events_none ms-resource-card-img ms-image-colors ms-flex-box _flex _flex-center-h _flex-center-v">
+                                                        <div class="ms-text _font-size-xxl"><span
+                                                                class="glyphicon glyphicon-dataset"></span></div>
+                                                    </div>
+                                                    <div
+                                                        class="_padding-sm ms-flex-fill ms-flex-box _flex _flex-column _flex-gap-sm">
+                                                        <div
+                                                            class="ms-resource-card-body-header ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-md _ellipsis"><span
+                                                                        class="glyphicon glyphicon-dataset"></span>
+                                                                    Dataset</div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="ms-resource-card-body-footer ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-sm _ellipsis"><img
+                                                                        class="ms-resource-icon-logo"
+                                                                        src="https://development.demo.geonode.org/static/geonode/img/avatar.png">
+                                                                    admin</div>
+                                                            </div>
+                                                            <div
+                                                                class="_relative ms-resource-card-buttons ms-flex-box _flex _flex-gap-xs">
+                                                                <button type="button"
+                                                                    class="square-button-md btn btn-default"><span
+                                                                        class="glyphicon glyphicon-details"></span>
+                                                                </button></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div
+                                                class="_relative _interactive ms-resource-card ms-resource-card-type-grid ms-main-colors ms-flex-box _flex _flex-column">
+
+                                                <div
+                                                    class="ms-resource-card-body ms-flex-fill ms-flex-box _flex _flex-column">
+                                                    <div
+                                                        class="pointer_events_none ms-resource-card-img ms-image-colors ms-flex-box _flex _flex-center-h _flex-center-v">
+                                                        <div class="ms-text _font-size-xxl"><span
+                                                                class="glyphicon glyphicon-dataset"></span></div>
+                                                    </div>
+                                                    <div
+                                                        class="_padding-sm ms-flex-fill ms-flex-box _flex _flex-column _flex-gap-sm">
+                                                        <div
+                                                            class="ms-resource-card-body-header ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-md _ellipsis"><span
+                                                                        class="glyphicon glyphicon-dataset"></span>
+                                                                    Dataset</div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="ms-resource-card-body-footer ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-sm _ellipsis"><img
+                                                                        class="ms-resource-icon-logo"
+                                                                        src="https://development.demo.geonode.org/static/geonode/img/avatar.png">
+                                                                    admin</div>
+                                                            </div>
+                                                            <div
+                                                                class="_relative ms-resource-card-buttons ms-flex-box _flex _flex-gap-xs">
+                                                                <button type="button"
+                                                                    class="square-button-md btn btn-default"><span
+                                                                        class="glyphicon glyphicon-details"></span>
+                                                                </button></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div
+                                                class="_relative _interactive ms-resource-card ms-resource-card-type-grid ms-main-colors ms-flex-box _flex _flex-column">
+
+                                                <div
+                                                    class="ms-resource-card-body ms-flex-fill ms-flex-box _flex _flex-column">
+                                                    <div
+                                                        class="pointer_events_none ms-resource-card-img ms-image-colors ms-flex-box _flex _flex-center-h _flex-center-v">
+                                                        <div class="ms-text _font-size-xxl"><span
+                                                                class="glyphicon glyphicon-dataset"></span></div>
+                                                    </div>
+                                                    <div
+                                                        class="_padding-sm ms-flex-fill ms-flex-box _flex _flex-column _flex-gap-sm">
+                                                        <div
+                                                            class="ms-resource-card-body-header ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-md _ellipsis"><span
+                                                                        class="glyphicon glyphicon-dataset"></span>
+                                                                    Dataset</div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="ms-resource-card-body-footer ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-sm _ellipsis"><img
+                                                                        class="ms-resource-icon-logo"
+                                                                        src="https://development.demo.geonode.org/static/geonode/img/avatar.png">
+                                                                    admin</div>
+                                                            </div>
+                                                            <div
+                                                                class="_relative ms-resource-card-buttons ms-flex-box _flex _flex-gap-xs">
+                                                                <button type="button"
+                                                                    class="square-button-md btn btn-default"><span
+                                                                        class="glyphicon glyphicon-details"></span>
+                                                                </button></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div
+                                                class="_relative _interactive ms-resource-card ms-resource-card-type-grid ms-main-colors ms-flex-box _flex _flex-column">
+
+                                                <div
+                                                    class="ms-resource-card-body ms-flex-fill ms-flex-box _flex _flex-column">
+                                                    <div
+                                                        class="pointer_events_none ms-resource-card-img ms-image-colors ms-flex-box _flex _flex-center-h _flex-center-v">
+                                                        <div class="ms-text _font-size-xxl"><span
+                                                                class="glyphicon glyphicon-dataset"></span></div>
+                                                    </div>
+                                                    <div
+                                                        class="_padding-sm ms-flex-fill ms-flex-box _flex _flex-column _flex-gap-sm">
+                                                        <div
+                                                            class="ms-resource-card-body-header ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-md _ellipsis"><span
+                                                                        class="glyphicon glyphicon-dataset"></span>
+                                                                    Dataset</div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="ms-resource-card-body-footer ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-sm _ellipsis"><img
+                                                                        class="ms-resource-icon-logo"
+                                                                        src="https://development.demo.geonode.org/static/geonode/img/avatar.png">
+                                                                    admin</div>
+                                                            </div>
+                                                            <div
+                                                                class="_relative ms-resource-card-buttons ms-flex-box _flex _flex-gap-xs">
+                                                                <button type="button"
+                                                                    class="square-button-md btn btn-default"><span
+                                                                        class="glyphicon glyphicon-details"></span>
+                                                                </button></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div
+                                                class="_relative _interactive ms-resource-card ms-resource-card-type-grid ms-main-colors ms-flex-box _flex _flex-column">
+
+                                                <div
+                                                    class="ms-resource-card-body ms-flex-fill ms-flex-box _flex _flex-column">
+                                                    <div
+                                                        class="pointer_events_none ms-resource-card-img ms-image-colors ms-flex-box _flex _flex-center-h _flex-center-v">
+                                                        <div class="ms-text _font-size-xxl"><span
+                                                                class="glyphicon glyphicon-dataset"></span></div>
+                                                    </div>
+                                                    <div
+                                                        class="_padding-sm ms-flex-fill ms-flex-box _flex _flex-column _flex-gap-sm">
+                                                        <div
+                                                            class="ms-resource-card-body-header ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-md _ellipsis"><span
+                                                                        class="glyphicon glyphicon-dataset"></span>
+                                                                    Dataset</div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="ms-resource-card-body-footer ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-sm _ellipsis"><img
+                                                                        class="ms-resource-icon-logo"
+                                                                        src="https://development.demo.geonode.org/static/geonode/img/avatar.png">
+                                                                    admin</div>
+                                                            </div>
+                                                            <div
+                                                                class="_relative ms-resource-card-buttons ms-flex-box _flex _flex-gap-xs">
+                                                                <button type="button"
+                                                                    class="square-button-md btn btn-default"><span
+                                                                        class="glyphicon glyphicon-details"></span>
+                                                                </button></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div
+                                                class="_relative _interactive ms-resource-card ms-resource-card-type-grid ms-main-colors ms-flex-box _flex _flex-column">
+
+                                                <div
+                                                    class="ms-resource-card-body ms-flex-fill ms-flex-box _flex _flex-column">
+                                                    <div
+                                                        class="pointer_events_none ms-resource-card-img ms-image-colors ms-flex-box _flex _flex-center-h _flex-center-v">
+                                                        <div class="ms-text _font-size-xxl"><span
+                                                                class="glyphicon glyphicon-dataset"></span></div>
+                                                    </div>
+                                                    <div
+                                                        class="_padding-sm ms-flex-fill ms-flex-box _flex _flex-column _flex-gap-sm">
+                                                        <div
+                                                            class="ms-resource-card-body-header ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-md _ellipsis"><span
+                                                                        class="glyphicon glyphicon-dataset"></span>
+                                                                    Dataset</div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="ms-resource-card-body-footer ms-flex-box _flex _flex-gap-sm _flex-center-v">
+                                                            <div class="ms-flex-fill ms-flex-box _flex">
+                                                                <div class="ms-text _font-size-sm _ellipsis"><img
+                                                                        class="ms-resource-icon-logo"
+                                                                        src="https://development.demo.geonode.org/static/geonode/img/avatar.png">
+                                                                    admin</div>
+                                                            </div>
+                                                            <div
+                                                                class="_relative ms-resource-card-buttons ms-flex-box _flex _flex-gap-xs">
+                                                                <button type="button"
+                                                                    class="square-button-md btn btn-default"><span
+                                                                        class="glyphicon glyphicon-details"></span>
+                                                                </button></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="ms-main-colors _padding-tb-sm ms-flex-box _flex _flex-center-h _flex-center-v"
+                                        style="position: sticky; bottom: 31.5938px;">
+                                        <ul class="custom pagination">
+                                            <li class="disabled"><a role="button" tabindex="-1"
+                                                    style="pointer-events: none;"><span aria-label="Previous"><span
+                                                            class="glyphicon glyphicon-back"></span></span></a></li>
+                                            <li class="active"><a role="button" >1</a></li>
+                                            <li class=""><a role="button" >2</a></li>
+                                            <li class=""><a role="button" >3</a></li>
+                                            <li class="disabled"><a role="button"  tabindex="-1"
+                                                    style="pointer-events: none;"><span aria-label="More">…</span></a></li>
+                                            <li class=""><a role="button" >202</a></li>
+                                            <li class=""><a role="button" ><span aria-label="Next"><span
+                                                            class="glyphicon glyphicon-next"></span></span></a></li>
+                                        </ul>
                                     </div>
                                 </div>
-                                <ul>
-                                    <li style="width: 100%; margin: 6px;">
-                                        <div class="gn-resource-card gn-card-type-list rounded-0">
-                                            <div class="card-resource-list">
-                                                <div class="card-img-left card-img-placeholder"></div>
-                                            
-                                            <div class="gn-resource-card-body-wrapper">
-                                                    <div class="card-body">
-                                                        <div class="card-title">
-                                                            <div><i class="fa fa-book"></i><a>Main</a></div>
-                                                            <div>
-                                                                <p class="gn-resource-status-text"></p>
-                                                            </div>
-                                                        </div>
-                                                        <p class="card-text gn-card-description"><div class="badge">Badge</div></p>
-                                                    </div>
-                                                    <div class="gn-footer-wrapper">
-                                                        <div class="gn-card-footer"
-                                                            style="padding: 0px 0.25rem 0px 0.5rem;">
-                                                            <p class="card-text gn-card-user"><img
-                                                                    src="https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/master/geonode_mapstore_client/static/mapstore/img/geonode-logo.svg"
-                                                                    alt="admin" class="gn-card-author-image"><a>Link</a>
-                                                            </p>
-                                                            <div class="gn-card-actions">
-                                                                <div class="gn-card-view-editor-right">
-                                                                    <a class="btn btn-primary"><span>View</span></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="gn-footer-placeholder" style="height: 32px;"></div>
+            <footer class="gn-footer">
+                <ul>
+                    <li>
+                        <a class="nav-link">
+                            <span>geonode.org</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link">
+                            <span>Developers</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link">
+                            <span>About</span>
+                        </a>
+                    </li>
+                </ul>
+            </footer>
         </div>
-        <footer class="gn-footer">
-            <ul>
-                <li>
-                    <a class="nav-link">
-                        <span>Footer link</span>
-                    </a>
-                </li>
-                <li>
-                    <span>Footer color</span>
-                </li>
-            </ul>
-        </footer>
     </div>
-
     <div id="extra-less-functions" style="display: none;">
         .extract-css-variables(@theme-vars) {
             // exclude nested rule sets, eg: @button-default
@@ -438,52 +740,60 @@
             width: 320
         });
         const params = {
-            'gn-primary': '#397AAB',
-            'gn-primary-contrast': '#ffffff',
+            // 'ms-font-family-sans-serif': 'Georgia, "Times New Roman", Times, serif',
+            // 'ms-font-family-serif': 'Menlo, Monaco, Consolas, "Courier New", monospace',
+            // 'ms-font-family-monospace': 'Montserrat, sans-serif',
+            'ms-font-family-base': 'Montserrat, sans-serif',
+            'ms-primary': '#397AAB',
+            'ms-primary-contrast': '#ffffff',
 
-            'gn-main-color': '#000000',
-            'gn-main-bg': '#ffffff',
-            'gn-main-border-color': '#dddddd',
+            'ms-main-color': '#000000',
+            'ms-main-bg': '#ffffff',
+            'ms-main-border-color': '#dddddd',
 
-            'gn-main-variant-color': '#000000',
-            'gn-main-variant-bg': '#f2f0f0',
+            'ms-main-variant-color': '#000000',
+            'ms-main-variant-bg': '#f2f0f0',
 
-            'gn-main-hover-color': '#000000',
-            'gn-main-hover-bg': '#eeeeee',
+            'ms-main-hover-color': '#000000',
+            'ms-main-hover-bg': '#eeeeee',
 
-            'gn-placeholder-color': '#aaaaaa',
-            'gn-placeholder-bg': '#dddddd',
+            'ms-placeholder-color': '#aaaaaa',
+            'ms-placeholder-bg': '#dddddd',
 
-            'gn-disabled-color': '#acacac',
-            'gn-disabled-bg': '#fcfcfc',
+            'ms-disabled-color': '#acacac',
+            'ms-disabled-bg': '#fcfcfc',
 
-            'gn-info': '#275a7f',
-            'gn-info-contrast': '#ffffff',
-            'gn-success': '#58cf80',
-            'gn-success-contrast': '#ffffff',
-            'gn-warning': '#ebbc35',
-            'gn-warning-contrast': '#ffffff',
-            'gn-danger': '#bb4940',
-            'gn-danger-contrast': '#ffffff',
+            'ms-info': '#275a7f',
+            'ms-info-contrast': '#ffffff',
+            'ms-success': '#58cf80',
+            'ms-success-contrast': '#ffffff',
+            'ms-warning': '#ebbc35',
+            'ms-warning-contrast': '#ffffff',
+            'ms-danger': '#bb4940',
+            'ms-danger-contrast': '#ffffff',
 
-            'gn-link-color': '#397AAB',
-            'gn-link-hover-color': '#1b4d74',
+            'ms-link-color': '#397AAB',
+            'ms-link-hover-color': '#1b4d74',
 
-            'gn-jumbotron-color': '#ffffff',
-            'gn-jumbotron-bg': '#0c3756',
+            'ms-jumbotron-color': '#ffffff',
+            'ms-jumbotron-bg': '#0c3756',
 
-            'gn-footer-color': '#000000',
-            'gn-footer-bg': '#ffffff',
-            'gn-footer-link-color': '#397AAB',
-            'gn-footer-link-hover-color': '#1b4d74',
+            'ms-footer-color': '#000000',
+            'ms-footer-bg': '#ffffff',
+            'ms-footer-link-color': '#397AAB',
+            'ms-footer-link-hover-color': '#1b4d74',
 
-            'gn-badge-color': '#000000',
-            'gn-badge-bg': '#D5D5D5'
+            'ms-badge-color': '#000000',
+            'ms-badge-bg': '#D5D5D5'
         };
 
         const paramsKeys = Object.keys(params);
         for (var i = 0; i < paramsKeys.length; i++) {
-            gui.addColor(params, paramsKeys[i]).name(paramsKeys[i].replace('gn-', '').replace(/\-/g, ' '));
+            if (paramsKeys[i].includes('font')) {
+                gui.add(params, paramsKeys[i]).name(paramsKeys[i].replace('gn-', '').replace(/\-/g, ' '));
+            } else {
+                gui.addColor(params, paramsKeys[i]).name(paramsKeys[i].replace('gn-', '').replace(/\-/g, ' '));
+            }
         }
         const overlay = document.getElementById('snippet-overlay');
         const textarea = overlay.querySelector('textarea');
@@ -519,16 +829,20 @@
             .then(function (text) {
                 const style = document.createElement('style');
                 style.innerHTML = text;
+                const stylesheets = document.querySelectorAll('[rel="stylesheet"]');
+                [...stylesheets].forEach(stylesheet => {
+                    stylesheet.parentNode.removeChild(stylesheet);
+                });
                 document.head.insertBefore(style, document.head.firstChild);
                 loadCount++;
                 loaded();
             });
-        fetch('https://raw.githubusercontent.com/GeoNode/geonode-mapstore-client/' + branch + '/geonode_mapstore_client/client/themes/geonode/less/_variables.less')
+        fetch('https://raw.githubusercontent.com/geosolutions-it/MapStore2/refs/heads/' + (branch === 'master' ? 'master' : `geonode-${branch}`) + '/web/client/themes/default/ms-variables.less')
             .then(function (res) { return res.text(); })
             .then(function (text) {
                 const extraLess = document.getElementById('extra-less-functions').innerText;
                 function renderLessVariables(init) {
-                    less.render(text + extraLess + ' :root { .extract-css-variables(@gn-theme-vars); }', { modifyVars: params }, function (error, output) {
+                    less.render(text + extraLess + ' :root { .extract-css-variables(@ms-theme-vars); }', { modifyVars: params }, function (error, output) {
                         document.getElementById('gn-css-variables').innerHTML = output.css;
                         textarea.innerHTML = '/* copy this style in the "Custom CSS rules" field of the theme page to apply these new variables */\n' + output.css + '';
                         if (init) {
