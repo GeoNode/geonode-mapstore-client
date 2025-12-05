@@ -113,7 +113,10 @@ import {
     success as successNotification,
     warning as warningNotification
 } from '@mapstore/framework/actions/notifications';
-import { convertDependenciesMappingForCompatibility } from '@mapstore/framework/utils/WidgetsUtils';
+import {
+    convertDependenciesMappingForCompatibility,
+    updateDependenciesForMultiViewCompatibility
+} from '@mapstore/framework/utils/WidgetsUtils';
 import {
     setResource as setContextCreatorResource,
     enableMandatoryPlugins,
@@ -320,9 +323,10 @@ const resourceTypes = {
         newResourceObservable: (options) =>
             Observable.defer(() => getNewGeoStoryConfig())
                 .switchMap((gnGeoStory) => {
+                    const currentStory = options.data || {...gnGeoStory, sections: [{...gnGeoStory.sections[0], id: uuid(),
+                        contents: [{...gnGeoStory.sections[0].contents[0], id: uuid()}]}]};
                     return Observable.of(
-                        setCurrentStory(options.data || {...gnGeoStory, sections: [{...gnGeoStory.sections[0], id: uuid(),
-                            contents: [{...gnGeoStory.sections[0].contents[0], id: uuid()}]}]}),
+                        setCurrentStory({...currentStory, defaultGeoStoryConfig: {...currentStory}}),
                         setEditing(true),
                         setGeoStoryResource({
                             canEdit: true
@@ -358,7 +362,9 @@ const resourceTypes = {
                                 lastUpdate: resource.last_updated,
                                 name: resource.title
                             },
-                            options.data ? convertDependenciesMappingForCompatibility(options.data) : convertDependenciesMappingForCompatibility(resource.data)
+                            options.data
+                                ? updateDependenciesForMultiViewCompatibility(convertDependenciesMappingForCompatibility(options.data))
+                                : updateDependenciesForMultiViewCompatibility(convertDependenciesMappingForCompatibility(resource.data))
                         ),
                         setResource(resource),
                         setResourceId(pk)
@@ -374,7 +380,7 @@ const resourceTypes = {
                             canDelete: true,
                             canEdit: true
                         },
-                        convertDependenciesMappingForCompatibility(options.data)
+                        updateDependenciesForMultiViewCompatibility(convertDependenciesMappingForCompatibility(options.data))
                     )
                 ] : []),
                 dashboardLoading(false)

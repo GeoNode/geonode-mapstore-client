@@ -1,6 +1,6 @@
 {
   "name": "geonode-mapstore-client",
-  "version": "4.0.0",
+  "version": "master",
   "description": "MapStore 2 bundles specific to geonode framework",
   "eslintConfig": {
     "extends": [

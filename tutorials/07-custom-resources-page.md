@@ -19,38 +19,50 @@ geonode-project-name/
 - add the following block extension in the `geostory_resources_page.html` template
 
 ```html
-{% extends "page.html" %}
+{% extends "geonode-mapstore-client/resource_page_catalog.html" %} 
+{% load i18n %}
+{% block content %}
+    {% comment %}
+        The i18n template tag allows to import functionality needed to support translations.
+        It is also possible to access information about the current language in use with:
 
-{% block container %}
-    <div class="gn-container">
-        <div id="custom-resources-grid"></div>
+            {% get_current_language as LANG %}
+
+        then the LANG variable can be used inside the template, e.g.:
+
+            <div>{{ LANG }}</div>
+
+    {% endcomment %}
+    <div class="gn-resource-page-catalog-section">
+        <div class="gn-resource-page-catalog-content">
+            <h4>{% trans "My GeoStories" %}</h4>
+        </div>
     </div>
-    <script>
-        window.addEventListener('mapstore:ready', function(event) {
-            const msAPI = event.detail;
-            msAPI.setPluginsConfig([
-                {
-                    name: 'ResourcesGrid',
-                    cfg: {
-                        targetSelector: '#custom-resources-grid',
-                        containerSelector: '.gn-container',
-                        menuItems: [],
-                        filtersFormItems: [],
-                        defaultQuery: {
-                            f: 'geostory'
-                        },
-                        pagination: true
-                    }
-                },
-                { name: 'SaveAs', cfg: { closeOnSave: true } },
-                { name: 'DeleteResource' },
-                { name: 'DownloadResource' },
-                { name: 'Notifications' }
-            ]);
-        });
-    </script>
-{% endblock %}
+    <div id="my-geostory" class="ms-plugin ResourcesGrid"></div>
+{% endblock content %}
 
+{% block ms_plugins %}
+    msPluginsBlocks = [
+        {
+            "name": "ResourcesGrid",
+            "cfg": {
+                "id": "catalog",
+                "title": "GeoStory",
+                "defaultQuery": {
+                    "f": "geostory"
+                },
+                "targetSelector": "#my-geostory",
+                "menuItems": []
+            }
+        },
+        {
+            "name": "ResourcesFiltersForm",
+            "cfg": {
+                "fields": getPageFilterForm()
+            }
+        }
+    ];
+{% endblock ms_plugins %}
 ```
 
 - add the new page inside urls.py inside urlpatterns list

@@ -158,8 +158,7 @@
                     const url = '/api/v2/resources' +
                     '?page=' + options.page +
                     '&search=' + options.value +
-                    '&search_fields=title' +
-                    '&search_fields=abstract' +
+                    '&search_index=' + window.__GEONODE_CONFIG__?.localConfig?.geoNodeSettings?.resourcesSearchIndex +
                     '&filter{metadata_only}=false';
                     {% endblock %}
                     request = $.ajax({

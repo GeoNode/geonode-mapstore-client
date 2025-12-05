@@ -132,6 +132,10 @@ export const paramsSerializer = () => {
     };
 };
 
+export const getResourcesSearchIndex = () => {
+    return getGeoNodeLocalConfig('geoNodeSettings.resourcesSearchIndex');
+};
+
 export const API_PRESET = {
     CATALOGS: 'catalog_list',
     DATASETS: 'dataset_list',

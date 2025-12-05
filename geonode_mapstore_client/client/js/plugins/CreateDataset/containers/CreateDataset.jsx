@@ -43,6 +43,7 @@ import { getEndpointUrl, EXECUTION_REQUEST } from '@js/api/geonode/v2/constants'
  * @param {Object} props - The component props
  * @param {Function} props.onError - The function to handle errors
  * @param {number} props.refreshTime - The time in milliseconds to refresh the execution status
+ * @ignore
  */
 const CreateDataset = ({
     onError = () => {},

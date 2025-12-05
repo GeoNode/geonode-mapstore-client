@@ -12,7 +12,8 @@ import {
     paramsSerializer,
     getGeoNodeConfig,
     getGeoNodeLocalConfig,
-    API_PRESET
+    API_PRESET,
+    getResourcesSearchIndex
 } from '@js/utils/APIUtils';
 import merge from 'lodash/merge';
 import mergeWith from 'lodash/mergeWith';
@@ -62,7 +63,7 @@ export const getResources = ({
         ...getQueryParams({...params, f}, customFilters),
         ...(q && {
             search: q,
-            search_fields: ['title', 'abstract']
+            search_index: getResourcesSearchIndex()
         }),
         ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
         page,
@@ -102,7 +103,7 @@ export const getMaps = ({
                     ...params,
                     ...(q && {
                         search: q,
-                        search_fields: ['title', 'abstract']
+                        search_index: getResourcesSearchIndex()
                     }),
                     ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
                     page,
@@ -138,7 +139,7 @@ export const getDatasets = ({
                     'filter{metadata_only}': false,
                     ...(q && {
                         search: q,
-                        search_fields: ['title', 'abstract']
+                        search_index: getResourcesSearchIndex()
                     }),
                     ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
                     page,
@@ -211,7 +212,7 @@ export const getDocumentsByDocType = (docType = 'image', {
                     ...params,
                     ...(q && {
                         search: q,
-                        search_fields: ['title', 'abstract']
+                        search_index: getResourcesSearchIndex()
                     }),
                     ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
                     'filter{subtype}': [docType],
@@ -375,7 +376,7 @@ export const getGeoApps = ({
                     ...params,
                     ...(q && {
                         search: q,
-                        search_fields: ['title', 'abstract']
+                        search_index: getResourcesSearchIndex()
                     }),
                     ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
                     page,

@@ -8,31 +8,36 @@
 
 import { Observable } from 'rxjs';
 import { addApi, setApi } from '@mapstore/framework/api/persistence';
-import { getMaps, getMapByPk, getResources as gnGetResources } from '@js/api/geonode/v2';
+import { getMaps, getMapByPk, getGeoAppByPk, getResources as gnGetResources } from '@js/api/geonode/v2';
 import { getFacetItems } from '@js/api/geonode/v2/facets';
-import { parseCatalogResource } from '@js/utils/ResourceUtils';
+import { parseCatalogResource, ResourceTypes } from '@js/utils/ResourceUtils';
 import { getCustomMenuFilters } from '@js/selectors/config';
 
-const getResource = (pk) => {
-    return Observable.defer(() => {
-        return getMapByPk(pk)
-            .then((resource) => {
-                return {
-                    ...resource,
-                    data: {
-                        ...resource?.data,
-                        map: {
-                            ...resource?.data?.map,
-                            extraParams: {
-                                ...resource?.data?.map?.extraParams,
-                                // add the original pk to keep track in future synchronizations
-                                pk: resource?.pk
+const getResource = (pk, category) => {
+    return Observable.defer(() =>
+        category === ResourceTypes.DASHBOARD
+            ? getGeoAppByPk(pk)
+                .then((resource) => {
+                    return resource;
+                })
+            : getMapByPk(pk)
+                .then((resource) => {
+                    return {
+                        ...resource,
+                        data: {
+                            ...resource?.data,
+                            map: {
+                                ...resource?.data?.map,
+                                extraParams: {
+                                    ...resource?.data?.map?.extraParams,
+                                    // add the original pk to keep track in future synchronizations
+                                    pk: resource?.pk
+                                }
                             }
                         }
-                    }
-                };
-            });
-    });
+                    };
+                })
+    );
 };
 
 const getResources = ({ category, options, query }) => {

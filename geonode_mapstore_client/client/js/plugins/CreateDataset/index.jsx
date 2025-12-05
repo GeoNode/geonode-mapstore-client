@@ -12,10 +12,13 @@ import { createPlugin } from "@mapstore/framework/utils/PluginsUtils";
 const CreateDataset = lazy(() => import('./containers/CreateDataset'));
 
 /**
+* @module CreateDataset
+*/
+
+/**
  * Create new datasets with custom attributes and restrictions.
  * Also supports manual attribute creation or loading from JSON schema files.
  * @name CreateDataset
- * @memberof plugins
  * @example
  * // Sample JSON schema that can be loaded:
  * {
