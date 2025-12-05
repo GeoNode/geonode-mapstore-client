@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useMemo, use } from 'react';
+import React, { useState, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { Glyphicon, Checkbox, FormGroup } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
@@ -143,8 +143,7 @@ function DocumentsCatalog({
     const handleSearchChange = (value, clear) => {
         if (clear) {
             setSearch('');
-        }
-        else {
+        } else {
             setSearch(value);
         }
         setPage(1);
@@ -153,7 +152,7 @@ function DocumentsCatalog({
     const handleExtensionFilterChange = (values) => {
         setExtensionFilter(values);
         setPage(1);
-    }
+    };
 
     const handleSortChange = (sortValue) => {
         setSort(sortValue);
@@ -162,8 +161,7 @@ function DocumentsCatalog({
     const handleFiltersChange = (newFilters, clear) => {
         if (clear) {
             setFilters({});
-        }
-        else {
+        } else {
             setFilters((prev) => ({
                 ...prev,
                 ...newFilters
@@ -186,7 +184,7 @@ function DocumentsCatalog({
         request: requestResources,
         queryParams: {
             page,
-            q: search, 
+            q: search,
             sort,
             'filter{extension.in}': extensionFilter.length > 0 ? extensionFilter : undefined,
             ...filters
@@ -195,7 +193,7 @@ function DocumentsCatalog({
         user,
         setLoading,
         setResources,
-        setResourcesMetadata: handleSetResourcesMetadata,
+        setResourcesMetadata: handleSetResourcesMetadata
     });
 
     const defaultTarget = openInNewTab ? '_blank' : undefined;
@@ -373,7 +371,7 @@ function DocumentsCatalog({
             />
 
             <div style={{
-                marginLeft: 8,
+                marginLeft: 8
             }}>
                 <ResourcesPanelWrapper
                     className="ms-resources-filter shadow-md"

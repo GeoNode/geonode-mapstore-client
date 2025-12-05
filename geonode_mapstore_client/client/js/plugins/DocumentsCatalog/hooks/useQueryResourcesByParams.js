@@ -9,7 +9,8 @@
 import { useRef, useEffect } from 'react';
 import axios from '@mapstore/framework/libs/ajax';
 import useIsMounted from '@mapstore/framework/hooks/useIsMounted';
-import { isEqual, isArray, omit, castArray } from 'lodash';
+import { isEqual, isArray, castArray } from 'lodash';
+import uniq from 'lodash/uniq';
 
 const cleanParams = (params, exclude = ['d']) => {
     return Object.keys(params)
@@ -129,7 +130,7 @@ const useQueryResourcesByParams = ({
             requestResources.current(queryParams);
             prevParams.current = queryParams;
         }
-    }, [queryParams, pageSize, user]); 
+    }, [queryParams, pageSize, user]);
 
 
     useEffect(() => {
