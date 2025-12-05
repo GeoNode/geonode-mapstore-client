@@ -99,12 +99,12 @@ const ResourcesListHeader = ({
                 }}
             >
                 {columns.filter((column, idx) => idx < columns.length - 1).map((column, idx) => {
-                    return (<div key={column.path} data-column-index={idx} className={`ms-resources-list-header-divider${selected === idx ? ' selected' : ''}`} style={{ left: `${column.left}%` }}/>);
+                    return (<div key={column.path} data-column-index={idx} className={`ms-resources-list-header-divider${selected === idx ? ' selected' : ''}`} style={{ left: `${column.left}%` }} />);
                 })}
                 {columns.map((entry) => {
                     const property = metadata.find(en => en.path === entry.path);
                     return (<Text fontSize="sm" classNames={['_padding-lr-sm']} ellipsis key={entry.path} style={{ width: `${entry.width}%` }}>
-                        {property?.labelId ? <Message msgId={property.labelId}/> : null}
+                        {property?.labelId ? <Message msgId={property.labelId} /> : null}
                     </Text>);
                 })}
             </FlexBox.Fill>
@@ -200,7 +200,7 @@ const ResourcesMenu = forwardRef(({
         >
             {titleId
                 ? <Text fontSize="lg">
-                    <Message msgId={titleId}/>
+                    <Message msgId={titleId} />
                 </Text>
                 : null}
             <FlexBox centerChildrenVertically gap="xs">
@@ -212,7 +212,8 @@ const ResourcesMenu = forwardRef(({
                     <Text fontSize="sm" ellipsis>
                         {loading
                             ? <Spinner />
-                            : <Message msgId={resourcesFoundMsgId} msgParams={{ count: totalResources }}/>}
+                            : <span><span>{totalResources}</span>{" "}<Message msgId={resourcesFoundMsgId} msgParams={{ count: totalResources }} /></span>
+                        }
                     </Text>
                 </FlexBox.Fill>
                 <Menu
@@ -231,7 +232,7 @@ const ResourcesMenu = forwardRef(({
                 </Button>}
                 {orderAlign === 'right' ? orderButtonNode : null}
             </FlexBox>
-            {cardLayoutStyle === 'list' ? <ResourcesListHeader columns={columns} setColumns={setColumns} metadata={metadata}/> : null}
+            {cardLayoutStyle === 'list' ? <ResourcesListHeader columns={columns} setColumns={setColumns} metadata={metadata} /> : null}
         </FlexBox>
     );
 });

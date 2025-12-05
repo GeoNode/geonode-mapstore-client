@@ -50,7 +50,7 @@ const extensionField = {
     facet: "extension",
     labelId: "Extension",
     label: "Extension",
-    placeholderId: "Filter by extension",
+    placeholderId: "gnviewer.filterByExtension",
     description: "extension",
     options: [
         { label: "png", value: "png" },
@@ -114,15 +114,14 @@ function DocumentsCatalog({
     titleId = 'gnviewer.documentsCatalogTitle',
     theme = 'main',
     metadata: metadataProp,
-    noResultId = 'No results found',
+    noResultId = 'gnviewer.noDocumentsFound',
     openInNewTab = false,
-    resourcesFoundMsgId = 'Documents found',
+    resourcesFoundMsgId = 'gnviewer.documentsFound',
     resourceTypes: availableResourceTypes = [],
     onClose,
     onAdd,
     onZoomTo
 }, context) {
-
     const [resources, setResources] = useState([]);
     const [loading, setLoading] = useState(false);
     const [totalResources, setTotalResources] = useState(0);
@@ -364,7 +363,7 @@ function DocumentsCatalog({
                 columns={columns}
                 setColumns={setColumns}
                 target={defaultTarget}
-                resourcesFoundMsgId={totalResources + " " + resourcesFoundMsgId}
+                resourcesFoundMsgId={resourcesFoundMsgId}
                 onSortChange={(sortValue) => {
                     handleSortChange(sortValue);
                 }}
@@ -450,7 +449,7 @@ function DocumentsCatalog({
                         variant="primary"
                         onClick={() => handleAddLayer(false)}
                     >
-                        <Message msgId={"Add Selected as a Layer"} />
+                        <Message msgId={"gnviewer.addSelectedAsLayer"} />
                         {` (${selectedDocuments.length})`}
                     </Button>
                 ) : hasActiveSearch ? (

@@ -524,7 +524,11 @@
             "documentsCatalogTitle": "Documents catalog",
             "documentsCatalogFilterPlaceholder": "Filter documents by title or abstract...",
             "documentsCatalogEntriesNoResults": "No results match your search",
-            "selectAll": "Select All"
+            "selectAll": "Select All",
+            "filterByExtension": "Filter by extension",
+            "documentsFound": "Documents found",
+            "noDocumentsFound": "No documents found",
+            "addSelectedAsLayer": "Add selected as layer"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

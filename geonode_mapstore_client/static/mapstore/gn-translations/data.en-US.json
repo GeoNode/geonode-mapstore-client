@@ -254,6 +254,11 @@
             "documentsCatalogFilterPlaceholder": "Filter documents by title or abstract...",
             "documentsCatalogEntriesNoResults": "No results match your search",
             "selectAll": "Select All",
+            "filterByExtension": "Filter by extension",
+            "documentsFound": "Documents found",
+            "noDocumentsFound": "No documents found",
+            "addSelectedAsLayer": "Add selected as layer",
+
 
             "zoomToLayer": "Zoom to layer extent",
             "applyCurrentStyleToLayer": "Apply current style to layer",

@@ -260,6 +260,10 @@
             "deleteCurrentStyle": "Elimina lo stile corrente",
             "createNewStyle": "Crea nuovo stile",
             "selectAll": "Seleziona tutto",
+            "filterByExtension": "Filtra per estensione",
+            "documentsFound": "Documenti trovati",
+            "noDocumentsFound": "Nessun documento trovato",
+            "addSelectedAsLayer": "Aggiungi selezionati come layer",
 
             "createStyleTitle": "Aggiungi nuovo stile",
             "createStyleTitleInput": "Titolo:",

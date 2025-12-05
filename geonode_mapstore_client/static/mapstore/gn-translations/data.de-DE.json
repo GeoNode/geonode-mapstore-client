@@ -258,6 +258,11 @@
             "deleteCurrentStyle": "Aktuellen Stil löschen",
             "createNewStyle": "Neuen Stil erstellen",
             "selectAll": "Alle auswählen",
+            "filterByExtension": "Nach Erweiterung filtern",
+            "documentsFound": "Dokumente gefunden",
+            "noDocumentsFound": "Keine Dokumente gefunden",
+            "addSelectedAsLayer": "Ausgewählte als Ebene hinzufügen",
+
 
             "createStyleTitle": "Neuen Stil hinzufügen",
             "createStyleTitleInput": "Titel:",
