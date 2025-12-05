@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import axios from '@mapstore/framework/libs/ajax';
-import uniq from 'lodash/uniq';
 import useIsMounted from '@mapstore/framework/hooks/useIsMounted';
 import { isEqual, isArray, omit, castArray } from 'lodash';
 
@@ -44,35 +43,32 @@ const mergeParams = (params, defaultQuery) => {
 };
 
 /**
- * contains all the logic to update the resource grids content based on the params
+ * contains all the logic to update the documetns catalog content based on the query params
  * @param {func} props.setLoading set the loading state
  * @param {func} props.setResources set the resource items returned by the request
  * @param {func} props.setResourcesMetadata set the resource metadata returned by the request
  * @param {func} props.request function returning the resources request
  * @param {object} props.defaultQuery default query object always applied to the requests
  * @param {number} props.pageSize page size for the request
- * @param {bool} props.queryPage if true adds the page to the  query
  */
 
 const useQueryResourcesByParams = ({
-    setLoading = () => {},
-    setResources = () => {},
-    setResourcesMetadata = () => {},
+    setLoading = () => { },
+    setResources = () => { },
+    setResourcesMetadata = () => { },
     request = () => Promise.resolve({}),
-    defaultQuery,
-    pageSize,
+    defaultQuery = {},
+    pageSize = 20,
     user,
-    queryPage = true
+    monitoredState,
+    queryParams = {}
 }) => {
-
-    const [query, setQuery] = useState(defaultQuery);
-    const _prevQuery = useRef();
-    const requestResources = useRef();
+    const prevParams = useRef({});
     const requestTimeout = useRef();
-
+    const requestResources = useRef();
+    const source = useRef();
     const isMounted = useIsMounted();
 
-    const source = useRef();
     const createToken = () => {
         if (source?.current?.cancel) {
             source.current?.cancel();
@@ -98,6 +94,7 @@ const useQueryResourcesByParams = ({
             request({
                 ...requestParams,
                 pageSize,
+                monitoredState,
                 config: {
                     cancelToken: source?.current?.token
                 }
@@ -127,96 +124,24 @@ const useQueryResourcesByParams = ({
         }, 300);
     };
 
-    const _queryPage = useRef();
-    _queryPage.current = queryPage;
-
-    const init = useRef();
-
     useEffect(() => {
-        if (init.current) {
-            const currentPage = queryPage ? (query.page || 1) : undefined;
-            requestResources.current({
-                ...query,
-                ...(currentPage && { page: currentPage })
-            });
+        if (!isEqual(prevParams.current, queryParams)) {
+            requestResources.current(queryParams);
+            prevParams.current = queryParams;
         }
-    }, [pageSize, JSON.stringify(defaultQuery), user]);
-
-    useEffect(() => {
-        const prevQuery = _prevQuery.current;
-        const currentPage = queryPage ? (query.page || 1) : undefined;
-
-        const isPageUpdated = queryPage
-            ? query.page !== prevQuery?.page
-            : false;
-
-        const shouldUpdate = prevQuery === undefined
-            || isPageUpdated
-            || !isEqual(omit(query, ['page']), omit(prevQuery, ['page']));
-
-        if (shouldUpdate) {
-            requestResources.current({
-                ...query,
-                ...(currentPage && { page: currentPage })
-            });
-        }
-        _prevQuery.current = query;
-
-        if (!init.current) {
-            init.current = true;
-        }
-    }, [query]);
-
-    function handleSearch(nextParams) {
-        if (nextParams?.page !== undefined && !queryPage) {
-            requestResources.current({
-                ...query,
-                page: nextParams.page
-            });
-            return;
-        }
-
-        const nextQuery = cleanParams({
-            ...omit(query, ['page']),
-            ...nextParams
-        }, []);
-
-        setQuery(nextQuery);
-    }
+    }, [queryParams, pageSize, user]); 
 
 
-    function handleClear() {
-        const { q, sort, 'filter{extension.in}': extension } = query;
-        const clearedQuery = {
-            ...defaultQuery,
-            ...(q && { q }),
-            ...(sort && { sort }),
-            ...(extension && { 'filter{extension.in}': extension }),
-            page: 1
-        };
-        setQuery(clearedQuery);
-        requestResources.current({
-            ...clearedQuery
-        });
-    }
-
-
-    // Cleanup on unmount
     useEffect(() => {
         return () => {
             if (source?.current?.cancel) {
                 source.current.cancel();
-                source.current = undefined;
             }
             clearRequestTimeout();
         };
     }, []);
 
-    return {
-        search: handleSearch,
-        clear: handleClear,
-        query
-    };
+    return {};
 };
 
 export default useQueryResourcesByParams;

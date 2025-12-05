@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, use } from 'react';
 import { connect } from 'react-redux';
 import { Glyphicon, Checkbox, FormGroup } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
@@ -23,14 +23,13 @@ import ResourcesPanelWrapper from '@mapstore/framework/plugins/ResourcesCatalog/
 import ReactSelect from 'react-select';
 import localizedProps from '@mapstore/framework/components/misc/enhancers/localizedProps';
 import { createStructuredSelector } from 'reselect';
-import useQueryDocumentsState from '../hooks/useQueryResourcesByParams';
+import useQueryResourcesByParams from '../hooks/useQueryResourcesByParams';
 import { isMenuItemSupportedSupported } from '@mapstore/framework/utils/ResourcesUtils';
 import { getDocuments } from '@js/api/geonode/v2';
 import useParsePluginConfigExpressions from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useParsePluginConfigExpressions';
 import { userSelector } from '@mapstore/framework/selectors/security';
 import { getMonitoredStateSelector } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import { documentsToLayerConfig } from '@js/plugins/DocumentsCatalog/utils';
-
 
 const SelectSync = localizedProps('placeholder')(ReactSelect);
 
@@ -103,8 +102,8 @@ const DocumentResourceItem = ({ entry, isChecked, onToggle }) => (
 
 
 function DocumentsCatalog({
+    // id = 'documents-catalog',
     user,
-    defaultQuery = {},
     order,
     menuItems = [],
     pageSize = 10,
@@ -113,8 +112,6 @@ function DocumentsCatalog({
     style,
     requestResources = getDocuments,
     titleId = 'gnviewer.documentsCatalogTitle',
-    queryPage,
-    page: pageProp = 1,
     theme = 'main',
     metadata: metadataProp,
     noResultId = 'No results found',
@@ -126,7 +123,6 @@ function DocumentsCatalog({
     onZoomTo
 }, context) {
 
-    const prevSearchRef = React.useRef(null);
     const [resources, setResources] = useState([]);
     const [loading, setLoading] = useState(false);
     const [totalResources, setTotalResources] = useState(0);
@@ -134,14 +130,48 @@ function DocumentsCatalog({
     const [selectedDocuments, setSelectedDocuments] = useState([]);
     const [showFilter, setShowFilter] = useState(false);
 
-    const handleSetLoading = (isLoading) => {
-        setLoading(isLoading);
+    const [page, setPage] = useState(1);
+    const [search, setSearch] = useState('');
+    const [extensionFilter, setExtensionFilter] = useState([]);
+    const [sort, setSort] = useState('');
+    const [filters, setFilters] = useState({});
+
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
     };
 
-    const handleSetResources = (newResources) => {
-        setResources(newResources);
+    const handleSearchChange = (value, clear) => {
+        if (clear) {
+            setSearch('');
+        }
+        else {
+            setSearch(value);
+        }
+        setPage(1);
     };
 
+    const handleExtensionFilterChange = (values) => {
+        setExtensionFilter(values);
+        setPage(1);
+    }
+
+    const handleSortChange = (sortValue) => {
+        setSort(sortValue);
+    };
+
+    const handleFiltersChange = (newFilters, clear) => {
+        if (clear) {
+            setFilters({});
+        }
+        else {
+            setFilters((prev) => ({
+                ...prev,
+                ...newFilters
+            })
+            );
+        }
+        setPage(1);
+    };
 
     const handleSetResourcesMetadata = (metadata) => {
         if (metadata.total !== undefined) {
@@ -152,18 +182,21 @@ function DocumentsCatalog({
         }
     };
 
-
-    const { search: handleUpdate, clear: handleClear, query } = useQueryDocumentsState({
-        setLoading: handleSetLoading,
-        setResources: handleSetResources,
-        setResourcesMetadata: handleSetResourcesMetadata,
+    useQueryResourcesByParams({
         request: requestResources,
-        defaultQuery,
+        queryParams: {
+            page,
+            q: search, 
+            sort,
+            'filter{extension.in}': extensionFilter.length > 0 ? extensionFilter : undefined,
+            ...filters
+        },
         pageSize,
         user,
-        queryPage
+        setLoading,
+        setResources,
+        setResourcesMetadata: handleSetResourcesMetadata,
     });
-
 
     const defaultTarget = openInNewTab ? '_blank' : undefined;
     const parsedConfig = useParsePluginConfigExpressions(monitoredState, {
@@ -175,12 +208,7 @@ function DocumentsCatalog({
     });
 
     const menuItemsLeft = useMemo(() => {
-        const hasActiveFilters = Object.keys(query).some(key =>
-            !['page', 'sort', 'q', extensionField.filterKey].includes(key) &&
-            query[key] !== undefined &&
-            query[key] !== null &&
-            query[key] !== ''
-        );
+        const hasActiveFilters = Object.keys(filters).length > 0;
         return [
             {
                 Component: () => (
@@ -250,23 +278,9 @@ function DocumentsCatalog({
     );
     const isIndeterminate = selectedDocuments.length > 0 && !isAllSelected;
 
-
-    const [localPage, setLocalPage] = useState(pageProp);
-    const currentPage = query?.page || localPage;
-
-    const handlePageChange = (value) => {
-        setLocalPage(value);
-        handleUpdate({ page: value });
-    };
-
     const hasActiveSearch = useMemo(() => {
-        return Object.keys(query).some(key =>
-            !['page', 'sort'].includes(key) &&
-            query[key] !== undefined &&
-            query[key] !== null &&
-            query[key] !== ''
-        );
-    }, [query]);
+        return !!(search || Object.keys(filters).length > 0 || extensionFilter.length > 0);
+    }, [search, filters, extensionFilter]);
 
     const handleAddLayer = (isSearchMode) => {
         if (isSearchMode) {
@@ -275,20 +289,6 @@ function DocumentsCatalog({
             handleSelectResource(selectedDocuments);
         }
     };
-
-    useEffect(() => {
-        const currentSearchState = JSON.stringify(
-            Object.keys(query)
-                .filter(key => !['page', 'sort'].includes(key))
-                .reduce((acc, key) => ({ ...acc, [key]: query[key] }), {})
-        );
-
-        if (prevSearchRef.current && prevSearchRef.current !== currentSearchState) {
-            setSelectedDocuments([]);
-        }
-        prevSearchRef.current = currentSearchState;
-    }, [query]);
-
 
     return (
         <FlexBox column className="gn-resources-catalog" style={style}>
@@ -306,17 +306,13 @@ function DocumentsCatalog({
             <div className="gn-resources-catalog-filter">
                 <InputControl
                     placeholder={'gnviewer.documentsCatalogFilterPlaceholder'}
-                    value={query.q || ''}
+                    value={search}
                     debounceTime={300}
-                    onChange={(value) => {
-                        setLocalPage(1);
-                        handleUpdate({ q: value || undefined, page: 1 });
-                    }}
+                    onChange={(value) => handleSearchChange(value, false)}
                 />
-                {(query.q && !loading) && (
+                {(search && !loading) && (
                     <Button onClick={() => {
-                        setLocalPage(1);
-                        handleUpdate({ q: undefined, page: 1 });
+                        handleSearchChange('', true);
                     }}>
                         <Glyphicon glyph="remove" />
                     </Button>
@@ -328,19 +324,14 @@ function DocumentsCatalog({
                     <FormGroup controlId={extensionField.label} style={{ marginBottom: 0 }}>
                         <SelectSync
                             value={(() => {
-                                const filterValue = query[extensionField.filterKey];
-                                if (!filterValue) return [];
-                                const values = Array.isArray(filterValue) ? filterValue : [filterValue];
+                                const values = Array.isArray(extensionFilter) ? extensionFilter : [extensionFilter];
                                 return values.map((v) => ({ value: v, label: v }));
                             })()}
                             multi
                             placeholder={extensionField.placeholderId}
                             onChange={(selected) => {
                                 const values = selected?.map(({ value }) => value) || [];
-                                setLocalPage(1);
-                                handleUpdate({
-                                    [extensionField.filterKey]: values.length > 0 ? values : undefined
-                                });
+                                handleExtensionFilterChange(values);
                             }}
                             options={extensionField.options}
                         />
@@ -368,39 +359,42 @@ function DocumentsCatalog({
                 cardLayoutStyle={cardLayoutStyle}
                 hideCardLayoutButton
                 style={{ padding: '0.6rem' }}
-                query={query}
+                query={
+                    sort
+                }
                 metadata={metadata}
                 columns={columns}
                 setColumns={setColumns}
                 target={defaultTarget}
                 resourcesFoundMsgId={totalResources + " " + resourcesFoundMsgId}
                 onSortChange={(sortValue) => {
-                    handleUpdate({ sort: sortValue, page: currentPage });
+                    handleSortChange(sortValue);
                 }}
             />
 
-            <ResourcesPanelWrapper
-                className="ms-resources-filter shadow-md"
-                top={181}
-                show={showFilter}
-                enabled={showFilter}
-            >
-                <FiltersForm
-                    id={'documents-catalog-filter-form'}
-                    extentProps={parsedConfig.extent}
-                    query={(() => {
-                        const { [extensionField.filterKey]: _, ...filteredQuery } = query;
-                        return filteredQuery;
-                    })()}
-                    onChange={(newParams) => {
-                        setLocalPage(1);
-                        handleUpdate({ ...newParams, page: 1 });
-                    }}
-                    onClear={handleClear}
-                    onClose={() => setShowFilter(false)}
-                />
-            </ResourcesPanelWrapper>
-
+            <div style={{
+                marginLeft: 8,
+            }}>
+                <ResourcesPanelWrapper
+                    className="ms-resources-filter shadow-md"
+                    top={182}
+                    show={showFilter}
+                    enabled={showFilter}
+                >
+                    <FiltersForm
+                        id={'documents-catalog-filter-form'}
+                        extentProps={parsedConfig.extent}
+                        query={filters}
+                        onChange={(newParams) => {
+                            handleFiltersChange(newParams, false);
+                        }}
+                        onClear={() => {
+                            handleFiltersChange({}, true);
+                        }}
+                        onClose={() => setShowFilter(false)}
+                    />
+                </ResourcesPanelWrapper>
+            </div>
             <div className="gn-resources-catalog-body">
                 <ul className="gn-resources-catalog-list">
                     {resources.map((entry) => {
@@ -421,7 +415,6 @@ function DocumentsCatalog({
                     )}
                 </ul>
             </div>
-
             {loading && (
                 <div style={{
                     width: '100%',
@@ -446,7 +439,7 @@ function DocumentsCatalog({
                     (!loading || !!totalResources) && (
                         <PaginationCustom
                             items={Math.ceil(totalResources / pageSize)}
-                            activePage={localPage}
+                            activePage={page}
                             onSelect={handlePageChange}
                         />
                     )

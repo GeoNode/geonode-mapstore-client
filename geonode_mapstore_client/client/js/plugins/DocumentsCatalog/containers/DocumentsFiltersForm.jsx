@@ -27,8 +27,6 @@ import { isMenuItemSupportedSupported } from '@mapstore/framework/utils/Resource
  * @prop {object[]} cfg.fields array of filter object configurations
  * @example
  */
-
-
 function DocumentsFiltersForm({
     id = 'ms-filter-form',
     onChange: onSearch,
