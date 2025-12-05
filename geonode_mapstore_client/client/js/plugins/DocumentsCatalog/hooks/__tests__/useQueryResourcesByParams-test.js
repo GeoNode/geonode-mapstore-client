@@ -14,7 +14,7 @@ import { act } from 'react-dom/test-utils';
 
 const Component = ({ queryParams, ...props }) => {
     const defaultRequest = props.request || (() => Promise.resolve({ resources: [], isNextPageAvailable: false, total: 0 }));
-    
+
     useQueryResourcesByParams({
         ...props,
         queryParams,
@@ -186,7 +186,7 @@ describe('useQueryResourcesByParams', () => {
     it('should delay request execution by 300ms', (done) => {
         let requestTime = null;
         const startTime = Date.now();
-        
+
         act(() => {
             ReactDOM.render(<Component
                 pageSize={20}
@@ -215,8 +215,6 @@ describe('useQueryResourcesByParams', () => {
     });
 
     it('should cancel previous request when new queryParams change', (done) => {
-        let cancelCalled = false;
-        
         act(() => {
             ReactDOM.render(<Component
                 pageSize={20}
@@ -256,7 +254,7 @@ describe('useQueryResourcesByParams', () => {
 
     it('should cleanup on unmount', (done) => {
         let container = document.getElementById("container");
-        
+
         act(() => {
             ReactDOM.render(<Component
                 pageSize={20}

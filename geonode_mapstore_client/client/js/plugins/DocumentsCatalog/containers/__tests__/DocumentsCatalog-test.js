@@ -33,8 +33,8 @@ describe('DocumentsCatalog container', () => {
         });
 
         const store = {
-            dispatch: () => {},
-            subscribe: () => {},
+            dispatch: () => { },
+            subscribe: () => { },
             getState: () => ({
                 security: {
                     user: { id: 1, name: 'testuser' }
@@ -78,8 +78,8 @@ describe('DocumentsCatalog container', () => {
         });
 
         const store = {
-            dispatch: () => {},
-            subscribe: () => {},
+            dispatch: () => { },
+            subscribe: () => { },
             getState: () => ({
                 security: {
                     user: { id: 1, name: 'testuser' }
@@ -104,8 +104,6 @@ describe('DocumentsCatalog container', () => {
             </Provider>,
             document.getElementById('container')
         );
-
-        // Wait for hook debounce time (300ms) + render time
         setTimeout(() => {
             try {
                 const container = document.getElementById('container');
@@ -123,15 +121,15 @@ describe('DocumentsCatalog container', () => {
             { pk: 2, title: 'Document 2', thumbnail_url: 'http://example.com/thumb2.jpg' }
         ];
 
-        const mockRequest = ({ page, pageSize }) => Promise.resolve({
+        const mockRequest = ({ page }) => Promise.resolve({
             resources: page === 1 ? mockDocuments : [],
             isNextPageAvailable: false,
             total: 2
         });
 
         const store = {
-            dispatch: () => {},
-            subscribe: () => {},
+            dispatch: () => { },
+            subscribe: () => { },
             getState: () => ({
                 security: {
                     user: { id: 1, name: 'testuser' }
