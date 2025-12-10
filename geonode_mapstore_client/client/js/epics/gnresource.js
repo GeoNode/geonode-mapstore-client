@@ -30,7 +30,8 @@ import {
     removeLinkedResourcesByPk,
     getDatasetTimeSettingsByPk,
     getResourceByTypeAndByPk,
-    deleteResourceThumbnail
+    deleteResourceThumbnail,
+    updateResourceExtent
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
 import { isMapInfoOpen } from '@mapstore/framework/selectors/mapInfo';
@@ -67,7 +68,9 @@ import {
     REQUEST_RESOURCE,
     resourceLoading,
     resourceError,
-    setSelectedLayer
+    setSelectedLayer,
+    UPDATE_RESOURCE_EXTENT,
+    updateResourceExtentLoading
 } from '@js/actions/gnresource';
 
 import {
@@ -80,6 +83,8 @@ import {
     dashboardLoading,
     resetDashboard
 } from '@mapstore/framework/actions/dashboard';
+
+import { SAVE_SUCCESS } from '@mapstore/framework/actions/featuregrid';
 
 import {
     setControlProperty,
@@ -788,6 +793,37 @@ export const gnSelectResourceEpic = (action$, store) =>
                 );
         });
 
+export const gnUpdateResourceExtent = (action$, store) =>
+    action$.ofType(UPDATE_RESOURCE_EXTENT, SAVE_SUCCESS)
+        .switchMap((action) => {
+            const state = store.getState();
+            const currentResource = state.gnresource?.data || {};
+            const shouldNotify = action.type === UPDATE_RESOURCE_EXTENT;
+            
+            return Observable.concat(
+                Observable.of(updateResourceExtentLoading(true)),
+                Observable.defer(() => updateResourceExtent(currentResource?.pk))
+                    .switchMap(() =>
+                        Observable.of(
+                            updateResourceExtentLoading(false),
+                            ...(shouldNotify ? [successNotification({
+                                title: "gnviewer.updateBoundingBox",
+                                message: "gnviewer.updateBoundingBoxSuccess"
+                            })] : [])
+                        )
+                    )
+                    .catch(() =>
+                        Observable.of(
+                            updateResourceExtentLoading(false),
+                            ...(shouldNotify ? [errorNotification({
+                                title: "gnviewer.updateBoundingBox",
+                                message: "gnviewer.updateBoundingBoxError"
+                            })] : [])
+                        )
+                    )
+            );
+        });
+
 export default {
     gnViewerRequestNewResourceConfig,
     gnViewerRequestResourceConfig,
@@ -798,5 +834,6 @@ export default {
     closeResourceDetailsOnMapInfoOpen,
     gnManageLinkedResource,
     gnZoomToFitBounds,
-    gnSelectResourceEpic
+    gnSelectResourceEpic,
+    gnUpdateResourceExtent
 };

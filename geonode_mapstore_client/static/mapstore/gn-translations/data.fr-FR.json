@@ -547,7 +547,10 @@
             "assetUploadUnsupportedFormatError": "Format de fichier non pris en charge(s) '{ext}', impossible de télécharger le(s) fichier(s)",
             "assetDelete": "Supprimer l'Asset",
             "assetDeleteErrorMessage": "Erreur lors de la suppression de l'Asset",
-            "noAssets": "Aucun asset trouvé"
+            "noAssets": "Aucun asset trouvé",
+            "updateBoundingBox": "Mettre à jour la boîte englobante",
+            "updateBoundingBoxSuccess": "Boîte englobante mise à jour avec succès",
+            "updateBoundingBoxError": "Erreur lors de la mise à jour de la boîte englobante"
         },
         "resourcesCatalog": {
             "anonymous": "N'importe qui",

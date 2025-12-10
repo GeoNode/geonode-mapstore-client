@@ -547,7 +547,10 @@
             "assetUploadUnsupportedFormatError": "Nicht unterstützter Dateityp(s) '{ext}', kann die Datei(en) nicht hochladen",
             "assetDelete": "Asset löschen",
             "assetDeleteErrorMessage": "Fehler beim Löschen des Assets",
-            "noAssets": "Keine Assets gefunden"
+            "noAssets": "Keine Assets gefunden",
+            "updateBoundingBox": "Begrenzungsrahmen aktualisieren",
+            "updateBoundingBoxSuccess": "Begrenzungsrahmen erfolgreich aktualisiert",
+            "updateBoundingBoxError": "Fehler beim Aktualisieren des Begrenzungsrahmens"
         },
         "resourcesCatalog": {
             "anonymous": "Jeder",

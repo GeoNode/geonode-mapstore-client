@@ -15,12 +15,16 @@ import {
     closeInfoPanelOnMapClick,
     closeDatasetCatalogPanel,
     gnZoomToFitBounds,
-    closeResourceDetailsOnMapInfoOpen
+    closeResourceDetailsOnMapInfoOpen,
+    gnUpdateResourceExtent
 } from '@js/epics/gnresource';
+import { SAVE_SUCCESS } from '@mapstore/framework/actions/featuregrid';
 import {
     setResourceThumbnail,
     UPDATE_RESOURCE_PROPERTIES,
-    UPDATE_SINGLE_RESOURCE
+    UPDATE_SINGLE_RESOURCE,
+    UPDATE_RESOURCE_EXTENT_LOADING,
+    updateResourceExtent
 } from '@js/actions/gnresource';
 import { clickOnMap, changeMapView, ZOOM_TO_EXTENT } from '@mapstore/framework/actions/map';
 import { SET_CONTROL_PROPERTY, setControlProperty } from '@mapstore/framework/actions/controls';
@@ -268,5 +272,77 @@ describe('gnresource epics', () => {
             testState
         );
 
+    });
+    it('should update resource extent on UPDATE_RESOURCE_EXTENT action', (done) => {
+        const NUM_ACTIONS = 3;
+        const pk = 1;
+        const testState = {
+            gnresource: {
+                data: {
+                    pk: pk,
+                    'title': 'Map'
+                }
+            }
+        };
+        mockAxios.onPut(new RegExp(`datasets/${pk}/bbox_recalc`))
+            .reply(() => [200, { success: true }]);
+
+        testEpic(
+            gnUpdateResourceExtent,
+            NUM_ACTIONS,
+            updateResourceExtent(),
+            (actions) => {
+                try {
+                    expect(actions.map(({ type }) => type))
+                        .toEqual([
+                            UPDATE_RESOURCE_EXTENT_LOADING,
+                            UPDATE_RESOURCE_EXTENT_LOADING,
+                            SHOW_NOTIFICATION
+                        ]);
+                    expect(actions[0].loading).toBe(true);
+                    expect(actions[1].loading).toBe(false);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            testState
+        );
+    });
+
+    it('should update resource extent on SAVE_SUCCESS without notification', (done) => {
+        const NUM_ACTIONS = 2;
+        const pk = 1;
+        const testState = {
+            gnresource: {
+                data: {
+                    pk: pk,
+                    'title': 'Map'
+                }
+            }
+        };
+        mockAxios.onPut(new RegExp(`datasets/${pk}/bbox_recalc`))
+            .reply(() => [200, { success: true }]);
+
+        testEpic(
+            gnUpdateResourceExtent,
+            NUM_ACTIONS,
+            { type: SAVE_SUCCESS },
+            (actions) => {
+                try {
+                    expect(actions.map(({ type }) => type))
+                        .toEqual([
+                            UPDATE_RESOURCE_EXTENT_LOADING,
+                            UPDATE_RESOURCE_EXTENT_LOADING
+                        ]);
+                    expect(actions[0].loading).toBe(true);
+                    expect(actions[1].loading).toBe(false);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            testState
+        );
     });
 });

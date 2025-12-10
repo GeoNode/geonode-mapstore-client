@@ -739,6 +739,11 @@ export const getMetadataDownloadLinkByPk = (pk) => {
     return getEndpointUrl(RESOURCES, `/${pk}/iso_metadata_xml`);
 };
 
+export const updateResourceExtent = (pk) => {
+    return axios.put(getEndpointUrl(DATASETS, `/${pk}/recalc-bbox`))
+        .then(({ data }) => data);
+}
+
 export default {
     getEndpoints,
     getResources,
@@ -778,5 +783,6 @@ export default {
     getResourceByTypeAndByPk,
     createDataset,
     getMetadataDownloadLinkByPk,
-    updateResource
+    updateResource,
+    updateResourceExtent
 };
