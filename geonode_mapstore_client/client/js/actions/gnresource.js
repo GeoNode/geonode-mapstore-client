@@ -35,6 +35,8 @@ export const DOWNLOAD_RESOURCE = 'GEONODE_DOWNLOAD_RESOURCE';
 export const DOWNLOAD_COMPLETE = 'GEONODE_DOWNLOAD_COMPLETE';
 export const UPDATE_SINGLE_RESOURCE = 'GEONODE_UPDATE_SINGLE_RESOURCE';
 export const SET_RESOURCE_EXTENT = 'GEONODE_SET_RESOURCE_EXTENT';
+export const UPDATE_RESOURCE_EXTENT = 'GEONODE_UPDATE_RESOURCE_EXTENT';
+export const UPDATE_RESOURCE_EXTENT_LOADING = 'GEONODE_UPDATE_RESOURCE_EXTENT_LOADING';
 export const SET_RESOURCE_PATH_PARAMETERS = 'GEONODE:SET_RESOURCE_PATH_PARAMETERS';
 export const SET_MAP_VIEWER_LINKED_RESOURCE = 'GEONODE:SET_MAP_VIEWER_LINKED_RESOURCE';
 export const MANAGE_LINKED_RESOURCE = 'GEONODE:MANAGE_LINKED_RESOURCE';
@@ -325,6 +327,19 @@ export function setResourceExtent(coords) {
     return {
         type: SET_RESOURCE_EXTENT,
         coords
+    };
+}
+
+export function updateResourceExtent() {
+    return {
+        type: UPDATE_RESOURCE_EXTENT,
+    };
+}
+
+export function updateResourceExtentLoading(loading) {
+    return {
+        type: UPDATE_RESOURCE_EXTENT_LOADING,
+        loading
     };
 }
 

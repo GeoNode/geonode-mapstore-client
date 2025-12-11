@@ -37,7 +37,8 @@ import {
     SET_DEFAULT_VIEWER_PLUGINS,
     SET_SELECTED_LAYER,
     UPDATE_LAYER_DATASET,
-    SET_SELECTED_LAYER_DATASET
+    SET_SELECTED_LAYER_DATASET,
+    UPDATE_RESOURCE_EXTENT_LOADING
 } from '@js/actions/gnresource';
 import {
     cleanCompactPermissions,
@@ -178,6 +179,12 @@ function gnresource(state = defaultState, action) {
         };
     }
 
+    case UPDATE_RESOURCE_EXTENT_LOADING: {
+        return {
+            ...state,
+            loadingUpdateResourceExtent: action.loading
+        };
+    }
     case ENABLE_MAP_THUMBNAIL_VIEWER: {
         return {
             ...state,

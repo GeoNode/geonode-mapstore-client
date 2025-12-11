@@ -413,7 +413,10 @@
             "uploadName": "nome",
             "uploadCreated": "Criado em",
             "replaceDataset": "Substituir conjunto de dados",
-            "replaceDatasetTitle": "Substituir conjunto de dados"
+            "replaceDatasetTitle": "Substituir conjunto de dados",
+            "updateBoundingBox": "Atualizar bounding box",
+            "updateBoundingBoxSuccess": "Bounding box atualizada com sucesso",
+            "updateBoundingBoxError": "Erro ao atualizar bounding box"
         },
         "print": {
             "outputFormat": "Formato de Saída",
