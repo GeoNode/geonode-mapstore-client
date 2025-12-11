@@ -161,7 +161,7 @@ const defaultInteractions = {
     pinchZoom: true
 };
 
-const DetailsLocations = ({loadingUpdateResourceExtent , onSetExtent, onUpdateExtent, fields, editing: allowEditProp, resource } = {}) => {
+const DetailsLocations = ({loadingUpdateResourceExtent, onSetExtent, onUpdateExtent, fields, editing: allowEditProp, resource } = {}) => {
     const extent = get(fields, 'extent.coords');
     const initialExtent = get(fields, 'initialExtent.coords');
 
@@ -234,17 +234,17 @@ const DetailsLocations = ({loadingUpdateResourceExtent , onSetExtent, onUpdateEx
             </FlexBox>
             {allowEdit && <Text fontSize="sm"><HTML msgId="gnviewer.mapExtentHelpText"/></Text>}
             {allowRecalcBbox && (
-            <FlexBox centerChildrenVertically gap="lg" classNames={['_padding-b-md']}>
-                <Button
-                    disabled={loadingUpdateResourceExtent}
-                    variant="primary"
-                    onClick={() => onUpdateExtent()}>
-                    <Message msgId="gnviewer.updateBoundingBox"/>
-                </Button>
-                {
-                    loadingUpdateResourceExtent ? <Spinner/> : null
-                }
-            </FlexBox>
+                <FlexBox centerChildrenVertically gap="lg" classNames={['_padding-b-md']}>
+                    <Button
+                        disabled={loadingUpdateResourceExtent}
+                        variant="primary"
+                        onClick={() => onUpdateExtent()}>
+                        <Message msgId="gnviewer.updateBoundingBox"/>
+                    </Button>
+                    {
+                        loadingUpdateResourceExtent ? <Spinner/> : null
+                    }
+                </FlexBox>
             )}
         </div>
     );

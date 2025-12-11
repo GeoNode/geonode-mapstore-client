@@ -185,7 +185,6 @@ function gnresource(state = defaultState, action) {
             loadingUpdateResourceExtent: action.loading
         };
     }
-    
     case ENABLE_MAP_THUMBNAIL_VIEWER: {
         return {
             ...state,

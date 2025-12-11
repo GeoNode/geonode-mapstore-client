@@ -799,17 +799,28 @@ export const gnUpdateResourceExtent = (action$, store) =>
             const state = store.getState();
             const currentResource = state.gnresource?.data || {};
             const shouldNotify = action.type === UPDATE_RESOURCE_EXTENT;
-            
             return Observable.concat(
                 Observable.of(updateResourceExtentLoading(true)),
-                Observable.defer(() => updateResourceExtent(currentResource?.pk))
-                    .switchMap(() =>
+                Observable.defer(() =>
+                    updateResourceExtent(currentResource?.pk)
+                        .then(() => getResourceByPk(currentResource?.pk))
+                        .then((updatedResource) => {
+                            const { extent } = updatedResource || {};
+                            return extent;
+                        })
+                )
+                    .switchMap((extent) =>
                         Observable.of(
                             updateResourceExtentLoading(false),
                             ...(shouldNotify ? [successNotification({
                                 title: "gnviewer.updateBoundingBox",
                                 message: "gnviewer.updateBoundingBoxSuccess"
-                            })] : [])
+                            })] : []),
+                            ...(extent ? [
+                                updateResourceProperties({
+                                    extent
+                                })
+                            ] : [])
                         )
                     )
                     .catch(() =>

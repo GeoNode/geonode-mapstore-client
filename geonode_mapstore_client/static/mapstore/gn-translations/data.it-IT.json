@@ -550,9 +550,9 @@
             "assetDelete": "Elimina Asset",
             "assetDeleteErrorMessage": "Errore durante l'eliminazione dell'Asset",
             "noAssets": "Nessun asset trovato",
-            "updateBoundingBox": "Aggiorna la bounding box",
-            "updateBoundingBoxSuccess": "Bounding box aggiornata con successo",
-            "updateBoundingBoxError": "Errore durante l'aggiornamento della bounding box"
+            "updateBoundingBox": "Aggiorna il bounding box",
+            "updateBoundingBoxSuccess": "Bounding box aggiornato con successo",
+            "updateBoundingBoxError": "Errore durante l'aggiornamento del bounding box"
         },
         "resourcesCatalog": {
             "anonymous": "Chiunque",
