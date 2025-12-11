@@ -45,20 +45,6 @@ const checkboxStyle = {
     justifyContent: 'center'
 };
 
-const extensionField = {
-    type: "select",
-    facet: "extension",
-    labelId: "Extension",
-    label: "Extension",
-    placeholderId: "gnviewer.filterByExtension",
-    description: "extension",
-    options: [
-        { label: "png", value: "png" },
-        { label: "jpg", value: "jpg" }
-    ],
-    filterKey: `filter{extension.in}`
-};
-
 const FilterButton = ({ onClick, active, hasActiveFilters }) => (
     <Button
         variant={active ? 'success' : 'primary'}
@@ -88,7 +74,8 @@ const DocumentResourceItem = ({ entry, isChecked, onToggle }) => (
                 ...entry,
                 '@extras': {
                     info: {
-                        thumbnailUrl: entry?.thumbnail_url
+                        thumbnailUrl: entry?.thumbnail_url,
+                        icon: { glyph: 'document' }
                     }
                 }
             }}
@@ -102,12 +89,10 @@ const DocumentResourceItem = ({ entry, isChecked, onToggle }) => (
 
 
 function DocumentsCatalog({
-    // id = 'documents-catalog',
     user,
     order,
     menuItems = [],
     pageSize = 10,
-    cardLayoutStyle = 'grid',
     monitoredState,
     style,
     requestResources = getDocuments,
@@ -120,7 +105,11 @@ function DocumentsCatalog({
     resourceTypes: availableResourceTypes = [],
     onClose,
     onAdd,
-    onZoomTo
+    onZoomTo,
+    subtypeOptions = [
+        { labelId: "gnviewer.image", value: "image" },
+        { labelId: "gnviewer.video", value: "video" }
+    ]
 }, context) {
     const [resources, setResources] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -131,7 +120,7 @@ function DocumentsCatalog({
 
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState('');
-    const [extensionFilter, setExtensionFilter] = useState([]);
+    const [subtypeFilter, setSubtypeFilter] = useState([]);
     const [sort, setSort] = useState('');
     const [filters, setFilters] = useState({});
 
@@ -148,8 +137,8 @@ function DocumentsCatalog({
         setPage(1);
     };
 
-    const handleExtensionFilterChange = (values) => {
-        setExtensionFilter(values);
+    const handleSubtypeFilterChange = (values) => {
+        setSubtypeFilter(values);
         setPage(1);
     };
 
@@ -185,7 +174,7 @@ function DocumentsCatalog({
             page,
             q: search,
             sort,
-            'filter{extension.in}': extensionFilter.length > 0 ? extensionFilter : undefined,
+            'filter{subtype.in}': subtypeFilter.length > 0 ? subtypeFilter : undefined,
             ...filters
         },
         pageSize,
@@ -219,18 +208,6 @@ function DocumentsCatalog({
             }
         ];
     }, [showFilter]);
-
-    const [metadataColumns, setMetadataColumns] = useState({});
-    const columnsId = user?.name ? 'authenticated' : 'anonymous';
-    const columns = metadataColumns?.[columnsId] || [];
-    const metadata = Array.isArray(parsedConfig.metadata) ? parsedConfig.metadata : parsedConfig.metadata?.[cardLayoutStyle];
-
-    const setColumns = (newColumns) => {
-        setMetadataColumns((prev) => ({
-            ...prev,
-            [columnsId]: newColumns
-        }));
-    };
 
     const handleToggleDocument = (entry, checked) => {
         setSelectedDocuments(prev => {
@@ -276,8 +253,8 @@ function DocumentsCatalog({
     const isIndeterminate = selectedDocuments.length > 0 && !isAllSelected;
 
     const hasActiveSearch = useMemo(() => {
-        return !!(search || Object.keys(filters).length > 0 || extensionFilter.length > 0);
-    }, [search, filters, extensionFilter]);
+        return !!(search || Object.keys(filters).length > 0 || subtypeFilter.length > 0);
+    }, [search, filters, subtypeFilter]);
 
     const handleAddLayer = (isSearchMode) => {
         if (isSearchMode) {
@@ -318,19 +295,33 @@ function DocumentsCatalog({
 
             <FlexBox gap="sm" centerChildrenVertically classNames={['_padding-sm']}>
                 <FlexBox.Fill>
-                    <FormGroup controlId={extensionField.label} style={{ marginBottom: 0 }}>
+                    <FormGroup controlId="subtype" style={{ marginBottom: 0 }}>
                         <SelectSync
                             value={(() => {
-                                const values = Array.isArray(extensionFilter) ? extensionFilter : [extensionFilter];
-                                return values.map((v) => ({ value: v, label: v }));
+                                const values = Array.isArray(subtypeFilter) ? subtypeFilter : [subtypeFilter];
+                                return values.map((v) => {
+                                    const option = subtypeOptions.find((opt) => opt.value === v);
+                                    if (option) {
+                                        return {
+                                            label: <Message msgId={option.labelId} />,
+                                            value: option.value
+                                        };
+                                    }
+                                    return { value: v, label: v };
+                                });
                             })()}
                             multi
-                            placeholder={extensionField.placeholderId}
+                            placeholder="gnviewer.filterByType"
                             onChange={(selected) => {
                                 const values = selected?.map(({ value }) => value) || [];
-                                handleExtensionFilterChange(values);
+                                handleSubtypeFilterChange(values);
                             }}
-                            options={extensionField.options}
+                            options={subtypeOptions.map((option) => {
+                                return {
+                                    label: <Message msgId={option.labelId} />,
+                                    value: option.value
+                                };
+                            })}
                         />
                     </FormGroup>
                 </FlexBox.Fill>
@@ -345,7 +336,6 @@ function DocumentsCatalog({
             </FlexBox>
 
             <ResourcesMenu
-                key={columnsId}
                 theme={theme}
                 titleId={""}
                 menuItemsLeft={menuItemsLeft}
@@ -353,15 +343,10 @@ function DocumentsCatalog({
                 orderConfig={parsedConfig.order}
                 totalResources={totalResources}
                 loading={loading}
-                cardLayoutStyle={cardLayoutStyle}
-                hideCardLayoutButton
                 style={{ padding: '0.6rem' }}
                 query={
                     sort
                 }
-                metadata={metadata}
-                columns={columns}
-                setColumns={setColumns}
                 target={defaultTarget}
                 resourcesFoundMsgId={resourcesFoundMsgId}
                 onSortChange={(sortValue) => {

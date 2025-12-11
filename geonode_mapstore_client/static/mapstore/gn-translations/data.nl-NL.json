@@ -524,7 +524,9 @@
             "documentsCatalogFilterPlaceholder": "Filter documents by title or abstract...",
             "documentsCatalogEntriesNoResults": "No results match your search",
             "selectAll": "Select All",
-            "filterByExtension": "Filter by extension",
+            "filterByType": "Filter by type",
+            "image": "Image",
+            "video": "Video",
             "documentsFound": "Documents found",
             "noDocumentsFound": "No documents found",
             "addSelectedAsLayer": "Add selected as layer"

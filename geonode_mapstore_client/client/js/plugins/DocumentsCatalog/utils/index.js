@@ -59,7 +59,8 @@ export const documentsToLayerConfig = (documents) => {
                         "abstract": doc.abstract,
                         detail_url: doc.detail_url,
                         embed_url: doc.embed_url,
-                        uuid: doc.uuid
+                        uuid: doc.uuid,
+                        subtype: doc.subtype
                     },
                     geometry: {
                         type: "Point",
@@ -89,21 +90,102 @@ export const documentsToLayerConfig = (documents) => {
                 body: {
                     rules: [
                         {
-                            name: "Default Point Style",
-                            ruleId: 'documents:' + unId,
-                            symbolizers: [
+                            "name": "Videos",
+                            "filter": ["&&", [
+                                "==",
+                                "subtype",
+                                "video"
+                            ]],
+                            "ruleId": "01",
+                            "mandatory": false,
+                            "symbolizers": [
                                 {
-                                    kind: "Mark",
-                                    color: "#0000ff",
-                                    fillOpacity: 0.1,
-                                    opacity: 1,
-                                    strokeColor: "#0000ff",
-                                    strokeOpacity: 1,
-                                    strokeWidth: 3,
-                                    wellKnownName: "Circle",
-                                    radius: 10,
-                                    msBringToFront: true,
-                                    symbolizerId: "documents:" + unId
+                                    "kind": "Icon",
+                                    "size": 46,
+                                    "image": {
+                                        "args": [
+                                            {
+                                                "color": "blue",
+                                                "glyph": "video-camera",
+                                                "shape": "circle"
+                                            }
+                                        ],
+                                        "name": "msMarkerIcon"
+                                    },
+                                    "anchor": "bottom",
+                                    "rotate": 0,
+                                    "opacity": 1,
+                                    "symbolizerId": "01",
+                                    "msBringToFront": false,
+                                    "msHeightReference": "none"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Images",
+                            "filter": ["&&", [
+                                "==",
+                                "subtype",
+                                "image"
+                            ]],
+                            "ruleId": "02",
+                            "mandatory": false,
+                            "symbolizers": [
+                                {
+                                    "kind": "Icon",
+                                    "size": 46,
+                                    "image": {
+                                        "args": [
+                                            {
+                                                "color": "blue",
+                                                "glyph": "camera",
+                                                "shape": "circle"
+                                            }
+                                        ],
+                                        "name": "msMarkerIcon"
+                                    },
+                                    "anchor": "bottom",
+                                    "rotate": 0,
+                                    "opacity": 1,
+                                    "symbolizerId": "01",
+                                    "msBringToFront": false,
+                                    "msHeightReference": "none"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Files",
+                            "filter": ["&&", [
+                                "!=",
+                                "subtype",
+                                "image"
+                            ], [
+                                "!=",
+                                "subtype",
+                                "video"
+                            ]],
+                            "ruleId": "03",
+                            "mandatory": false,
+                            "symbolizers": [
+                                {
+                                    "kind": "Icon",
+                                    "size": 46,
+                                    "image": {
+                                        "args": [
+                                            {
+                                                "color": "blue",
+                                                "glyph": "file",
+                                                "shape": "circle"
+                                            }
+                                        ],
+                                        "name": "msMarkerIcon"
+                                    },
+                                    "anchor": "bottom",
+                                    "rotate": 0,
+                                    "opacity": 1,
+                                    "symbolizerId": "01",
+                                    "msBringToFront": false,
+                                    "msHeightReference": "none"
                                 }
                             ]
                         }
