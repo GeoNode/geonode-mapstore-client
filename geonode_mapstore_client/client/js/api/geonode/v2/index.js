@@ -157,6 +157,46 @@ export const getDatasets = ({
         });
 };
 
+export const getDocuments = ({
+    q,
+    pageSize = 10,
+    page = 1,
+    sort,
+    f,
+    customFilters = [],
+    config,
+    ...params
+}) => {
+    const _params = {
+        ...getQueryParams({...params, f}, customFilters),
+        ...(q && {
+            search: q,
+            search_fields: ['title', 'abstract']
+        }),
+        ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
+        page,
+        page_size: pageSize,
+        'filter{resource_type.in}': 'document'
+    };
+    return axios
+        .get(
+            getEndpointUrl(DOCUMENTS), {
+                params: _params,
+                ...config,
+                ...paramsSerializer()
+            })
+        .then(({ data }) => {
+            return {
+                total: data.total,
+                isNextPageAvailable: !!data.links.next,
+                resources: (data.documents || [])
+                    .map((resource) => {
+                        return resource;
+                    })
+            };
+        });
+};
+
 export const getDocumentsByDocType = (docType = 'image', {
     q,
     pageSize = 20,
