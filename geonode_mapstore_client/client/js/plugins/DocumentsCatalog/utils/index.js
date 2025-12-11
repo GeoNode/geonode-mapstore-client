@@ -37,7 +37,6 @@ const calculateBbox = (coordinates) => {
 
 export const documentsToLayerConfig = (documents) => {
     const documentPromises = documents.map(doc => getDocumentByPk(doc.pk));
-    const unId = uuid();
 
     return Promise.all(documentPromises).then(fullDocs => {
         const extendedParams = {};
@@ -77,8 +76,9 @@ export const documentsToLayerConfig = (documents) => {
         return {
             type: "vector",
             visibility: true,
-            id: 'documents:' + unId,
+            id: uuid(),
             name: "Documents",
+            title: "Documents",
             ...(bbox && { bbox }),
             extendedParams: extendedParams,
             features,

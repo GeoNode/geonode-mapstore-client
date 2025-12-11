@@ -20,19 +20,17 @@ export const mapSaveSelector = (state) => {
         ...data,
         map: {
             ...map,
-            layers: (map?.layers || [])
-                .filter((layer) => !layer.id || !layer.id.includes('documents:'))
-                .map((layer) => {
-                    const layerState = layersState.find((lState) => lState.id === layer.id);
-                    if (layerState) {
-                        const { availableStyles } = layerState;
-                        return {
-                            ...layer,
-                            availableStyles
-                        };
-                    }
-                    return layer;
-                })
+            layers: (map?.layers || []).map((layer) => {
+                const layerState = layersState.find((lState) => lState.id === layer.id);
+                if (layerState) {
+                    const { availableStyles } = layerState;
+                    return {
+                        ...layer,
+                        availableStyles
+                    };
+                }
+                return layer;
+            })
         }
     };
 };
