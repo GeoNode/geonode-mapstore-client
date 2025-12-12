@@ -2823,6 +2823,12 @@
                       }
                   ]
                 }
+            },
+            {
+                "name": "MapEditor",
+                "cfg": {
+                    "titleMsgId": "widgets.mapWidget.mapEditorTitle"
+                }
             }
         ],
         "map_viewer_mobile": [
