@@ -374,16 +374,16 @@ const CreateDataset = ({
                     </table>
                 </FlexBox>
 
-                <div>
+                <FlexBox centerChildrenVertically gap="sm">
                     <Button
                         className="gn-attribute-button"
                         variant="success"
                         disabled={!!allErrors.length || loading}
                         onClick={handleCreate}>
                         <Message msgId="gnviewer.createNewDataset" />
-                        {loading ? <Spinner /> : null}
                     </Button>
-                </div>
+                    {loading ? <Spinner /> : null}
+                </FlexBox>
             </FlexBox>
         </FlexBox>
     );
