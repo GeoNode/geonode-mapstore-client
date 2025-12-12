@@ -481,7 +481,7 @@ export const plugins = {
     ),
     MapEditorPlugin: toModulePlugin(
         'MapEditor',
-        () => import(/* webpackChunkName: 'plugins/mapEditor' */ '@mapstore/framework/plugins/MapEditor')
+        () => import(/* webpackChunkName: 'plugins/map-editor' */ '@mapstore/framework/plugins/MapEditor')
     )
 };
 
