@@ -580,7 +580,7 @@
                                     "type": "link",
                                     "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
                                     "labelId": "gnviewer.viewData",
-                                    "disableIf": "{state('gnResourceData') && ['raster', '3dtiles'].includes(state('gnResourceData').subtype)}"
+                                    "disableIf": "{(state('gnResourceData') && ['raster', '3dtiles'].includes(state('gnResourceData').subtype)) || !state('selectedLayerPermissions').includes('download_resourcebase')}"
                                 }
                             ]
                         },
@@ -658,7 +658,8 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "FilterLayer"
+                            "name": "FilterLayer",
+                            "disableIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
                         },
                         {
                             "type": "link",
@@ -1916,7 +1917,10 @@
                 "name": "AddLayer"
             },
             {
-                "name": "FilterLayer"
+                "name": "FilterLayer",
+                "cfg": {
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                }
             },
             {
                 "name": "ScaleBox"
@@ -1924,7 +1928,8 @@
             {
                 "name": "FeatureEditor",
                 "cfg": {
-                    "primaryKeyAttributes": ["fid"]
+                    "primaryKeyAttributes": ["fid"],
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
                 }
             },
             {
