@@ -128,7 +128,7 @@ import {
     loadFinished,
     setCreationStep
 } from '@mapstore/framework/actions/contextcreator';
-import { setContext } from '@mapstore/framework/actions/context';
+import { setContext, setResource as setResourceContext } from '@mapstore/framework/actions/context';
 import { REDUCERS_LOADED } from '@mapstore/framework/actions/storemanager';
 import { wrapStartStop } from '@mapstore/framework/observables/epics';
 import { parseDevHostname } from '@js/utils/APIUtils';
@@ -138,6 +138,7 @@ import { VisualizationModes } from '@mapstore/framework/utils/MapTypeUtils';
 import { forceUpdateMapLayout } from '@mapstore/framework/actions/maplayout';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import { searchSelector } from '@mapstore/framework/selectors/router';
+import { CREATE_BACKGROUNDS_LIST } from '@mapstore/framework/actions/backgroundselector';
 
 const FIT_BOUNDS_CONTROL = 'fitBounds';
 
@@ -835,10 +836,23 @@ export const gnUpdateResourceExtent = (action$, store) =>
             );
         });
 
+export const gnUpdateBackgroundEditEpic = (action$, store) =>
+    action$.ofType(CREATE_BACKGROUNDS_LIST)
+        .switchMap(() => {
+            const state = store.getState();
+            const resource = state.gnresource?.data || {};
+            const resourceType = state.gnresource?.type;
+            const canEdit = resourceType === ResourceTypes.MAP && resource?.perms?.includes('change_resourcebase') ? true : false;
+            return Observable.of(
+                setResourceContext({ canEdit })
+            );
+        });
+
 export default {
     gnViewerRequestNewResourceConfig,
     gnViewerRequestResourceConfig,
     gnViewerSetNewResourceThumbnail,
+    gnUpdateBackgroundEditEpic,
     closeInfoPanelOnMapClick,
     closeOpenPanels,
     closeDatasetCatalogPanel,
