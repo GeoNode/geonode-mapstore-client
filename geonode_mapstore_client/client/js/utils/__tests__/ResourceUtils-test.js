@@ -249,7 +249,7 @@ describe('Test Resource Utils', () => {
                 map: {
                     sources: {},
                     layers: [
-                        { type: 'osm', source: 'osm', group: 'background', visibility: true },
+                        { id: '01', type: 'osm', source: 'osm', group: 'background', visibility: true },
                         { id: '02', type: 'vector', features: [] },
                         {
                             id: '03',
@@ -327,7 +327,7 @@ describe('Test Resource Utils', () => {
                 map: {
                     sources: {},
                     layers: [
-                        { type: 'osm', source: 'osm', group: 'background', visibility: true },
+                        { id: '01', type: 'osm', source: 'osm', group: 'background', visibility: true },
                         { id: '02', type: 'vector', features: [] },
                         {
                             id: '03',
@@ -410,11 +410,18 @@ describe('Test Resource Utils', () => {
                     sources: {},
                     layers: [
                         {
+                            id: '01',
+                            type: 'osm',
+                            source: 'osm',
+                            group: 'background',
+                            visibility: true
+                        },
+                        {
                             name: 'OpenTopoMap',
                             provider: 'OpenTopoMap',
                             source: 'OpenTopoMap',
                             type: 'tileprovider',
-                            visibility: true,
+                            visibility: false,
                             group: 'background'
                         },
                         { id: '02', type: 'vector', features: [] },
