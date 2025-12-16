@@ -182,6 +182,7 @@ const resourceTypes = {
                             ...mapConfig,
                             map: {
                                 ...mapConfig.map,
+                                zoom: 20, // we are applying high zoom level to mitigate the initial tile blurring due to the zoom to event
                                 visualizationMode: ['3dtiles'].includes(subtype) ? VisualizationModes._3D : VisualizationModes._2D,
                                 layers: [
                                     ...mapConfig.map.layers,
