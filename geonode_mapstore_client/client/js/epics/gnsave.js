@@ -39,7 +39,8 @@ import {
     enableMapThumbnailViewer,
     updateResource,
     manageLinkedResource,
-    setSelectedLayer
+    setSelectedLayer,
+    setResourcePathParameters
 } from '@js/actions/gnresource';
 import {
     getResourceByPk,
@@ -239,9 +240,15 @@ export const gnSaveContent = (action$, store) =>
                             const sourcepk = get(state, 'router.location.pathname', '').split('/').pop();
                             return Observable.of(manageLinkedResource({resourceType: contentType, source: sourcepk, target: resource.pk, processType: ProcessTypes.LINK_RESOURCE}));
                         }
-                        window.location.href = parseDevHostname(resource?.detail_url);
-                        window.location.reload();
-                        return Observable.empty();
+                        return Observable.concat(
+                            Observable.of(setResourcePathParameters({pk: resource?.pk})),
+                            Observable.defer(() => {
+                                window.location.href = parseDevHostname(resource?.detail_url);
+                                window.location.reload();
+                                return Observable.empty();
+                            })
+                        );
+
                     }
                     const selectedLayer = getSelectedNode(state);
                     const currentStyle = selectedLayer?.availableStyles?.find(({ name }) => selectedLayer?.style?.includes(name));

@@ -337,16 +337,67 @@ function isResourceDataEqual(state, initialData = {}, currentData = {}) {
     }
 }
 
-export const isNewMapViewerResource = (state) => {
-    const isNew = state?.gnresource?.params?.pk === "new";
-    const isMapViewer = state?.gnresource?.type === ResourceTypes.VIEWER;
-    return isNew && isMapViewer;
+export const isNewResourcePk = (state) => {
+    return state?.gnresource?.params?.pk === "new";
+};
+
+export const isNewMapDirty = (state) => {
+    const mapConfigRawData = state?.mapConfigRawData;
+    if (!mapConfigRawData) {
+        return false;
+    }
+    const currentMapData = mapSaveSelector(state);
+    return !compareMapChanges(mapConfigRawData, currentMapData);
+};
+
+export const isNewDashboardDirty = (state) => {
+    const currentData = getDataPayload(state, ResourceTypes.DASHBOARD);
+    const widgets = currentData?.widgets || [];
+    const layouts = currentData?.layouts || [];
+    return widgets.length > 0 ||
+    layouts.length > 1 ||
+    (layouts.length === 1 && (layouts[0].name !== "Main view" || layouts[0].color !== null));
+};
+
+export const isNewGeoStoryDirty = (state) => {
+    const currentData = getDataPayload(state, ResourceTypes.GEOSTORY);
+    if (!currentData) return false;
+
+    const defaultConfig = currentStorySelector(state)?.defaultGeoStoryConfig ?? {};
+    return (
+        currentData.sections?.length > 1 || // More than the default title section
+        currentData.sections?.[0]?.contents?.[0]?.html?.trim() || // Title section has content
+        currentData.sections?.[0]?.title !== defaultConfig.sections?.[0]?.title || // Title changed from default
+        currentData.resources?.length > 0 || // Has resources
+        !isEqual( // Settings changed from default
+            omitBy(currentData.settings || {}, isNil),
+            omitBy(defaultConfig.settings || {}, isNil)
+        )
+    );
+};
+
+const isNewResourceDirty = (state) => {
+    const resourceType = state?.gnresource?.type;
+
+    switch (resourceType) {
+    case ResourceTypes.MAP:
+        return isNewMapDirty(state);
+    case ResourceTypes.VIEWER:
+        return true;
+    case ResourceTypes.DASHBOARD:
+        return isNewDashboardDirty(state);
+    case ResourceTypes.GEOSTORY:
+        return isNewGeoStoryDirty(state);
+    default:
+        return false;
+    }
 };
 
 export const getResourceDirtyState = (state) => {
-    if (isNewMapViewerResource(state)) {
-        return true;
+    if (isNewResourcePk(state)) {
+        return isNewResourceDirty(state);
     }
+
     const canEdit = canEditPermissions(state);
     const isDeleting = getCurrentResourceDeleteLoading(state);
     const isCopying = getCurrentResourceCopyLoading(state);
