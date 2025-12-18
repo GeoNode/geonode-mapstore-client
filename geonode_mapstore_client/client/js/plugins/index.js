@@ -478,6 +478,10 @@ export const plugins = {
     UploadResourcePlugin: toModulePlugin(
         'UploadResource',
         () => import(/* webpackChunkName: 'plugins/upload-operation' */ '@js/plugins/UploadResource')
+    ),
+    MapEditorPlugin: toModulePlugin(
+        'MapEditor',
+        () => import(/* webpackChunkName: 'plugins/map-editor' */ '@mapstore/framework/plugins/MapEditor')
     )
 };
 
