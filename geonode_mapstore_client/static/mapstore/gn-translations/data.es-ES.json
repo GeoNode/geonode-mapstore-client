@@ -549,7 +549,8 @@
             "noAssets": "No se encontraron assets",
             "updateBoundingBox": "Actualizar caja delimitadora",
             "updateBoundingBoxSuccess": "Caja delimitadora actualizada con éxito",
-            "updateBoundingBoxError": "Error al actualizar la caja delimitadora"
+            "updateBoundingBoxError": "Error al actualizar la caja delimitadora",
+            "noEditPermissions": "No tienes permiso para editar este recurso."
         },
         "resourcesCatalog": {
             "anonymous": "Cualquiera",

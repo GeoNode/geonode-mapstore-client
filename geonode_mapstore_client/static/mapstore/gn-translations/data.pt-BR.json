@@ -416,7 +416,8 @@
             "replaceDatasetTitle": "Substituir conjunto de dados",
             "updateBoundingBox": "Atualizar bounding box",
             "updateBoundingBoxSuccess": "Bounding box atualizada com sucesso",
-            "updateBoundingBoxError": "Erro ao atualizar bounding box"
+            "updateBoundingBoxError": "Erro ao atualizar bounding box",
+            "noEditPermissions": "Você não tem permissão para editar este recurso."
         },
         "print": {
             "outputFormat": "Formato de Saída",

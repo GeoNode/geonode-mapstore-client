@@ -521,7 +521,8 @@
             "noAssets": "No assets found",
             "updateBoundingBox": "Update bounding box",
             "updateBoundingBoxSuccess": "Bounding box updated successfully",
-            "updateBoundingBoxError": "Error updating bounding box"
+            "updateBoundingBoxError": "Error updating bounding box",
+            "noEditPermissions": "You don't have permission to edit this resource."
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

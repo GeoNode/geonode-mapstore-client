@@ -45,6 +45,7 @@ export const SET_SELECTED_LAYER = 'GEONODE:SET_SELECTED_LAYER';
 export const UPDATE_LAYER_DATASET = 'GEONODE:UPDATE_LAYER_DATASET';
 export const SET_SELECTED_LAYER_DATASET = 'GEONODE:SET_SELECTED_LAYER_DATASET';
 export const REQUEST_RESOURCE = 'GEONODE:REQUEST_RESOURCE';
+export const SET_DATASET_EDIT_PERMISSIONS_ERROR = 'GEONODE:SET_DATASET_EDIT_PERMISSIONS_ERROR';
 
 /**
 * Actions for GeoNode resource
@@ -415,5 +416,12 @@ export function requestResource(resource) {
     return {
         type: REQUEST_RESOURCE,
         resource
+    };
+}
+
+export function setDatasetEditPermissionsError(datasetEditPermissionError) {
+    return {
+        type: SET_DATASET_EDIT_PERMISSIONS_ERROR,
+        datasetEditPermissionError
     };
 }
