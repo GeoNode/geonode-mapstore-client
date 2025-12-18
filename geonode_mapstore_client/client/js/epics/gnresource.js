@@ -70,7 +70,8 @@ import {
     resourceError,
     setSelectedLayer,
     UPDATE_RESOURCE_EXTENT,
-    updateResourceExtentLoading
+    updateResourceExtentLoading,
+    setDatasetEditPermissionsError
 } from '@js/actions/gnresource';
 
 import {
@@ -177,6 +178,7 @@ const resourceTypes = {
                     const [mapConfig, gnLayer, newLayer] = response;
                     const {minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
                     const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
+                    const hasDownloadPermission = gnLayer?.perms?.includes('download_resourcebase');
                     return Observable.of(
                         configureMap({
                             ...mapConfig,
@@ -203,7 +205,8 @@ const resourceTypes = {
                         setResourceId(pk),
                         ...(page === 'dataset_edit_data_viewer'
                             ? [
-                                browseData(newLayer)
+                                browseData(newLayer),
+                                ...(hasDownloadPermission ? [] : [setDatasetEditPermissionsError('gnviewer.noEditPermissions')])
                             ]
                             : []),
                         ...(page === 'dataset_edit_layer_settings'

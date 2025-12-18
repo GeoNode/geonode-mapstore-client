@@ -1008,7 +1008,10 @@
                 "name": "AddLayer"
             },
             {
-                "name": "FilterLayer"
+                "name": "FilterLayer",
+                "cfg": {
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                }
             },
             {
                 "name": "ScaleBox"
