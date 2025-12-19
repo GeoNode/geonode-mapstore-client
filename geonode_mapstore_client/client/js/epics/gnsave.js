@@ -39,7 +39,8 @@ import {
     enableMapThumbnailViewer,
     updateResource,
     manageLinkedResource,
-    setSelectedLayer
+    setSelectedLayer,
+    setResourcePathParameters
 } from '@js/actions/gnresource';
 import {
     getResourceByPk,
@@ -92,6 +93,7 @@ import {
     ProcessStatus
 } from '@js/utils/ResourceServiceUtils';
 import { updateNode, updateSettingsParams } from '@mapstore/framework/actions/layers';
+import { setControlProperty } from '@mapstore/framework/actions/controls';
 import { layersSelector, getSelectedLayer as getSelectedNode } from '@mapstore/framework/selectors/layers';
 import { styleServiceSelector, getUpdatedLayer, selectedStyleSelector } from '@mapstore/framework/selectors/styleeditor';
 import LayersAPI from '@mapstore/framework/api/geoserver/Layers';
@@ -239,9 +241,17 @@ export const gnSaveContent = (action$, store) =>
                             const sourcepk = get(state, 'router.location.pathname', '').split('/').pop();
                             return Observable.of(manageLinkedResource({resourceType: contentType, source: sourcepk, target: resource.pk, processType: ProcessTypes.LINK_RESOURCE}));
                         }
-                        window.location.href = parseDevHostname(resource?.detail_url);
-                        window.location.reload();
-                        return Observable.empty();
+                        return Observable.concat(
+                            Observable.of(
+                                setResourcePathParameters({pk: resource?.pk}),
+                                setControlProperty(ProcessTypes.COPY_RESOURCE, 'value', undefined)
+                            ),
+                            Observable.defer(() => {
+                                window.location.href = parseDevHostname(resource?.detail_url);
+                                window.location.reload();
+                                return Observable.empty();
+                            })
+                        );
                     }
                     const selectedLayer = getSelectedNode(state);
                     const currentStyle = selectedLayer?.availableStyles?.find(({ name }) => selectedLayer?.style?.includes(name));
