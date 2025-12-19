@@ -21,7 +21,6 @@ import { getCurrentProcesses } from '@js/selectors/resourceservice';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Message from '@mapstore/framework/components/I18N/Message';
-import ViewerLayout from '@js/components/ViewerLayout/ViewerLayout';
 
 /**
  * Plugin that monitors async executions embedded in resources and
@@ -88,8 +87,11 @@ function ExecutionTracker({
         if (isEmpty(resourceData)) {
             return null;
         }
-
-        const foundProcess = processes.filter((p) => p?.resource?.pk === resourceData?.pk);
+        const resourcePk = resourceData?.pk ?? resourceData?.id;
+        if (!resourcePk) {
+            return null;
+        }
+        const foundProcess = processes.filter((p) => p?.resource?.pk === resourcePk);
         if (!foundProcess?.length) {
             return null;
         }
@@ -106,14 +108,10 @@ function ExecutionTracker({
 
     return msgId ? (
         <div className="gn-execution-tracker">
-            <ViewerLayout className="gn-main-execution-container">
-                <div className="gn-execution-tracker-content">
-                    <FlexBox centerChildren gap="sm" className="ms-text _font-size-lg _strong">
-                        <Spinner />
-                        <Message msgId={msgId} />
-                    </FlexBox>
-                </div>
-            </ViewerLayout>
+            <FlexBox centerChildren gap="sm" className="ms-text _font-size-lg _strong">
+                <Spinner />
+                <Message msgId={msgId} />
+            </FlexBox>
         </div>
     ) : null;
 }

@@ -80,14 +80,10 @@ const persistence = {
                 config,
                 customFilters
             }).then(({ resources, ...response }) => {
-                const filterEmptyResources = resources.filter(resource => !resource.resource_type);
                 const filteredResources = resources.filter(resource => resource.resource_type);
-                response = {
-                    ...response,
-                    total: response.total - filterEmptyResources.length
-                }
                 return {
                     ...response,
+                    total: response.total - (resources.length - filteredResources.length),
                     resources: filteredResources.map((resource) => parseCatalogResource(resource, monitoredState.user))
                 };
             });
