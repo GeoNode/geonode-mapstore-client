@@ -9,6 +9,38 @@
     <script>
         (function(){
             function getPageFilterForm(filterForm) {
+                const filterGroup = [...new Map([
+                        {
+                            "id": "my-resources",
+                            "labelId": "gnhome.myResources",
+                            "type": "filter",
+                            "disableIf": "{!state('user')}"
+                        },
+                        {
+                            "id": "favorite",
+                            "labelId": "gnhome.favorites",
+                            "type": "filter",
+                            "disableIf": "{!state('user')}"
+                        },
+                        {
+                            "id": "featured",
+                            "labelId": "gnhome.featuredList",
+                            "type": "filter"
+                        },
+                        {
+                            "id": "unpublished",
+                            "labelId": "gnhome.unpublished",
+                            "type": "filter",
+                            "disableIf": "{!state('user')}"
+                        },
+                        {
+                            "id": "pending-approval",
+                            "labelId": "gnhome.pendingApproval",
+                            "type": "filter",
+                            "disableIf": "{!state('user')}"
+                        },
+                        ...(filterForm ?? []),
+                    ].map(item => [item.id, item])).values()];
                 return [
                     {
                         "type": "search"
@@ -16,38 +48,7 @@
                     {
                         "type": "group",
                         "labelId": "gnhome.customFiltersTitle",
-                        "items": [
-                            {
-                                "id": "my-resources",
-                                "labelId": "gnhome.myResources",
-                                "type": "filter",
-                                "disableIf": "{!state('user')}"
-                            },
-                            {
-                                "id": "favorite",
-                                "labelId": "gnhome.favorites",
-                                "type": "filter",
-                                "disableIf": "{!state('user')}"
-                            },
-                            {
-                                "id": "featured",
-                                "labelId": "gnhome.featuredList",
-                                "type": "filter"
-                            },
-                            {
-                                "id": "unpublished",
-                                "labelId": "gnhome.unpublished",
-                                "type": "filter",
-                                "disableIf": "{!state('user')}"
-                            },
-                            {
-                                "id": "pending-approval",
-                                "labelId": "gnhome.pendingApproval",
-                                "type": "filter",
-                                "disableIf": "{!state('user')}"
-                            },
-                            ...(filterForm ?? []),
-                        ]
+                        "items": filterGroup
                     },
                     {
                         "type": "divider",
