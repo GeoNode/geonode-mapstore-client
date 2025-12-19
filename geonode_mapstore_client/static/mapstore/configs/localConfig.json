@@ -1236,6 +1236,12 @@
             },
             {
                 "name": "MetadataViewer"
+            },
+            {
+                "name": "ExecutionTracker",
+                "cfg": {
+                    "containerPosition": "header"
+                }
             }
         ],
         "dataset_edit_data_viewer": [
@@ -3485,6 +3491,12 @@
             },
             {
                 "name": "Favorites"
+            },
+            {
+                "name": "ExecutionTracker",
+                "cfg": {
+                    "containerPosition": "header"
+                }
             }
         ],
         "viewer": [
