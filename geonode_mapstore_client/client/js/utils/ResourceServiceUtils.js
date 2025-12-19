@@ -55,7 +55,7 @@ export const extractExecutionsFromResources = (resources, username) => {
                 status_url: statusUrl,
                 user
             }) =>
-                funcName === 'copy'
+                ['copy', 'copy_geonode_resource'].includes(funcName)
                 && statusUrl && user && user === username
             ).map((output) => {
                 return {

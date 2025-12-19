@@ -460,11 +460,11 @@ export const getResourceStatuses = (resource, userInfo) => {
     const isPublished = isApproved && resource?.is_published;
     const runningExecutions = executions.filter(({ func_name: funcName, status, user }) =>
         [ProcessStatus.RUNNING, ProcessStatus.READY].includes(status)
-        && ['delete', 'copy', ProcessTypes.DELETE_RESOURCE, ProcessTypes.COPY_RESOURCE].includes(funcName)
+        && ['delete', 'copy', 'copy_geonode_resource', ProcessTypes.DELETE_RESOURCE, ProcessTypes.COPY_RESOURCE].includes(funcName)
         && (user === undefined || user === userInfo?.info?.preferred_username));
     const isProcessing = !!runningExecutions.length;
     const isDeleting = runningExecutions.some(({ func_name: funcName }) => ['delete', ProcessTypes.DELETE_RESOURCE].includes(funcName));
-    const isCopying = runningExecutions.some(({ func_name: funcName }) => ['copy', ProcessTypes.COPY_RESOURCE].includes(funcName));
+    const isCopying = runningExecutions.some(({ func_name: funcName }) => ['copy', 'copy_geonode_resource', ProcessTypes.COPY_RESOURCE].includes(funcName));
     return {
         isApproved,
         isPublished,
@@ -878,7 +878,7 @@ export const getResourceAdditionalProperties = (_resource = {}) => {
     };
 };
 
-export const parseCatalogResource = (resource) => {
+export const parseCatalogResource = (resource, user) => {
     const {
         formatDetailUrl,
         icon,
@@ -886,7 +886,7 @@ export const parseCatalogResource = (resource) => {
         canPreviewed,
         hasPermission,
         name
-    } = getResourceTypesInfo(resource)[resource.resource_type];
+    } = getResourceTypesInfo(resource)[resource.resource_type] || {};
     const resourceCanPreviewed = resource?.pk && canPreviewed && canPreviewed(resource);
     const embedUrl = resourceCanPreviewed && formatEmbedUrl && resource?.embed_url && formatEmbedUrl(resource);
     const canView = resource?.pk && hasPermission && hasPermission(resource);
@@ -911,7 +911,7 @@ export const parseCatalogResource = (resource) => {
                 metadataDetailUrl,
                 typeName: name
             },
-            status: getResourceStatuses(resource)
+            status: getResourceStatuses(resource, user)
         }
     };
 };
