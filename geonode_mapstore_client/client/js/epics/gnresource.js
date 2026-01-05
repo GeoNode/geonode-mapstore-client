@@ -138,7 +138,7 @@ import { VisualizationModes } from '@mapstore/framework/utils/MapTypeUtils';
 import { forceUpdateMapLayout } from '@mapstore/framework/actions/maplayout';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import { searchSelector } from '@mapstore/framework/selectors/router';
-import { CREATE_BACKGROUNDS_LIST } from '@mapstore/framework/actions/backgroundselector';
+import { CREATE_BACKGROUNDS_LIST, allowBackgroundsDeletion } from '@mapstore/framework/actions/backgroundselector';
 
 const FIT_BOUNDS_CONTROL = 'fitBounds';
 
@@ -844,7 +844,8 @@ export const gnUpdateBackgroundEditEpic = (action$, store) =>
             const resourceType = state.gnresource?.type;
             const canEdit = resourceType === ResourceTypes.MAP && resource?.perms?.includes('change_resourcebase') ? true : false;
             return Observable.of(
-                setResourceContext({ canEdit })
+                setResourceContext({ canEdit }),
+                ...(canEdit ? [allowBackgroundsDeletion(true)] : [])
             );
         });
 

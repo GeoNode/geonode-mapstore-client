@@ -620,32 +620,9 @@ export function toGeoNodeMapConfig(data) {
     };
 }
 
-export function compareBackgroundLayers(aLayer, bLayer) {
-    return aLayer.type === bLayer.type
-        && aLayer.name === bLayer.name
-        && aLayer.source === bLayer.source
-        && aLayer.provider === bLayer.provider
-        && aLayer.url === bLayer.url;
-}
-
 export function toMapStoreMapConfig(resource, baseConfig) {
     const { maplayers = [], data } = resource || {};
-    const baseMapBackgroundLayers = (baseConfig?.map?.layers || []).filter(layer => layer.group === 'background');
-    const dataBackgroundLayers = (data?.map?.layers || []).filter(layer => layer.group === 'background');
-    const currentBackgroundLayer = dataBackgroundLayers.find(layer => layer.visibility);
-    const backgroundLayers = currentBackgroundLayer
-        ? [
-            ...dataBackgroundLayers,
-            ...baseMapBackgroundLayers
-                .filter(baseLayer => !dataBackgroundLayers.find(dataLayer => compareBackgroundLayers(dataLayer, baseLayer)))
-                .map(layer => ({ ...layer, visibility: false }))
-        ]
-        : [
-            ...dataBackgroundLayers,
-            ...baseMapBackgroundLayers
-                .filter(baseLayer => !dataBackgroundLayers.find(dataLayer => compareBackgroundLayers(dataLayer, baseLayer)))
-        ];
-
+    const backgroundLayers = (data?.map?.layers || []).filter(layer => layer.group === 'background');
     const layers = (data?.map?.layers || [])
         .filter(layer => layer.group !== 'background')
         .map((layer) => {
