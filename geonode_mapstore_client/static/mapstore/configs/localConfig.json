@@ -1397,7 +1397,8 @@
                 "mandatory": true,
                 "cfg": {
                     "enableIFrameModule": true,
-                    "className": "gn-dataset-layersettings"
+                    "className": "gn-dataset-layersettings",
+                    "hideCloseButton": true
                 }  
             },
             {
