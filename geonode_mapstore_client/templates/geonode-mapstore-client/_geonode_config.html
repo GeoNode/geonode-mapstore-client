@@ -185,6 +185,23 @@
                     endpointV1: siteUrl + 'api',
                     endpointV2: siteUrl + 'api/v2/'
                 },
+                initialState: {
+                    defaultState: {
+                        catalog: {
+                            default: {
+                                staticServices: {
+                                    default_map_backgrounds: {
+                                        type: 'backgrounds',
+                                        title: 'Default Backgrounds',
+                                        titleMsgId: 'defaultMapBackgroundsServiceTitle',
+                                        autoload: true,
+                                        backgrounds: baseLayers
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 projectionDefs: projectionDefs,
                 geoNodeCustomFilters: customFilters,
                 geoNodeCardsMenuItems: cardsMenuItems,

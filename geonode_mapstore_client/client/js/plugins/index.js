@@ -21,6 +21,8 @@ import TOCPlugin from '@mapstore/framework/plugins/TOC';
 import Isochrone from "@mapstore/framework/plugins/Isochrone";
 import Itinerary from "@mapstore/framework/plugins/Itinerary";
 import SecurityPopup from "@mapstore/framework/plugins/SecurityPopup";
+import BackgroundSelector from '@mapstore/framework/plugins/BackgroundSelector';
+import MetadataExplorer from '@mapstore/framework/plugins/MetadataExplorer';
 
 import OperationPlugin from '@js/plugins/Operation';
 import MetadataEditorPlugin from '@js/plugins/MetadataEditor';
@@ -87,6 +89,8 @@ export const plugins = {
     IsochronePlugin: Isochrone,
     ItineraryPlugin: Itinerary,
     SecurityPopupPlugin: SecurityPopup,
+    BackgroundSelectorPlugin: BackgroundSelector,
+    MetadataExplorerPlugin: MetadataExplorer,
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
         () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload'),
@@ -130,10 +134,6 @@ export const plugins = {
     StyleEditorPlugin: toModulePlugin(
         'StyleEditor',
         () => import(/* webpackChunkName: 'plugins/style-editor' */ '@mapstore/framework/plugins/StyleEditor')
-    ),
-    MetadataExplorerPlugin: toModulePlugin(
-        'MetadataExplorer',
-        () => import(/* webpackChunkName: 'plugins/metadata-explorer' */ '@mapstore/framework/plugins/MetadataExplorer')
     ),
     QueryPanelPlugin: toModulePlugin(
         'QueryPanel',
@@ -257,10 +257,6 @@ export const plugins = {
     MapLoadingPlugin: toModulePlugin(
         'MapLoading',
         () => import(/* webpackChunkName: 'plugins/map-loading-plugin' */ '@mapstore/framework/plugins/MapLoading')
-    ),
-    BackgroundSelectorPlugin: toModulePlugin(
-        'BackgroundSelector',
-        () => import(/* webpackChunkName: 'plugins/background-selector-plugin' */ '@mapstore/framework/plugins/BackgroundSelector')
     ),
     ZoomInPlugin: toModulePlugin(
         'ZoomIn',
