@@ -153,6 +153,7 @@ RootMetadata.contextTypes = {
 };
 
 function ObjectFieldTemplate(props) {
+
     const isRoot = props?.idSchema?.$id === 'root';
     if (isRoot) {
         return <RootMetadata {...props} />;
