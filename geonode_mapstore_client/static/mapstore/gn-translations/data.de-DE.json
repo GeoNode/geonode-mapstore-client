@@ -550,7 +550,8 @@
             "noAssets": "Keine Assets gefunden",
             "updateBoundingBox": "Begrenzungsrahmen aktualisieren",
             "updateBoundingBoxSuccess": "Begrenzungsrahmen erfolgreich aktualisiert",
-            "updateBoundingBoxError": "Fehler beim Aktualisieren des Begrenzungsrahmens"
+            "updateBoundingBoxError": "Fehler beim Aktualisieren des Begrenzungsrahmens",
+            "noEditPermissions": "Sie haben keine Berechtigung, diese Ressource zu bearbeiten."
         },
         "resourcesCatalog": {
             "anonymous": "Jeder",

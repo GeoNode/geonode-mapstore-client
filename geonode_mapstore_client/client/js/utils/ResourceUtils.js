@@ -629,28 +629,9 @@ export function toGeoNodeMapConfig(data) {
     };
 }
 
-export function compareBackgroundLayers(aLayer, bLayer) {
-    return aLayer.type === bLayer.type
-        && aLayer.name === bLayer.name
-        && aLayer.source === bLayer.source
-        && aLayer.provider === bLayer.provider
-        && aLayer.url === bLayer.url;
-}
-
 export function toMapStoreMapConfig(resource, baseConfig) {
     const { maplayers = [], data } = resource || {};
-    const baseMapBackgroundLayers = (baseConfig?.map?.layers || []).filter(layer => layer.group === 'background');
-    const currentBackgroundLayer = (data?.map?.layers || [])
-        .filter(layer => layer.group === 'background')
-        .find(layer => layer.visibility && baseMapBackgroundLayers.find(bLayer => compareBackgroundLayers(layer, bLayer)));
-
-    const backgroundLayers = !currentBackgroundLayer
-        ? baseMapBackgroundLayers
-        : baseMapBackgroundLayers.map((layer) => ({
-            ...layer,
-            visibility: compareBackgroundLayers(layer, currentBackgroundLayer)
-        }));
-
+    const backgroundLayers = (data?.map?.layers || []).filter(layer => layer.group === 'background');
     const layers = (data?.map?.layers || [])
         .filter(layer => layer.group !== 'background')
         .map((layer) => {

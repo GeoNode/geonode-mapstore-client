@@ -69,7 +69,8 @@ function ViewerRoute({
     resourceType,
     loadingConfig,
     configError,
-    loaderStyle
+    loaderStyle,
+    datasetEditPermissionError
 }) {
 
     const { pk } = match.params || {};
@@ -133,7 +134,7 @@ function ViewerRoute({
                 params={params}
             />
             {loading && Loader && <Loader style={loaderStyle}/>}
-            {configError && <MainEventView msgId={configError}/>}
+            {(configError || datasetEditPermissionError) && <MainEventView msgId={configError || datasetEditPermissionError}/>}
         </>
     );
 }
@@ -147,12 +148,14 @@ const ConnectedViewerRoute = connect(
         state => state?.gnresource?.data,
         state => state?.gnsettings?.siteName || 'GeoNode',
         state => state?.gnresource?.loadingResourceConfig,
-        state => state?.gnresource?.configError
-    ], (resource, siteName, loadingConfig, configError) => ({
+        state => state?.gnresource?.configError,
+        state => state?.gnresource?.datasetEditPermissionError
+    ], (resource, siteName, loadingConfig, configError, datasetEditPermissionError) => ({
         resource,
         siteName,
         loadingConfig,
-        configError
+        configError,
+        datasetEditPermissionError
     })),
     {
         onUpdate: requestResourceConfig,
