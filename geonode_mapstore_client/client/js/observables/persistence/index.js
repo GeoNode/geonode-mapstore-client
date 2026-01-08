@@ -77,7 +77,7 @@ const persistence = {
             }).then(({ resources, ...response }) => {
                 return {
                     ...response,
-                    resources: resources.map(parseCatalogResource)
+                    resources: resources.map((resource) => parseCatalogResource(resource, monitoredState.user))
                 };
             });
         });
