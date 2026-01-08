@@ -22,10 +22,9 @@ import { isMenuItemSupportedSupported } from '@mapstore/framework/utils/Resource
 
 /**
  * This  renders a  configurable input filters for documents catalog
- * @class
  * @name DocumentsFiltersForm
- * @prop {object[]} cfg.fields array of filter object configurations
- * @example
+ * @prop {object[]} props.fields array of filter object configurations
+ * @private
  */
 function DocumentsFiltersForm({
     id = 'ms-filter-form',
