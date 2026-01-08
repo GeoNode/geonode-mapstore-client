@@ -51,6 +51,7 @@ const mergeParams = (params, defaultQuery) => {
  * @param {func} props.request function returning the resources request
  * @param {object} props.defaultQuery default query object always applied to the requests
  * @param {number} props.pageSize page size for the request
+ * @private
  */
 
 const useQueryResourcesByParams = ({
