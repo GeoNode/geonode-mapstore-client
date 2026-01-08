@@ -25,6 +25,7 @@ import BackgroundSelector from '@mapstore/framework/plugins/BackgroundSelector';
 import MetadataExplorer from '@mapstore/framework/plugins/MetadataExplorer';
 
 import OperationPlugin from '@js/plugins/Operation';
+import ExecutionTrackerPlugin from '@js/plugins/ExecutionTracker';
 import MetadataEditorPlugin from '@js/plugins/MetadataEditor';
 import MetadataViewerPlugin from '@js/plugins/MetadataEditor/MetadataViewer';
 import FavoritesPlugin from '@js/plugins/Favorites';
@@ -80,6 +81,7 @@ const toModulePlugin = (...args) => {
 export const plugins = {
     TOCPlugin,
     OperationPlugin,
+    ExecutionTrackerPlugin,
     MetadataEditorPlugin,
     MetadataViewerPlugin,
     ResourcesGridPlugin,

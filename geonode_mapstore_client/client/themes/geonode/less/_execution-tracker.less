@@ -1,0 +1,22 @@
+#ms-components-theme(@theme-vars) {
+    .gn-main-execution-container {
+        .background-color-var(@theme-vars[main-variant-bg]);
+        .gn-execution-tracker-content {
+            .background-color-var(@theme-vars[main-variant-bg]);
+        }
+    }
+}
+
+.gn-execution-tracker {
+    position: absolute;
+    z-index: 5000;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #eeeeee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

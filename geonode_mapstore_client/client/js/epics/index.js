@@ -21,6 +21,11 @@ import { SELECT_NODE, updateNode, ADD_LAYER } from '@mapstore/framework/actions/
 import { setSelectedDatasetPermissions, setSelectedLayer, updateLayerDataset, setLayerDataset } from '@js/actions/gnresource';
 import { updateMapLayoutEpic as msUpdateMapLayoutEpic } from '@mapstore/framework/epics/maplayout';
 import isEmpty from 'lodash/isEmpty';
+import { userSelector } from "@mapstore/framework/selectors/security";
+import { getCurrentProcesses } from "@js/selectors/resourceservice";
+import { extractExecutionsFromResources } from "@js/utils/ResourceServiceUtils";
+import { UPDATE_RESOURCES } from "@mapstore/framework/plugins/ResourcesCatalog/actions/resources";
+import { startAsyncProcess } from "@js/actions/resourceservice";
 
 // We need to include missing epics. The plugins that normally include this epic is not used.
 
@@ -124,8 +129,38 @@ export const gnSetDatasetsPermissions = (actions$, { getState = () => {}} = {}) 
 
 export const updateMapLayoutEpic = msUpdateMapLayoutEpic;
 
+export const gnListenToResourcesPendingExecution = (actions$, { getState = () => {} } = {}) =>
+    actions$.ofType(UPDATE_RESOURCES)
+        .switchMap((action) => {
+            const processes = getCurrentProcesses(getState());
+            const username = userSelector(getState())?.info?.preferred_username;
+            const resourcesToTrack = action.resources;
+            if (!resourcesToTrack?.length || !username) {
+                return Rx.Observable.empty();
+            }
+            const executions = extractExecutionsFromResources(resourcesToTrack, username) || [];
+            if (!executions.length) {
+                return Rx.Observable.empty();
+            }
+            const processesToStart = executions.map((process) => {
+                const pk = process?.resource?.pk ?? process?.resource?.id;
+                const processType = process?.processType;
+                const statusUrl = process?.output?.status_url;
+                if (!pk || !processType || !statusUrl) {
+                    return null;
+                }
+                const foundProcess = processes.find((p) => p?.resource?.pk === pk && p?.processType === processType);
+                if (!foundProcess) {
+                    return startAsyncProcess({ ...process });
+                }
+                return null;
+            }).filter((process) => process);
+            return Rx.Observable.of(...processesToStart);
+        });
+
 export default {
     gnCheckSelectedDatasetPermissions,
     updateMapLayoutEpic,
-    gnSetDatasetsPermissions
+    gnSetDatasetsPermissions,
+    gnListenToResourcesPendingExecution
 };
