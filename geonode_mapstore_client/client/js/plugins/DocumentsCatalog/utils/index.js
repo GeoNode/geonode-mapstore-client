@@ -12,6 +12,7 @@ import { getDocumentByPk } from '@js/api/geonode/v2';
 import isEmpty from "lodash/isEmpty";
 import { getPolygonFromExtent } from "@mapstore/framework/utils/CoordinatesUtils";
 import turfCenter from "@turf/center";
+import { GEONODE_DOCUMENTS_ROW_VIEWER } from '../constants';
 
 
 const calculateBbox = (coordinates) => {
@@ -52,15 +53,7 @@ export const documentsToLayerConfig = (documents) => {
 
                 return {
                     type: "Feature",
-                    properties: {
-                        pk: doc.pk,
-                        title: doc.title,
-                        "abstract": doc.abstract,
-                        detail_url: doc.detail_url,
-                        embed_url: doc.embed_url,
-                        uuid: doc.uuid,
-                        subtype: doc.subtype
-                    },
+                    properties: doc,
                     geometry: {
                         type: "Point",
                         coordinates: center.geometry.coordinates
@@ -192,23 +185,7 @@ export const documentsToLayerConfig = (documents) => {
                     ]
                 }
             },
-            featureInfo: {
-                format: "TEMPLATE",
-                template: `
-                    <div style="width: 100%; aspect-ratio: 16/9;">
-                        <h3>\${properties['title']}</h3>
-                        <p>\${properties['abstract']}</p>
-                        <iframe 
-                            key="\${properties['embed_url']}"
-                            src="\${properties['embed_url']}" 
-                            style="width: 100%; height: 100%;"
-                            frameborder="0"
-                            sandbox="allow-scripts allow-same-origin"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                `
-            }
+            rowViewer: GEONODE_DOCUMENTS_ROW_VIEWER
         };
     });
 };

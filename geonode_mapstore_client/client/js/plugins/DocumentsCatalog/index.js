@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -18,6 +18,9 @@ import { setControlProperty } from '@mapstore/framework/actions/controls';
 import documentscatalogEpics from '@js/plugins/DocumentsCatalog/epics';
 import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
 import ConnectedDocumentsCatalog from '@js/plugins/DocumentsCatalog/containers/DocumentsCatalog';
+import DocumentInfoViewer from '@js/plugins/DocumentsCatalog/containers/DocumentInfoViewer';
+import { registerRowViewer } from '@mapstore/framework/utils/MapInfoUtils';
+import { GEONODE_DOCUMENTS_ROW_VIEWER } from '@js/plugins/DocumentsCatalog/constants';
 
 function DocumentsCatalog({
     enabled,
@@ -56,6 +59,13 @@ function DocumentsCatalog({
     },
     resourceTypes = ['MAP', 'DASHBOARD', 'GEOSTORY', 'CONTEXT'],
     ...props }) {
+
+    useEffect(() => {
+        registerRowViewer(GEONODE_DOCUMENTS_ROW_VIEWER, DocumentInfoViewer);
+        return () => {
+            registerRowViewer(GEONODE_DOCUMENTS_ROW_VIEWER, undefined);
+        };
+    }, []);
 
     return enabled ? <ConnectedDocumentsCatalog items={items} order={order} metadata={metadata} resourceTypes={resourceTypes} {...props} /> : null;
 }
