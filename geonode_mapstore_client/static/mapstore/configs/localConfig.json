@@ -1598,6 +1598,15 @@
                             "type": "plugin",
                             "name": "DatasetsCatalog",
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource')}"
+                        },
+                        {
+                            "type": "divider",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource')}"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "DocumentsCatalog",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource')}"
                         }
                     ]
                 }
@@ -2069,6 +2078,10 @@
             {
                 "mandatory": true,
                 "name": "DatasetsCatalog"
+            },
+            {
+                "mandatory": true,
+                "name": "DocumentsCatalog"
             },
             { 
                 "name": "StyleEditor",

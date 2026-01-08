@@ -429,6 +429,10 @@ export const plugins = {
         'MapViewerConfiguration',
         () => import(/* webpackChunkName: 'plugins/map-viewer-configuration' */ '@js/plugins/MapViewerConfiguration')
     ),
+    DocumentsCatalogPlugin: toModulePlugin(
+        'DocumentsCatalog',
+        () => import(/* webpackChunkName: 'plugins/documents-catalog' */ '@js/plugins/DocumentsCatalog')
+    ),
     DatasetsCatalogPlugin: toModulePlugin(
         'DatasetsCatalog',
         () => import(/* webpackChunkName: 'plugins/dataset-catalog' */ '@js/plugins/DatasetsCatalog')

@@ -613,12 +613,33 @@ export const closeInfoPanelOnMapClick = (action$, store) => action$.ofType(CLICK
     .switchMap(() => Observable.of(setControlProperty('rightOverlay', 'enabled', false)));
 
 
-// Check which control is enabled between annotations and datasetsCatlog
+// Check which control is enabled between annotations, datasetsCatalog and documentsCatalog
 const oneOfTheOther = (control) => {
     if (control === 'rightOverlay') return null;
+
+    // Handle three-way alternates
+    if (control === 'annotations') {
+        return {
+            control,
+            alternates: ['datasetsCatalog', 'documentsCatalog']
+        };
+    }
+    if (control === 'datasetsCatalog') {
+        return {
+            control,
+            alternates: ['annotations', 'documentsCatalog']
+        };
+    }
+    if (control === 'documentsCatalog') {
+        return {
+            control,
+            alternates: ['annotations', 'datasetsCatalog']
+        };
+    }
+
     return {
         control,
-        alternate: control === 'annotations' ? 'datasetsCatalog' : 'annotations'
+        alternates: []
     };
 };
 
@@ -635,13 +656,17 @@ export const closeOpenPanels = (action$, store) => action$.ofType(SET_CONTROL_PR
                 setActions.push(purgeMapInfoResults(), closeIdentify());
             }
             const isDatasetCatalogPanelOpen = get(state, "controls.datasetsCatalog.enabled");
+            const isDocumentsCatalogPanelOpen = get(state, "controls.documentsCatalog.enabled");
             const isCatalogOpen = get(state, "controls.metadataexplorer.enabled");
             const isVisualStyleEditorOpen = get(state, "controls.visualStyleEditor.enabled");
-            if ((isDatasetCatalogPanelOpen || isVisualStyleEditorOpen) && isCatalogOpen) {
+            if ((isDatasetCatalogPanelOpen || isDocumentsCatalogPanelOpen || isVisualStyleEditorOpen) && isCatalogOpen) {
                 setActions.push(catalogClose());
             }
             if (isDatasetCatalogPanelOpen && isVisualStyleEditorOpen) {
                 setActions.push(setControlProperty('datasetsCatalog', 'enabled', false));
+            }
+            if (isDocumentsCatalogPanelOpen && isVisualStyleEditorOpen) {
+                setActions.push(setControlProperty('documentsCatalog', 'enabled', false));
             }
             const isResourceDetailsOpen = !action.show && getShowDetails(state);
             if (isResourceDetailsOpen) {
@@ -651,8 +676,13 @@ export const closeOpenPanels = (action$, store) => action$.ofType(SET_CONTROL_PR
             if (control?.control || action.show) {
                 if (state.controls?.rightOverlay?.enabled === 'Share') {
                     setActions.push(setControlProperty('rightOverlay', 'enabled', false));
-                } else if (!!state.controls?.[`${control.alternate}`]?.enabled) {
-                    setActions.push(setControlProperty(`${control.alternate}`, 'enabled', false));
+                } else {
+                    // Close all alternate panels
+                    control.alternates?.forEach(alternate => {
+                        if (state.controls?.[alternate]?.enabled) {
+                            setActions.push(setControlProperty(alternate, 'enabled', false));
+                        }
+                    });
                 }
             }
             return setActions;
@@ -662,12 +692,28 @@ export const closeOpenPanels = (action$, store) => action$.ofType(SET_CONTROL_PR
     });
 
 /**
- * Close dataset panels on map info panel open
+ * Close dataset and documents panels on map info panel open
  */
 export const closeDatasetCatalogPanel = (action$, store) => action$.ofType(NEW_MAPINFO_REQUEST)
-    .filter(() => isMapInfoOpen(store.getState()) && get(store.getState(), "controls.datasetsCatalog.enabled"))
+    .filter(() => {
+        const state = store.getState();
+        return isMapInfoOpen(state) &&
+               (get(state, "controls.datasetsCatalog.enabled") ||
+                get(state, "controls.documentsCatalog.enabled"));
+    })
     .switchMap(() => {
-        return Observable.of(setControlProperty('datasetsCatalog', 'enabled', false));
+        const state = store.getState();
+        const actions = [];
+
+        if (get(state, "controls.datasetsCatalog.enabled")) {
+            actions.push(setControlProperty('datasetsCatalog', 'enabled', false));
+        }
+
+        if (get(state, "controls.documentsCatalog.enabled")) {
+            actions.push(setControlProperty('documentsCatalog', 'enabled', false));
+        }
+
+        return Observable.of(...actions);
     });
 
 export const closeResourceDetailsOnMapInfoOpen = (action$, store) => action$.ofType(NEW_MAPINFO_REQUEST)
