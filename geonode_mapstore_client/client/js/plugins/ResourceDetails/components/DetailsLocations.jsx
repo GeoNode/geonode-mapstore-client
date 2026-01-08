@@ -25,6 +25,7 @@ import CopyToClipboardCmp from 'react-copy-to-clipboard';
 import Button from "@mapstore/framework/components/layout/Button";
 import FlexBox from "@mapstore/framework/components/layout/FlexBox";
 import Text from "@mapstore/framework/components/layout/Text";
+import Spinner from "@mapstore/framework/components/layout/Spinner";
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = "Map";
@@ -160,8 +161,7 @@ const defaultInteractions = {
     pinchZoom: true
 };
 
-const DetailsLocations = ({ onSetExtent, fields, editing: allowEditProp, resource } = {}) => {
-
+const DetailsLocations = ({loadingUpdateResourceExtent, onSetExtent, onUpdateExtent, fields, editing: allowEditProp, resource } = {}) => {
     const extent = get(fields, 'extent.coords');
     const initialExtent = get(fields, 'initialExtent.coords');
 
@@ -170,6 +170,7 @@ const DetailsLocations = ({ onSetExtent, fields, editing: allowEditProp, resourc
     const isDrawn = initialExtent !== undefined && !isEqual(initialExtent, extent);
 
     const allowEdit = !!(onSetExtent && !['map', 'dataset'].includes(resource?.resource_type) && allowEditProp);
+    const allowRecalcBbox =  !!(onUpdateExtent && resource?.resource_type === 'dataset');
 
     return (
         <div>
@@ -232,6 +233,19 @@ const DetailsLocations = ({ onSetExtent, fields, editing: allowEditProp, resourc
                 </FlexBox.Fill>
             </FlexBox>
             {allowEdit && <Text fontSize="sm"><HTML msgId="gnviewer.mapExtentHelpText"/></Text>}
+            {allowRecalcBbox && (
+                <FlexBox centerChildrenVertically gap="lg" classNames={['_padding-b-md']}>
+                    <Button
+                        disabled={loadingUpdateResourceExtent}
+                        variant="primary"
+                        onClick={() => onUpdateExtent()}>
+                        <Message msgId="gnviewer.updateBoundingBox"/>
+                    </Button>
+                    {
+                        loadingUpdateResourceExtent ? <Spinner/> : null
+                    }
+                </FlexBox>
+            )}
         </div>
     );
 };

@@ -376,6 +376,15 @@ export const isDocumentExternalSource = (resource) => {
 };
 
 export const getResourceTypesInfo = () => ({
+    'null': {
+        icon: { glyph: 'dataset' },
+        name: '',
+        canPreviewed: () => false,
+        formatEmbedUrl: () => undefined,
+        formatDetailUrl: () => undefined,
+        formatMetadataUrl: () => undefined,
+        formatMetadataDetailUrl: () => undefined
+    },
     [ResourceTypes.DATASET]: {
         icon: { glyph: 'dataset' },
         canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),
@@ -460,11 +469,11 @@ export const getResourceStatuses = (resource, userInfo) => {
     const isPublished = isApproved && resource?.is_published;
     const runningExecutions = executions.filter(({ func_name: funcName, status, user }) =>
         [ProcessStatus.RUNNING, ProcessStatus.READY].includes(status)
-        && ['delete', 'copy', ProcessTypes.DELETE_RESOURCE, ProcessTypes.COPY_RESOURCE].includes(funcName)
+        && ['delete', 'copy', 'copy_geonode_resource', ProcessTypes.DELETE_RESOURCE, ProcessTypes.COPY_RESOURCE].includes(funcName)
         && (user === undefined || user === userInfo?.info?.preferred_username));
     const isProcessing = !!runningExecutions.length;
     const isDeleting = runningExecutions.some(({ func_name: funcName }) => ['delete', ProcessTypes.DELETE_RESOURCE].includes(funcName));
-    const isCopying = runningExecutions.some(({ func_name: funcName }) => ['copy', ProcessTypes.COPY_RESOURCE].includes(funcName));
+    const isCopying = runningExecutions.some(({ func_name: funcName }) => ['copy', 'copy_geonode_resource', ProcessTypes.COPY_RESOURCE].includes(funcName));
     return {
         isApproved,
         isPublished,
@@ -620,28 +629,9 @@ export function toGeoNodeMapConfig(data) {
     };
 }
 
-export function compareBackgroundLayers(aLayer, bLayer) {
-    return aLayer.type === bLayer.type
-        && aLayer.name === bLayer.name
-        && aLayer.source === bLayer.source
-        && aLayer.provider === bLayer.provider
-        && aLayer.url === bLayer.url;
-}
-
 export function toMapStoreMapConfig(resource, baseConfig) {
     const { maplayers = [], data } = resource || {};
-    const baseMapBackgroundLayers = (baseConfig?.map?.layers || []).filter(layer => layer.group === 'background');
-    const currentBackgroundLayer = (data?.map?.layers || [])
-        .filter(layer => layer.group === 'background')
-        .find(layer => layer.visibility && baseMapBackgroundLayers.find(bLayer => compareBackgroundLayers(layer, bLayer)));
-
-    const backgroundLayers = !currentBackgroundLayer
-        ? baseMapBackgroundLayers
-        : baseMapBackgroundLayers.map((layer) => ({
-            ...layer,
-            visibility: compareBackgroundLayers(layer, currentBackgroundLayer)
-        }));
-
+    const backgroundLayers = (data?.map?.layers || []).filter(layer => layer.group === 'background');
     const layers = (data?.map?.layers || [])
         .filter(layer => layer.group !== 'background')
         .map((layer) => {
@@ -878,7 +868,7 @@ export const getResourceAdditionalProperties = (_resource = {}) => {
     };
 };
 
-export const parseCatalogResource = (resource) => {
+export const parseCatalogResource = (resource, user) => {
     const {
         formatDetailUrl,
         icon,
@@ -886,7 +876,7 @@ export const parseCatalogResource = (resource) => {
         canPreviewed,
         hasPermission,
         name
-    } = getResourceTypesInfo(resource)[resource.resource_type];
+    } = getResourceTypesInfo(resource)[resource.resource_type] || {};
     const resourceCanPreviewed = resource?.pk && canPreviewed && canPreviewed(resource);
     const embedUrl = resourceCanPreviewed && formatEmbedUrl && resource?.embed_url && formatEmbedUrl(resource);
     const canView = resource?.pk && hasPermission && hasPermission(resource);
@@ -911,7 +901,7 @@ export const parseCatalogResource = (resource) => {
                 metadataDetailUrl,
                 typeName: name
             },
-            status: getResourceStatuses(resource)
+            status: getResourceStatuses(resource, user)
         }
     };
 };

@@ -352,7 +352,13 @@ export const isNewMapDirty = (state) => {
 
 export const isNewDashboardDirty = (state) => {
     const currentData = getDataPayload(state, ResourceTypes.DASHBOARD);
-    return (currentData?.widgets || []).length > 0;
+    const widgets = currentData?.widgets || [];
+    const layouts = currentData?.layouts || [];
+    return widgets.length > 0 ||
+    layouts.length > 1 ||
+    (layouts.length === 1 &&
+        (layouts[0].name !== "Main view" || layouts[0].color !== null) // Default layout name is "Main view"
+    );
 };
 
 export const isNewGeoStoryDirty = (state) => {

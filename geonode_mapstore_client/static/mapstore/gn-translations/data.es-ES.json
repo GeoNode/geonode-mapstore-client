@@ -557,7 +557,11 @@
             "assetUploadUnsupportedFormatError": "Tipo de archivo no admitido(s) '{ext}', no se puede cargar el archivo(s)",
             "assetDelete": "Eliminar Asset",
             "assetDeleteErrorMessage": "Error al eliminar el Asset",
-            "noAssets": "No se encontraron assets"
+            "noAssets": "No se encontraron assets",
+            "updateBoundingBox": "Actualizar caja delimitadora",
+            "updateBoundingBoxSuccess": "Caja delimitadora actualizada con éxito",
+            "updateBoundingBoxError": "Error al actualizar la caja delimitadora",
+            "noEditPermissions": "No tienes permiso para editar este recurso."
         },
         "resourcesCatalog": {
             "anonymous": "Cualquiera",

@@ -30,7 +30,8 @@ import {
     removeLinkedResourcesByPk,
     getDatasetTimeSettingsByPk,
     getResourceByTypeAndByPk,
-    deleteResourceThumbnail
+    deleteResourceThumbnail,
+    updateResourceExtent
 } from '@js/api/geonode/v2';
 import { configureMap } from '@mapstore/framework/actions/config';
 import { isMapInfoOpen } from '@mapstore/framework/selectors/mapInfo';
@@ -67,7 +68,10 @@ import {
     REQUEST_RESOURCE,
     resourceLoading,
     resourceError,
-    setSelectedLayer
+    setSelectedLayer,
+    UPDATE_RESOURCE_EXTENT,
+    updateResourceExtentLoading,
+    setDatasetEditPermissionsError
 } from '@js/actions/gnresource';
 
 import {
@@ -80,6 +84,8 @@ import {
     dashboardLoading,
     resetDashboard
 } from '@mapstore/framework/actions/dashboard';
+
+import { SAVE_SUCCESS } from '@mapstore/framework/actions/featuregrid';
 
 import {
     setControlProperty,
@@ -123,7 +129,7 @@ import {
     loadFinished,
     setCreationStep
 } from '@mapstore/framework/actions/contextcreator';
-import { setContext } from '@mapstore/framework/actions/context';
+import { setContext, setResource as setResourceContext } from '@mapstore/framework/actions/context';
 import { REDUCERS_LOADED } from '@mapstore/framework/actions/storemanager';
 import { wrapStartStop } from '@mapstore/framework/observables/epics';
 import { parseDevHostname } from '@js/utils/APIUtils';
@@ -133,6 +139,7 @@ import { VisualizationModes } from '@mapstore/framework/utils/MapTypeUtils';
 import { forceUpdateMapLayout } from '@mapstore/framework/actions/maplayout';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import { searchSelector } from '@mapstore/framework/selectors/router';
+import { CREATE_BACKGROUNDS_LIST, allowBackgroundsDeletion } from '@mapstore/framework/actions/backgroundselector';
 
 const FIT_BOUNDS_CONTROL = 'fitBounds';
 
@@ -172,11 +179,13 @@ const resourceTypes = {
                     const [mapConfig, gnLayer, newLayer] = response;
                     const {minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
                     const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
+                    const hasDownloadPermission = gnLayer?.perms?.includes('download_resourcebase');
                     return Observable.of(
                         configureMap({
                             ...mapConfig,
                             map: {
                                 ...mapConfig.map,
+                                zoom: 20, // we are applying high zoom level to mitigate the initial tile blurring due to the zoom to event
                                 visualizationMode: ['3dtiles'].includes(subtype) ? VisualizationModes._3D : VisualizationModes._2D,
                                 layers: [
                                     ...mapConfig.map.layers,
@@ -198,7 +207,8 @@ const resourceTypes = {
                         setResourceId(pk),
                         ...(page === 'dataset_edit_data_viewer'
                             ? [
-                                browseData(newLayer)
+                                browseData(newLayer),
+                                ...(hasDownloadPermission ? [] : [setDatasetEditPermissionsError('gnviewer.noEditPermissions')])
                             ]
                             : []),
                         ...(page === 'dataset_edit_layer_settings'
@@ -835,15 +845,72 @@ export const gnSelectResourceEpic = (action$, store) =>
                 );
         });
 
+export const gnUpdateResourceExtent = (action$, store) =>
+    action$.ofType(UPDATE_RESOURCE_EXTENT, SAVE_SUCCESS)
+        .switchMap((action) => {
+            const state = store.getState();
+            const currentResource = state.gnresource?.data || {};
+            const shouldNotify = action.type === UPDATE_RESOURCE_EXTENT;
+            return Observable.concat(
+                Observable.of(updateResourceExtentLoading(true)),
+                Observable.defer(() =>
+                    updateResourceExtent(currentResource?.pk)
+                        .then(() => getResourceByPk(currentResource?.pk))
+                        .then((updatedResource) => {
+                            const { extent } = updatedResource || {};
+                            return extent;
+                        })
+                )
+                    .switchMap((extent) =>
+                        Observable.of(
+                            updateResourceExtentLoading(false),
+                            ...(shouldNotify ? [successNotification({
+                                title: "gnviewer.updateBoundingBox",
+                                message: "gnviewer.updateBoundingBoxSuccess"
+                            })] : []),
+                            ...(extent ? [
+                                updateResourceProperties({
+                                    extent
+                                })
+                            ] : [])
+                        )
+                    )
+                    .catch(() =>
+                        Observable.of(
+                            updateResourceExtentLoading(false),
+                            ...(shouldNotify ? [errorNotification({
+                                title: "gnviewer.updateBoundingBox",
+                                message: "gnviewer.updateBoundingBoxError"
+                            })] : [])
+                        )
+                    )
+            );
+        });
+
+export const gnUpdateBackgroundEditEpic = (action$, store) =>
+    action$.ofType(CREATE_BACKGROUNDS_LIST)
+        .switchMap(() => {
+            const state = store.getState();
+            const resource = state.gnresource?.data || {};
+            const resourceType = state.gnresource?.type;
+            const canEdit = resourceType === ResourceTypes.MAP && resource?.perms?.includes('change_resourcebase') ? true : false;
+            return Observable.of(
+                setResourceContext({ canEdit }),
+                ...(canEdit ? [allowBackgroundsDeletion(true)] : [])
+            );
+        });
+
 export default {
     gnViewerRequestNewResourceConfig,
     gnViewerRequestResourceConfig,
     gnViewerSetNewResourceThumbnail,
+    gnUpdateBackgroundEditEpic,
     closeInfoPanelOnMapClick,
     closeOpenPanels,
     closeDatasetCatalogPanel,
     closeResourceDetailsOnMapInfoOpen,
     gnManageLinkedResource,
     gnZoomToFitBounds,
-    gnSelectResourceEpic
+    gnSelectResourceEpic,
+    gnUpdateResourceExtent
 };

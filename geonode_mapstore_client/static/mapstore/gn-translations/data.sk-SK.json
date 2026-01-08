@@ -529,7 +529,11 @@
             "video": "Video",
             "documentsFound": "Documents found",
             "noDocumentsFound": "No documents found",
-            "addSelectedAsLayer": "Add selected as layer"
+            "addSelectedAsLayer": "Add selected as layer",
+            "updateBoundingBox": "Update bounding box",
+            "updateBoundingBoxSuccess": "Bounding box updated successfully",
+            "updateBoundingBoxError": "Error updating bounding box",
+            "noEditPermissions": "You don't have permission to edit this resource."
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

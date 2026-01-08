@@ -254,7 +254,7 @@ describe('resource selector', () => {
         expect(isNewDashboardDirty(state)).toBeTruthy();
     });
 
-    it('test isNewDashboardDirty returns false when dashboard has no widgets', () => {
+    it('test isNewDashboardDirty returns false when dashboard has no widgets and no layouts', () => {
         const state = {
             gnresource: {
                 type: ResourceTypes.DASHBOARD
@@ -268,6 +268,75 @@ describe('resource selector', () => {
             }
         };
         expect(isNewDashboardDirty(state)).toBeFalsy();
+    });
+
+    it('test isNewDashboardDirty returns false when dashboard has default single layout and no widgets', () => {
+        const state = {
+            gnresource: {
+                type: ResourceTypes.DASHBOARD
+            },
+            widgets: {
+                containers: {
+                    floating: {
+                        widgets: [],
+                        layouts: [{ id: 'layout-1', name: 'Main view', color: null }]
+                    }
+                }
+            }
+        };
+        expect(isNewDashboardDirty(state)).toBeFalsy();
+    });
+
+    it('test isNewDashboardDirty returns true when dashboard has more than one layout', () => {
+        const state = {
+            gnresource: {
+                type: ResourceTypes.DASHBOARD
+            },
+            widgets: {
+                containers: {
+                    floating: {
+                        widgets: [],
+                        layouts: [
+                            { id: 'layout-1', name: 'Main view', color: null },
+                            { id: 'layout-2', name: 'Secondary', color: null }
+                        ]
+                    }
+                }
+            }
+        };
+        expect(isNewDashboardDirty(state)).toBeTruthy();
+    });
+
+    it('test isNewDashboardDirty returns true when single layout differs from default (name or color)', () => {
+        const stateNameChanged = {
+            gnresource: {
+                type: ResourceTypes.DASHBOARD
+            },
+            widgets: {
+                containers: {
+                    floating: {
+                        widgets: [],
+                        layouts: [{ id: 'layout-1', name: 'Custom view', color: null }]
+                    }
+                }
+            }
+        };
+        expect(isNewDashboardDirty(stateNameChanged)).toBeTruthy();
+
+        const stateColorChanged = {
+            gnresource: {
+                type: ResourceTypes.DASHBOARD
+            },
+            widgets: {
+                containers: {
+                    floating: {
+                        widgets: [],
+                        layouts: [{ id: 'layout-1', name: 'Main view', color: '#ff0000' }]
+                    }
+                }
+            }
+        };
+        expect(isNewDashboardDirty(stateColorChanged)).toBeTruthy();
     });
 
     it('test isNewGeoStoryDirty returns false for default geostory', () => {

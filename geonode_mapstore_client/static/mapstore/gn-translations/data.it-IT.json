@@ -560,7 +560,11 @@
             "assetUploadUnsupportedFormatError": "Tipo di file non supportato(s) '{ext}', non è possibile caricare il file(s)",
             "assetDelete": "Elimina Asset",
             "assetDeleteErrorMessage": "Errore durante l'eliminazione dell'Asset",
-            "noAssets": "Nessun asset trovato"
+            "noAssets": "Nessun asset trovato",
+            "updateBoundingBox": "Aggiorna il bounding box",
+            "updateBoundingBoxSuccess": "Bounding box aggiornato con successo",
+            "updateBoundingBoxError": "Errore durante l'aggiornamento del bounding box",
+            "noEditPermissions": "Non hai l’autorizzazione per modificare questa risorsa."
         },
         "resourcesCatalog": {
             "anonymous": "Chiunque",
