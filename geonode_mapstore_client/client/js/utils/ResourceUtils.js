@@ -376,6 +376,15 @@ export const isDocumentExternalSource = (resource) => {
 };
 
 export const getResourceTypesInfo = () => ({
+    'null': {
+        icon: { glyph: 'dataset' },
+        name: '',
+        canPreviewed: () => false,
+        formatEmbedUrl: () => undefined,
+        formatDetailUrl: () => undefined,
+        formatMetadataUrl: () => undefined,
+        formatMetadataDetailUrl: () => undefined
+    },
     [ResourceTypes.DATASET]: {
         icon: { glyph: 'dataset' },
         canPreviewed: (resource) => resourceHasPermission(resource, 'view_resourcebase'),

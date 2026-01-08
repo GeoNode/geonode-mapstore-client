@@ -3491,12 +3491,6 @@
             },
             {
                 "name": "Favorites"
-            },
-            {
-                "name": "ExecutionTracker",
-                "cfg": {
-                    "containerPosition": "header"
-                }
             }
         ],
         "viewer": [
