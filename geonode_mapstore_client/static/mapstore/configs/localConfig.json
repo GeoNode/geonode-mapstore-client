@@ -1236,6 +1236,12 @@
             },
             {
                 "name": "MetadataViewer"
+            },
+            {
+                "name": "ExecutionTracker",
+                "cfg": {
+                    "containerPosition": "header"
+                }
             }
         ],
         "dataset_edit_data_viewer": [
