@@ -30,6 +30,7 @@ import { updateGeoNodeSettings } from '@js/actions/gnsettings';
 import { COMPONENTS_ROUTES, appRouteComponentTypes } from '@js/utils/AppRoutesUtils';
 import gnresourceEpics from '@js/epics/gnresource';
 import resourceServiceEpics from '@js/epics/resourceservice';
+import securityEpics from '@js/epics/security';
 
 import gnresource from '@js/reducers/gnresource';
 import resourceservice from '@js/reducers/resourceservice';
@@ -75,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             ...configEpics,
                             ...gnresourceEpics,
                             ...resourceServiceEpics,
+                            ...securityEpics,
                             gnListenToResourcesPendingExecution
                         });
 
