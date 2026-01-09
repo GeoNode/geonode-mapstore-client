@@ -1,5 +1,5 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Deploy static master branch content to Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -21,46 +21,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Single deploy job since we're just deploying
+
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+
       - name: Checkout master
         uses: actions/checkout@v4
         with:
            ref: master
 
-      ###########
-      # SET UP
-      #########
       - name: "Setting up npm"
         uses: actions/setup-node@v4
         with:
             node-version: 20
 
-      ############
-      # CACHING
-      ##########
-      - name: "Cache node modules"
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
       - name: Install build dependencies
         run: |
-          mkdir ../gh-pages
           npm install jsdoc@4.0.0 -g
           npm install @jsdoc/salty@0.2.1 -g
+
+      - name: Restore previous github-pages artifact
+        run: |
+          wget https://geonode.org/geonode-mapstore-client/artifact.zip
+          unzip artifact.zip
+          mv gh-pages/ ../gh-pages
 
       - name: Build master documentation
         run: |
@@ -68,7 +56,11 @@ jobs:
           npm run docs
           cd ../../
           cp -a ./geonode_mapstore_client/static/fonts/. ./docs/fonts/
+          rm -rf ../gh-pages/master
           mv ./docs ../gh-pages/master
+          cd ../
+          zip -r artifact.zip gh-pages/
+          mv artifact.zip gh-pages/artifact.zip
 
       - name: Setup Pages
         uses: actions/configure-pages@v2
@@ -77,6 +69,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
+          name: github-pages
           path: '../gh-pages'
 
       - name: Deploy to GitHub Pages

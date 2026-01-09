@@ -108,8 +108,8 @@ function Operation({
     // open the import ui if a blocking execution is still running
     const executions = resource?.executions;
     useEffect(() => {
-        const actionsToCheck = api?.uploadActions 
-            ? api.uploadActions.map(actionObj => actionObj.action) 
+        const actionsToCheck = api?.uploadActions
+            ? api.uploadActions.map(actionObj => actionObj.action)
             : [action];
 
         if (executions && blocking && actionsToCheck) {

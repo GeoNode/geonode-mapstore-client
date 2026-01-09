@@ -72,6 +72,7 @@
         let catalogPagePath = geoNodeSettings.CATALOG_PAGE_PATH;
         let isPublishedOptionEnabled = geoNodeSettings.RESOURCE_PUBLISHING || false;
         let isApprovedOptionEnabled = geoNodeSettings.ADMIN_MODERATE_UPLOADS || false;
+        let resourcesSearchIndex = geoNodeSettings.RESOURCES_SEARCH_INDEX || 'title_abstract';
         let customFilters = geoNodeSettings.CUSTOM_FILTERS || {
             "my-resources": {
                 "filter{owner.pk}": "{state('user') && state('user').pk}"
@@ -184,6 +185,23 @@
                     endpointV1: siteUrl + 'api',
                     endpointV2: siteUrl + 'api/v2/'
                 },
+                initialState: {
+                    defaultState: {
+                        catalog: {
+                            default: {
+                                staticServices: {
+                                    default_map_backgrounds: {
+                                        type: 'backgrounds',
+                                        title: 'Default Backgrounds',
+                                        titleMsgId: 'defaultMapBackgroundsServiceTitle',
+                                        autoload: true,
+                                        backgrounds: baseLayers
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 projectionDefs: projectionDefs,
                 geoNodeCustomFilters: customFilters,
                 geoNodeCardsMenuItems: cardsMenuItems,
@@ -214,7 +232,8 @@
                     catalogHomeRedirectsTo: catalogHomeRedirectsTo,
                     catalogPagePath: catalogPagePath,
                     isPublishedOptionEnabled: isPublishedOptionEnabled,
-                    isApprovedOptionEnabled: isApprovedOptionEnabled
+                    isApprovedOptionEnabled: isApprovedOptionEnabled,
+                    resourcesSearchIndex: resourcesSearchIndex
                 }
             },
         };

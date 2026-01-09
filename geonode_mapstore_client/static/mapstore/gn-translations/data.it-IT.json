@@ -250,11 +250,22 @@
             "datasetsCatalogFilterPlaceholder": "Filtra set di dati per titolo o descrizione...",
             "datasetsCatalogEntriesNoResults": "Nessun risultato corrisponde alla tua ricerca",
             "legend": "Legenda",
-
+            "addDocument": "Aggiungi layer documenti",
+            "addSearchAsLayer": "Aggiungi ricerca come layer",
+            "documentsCatalogTitle": "Catalogo documenti",
+            "documentsCatalogFilterPlaceholder": "Filtra documenti per titolo o abstract...",
+            "documentsCatalogEntriesNoResults": "Nessun risultato corrisponde alla tua ricerca",
             "zoomToLayer": "Zoom all'estensione del layer",
             "applyCurrentStyleToLayer": "Applica lo stile corrente al layer",
             "deleteCurrentStyle": "Elimina lo stile corrente",
             "createNewStyle": "Crea nuovo stile",
+            "selectAll": "Seleziona tutto",
+            "filterByType": "Filtra per tipo",
+            "image": "Immagine",
+            "video": "Video",
+            "documentsFound": "Documenti trovati",
+            "noDocumentsFound": "Nessun documento trovato",
+            "addSelectedAsLayer": "Aggiungi selezionati come layer",
 
             "createStyleTitle": "Aggiungi nuovo stile",
             "createStyleTitleInput": "Titolo:",
@@ -549,7 +560,11 @@
             "assetUploadUnsupportedFormatError": "Tipo di file non supportato(s) '{ext}', non è possibile caricare il file(s)",
             "assetDelete": "Elimina Asset",
             "assetDeleteErrorMessage": "Errore durante l'eliminazione dell'Asset",
-            "noAssets": "Nessun asset trovato"
+            "noAssets": "Nessun asset trovato",
+            "updateBoundingBox": "Aggiorna il bounding box",
+            "updateBoundingBoxSuccess": "Bounding box aggiornato con successo",
+            "updateBoundingBoxError": "Errore durante l'aggiornamento del bounding box",
+            "noEditPermissions": "Non hai l’autorizzazione per modificare questa risorsa."
         },
         "resourcesCatalog": {
             "anonymous": "Chiunque",

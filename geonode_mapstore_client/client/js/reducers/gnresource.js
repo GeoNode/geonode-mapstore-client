@@ -37,7 +37,9 @@ import {
     SET_DEFAULT_VIEWER_PLUGINS,
     SET_SELECTED_LAYER,
     UPDATE_LAYER_DATASET,
-    SET_SELECTED_LAYER_DATASET
+    SET_SELECTED_LAYER_DATASET,
+    UPDATE_RESOURCE_EXTENT_LOADING,
+    SET_DATASET_EDIT_PERMISSIONS_ERROR
 } from '@js/actions/gnresource';
 import {
     cleanCompactPermissions,
@@ -48,7 +50,8 @@ import {
 const defaultState = {
     selectedLayerPermissions: [],
     data: {},
-    permissions: []
+    permissions: [],
+    datasetEditPermissionError: null
 };
 
 function gnresource(state = defaultState, action) {
@@ -178,6 +181,12 @@ function gnresource(state = defaultState, action) {
         };
     }
 
+    case UPDATE_RESOURCE_EXTENT_LOADING: {
+        return {
+            ...state,
+            loadingUpdateResourceExtent: action.loading
+        };
+    }
     case ENABLE_MAP_THUMBNAIL_VIEWER: {
         return {
             ...state,
@@ -286,6 +295,11 @@ function gnresource(state = defaultState, action) {
                     return layer;
                 })
             }
+        };
+    case SET_DATASET_EDIT_PERMISSIONS_ERROR:
+        return {
+            ...state,
+            datasetEditPermissionError: action.datasetEditPermissionError
         };
     default:
         return state;

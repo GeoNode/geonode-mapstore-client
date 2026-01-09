@@ -22,6 +22,7 @@ import { castArray } from 'lodash';
  * @prop {function} onSearch trigger a refresh request after changing the favorite association
  * @prop {number} delayTime delay time to complete the request
  * @prop {string} renderType define the component type (eg. menuItem)
+ * @ignore
  */
 function Favorites({
     user,

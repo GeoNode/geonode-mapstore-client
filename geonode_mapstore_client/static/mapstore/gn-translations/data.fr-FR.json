@@ -248,7 +248,18 @@
             "datasetsCatalogFilterPlaceholder": "Filtrer les jeux de données par titre ou résumé...",
             "datasetsCatalogEntriesNoResults": "Aucun résultat ne correspond à votre recherche",
             "legend": "Légende",
-
+            "addDocument": "Ajouter une couche de documents",
+            "addSearchAsLayer": "Ajouter une recherche en tant que couche",
+            "documentsCatalogTitle": "Catalogue de documents",
+            "documentsCatalogFilterPlaceholder": "Filtrer les documents par titre ou résumé...",
+            "documentsCatalogEntriesNoResults": "Aucun résultat ne correspond à votre recherche",
+            "selectAll": "Tout sélectionner",
+            "filterByType": "Filtrer par type",
+            "image": "Image",
+            "video": "Vidéo",
+            "documentsFound": "Documents trouvés",
+            "noDocumentsFound": "No documents found",
+            "addSelectedAsLayer": "Add selected as layer",
             "zoomToLayer": "Zoomer sur l'étendue du calque",
             "applyCurrentStyleToLayer": "Appliquer le style actuel au calque",
             "deleteCurrentStyle": "Supprimer le style actuel",
@@ -547,7 +558,11 @@
             "assetUploadUnsupportedFormatError": "Format de fichier non pris en charge(s) '{ext}', impossible de télécharger le(s) fichier(s)",
             "assetDelete": "Supprimer l'Asset",
             "assetDeleteErrorMessage": "Erreur lors de la suppression de l'Asset",
-            "noAssets": "Aucun asset trouvé"
+            "noAssets": "Aucun asset trouvé",
+            "updateBoundingBox": "Mettre à jour la boîte englobante",
+            "updateBoundingBoxSuccess": "Boîte englobante mise à jour avec succès",
+            "updateBoundingBoxError": "Erreur lors de la mise à jour de la boîte englobante",
+            "noEditPermissions": "Vous n’avez pas l’autorisation de modifier cette ressource."
         },
         "resourcesCatalog": {
             "anonymous": "N'importe qui",

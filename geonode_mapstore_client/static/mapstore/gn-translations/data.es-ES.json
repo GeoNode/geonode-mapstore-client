@@ -252,7 +252,18 @@
             "applyCurrentStyleToLayer": "Aplicar el estilo actual a la capa",
             "deleteCurrentStyle": "Eliminar estilo actual",
             "createNewStyle": "Crear nuevo estilo",
-
+            "addDocument": "Agregar capa de documentos",
+            "addSearchAsLayer": "Agregar búsqueda como capa",
+            "documentsCatalogTitle": "Catálogo de documentos",
+            "documentsCatalogFilterPlaceholder": "Filtrar documentos por título o resumen...",
+            "documentsCatalogEntriesNoResults": "No hay resultados que coincidan con su búsqueda",
+            "selectAll": "Seleccionar todo",
+            "filterByType": "Filtrar por tipo",
+            "image": "Imagen",
+            "video": "Vídeo",
+            "documentsFound": "Documentos encontrados",
+            "noDocumentsFound": "No se encontraron documentos",
+            "addSelectedAsLayer": "Agregar seleccionado como capa",
             "createStyleTitle": "Agregar nuevo estilo",
             "createStyleTitleInput": "Título:",
             "createStyleClose": "Cerrar",
@@ -546,7 +557,11 @@
             "assetUploadUnsupportedFormatError": "Tipo de archivo no admitido(s) '{ext}', no se puede cargar el archivo(s)",
             "assetDelete": "Eliminar Asset",
             "assetDeleteErrorMessage": "Error al eliminar el Asset",
-            "noAssets": "No se encontraron assets"
+            "noAssets": "No se encontraron assets",
+            "updateBoundingBox": "Actualizar caja delimitadora",
+            "updateBoundingBoxSuccess": "Caja delimitadora actualizada con éxito",
+            "updateBoundingBoxError": "Error al actualizar la caja delimitadora",
+            "noEditPermissions": "No tienes permiso para editar este recurso."
         },
         "resourcesCatalog": {
             "anonymous": "Cualquiera",
