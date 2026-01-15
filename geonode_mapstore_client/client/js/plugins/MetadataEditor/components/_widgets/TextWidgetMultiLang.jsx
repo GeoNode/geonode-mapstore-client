@@ -40,6 +40,7 @@ const TextWidgetMultiLang = (props) => {
       ...values,
       [currentLang]: value,
     };
+
     onChange(newValue);
   };
 
@@ -71,7 +72,7 @@ const TextWidgetMultiLang = (props) => {
       />
       }
       
-      <div style={{ marginTop: "8px", display: "flex", gap: "5px" }}>
+      <div className="multilang-widget-buttons">
         {languages.map((lang) => (
           <button
             key={lang}
