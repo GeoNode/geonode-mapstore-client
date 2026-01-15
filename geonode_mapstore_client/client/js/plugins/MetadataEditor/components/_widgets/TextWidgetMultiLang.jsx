@@ -12,7 +12,6 @@ import isString from 'lodash/isString';
 
 import DefaultTextareaWidget from '@rjsf/core/lib/components/widgets/TextareaWidget';
 import IconWithTooltip from '../IconWithTooltip';
-import Message from '@mapstore/framework/components/I18N/Message';
 import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 
 const TextWidgetMultiLang = (props) => {

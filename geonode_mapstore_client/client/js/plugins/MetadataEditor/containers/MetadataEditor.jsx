@@ -87,8 +87,6 @@ function MetadataEditor({
         };
     }, []);
 
-    const formTitle = metadata?.title || getMessageById(messages, 'gnviewer.metadataEditorTitle', 'Metadata Editor');
-
     /**
      * tranform metadata to multilang format managed by widget `TextWidgetMultiLang` using `geonode:multilang-group` property
      * see also schemaToMultiLang() schema transformation
@@ -234,7 +232,7 @@ function MetadataEditor({
                     readonly={readOnly}
                     ref={initialize.current}
                     formContext={{
-                        title: formTitle,
+                        title: metadata.title || metadataMultiLang.title.en || getMessageById(messages, 'gnviewer.metadataEditorTitle'),
                         metadata: metadataMultiLang,
                         capitalizeTitle: capitalizeFieldTitle,
                         messages

@@ -474,6 +474,7 @@
             "metadataUpdatePartialSuccess": "Metadaten aktualisiert teilweise erfolgreich",
             "metadataUpdateFailure": "Metadatenaktualisierung fehlgeschlagen",
             "metadataGroupTitle": "Allgemein",
+            "metadataEditorTitle": "Metadaten Editor",
             "noGridData": "Keine Daten zum Anzeigen",
             "layerSettings": {
                 "title": "Kartenschichteinstellungen",

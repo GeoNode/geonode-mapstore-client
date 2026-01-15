@@ -280,6 +280,7 @@
             "styleEditorCloseCancel": "Não, voltar para o editor de estilos",
             "styleEditorCloseConfirm": "Sim, pode fechar",
             "metadataUpload": "Carregar Metadados",
+            "metadataEditorTitle": "Editor de Metadados",
             "styleUpload": "Carregar Estilos",
 
             "missingFiles": "Arquivos ausentes",

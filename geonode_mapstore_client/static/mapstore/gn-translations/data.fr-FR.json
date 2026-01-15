@@ -474,6 +474,7 @@
             "metadataUpdatePartialSuccess": "Métadonnées mises à jour partiellement avec succès",
             "metadataUpdateFailure": "Mise à jour des métadonnées impossible",
             "metadataGroupTitle": "Général",
+            "metadataEditorTitle": "Éditeur de métadonnées",
             "noGridData": "Aucune donnée à afficher",
             "layerSettings": {
                 "title": "Paramètres des couches de la carte",

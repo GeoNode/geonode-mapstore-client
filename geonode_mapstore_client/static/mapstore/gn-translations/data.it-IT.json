@@ -476,6 +476,7 @@
             "metadataUpdatePartialSuccess": "Metadati aggiornati parzialmente con successo",
             "metadataUpdateFailure": "Impossibile aggiornare i metadati",
             "metadataGroupTitle": "Generale",
+            "metadataEditorTitle": "Editor dei metadati",
             "noGridData": "Nessun dato da visualizzare",
             "layerSettings": {
                 "title": "Impostazioni del layer della mappa",
