@@ -7,29 +7,19 @@
  */
 
 import React, { useState } from "react";
-import Form from "@rjsf/core";
-import validator from "@rjsf/validator-ajv8";
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
 
-import DefaultTextWidget from "@rjsf/core/lib/components/widgets/TextWidget";
 import DefaultTextareaWidget from '@rjsf/core/lib/components/widgets/TextareaWidget';
-import FieldTemplate from "../_templates/FieldTemplate";
 import IconWithTooltip from '../IconWithTooltip';
-import {
-    getTemplate,
-    getUiOptions
-} from '@rjsf/utils';
 
 const TextWidgetMultiLang = (props) => {
-
-  //console.log("TextWidgetMultiLang props:", props);
 
   const { formData, onChange, schema, required, formContext, registry } = props;
   const id = props.id || Math.random().toString(36).substring(7);
   const { title, description } = schema;
 
-  //TODO map langs from schema when iso lang is change to 2 chars https://github.com/GeoNode/geonode/issues/13643#issuecomment-3728578749
+  // TODO map langs from schema when iso lang is change to 2 chars https://github.com/GeoNode/geonode/issues/13643#issuecomment-3728578749
   const languages = ["en", "hy", "ru"];
   const languageLong = (langCode) => {
     return {
@@ -100,133 +90,3 @@ const TextWidgetMultiLang = (props) => {
 
 
 export default TextWidgetMultiLang;
-
-
-/**
- * schema definition for multilang fields: 
- * https://github.com/GeoNode/geonode/issues/13643
- * 
- * loaded from backend as: http://localhost/api/v2/metadata/schema?format=json
- * 
- * 
- * "title": {
-      "type": "string",
-      "title": "Title",
-      "description": "name by which the cited resource is known",
-      "maxLength": 255,
-      "geonode:handler": "base",
-      "geonode:required": true,
-      "geonode:multilang": true,
-      "readOnly": true,
-      "ui:widget": "hidden"
-  },
-  "title_multilang_en": {
-      "type": [
-          "string",
-          "null"
-      ],
-      "geonode:handler": "sparse",
-      "geonode:multilang-lang": "en",
-      "geonode:multilang-group": "title",
-      "title": "Title [EN] !",
-      "geonode:required": true,
-      "description": "name by which the cited resource is known"
-  },
-  "title_multilang_hy": {
-      "type": [
-          "string",
-          "null"
-      ],
-      "geonode:handler": "sparse",
-      "geonode:multilang-lang": "hy",
-      "geonode:multilang-group": "title",
-      "title": "Title [HY]"
-  },
-  "title_multilang_ru": {
-      "type": [
-          "string",
-          "null"
-      ],
-      "geonode:handler": "sparse",
-      "geonode:multilang-lang": "ru",
-      "geonode:multilang-group": "title",
-      "title": "Title [RU]"
-  },
-
-  textarea widgets
-
-  "abstract": {
-      "type": "string",
-      "title": "Abstract",
-      "description": "brief narrative summary of the content of the resource(s)",
-      "maxLength": 2000,
-      "ui:options": {
-        "widget": "hidden",
-        "rows": 5
-      },
-      "geonode:handler": "base",
-      "geonode:required": true,
-      "geonode:multilang": true,
-      "readOnly": true
-    },
-    "abstract_multilang_en": {
-      "type": [
-        "string",
-        "null"
-      ],
-      "geonode:handler": "sparse",
-      "geonode:multilang-lang": "en",
-      "geonode:multilang-group": "abstract",
-      "title": "Abstract [EN] !",
-      "geonode:required": true,
-      "description": "brief narrative summary of the content of the resource(s)",
-      "ui:options": {
-        "widget": "textarea",
-        "rows": 5
-      }
-    }
- * 
- * 
- */
-
-// // schema of form
-// const schema = {
-//   title: "Esempio Form Multilingua",
-//   type: "object",
-//   properties: {
-//     titolo_prodotto: {
-//       type: "object",
-//       title: "Nome Prodotto (Multilingua)",
-//       properties: {
-//         it: { type: "string" },
-//         en: { type: "string" },
-//         fr: { type: "string" },
-//       },
-//     },
-//   },
-// };
-
-// // uiSchema of rjsf form
-// const uiSchema = {
-//   titolo_prodotto: {
-//     "ui:widget": "MultiLangWidget",
-//     "ui:options": {
-//       languages: ["it", "en", "es"], // Personalizzabile qui
-//     },
-//   },
-// };
-
-// USAGE EXAMPLE:
-// register widget on Form
-// const widgets = {
-//   MultiLangWidget: MultiLangWidget
-// };
-// export const TextWidgetMultiLang = () => (
-//   <Form
-//     schema={schema}
-//     uiSchema={uiSchema}
-//     widgets={widgets}
-//     validator={validator}
-//     onChange={(e) => console.log("Data:", e.formData)}
-//   />
-// );
