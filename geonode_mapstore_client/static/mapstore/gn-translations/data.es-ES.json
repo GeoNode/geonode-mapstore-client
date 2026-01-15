@@ -503,6 +503,7 @@
             "datasetTitle": "Título del conjunto de datos",
             "name": "Nombre",
             "type": "Tipo",
+            "typeText": "Escriba texto en {lang} ...",
             "nillable": "Nulable",
             "restrictions": "Restricciones",
             "loadAttributesFromJSONSchema": "Cargar atributos desde esquema JSON",

@@ -236,7 +236,8 @@ function MetadataEditor({
                     formContext={{
                         title: formTitle,
                         metadata: metadataMultiLang,
-                        capitalizeTitle: capitalizeFieldTitle
+                        capitalizeTitle: capitalizeFieldTitle,
+                        messages
                     }}
                     schema={schemaMultiLang}
                     uiSchema={uiSchemaMultiLang}

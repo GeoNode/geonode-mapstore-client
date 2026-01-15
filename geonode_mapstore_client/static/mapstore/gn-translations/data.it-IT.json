@@ -506,6 +506,7 @@
             "datasetTitle": "Titolo del dataset",
             "name": "Nome",
             "type": "Tipo",
+            "typeText": "Digita il testo in {lang} ...",
             "nillable": "Annullabile",
             "restrictions": "Restrizioni",
             "loadAttributesFromJSONSchema": "Carica attributi da schema JSON",

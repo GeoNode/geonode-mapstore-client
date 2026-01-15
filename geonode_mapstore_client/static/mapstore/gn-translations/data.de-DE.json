@@ -504,6 +504,7 @@
             "datasetTitle": "Datensatztitel",
             "name": "Name",
             "type": "Typ",
+            "typeText": "Text in {lang} eingeben...",
             "nillable": "Nullbar",
             "restrictions": "Einschränkungen",
             "loadAttributesFromJSONSchema": "Attribute aus JSON-Schema laden",

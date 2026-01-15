@@ -504,6 +504,7 @@
             "datasetTitle": "Titre du jeu de données",
             "name": "Nom",
             "type": "Type",
+            "typeText": "Tapez le texte en {lang} ...",
             "nillable": "Nullable",
             "restrictions": "Restrictions",
             "loadAttributesFromJSONSchema": "Charger les attributs depuis le schéma JSON",

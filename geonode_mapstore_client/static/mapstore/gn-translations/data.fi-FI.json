@@ -474,6 +474,7 @@
             "datasetTitle": "Dataset title",
             "name": "Name",
             "type": "Type",
+            "typeText": "Kirjoita teksti kielellä {lang} ...",
             "nillable": "Nillable",
             "restrictions": "Restrictions",
             "loadAttributesFromJSONSchema": "Load attributes from JSON Schema",

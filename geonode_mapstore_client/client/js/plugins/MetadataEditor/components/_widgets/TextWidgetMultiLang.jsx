@@ -12,10 +12,14 @@ import isString from 'lodash/isString';
 
 import DefaultTextareaWidget from '@rjsf/core/lib/components/widgets/TextareaWidget';
 import IconWithTooltip from '../IconWithTooltip';
+import Message from '@mapstore/framework/components/I18N/Message';
+import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 
 const TextWidgetMultiLang = (props) => {
 
     const { formData, onChange, schema, required, formContext } = props;
+    console.log('TextWidgetMultiLang props', props);
+
     const id = props.id || Math.random().toString(36).substring(7);
     const { title, description } = schema;
 
@@ -45,6 +49,8 @@ const TextWidgetMultiLang = (props) => {
         onChange(newValue);
     };
 
+    const placeholder = getMessageById(formContext.messages, "gnviewer.typeText").replace("{lang}", languageLong(currentLang));
+
     return (
         <div className="form-group field field-string multilang-widget">
             <label className={`control-label${formContext?.capitalizeTitle ? ' capitalize' : ''}`}>
@@ -62,7 +68,7 @@ const TextWidgetMultiLang = (props) => {
                     onFocus={() => {}}
                     onBlur={() => {}}
                     options={{ rows: 5 }}
-                    placeholder={`Type textarea in ${languageLong(currentLang)}...`}
+                    placeholder={placeholder}
                 />
             ) :
                 <input
@@ -71,7 +77,7 @@ const TextWidgetMultiLang = (props) => {
                     value={values[currentLang] || ""}
                     onChange={handleInputChange}
                     onBlur={() => {}}
-                    placeholder={`Type text in ${languageLong(currentLang)}...`}
+                    placeholder={placeholder}
                 />
             }
 
