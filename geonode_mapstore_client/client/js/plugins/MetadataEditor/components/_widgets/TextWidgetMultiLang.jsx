@@ -18,7 +18,6 @@ import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 const TextWidgetMultiLang = (props) => {
 
     const { formData, onChange, schema, required, formContext } = props;
-    console.log('TextWidgetMultiLang props', props);
 
     const id = props.id || Math.random().toString(36).substring(7);
     const { title, description } = schema;
@@ -30,7 +29,7 @@ const TextWidgetMultiLang = (props) => {
         return acc;
     }, {});
 
-    const languageLong = (langCode) => {
+    const getLanguageName = (langCode) => {
         return languageLabels[langCode] || langCode;
     };
 
@@ -49,7 +48,7 @@ const TextWidgetMultiLang = (props) => {
         onChange(newValue);
     };
 
-    const placeholder = getMessageById(formContext.messages, "gnviewer.typeText").replace("{lang}", languageLong(currentLang));
+    const placeholder = getMessageById(formContext.messages, "gnviewer.typeText").replace("{lang}", getLanguageName(currentLang));
 
     return (
         <div className="form-group field field-string multilang-widget">
@@ -89,7 +88,7 @@ const TextWidgetMultiLang = (props) => {
                         className={`btn btn-xs ${currentLang === lang ? "btn-primary" : "btn-outline-secondary"}`}
                         onClick={() => setCurrentLang(lang)}
                     >
-                        {languageLong(lang)}
+                        {getLanguageName(lang)}
                     </button>
                 ))}
             </div>

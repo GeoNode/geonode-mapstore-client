@@ -103,7 +103,7 @@ function MetadataEditor({
             ...metadataSingleLang,
             ...Object.keys(schemaSingleLang?.properties || {}).reduce((acc, key) => {
                 const property = schemaSingleLang.properties[key];
-                if (property?.['geonode:multilang'] === true) {
+                if (property?.['geonode:multilang']) {
                     acc[key] = Object.keys(metadataSingleLang || {}).reduce((langAcc, dataKey) => {
                         const dataProperty = schemaSingleLang.properties[dataKey];
                         if (dataProperty?.['geonode:multilang-group'] === key) {
@@ -126,7 +126,7 @@ function MetadataEditor({
 
         Object.keys(schemaMultiLang?.properties || {}).forEach(key => {
             const property = schemaMultiLang.properties[key];
-            if (property?.['geonode:multilang'] === true && metadataMultiLang[key]) {
+            if (property?.['geonode:multilang'] && metadataMultiLang[key]) {
                 Object.entries(metadataMultiLang[key] || {}).forEach(([lang, value]) => {
                     const singleLangKey = Object.keys(schemaMultiLang.properties).find(k => {
                         const prop = schemaMultiLang.properties[k];
@@ -186,7 +186,7 @@ function MetadataEditor({
             ...schemaSingleLang,
             properties: Object.keys(schemaSingleLang?.properties || {}).reduce((acc, key) => {
                 const property = { ...schemaSingleLang.properties[key] };
-                if (property?.['geonode:multilang'] === true) {
+                if (property?.['geonode:multilang']) {
                     const newProperty = {
                         ...property,
                         type: 'object',
