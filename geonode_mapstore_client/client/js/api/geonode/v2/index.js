@@ -742,7 +742,7 @@ export const getMetadataDownloadLinkByPk = (pk) => {
 export const updateResourceExtent = (pk) => {
     return axios.put(getEndpointUrl(DATASETS, `/${pk}/recalc-bbox`))
         .then(({ data }) => data);
-}
+};
 
 export default {
     getEndpoints,

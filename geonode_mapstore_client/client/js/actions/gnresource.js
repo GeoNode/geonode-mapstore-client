@@ -332,7 +332,7 @@ export function setResourceExtent(coords) {
 
 export function updateResourceExtent() {
     return {
-        type: UPDATE_RESOURCE_EXTENT,
+        type: UPDATE_RESOURCE_EXTENT
     };
 }
 

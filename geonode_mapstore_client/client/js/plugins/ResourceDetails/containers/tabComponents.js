@@ -19,10 +19,10 @@ import { createSelector } from 'reselect';
 
 const tabComponents = {
     'locations': connect( createSelector([
-            state => state?.gnresource?.loadingUpdateResourceExtent,
-        ], (loadingUpdateResourceExtent) => ({
-            loadingUpdateResourceExtent,
-        })), { onSetExtent: setResourceExtent , onUpdateExtent: updateResourceExtent })(DetailsLocations),
+        state => state?.gnresource?.loadingUpdateResourceExtent
+    ], (loadingUpdateResourceExtent) => ({
+        loadingUpdateResourceExtent
+    })), { onSetExtent: setResourceExtent, onUpdateExtent: updateResourceExtent })(DetailsLocations),
     'relations': DetailsLinkedResources,
     'assets': connect(() => ({}), { onNotify: show, onChange: updateResourceProperties })(DetailsAssets),
     'data': connect(() => ({}), { onChange: updateResourceProperties })(DetailsData),
