@@ -19,14 +19,15 @@ const TextWidgetMultiLang = (props) => {
     const id = props.id || Math.random().toString(36).substring(7);
     const { title, description } = schema;
 
-    // TODO map langs from schema when iso lang is change to 2 chars https://github.com/GeoNode/geonode/issues/13643#issuecomment-3728578749
-    const languages = ["en", "hy", "ru"];
+    const languages = Object.keys(schema?.properties);
+    const languageLabels = languages.reduce((acc, lang) => {
+        const label = schema?.properties?.[lang]?.['geonode:multilang-lang-label'] || lang;
+        acc[lang] = label;
+        return acc;
+    }, {});
+
     const languageLong = (langCode) => {
-        return {
-            en: "English",
-            hy: "Armenian",
-            ru: "Russian"
-        }[langCode] || langCode.toUpperCase();
+        return languageLabels[langCode] || langCode;
     };
 
     const isTextarea = schema?.['ui:options']?.widget === 'textarea';
