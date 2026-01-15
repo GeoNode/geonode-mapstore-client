@@ -183,9 +183,8 @@ const SchemaField = (props) => {
         return <Autocomplete {...autoCompleteProps}/>;
     }
 
-    //this override ObjectFieldTemplate
+    // this override ObjectFieldTemplate
     if (uiWidget === 'textwidgetmultilang') {
-        //console.log('SchemaField props', name, props);
         return <TextWidgetMultiLang {...props} />;
     }
 

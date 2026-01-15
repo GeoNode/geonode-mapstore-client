@@ -40,7 +40,6 @@ const TextWidgetMultiLang = (props) => {
       ...values,
       [currentLang]: value,
     };
-    console.log("handleInputChange value:", value, newValue);
     onChange(newValue);
   };
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, GeoSolutions Sas.
+ * Copyright 2026, GeoSolutions Sas.
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
@@ -10,7 +10,6 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import validator from '@rjsf/validator-ajv8';
 import Form from '@rjsf/core';
-import { ObjectFieldTemplateProps } from "@rjsf/utils";
 
 import { Alert } from 'react-bootstrap';
 import isEmpty from 'lodash/isEmpty';
@@ -128,7 +127,6 @@ function MetadataEditor({
                 });
                 // set empty the single lang field
                 result[key] = '';
-                //TODO or use default lang EN
             }
         });
 
@@ -186,7 +184,7 @@ function MetadataEditor({
                     property['ui:options'] = {}
                     delete property?.maxLength;
                     acc[key] = property;
-                    //set custom widget for multilang text
+                    // set custom widget for multilang text
                     uiSchemaMultiLang[key] = {
                         "ui:widget": "TextWidgetMultiLang",
                     };
@@ -210,15 +208,6 @@ function MetadataEditor({
 
     const schemaMultiLang = schemaToMultiLang(schema, uiSchemaMultiLang);
     const metadataMultiLang = metadataToMultiLang(metadata, schema);
-    // console.log('MetadataEditor', {
-    //     widgets, templates,
-    //     metadata,
-    //     metadataMultiLang,
-    //     schema,
-    //     schemaMultiLang,
-    //     uiSchema,
-    //     uiSchemaMultiLang,
-    // });
 
     return (
         <div className="gn-metadata">
@@ -287,58 +276,4 @@ MetadataEditor.defaultProps = {
 
 export default MetadataEditor;
 
-
-
-// DOCS: https://rjsf-team.github.io/react-jsonschema-form/docs/version-5.24.10/advanced-customization/custom-templates/#objectfieldtemplate
-// function GroupedObjectFieldTemplate(props) {
-//   const groups = {};
-//   const ungrouped = [];
-
-//   props.properties.forEach((prop) => {
-//     const uiSchema =
-//       prop.content &&
-//       prop.content.props &&
-//       prop.content.props.uiSchema;
-
-//     const group = uiSchema && uiSchema["ui:group"];
-
-//     if (group) {
-//       if (!groups[group]) {
-//         groups[group] = [];
-//       }
-//       groups[group].push(prop);
-//     } else {
-//       ungrouped.push(prop);
-//     }
-//   });
-
-//   return (
-//     <div>
-//       {ungrouped.map((prop) => (
-//         <div key={prop.name} style={{ marginBottom: 12 }}>
-//           {prop.content}
-//         </div>
-//       ))}
-//       {Object.keys(groups).map((groupName) => (
-//         <div
-//           key={groupName}
-//           style={{
-//             display: "flex",
-//             gap: 8,
-//             padding: 8,
-//             border: "1px solid #ccc",
-//             borderRadius: 6,
-//             marginBottom: 12
-//           }}
-//         >
-//           {groups[groupName].map((field) => (
-//             <div key={field.name} style={{ flex: 1 }}>
-//               {field.content}
-//             </div>
-//           ))}
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
 
