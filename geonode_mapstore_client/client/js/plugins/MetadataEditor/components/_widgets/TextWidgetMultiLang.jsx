@@ -12,7 +12,7 @@ import isString from 'lodash/isString';
 
 import DefaultTextareaWidget from '@rjsf/core/lib/components/widgets/TextareaWidget';
 import IconWithTooltip from '../IconWithTooltip';
-import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
+import { getMessageById, getSupportedLocales } from '@mapstore/framework/utils/LocaleUtils';
 
 const TextWidgetMultiLang = (props) => {
 
@@ -23,13 +23,15 @@ const TextWidgetMultiLang = (props) => {
 
     const languages = Object.keys(schema?.properties);
     const languageLabels = languages.reduce((acc, lang) => {
-        const label = schema?.properties?.[lang]?.['geonode:multilang-lang-label'] || lang;
+        const label = schema?.properties?.[lang]?.['geonode:multilang-lang-label'];
         acc[lang] = label;
         return acc;
     }, {});
 
     const getLanguageName = (langCode) => {
-        return languageLabels[langCode] || langCode;
+        const languagesNames = getSupportedLocales();
+        const langName = languageLabels[langCode] || languagesNames[langCode]?.description
+        return `${langName} (${langCode})`
     };
 
     const isTextarea = schema?.['ui:options']?.widget === 'textarea';
