@@ -18,7 +18,7 @@ const TextWidgetMultiLang = (props) => {
 
     const { formData, onChange, schema, required, formContext } = props;
 
-    const id = props.id || Math.random().toString(36).substring(7);
+    const id = props.idSchema?.$id;
     const { title, description } = schema;
 
     const languages = Object.keys(schema?.properties);
@@ -70,6 +70,7 @@ const TextWidgetMultiLang = (props) => {
                 />
             ) :
                 <input
+                    id={id}
                     type="text"
                     className="form-control"
                     value={values[currentLang] || ""}
