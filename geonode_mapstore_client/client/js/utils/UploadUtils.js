@@ -141,8 +141,7 @@ export const validateRemoteResourceUploads = (uploads = [], { remoteTypes } = {}
             && !(upload.url.indexOf('/') === 0) // is not relative
             && isValidURL(upload.url);
         // Automatically change remoteType to 'cog' if URL ends with .tif or .tiff
-        const urlLowerCase = upload.url?.toLowerCase() || '';
-        const isTifFile = urlLowerCase.endsWith('.tif') || urlLowerCase.endsWith('.tiff');
+        const isTifFile = isCOGFileUrl(upload.url);
         const remoteType = isTifFile ? 'cog' : upload.remoteType;
         const isRemoteTypeSupported = remoteTypes ? !!remoteTypes.find(({ value }) => value === remoteType) : true;
         const supported = !!(!isRemoteUrlDuplicated && isValidRemoteUrl && isRemoteTypeSupported);

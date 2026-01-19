@@ -20,7 +20,8 @@ import {
     getUploadFileName,
     getUploadProperty,
     getSize,
-    getExceedingFileSize
+    getExceedingFileSize,
+    isCOGFileUrl
 } from '../UploadUtils';
 
 const supportedFiles = [
@@ -50,6 +51,13 @@ const supportedFiles = [
 ];
 
 describe('Test Upload Utils', () => {
+    it('isCOGFileUrl', () => {
+        expect(isCOGFileUrl()).toBe(false);
+        expect(isCOGFileUrl('http://example.com/data.tif')).toBe(true);
+        expect(isCOGFileUrl('http://example.com/data.tiff')).toBe(true);
+        expect(isCOGFileUrl('http://example.com/DATA.TIF')).toBe(true);
+        expect(isCOGFileUrl('http://example.com/data.png')).toBe(false);
+    });
     it('hasExtensionInUrl', () => {
         expect(hasExtensionInUrl()).toBe(false);
         expect(hasExtensionInUrl({ url: 'http://path/filename.png' })).toBe(true);
@@ -222,6 +230,22 @@ describe('Test Upload Utils', () => {
                 missingExtensions: []
             }
         ]);
+    });
+    it('validateRemoteResourceUploads sets COG type for tif/tiff URLs', () => {
+        const uploads = [
+            { url: 'http://example.com/data.tif', remoteType: '', type: 'remote' },
+            { url: 'http://example.com/data.TIFF', remoteType: 'wms', type: 'remote' }
+        ];
+        const remoteTypes = [{ value: 'cog' }];
+        const [first, second] = validateRemoteResourceUploads(uploads, { remoteTypes });
+
+        expect(first.remoteType).toBe('cog');
+        expect(first.supported).toBe(true);
+        expect(first.ready).toBe(true);
+
+        expect(second.remoteType).toBe('cog');
+        expect(second.supported).toBe(true);
+        expect(second.ready).toBe(true);
     });
     it('validateRemoteResourceUploads', () => {
         expect(validateRemoteResourceUploads()).toEqual([]);
