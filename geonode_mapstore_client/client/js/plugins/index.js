@@ -484,6 +484,10 @@ export const plugins = {
     MapEditorPlugin: toModulePlugin(
         'MapEditor',
         () => import(/* webpackChunkName: 'plugins/map-editor' */ '@mapstore/framework/plugins/MapEditor')
+    ),
+    DynamicLegendPlugin: toModulePlugin(
+        'DynamicLegend',
+        () => import(/* webpackChunkName: 'plugins/dynamic-legend' */ '@mapstore/framework/plugins/DynamicLegend')
     )
 };
 
