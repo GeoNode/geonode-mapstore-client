@@ -204,6 +204,21 @@ export const resourceToLayerConfig = (resource) => {
             extendedParams
         };
     }
+    if (subtype === 'cog') {
+        const { url: cogUrl } = links.find(({ extension }) => (extension === 'cog')) || {};
+        return {
+            perms,
+            id: uuid(),
+            type: 'cog',
+            title,
+            sources: [{
+                url: parseDevHostname(cogUrl || ''),
+            }],
+            ...(bbox && { bbox }),
+            visibility: true,
+            extendedParams
+        };
+    }
 
     switch (ptype) {
     case GXP_PTYPES.REST_MAP:
