@@ -24,10 +24,7 @@ classifiers = [
 ]
 dependencies = [
   "django>=4.2,<5.3",
-  "idna>=2.5,<2.11",
   "requests>=2.13.0",
-  "Markdown>=2.6.11",
-  "MarkupSafe>=1.1.1",
   "urllib3>=1.25"
 ]
 dynamic = ["version"]
