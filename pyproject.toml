@@ -24,10 +24,11 @@ classifiers = [
 ]
 dependencies = [
   "django>=4.2,<5.3",
-  "requests>=2.13.0",
-  "urllib3>=1.25"
 ]
 dynamic = ["version"]
+
+[project.optional-dependencies]
+test = ["requests==2.32.5"]
 
 [project.urls]
 Homepage = "https://github.com/GeoNode/geonode-mapstore-client"
