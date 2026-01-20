@@ -2246,13 +2246,6 @@
                         }
                     ]
                 }
-            },
-            {
-                "name": "DynamicLegend",
-                "cfg": {
-                    "isFloating": false,
-                    "flatLegend": false
-                }
             }
         ],
         "geostory_viewer": [
