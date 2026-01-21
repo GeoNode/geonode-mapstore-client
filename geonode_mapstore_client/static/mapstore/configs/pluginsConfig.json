@@ -548,7 +548,18 @@
         "SidebarMenu"
       ],
       "defaultConfig": {
-        "wrap": true
+        "wrap": true,
+        "serviceTypes": [
+          { "name": "csw", "label": "CSW" }, 
+          { "name": "wms", "label": "WMS" }, 
+          { "name": "wmts", "label": "WMTS" }, 
+          { "name": "tms", "label": "TMS", "allowedProviders": ["OpenStreetMap", "OpenSeaMap", "Stamen"] }, 
+          { "name": "wfs", "label": "WFS" }, 
+          { "name": "3dtiles", "label": "3D Tiles" }, 
+          { "name": "model", "label": "IFC Model" }, 
+          { "name": "arcgis", "label": "ArcGIS" }, 
+          { "name": "cog", "label": "COG" }
+        ]
       }
     },
     {
