@@ -104,7 +104,8 @@ function UploadDataset({
                 remoteType: '3dtiles'
             })}
             remoteTypes={[
-                { value: '3dtiles', label: '3D Tiles' }
+                { value: '3dtiles', label: '3D Tiles' },
+                { value: 'cog', label: 'COG' }
             ]}
             remoteTypeErrorMessageId="gnviewer.unsupportedUrlServiceType"
         >
