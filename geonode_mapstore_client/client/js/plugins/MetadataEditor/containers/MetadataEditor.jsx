@@ -87,7 +87,7 @@ function MetadataEditor({
         };
     }, []);
 
-    /**
+    /*
      * tranform metadata to multilang format managed by widget `TextWidgetMultiLang` using `geonode:multilang-group` property
      * see also schemaToMultiLang() schema transformation
      * {
@@ -116,7 +116,7 @@ function MetadataEditor({
         };
     }
 
-    /**
+    /*
      *  re-tranform multilang metadata to single lang format to post to backend api
      */
     function metadataToSingleLang(metadataMultiLang, schemaMultiLang) {
@@ -161,7 +161,7 @@ function MetadataEditor({
         return null;
     }
 
-    /**
+    /*
      * tranform schema to multilang schema, by `geonode:multilang-group` property
      * {
      *   'title': {
@@ -176,7 +176,6 @@ function MetadataEditor({
      *   }
     * @param {*} schema
     * @param {*} uiSchemaMultiLang
-    * @returns
     */
     function schemaToMultiLang(schemaSingleLang, uiSchemaSingleLang) {
         const uiSchemaMultiLang = { ...uiSchemaSingleLang };
