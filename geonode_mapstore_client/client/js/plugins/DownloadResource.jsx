@@ -113,6 +113,9 @@ const DownloadResource = connect(
  * enable button or menu item to download a specific resource
  * @name DownloadResource
  * @example
+ * {
+ *  "name": "DownloadResource"
+ * }
  */
 export default createPlugin('DownloadResource', {
     component: DownloadResource,
