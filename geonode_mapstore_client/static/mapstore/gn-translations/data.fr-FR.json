@@ -485,6 +485,7 @@
             "metadataUpdatePartialSuccess": "Métadonnées mises à jour partiellement avec succès",
             "metadataUpdateFailure": "Mise à jour des métadonnées impossible",
             "metadataGroupTitle": "Général",
+            "metadataEditorTitle": "Éditeur de métadonnées",
             "noGridData": "Aucune donnée à afficher",
             "layerSettings": {
                 "title": "Paramètres des couches de la carte",
@@ -515,6 +516,7 @@
             "datasetTitle": "Titre du jeu de données",
             "name": "Nom",
             "type": "Type",
+            "typeText": "Tapez le texte en {lang} ...",
             "nillable": "Nullable",
             "restrictions": "Restrictions",
             "loadAttributesFromJSONSchema": "Charger les attributs depuis le schéma JSON",

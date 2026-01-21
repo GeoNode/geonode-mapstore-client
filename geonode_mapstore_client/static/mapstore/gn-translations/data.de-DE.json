@@ -486,6 +486,7 @@
             "metadataUpdatePartialSuccess": "Metadaten aktualisiert teilweise erfolgreich",
             "metadataUpdateFailure": "Metadatenaktualisierung fehlgeschlagen",
             "metadataGroupTitle": "Allgemein",
+            "metadataEditorTitle": "Metadaten Editor",
             "noGridData": "Keine Daten zum Anzeigen",
             "layerSettings": {
                 "title": "Kartenschichteinstellungen",
@@ -516,6 +517,7 @@
             "datasetTitle": "Datensatztitel",
             "name": "Name",
             "type": "Typ",
+            "typeText": "Text in {lang} eingeben...",
             "nillable": "Nullbar",
             "restrictions": "Einschränkungen",
             "loadAttributesFromJSONSchema": "Attribute aus JSON-Schema laden",

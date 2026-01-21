@@ -484,6 +484,7 @@
             "metadataUpdatePartialSuccess": "Metadatos actualizados parcialmente correctamente",
             "metadataUpdateFailure": "Error al actualizar los metadatos",
             "metadataGroupTitle": "General",
+            "metadataEditorTitle": "Editor de Metadatos",
             "noGridData": "No hay datos para mostrar",
             "layerSettings": {
                 "title": "Configuración de capas del mapa",
@@ -514,6 +515,7 @@
             "datasetTitle": "Título del conjunto de datos",
             "name": "Nombre",
             "type": "Tipo",
+            "typeText": "Escriba texto en {lang} ...",
             "nillable": "Nulable",
             "restrictions": "Restricciones",
             "loadAttributesFromJSONSchema": "Cargar atributos desde esquema JSON",

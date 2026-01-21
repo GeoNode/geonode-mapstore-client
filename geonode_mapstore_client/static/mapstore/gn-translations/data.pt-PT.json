@@ -444,6 +444,7 @@
             "metadataUpdatePartialSuccess": "Metadata updated partially successful",
             "metadataUpdateFailure": "Metadata update failed",
             "metadataGroupTitle": "General",
+            "metadataEditorTitle": "Editor de Metadados",
             "noGridData": "No data to display",
             "layerSettings": {
                 "title": "Map layer settings",
@@ -474,6 +475,7 @@
             "datasetTitle": "Dataset title",
             "name": "Name",
             "type": "Type",
+            "typeText": "Escreva o texto em {lang} ...",
             "nillable": "Nillable",
             "restrictions": "Restrictions",
             "loadAttributesFromJSONSchema": "Load attributes from JSON Schema",
