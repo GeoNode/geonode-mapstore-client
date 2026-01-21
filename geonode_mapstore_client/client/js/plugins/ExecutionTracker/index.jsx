@@ -13,7 +13,7 @@ import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { userSelector } from '@mapstore/framework/selectors/security';
 
 import { startAsyncProcess } from '@js/actions/resourceservice';
-import { extractExecutionsFromResources, ProcessTypes } from '@js/utils/ResourceServiceUtils';
+import { extractExecutionsFromResources, ProcessStatus, ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { getResourceData } from '@js/selectors/resource';
 import isEmpty from 'lodash/isEmpty';
 import { getCurrentProcesses } from '@js/selectors/resourceservice';
@@ -90,7 +90,7 @@ function ExecutionTracker({
         if (!resourcePk) {
             return null;
         }
-        const foundProcess = processes.filter((p) => p?.resource?.pk === resourcePk);
+        const foundProcess = processes.filter((p) => p?.resource?.pk === resourcePk && p?.output?.status === ProcessStatus.RUNNING);
         if (!foundProcess?.length) {
             return null;
         }
