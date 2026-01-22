@@ -39,25 +39,25 @@ export const getUploadErrorMessageFromCode = (code, log) => {
 export const getProcessErrorInfo = (process, { defaultTitle = null, defaultMessage = 'map.mapError.errorDefault' } = {}) => {
     const output = process?.output;
     const processType = process?.processType;
-    
+
     // Extract error message
     const log = output?.log;
     const errorMessage = log
         ? getUploadErrorMessageFromCode(null, log)
         : output?.error || process?.error || defaultMessage;
-    
+
     // Determine error title based on process type
     let title = defaultTitle;
     if (!title && processType) {
         const isCopy = ['copy', 'copy_geonode_resource', ProcessTypes.COPY_RESOURCE].includes(processType);
         const isDelete = [ProcessTypes.DELETE_RESOURCE, 'delete'].includes(processType);
-        title = isCopy 
-            ? "gnviewer.errorCloningTitle" 
-            : isDelete 
-                ? "gnviewer.errorDeletingTitle" 
+        title = isCopy
+            ? "gnviewer.errorCloningTitle"
+            : isDelete
+                ? "gnviewer.errorDeletingTitle"
                 : "gnviewer.errorOperationTitle";
     }
-    
+
     return {
         title: title || "gnviewer.errorOperationTitle",
         message: errorMessage

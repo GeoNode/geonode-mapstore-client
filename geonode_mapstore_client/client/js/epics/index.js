@@ -23,10 +23,9 @@ import { updateMapLayoutEpic as msUpdateMapLayoutEpic } from '@mapstore/framewor
 import isEmpty from 'lodash/isEmpty';
 import { userSelector } from "@mapstore/framework/selectors/security";
 import { getCurrentProcesses } from "@js/selectors/resourceservice";
-import { extractExecutionsFromResources, ProcessTypes, ProcessStatus } from "@js/utils/ResourceServiceUtils";
+import { extractExecutionsFromResources, ProcessStatus } from "@js/utils/ResourceServiceUtils";
 import { UPDATE_RESOURCES } from "@mapstore/framework/plugins/ResourcesCatalog/actions/resources";
 import { startAsyncProcess, STOP_ASYNC_PROCESS } from "@js/actions/resourceservice";
-import { saveError } from "@js/actions/gnsave";
 import { error as errorNotification } from "@mapstore/framework/actions/notifications";
 import { getProcessErrorInfo } from "@js/utils/ErrorUtils";
 
