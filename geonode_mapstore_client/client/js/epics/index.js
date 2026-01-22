@@ -23,9 +23,13 @@ import { updateMapLayoutEpic as msUpdateMapLayoutEpic } from '@mapstore/framewor
 import isEmpty from 'lodash/isEmpty';
 import { userSelector } from "@mapstore/framework/selectors/security";
 import { getCurrentProcesses } from "@js/selectors/resourceservice";
-import { extractExecutionsFromResources } from "@js/utils/ResourceServiceUtils";
+import { extractExecutionsFromResources, ProcessTypes } from "@js/utils/ResourceServiceUtils";
 import { UPDATE_RESOURCES } from "@mapstore/framework/plugins/ResourcesCatalog/actions/resources";
-import { startAsyncProcess } from "@js/actions/resourceservice";
+import { startAsyncProcess, STOP_ASYNC_PROCESS } from "@js/actions/resourceservice";
+import { saveError } from "@js/actions/gnsave";
+import { error as errorNotification } from "@mapstore/framework/actions/notifications";
+import { ProcessStatus } from "@js/utils/ResourceServiceUtils";
+import { getUploadErrorMessageFromCode } from "@js/utils/ErrorUtils";
 
 // We need to include missing epics. The plugins that normally include this epic is not used.
 
@@ -129,6 +133,37 @@ export const gnSetDatasetsPermissions = (actions$, { getState = () => {}} = {}) 
 
 export const updateMapLayoutEpic = msUpdateMapLayoutEpic;
 
+/**
+ * Listens to STOP_ASYNC_PROCESS actions and displays error notifications
+ * when a process fails
+ */
+export const gnHandleAsyncProcessErrors = (actions$) =>
+    actions$.ofType(STOP_ASYNC_PROCESS)
+        .filter((action) => {
+            const { payload } = action;
+            const output = payload?.output;
+            return (
+                payload?.error ||
+                output?.error ||
+                output?.status === ProcessStatus.FAILED
+            );
+        })
+        .switchMap((action) => {
+            const { payload } = action;
+            const output = payload?.output;
+            const log = output?.log;
+            const errorMessage = log
+                ? getUploadErrorMessageFromCode(null, log)
+                : output?.error || payload?.error || 'map.mapError.errorDefault';
+            return Rx.Observable.of(
+                saveError(payload?.error || output?.error || errorMessage),
+                errorNotification({
+                    title: ['copy', 'copy_geonode_resource', ProcessTypes.COPY_RESOURCE].includes(payload?.processType) ? "gnviewer.errorCloningTitle" : "gnviewer.errorDeletingTitle",
+                    message: errorMessage
+                })
+            );
+        });
+
 export const gnListenToResourcesPendingExecution = (actions$, { getState = () => {} } = {}) =>
     actions$.ofType(UPDATE_RESOURCES)
         .switchMap((action) => {
@@ -162,5 +197,6 @@ export default {
     gnCheckSelectedDatasetPermissions,
     updateMapLayoutEpic,
     gnSetDatasetsPermissions,
-    gnListenToResourcesPendingExecution
+    gnListenToResourcesPendingExecution,
+    gnHandleAsyncProcessErrors
 };

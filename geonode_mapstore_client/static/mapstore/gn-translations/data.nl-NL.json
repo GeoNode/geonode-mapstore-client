@@ -535,7 +535,9 @@
             "updateBoundingBox": "Update bounding box",
             "updateBoundingBoxSuccess": "Bounding box updated successfully",
             "updateBoundingBoxError": "Error updating bounding box",
-            "noEditPermissions": "You don't have permission to edit this resource."
+            "noEditPermissions": "You don't have permission to edit this resource.",
+            "errorCloningTitle": "Kan de resource niet klonen",
+            "errorDeletingTitle": "Kan de resource niet verwijderen"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

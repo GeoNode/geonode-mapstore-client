@@ -564,7 +564,9 @@
             "updateBoundingBox": "Mettre à jour la boîte englobante",
             "updateBoundingBoxSuccess": "Boîte englobante mise à jour avec succès",
             "updateBoundingBoxError": "Erreur lors de la mise à jour de la boîte englobante",
-            "noEditPermissions": "Vous n’avez pas l’autorisation de modifier cette ressource."
+            "noEditPermissions": "Vous n'avez pas l'autorisation de modifier cette ressource.",
+            "errorCloningTitle": "Impossible de cloner la ressource",
+            "errorDeletingTitle": "Impossible de supprimer la ressource"
         },
         "resourcesCatalog": {
             "anonymous": "N'importe qui",
