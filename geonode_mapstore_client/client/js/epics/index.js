@@ -23,9 +23,11 @@ import { updateMapLayoutEpic as msUpdateMapLayoutEpic } from '@mapstore/framewor
 import isEmpty from 'lodash/isEmpty';
 import { userSelector } from "@mapstore/framework/selectors/security";
 import { getCurrentProcesses } from "@js/selectors/resourceservice";
-import { extractExecutionsFromResources } from "@js/utils/ResourceServiceUtils";
+import { extractExecutionsFromResources, ProcessStatus } from "@js/utils/ResourceServiceUtils";
 import { UPDATE_RESOURCES } from "@mapstore/framework/plugins/ResourcesCatalog/actions/resources";
-import { startAsyncProcess } from "@js/actions/resourceservice";
+import { startAsyncProcess, STOP_ASYNC_PROCESS } from "@js/actions/resourceservice";
+import { error as errorNotification } from "@mapstore/framework/actions/notifications";
+import { getProcessErrorInfo } from "@js/utils/ErrorUtils";
 
 // We need to include missing epics. The plugins that normally include this epic is not used.
 
@@ -129,6 +131,26 @@ export const gnSetDatasetsPermissions = (actions$, { getState = () => {}} = {}) 
 
 export const updateMapLayoutEpic = msUpdateMapLayoutEpic;
 
+/**
+ * Listens to STOP_ASYNC_PROCESS actions and displays error notifications
+ * when a process fails
+ */
+export const gnHandleAsyncProcessErrors = (actions$) =>
+    actions$.ofType(STOP_ASYNC_PROCESS)
+        .filter((action) => {
+            const { payload } = action;
+            const output = payload?.output;
+            return (
+                payload?.error ||
+                output?.error ||
+                output?.status === ProcessStatus.FAILED
+            );
+        })
+        .switchMap((action) => {
+            const { title, message } = getProcessErrorInfo(action?.payload, { defaultMessage: 'map.mapError.errorDefault' });
+            return Rx.Observable.of(errorNotification({ title, message }));
+        });
+
 export const gnListenToResourcesPendingExecution = (actions$, { getState = () => {} } = {}) =>
     actions$.ofType(UPDATE_RESOURCES)
         .switchMap((action) => {
@@ -162,5 +184,6 @@ export default {
     gnCheckSelectedDatasetPermissions,
     updateMapLayoutEpic,
     gnSetDatasetsPermissions,
-    gnListenToResourcesPendingExecution
+    gnListenToResourcesPendingExecution,
+    gnHandleAsyncProcessErrors
 };

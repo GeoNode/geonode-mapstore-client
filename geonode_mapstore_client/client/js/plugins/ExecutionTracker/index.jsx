@@ -20,6 +20,8 @@ import { getCurrentProcesses } from '@js/selectors/resourceservice';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Message from '@mapstore/framework/components/I18N/Message';
+import { getProcessErrorInfo } from '@js/utils/ErrorUtils';
+import { error } from '@mapstore/framework/actions/notifications';
 
 /**
  * Plugin that monitors async executions embedded in resources and
@@ -37,9 +39,11 @@ function ExecutionTracker({
     user,
     onStartAsyncProcess,
     resourceData,
-    processes
+    processes,
+    onErrorNotification
 }) {
     const redirected = useRef(false);
+    const notifiedError = useRef(false);
 
     useEffect(() => {
         const username = user?.info?.preferred_username;
@@ -106,6 +110,45 @@ function ExecutionTracker({
         return null;
     }, [resourceData, processes]);
 
+    const errorInfo = useMemo(() => {
+        if (isEmpty(resourceData)) {
+            return null;
+        }
+        const resourcePk = resourceData?.pk ?? resourceData?.id;
+        if (!resourcePk) {
+            return null;
+        }
+        const failedProcesses = processes.filter((p) =>
+            p?.resource?.pk === resourcePk
+            && p?.output?.status === ProcessStatus.FAILED
+        );
+        if (!failedProcesses?.length) {
+            return null;
+        }
+        const failedProcess = failedProcesses[0];
+        const { output } = failedProcess || {};
+        const log = output?.log;
+        if (!log) {
+            return null;
+        }
+        return getProcessErrorInfo(failedProcess, {
+            defaultMessage: 'map.mapError.errorDefault'
+        });
+    }, [resourceData, processes]);
+
+    useEffect(() => {
+        if (errorInfo && !notifiedError.current) {
+            notifiedError.current = true;
+            onErrorNotification({
+                title: errorInfo.title,
+                message: errorInfo.message
+            });
+        }
+        if (!errorInfo) {
+            notifiedError.current = false;
+        }
+    }, [errorInfo, onErrorNotification]);
+
     return msgId ? (
         <div className="gn-execution-tracker">
             <FlexBox centerChildren gap="sm" className="ms-text _font-size-lg _strong">
@@ -126,7 +169,8 @@ const ExecutionTrackerPlugin = connect(
         })
     ),
     {
-        onStartAsyncProcess: startAsyncProcess
+        onStartAsyncProcess: startAsyncProcess,
+        onErrorNotification: error
     }
 )(ExecutionTracker);
 

@@ -547,7 +547,10 @@
             "assetUploadUnsupportedFormatError": "Nicht unterstützter Dateityp(s) '{ext}', kann die Datei(en) nicht hochladen",
             "assetDelete": "Asset löschen",
             "assetDeleteErrorMessage": "Fehler beim Löschen des Assets",
-            "noAssets": "Keine Assets gefunden"
+            "noAssets": "Keine Assets gefunden",
+            "errorCloningTitle": "Ressource kann nicht geklont werden",
+            "errorDeletingTitle": "Ressource kann nicht gelöscht werden",
+            "errorOperationTitle": "Fehler beim Ausführen der Operation"
         },
         "resourcesCatalog": {
             "anonymous": "Jeder",
