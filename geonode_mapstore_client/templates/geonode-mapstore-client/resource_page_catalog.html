@@ -106,16 +106,16 @@
             if (msPluginsBlocks) {
                 window.addEventListener("mapstore:ready", function (event) {
                     const msAPI = event.detail;
-                    const configurablePlugins = ['ResourcesGrid', 'ResourcesFiltersForm'];
                     msAPI.setPluginsConfig((localConfig) => {
                         const cataloguePlugins = (localConfig?.plugins?.catalogue || []);
-                        const defaultConfig = configurablePlugins.reduce((acc, key) => {
+                        const msPluginsBlocksNames = msPluginsBlocks.map(msPluginBlock => msPluginBlock.name);
+                        const defaultConfig = msPluginsBlocksNames.reduce((acc, key) => {
                             acc[key] = cataloguePlugins.find(plugin => plugin.name === key)?.cfg || {};
                             delete acc[key].titleId;
                             return acc;
                         }, {});
                         return [
-                            ...cataloguePlugins.filter(plugin => !configurablePlugins.includes(plugin.name)),
+                            ...cataloguePlugins.filter(plugin => !msPluginsBlocksNames.includes(plugin.name)),
                             ...msPluginsBlocks.map(msPluginBlock => {
                                 return {
                                     name: msPluginBlock.name,
