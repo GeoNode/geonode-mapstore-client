@@ -517,7 +517,10 @@
             "assetUploadUnsupportedFormatError": "Unsupported file format(s) '{ext}', cannot upload the file(s)",
             "assetDelete": "Asset delete",
             "assetDeleteErrorMessage": "Failed to delete asset",
-            "noAssets": "No assets found"
+            "noAssets": "No assets found",
+            "errorCloningTitle": "无法克隆资源",
+            "errorDeletingTitle": "无法删除资源",
+            "errorOperationTitle": "执行操作时发生错误"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

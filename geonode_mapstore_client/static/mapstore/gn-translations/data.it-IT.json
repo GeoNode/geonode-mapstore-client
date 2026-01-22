@@ -549,7 +549,10 @@
             "assetUploadUnsupportedFormatError": "Tipo di file non supportato(s) '{ext}', non è possibile caricare il file(s)",
             "assetDelete": "Elimina Asset",
             "assetDeleteErrorMessage": "Errore durante l'eliminazione dell'Asset",
-            "noAssets": "Nessun asset trovato"
+            "noAssets": "Nessun asset trovato",
+            "errorCloningTitle": "Impossibile clonare la risorsa",
+            "errorDeletingTitle": "Impossibile eliminare la risorsa",
+            "errorOperationTitle": "Errore durante l'esecuzione dell'operazione"
         },
         "resourcesCatalog": {
             "anonymous": "Chiunque",

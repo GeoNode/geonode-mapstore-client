@@ -36,7 +36,7 @@ import resourceservice from '@js/reducers/resourceservice';
 import notifications from '@mapstore/framework/reducers/notifications';
 
 import '@js/observables/persistence';
-import { gnListenToResourcesPendingExecution } from '@js/epics';
+import { gnListenToResourcesPendingExecution, gnHandleAsyncProcessErrors } from '@js/epics';
 
 const requires = {};
 
@@ -75,7 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             ...configEpics,
                             ...gnresourceEpics,
                             ...resourceServiceEpics,
-                            gnListenToResourcesPendingExecution
+                            gnListenToResourcesPendingExecution,
+                            gnHandleAsyncProcessErrors
                         });
 
                         storeEpicsNamesToExclude(appEpics);

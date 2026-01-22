@@ -517,7 +517,10 @@
             "assetUploadUnsupportedFormatError": "Unsupported file format(s) '{ext}', cannot upload the file(s)",
             "assetDelete": "Asset delete",
             "assetDeleteErrorMessage": "Failed to delete asset",
-            "noAssets": "No assets found"
+            "noAssets": "No assets found",
+            "errorCloningTitle": "Nie je možné klonovať zdroj",
+            "errorDeletingTitle": "Nie je možné vymazať zdroj",
+            "errorOperationTitle": "Pri vykonávaní operácie došlo k chybe"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",
