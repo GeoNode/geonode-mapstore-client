@@ -108,14 +108,21 @@
                     const msAPI = event.detail;
                     msAPI.setPluginsConfig((localConfig) => {
                         const cataloguePlugins = (localConfig?.plugins?.catalogue || []);
-                        const msPluginsBlocksNames = msPluginsBlocks.map(msPluginBlock => msPluginBlock.name);
-                        const defaultConfig = msPluginsBlocksNames.reduce((acc, key) => {
-                            acc[key] = cataloguePlugins.find(plugin => plugin.name === key)?.cfg || {};
-                            delete acc[key].titleId;
-                            return acc;
-                        }, {});
+                        const msPluginsBlocksNames = new Set(msPluginsBlocks.map(p => p.name));
+                        const cataloguePluginsMap = new Map(cataloguePlugins.map(p => [p.name, p.cfg]));
+                        const defaultConfig = {};
+                        msPluginsBlocksNames.forEach(name => {
+                            const cfg = cataloguePluginsMap.get(name);
+                            if (cfg) {
+                                const { titleId, ...rest } = cfg;
+                                defaultConfig[name] = rest;
+                            } else {
+                                defaultConfig[name] = {};
+                            }
+                        });
+                        
                         return [
-                            ...cataloguePlugins.filter(plugin => !msPluginsBlocksNames.includes(plugin.name)),
+                            ...cataloguePlugins.filter(plugin => !msPluginsBlocksNames.has(plugin.name)),
                             ...msPluginsBlocks.map(msPluginBlock => {
                                 return {
                                     name: msPluginBlock.name,
