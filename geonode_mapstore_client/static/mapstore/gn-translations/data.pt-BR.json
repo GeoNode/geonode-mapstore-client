@@ -418,7 +418,10 @@
             "updateBoundingBox": "Atualizar bounding box",
             "updateBoundingBoxSuccess": "Bounding box atualizada com sucesso",
             "updateBoundingBoxError": "Erro ao atualizar bounding box",
-            "noEditPermissions": "Você não tem permissão para editar este recurso."
+            "noEditPermissions": "Você não tem permissão para editar este recurso.",
+            "errorCloningTitle": "Não é possível clonar o recurso",
+            "errorDeletingTitle": "Não é possível excluir o recurso",
+            "errorOperationTitle": "Ocorreu um erro ao realizar a operação"
         },
         "print": {
             "outputFormat": "Formato de Saída",

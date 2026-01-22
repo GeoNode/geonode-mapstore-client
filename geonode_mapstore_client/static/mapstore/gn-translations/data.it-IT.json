@@ -566,7 +566,10 @@
             "updateBoundingBox": "Aggiorna il bounding box",
             "updateBoundingBoxSuccess": "Bounding box aggiornato con successo",
             "updateBoundingBoxError": "Errore durante l'aggiornamento del bounding box",
-            "noEditPermissions": "Non hai l’autorizzazione per modificare questa risorsa."
+            "noEditPermissions": "Non hai l'autorizzazione per modificare questa risorsa.",
+            "errorCloningTitle": "Impossibile clonare la risorsa",
+            "errorDeletingTitle": "Impossibile eliminare la risorsa",
+            "errorOperationTitle": "Errore durante l'esecuzione dell'operazione"
         },
         "resourcesCatalog": {
             "anonymous": "Chiunque",

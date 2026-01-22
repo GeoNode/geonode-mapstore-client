@@ -535,7 +535,10 @@
             "updateBoundingBox": "Update bounding box",
             "updateBoundingBoxSuccess": "Bounding box updated successfully",
             "updateBoundingBoxError": "Error updating bounding box",
-            "noEditPermissions": "You don't have permission to edit this resource."
+            "noEditPermissions": "You don't have permission to edit this resource.",
+            "errorCloningTitle": "Không thể sao chép tài nguyên",
+            "errorDeletingTitle": "Không thể xóa tài nguyên",
+            "errorOperationTitle": "Đã xảy ra lỗi khi thực hiện thao tác"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

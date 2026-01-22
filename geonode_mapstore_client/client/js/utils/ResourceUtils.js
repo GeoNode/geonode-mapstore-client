@@ -212,7 +212,7 @@ export const resourceToLayerConfig = (resource) => {
             type: 'cog',
             title,
             sources: [{
-                url: parseDevHostname(cogUrl || ''),
+                url: parseDevHostname(cogUrl || '')
             }],
             ...(bbox && { bbox }),
             visibility: true,

@@ -535,7 +535,10 @@
             "updateBoundingBox": "Update bounding box",
             "updateBoundingBoxSuccess": "Bounding box updated successfully",
             "updateBoundingBoxError": "Error updating bounding box",
-            "noEditPermissions": "You don't have permission to edit this resource."
+            "noEditPermissions": "You don't have permission to edit this resource.",
+            "errorCloningTitle": "Nije moguće klonirati resurs",
+            "errorDeletingTitle": "Nije moguće obrisati resurs",
+            "errorOperationTitle": "Došlo je do greške prilikom izvođenja operacije"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

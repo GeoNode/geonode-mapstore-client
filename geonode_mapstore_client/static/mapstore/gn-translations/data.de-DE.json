@@ -565,7 +565,10 @@
             "updateBoundingBox": "Begrenzungsrahmen aktualisieren",
             "updateBoundingBoxSuccess": "Begrenzungsrahmen erfolgreich aktualisiert",
             "updateBoundingBoxError": "Fehler beim Aktualisieren des Begrenzungsrahmens",
-            "noEditPermissions": "Sie haben keine Berechtigung, diese Ressource zu bearbeiten."
+            "noEditPermissions": "Sie haben keine Berechtigung, diese Ressource zu bearbeiten.",
+            "errorCloningTitle": "Ressource kann nicht geklont werden",
+            "errorDeletingTitle": "Ressource kann nicht gelöscht werden",
+            "errorOperationTitle": "Fehler beim Ausführen der Operation"
         },
         "resourcesCatalog": {
             "anonymous": "Jeder",

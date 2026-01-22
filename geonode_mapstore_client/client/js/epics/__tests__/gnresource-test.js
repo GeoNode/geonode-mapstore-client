@@ -362,19 +362,19 @@ describe('gnresource epics', () => {
         };
 
         testEpic(
-                gnUpdateBackgroundEditEpic,
-                NUM_ACTIONS,
-                { type: CREATE_BACKGROUNDS_LIST },
-                (actions) => {
-                    try {
-                        expect(actions.length).toBe(1);
-                        expect(actions[0].resource.canEdit).toBe(true);
-                    } catch (e) {
-                        done(e);
-                    }
-                    done();
-                },
-                testState
-            );
-        });
+            gnUpdateBackgroundEditEpic,
+            NUM_ACTIONS,
+            { type: CREATE_BACKGROUNDS_LIST },
+            (actions) => {
+                try {
+                    expect(actions.length).toBe(1);
+                    expect(actions[0].resource.canEdit).toBe(true);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            testState
+        );
+    });
 });
