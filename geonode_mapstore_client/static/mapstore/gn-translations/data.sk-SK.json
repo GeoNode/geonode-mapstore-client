@@ -537,7 +537,8 @@
             "updateBoundingBoxError": "Error updating bounding box",
             "noEditPermissions": "You don't have permission to edit this resource.",
             "errorCloningTitle": "Nie je možné klonovať zdroj",
-            "errorDeletingTitle": "Nie je možné vymazať zdroj"
+            "errorDeletingTitle": "Nie je možné vymazať zdroj",
+            "errorOperationTitle": "Pri vykonávaní operácie došlo k chybe"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

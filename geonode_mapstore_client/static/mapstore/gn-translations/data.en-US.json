@@ -568,7 +568,8 @@
             "updateBoundingBoxError": "Error updating bounding box",
             "noEditPermissions": "You don't have permission to edit this resource.",
             "errorCloningTitle": "Cannot clone the resource",
-            "errorDeletingTitle": "Cannot delete the resource"
+            "errorDeletingTitle": "Cannot delete the resource",
+            "errorOperationTitle": "Error occurred while performing the operation"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

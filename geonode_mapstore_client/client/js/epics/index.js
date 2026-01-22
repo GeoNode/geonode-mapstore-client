@@ -28,7 +28,7 @@ import { UPDATE_RESOURCES } from "@mapstore/framework/plugins/ResourcesCatalog/a
 import { startAsyncProcess, STOP_ASYNC_PROCESS } from "@js/actions/resourceservice";
 import { saveError } from "@js/actions/gnsave";
 import { error as errorNotification } from "@mapstore/framework/actions/notifications";
-import { getUploadErrorMessageFromCode } from "@js/utils/ErrorUtils";
+import { getProcessErrorInfo } from "@js/utils/ErrorUtils";
 
 // We need to include missing epics. The plugins that normally include this epic is not used.
 
@@ -148,19 +148,8 @@ export const gnHandleAsyncProcessErrors = (actions$) =>
             );
         })
         .switchMap((action) => {
-            const { payload } = action;
-            const output = payload?.output;
-            const log = output?.log;
-            const errorMessage = log
-                ? getUploadErrorMessageFromCode(null, log)
-                : output?.error || payload?.error || 'map.mapError.errorDefault';
-            return Rx.Observable.of(
-                saveError(payload?.error || output?.error || errorMessage),
-                errorNotification({
-                    title: ['copy', 'copy_geonode_resource', ProcessTypes.COPY_RESOURCE].includes(payload?.processType) ? "gnviewer.errorCloningTitle" : "gnviewer.errorDeletingTitle",
-                    message: errorMessage
-                })
-            );
+            const { title, message } = getProcessErrorInfo(action?.payload, { defaultMessage: 'map.mapError.errorDefault' });
+            return Rx.Observable.of(errorNotification({ title, message }));
         });
 
 export const gnListenToResourcesPendingExecution = (actions$, { getState = () => {} } = {}) =>

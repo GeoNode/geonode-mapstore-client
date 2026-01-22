@@ -321,16 +321,14 @@ export function setupConfiguration({
             settings: localConfig.geoNodeSettings,
             MapStoreAPI: window.MapStoreAPI,
             onStoreInit: (store) => {
-                if (store.addActionListener) {
-                    store.addActionListener((action) => {
-                        const act = action.type === 'PERFORM_ACTION' && action.action || action; // Needed to works also in debug
-                        (actionListeners[act.type] || [])
-                            .concat(actionListeners['*'] || [])
-                            .forEach((listener) => {
-                                listener.call(null, act);
-                            });
-                    });
-                }
+                store.addActionListener((action) => {
+                    const act = action.type === 'PERFORM_ACTION' && action.action || action; // Needed to works also in debug
+                    (actionListeners[act.type] || [])
+                        .concat(actionListeners['*'] || [])
+                        .forEach((listener) => {
+                            listener.call(null, act);
+                        });
+                });
             },
             configEpics: {
                 gnMapStoreApiEpic: actionTrigger.epic

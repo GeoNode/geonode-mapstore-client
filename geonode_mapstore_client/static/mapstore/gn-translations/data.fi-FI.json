@@ -537,7 +537,8 @@
             "updateBoundingBoxError": "Error updating bounding box",
             "noEditPermissions": "You don't have permission to edit this resource.",
             "errorCloningTitle": "Resurssia ei voi kloonata",
-            "errorDeletingTitle": "Resurssia ei voi poistaa"
+            "errorDeletingTitle": "Resurssia ei voi poistaa",
+            "errorOperationTitle": "Virhe toimenpiteen suorittamisessa"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

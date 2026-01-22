@@ -565,7 +565,8 @@
             "updateBoundingBoxError": "Error al actualizar la caja delimitadora",
             "noEditPermissions": "No tienes permiso para editar este recurso.",
             "errorCloningTitle": "No se puede clonar el recurso",
-            "errorDeletingTitle": "No se puede eliminar el recurso"
+            "errorDeletingTitle": "No se puede eliminar el recurso",
+            "errorOperationTitle": "Error al realizar la operación"
         },
         "resourcesCatalog": {
             "anonymous": "Cualquiera",

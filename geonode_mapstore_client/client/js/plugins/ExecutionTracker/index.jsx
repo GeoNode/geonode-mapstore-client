@@ -20,7 +20,7 @@ import { getCurrentProcesses } from '@js/selectors/resourceservice';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Message from '@mapstore/framework/components/I18N/Message';
-import { getUploadErrorMessageFromCode } from '@js/utils/ErrorUtils';
+import { getProcessErrorInfo } from '@js/utils/ErrorUtils';
 import { error } from '@mapstore/framework/actions/notifications';
 
 /**
@@ -109,7 +109,7 @@ function ExecutionTracker({
         return null;
     }, [resourceData, processes]);
 
-    const errorMessage = useMemo(() => {
+    const errorInfo = useMemo(() => {
         if (isEmpty(resourceData)) {
             return null;
         }
@@ -124,23 +124,29 @@ function ExecutionTracker({
         if (!failedProcesses?.length) {
             return null;
         }
-        const { output } = failedProcesses[0] || {};
+        const failedProcess = failedProcesses[0];
+        const { output } = failedProcess || {};
         const log = output?.log;
-        return log ? getUploadErrorMessageFromCode(null, log) : null;
+        if (!log) {
+            return null;
+        }
+        return getProcessErrorInfo(failedProcess, {
+            defaultMessage: 'map.mapError.errorDefault'
+        });
     }, [resourceData, processes]);
 
     useEffect(() => {
-        if (errorMessage && !notifiedError.current) {
+        if (errorInfo && !notifiedError.current) {
             notifiedError.current = true;
             onErrorNotification({
-                title: 'map.mapError.errorTitle',
-                message: errorMessage || 'map.mapError.errorDefault'
+                title: errorInfo.title,
+                message: errorInfo.message
             });
         }
-        if (!errorMessage) {
+        if (!errorInfo) {
             notifiedError.current = false;
         }
-    }, [errorMessage, onErrorNotification]);
+    }, [errorInfo, onErrorNotification]);
 
     return msgId ? (
         <div className="gn-execution-tracker">

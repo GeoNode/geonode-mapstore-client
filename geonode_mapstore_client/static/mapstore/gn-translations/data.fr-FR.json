@@ -566,7 +566,8 @@
             "updateBoundingBoxError": "Erreur lors de la mise à jour de la boîte englobante",
             "noEditPermissions": "Vous n'avez pas l'autorisation de modifier cette ressource.",
             "errorCloningTitle": "Impossible de cloner la ressource",
-            "errorDeletingTitle": "Impossible de supprimer la ressource"
+            "errorDeletingTitle": "Impossible de supprimer la ressource",
+            "errorOperationTitle": "Erreur lors de l'exécution de l'opération"
         },
         "resourcesCatalog": {
             "anonymous": "N'importe qui",
