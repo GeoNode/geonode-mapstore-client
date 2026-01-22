@@ -30,8 +30,8 @@ const TextWidgetMultiLang = (props) => {
 
     const getLanguageName = (langCode) => {
         const languagesNames = getSupportedLocales();
-        const langName = languageLabels[langCode] || languagesNames[langCode]?.description
-        return `${langName} (${langCode})`
+        const langName = languageLabels[langCode] || languagesNames[langCode]?.description;
+        return `${langName} (${langCode})`;
     };
 
     const isTextarea = schema?.['ui:options']?.widget === 'textarea';
