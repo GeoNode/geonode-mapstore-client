@@ -23,6 +23,7 @@ import Itinerary from "@mapstore/framework/plugins/Itinerary";
 import SecurityPopup from "@mapstore/framework/plugins/SecurityPopup";
 
 import OperationPlugin from '@js/plugins/Operation';
+import ExecutionTrackerPlugin from '@js/plugins/ExecutionTracker';
 import MetadataEditorPlugin from '@js/plugins/MetadataEditor';
 import MetadataViewerPlugin from '@js/plugins/MetadataEditor/MetadataViewer';
 import FavoritesPlugin from '@js/plugins/Favorites';
@@ -78,6 +79,7 @@ const toModulePlugin = (...args) => {
 export const plugins = {
     TOCPlugin,
     OperationPlugin,
+    ExecutionTrackerPlugin,
     MetadataEditorPlugin,
     MetadataViewerPlugin,
     ResourcesGridPlugin,

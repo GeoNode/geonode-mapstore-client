@@ -518,7 +518,10 @@
             "assetUploadUnsupportedFormatError": "Unsupported file format(s) '{ext}', cannot upload the file(s)",
             "assetDelete": "Asset delete",
             "assetDeleteErrorMessage": "Failed to delete asset",
-            "noAssets": "No assets found"
+            "noAssets": "No assets found",
+            "errorCloningTitle": "Kan inte klona resursen",
+            "errorDeletingTitle": "Kan inte ta bort resursen",
+            "errorOperationTitle": "Ett fel uppstod vid utförandet av operationen"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

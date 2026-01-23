@@ -547,7 +547,10 @@
             "assetUploadUnsupportedFormatError": "Format de fichier non pris en charge(s) '{ext}', impossible de télécharger le(s) fichier(s)",
             "assetDelete": "Supprimer l'Asset",
             "assetDeleteErrorMessage": "Erreur lors de la suppression de l'Asset",
-            "noAssets": "Aucun asset trouvé"
+            "noAssets": "Aucun asset trouvé",
+            "errorCloningTitle": "Impossible de cloner la ressource",
+            "errorDeletingTitle": "Impossible de supprimer la ressource",
+            "errorOperationTitle": "Erreur lors de l'exécution de l'opération"
         },
         "resourcesCatalog": {
             "anonymous": "N'importe qui",
