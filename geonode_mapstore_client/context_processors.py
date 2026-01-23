@@ -69,5 +69,6 @@ def resource_urls(request):
         "RESOURCE_PUBLISHING": getattr(settings, "RESOURCE_PUBLISHING", False),
         "ADMIN_MODERATE_UPLOADS": getattr(settings, "ADMIN_MODERATE_UPLOADS", False),
         "RESOURCES_SEARCH_INDEX": getattr(settings, "RESOURCES_SEARCH_INDEX", "title_abstract"),
+        "USE_CORS": getattr(settings, "MAPSTORE_USE_CORS", [])
     }
     return defaults

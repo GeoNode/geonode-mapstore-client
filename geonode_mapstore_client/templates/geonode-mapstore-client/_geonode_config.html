@@ -133,6 +133,7 @@
         let siteName = '{{ SITE_NAME }}' || 'Geonode';
         let geoServerPublicLocation = '{{ GEOSERVER_PUBLIC_LOCATION }}' || '';
         let isMobile = '{{ request.user_agent.is_mobile }}' === 'True' ? true : false;
+        let useCORS = geoNodeSettings.USE_CORS || [];
 
         const searchServicesPayload =  {{SEARCH_SERVICES_PAYLOAD|safe}};
         let searchServicesPatchRules = searchServicesPayload.length ? ['map_viewer', 'dataset_viewr', 'map_viewer_mobile', 'dataset_viewer_mobile'].map(
@@ -159,7 +160,7 @@
             localConfig: {
                 proxyUrl: {
                     url: '{{UPDATED_PROXY_URL|safe }}',
-                    useCORS: []
+                    useCORS: useCORS
                 },
                 useAuthenticationRules: true,
                 authenticationRules: [
