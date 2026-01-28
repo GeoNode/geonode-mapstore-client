@@ -38,6 +38,7 @@ import gnresource from '@js/reducers/gnresource';
 import useDetectClickOut from '@js/hooks/useDetectClickOut';
 import tabComponents from '@js/plugins/ResourceDetails/containers/tabComponents';
 import DetailsPanel from '@js/plugins/ResourceDetails/containers/DetailsPanel';
+import { toggleEditMode } from '@mapstore/framework/actions/featuregrid';
 
 /**
 * @module ResourceDetails
@@ -219,7 +220,8 @@ function ResourceDetailsPanel({
             "type": "locations",
             "id": "locations",
             "labelId": "gnviewer.locations",
-            "items": "{({extent: context.get(state('gnResourceData'), 'extent')})}"
+            "items": "{({extent: context.get(state('gnResourceData'), 'extent')})}",
+            "disableIf": "{context.get(state('gnResourceData'), 'hasNoGeometry')}"
         },
         {
             "type": "relations",
@@ -450,6 +452,18 @@ export default createPlugin('ResourceDetails', {
                         <Message msgId="share.title"/>
                     </Button>
                     : null;
+            }),
+            priority: 1,
+            doNotHide: true
+        }, {
+            name: 'EditDataActionButton',
+            Component: connect(
+                () => ({}),
+                { onClick: toggleEditMode }
+            )(({ onClick, size }) => {
+                return <Button size={size} onClick={onClick}>
+                    <Message msgId="gnviewer.editData" />
+                </Button>;
             }),
             priority: 1,
             doNotHide: true
