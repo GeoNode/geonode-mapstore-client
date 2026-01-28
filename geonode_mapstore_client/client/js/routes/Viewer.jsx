@@ -18,11 +18,12 @@ import PluginsContainer from '@mapstore/framework/components/plugins/PluginsCont
 import { requestResourceConfig, requestNewResourceConfig } from '@js/actions/gnresource';
 import MetaTags from '@js/components/MetaTags';
 import MainEventView from '@js/components/MainEventView';
-import ViewerLayout from '@js/components/ViewerLayout';
 import { createShallowSelector } from '@mapstore/framework/utils/ReselectUtils';
-import { getResourceImageSource } from '@js/utils/ResourceUtils';
+import { checkIfGeometryAttributeIsNull, getResourceImageSource } from '@js/utils/ResourceUtils';
 import useModulePlugins from '@mapstore/framework/hooks/useModulePlugins';
 import { getPlugins } from '@mapstore/framework/utils/ModulePluginsUtils';
+import { updateMapLayout } from '@mapstore/framework/actions/maplayout';
+import MapViewerLayout from '@mapstore/framework/components/layout/MapViewerLayout';
 
 const urlQuery = url.parse(window.location.href, true).query;
 
@@ -69,11 +70,30 @@ function ViewerRoute({
     resourceType,
     loadingConfig,
     configError,
-    loaderStyle
+    loaderStyle,
+    loading: isResourceLoading,
+    mapLayout,
+    onContentResize
 }) {
-
     const { pk } = match.params || {};
-    const pluginsConfig = getPluginsConfiguration(name, propPluginsConfig);
+    
+    // check if the resource have geometry or not
+    const hasNoGeometry = useMemo(
+        () => checkIfGeometryAttributeIsNull(resource?.attribute_set),
+        [resource?.attribute_set]
+    );
+    const isDatasetViewer = name === 'dataset_viewer';
+    // do not resolve plugins configuration while the resource is still loading;
+    const hasDatasetResource = !isDatasetViewer || resource != null;
+    const shouldInitPlugins = !isResourceLoading && hasDatasetResource;
+    // determine the plugins name based on the resource type and if it has no geometry
+    const pluginsName = isDatasetViewer
+        ? (hasNoGeometry ? 'dataset_viewer_non_spatial' : 'dataset_viewer')
+        : name;
+    // get the plugins configuration
+    const pluginsConfig = shouldInitPlugins
+        ? getPluginsConfiguration(pluginsName, propPluginsConfig)
+        : DEFAULT_PLUGINS_CONFIG;
     const pluginsCfgLength = pluginsConfig?.length;
 
     const { plugins: loadedPlugins, pending } = useModulePlugins({
@@ -108,10 +128,26 @@ function ViewerRoute({
         }
     }, [pluginLoading, pk]);
 
-    const loading = loadingConfig || pluginLoading;
+    const isLoading = isResourceLoading || loadingConfig || pluginLoading;
     const parsedPlugins = useMemo(() => ({ ...loadedPlugins, ...getPlugins(plugins) }), [loadedPlugins]);
     const Loader = loaderComponent;
     const className = `page-${resourceType || name}-viewer page-viewer`;
+
+    const handleContentResize = (changed) => {
+        if (changed.bottom !== undefined) {
+            const bottomOffset = Math.max(0, changed.bottom - 35);
+            const {boundingMapRect, layout, boundingSidebarRect} = mapLayout;
+
+            onContentResize({
+                ...layout,
+                ...boundingSidebarRect,
+                boundingMapRect: {
+                    ...boundingMapRect,
+                    bottom: bottomOffset
+                }
+            });
+        }
+    };
 
     return (
         <>
@@ -126,13 +162,13 @@ function ViewerRoute({
                 key={className}
                 id={className}
                 className={className}
-                component={ViewerLayout}
+                component={(props) => <MapViewerLayout {...props} onResize={handleContentResize} />}
                 pluginsConfig={pluginsConfig}
                 plugins={parsedPlugins}
                 allPlugins={plugins}
                 params={params}
             />
-            {loading && Loader && <Loader style={loaderStyle}/>}
+            {isLoading && Loader && <Loader style={loaderStyle}/>}
             {configError && <MainEventView msgId={configError}/>}
         </>
     );
@@ -147,16 +183,21 @@ const ConnectedViewerRoute = connect(
         state => state?.gnresource?.data,
         state => state?.gnsettings?.siteName || 'GeoNode',
         state => state?.gnresource?.loadingResourceConfig,
-        state => state?.gnresource?.configError
-    ], (resource, siteName, loadingConfig, configError) => ({
+        state => state?.gnresource?.configError,
+        state => state?.gnresource?.loading,
+        state => state?.maplayout,
+    ], (resource, siteName, loadingConfig, configError, loading, mapLayout) => ({
         resource,
         siteName,
         loadingConfig,
-        configError
+        configError,
+        loading,
+        mapLayout
     })),
     {
         onUpdate: requestResourceConfig,
-        onCreate: requestNewResourceConfig
+        onCreate: requestNewResourceConfig,
+        onContentResize: updateMapLayout
 
     }
 )(ViewerRoute);

@@ -92,7 +92,8 @@ import {
     toMapStoreMapConfig,
     getCataloguePath,
     isDefaultDatasetSubtype,
-    resourceHasPermission
+    resourceHasPermission,
+    checkIfGeometryAttributeIsNull
 } from '@js/utils/ResourceUtils';
 import {
     canAddResource,
@@ -169,6 +170,7 @@ const resourceTypes = {
                     const [mapConfig, gnLayer, newLayer] = response;
                     const {minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
                     const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
+                    const hasNoGeometry = checkIfGeometryAttributeIsNull(gnLayer.attribute_set);
                     return Observable.of(
                         configureMap({
                             ...mapConfig,
@@ -191,9 +193,9 @@ const resourceTypes = {
                         setControlProperty('toolbar', 'expanded', false),
                         forceUpdateMapLayout(),
                         selectNode(newLayer.id, 'layer', false),
-                        ...(!options?.isSamePreviousResource ? [setResource(gnLayer)] : []),
+                        ...(!options?.isSamePreviousResource ? [setResource({...gnLayer, hasNoGeometry})] : []),
                         setResourceId(pk),
-                        ...(page === 'dataset_edit_data_viewer'
+                        ...((hasNoGeometry || page === 'dataset_edit_data_viewer')
                             ? [
                                 browseData(newLayer)
                             ]
