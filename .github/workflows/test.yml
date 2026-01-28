@@ -48,6 +48,13 @@ jobs:
       ###############
       # NPM CHECKS
       #############
+      - name: "Run JsDoc"
+        run: |
+          npm install jsdoc@4.0.0 -g
+          npm install @jsdoc/salty@0.2.1 -g
+          npm run docs
+        working-directory: ${{env.working-directory}}
+
       - name: "Run npm install"
         run: npm install
         working-directory: ${{env.working-directory}}

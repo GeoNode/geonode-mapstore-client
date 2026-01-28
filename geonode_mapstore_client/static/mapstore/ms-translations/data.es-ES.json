@@ -1509,6 +1509,11 @@
         "height": "altura"
       }
     },
+    "dynamiclegend": {
+      "title": "Leyenda",
+      "tooltip": "Mostrar la leyenda del mapa",
+      "emptyLegend": "Ninguna leyenda para mostrar"
+    },
     "permalink": {
       "title": "Permalink",
       "shareLinkTitle": "Enlace permanente generado",
@@ -2226,7 +2231,8 @@
           "hide": "Esconder",
           "hideDescription": "Ocultar este widget a otros usuarios",
           "unhide": "Ocultar",
-          "unhideDescription": "Mostrar el widget a otros usuarios"
+          "unhideDescription": "Mostrar el widget a otros usuarios",
+          "advancedMapEditor": "Abrir editor de mapas"
         }
       },
       "mapSwitcher": {
@@ -2235,6 +2241,15 @@
         "selectLabel": "Seleccione un mapa",
         "infoOnHide": "Expanda el widget para ver el selector de mapas",
         "subTitle": "<p>Para la selección múltiple,<br>en Windows use CTRL + clic <br> y en Mac use control + clic</p>"
+      },
+      "mapWidget": {
+        "showBackgroundSelector": "Mostrar selector de fondo",
+        "showLegend": "Mostrar leyenda",
+        "legendAlreadyExists": "Ya existe un widget de leyenda para el widget de mapa",
+        "mapEditorTitle": "Editor de widget de mapa"
+      },
+      "legendWidget": {
+        "mapAlreadyHasLegend": "El widget de mapa seleccionado ya tiene una leyenda visible en el visualizador de mapas"
       },
       "chartSwitcher": {
         "noResults": "No se encontró ninguna capa",
@@ -2389,7 +2404,8 @@
           "log": "Log",
           "date": "Fecha"
         },
-        "showCurrentTime": "Mostrar la hora actual en el eje"
+        "showCurrentTime": "Mostrar la hora actual en el eje",
+        "type": "Tipo"
       },
       "tray": {
         "title": "Widgets",
@@ -3522,6 +3538,10 @@
         "description": "Permite compartir el mapa de varias maneras (enlace, código QR, incrustar, redes sociales ...)",
         "title": "Compartir herramienta"
       },
+      "DynamicLegend": {
+        "title": "Leyenda",
+        "description": "Mostrar la leyenda del mapa"
+      },
       "Permalink": {
         "description": "Permite crear un enlace permanente del recurso actual a la vista",
         "title": "Enlace permanente"
@@ -4518,7 +4538,7 @@
         "errorDefault": "Error de red"
       },
       "resourceIssues": {
-        "dependencyMissing": "Este recurso no se puede abrir. Faltan permisos en un recurso asociado."
+        "dependencyMissing": "Faltan permisos en un recurso asociado."
       },
       "deleteError": {
         "error403": "No tiene permiso para eliminar el recurso",

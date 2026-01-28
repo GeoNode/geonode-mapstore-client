@@ -73,22 +73,18 @@ function ViewerRoute({
     loaderStyle,
     loading: isResourceLoading,
     mapLayout,
-    onContentResize
+    onContentResize,
+    datasetEditPermissionError
 }) {
     const { pk } = match.params || {};
     
-    // check if the resource have geometry or not
-    const hasNoGeometry = useMemo(
-        () => checkIfGeometryAttributeIsNull(resource?.attribute_set),
-        [resource?.attribute_set]
-    );
     const isDatasetViewer = name === 'dataset_viewer';
     // do not resolve plugins configuration while the resource is still loading;
-    const hasDatasetResource = !isDatasetViewer || resource != null;
+    const hasDatasetResource = !isDatasetViewer || resource;
     const shouldInitPlugins = !isResourceLoading && hasDatasetResource;
     // determine the plugins name based on the resource type and if it has no geometry
     const pluginsName = isDatasetViewer
-        ? (hasNoGeometry ? 'dataset_viewer_non_spatial' : 'dataset_viewer')
+        ? (resource?.hasNoGeometry ? 'dataset_viewer_non_spatial' : 'dataset_viewer')
         : name;
     // get the plugins configuration
     const pluginsConfig = shouldInitPlugins
@@ -169,7 +165,7 @@ function ViewerRoute({
                 params={params}
             />
             {isLoading && Loader && <Loader style={loaderStyle}/>}
-            {configError && <MainEventView msgId={configError}/>}
+            {(configError || datasetEditPermissionError) && <MainEventView msgId={configError || datasetEditPermissionError}/>}
         </>
     );
 }
@@ -186,13 +182,15 @@ const ConnectedViewerRoute = connect(
         state => state?.gnresource?.configError,
         state => state?.gnresource?.loading,
         state => state?.maplayout,
-    ], (resource, siteName, loadingConfig, configError, loading, mapLayout) => ({
+        state => state?.gnresource?.datasetEditPermissionError
+    ], (resource, siteName, loadingConfig, configError, loading, mapLayout, datasetEditPermissionError) => ({
         resource,
         siteName,
         loadingConfig,
         configError,
         loading,
-        mapLayout
+        mapLayout,
+        datasetEditPermissionError
     })),
     {
         onUpdate: requestResourceConfig,

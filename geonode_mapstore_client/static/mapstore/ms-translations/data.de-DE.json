@@ -1548,6 +1548,11 @@
         "height": "Höhe"
       }
     },
+    "dynamiclegend": {
+      "title": "Legende",
+      "tooltip": "Kartenlegende anzeigen",
+      "emptyLegend": "Keine legende zum Anzeigen"
+    },
     "permalink": {
       "title": "Permalink",
       "shareLinkTitle": "Permalink generiert",
@@ -2265,7 +2270,8 @@
           "hide": "Verbergen",
           "hideDescription": "Verstecken Sie dieses Widget für andere Benutzer",
           "unhide": "Einblenden",
-          "unhideDescription": "Blenden Sie das Widget für andere Benutzer ein"
+          "unhideDescription": "Blenden Sie das Widget für andere Benutzer ein",
+          "advancedMapEditor": "Karteneditor öffnen"
         }
       },
       "mapSwitcher": {
@@ -2274,6 +2280,15 @@
         "selectLabel": "Wählen Sie eine Karte aus",
         "infoOnHide": "Erweitern Sie das Widget, um den Kartenwechsler anzuzeigen",
         "subTitle": "<p>Für die Mehrfachauswahl<br>verwenden Sie unter Windows STRG + Klicken <br> und unter Mac verwenden Sie Strg + Klicken</p>"
+      },
+      "mapWidget": {
+        "showBackgroundSelector": "Hintergrundselektor anzeigen",
+        "showLegend": "Legende anzeigen",
+        "legendAlreadyExists": "Eine Legende-Widget für das Karten-Widget existiert bereits",
+        "mapEditorTitle": "Karten-Widget-Editor"
+      },
+      "legendWidget": {
+        "mapAlreadyHasLegend": "Das ausgewählte Karten-Widget hat bereits eine Legende im Karten-Viewer"
       },
       "chartSwitcher": {
         "noResults": "Keine Ebene gefunden",
@@ -2428,7 +2443,8 @@
           "log": "Logarithmus",
           "date": "Datum"
         },
-        "showCurrentTime": "Aktuelle Zeit auf der Achse anzeigen"
+        "showCurrentTime": "Aktuelle Zeit auf der Achse anzeigen",
+        "type": "Typ"
       },
       "tray": {
         "title": "Widgets",
@@ -3561,6 +3577,10 @@
         "description": "Ermöglicht das Teilen der Karte auf verschiedene Arten (Link, QR-Code, Einbettung, soziale Netzwerke ...)",
         "title": "Freigabe-Werkzeug"
       },
+      "DynamicLegend": {
+        "title": "Legende",
+        "description": "Kartenlegende anzeigen"
+      },
       "Permalink": {
         "description": "Ermöglicht das Erstellen eines Permalinks der aktuell angezeigten Ressource",
         "title": "Permalink"
@@ -4557,7 +4577,7 @@
         "errorDefault": "Netzwerkfehler"
       },
       "resourceIssues": {
-        "dependencyMissing": "Diese Ressource kann nicht geöffnet werden. Fehlende Berechtigungen für eine zugehörige Ressource."
+        "dependencyMissing": "Fehlende Berechtigungen für eine zugehörige Ressource."
       },
       "deleteError": {
         "error403": "Sie dürfen die Ressource nicht löschen",

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024, GeoSolutions Sas.
+ * Copyright 2026, GeoSolutions Sas.
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
@@ -10,6 +10,7 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import validator from '@rjsf/validator-ajv8';
 import Form from '@rjsf/core';
+
 import { Alert } from 'react-bootstrap';
 import isEmpty from 'lodash/isEmpty';
 
@@ -86,9 +87,66 @@ function MetadataEditor({
         };
     }, []);
 
+    /*
+     * tranform metadata to multilang format managed by widget `TextWidgetMultiLang` using `geonode:multilang-group` property
+     * see also schemaToMultiLang() schema transformation
+     * {
+     *   'title': {
+     *       "en": "Title in English",
+     *       ...
+     * }
+     */
+    function metadataToMultiLang(metadataSingleLang, schemaSingleLang) {
+        return {
+            ...metadataSingleLang,
+            ...Object.keys(schemaSingleLang?.properties || {}).reduce((acc, key) => {
+                const property = schemaSingleLang.properties[key];
+                if (property?.['geonode:multilang']) {
+                    acc[key] = Object.keys(metadataSingleLang || {}).reduce((langAcc, dataKey) => {
+                        const dataProperty = schemaSingleLang.properties[dataKey];
+                        if (dataProperty?.['geonode:multilang-group'] === key) {
+                            const itemLang = dataProperty['geonode:multilang-lang'];
+                            langAcc[itemLang] = metadataSingleLang[dataKey];
+                        }
+                        return langAcc;
+                    }, {});
+                }
+                return acc;
+            }, {})
+        };
+    }
+
+    /*
+     *  re-tranform multilang metadata to single lang format to post to backend api
+     */
+    function metadataToSingleLang(metadataMultiLang, schemaMultiLang) {
+        const result = { ...metadataMultiLang };
+
+        Object.keys(schemaMultiLang?.properties || {}).forEach(key => {
+            const property = schemaMultiLang.properties[key];
+            if (property?.['geonode:multilang'] && metadataMultiLang[key]) {
+                Object.entries(metadataMultiLang[key] || {}).forEach(([lang, value]) => {
+                    const singleLangKey = Object.keys(schemaMultiLang.properties).find(k => {
+                        const prop = schemaMultiLang.properties[k];
+                        return prop?.['geonode:multilang-group'] === key &&
+                            prop?.['geonode:multilang-lang'] === lang;
+                    });
+                    if (singleLangKey) {
+                        result[singleLangKey] = value;
+                    }
+                });
+                // set empty the single lang field
+                result[key] = '';
+            }
+        });
+
+        return result;
+    }
+
     function handleChange(formData) {
+        const singleFormData = metadataToSingleLang(formData, schema);
         setUpdateError(null);
-        setMetadata(formData);
+        setMetadata(singleFormData);
     }
 
     if (loading) {
@@ -102,6 +160,62 @@ function MetadataEditor({
     if (!metadata && !schema) {
         return null;
     }
+
+    /*
+     * tranform schema to multilang schema, by `geonode:multilang-group` property
+     * {
+     *   'title': {
+     *       "type": "object",
+     *       "title": "Title multilanguage",
+     *       "description": "same title object for multiple languages",
+     *       "properties": {
+     *           "en": {"type": "string" ...},
+     *           "hy": {"type": "string" ...},
+     *           "ru": {"type": "string" ...}
+     *       }
+     *   }
+    * @param {*} schema
+    * @param {*} uiSchemaMultiLang
+    */
+    function schemaToMultiLang(schemaSingleLang, uiSchemaSingleLang) {
+        const uiSchemaMultiLang = { ...uiSchemaSingleLang };
+        const schemaMultiLang = {
+            ...schemaSingleLang,
+            properties: Object.keys(schemaSingleLang?.properties || {}).reduce((acc, key) => {
+                const property = { ...schemaSingleLang.properties[key] };
+                if (property?.['geonode:multilang']) {
+                    const newProperty = {
+                        ...property,
+                        type: 'object',
+                        properties: {},
+                        'ui:widget': "TextWidgetMultiLang",
+                        'ui:options': {}
+                    };
+                    delete newProperty.maxLength;
+                    acc[key] = newProperty;
+                    // set custom widget for multilang text
+                    uiSchemaMultiLang[key] = {
+                        "ui:widget": "TextWidgetMultiLang"
+                    };
+                } else if (property?.['geonode:multilang-group']) {
+                    const groupKey = property['geonode:multilang-group'];
+                    const itemLang = property['geonode:multilang-lang'];
+                    acc[groupKey].properties[itemLang] = property;
+                    acc[groupKey]['ui:options'] = {
+                        ...acc[groupKey]['ui:options'],
+                        widget: property['ui:options']?.widget
+                    };
+                } else {
+                    acc[key] = property;
+                }
+                return acc;
+            }, {})
+        };
+        return { schemaMultiLang, uiSchemaMultiLang };
+    }
+
+    const {schemaMultiLang, uiSchemaMultiLang} = schemaToMultiLang(schema, uiSchema);
+    const metadataMultiLang = metadataToMultiLang(metadata, schema);
 
     return (
         <div className="gn-metadata">
@@ -117,14 +231,15 @@ function MetadataEditor({
                     readonly={readOnly}
                     ref={initialize.current}
                     formContext={{
-                        title: metadata?.title,
-                        metadata,
-                        capitalizeTitle: capitalizeFieldTitle
+                        title: metadata.title || metadataMultiLang.title.en || getMessageById(messages, 'gnviewer.metadataEditorTitle'),
+                        metadata: metadataMultiLang,
+                        capitalizeTitle: capitalizeFieldTitle,
+                        messages
                     }}
-                    schema={schema}
+                    schema={schemaMultiLang}
+                    uiSchema={uiSchemaMultiLang}
+                    formData={metadataMultiLang}
                     widgets={widgets}
-                    uiSchema={uiSchema}
-                    formData={metadata}
                     validator={validator}
                     templates={templates}
                     fields={fields}
@@ -169,3 +284,5 @@ MetadataEditor.defaultProps = {
 };
 
 export default MetadataEditor;
+
+

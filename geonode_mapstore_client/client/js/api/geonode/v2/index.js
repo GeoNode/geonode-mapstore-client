@@ -12,7 +12,8 @@ import {
     paramsSerializer,
     getGeoNodeConfig,
     getGeoNodeLocalConfig,
-    API_PRESET
+    API_PRESET,
+    getResourcesSearchIndex
 } from '@js/utils/APIUtils';
 import merge from 'lodash/merge';
 import mergeWith from 'lodash/mergeWith';
@@ -62,7 +63,7 @@ export const getResources = ({
         ...getQueryParams({...params, f}, customFilters),
         ...(q && {
             search: q,
-            search_fields: ['title', 'abstract']
+            search_index: getResourcesSearchIndex()
         }),
         ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
         page,
@@ -102,7 +103,7 @@ export const getMaps = ({
                     ...params,
                     ...(q && {
                         search: q,
-                        search_fields: ['title', 'abstract']
+                        search_index: getResourcesSearchIndex()
                     }),
                     ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
                     page,
@@ -138,7 +139,7 @@ export const getDatasets = ({
                     'filter{metadata_only}': false,
                     ...(q && {
                         search: q,
-                        search_fields: ['title', 'abstract']
+                        search_index: getResourcesSearchIndex()
                     }),
                     ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
                     page,
@@ -152,6 +153,46 @@ export const getDatasets = ({
                 totalCount: data.total,
                 isNextPageAvailable: !!data.links.next,
                 resources: (data.resources || [])
+            };
+        });
+};
+
+export const getDocuments = ({
+    q,
+    pageSize = 10,
+    page = 1,
+    sort,
+    f,
+    customFilters = [],
+    config,
+    ...params
+}) => {
+    const _params = {
+        ...getQueryParams({...params, f}, customFilters),
+        ...(q && {
+            search: q,
+            search_fields: ['title', 'abstract']
+        }),
+        ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
+        page,
+        page_size: pageSize,
+        'filter{resource_type.in}': 'document'
+    };
+    return axios
+        .get(
+            getEndpointUrl(DOCUMENTS), {
+                params: _params,
+                ...config,
+                ...paramsSerializer()
+            })
+        .then(({ data }) => {
+            return {
+                total: data.total,
+                isNextPageAvailable: !!data.links.next,
+                resources: (data.documents || [])
+                    .map((resource) => {
+                        return resource;
+                    })
             };
         });
 };
@@ -171,7 +212,7 @@ export const getDocumentsByDocType = (docType = 'image', {
                     ...params,
                     ...(q && {
                         search: q,
-                        search_fields: ['title', 'abstract']
+                        search_index: getResourcesSearchIndex()
                     }),
                     ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
                     'filter{subtype}': [docType],
@@ -335,7 +376,7 @@ export const getGeoApps = ({
                     ...params,
                     ...(q && {
                         search: q,
-                        search_fields: ['title', 'abstract']
+                        search_index: getResourcesSearchIndex()
                     }),
                     ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
                     page,
@@ -738,6 +779,11 @@ export const getMetadataDownloadLinkByPk = (pk) => {
     return getEndpointUrl(RESOURCES, `/${pk}/iso_metadata_xml`);
 };
 
+export const updateResourceExtent = (pk) => {
+    return axios.put(getEndpointUrl(DATASETS, `/${pk}/recalc-bbox`))
+        .then(({ data }) => data);
+};
+
 export default {
     getEndpoints,
     getResources,
@@ -777,5 +823,6 @@ export default {
     getResourceByTypeAndByPk,
     createDataset,
     getMetadataDownloadLinkByPk,
-    updateResource
+    updateResource,
+    updateResourceExtent
 };

@@ -17,6 +17,11 @@ export const hasExtensionInUrl = (remoteResource) => {
     return !isEmpty(ext);
 };
 
+export const isCOGFileUrl = (url = '') => {
+    const urlLowerCase = url.toLowerCase();
+    return urlLowerCase.endsWith('.tif') || urlLowerCase.endsWith('.tiff');
+};
+
 export const isNotSupported = (remoteResource) => !isNil(remoteResource?.supported) && !remoteResource?.supported;
 
 export const getErrorMessageId = (remoteResource, { remoteTypeErrorMessageId } = {}) => {
@@ -135,10 +140,14 @@ export const validateRemoteResourceUploads = (uploads = [], { remoteTypes } = {}
         const isValidRemoteUrl = !!upload.url
             && !(upload.url.indexOf('/') === 0) // is not relative
             && isValidURL(upload.url);
-        const isRemoteTypeSupported = remoteTypes ? !!remoteTypes.find(({ value }) => value === upload.remoteType) : true;
+        // Automatically change remoteType to 'cog' if URL ends with .tif or .tiff
+        const isTifFile = isCOGFileUrl(upload.url);
+        const remoteType = isTifFile ? 'cog' : upload.remoteType;
+        const isRemoteTypeSupported = remoteTypes ? !!remoteTypes.find(({ value }) => value === remoteType) : true;
         const supported = !!(!isRemoteUrlDuplicated && isValidRemoteUrl && isRemoteTypeSupported);
         return {
             ...upload,
+            remoteType,
             supported,
             ready: supported,
             validation: {

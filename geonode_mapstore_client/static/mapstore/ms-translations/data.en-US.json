@@ -1509,6 +1509,11 @@
         "height": "height"
       }
     },
+    "dynamiclegend": {
+      "title": "Legend",
+      "tooltip": "Display the map legend",
+      "emptyLegend": "No legend to display"
+    },
     "permalink": {
       "title": "Permalink",
       "shareLinkTitle": "Permalink generated",
@@ -2226,7 +2231,8 @@
           "hide": "Hide",
           "hideDescription": "Hide this widget to other users",
           "unhide": "Unhide",
-          "unhideDescription": "Unhide the widget to other users"
+          "unhideDescription": "Unhide the widget to other users",
+          "advancedMapEditor": "Open map editor"
         }
       },
       "mapSwitcher": {
@@ -2235,6 +2241,15 @@
         "selectLabel": "Select a map",
         "infoOnHide": "Expand widget to see map switcher",
         "subTitle": "<p>For multi-selection,<br>on windows use CTRL + click <br> and on Mac use control + click</p>"
+      },
+      "mapWidget": {
+        "showBackgroundSelector": "Show background selector",
+        "showLegend": "Show legend",
+        "legendAlreadyExists": "A legend widget already exists for the map widget",
+        "mapEditorTitle": "Widget Map Editor"
+      },
+      "legendWidget": {
+        "mapAlreadyHasLegend": "The selected map widget already has legend visible in map viewer"
       },
       "chartSwitcher": {
         "noResults": "No layer found",
@@ -2389,7 +2404,8 @@
           "log": "Log",
           "date": "Date"
         },
-        "showCurrentTime": "Show current time on the axis"
+        "showCurrentTime": "Show current time on the axis",
+        "type": "Type"
       },
       "tray": {
         "title": "Widgets",
@@ -3532,6 +3548,10 @@
         "description": "Allows to share the map in various ways (link, QR-Code, embed, social networks...)",
         "title": "Share Tool"
       },
+      "DynamicLegend": {
+        "title": "Legend",
+        "description": "Display the map legend"
+      },
       "Permalink": {
         "description": "Allows to create a permalink of the current resource in view",
         "title": "Permalink"
@@ -4528,7 +4548,7 @@
         "errorDefault": "Network error"
       },
       "resourceIssues": {
-        "dependencyMissing": "This resource can't be open. Missing permissions on an associated resource."
+        "dependencyMissing": "Missing permissions on an associated resource."
       },
       "deleteError": {
         "error403": "You are not allowed to delete the resource",

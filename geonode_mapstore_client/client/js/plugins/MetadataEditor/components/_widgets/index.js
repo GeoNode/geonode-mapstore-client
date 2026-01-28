@@ -8,8 +8,10 @@
 
 import SelectWidget from './SelectWidget';
 import TextareaWidget from './TextareaWidget';
+import TextWidgetMultiLang from './TextWidgetMultiLang';
 
 export default {
     SelectWidget,
-    TextareaWidget
+    TextareaWidget,
+    TextWidgetMultiLang
 };
