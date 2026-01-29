@@ -23,6 +23,7 @@ import Itinerary from "@mapstore/framework/plugins/Itinerary";
 import SecurityPopup from "@mapstore/framework/plugins/SecurityPopup";
 import BackgroundSelector from '@mapstore/framework/plugins/BackgroundSelector';
 import MetadataExplorer from '@mapstore/framework/plugins/MetadataExplorer';
+import CameraPosition from '@mapstore/framework/plugins/CameraPosition';
 
 import OperationPlugin from '@js/plugins/Operation';
 import ExecutionTrackerPlugin from '@js/plugins/ExecutionTracker';
@@ -93,6 +94,7 @@ export const plugins = {
     SecurityPopupPlugin: SecurityPopup,
     BackgroundSelectorPlugin: BackgroundSelector,
     MetadataExplorerPlugin: MetadataExplorer,
+    CameraPositionPlugin: CameraPosition,
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
         () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload'),
