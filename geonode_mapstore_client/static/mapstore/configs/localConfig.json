@@ -517,7 +517,12 @@
             {
                 "name": "Dashboard",
                 "cfg": {
-                    "minLayoutWidth": 768
+                    "minLayoutWidth": 768,
+                    "configureViewOptions": {
+                        "query": {
+                            "filter{resource_type.in}": "dashboard"
+                        }
+                    }
                 }
             }
         ],
@@ -2701,7 +2706,12 @@
             {
                 "name": "Dashboard",
                 "cfg": {
-                    "minLayoutWidth": 768
+                    "minLayoutWidth": 768,
+                    "configureViewOptions": {
+                        "query": {
+                            "filter{resource_type.in}": "dashboard"
+                        }
+                    }
                 }
             },
             {
@@ -3154,7 +3164,12 @@
             {
                 "name": "Dashboard",
                 "cfg": {
-                    "minLayoutWidth": 768
+                    "minLayoutWidth": 768,
+                    "configureViewOptions": {
+                        "query": {
+                            "filter{resource_type.in}": "dashboard"
+                        }
+                    }
                 }
             }
         ],
