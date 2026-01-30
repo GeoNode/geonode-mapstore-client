@@ -72,7 +72,7 @@ const getResources = ({ category, options, query }) => {
 const persistence = {
     getResource,
     getResources,
-    getCatalogResources: ({ params, config, monitoredState }, { user }) => {
+    getCatalogResources: ({ params, config, monitoredState }, { user } = {}) => {
         return Observable.defer(() => {
             const customFilters = getCustomMenuFilters(monitoredState);
             return gnGetResources({
