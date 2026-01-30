@@ -27,6 +27,7 @@ import {
     ResourceTypes,
     FEATURE_INFO_FORMAT,
     isDocumentExternalSource,
+    hasDefaultDownload,
     getDownloadUrlInfo,
     getCataloguePath,
     getResourceWithLinkedResources,
@@ -782,31 +783,77 @@ describe('Test Resource Utils', () => {
         resource = {...resource, resource_type: "dataset"};
         expect(isDocumentExternalSource(resource)).toBeFalsy();
     });
+    it('test hasDefaultDownload', () => {
+        expect(hasDefaultDownload(null)).toBeFalsy();
+        expect(hasDefaultDownload(undefined)).toBeFalsy();
+        expect(hasDefaultDownload({})).toBeFalsy();
+        expect(hasDefaultDownload({ download_urls: null })).toBeFalsy();
+        expect(hasDefaultDownload({ download_urls: [] })).toBeFalsy();
+        expect(hasDefaultDownload({ download_urls: [{ url: '/a', "default": false }] })).toBeFalsy();
+        expect(hasDefaultDownload({ download_urls: [{ url: '/a' }] })).toBeFalsy();
+        expect(hasDefaultDownload({ download_urls: [{ url: '/a', "default": true }] })).toBeTruthy();
+        expect(hasDefaultDownload({ download_urls: [{ url: '/a' }, { url: '/b', "default": true }] })).toBeTruthy();
+    });
     it('test getDownloadUrlInfo', () => {
-        const downloadData = {url: "/someurl", ajax_safe: true };
+        const downloadData = { url: "/someurl", ajax_safe: true };
 
-        // EXTERNAL SOURCE
+        // EXTERNAL SOURCE (document, remote) → href
         let resource = { download_urls: [downloadData], href: "/somehref", resource_type: "document", sourcetype: "REMOTE"};
         let downloadInfo = getDownloadUrlInfo(resource);
         expect(downloadInfo.url).toBe("/somehref");
         expect(downloadInfo.ajaxSafe).toBeFalsy();
 
-        // AJAX SAFE
-        resource = { download_urls: [downloadData]};
+        // Non-dataset, single download_url → use that entry (length === 1 fallback)
+        resource = { download_urls: [downloadData] };
         downloadInfo = getDownloadUrlInfo(resource);
         expect(downloadInfo.url).toBe(downloadData.url);
         expect(downloadInfo.ajaxSafe).toBeTruthy();
 
-        // HREF
-        resource = {href: "/someurl"};
+        // HREF fallback (no download_urls)
+        resource = { href: "/someurl" };
         downloadInfo = getDownloadUrlInfo(resource);
         expect(downloadInfo.url).toBe(resource.href);
         expect(downloadInfo.ajaxSafe).toBeFalsy();
 
-        // NOT AJAX SAFE
-        resource = {download_urls: [{...downloadData, ajax_safe: false}]};
+        // Non-dataset, single entry, not ajax safe
+        resource = { download_urls: [{ ...downloadData, ajax_safe: false }] };
         downloadInfo = getDownloadUrlInfo(resource);
         expect(downloadInfo.url).toBe(downloadData.url);
+        expect(downloadInfo.ajaxSafe).toBeFalsy();
+
+        // Dataset with default download → url and ajaxSafe from default entry
+        resource = { resource_type: ResourceTypes.DATASET, download_urls: [{ ...downloadData, "default": true }] };
+        downloadInfo = getDownloadUrlInfo(resource);
+        expect(downloadInfo.url).toBe(downloadData.url);
+        expect(downloadInfo.ajaxSafe).toBeTruthy();
+
+        // Dataset with download_urls but no default → url null, ajaxSafe false
+        resource = { resource_type: ResourceTypes.DATASET, download_urls: [{ url: '/asset', "default": false }] };
+        downloadInfo = getDownloadUrlInfo(resource);
+        expect(downloadInfo.url).toBeFalsy();
+        expect(downloadInfo.ajaxSafe).toBeFalsy();
+
+        // Dataset with multiple entries, one default → use default
+        resource = {
+            resource_type: ResourceTypes.DATASET,
+            download_urls: [
+                { url: '/asset1', "default": false },
+                { url: '/dataset', "default": true, ajax_safe: true }
+            ]
+        };
+        downloadInfo = getDownloadUrlInfo(resource);
+        expect(downloadInfo.url).toBe('/dataset');
+        expect(downloadInfo.ajaxSafe).toBeTruthy();
+
+        // Non-dataset with multiple entries, one default → use default
+        resource = {
+            download_urls: [
+                { url: '/other', "default": false },
+                { url: '/default', "default": true, ajax_safe: false }
+            ]
+        };
+        downloadInfo = getDownloadUrlInfo(resource);
+        expect(downloadInfo.url).toBe('/default');
         expect(downloadInfo.ajaxSafe).toBeFalsy();
     });
     it('test getCataloguePath', () => {

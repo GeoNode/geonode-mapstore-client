@@ -26,7 +26,7 @@ import { getSelectedLayer } from '@mapstore/framework/selectors/layers';
 import { isDashboardEditing } from '@mapstore/framework/selectors/dashboard';
 import { createWidget } from '@mapstore/framework/actions/widgets';
 import { getResourceData, getSelectedLayerDataset } from '@js/selectors/resource';
-import { GXP_PTYPES } from '@js/utils/ResourceUtils';
+import { GXP_PTYPES, hasDefaultDownload, ResourceTypes } from '@js/utils/ResourceUtils';
 import { exportDataResultsControlEnabledSelector, checkingExportDataEntriesSelector, exportDataResultsSelector } from '@mapstore/framework/selectors/layerdownload';
 import { currentLocaleSelector } from '@mapstore/framework/selectors/locale';
 import { checkExportDataEntries, removeExportDataResult } from '@mapstore/framework/actions/layerdownload';
@@ -71,7 +71,9 @@ const LayerDownloadActionButtonComponent = ({
     nodeTypes,
     items,
     status,
-    statusTypes
+    statusTypes,
+    showIcon,
+    tooltipId = "gnviewer.exportData"
 }, context) => {
     const node = useRef();
     const { loadedPlugins } = context;
@@ -109,14 +111,22 @@ const LayerDownloadActionButtonComponent = ({
             </>
         ) : null;
     }
+
+    // Hide export data icon button for datasets with default download
+    if (data?.resource_type === ResourceTypes.DATASET && hasDefaultDownload(data) && showIcon) {
+        return null;
+    }
+
+    const Component = tooltip(Button);
     return (
-        <Button
+        <Component
             variant={variant}
             size={size}
             onClick={() => onClick()}
+            {...showIcon && { tooltipId }}
         >
-            <Message msgId="gnviewer.exportData" />
-        </Button>
+            {showIcon ? <Glyphicon glyph="download" /> : <Message msgId="gnviewer.exportData" />}
+        </Component>
     );
 };
 
