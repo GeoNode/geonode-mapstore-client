@@ -361,6 +361,13 @@
       }
     },
     {
+      "name": "CameraPosition",
+      "glyph": "camera",
+      "title": "plugins.CameraPosition.title",
+      "description": "plugins.CameraPosition.description",
+      "dependencies": ["MapFooter"]
+    },
+    {
       "name": "Swipe"
     },
     {
@@ -548,7 +555,18 @@
         "SidebarMenu"
       ],
       "defaultConfig": {
-        "wrap": true
+        "wrap": true,
+        "serviceTypes": [
+          { "name": "csw", "label": "CSW" }, 
+          { "name": "wms", "label": "WMS" }, 
+          { "name": "wmts", "label": "WMTS" }, 
+          { "name": "tms", "label": "TMS", "allowedProviders": ["OpenStreetMap", "OpenSeaMap", "Stamen"] }, 
+          { "name": "wfs", "label": "WFS" }, 
+          { "name": "3dtiles", "label": "3D Tiles" }, 
+          { "name": "model", "label": "IFC Model" }, 
+          { "name": "arcgis", "label": "ArcGIS" }, 
+          { "name": "cog", "label": "COG" }
+        ]
       }
     },
     {
@@ -613,6 +631,13 @@
       "glyph": "1-point-dashed",
       "title": "plugins.Isochrone.title",
       "description": "plugins.Isochrone.description",
+      "dependencies": ["SidebarMenu"]
+    },
+    {
+      "name": "DynamicLegend",
+      "glyph": "align-left",
+      "title": "plugins.DynamicLegend.title",
+      "description": "plugins.DynamicLegend.description",
       "dependencies": ["SidebarMenu"]
     }
   ]

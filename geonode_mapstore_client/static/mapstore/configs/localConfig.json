@@ -585,7 +585,7 @@
                                     "type": "link",
                                     "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
                                     "labelId": "gnviewer.viewData",
-                                    "disableIf": "{state('gnResourceData') && ['raster', '3dtiles'].includes(state('gnResourceData').subtype)}"
+                                    "disableIf": "{(state('gnResourceData') && ['raster', '3dtiles'].includes(state('gnResourceData').subtype)) || !state('selectedLayerPermissions').includes('download_resourcebase')}"
                                 }
                             ]
                         },
@@ -663,7 +663,8 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "FilterLayer"
+                            "name": "FilterLayer",
+                            "disableIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
                         },
                         {
                             "type": "link",
@@ -1012,7 +1013,10 @@
                 "name": "AddLayer"
             },
             {
-                "name": "FilterLayer"
+                "name": "FilterLayer",
+                "cfg": {
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                }
             },
             {
                 "name": "ScaleBox"
@@ -1241,6 +1245,12 @@
             },
             {
                 "name": "MetadataViewer"
+            },
+            {
+                "name": "ExecutionTracker",
+                "cfg": {
+                    "containerPosition": "header"
+                }
             }
         ],
         "dataset_edit_data_viewer": [
@@ -1402,7 +1412,8 @@
                 "mandatory": true,
                 "cfg": {
                     "enableIFrameModule": true,
-                    "className": "gn-dataset-layersettings"
+                    "className": "gn-dataset-layersettings",
+                    "hideCloseButton": true
                 }  
             },
             {
@@ -1591,6 +1602,15 @@
                         {
                             "type": "plugin",
                             "name": "DatasetsCatalog",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource')}"
+                        },
+                        {
+                            "type": "divider",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource')}"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "DocumentsCatalog",
                             "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource')}"
                         }
                     ]
@@ -1921,7 +1941,10 @@
                 "name": "AddLayer"
             },
             {
-                "name": "FilterLayer"
+                "name": "FilterLayer",
+                "cfg": {
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                }
             },
             {
                 "name": "ScaleBox"
@@ -1929,7 +1952,8 @@
             {
                 "name": "FeatureEditor",
                 "cfg": {
-                    "primaryKeyAttributes": ["fid"]
+                    "primaryKeyAttributes": ["fid"],
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
                 }
             },
             {
@@ -2060,6 +2084,10 @@
                 "mandatory": true,
                 "name": "DatasetsCatalog"
             },
+            {
+                "mandatory": true,
+                "name": "DocumentsCatalog"
+            },
             { 
                 "name": "StyleEditor",
                 "cfg": {
@@ -2072,7 +2100,18 @@
             {
                 "name": "MetadataExplorer",
                 "cfg": {
-                    "wrap": true
+                    "wrap": true,
+                    "serviceTypes": [
+                        { "name": "csw", "label": "CSW" }, 
+                        { "name": "wms", "label": "WMS" }, 
+                        { "name": "wmts", "label": "WMTS" }, 
+                        { "name": "tms", "label": "TMS", "allowedProviders": ["OpenStreetMap", "OpenSeaMap", "Stamen"] }, 
+                        { "name": "wfs", "label": "WFS" }, 
+                        { "name": "3dtiles", "label": "3D Tiles" }, 
+                        { "name": "model", "label": "IFC Model" }, 
+                        { "name": "arcgis", "label": "ArcGIS" }, 
+                        { "name": "cog", "label": "COG" }
+                    ]
                 }
             },
             {
@@ -2832,6 +2871,13 @@
                           ]
                       }
                   ]
+                }
+            },
+            {
+                "name": "MapEditor",
+                "cfg": {
+                    "titleMsgId": "widgets.mapWidget.mapEditorTitle",
+                    "overrideDefaultPlugins": ["FeatureEditor"]
                 }
             }
         ],

@@ -21,8 +21,12 @@ import TOCPlugin from '@mapstore/framework/plugins/TOC';
 import Isochrone from "@mapstore/framework/plugins/Isochrone";
 import Itinerary from "@mapstore/framework/plugins/Itinerary";
 import SecurityPopup from "@mapstore/framework/plugins/SecurityPopup";
+import BackgroundSelector from '@mapstore/framework/plugins/BackgroundSelector';
+import MetadataExplorer from '@mapstore/framework/plugins/MetadataExplorer';
+import CameraPosition from '@mapstore/framework/plugins/CameraPosition';
 
 import OperationPlugin from '@js/plugins/Operation';
+import ExecutionTrackerPlugin from '@js/plugins/ExecutionTracker';
 import MetadataEditorPlugin from '@js/plugins/MetadataEditor';
 import MetadataViewerPlugin from '@js/plugins/MetadataEditor/MetadataViewer';
 import FavoritesPlugin from '@js/plugins/Favorites';
@@ -78,6 +82,7 @@ const toModulePlugin = (...args) => {
 export const plugins = {
     TOCPlugin,
     OperationPlugin,
+    ExecutionTrackerPlugin,
     MetadataEditorPlugin,
     MetadataViewerPlugin,
     ResourcesGridPlugin,
@@ -87,6 +92,9 @@ export const plugins = {
     IsochronePlugin: Isochrone,
     ItineraryPlugin: Itinerary,
     SecurityPopupPlugin: SecurityPopup,
+    BackgroundSelectorPlugin: BackgroundSelector,
+    MetadataExplorerPlugin: MetadataExplorer,
+    CameraPositionPlugin: CameraPosition,
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
         () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload'),
@@ -130,10 +138,6 @@ export const plugins = {
     StyleEditorPlugin: toModulePlugin(
         'StyleEditor',
         () => import(/* webpackChunkName: 'plugins/style-editor' */ '@mapstore/framework/plugins/StyleEditor')
-    ),
-    MetadataExplorerPlugin: toModulePlugin(
-        'MetadataExplorer',
-        () => import(/* webpackChunkName: 'plugins/metadata-explorer' */ '@mapstore/framework/plugins/MetadataExplorer')
     ),
     QueryPanelPlugin: toModulePlugin(
         'QueryPanel',
@@ -257,10 +261,6 @@ export const plugins = {
     MapLoadingPlugin: toModulePlugin(
         'MapLoading',
         () => import(/* webpackChunkName: 'plugins/map-loading-plugin' */ '@mapstore/framework/plugins/MapLoading')
-    ),
-    BackgroundSelectorPlugin: toModulePlugin(
-        'BackgroundSelector',
-        () => import(/* webpackChunkName: 'plugins/background-selector-plugin' */ '@mapstore/framework/plugins/BackgroundSelector')
     ),
     ZoomInPlugin: toModulePlugin(
         'ZoomIn',
@@ -431,6 +431,10 @@ export const plugins = {
         'MapViewerConfiguration',
         () => import(/* webpackChunkName: 'plugins/map-viewer-configuration' */ '@js/plugins/MapViewerConfiguration')
     ),
+    DocumentsCatalogPlugin: toModulePlugin(
+        'DocumentsCatalog',
+        () => import(/* webpackChunkName: 'plugins/documents-catalog' */ '@js/plugins/DocumentsCatalog')
+    ),
     DatasetsCatalogPlugin: toModulePlugin(
         'DatasetsCatalog',
         () => import(/* webpackChunkName: 'plugins/dataset-catalog' */ '@js/plugins/DatasetsCatalog')
@@ -478,6 +482,14 @@ export const plugins = {
     UploadResourcePlugin: toModulePlugin(
         'UploadResource',
         () => import(/* webpackChunkName: 'plugins/upload-operation' */ '@js/plugins/UploadResource')
+    ),
+    MapEditorPlugin: toModulePlugin(
+        'MapEditor',
+        () => import(/* webpackChunkName: 'plugins/map-editor' */ '@mapstore/framework/plugins/MapEditor')
+    ),
+    DynamicLegendPlugin: toModulePlugin(
+        'DynamicLegend',
+        () => import(/* webpackChunkName: 'plugins/dynamic-legend' */ '@mapstore/framework/plugins/DynamicLegend')
     )
 };
 

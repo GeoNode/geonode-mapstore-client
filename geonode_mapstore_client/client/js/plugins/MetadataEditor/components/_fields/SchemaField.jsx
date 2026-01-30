@@ -15,6 +15,7 @@ import template from 'lodash/template';
 import Autocomplete from '../Autocomplete';
 import DefaultSchemaField from '@rjsf/core/lib/components/fields/SchemaField';
 import useSchemaReference from './useSchemaReference';
+import TextWidgetMultiLang from '../_widgets/TextWidgetMultiLang';
 
 function findProperty(name, properties) {
     return Object.keys(properties || {}).some((key) => {
@@ -42,6 +43,7 @@ function shouldHideLabel({
  * - Fallback to the default `SchemaField` from `@rjsf` when no custom rendering is needed.
  */
 const SchemaField = (props) => {
+
     const {
         onChange,
         schema,
@@ -53,6 +55,8 @@ const SchemaField = (props) => {
         required,
         formContext
     } = props;
+
+    const uiWidget = uiSchema?.['ui:widget']?.toLowerCase();
     const uiOptions = uiSchema?.['ui:options'];
     const autocomplete = uiOptions?.['geonode-ui:autocomplete'];
     const isSchemaItemString = schema?.items?.type === 'string';
@@ -177,6 +181,11 @@ const SchemaField = (props) => {
         };
 
         return <Autocomplete {...autoCompleteProps}/>;
+    }
+
+    // this override ObjectFieldTemplate
+    if (uiWidget === 'textwidgetmultilang') {
+        return <TextWidgetMultiLang {...props} />;
     }
 
     const hideLabel = shouldHideLabel(props);

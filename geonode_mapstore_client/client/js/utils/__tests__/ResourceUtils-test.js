@@ -17,7 +17,6 @@ import {
     setAvailableResourceTypes,
     getGeoNodeMapLayers,
     toGeoNodeMapConfig,
-    compareBackgroundLayers,
     toMapStoreMapConfig,
     parseStyleName,
     canCopyResource,
@@ -198,9 +197,6 @@ describe('Test Resource Utils', () => {
         const geoNodeMapConfig = toGeoNodeMapConfig(data, mapState);
         expect(geoNodeMapConfig.maplayers.length).toBe(1);
     });
-    it('should be able to compare background layers with different ids', () => {
-        expect(compareBackgroundLayers({ type: 'osm', source: 'osm', id: '11' }, { type: 'osm', source: 'osm' })).toBe(true);
-    });
     it('should transform a resource to a mapstore map config', () => {
         const resource = {
             maplayers: [
@@ -249,7 +245,7 @@ describe('Test Resource Utils', () => {
                 map: {
                     sources: {},
                     layers: [
-                        { type: 'osm', source: 'osm', group: 'background', visibility: true },
+                        { id: '01', type: 'osm', source: 'osm', group: 'background', visibility: true },
                         { id: '02', type: 'vector', features: [] },
                         {
                             id: '03',
@@ -327,7 +323,7 @@ describe('Test Resource Utils', () => {
                 map: {
                     sources: {},
                     layers: [
-                        { type: 'osm', source: 'osm', group: 'background', visibility: true },
+                        { id: '01', type: 'osm', source: 'osm', group: 'background', visibility: true },
                         { id: '02', type: 'vector', features: [] },
                         {
                             id: '03',
@@ -354,7 +350,7 @@ describe('Test Resource Utils', () => {
             }
         );
     });
-    it('should transform a resource to a mapstore map config and update backgrounds', () => {
+    it('should transform a resource to a mapstore map config and to not update backgrounds', () => {
         const resource = {
             maplayers: [
                 {
@@ -410,12 +406,11 @@ describe('Test Resource Utils', () => {
                     sources: {},
                     layers: [
                         {
-                            name: 'OpenTopoMap',
-                            provider: 'OpenTopoMap',
-                            source: 'OpenTopoMap',
-                            type: 'tileprovider',
-                            visibility: true,
-                            group: 'background'
+                            id: '01',
+                            type: 'osm',
+                            source: 'osm',
+                            group: 'background',
+                            visibility: true
                         },
                         { id: '02', type: 'vector', features: [] },
                         {
@@ -492,8 +487,8 @@ describe('Test Resource Utils', () => {
         const mapStoreMapConfig = toMapStoreMapConfig(resource, baseConfig);
         expect(mapStoreMapConfig).toBeTruthy();
         const layers = mapStoreMapConfig.map.layers;
-        expect(layers.length).toBe(2);
-        expect(layers[1].featureInfo).toEqual({ template, format: FEATURE_INFO_FORMAT });
+        expect(layers.length).toBe(1);
+        expect(layers[0].featureInfo).toEqual({ template, format: FEATURE_INFO_FORMAT });
     });
 
     it('should parse style name into accepted format', () => {

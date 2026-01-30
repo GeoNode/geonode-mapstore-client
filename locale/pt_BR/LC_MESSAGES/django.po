@@ -1,0 +1,108 @@
+# PT-BR PORTABLE OBJECT FOR GEONODE_MAPSTORE_CLIENT
+# This file is distributed under the same license as the PACKAGE package.
+# CARLOS EDUARDO MOTA <CARLOS.MOTA@SGB.GOV.BR>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-01-22 12:32+0100\n"
+"PO-Revision-Date: 2025-11-11 12:44-0300\n"
+"Last-Translator: Carlos Eduardo Mota <carlos.mota@sgb.gov.br>\n"
+"Language-Team: Geonode BR \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#: mapstore2_adapter/api/models.py:74
+msgid "String"
+msgstr "Texto"
+
+#: mapstore2_adapter/api/models.py:75
+msgid "Number"
+msgstr "Número"
+
+#: mapstore2_adapter/api/models.py:76
+msgid "Integer"
+msgstr "Inteiro"
+
+#: mapstore2_adapter/api/models.py:77
+msgid "Boolean"
+msgstr "Booleano"
+
+#: mapstore2_adapter/api/models.py:78
+msgid "Binary"
+msgstr "Binário"
+
+#: mapstore2_adapter/apps.py:30
+msgid "Django MapStore2 Adapter"
+msgstr "Adaptador Django MapStore2"
+
+#: mapstore2_adapter/geoapps/apps.py:28
+msgid "MapStore2 Geonode Apps Plugins"
+msgstr "Plugins de App MapStore2 Geonode"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:32
+msgid "GeoStory Created"
+msgstr "GeoStory Criado"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:32
+msgid "A GeoStory was created"
+msgstr "Um GeoStory foi criado"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:33
+msgid "GeoStory Updated"
+msgstr "GeoStory Atualizado"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:33
+msgid "A GeoStory was updated"
+msgstr "Um GeoStory foi atualizado"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:34
+msgid "GeoStory Approved"
+msgstr "GeoStory Aprovado"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:34
+msgid "A GeoStory was approved by a Manager"
+msgstr "Um GeoStory foi aprovado por um Gerente"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:35
+msgid "GeoStory Published"
+msgstr "GeoStory Publicado"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:35
+msgid "A GeoStory was published"
+msgstr "Um GeoStory foi publicado"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:36
+msgid "GeoStory Deleted"
+msgstr "GeoStory Apagado"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:36
+msgid "A GeoStory was deleted"
+msgstr "Um GeoStory foi apagado"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:37
+msgid "Comment on GeoStory"
+msgstr "Comentários no GeoStory"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:37
+msgid "A GeoStory was commented on"
+msgstr "Um GeoStory foi comentado em"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:38
+msgid "Rating for GeoStory"
+msgstr "Avaliação para o GeoStory"
+
+#: mapstore2_adapter/geoapps/geostories/__init__.py:38
+msgid "A rating was given to a GeoStory"
+msgstr "Uma avaliação foi dada a um GeoStory"
+
+#: mapstore2_adapter/geoapps/geostories/models.py:36
+#, python-format
+msgid "%s Type"
+msgstr "Tipo %s"
