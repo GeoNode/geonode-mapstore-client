@@ -361,6 +361,13 @@
       }
     },
     {
+      "name": "CameraPosition",
+      "glyph": "camera",
+      "title": "plugins.CameraPosition.title",
+      "description": "plugins.CameraPosition.description",
+      "dependencies": ["MapFooter"]
+    },
+    {
       "name": "Swipe"
     },
     {
