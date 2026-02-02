@@ -66,6 +66,13 @@
     .page-header {
         .border-color-var(@theme-vars[main-border-color]);
     }
+
+    .gn-pending-changes-icon, 
+    .gn-success-changes-icon {
+        &::after {
+            .background-color-var(@theme-vars[warning]);
+        }
+    }
 }
 
 // **************
