@@ -19,13 +19,13 @@ import { requestResourceConfig, requestNewResourceConfig } from '@js/actions/gnr
 import MetaTags from '@js/components/MetaTags';
 import MainEventView from '@js/components/MainEventView';
 import { createShallowSelector } from '@mapstore/framework/utils/ReselectUtils';
-import { checkIfGeometryAttributeIsNull, getResourceImageSource } from '@js/utils/ResourceUtils';
+import { getResourceImageSource } from '@js/utils/ResourceUtils';
 import useModulePlugins from '@mapstore/framework/hooks/useModulePlugins';
 import { getPlugins } from '@mapstore/framework/utils/ModulePluginsUtils';
-import { updateMapLayout } from '@mapstore/framework/actions/maplayout';
-import MapViewerLayout from '@mapstore/framework/components/layout/MapViewerLayout';
+import MapViewerLayout from '@mapstore/framework/containers/MapViewerLayout';
 
 const urlQuery = url.parse(window.location.href, true).query;
+const DATASET_VIEWER = 'dataset_viewer';
 
 const ConnectedPluginsContainer = connect(
     createShallowSelector(
@@ -56,6 +56,15 @@ function getPluginsConfiguration(name, pluginsConfig) {
     return pluginsConfig[name] || DEFAULT_PLUGINS_CONFIG;
 }
 
+function getPluginName(name, options = {}) {
+    const { hasNoGeometry } = options;
+    const isDatasetViewer = name === DATASET_VIEWER;
+    if (isDatasetViewer && typeof hasNoGeometry === 'boolean' && hasNoGeometry) {
+        return `${name}_non_spatial`;
+    }
+    return name;
+}
+
 function ViewerRoute({
     name,
     pluginsConfig: propPluginsConfig,
@@ -72,20 +81,13 @@ function ViewerRoute({
     configError,
     loaderStyle,
     loading: isResourceLoading,
-    mapLayout,
-    onContentResize,
     datasetEditPermissionError
 }) {
     const { pk } = match.params || {};
     
-    const isDatasetViewer = name === 'dataset_viewer';
-    // do not resolve plugins configuration while the resource is still loading;
-    const hasDatasetResource = !isDatasetViewer || resource;
-    const shouldInitPlugins = !isResourceLoading && hasDatasetResource;
-    // determine the plugins name based on the resource type and if it has no geometry
-    const pluginsName = isDatasetViewer
-        ? (resource?.hasNoGeometry ? 'dataset_viewer_non_spatial' : 'dataset_viewer')
-        : name;
+    // determine the plugins name based on the view, resource type and geometry field
+    const pluginsName = getPluginName(name, { hasNoGeometry: resource?.hasNoGeometry });
+    const shouldInitPlugins = !isResourceLoading && (resource || name === DATASET_VIEWER);
     // get the plugins configuration
     const pluginsConfig = shouldInitPlugins
         ? getPluginsConfiguration(pluginsName, propPluginsConfig)
@@ -129,22 +131,6 @@ function ViewerRoute({
     const Loader = loaderComponent;
     const className = `page-${resourceType || name}-viewer page-viewer`;
 
-    const handleContentResize = (changed) => {
-        if (changed.bottom !== undefined) {
-            const bottomOffset = Math.max(0, changed.bottom - 35);
-            const {boundingMapRect, layout, boundingSidebarRect} = mapLayout;
-
-            onContentResize({
-                ...layout,
-                ...boundingSidebarRect,
-                boundingMapRect: {
-                    ...boundingMapRect,
-                    bottom: bottomOffset
-                }
-            });
-        }
-    };
-
     return (
         <>
             {resource && <MetaTags
@@ -158,7 +144,7 @@ function ViewerRoute({
                 key={className}
                 id={className}
                 className={className}
-                component={(props) => <MapViewerLayout {...props} onResize={handleContentResize} />}
+                component={MapViewerLayout}
                 pluginsConfig={pluginsConfig}
                 plugins={parsedPlugins}
                 allPlugins={plugins}
@@ -181,21 +167,18 @@ const ConnectedViewerRoute = connect(
         state => state?.gnresource?.loadingResourceConfig,
         state => state?.gnresource?.configError,
         state => state?.gnresource?.loading,
-        state => state?.maplayout,
         state => state?.gnresource?.datasetEditPermissionError
-    ], (resource, siteName, loadingConfig, configError, loading, mapLayout, datasetEditPermissionError) => ({
+    ], (resource, siteName, loadingConfig, configError, loading, datasetEditPermissionError) => ({
         resource,
         siteName,
         loadingConfig,
         configError,
         loading,
-        mapLayout,
         datasetEditPermissionError
     })),
     {
         onUpdate: requestResourceConfig,
-        onCreate: requestNewResourceConfig,
-        onContentResize: updateMapLayout
+        onCreate: requestNewResourceConfig
 
     }
 )(ViewerRoute);

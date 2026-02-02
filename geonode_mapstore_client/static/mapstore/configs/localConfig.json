@@ -1818,7 +1818,8 @@
                             }
                         }
                     }
-                }
+                },
+                "containerPosition": "background"
             },
             {
                 "name": "DownloadResource",
@@ -2276,7 +2277,8 @@
                 "name": "FeatureEditor",
                 "cfg": {
                     "primaryKeyAttributes": ["fid"],
-                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                    "containerPosition": "bottom"
                 }
             },
             {
@@ -3475,14 +3477,6 @@
             },
             {
                 "name": "MetadataViewer"
-            },
-            {
-                "name": "FeatureEditor",
-                "cfg": {
-                    "hideCloseButton": true,
-                    "hideLayerTitle": true,
-                    "primaryKeyAttributes": ["fid"]
-                }
             }
         ],
         "geostory_viewer_mobile": [
