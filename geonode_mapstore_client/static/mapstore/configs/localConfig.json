@@ -2122,7 +2122,7 @@
                 "mandatory": true,
                 "name": "LayerDetailViewer",
                 "cfg": {
-                    "containerPosition": "rightOverlay",
+                    "containerPosition": "rightColumn",
                     "tabs": [
                         {
                             "type": "tab",
