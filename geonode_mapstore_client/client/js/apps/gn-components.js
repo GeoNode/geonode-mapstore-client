@@ -8,7 +8,6 @@
 import { connect } from 'react-redux';
 import main from '@mapstore/framework/components/app/main';
 import ComponentsRoute from '@js/routes/Components';
-import MainLoader from '@js/components/MainLoader';
 import Router, { withRoutes } from '@js/components/Router';
 import security from '@mapstore/framework/reducers/security';
 import {
