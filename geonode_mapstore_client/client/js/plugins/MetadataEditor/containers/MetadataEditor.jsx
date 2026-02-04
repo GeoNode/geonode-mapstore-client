@@ -231,7 +231,7 @@ function MetadataEditor({
                     readonly={readOnly}
                     ref={initialize.current}
                     formContext={{
-                        title: metadata.title || metadataMultiLang.title.en || getMessageById(messages, 'gnviewer.metadataEditorTitle'),
+                        title: metadata.title || metadataMultiLang.title?.en || getMessageById(messages, 'gnviewer.metadataEditorTitle'),
                         metadata: metadataMultiLang,
                         capitalizeTitle: capitalizeFieldTitle,
                         messages
