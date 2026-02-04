@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             appComponent: withRoutes(routes)(ConnectedRouter),
                             pluginsConfig: getPluginsConfigOverride(getPluginsConfiguration(localConfig.plugins, pluginsConfigKey)),
                             targetId: 'ms-container',
-                            loaderComponent: MainLoader,
+                            loaderComponent: ()=> null,
                             pluginsDef: {
                                 plugins: {
                                     ...pluginsDefinition.plugins
