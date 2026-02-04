@@ -33,7 +33,7 @@ import {
     deleteResourceThumbnail,
     updateResourceExtent
 } from '@js/api/geonode/v2';
-import { configureMap } from '@mapstore/framework/actions/config';
+import { configureMap, MAP_CONFIG_LOADED } from '@mapstore/framework/actions/config';
 import { isMapInfoOpen } from '@mapstore/framework/selectors/mapInfo';
 import { isLoggedIn, userSelector } from '@mapstore/framework/selectors/security';
 import {
@@ -140,7 +140,6 @@ import { forceUpdateMapLayout } from '@mapstore/framework/actions/maplayout';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import { searchSelector } from '@mapstore/framework/selectors/router';
 import { CREATE_BACKGROUNDS_LIST, allowBackgroundsDeletion } from '@mapstore/framework/actions/backgroundselector';
-import { MAP_CONFIG_LOADED } from '@mapstore/framework/actions/config';
 import { setCanEditProjection } from '@mapstore/framework/actions/crsselector';
 
 const FIT_BOUNDS_CONTROL = 'fitBounds';
