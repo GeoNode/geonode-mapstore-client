@@ -146,6 +146,9 @@
 
         {% block override_settings %}
         {% endblock %}
+        
+        window.MAPSTORE_STORAGE_NAMESPACE = '';
+
         window.__GEONODE_CONFIG__ = {
             languageCode: '{{ LANGUAGE_CODE }}',
             languages: languages,
