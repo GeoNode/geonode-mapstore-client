@@ -140,6 +140,8 @@ import { forceUpdateMapLayout } from '@mapstore/framework/actions/maplayout';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import { searchSelector } from '@mapstore/framework/selectors/router';
 import { CREATE_BACKGROUNDS_LIST, allowBackgroundsDeletion } from '@mapstore/framework/actions/backgroundselector';
+import { MAP_CONFIG_LOADED } from '@mapstore/framework/actions/config';
+import { setCanEditProjection } from '@mapstore/framework/actions/crsselector';
 
 const FIT_BOUNDS_CONTROL = 'fitBounds';
 
@@ -899,6 +901,16 @@ export const gnUpdateBackgroundEditEpic = (action$, store) =>
             );
         });
 
+export const gnUpdateEditProjectionEpic = (action$, store) =>
+    action$.ofType(MAP_CONFIG_LOADED)
+        .switchMap(() => {
+            const state = store.getState();
+            const resource = state.gnresource?.data || {};
+            const resourceType = state.gnresource?.type;
+            const canEdit = resourceType === ResourceTypes.MAP && (resource?.perms?.includes('change_resourcebase') || state.gnresource?.isNew);
+            return Observable.of(setCanEditProjection(canEdit));
+        });
+
 export default {
     gnViewerRequestNewResourceConfig,
     gnViewerRequestResourceConfig,
@@ -911,5 +923,6 @@ export default {
     gnManageLinkedResource,
     gnZoomToFitBounds,
     gnSelectResourceEpic,
-    gnUpdateResourceExtent
+    gnUpdateResourceExtent,
+    gnUpdateEditProjectionEpic
 };
