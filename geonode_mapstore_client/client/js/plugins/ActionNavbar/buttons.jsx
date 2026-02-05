@@ -172,7 +172,7 @@ export const FilterLayerActionButton = connect(
     return (
         <Button
             variant={variant}
-            className={active ? 'gn-success-changes-icon' : ''}
+            className={active ? 'ms-notification-circle warning' : ''}
             size={size}
             onClick={() => onClick()}
         >
