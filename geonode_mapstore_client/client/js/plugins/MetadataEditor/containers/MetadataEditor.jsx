@@ -103,6 +103,63 @@ function MetadataEditor({
         return null;
     }
 
+    /*
+     * tranform schema to multilang schema, by `geonode:multilang-group` property
+     * {
+     *   'title': {
+     *       "type": "object",
+     *       "title": "Title multilanguage",
+     *       "description": "same title object for multiple languages",
+     *       "properties": {
+     *           "en": {"type": "string" ...},
+     *           "hy": {"type": "string" ...},
+     *           "ru": {"type": "string" ...}
+     *       }
+     *   }
+    * @param {*} schema
+    * @param {*} uiSchemaMultiLang
+    */
+    function schemaToMultiLang(schemaSingleLang, uiSchemaSingleLang) {
+        const uiSchemaMultiLang = { ...uiSchemaSingleLang };
+        const schemaMultiLang = {
+            ...schemaSingleLang,
+            properties: Object.keys(schemaSingleLang?.properties || {}).reduce((acc, key) => {
+                const property = { ...schemaSingleLang.properties[key] };
+                if (property?.['geonode:multilang']) {
+                    const newProperty = {
+                        ...property,
+                        type: 'object',
+                        properties: {},
+                        'ui:widget': "TextWidgetMultiLang",
+                        'ui:options': {}
+                    };
+                    delete newProperty.maxLength;
+                    acc[key] = newProperty;
+                    // set custom widget for multilang text
+                    uiSchemaMultiLang[key] = {
+                        "ui:widget": "TextWidgetMultiLang"
+                    };
+                } else if (property?.['geonode:multilang-group']) {
+                    const groupKey = property['geonode:multilang-group'];
+                    const itemLang = property['geonode:multilang-lang'];
+                    acc[groupKey].properties[itemLang] = property;
+                    acc[groupKey]['ui:options'] = {
+                        ...acc[groupKey]['ui:options'],
+                        widget: property['ui:options']?.widget
+                    };
+                } else {
+                    acc[key] = property;
+                }
+                return acc;
+            }, {})
+        };
+        return { schemaMultiLang, uiSchemaMultiLang };
+    }
+
+    const {schemaMultiLang, uiSchemaMultiLang} = schemaToMultiLang(schema, uiSchema);
+    const metadataMultiLang = metadataToMultiLang(metadata, schema);
+    const defaultTitle = getMessageById(messages, 'gnviewer.metadataEditorTitle');
+
     return (
         <div className="gn-metadata">
             <div className="gn-metadata-header">
@@ -117,9 +174,10 @@ function MetadataEditor({
                     readonly={readOnly}
                     ref={initialize.current}
                     formContext={{
-                        title: metadata?.title,
-                        metadata,
-                        capitalizeTitle: capitalizeFieldTitle
+                        title: metadata.title || metadataMultiLang.title?.en || Object.values(metadataMultiLang.title || {})[0] || defaultTitle,
+                        metadata: metadataMultiLang,
+                        capitalizeTitle: capitalizeFieldTitle,
+                        messages
                     }}
                     schema={schema}
                     widgets={widgets}
