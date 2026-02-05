@@ -18,11 +18,11 @@ import PluginsContainer from '@mapstore/framework/components/plugins/PluginsCont
 import { requestResourceConfig, requestNewResourceConfig } from '@js/actions/gnresource';
 import MetaTags from '@js/components/MetaTags';
 import MainEventView from '@js/components/MainEventView';
-import ViewerLayout from '@js/components/ViewerLayout';
 import { createShallowSelector } from '@mapstore/framework/utils/ReselectUtils';
 import { getResourceImageSource } from '@js/utils/ResourceUtils';
 import useModulePlugins from '@mapstore/framework/hooks/useModulePlugins';
 import { getPlugins } from '@mapstore/framework/utils/ModulePluginsUtils';
+import MapViewerLayout from '@mapstore/framework/containers/MapViewerLayout';
 
 const urlQuery = url.parse(window.location.href, true).query;
 
@@ -127,7 +127,7 @@ function ViewerRoute({
                 key={className}
                 id={className}
                 className={className}
-                component={ViewerLayout}
+                component={MapViewerLayout}
                 pluginsConfig={pluginsConfig}
                 plugins={parsedPlugins}
                 allPlugins={plugins}
