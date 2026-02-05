@@ -66,6 +66,10 @@
     .page-header {
         .border-color-var(@theme-vars[main-border-color]);
     }
+
+    .gn-overlay-wrapper {
+        .background-color-var(@theme-vars[main-bg]);
+    }
 }
 
 // **************
@@ -227,7 +231,11 @@ div.chart-color-class-modal {
 }
 
 .gn-overlay-wrapper {
-    width: 640px
+    width: 640px;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    z-index: 1100;
 }
 
 .gn-viewer-right-overlay {

@@ -118,7 +118,13 @@ export const plugins = {
                             position: 1,
                             target: 'right-menu'
                         }
-                    ]
+                    ],
+                    ResourceDetails: {
+                        name: 'LayerDownload',
+                        Component: LayerDownloadActionButton,
+                        target: 'toolbar',
+                        position: 1
+                    }
                 }
             }
         }

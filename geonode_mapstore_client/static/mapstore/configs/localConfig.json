@@ -2452,7 +2452,6 @@
                 "mandatory": true,
                 "name": "LayerDetailViewer",
                 "cfg": {
-                    "containerPosition": "rightOverlay",
                     "tabs": [
                         {
                             "type": "tab",

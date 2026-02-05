@@ -831,12 +831,26 @@ export const getResourceImageSource = (image) => {
     return image ? image : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAADICAIAAABZHvsFAAAACXBIWXMAAC4jAAAuIwF4pT92AAABiklEQVR42u3SAQ0AAAjDMMC/5+MAAaSVsKyTFHwxEmBoMDQYGgyNocHQYGgwNBgaQ4OhwdBgaDA0hgZDg6HB0GBoDA2GBkODocHQGBoMDYYGQ4OhMTQYGgwNhgZDY2gwNBgaDI2hwdBgaDA0GBpDg6HB0GBoMDSGBkODocHQYGgMDYYGQ4OhwdAYGgwNhgZDg6ExNBgaDA2GBkNjaDA0GBoMDYbG0GBoMDQYGkODocHQYGgwNIYGQ4OhwdBgaAwNhgZDg6HB0BgaDA2GBkODoTE0GBoMDYYGQ2NoMDQYGgwNhsbQYGgwNBgaQ4OhwdBgaDA0hgZDg6HB0GBoDA2GBkODocHQGBoMDYYGQ4OhMTQYGgwNhgZDY2gwNBgaDA2GxtBgaDA0GBoMjaHB0GBoMDSGBkODocHQYGgMDYYGQ4OhwdAYGgwNhgZDg6ExNBgaDA2GBkNjaDA0GBoMDYbG0GBoMDQYGgyNocHQYGgwNIYGQ4OhwdBgaAwNhgZDg6HB0BgaDA2GBkPDbQH4OQSN0W8qegAAAABJRU5ErkJggg==';
 };
 
+export const hasDefaultDownload = (resource) => {
+    return !isEmpty(resource?.download_urls) && resource.download_urls.some((d) => d.default);
+};
+
 export const getDownloadUrlInfo = (resource) => {
     const hrefUrl = { url: resource?.href, ajaxSafe: false };
     if (isDocumentExternalSource(resource)) {
         return hrefUrl;
     }
-    if (!isEmpty(resource?.download_urls)) {
+    const downloadUrls = resource?.download_urls ?? [];
+    if (!isEmpty(downloadUrls)) {
+
+        // For datasets, use only default download url
+        if (resource?.resource_type === ResourceTypes.DATASET) {
+            const downloadData = downloadUrls.find((d) => d.default);
+            const _url = !isEmpty(downloadData) ? downloadData.url : null;
+            const ajaxSafe = !isEmpty(downloadData) ? downloadData.ajax_safe : false;
+            return { url: _url, ajaxSafe };
+        }
+
         const downloadData = resource.download_urls.length === 1
             ? resource.download_urls[0]
             : resource.download_urls.find((d) => d.default);
