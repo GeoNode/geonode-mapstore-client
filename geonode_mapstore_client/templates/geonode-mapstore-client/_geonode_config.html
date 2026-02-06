@@ -146,6 +146,10 @@
 
         {% block override_settings %}
         {% endblock %}
+        
+        // Prevents MapStore from creating a new localStorage namespace on each page load.
+        window.MAPSTORE_STORAGE_NAMESPACE = '';
+
         window.__GEONODE_CONFIG__ = {
             languageCode: '{{ LANGUAGE_CODE }}',
             languages: languages,

@@ -8,7 +8,6 @@
 import { connect } from 'react-redux';
 import main from '@mapstore/framework/components/app/main';
 import ComponentsRoute from '@js/routes/Components';
-import MainLoader from '@js/components/MainLoader';
 import Router, { withRoutes } from '@js/components/Router';
 import security from '@mapstore/framework/reducers/security';
 import {
@@ -87,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             appComponent: withRoutes(routes)(ConnectedRouter),
                             pluginsConfig: getPluginsConfigOverride(getPluginsConfiguration(localConfig.plugins, pluginsConfigKey)),
                             targetId: 'ms-container',
-                            loaderComponent: MainLoader,
+                            loaderComponent: ()=> null,
                             pluginsDef: {
                                 plugins: {
                                     ...pluginsDefinition.plugins

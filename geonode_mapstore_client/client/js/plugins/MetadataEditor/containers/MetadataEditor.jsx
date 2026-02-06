@@ -216,6 +216,7 @@ function MetadataEditor({
 
     const {schemaMultiLang, uiSchemaMultiLang} = schemaToMultiLang(schema, uiSchema);
     const metadataMultiLang = metadataToMultiLang(metadata, schema);
+    const defaultTitle = getMessageById(messages, 'gnviewer.metadataEditorTitle');
 
     return (
         <div className="gn-metadata">
@@ -231,7 +232,7 @@ function MetadataEditor({
                     readonly={readOnly}
                     ref={initialize.current}
                     formContext={{
-                        title: metadata.title || metadataMultiLang.title.en || getMessageById(messages, 'gnviewer.metadataEditorTitle'),
+                        title: metadata.title || metadataMultiLang.title?.en || Object.values(metadataMultiLang.title || {})[0] || defaultTitle,
                         metadata: metadataMultiLang,
                         capitalizeTitle: capitalizeFieldTitle,
                         messages
