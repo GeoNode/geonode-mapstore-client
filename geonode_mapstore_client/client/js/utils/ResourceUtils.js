@@ -977,3 +977,16 @@ export const canAccessPermissions = (resource) => {
     const { perms } = resource || {};
     return perms?.includes('change_resourcebase_permissions');
 };
+
+/**
+ * Check if the resource can be edited (for map resources)
+ * @param {Object} gnresource - The state of the resource
+ * @param {Object} options - The options for the check
+ * @param {boolean} options.isNewCheck - True if the check should be done for a new resource, false otherwise
+ * @returns {boolean} - True if the resource can be edited, false otherwise
+ */
+export const canEditMap = (gnresource, { isNewCheck = false } = {}) => {
+    const { data = {}, type, isNew } = gnresource;
+    const hasEditPermission = data?.perms?.includes('change_resourcebase');
+    return type === ResourceTypes.MAP && (hasEditPermission || (isNewCheck && isNew)) ? true : false;
+};

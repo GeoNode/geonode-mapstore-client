@@ -17,7 +17,8 @@ import {
     gnZoomToFitBounds,
     closeResourceDetailsOnMapInfoOpen,
     gnUpdateResourceExtent,
-    gnUpdateBackgroundEditEpic
+    gnUpdateBackgroundEditEpic,
+    gnUpdateEditProjectionEpic
 } from '@js/epics/gnresource';
 import { SAVE_SUCCESS } from '@mapstore/framework/actions/featuregrid';
 import {
@@ -35,6 +36,7 @@ import {
 import { newMapInfoRequest } from '@mapstore/framework/actions/mapInfo';
 import { SET_SHOW_DETAILS } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
 import { CREATE_BACKGROUNDS_LIST } from '@mapstore/framework/actions/backgroundselector';
+import { MAP_CONFIG_LOADED } from '@mapstore/framework/actions/config';
 
 let mockAxios;
 
@@ -369,6 +371,35 @@ describe('gnresource epics', () => {
                 try {
                     expect(actions.length).toBe(1);
                     expect(actions[0].resource.canEdit).toBe(true);
+                } catch (e) {
+                    done(e);
+                }
+                done();
+            },
+            testState
+        );
+    });
+    it('should set canEdit projection false for MAP resource without change_resourcebase permission', (done) => {
+        const NUM_ACTIONS = 1;
+        const testState = {
+            gnresource: {
+                type: "map",
+                data: {
+                    pk: 1,
+                    title: 'Test Map',
+                    perms: ['view_resourcebase']
+                }
+            }
+        };
+
+        testEpic(
+            gnUpdateEditProjectionEpic,
+            NUM_ACTIONS,
+            { type: MAP_CONFIG_LOADED },
+            (actions) => {
+                try {
+                    expect(actions.length).toBe(1);
+                    expect(actions[0].canEdit).toBe(false);
                 } catch (e) {
                     done(e);
                 }

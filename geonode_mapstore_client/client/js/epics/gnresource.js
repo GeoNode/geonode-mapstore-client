@@ -98,7 +98,8 @@ import {
     toMapStoreMapConfig,
     getCataloguePath,
     isDefaultDatasetSubtype,
-    resourceHasPermission
+    resourceHasPermission,
+    canEditMap
 } from '@js/utils/ResourceUtils';
 import {
     canAddResource,
@@ -891,9 +892,7 @@ export const gnUpdateBackgroundEditEpic = (action$, store) =>
     action$.ofType(CREATE_BACKGROUNDS_LIST)
         .switchMap(() => {
             const state = store.getState();
-            const resource = state.gnresource?.data || {};
-            const resourceType = state.gnresource?.type;
-            const canEdit = resourceType === ResourceTypes.MAP && resource?.perms?.includes('change_resourcebase') ? true : false;
+            const canEdit = canEditMap(state.gnresource);
             return Observable.of(
                 setResourceContext({ canEdit }),
                 ...(canEdit ? [allowBackgroundsDeletion(true)] : [])
@@ -904,9 +903,7 @@ export const gnUpdateEditProjectionEpic = (action$, store) =>
     action$.ofType(MAP_CONFIG_LOADED)
         .switchMap(() => {
             const state = store.getState();
-            const resource = state.gnresource?.data || {};
-            const resourceType = state.gnresource?.type;
-            const canEdit = resourceType === ResourceTypes.MAP && (resource?.perms?.includes('change_resourcebase') || state.gnresource?.isNew);
+            const canEdit = canEditMap(state.gnresource, { isNewCheck: true });
             return Observable.of(setCanEditProjection(canEdit));
         });
 

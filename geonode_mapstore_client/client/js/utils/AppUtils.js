@@ -321,7 +321,6 @@ export function setupConfiguration({
             settings: localConfig.geoNodeSettings,
             MapStoreAPI: window.MapStoreAPI,
             onStoreInit: (store) => {
-                if (!store.addActionListener) return;
                 store.addActionListener((action) => {
                     const act = action.type === 'PERFORM_ACTION' && action.action || action; // Needed to works also in debug
                     (actionListeners[act.type] || [])
