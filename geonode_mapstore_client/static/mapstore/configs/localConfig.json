@@ -727,7 +727,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition": "background"
                 }
             },
             {
@@ -1247,6 +1248,331 @@
                 "name": "MetadataViewer"
             },
             {
+                "name": "FeatureEditor",
+                "cfg": {
+                    "hideCloseButton": true,
+                    "hideLayerTitle": true,
+                    "primaryKeyAttributes": ["fid"]
+                }
+            },
+            {
+                "name": "ExecutionTracker",
+                "cfg": {
+                    "containerPosition": "header"
+                }
+            }
+        ],
+        "dataset_viewer_non_spatial": [
+            {
+                "name": "ActionNavbar",
+                "cfg": {
+                    "containerPosition": "header",
+                    "leftMenuItems": [
+                        {
+                            "type": "plugin",
+                            "size": "md",
+                            "name": "ResourceDetailsButton"
+                        },
+                        {
+                            "labelId": "gnviewer.resource",
+                            "showPendingChangesIcon": true,
+                            "type": "dropdown",
+                            "disableIf": "{!(context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') || context.canCopyResource(state('gnResourceData'), state('user')) || context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase'))}",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "Save",
+                                    "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "SaveAs",
+                                    "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user')) || (!state('selectedLayerPermissions').includes('download_resourcebase') || !context.resourceHasPermission(state('gnResourceData'), 'download_resourcebase'))}"
+                                },
+                                {
+                                    "type": "divider",
+                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "DeleteResource",
+                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                }
+                            ]
+                        },
+                        {
+                            "labelId": "gnviewer.view",
+                            "type": "dropdown",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "ResourceDetailsButton"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "MetadataViewer"
+                                }
+                            ]
+                        },
+                        {
+                            "labelId": "gnviewer.edit",
+                            "type": "dropdown",
+                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "EditDataActionButton",
+                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
+                                    "labelId": "gnviewer.editMetadata"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "OperationUploadMetadata",
+                                    "disableIf": "{state('gnResourceData').subtype === '3dtiles'}"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "OperationReplaceDataset",
+                                    "disableIf": "{state('gnResourceData').sourcetype === '3dtiles'}"
+                                }
+                            ]
+                        },
+                        {
+                            "labelId": "gnviewer.download",
+                            "type": "dropdown",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "DownloadResource"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "LayerDownload"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "IsoDownload"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "ShareActionButton",
+                            "disableIf": "{state('isNewResource') || (!state('isNewResource') && !context.canAccessPermissions(state('gnResourceData')))}"
+                        },
+                        {
+                            "type": "divider",
+                            "disableIf": "{state('isNewResource')}"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "FilterLayer"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "SaveAs",
+                "cfg": {
+                    "disablePermission": true
+                }
+            },
+            {
+                "name": "Save",
+                "cfg": {
+                    "disablePermission": true
+                }
+            },
+            {
+                "name": "ResourceDetails",
+                "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
+                    "containerPosition": "header",
+                    "defaultOpen": true,
+                    "closeOnClickOut": true
+                }
+            },
+            {
+                "name": "DeleteResource",
+                "cfg": {
+                    "redirectTo": "/"
+                }
+            },
+            {
+                "name": "DownloadResource",
+                "cfg": {
+                    "downloadMsgId": "gnhome.dataset",
+                    "tooltipId": "gnviewer.download",
+                    "allowedSources": ["LOCAL"]
+                }
+            },
+            {
+                "name": "Toolbar",
+                "id": "NavigationBar",
+                "cfg": {
+                    "id": "navigationBar",
+                    "layout": "horizontal"
+                }
+            },
+            {
+                "name": "IsoDownload"
+            },
+            {
+                "name": "LayerDownload",
+                "cfg": {
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                    "hideServiceSelector": true,
+                    "defaultSelectedService": "wps",
+                    "formats": [
+                        {
+                            "name": "text/csv",
+                            "label": "CSV",
+                            "type": "vector",
+                            "validServices": [
+                                "wps"
+                            ]
+                        },
+                        {
+                            "name": "application/vnd.ms-excel",
+                            "label": "Excel",
+                            "type": "vector",
+                            "validServices": [
+                                "wps"
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "QueryPanel",
+                "cfg": {
+                    "activateQueryTool": true,
+                    "toolsOptions": {
+                        "hideCrossLayer": true,
+                        "hideSpatialFilter": true
+                    }
+                }
+            },
+            {
+                "name": "Notifications"
+            },
+            {
+                "name": "Operation",
+                "cfg": {
+                    "id": "upload-metadata",
+                    "labelId": "gnviewer.metadataUpload",
+                    "containerPosition": "header",
+                    "iconName": "code",
+                    "titleMsgId": "gnviewer.uploadDatasetMetadata",
+                    "blocking": true,
+                    "action": "resource_metadata_upload",
+                    "pageReload": true,
+                    "api": {
+                        "upload": {
+                            "url": "{context.getEndpointUrl('uploads', '/upload')}",
+                            "maxParallelUploads": 1,
+                            "body": {
+                                "file": {
+                                    "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
+                                    "base_file": "{context.getUploadMainFile}",
+                                    "action": "resource_metadata_upload"
+                                }
+                            },
+                            "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['resource_metadata_upload'] })}"
+                        },
+                        "executionRequest": {
+                            "url": "{context.getEndpointUrl('executionrequest')}",
+                            "params": {
+                                "filter{action}": "resource_metadata_upload",
+                                "sort[]": "-created",
+                                "filter{geonode_resource}": "{context.get(state('gnResourceData'), 'pk')}"
+                            }
+                        }
+                    }
+                },
+                "override": {
+                    "ActionNavbar": {
+                        "name": "OperationUploadMetadata"
+                    }
+                }
+            },
+            {
+                "name": "Operation",
+                "cfg": {
+                    "id": "replace-dataset",
+                    "labelId": "gnviewer.updateDataset",
+                    "containerPosition": "header",
+                    "iconName": "refresh",
+                    "titleMsgId": "gnviewer.updateDatasetTitle",
+                    "blocking": true,
+                    "action": "replace",
+                    "pageReload": true,
+                    "api": {
+                        "uploadActions": [
+                            {
+                                "labelId": "gnviewer.update",
+                                "action": "upsert"
+                            },
+                            {
+                                "labelId": "gnviewer.replace",
+                                "action": "replace",
+                                "variant": "danger",
+                                "showConfirm": true
+                            }
+                        ],
+                        "upload": {
+                            "bodyExtra": {
+                                "replace": {
+                                    "file": {
+                                        "store_spatial_files": true,
+                                        "overwrite_existing_layer": true
+                                    }
+                                }
+                            },
+                            "url": "{context.getEndpointUrl('uploads', '/upload')}",
+                            "maxParallelUploads": 1,
+                            "body": {
+                                "file": {
+                                    "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
+                                    "base_file": "{context.getUploadMainFile}",
+                                    "action": "replace"
+                                }
+                            },
+                            "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['replace', 'upsert'] })}"
+                        },
+                        "executionRequest": {
+                            "url": "{context.getEndpointUrl('executionrequest')}",
+                            "params": {
+                                "filter{action.in}": ["replace", "upsert"],
+                                "sort[]": "-created",
+                                "filter{geonode_resource}": "{context.get(state('gnResourceData'), 'pk')}"
+                            }
+                        }
+                    }
+                },
+                "override": {
+                    "ActionNavbar": {
+                        "name": "OperationReplaceDataset"
+                    }
+                }
+            },
+            {
+                "name": "MetadataViewer"
+            },
+            {
+                "name": "FeatureEditor",
+                "cfg": {
+                    "hideCloseButton": true,
+                    "hideLayerTitle": true,
+                    "primaryKeyAttributes": ["fid"],
+                    "containerPosition": "bottom"
+                }
+            },
+            {
                 "name": "ExecutionTracker",
                 "cfg": {
                     "containerPosition": "header"
@@ -1285,7 +1611,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition": "background"
                 }
             },
             {
@@ -1293,7 +1620,8 @@
                 "cfg": {
                     "hideCloseButton": true,
                     "hideLayerTitle": true,
-                    "primaryKeyAttributes": ["fid"]
+                    "primaryKeyAttributes": ["fid"],
+                    "containerPosition": "bottom"
                 }
             },
             {
@@ -1495,7 +1823,8 @@
                             }
                         }
                     }
-                }
+                },
+                "containerPosition": "background"
             },
             {
                 "name": "DownloadResource",
@@ -1953,7 +2282,8 @@
                 "name": "FeatureEditor",
                 "cfg": {
                     "primaryKeyAttributes": ["fid"],
-                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                    "containerPosition": "bottom"
                 }
             },
             {
@@ -3128,6 +3458,34 @@
             },
             {
                 "name": "Notifications"
+            }
+        ],
+        "dataset_viewer_non_spatial_mobile": [
+            {
+                "name": "ActionNavbar",
+                "cfg": {
+                    "containerPosition": "header"
+                }
+            },
+            {
+                "name": "OmniBar"
+            },
+            {
+                "name": "Toolbar",
+                "id": "NavigationBar",
+                "cfg": {
+                    "id": "navigationBar",
+                    "layout": "horizontal"
+                }
+            },
+            {
+                "name": "Expander"
+            },
+            {
+                "name": "Notifications"
+            },
+            {
+                "name": "MetadataViewer"
             }
         ],
         "geostory_viewer_mobile": [
