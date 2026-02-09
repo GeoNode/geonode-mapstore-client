@@ -37,7 +37,7 @@ function ErrorFallback({
                 }><Message msgId="errorPage.title"/></h1>
                 <p><Message msgId="errorPage.subtitle"/></p>
                 <Button
-                    className="square-button-md"
+                    className="square-button"
                     onClick={() => {
                         window.location.reload();
                     }}

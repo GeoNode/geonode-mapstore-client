@@ -348,7 +348,7 @@ const CreateDataset = ({
                                         getErrorByPath={(path) => getErrorByPath(path, allErrors)}
                                         tools={
                                             <Button
-                                                className="square-button-md"
+                                                className="square-button"
                                                 disabled={loading}
                                                 onClick={() =>
                                                     handleRemoveAttribute(attribute.id)
