@@ -17,7 +17,7 @@ import { excludeGoogleBackground, extractTileMatrixFromSources, ServerTypes } fr
 import { getGeoNodeLocalConfig, parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
 import { determineResourceType } from '@js/utils/FileUtils';
-
+import { createDefaultStyle } from '@mapstore/framework/utils/StyleUtils';
 /**
 * @module utils/ResourceUtils
 */
@@ -162,6 +162,7 @@ export const resourceToLayerConfig = (resource) => {
 
     const {
         alternate,
+        attribute_set: attributeSet = [],
         links = [],
         featureinfo_custom_template: template,
         title,
@@ -191,9 +192,7 @@ export const resourceToLayerConfig = (resource) => {
     };
 
     if (subtype === '3dtiles') {
-
         const { url: tilesetUrl } = links.find(({ extension }) => (extension === '3dtiles')) || {};
-
         return {
             id: uuid(),
             type: '3dtiles',
@@ -219,7 +218,24 @@ export const resourceToLayerConfig = (resource) => {
             extendedParams
         };
     }
+    if (subtype === 'flatgeobuf') {
 
+        const defaultGeomType = 'GeometryCollection';
+        const geometryType = attributeSet.find(attr => attr.attribute === 'geometryType')?.attribute_type || defaultGeomType;
+
+        const { url: fgbUrl } = links.find(({ extension }) => (extension === 'flatgeobuf')) || {};
+        return {
+            perms,
+            id: uuid(),
+            type: 'flatgeobuf',
+            title,
+            style: createDefaultStyle({ geometryType }),
+            url: parseDevHostname(fgbUrl || ''),
+            ...(bbox && { bbox }),
+            visibility: true,
+            extendedParams
+        };
+    }
     switch (ptype) {
     case GXP_PTYPES.REST_MAP:
     case GXP_PTYPES.REST_IMG: {
