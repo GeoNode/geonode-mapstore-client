@@ -71,7 +71,8 @@ import {
     setSelectedLayer,
     UPDATE_RESOURCE_EXTENT,
     updateResourceExtentLoading,
-    setDatasetEditPermissionsError
+    setDatasetEditPermissionsError,
+    LOADING_RESOURCE_CONFIG
 } from '@js/actions/gnresource';
 
 import {
@@ -142,6 +143,8 @@ import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/sel
 import { searchSelector } from '@mapstore/framework/selectors/router';
 import { CREATE_BACKGROUNDS_LIST, allowBackgroundsDeletion } from '@mapstore/framework/actions/backgroundselector';
 import { setCanEditProjection } from '@mapstore/framework/actions/crsselector';
+import { setProjectionsConfig } from '@mapstore/framework/actions/crsselector';
+import { changeCRS } from '@mapstore/framework/actions/map';
 
 const FIT_BOUNDS_CONTROL = 'fitBounds';
 
@@ -223,7 +226,9 @@ const resourceTypes = {
                             : []),
                         ...(newLayer?.bboxError
                             ? [warningNotification({ title: "gnviewer.invalidBbox", message: "gnviewer.invalidBboxMsg" })]
-                            : [])
+                            : []),
+                        ...(gnLayer?.data?.crsSelector ? [changeCRS(gnLayer?.data?.crsSelector?.currentProjection)] : []),
+                        ...(gnLayer?.data?.crsSelector ? [setProjectionsConfig(gnLayer?.data?.crsSelector)] : [])
                     );
                 });
         }
@@ -900,10 +905,10 @@ export const gnUpdateBackgroundEditEpic = (action$, store) =>
         });
 
 export const gnUpdateEditProjectionEpic = (action$, store) =>
-    action$.ofType(MAP_CONFIG_LOADED)
+    action$.ofType(MAP_CONFIG_LOADED, LOADING_RESOURCE_CONFIG)
         .switchMap(() => {
             const state = store.getState();
-            const canEdit = canEditMap(state.gnresource, { isNewCheck: true });
+            const canEdit = canEditMap(state.gnresource, { isNewCheck: true, resourceTypes: [ResourceTypes.MAP, ResourceTypes.DATASET] });
             return Observable.of(setCanEditProjection(canEdit));
         });
 

@@ -985,8 +985,8 @@ export const canAccessPermissions = (resource) => {
  * @param {boolean} options.isNewCheck - True if the check should be done for a new resource, false otherwise
  * @returns {boolean} - True if the resource can be edited, false otherwise
  */
-export const canEditMap = (gnresource, { isNewCheck = false } = {}) => {
+export const canEditMap = (gnresource, { resourceTypes = [ResourceTypes.MAP], isNewCheck = false } = {}) => {
     const { data = {}, type, isNew } = gnresource;
     const hasEditPermission = data?.perms?.includes('change_resourcebase');
-    return type === ResourceTypes.MAP && (hasEditPermission || (isNewCheck && isNew)) ? true : false;
+    return type && resourceTypes.includes(type) && (hasEditPermission || (isNewCheck && isNew)) ? true : false;
 };

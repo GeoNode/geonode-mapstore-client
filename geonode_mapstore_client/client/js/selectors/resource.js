@@ -179,10 +179,13 @@ export const getDataPayload = (state, resourceType) => {
         const selectedLayer = getSelectedNode(state);
         const omitKeys = ['extendedParams', 'availableStyles', 'infoFormats', 'style'];
         const data = saveLayer(selectedLayer ?? {});
+        const crsSelector = state?.crsselector?.config;
+        const currentProjection = mapSelector(state)?.projection;
         return omit({
             ...data,
             ...currentLayerSettings,
-            ...(selectedLayer && {fields: selectedLayer?.fields ?? {}})
+            ...(selectedLayer && {fields: selectedLayer?.fields ?? {}}),
+            ...(crsSelector && {crsSelector: {...crsSelector, currentProjection}})
         }, omitKeys);
     }
     default:
