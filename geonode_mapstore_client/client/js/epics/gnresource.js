@@ -113,7 +113,7 @@ import {
 import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallayers';
 import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
 import { initStyleService, resetStyleEditor } from '@mapstore/framework/actions/styleeditor';
-import { CLICK_ON_MAP, resizeMap, CHANGE_MAP_VIEW, zoomToExtent } from '@mapstore/framework/actions/map';
+import { CLICK_ON_MAP, resizeMap, CHANGE_MAP_VIEW, zoomToExtent, changeCRS } from '@mapstore/framework/actions/map';
 import { purgeMapInfoResults, closeIdentify, NEW_MAPINFO_REQUEST } from '@mapstore/framework/actions/mapInfo';
 import { saveError } from '@js/actions/gnsave';
 import {
@@ -142,9 +142,7 @@ import { forceUpdateMapLayout } from '@mapstore/framework/actions/maplayout';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import { searchSelector } from '@mapstore/framework/selectors/router';
 import { CREATE_BACKGROUNDS_LIST, allowBackgroundsDeletion } from '@mapstore/framework/actions/backgroundselector';
-import { setCanEditProjection } from '@mapstore/framework/actions/crsselector';
-import { setProjectionsConfig } from '@mapstore/framework/actions/crsselector';
-import { changeCRS } from '@mapstore/framework/actions/map';
+import { setCanEditProjection, setProjectionsConfig } from '@mapstore/framework/actions/crsselector';
 
 const FIT_BOUNDS_CONTROL = 'fitBounds';
 
