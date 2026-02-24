@@ -144,7 +144,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition":"background"
                 }
             },
             {
@@ -213,7 +214,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition":"background"
                 }
             },
             {
@@ -277,7 +279,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition":"background"
                 }
             },
             {
@@ -363,7 +366,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition":"background"
                 }
             },
             {
@@ -727,7 +731,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition":"background"
                 }
             },
             {
@@ -1294,7 +1299,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition":"background"
                 }
             },
             {
@@ -1302,7 +1308,8 @@
                 "cfg": {
                     "hideCloseButton": true,
                     "hideLayerTitle": true,
-                    "primaryKeyAttributes": ["fid"]
+                    "primaryKeyAttributes": ["fid"],
+                    "containerPosition":"bottom"
                 }
             },
             {
@@ -1469,7 +1476,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition":"background"
                 }
             },
             {
@@ -1503,7 +1511,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition":"background"
                 }
             },
             {
@@ -1962,7 +1971,8 @@
                 "name": "FeatureEditor",
                 "cfg": {
                     "primaryKeyAttributes": ["fid"],
-                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                    "containerPosition":"bottom"
                 }
             },
             {
@@ -2919,7 +2929,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition": "background"
                 }
             },
             {
@@ -3051,7 +3062,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition": "background"
                 }
             },
             {
