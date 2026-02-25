@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkgeonode_mapstore_client=self.webpackChunkgeonode_mapstore_client||[]).push([[424],{850424(e,n,s){s.d(n,{default:()=>a});var t=s(3075),r=s(250797);class a extends r.A{decodeBlock(e){return(0,t.UD)(new Uint8Array(e)).buffer}}}}]);
