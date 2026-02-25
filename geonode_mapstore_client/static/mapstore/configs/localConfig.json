@@ -132,7 +132,8 @@
                 "cfg": {
                     "shouldLoadFont": false,
                     "tools": [
-                        "popup"
+                        "popup",
+                        "scalebar"
                     ],
                     "mapOptions": {
                         "openlayers": {
@@ -145,7 +146,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -202,7 +208,8 @@
                 "cfg": {
                     "shouldLoadFont": false,
                     "tools": [
-                        "popup"
+                        "popup",
+                        "scalebar"
                     ],
                     "mapOptions": {
                         "openlayers": {
@@ -215,7 +222,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -268,7 +280,7 @@
                 "name": "Map",
                 "cfg": {
                     "shouldLoadFont": false,
-                    "tools": [],
+                    "tools": ["scalebar"],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -280,7 +292,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -355,7 +372,7 @@
                 "name": "Map",
                 "cfg": {
                     "shouldLoadFont": false,
-                    "tools": [],
+                    "tools": ["scalebar"],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -367,7 +384,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -719,7 +741,8 @@
                 "cfg": {
                     "tools": [
                         "draw",
-                        "box"
+                        "box",
+                        "scalebar"
                     ],
                     "mapOptions": {
                         "openlayers": {
@@ -732,7 +755,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -1278,7 +1306,8 @@
                 "cfg": {
                     "tools": [
                         "draw",
-                        "box"
+                        "box",
+                        "scalebar"
                     ],
                     "mapOptions": {
                         "openlayers": {
@@ -1291,7 +1320,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -1455,7 +1489,8 @@
                     "tools": [
                         "draw",
                         "box",
-                        "popup"
+                        "popup",
+                        "scalebar"
                     ],
                     "mapOptions": {
                         "openlayers": {
@@ -1468,7 +1503,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -1490,7 +1530,8 @@
                 "cfg": {
                     "tools": [
                         "draw",
-                        "box"
+                        "box",
+                        "scalebar"
                     ],
                     "mapOptions": {
                         "openlayers": {
@@ -1503,7 +1544,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
