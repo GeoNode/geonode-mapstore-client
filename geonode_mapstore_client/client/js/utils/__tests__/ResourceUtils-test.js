@@ -37,7 +37,8 @@ import {
     canManageResourceOptions,
     canManageResourceSettings,
     canAccessPermissions,
-    formatResourceLinkUrl
+    formatResourceLinkUrl,
+    canEditMap
 } from '../ResourceUtils';
 
 describe('Test Resource Utils', () => {
@@ -1117,5 +1118,73 @@ describe('Test Resource Utils', () => {
     it('formatResourceLinkUrl', () => {
         expect(formatResourceLinkUrl({ uuid: '123' })).toContain('/catalogue/uuid/123');
         expect(formatResourceLinkUrl({ pk: '123' })).toNotContain('/catalogue/uuid/123');
+    });
+    describe('canEditMap', () => {
+        it('existing map with edit permission', () => {
+            const gnresourceState = {
+                type: ResourceTypes.MAP,
+                data: {
+                    perms: ['view_resourcebase', 'change_resourcebase']
+                },
+                isNew: false
+            };
+            const result = canEditMap(gnresourceState, { isNewCheck: false });
+            expect(result).toBeTruthy();
+        });
+        it('new map without edit permission but marked as new', () => {
+            const gnresourceState = {
+                type: ResourceTypes.MAP,
+                data: {
+                    perms: ['view_resourcebase']
+                },
+                isNew: true
+            };
+            const result = canEditMap(gnresourceState, { isNewCheck: true });
+            expect(result).toBeTruthy();
+        });
+        it('map without edit permission and not new', () => {
+            const gnresourceState = {
+                type: ResourceTypes.MAP,
+                data: {
+                    perms: ['view_resourcebase']
+                },
+                isNew: false
+            };
+            const result = canEditMap(gnresourceState, { isNewCheck: false });
+            expect(result).toBeFalsy();
+        });
+        it('non map type should not be editable when only MAP is allowed', () => {
+            const gnresourceState = {
+                type: ResourceTypes.DATASET,
+                data: {
+                    perms: ['change_resourcebase']
+                },
+                isNew: true
+            };
+            const result = canEditMap(gnresourceState, { isNewCheck: true });
+            expect(result).toBeFalsy();
+        });
+        it('dataset should be editable when included in resourceType and has edit permission', () => {
+            const gnresourceState = {
+                type: ResourceTypes.DATASET,
+                data: {
+                    perms: ['view_resourcebase', 'change_resourcebase']
+                },
+                isNew: false
+            };
+            const result = canEditMap(gnresourceState, { isNewCheck: false, resourceTypes: [ResourceTypes.MAP, ResourceTypes.DATASET] });
+            expect(result).toBeTruthy();
+        });
+        it('new dataset without edit permission but marked as new and included in resourceType', () => {
+            const gnresourceState = {
+                type: ResourceTypes.DATASET,
+                data: {
+                    perms: ['view_resourcebase']
+                },
+                isNew: true
+            };
+            const result = canEditMap(gnresourceState, { isNewCheck: true, resourceTypes: [ResourceTypes.MAP, ResourceTypes.DATASET] });
+            expect(result).toBeTruthy();
+        });
     });
 });

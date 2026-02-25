@@ -33,7 +33,7 @@ import {
     deleteResourceThumbnail,
     updateResourceExtent
 } from '@js/api/geonode/v2';
-import { configureMap } from '@mapstore/framework/actions/config';
+import { configureMap, MAP_CONFIG_LOADED } from '@mapstore/framework/actions/config';
 import { isMapInfoOpen } from '@mapstore/framework/selectors/mapInfo';
 import { isLoggedIn, userSelector } from '@mapstore/framework/selectors/security';
 import {
@@ -71,7 +71,8 @@ import {
     setSelectedLayer,
     UPDATE_RESOURCE_EXTENT,
     updateResourceExtentLoading,
-    setDatasetEditPermissionsError
+    setDatasetEditPermissionsError,
+    LOADING_RESOURCE_CONFIG
 } from '@js/actions/gnresource';
 
 import {
@@ -98,7 +99,8 @@ import {
     toMapStoreMapConfig,
     getCataloguePath,
     isDefaultDatasetSubtype,
-    resourceHasPermission
+    resourceHasPermission,
+    canEditMap
 } from '@js/utils/ResourceUtils';
 import {
     canAddResource,
@@ -111,7 +113,7 @@ import {
 import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallayers';
 import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
 import { initStyleService, resetStyleEditor } from '@mapstore/framework/actions/styleeditor';
-import { CLICK_ON_MAP, resizeMap, CHANGE_MAP_VIEW, zoomToExtent } from '@mapstore/framework/actions/map';
+import { CLICK_ON_MAP, resizeMap, CHANGE_MAP_VIEW, zoomToExtent, changeCRS } from '@mapstore/framework/actions/map';
 import { purgeMapInfoResults, closeIdentify, NEW_MAPINFO_REQUEST } from '@mapstore/framework/actions/mapInfo';
 import { saveError } from '@js/actions/gnsave';
 import {
@@ -140,6 +142,7 @@ import { forceUpdateMapLayout } from '@mapstore/framework/actions/maplayout';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import { searchSelector } from '@mapstore/framework/selectors/router';
 import { CREATE_BACKGROUNDS_LIST, allowBackgroundsDeletion } from '@mapstore/framework/actions/backgroundselector';
+import { setCanEditProjection, setProjectionsConfig } from '@mapstore/framework/actions/crsselector';
 
 const FIT_BOUNDS_CONTROL = 'fitBounds';
 
@@ -221,7 +224,9 @@ const resourceTypes = {
                             : []),
                         ...(newLayer?.bboxError
                             ? [warningNotification({ title: "gnviewer.invalidBbox", message: "gnviewer.invalidBboxMsg" })]
-                            : [])
+                            : []),
+                        ...(gnLayer?.data?.crsSelector ? [changeCRS(gnLayer?.data?.crsSelector?.currentProjection)] : []),
+                        ...(gnLayer?.data?.crsSelector ? [setProjectionsConfig(gnLayer?.data?.crsSelector)] : [])
                     );
                 });
         }
@@ -890,13 +895,19 @@ export const gnUpdateBackgroundEditEpic = (action$, store) =>
     action$.ofType(CREATE_BACKGROUNDS_LIST)
         .switchMap(() => {
             const state = store.getState();
-            const resource = state.gnresource?.data || {};
-            const resourceType = state.gnresource?.type;
-            const canEdit = resourceType === ResourceTypes.MAP && resource?.perms?.includes('change_resourcebase') ? true : false;
+            const canEdit = canEditMap(state.gnresource);
             return Observable.of(
                 setResourceContext({ canEdit }),
                 ...(canEdit ? [allowBackgroundsDeletion(true)] : [])
             );
+        });
+
+export const gnUpdateEditProjectionEpic = (action$, store) =>
+    action$.ofType(MAP_CONFIG_LOADED, LOADING_RESOURCE_CONFIG)
+        .switchMap(() => {
+            const state = store.getState();
+            const canEdit = canEditMap(state.gnresource, { isNewCheck: true, resourceTypes: [ResourceTypes.MAP, ResourceTypes.DATASET] });
+            return Observable.of(setCanEditProjection(canEdit));
         });
 
 export default {
@@ -911,5 +922,6 @@ export default {
     gnManageLinkedResource,
     gnZoomToFitBounds,
     gnSelectResourceEpic,
-    gnUpdateResourceExtent
+    gnUpdateResourceExtent,
+    gnUpdateEditProjectionEpic
 };

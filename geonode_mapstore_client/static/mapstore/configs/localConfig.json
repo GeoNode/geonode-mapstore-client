@@ -1256,6 +1256,15 @@
                 "cfg": {
                     "containerPosition": "header"
                 }
+            },
+            {
+                "name": "CRSSelector",
+                "cfg": {
+                    "availableProjections": [
+                        { "value": "EPSG:4326", "label": "EPSG:4326" },
+                        { "value": "EPSG:3857", "label": "EPSG:3857" }
+                    ]
+                }
             }
         ],
         "dataset_edit_data_viewer": [
@@ -2270,6 +2279,15 @@
                             "labelId": "gnviewer.assets",
                             "items": "{context.get(state('gnResourceSelectedLayerDataset'), 'assets')}"
                         }
+                    ]
+                }
+            },
+            {
+                "name": "CRSSelector",
+                "cfg": {
+                    "availableProjections": [
+                        { "value": "EPSG:4326", "label": "EPSG:4326" },
+                        { "value": "EPSG:3857", "label": "EPSG:3857" }
                     ]
                 }
             }
