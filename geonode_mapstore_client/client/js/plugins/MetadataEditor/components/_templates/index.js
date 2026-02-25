@@ -24,7 +24,7 @@ function AddButton({
     return (
         <Button
             disabled={disabled}
-            className="square-button-md"
+            className="square-button"
             onClick={onClick}
             variant="primary"
         >
@@ -40,7 +40,7 @@ function MoveUpButton({
     return (
         <Button
             disabled={disabled}
-            className="square-button-md"
+            className="square-button"
             onClick={onClick}
         >
             <Glyphicon glyph="arrow-up" />
@@ -55,7 +55,7 @@ function MoveDownButton({
     return (
         <Button
             disabled={disabled}
-            className="square-button-md"
+            className="square-button"
             onClick={onClick}
         >
             <Glyphicon glyph="arrow-down" />
@@ -70,7 +70,7 @@ function RemoveButton({
     return (
         <Button
             disabled={disabled}
-            className="square-button-md"
+            className="square-button"
             onClick={onClick}
         >
             <Glyphicon glyph="trash" />

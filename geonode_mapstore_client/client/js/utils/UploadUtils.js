@@ -17,9 +17,16 @@ export const hasExtensionInUrl = (remoteResource) => {
     return !isEmpty(ext);
 };
 
-export const isCOGFileUrl = (url = '') => {
+export const remoteTypeByUrl = (url, defaultType) => {
     const urlLowerCase = url.toLowerCase();
-    return urlLowerCase.endsWith('.tif') || urlLowerCase.endsWith('.tiff');
+    const fileTypeMaps = {
+        '.tif': 'cog',
+        '.tiff': 'cog',
+        '.fgb': 'flatgeobuf',
+        '.flatgeobuf': 'flatgeobuf'
+    };
+    const matchedType = Object.keys(fileTypeMaps).find(extension => urlLowerCase.endsWith(extension));
+    return matchedType ? fileTypeMaps[matchedType] : defaultType;
 };
 
 export const isNotSupported = (remoteResource) => !isNil(remoteResource?.supported) && !remoteResource?.supported;
@@ -140,9 +147,10 @@ export const validateRemoteResourceUploads = (uploads = [], { remoteTypes } = {}
         const isValidRemoteUrl = !!upload.url
             && !(upload.url.indexOf('/') === 0) // is not relative
             && isValidURL(upload.url);
-        // Automatically change remoteType to 'cog' if URL ends with .tif or .tiff
-        const isTifFile = isCOGFileUrl(upload.url);
-        const remoteType = isTifFile ? 'cog' : upload.remoteType;
+
+        // Automatically change remoteType by file extension
+        const remoteType = remoteTypeByUrl(upload.url, upload.remoteType);
+
         const isRemoteTypeSupported = remoteTypes ? !!remoteTypes.find(({ value }) => value === remoteType) : true;
         const supported = !!(!isRemoteUrlDuplicated && isValidRemoteUrl && isRemoteTypeSupported);
         return {
