@@ -131,10 +131,6 @@
                 "name": "Map",
                 "cfg": {
                     "shouldLoadFont": false,
-                    "tools": [
-                        "popup",
-                        "scalebar"
-                    ],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -207,10 +203,6 @@
                 "name": "Map",
                 "cfg": {
                     "shouldLoadFont": false,
-                    "tools": [
-                        "popup",
-                        "scalebar"
-                    ],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -280,7 +272,6 @@
                 "name": "Map",
                 "cfg": {
                     "shouldLoadFont": false,
-                    "tools": ["scalebar"],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -372,7 +363,6 @@
                 "name": "Map",
                 "cfg": {
                     "shouldLoadFont": false,
-                    "tools": ["scalebar"],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -739,11 +729,6 @@
             {
                 "name": "Map",
                 "cfg": {
-                    "tools": [
-                        "draw",
-                        "box",
-                        "scalebar"
-                    ],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -1304,11 +1289,6 @@
             {
                 "name": "Map",
                 "cfg": {
-                    "tools": [
-                        "draw",
-                        "box",
-                        "scalebar"
-                    ],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -1486,12 +1466,6 @@
             {
                 "name": "Map",
                 "cfg": {
-                    "tools": [
-                        "draw",
-                        "box",
-                        "popup",
-                        "scalebar"
-                    ],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -1528,11 +1502,6 @@
             {
                 "name": "Map",
                 "cfg": {
-                    "tools": [
-                        "draw",
-                        "box",
-                        "scalebar"
-                    ],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
