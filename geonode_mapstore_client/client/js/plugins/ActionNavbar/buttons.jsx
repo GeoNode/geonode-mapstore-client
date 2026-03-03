@@ -93,7 +93,7 @@ const LayerDownloadActionButtonComponent = ({
                     <Dropdown.Toggle
                         noCaret
                         bsStyle="primary"
-                        className="square-button-md"
+                        className="square-button"
                     >
                         <Glyphicon glyph="download" />
                     </Dropdown.Toggle>
@@ -107,7 +107,7 @@ const LayerDownloadActionButtonComponent = ({
                     </Dropdown.Menu>
                 </Dropdown>
                 {/* include a placeholder to compute the space */}
-                <div ref={node} className="square-button-md" style={{ display: 'inline-block', verticalAlign: 'middle' }} />
+                <div ref={node} className="square-button" style={{ display: 'inline-block', verticalAlign: 'middle' }} />
             </>
         ) : null;
     }
@@ -172,7 +172,7 @@ export const FilterLayerActionButton = connect(
     return (
         <Button
             variant={variant}
-            className={active ? 'gn-success-changes-icon' : ''}
+            className={active ? 'ms-notification-circle warning' : ''}
             size={size}
             onClick={() => onClick()}
         >

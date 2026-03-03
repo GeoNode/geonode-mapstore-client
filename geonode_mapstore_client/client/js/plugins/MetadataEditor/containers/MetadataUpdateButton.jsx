@@ -71,7 +71,7 @@ function MetadataUpdateButton({
             size={size}
             variant={variant}
             disabled={!pendingChanges || updating}
-            className={pendingChanges ? 'gn-pending-changes-icon' : ''}
+            className={pendingChanges ? 'ms-notification-circle warning' : ''}
             onClick={() => handleUpdate()}
         >
             <Message msgId="gnhome.update" />

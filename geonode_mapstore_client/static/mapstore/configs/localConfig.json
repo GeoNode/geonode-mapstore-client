@@ -144,7 +144,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition":"background"
                 }
             },
             {
@@ -213,7 +214,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition":"background"
                 }
             },
             {
@@ -277,7 +279,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition":"background"
                 }
             },
             {
@@ -363,7 +366,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition":"background"
                 }
             },
             {
@@ -1577,6 +1581,15 @@
                 "cfg": {
                     "containerPosition": "header"
                 }
+            },
+            {
+                "name": "CRSSelector",
+                "cfg": {
+                    "availableProjections": [
+                        { "value": "EPSG:4326", "label": "EPSG:4326" },
+                        { "value": "EPSG:3857", "label": "EPSG:3857" }
+                    ]
+                }
             }
         ],
         "dataset_edit_data_viewer": [
@@ -1788,7 +1801,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition":"background"
                 }
             },
             {
@@ -1822,9 +1836,9 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
-                },
-                "containerPosition": "background"
+                    },
+                    "containerPosition": "background"
+                }
             },
             {
                 "name": "DownloadResource",
@@ -2440,7 +2454,8 @@
                         { "name": "3dtiles", "label": "3D Tiles" }, 
                         { "name": "model", "label": "IFC Model" }, 
                         { "name": "arcgis", "label": "ArcGIS" }, 
-                        { "name": "cog", "label": "COG" }
+                        { "name": "cog", "label": "COG" },
+                        { "name": "flatgeobuf", "label": "FlatGeobuf" }
                     ]
                 }
             },
@@ -2589,6 +2604,15 @@
                             "labelId": "gnviewer.assets",
                             "items": "{context.get(state('gnResourceSelectedLayerDataset'), 'assets')}"
                         }
+                    ]
+                }
+            },
+            {
+                "name": "CRSSelector",
+                "cfg": {
+                    "availableProjections": [
+                        { "value": "EPSG:4326", "label": "EPSG:4326" },
+                        { "value": "EPSG:3857", "label": "EPSG:3857" }
                     ]
                 }
             }
@@ -3231,7 +3255,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition": "background"
                 }
             },
             {
@@ -3363,7 +3388,8 @@
                                 "altShiftDragRotate": false
                             }
                         }
-                    }
+                    },
+                    "containerPosition": "background"
                 }
             },
             {

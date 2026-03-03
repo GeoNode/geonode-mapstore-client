@@ -35,6 +35,7 @@ const ButtonViewer = ({ onClick, layer, size, status }) => {
             variant="primary"
             size={size}
             onClick={handleClickButton}
+            className="square-button"
         >
             <Glyphicon glyph={'info-sign'} />
         </Button>

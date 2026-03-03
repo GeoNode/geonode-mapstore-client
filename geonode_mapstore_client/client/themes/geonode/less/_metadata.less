@@ -173,7 +173,8 @@
     .field-object-properties {
         padding: 0.75rem 0;
         border: 1px solid transparent;
-        border-radius: 4px;
+        // use theme border radius to align with MapStore
+        border-radius: @border-radius-base;
         label {
             font-weight: normal;
             font-size: @font-size-sm;
@@ -227,7 +228,7 @@
         padding: 0;
         padding: 0.5rem;
         border: 1px solid transparent;
-        border-radius: 4px;
+        border-radius: @border-radius-base;
         > .field {
             padding: 0;
             flex: 1;
