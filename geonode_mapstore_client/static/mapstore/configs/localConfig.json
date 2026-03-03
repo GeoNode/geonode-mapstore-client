@@ -1264,6 +1264,15 @@
                 "cfg": {
                     "containerPosition": "header"
                 }
+            },
+            {
+                "name": "CRSSelector",
+                "cfg": {
+                    "availableProjections": [
+                        { "value": "EPSG:4326", "label": "EPSG:4326" },
+                        { "value": "EPSG:3857", "label": "EPSG:3857" }
+                    ]
+                }
             }
         ],
         "dataset_viewer_non_spatial": [
@@ -1580,15 +1589,6 @@
                 "name": "ExecutionTracker",
                 "cfg": {
                     "containerPosition": "header"
-                }
-            },
-            {
-                "name": "CRSSelector",
-                "cfg": {
-                    "availableProjections": [
-                        { "value": "EPSG:4326", "label": "EPSG:4326" },
-                        { "value": "EPSG:3857", "label": "EPSG:3857" }
-                    ]
                 }
             }
         ],
