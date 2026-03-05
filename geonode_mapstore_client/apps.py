@@ -119,6 +119,7 @@ def run_setup_hooks(*args, **kwargs):
     settings.REST_API_PRESETS["catalog_list"] = {
         "exclude[]": ["*"],
         "include[]": [
+            "include_i18n",
             "advertised",
             "detail_url",
             "is_approved",

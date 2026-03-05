@@ -566,7 +566,7 @@ export const getResourceTypes = () => {
 };
 
 export const getDatasetByName = name => {
-    const url = getEndpointUrl(DATASETS, `/?filter{alternate}=${name}`);
+    const url = getEndpointUrl(DATASETS, `/?filter{alternate}=${name}&include_i18n=true`);
     return axios.get(url, {
         params: {
             exclude: ['*'],
