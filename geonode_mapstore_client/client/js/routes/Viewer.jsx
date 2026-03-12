@@ -84,7 +84,7 @@ function ViewerRoute({
     datasetEditPermissionError
 }) {
     const { pk } = match.params || {};
-    
+
     // determine the plugins name based on the view, resource type and geometry field
     const pluginsName = getPluginName(name, { hasNoGeometry: resource?.hasNoGeometry });
     const shouldInitPlugins = !isResourceLoading && (resource || name === DATASET_VIEWER);
@@ -140,7 +140,7 @@ function ViewerRoute({
                 contentURL={resource?.detail_url}
                 content={resource?.abstract}
             />}
-            <ConnectedPluginsContainer
+            {!isLoading ? <ConnectedPluginsContainer
                 key={className}
                 id={className}
                 className={className}
@@ -149,7 +149,7 @@ function ViewerRoute({
                 plugins={parsedPlugins}
                 allPlugins={plugins}
                 params={params}
-            />
+            /> : null}
             {isLoading && Loader && <Loader style={loaderStyle}/>}
             {(configError || datasetEditPermissionError) && <MainEventView msgId={configError || datasetEditPermissionError}/>}
         </>
