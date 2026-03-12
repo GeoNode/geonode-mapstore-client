@@ -131,9 +131,6 @@
                 "name": "Map",
                 "cfg": {
                     "shouldLoadFont": false,
-                    "tools": [
-                        "popup"
-                    ],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -145,7 +142,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -201,9 +203,6 @@
                 "name": "Map",
                 "cfg": {
                     "shouldLoadFont": false,
-                    "tools": [
-                        "popup"
-                    ],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -215,7 +214,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -268,7 +272,6 @@
                 "name": "Map",
                 "cfg": {
                     "shouldLoadFont": false,
-                    "tools": [],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -280,7 +283,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -355,7 +363,6 @@
                 "name": "Map",
                 "cfg": {
                     "shouldLoadFont": false,
-                    "tools": [],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -367,7 +374,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -717,10 +729,6 @@
             {
                 "name": "Map",
                 "cfg": {
-                    "tools": [
-                        "draw",
-                        "box"
-                    ],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -732,7 +740,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -1285,10 +1298,6 @@
             {
                 "name": "Map",
                 "cfg": {
-                    "tools": [
-                        "draw",
-                        "box"
-                    ],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -1300,7 +1309,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -1461,11 +1475,6 @@
             {
                 "name": "Map",
                 "cfg": {
-                    "tools": [
-                        "draw",
-                        "box",
-                        "popup"
-                    ],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -1477,7 +1486,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
@@ -1497,10 +1511,6 @@
             {
                 "name": "Map",
                 "cfg": {
-                    "tools": [
-                        "draw",
-                        "box"
-                    ],
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
@@ -1512,7 +1522,12 @@
                             }
                         }
                     },
-                    "containerPosition":"background"
+                    "containerPosition":"background",
+                    "toolsOptions": {
+                        "scalebar": {
+                            "container": "#footer-scalebar-container"
+                        }
+                    }
                 }
             },
             {
