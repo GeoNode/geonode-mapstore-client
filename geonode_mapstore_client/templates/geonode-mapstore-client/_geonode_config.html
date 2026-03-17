@@ -75,7 +75,7 @@
         let resourcesSearchIndex = geoNodeSettings.RESOURCES_SEARCH_INDEX || 'title_abstract';
         let customFilters = geoNodeSettings.CUSTOM_FILTERS || {
             "my-resources": {
-                "filter{owner.pk}": "{state('user') && state('user').pk}"
+                "filter{owner.pk}": "{get(state('user'), 'pk')}"
             },
             "favorite": {
                 "favorite": true

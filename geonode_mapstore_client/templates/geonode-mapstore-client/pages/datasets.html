@@ -28,14 +28,14 @@
                             "labelId": "gnhome.uploadDataset",
                             "value": "layer",
                             "type": "link",
-                            "href": "{context.getCataloguePath('/catalogue/#/upload/dataset')}"
+                            "href": "{getCataloguePath('/catalogue/#/upload/dataset')}"
                         },
                         {
                             "labelId": "gnhome.createDataset",
                             "value": "layer",
                             "type": "link",
-                            "href": "{context.getCataloguePath('/catalogue/#/create/dataset')}",
-                            "disableIf": "{(state('settings') && state('settings').createLayer) ? false : true}"
+                            "href": "{getCataloguePath('/catalogue/#/create/dataset')}",
+                            "disableIf": "{not canCreateLayer(state('settings'))}"
                         },
                         {
                             "labelId": "gnhome.remoteServices",
