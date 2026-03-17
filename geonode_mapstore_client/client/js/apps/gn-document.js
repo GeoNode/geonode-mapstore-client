@@ -27,6 +27,7 @@ import {
     getPluginsConfigOverride,
     addQueryPlugins
 } from '@js/utils/AppUtils';
+import maplayout from '@mapstore/framework/reducers/maplayout';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 import pluginsDefinition, { storeEpicsNamesToExclude, cleanEpics } from '@js/plugins/index';
 import ReactSwipe from 'react-swipeable-views';
@@ -110,7 +111,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 controls,
                                 gnresource,
                                 gnsettings,
-                                security
+                                security,
+                                maplayout
                             },
                             appEpics,
                             onStoreInit,
