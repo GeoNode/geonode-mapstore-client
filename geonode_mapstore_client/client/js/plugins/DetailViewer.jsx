@@ -135,34 +135,34 @@ const ConnectedButton = connect(
  *                  {
  *                      "type": "text",
  *                      "labelId": "gnviewer.title",
- *                      "value": "{context.get(state('gnResourceData'), 'title')}"
+ *                      "value": "{get(state('gnResourceData'), 'title')}"
  *                  },
  *                  {
  *                      "type": "link",
  *                      "labelId": "gnviewer.owner",
- *                      "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
- *                      "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
- *                      "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
+ *                      "href": "{getOwnerProfileUrl(state('gnResourceData'))}",
+ *                      "value": "{getUserResourceName(get(state('gnResourceData'), 'owner'))}",
+ *                      "disableIf": "{not get(state('gnResourceData'), 'owner.username')}"
  *                  },
  *                  {
  *                      "type": "date",
  *                      "format": "MMMM Do YYYY",
  *                      "labelId": "gnviewer.published",
- *                      "value": "{context.get(state('gnResourceData'), 'date')}"
+ *                      "value": "{get(state('gnResourceData'), 'date')}"
  *                  },
  *                  {
  *                      "type": "query",
  *                      "labelId": "gnviewer.resourceType",
- *                      "value": "{context.get(state('gnResourceData'), 'resource_type')}",
+ *                      "value": "{get(state('gnResourceData'), 'resource_type')}",
  *                      "pathname": "/",
  *                      "query": {
- *                          "f": "{context.get(state('gnResourceData'), 'resource_type')}"
+ *                          "f": "{get(state('gnResourceData'), 'resource_type')}"
  *                      }
  *                  },
  *                  {
  *                      "type": "html",
  *                      "labelId": "gnviewer.supplementalInformation",
- *                      "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
+ *                      "value": "{get(state('gnResourceData'), 'supplemental_information')}"
  *                  }
  *              ]
  *          }

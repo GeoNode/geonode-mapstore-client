@@ -132,7 +132,7 @@ Note: not all configuration can be applied to the geonode-mapstore-client becaus
                                             "displayName": "${properties.propToDisplay}",
                                             "subTitle": " (a subtitle for the results coming from this service [ can contain expressions like ${properties.propForSubtitle}])",
                                             "options": {
-                                                "url": "{state('settings') && state('settings').geoserverUrl ? state('settings').geoserverUrl + '/wfs' : '/geoserver/wfs'}",
+                                                "url": "{getGeoServerWfsUrl(state('settings'))}",
                                                 "typeName": "workspace:layer",
                                                 "queriableAttributes": [
                                                     "attribute_to_query"

@@ -91,14 +91,14 @@
       "defaultConfig": {
         "showLayerProperties": true,
         "styleService": {
-            "baseUrl": "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}",
+            "baseUrl": "{getGeoNodeGsUrl(state('settings'))}",
             "formats": [
                 "css",
                 "sld"
             ],
             "availableUrls": [
-                "{state('settings') && state('settings').geoserverUrl || '/geoserver/'}",
-                "{state('settings') && state('settings').geonodeUrl && state('settings').geonodeUrl + 'gs/' || '/gs/'}"
+                "{getGeoServerUrl(state('settings'))}",
+                "{getGeoNodeGsUrl(state('settings'))}"
             ],
             "fonts": [
                 "Arial",
@@ -185,7 +185,7 @@
       "defaultConfig": {
         "showHighlightFeatureButton": true,
         "viewerOptions": {
-          "container": "{context.ReactSwipe}"
+          "container": "{ReactSwipe}"
         }
       },
       "children": [

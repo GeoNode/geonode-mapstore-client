@@ -260,7 +260,7 @@ function ResourcesGrid({
     menuItems = [
         {
             labelId: 'gnhome.addResource',
-            disableIf: "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
+            disableIf: "{(isMobile(state('browser'))) or not canAddResource(state('user'))}",
             type: 'dropdown',
             variant: 'primary',
             responsive: true,
@@ -270,38 +270,38 @@ function ResourcesGrid({
                     labelId: 'gnhome.uploadDataset',
                     value: 'layer',
                     type: 'link',
-                    href: '{context.getCataloguePath("/catalogue/#/upload/dataset")}'
+                    href: '{getCataloguePath("/catalogue/#/upload/dataset")}'
                 },
                 {
                     labelId: 'gnhome.uploadDocument',
                     value: 'document',
                     type: 'link',
-                    href: '{context.getCataloguePath("/catalogue/#/upload/document")}'
+                    href: '{getCataloguePath("/catalogue/#/upload/document")}'
                 },
                 {
                     labelId: 'gnhome.createDataset',
                     value: 'layer',
                     type: 'link',
                     href: '/createlayer/',
-                    disableIf: "{(state('settings') && state('settings').createLayer) ? false : true}"
+                    disableIf: "{not canCreateLayer(state('settings'))}"
                 },
                 {
                     labelId: 'gnhome.createMap',
                     value: 'map',
                     type: 'link',
-                    href: '{context.getCataloguePath("/catalogue/#/map/new")}'
+                    href: '{getCataloguePath("/catalogue/#/map/new")}'
                 },
                 {
                     labelId: 'gnhome.createGeostory',
                     value: 'geostory',
                     type: 'link',
-                    href: '{context.getCataloguePath("/catalogue/#/geostory/new")}'
+                    href: '{getCataloguePath("/catalogue/#/geostory/new")}'
                 },
                 {
                     labelId: 'gnhome.createDashboard',
                     value: 'dashboard',
                     type: 'link',
-                    href: '{context.getCataloguePath("/catalogue/#/dashboard/new")}'
+                    href: '{getCataloguePath("/catalogue/#/dashboard/new")}'
                 },
                 {
                     labelId: 'gnhome.remoteServices',
@@ -327,13 +327,13 @@ function ResourcesGrid({
                     id: 'my-resources',
                     labelId: 'gnhome.myResources',
                     type: 'filter',
-                    disableIf: '{!state("user")}'
+                    disableIf: '{not state("user")}'
                 },
                 {
                     id: 'favorite',
                     labelId: 'gnhome.favorites',
                     type: 'filter',
-                    disableIf: '{!state("user")}'
+                    disableIf: '{not state("user")}'
                 },
                 {
                     id: 'featured',
@@ -344,13 +344,13 @@ function ResourcesGrid({
                     id: 'unpublished',
                     labelId: 'gnhome.unpublished',
                     type: 'filter',
-                    disableIf: '{!state("user")}'
+                    disableIf: '{not state("user")}'
                 },
                 {
                     id: 'pending-approval',
                     labelId: 'gnhome.pendingApproval',
                     type: 'filter',
-                    disableIf: '{!state("user")}'
+                    disableIf: '{not state("user")}'
                 },
                 {
                     id: 'remote',
@@ -413,7 +413,7 @@ function ResourcesGrid({
         },
         {
             type: 'divider',
-            disableIf: '{!state("user")}'
+            disableIf: '{not state("user")}'
         },
         {
             type: 'select',
@@ -606,8 +606,8 @@ function ResourcesGrid({
     useEffect(() => {
         let pathname = location.pathname;
         const initialize = (pathname === '/'
-        || !isEmpty(getMatchPath())
-        || isCatalogPage(pathname)) && init;
+            || !isEmpty(getMatchPath())
+            || isCatalogPage(pathname)) && init;
 
         if (initialize) {
             pathname = getUpdatedPathName();
