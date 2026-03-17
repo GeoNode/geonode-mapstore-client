@@ -161,7 +161,7 @@ const updateFacets = (fields, facets = [], query = {}) => {
                     ...paramsSerializer()
                 })
                     .then(({ data } = {}) => {
-                        const filterField = { key: queryFacet.filter };
+                        const filterField = { key: queryFacet.filter, style, name: queryFacet.name };
                         const topics = data?.topics ?? {};
                         const items = parseTopicsItems(topics.items, { facet: queryFacet, style });
                         // store all filters information
