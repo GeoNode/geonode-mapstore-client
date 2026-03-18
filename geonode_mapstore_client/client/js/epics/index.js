@@ -28,22 +28,9 @@ import { UPDATE_RESOURCES } from "@mapstore/framework/plugins/ResourcesCatalog/a
 import { startAsyncProcess, STOP_ASYNC_PROCESS } from "@js/actions/resourceservice";
 import { error as errorNotification } from "@mapstore/framework/actions/notifications";
 import { getProcessErrorInfo } from "@js/utils/ErrorUtils";
-import { getSupportedLocales } from '@mapstore/framework/utils/LocaleUtils';
 
 // We need to include missing epics. The plugins that normally include this epic is not used.
 
-function localeCodeToBCP47(iso2) {
-    const supportedLocales = getSupportedLocales();
-    supportedLocales.hy = {
-        code: 'hy-AM',
-        description: 'Armenian'
-    };
-    supportedLocales.ru = {
-        code: 'ru-RU',
-        description: 'Russian'
-    };
-    return supportedLocales[iso2] ? supportedLocales[iso2].code : iso2;
-}
 /**
 * @module epics/index
 */
@@ -110,7 +97,7 @@ export const gnFetchMissingLayerData = (action$, { getState } = {}) =>
 
 /**
  * Checks the permissions for layers when a map is loaded and when a new layer is added
- * to a map and update layer in multi-language support for layer title in TOC
+ * to a map
  */
 export const gnSetDatasetsPermissions = (actions$, { getState = () => {}} = {}) =>
     actions$.ofType(MAP_CONFIG_LOADED, ADD_LAYER)
@@ -135,26 +122,11 @@ export const gnSetDatasetsPermissions = (actions$, { getState = () => {}} = {}) 
             // skip layers of non-geonode origin
             if (!action.layer?.extendedParams?.pk) return Rx.Observable.empty();
 
-            if (action.type === ADD_LAYER) {
-
-                return Rx.Observable.defer(() => getDatasetByName(action.layer?.name))
-                    .switchMap((layer = {}) => {
-                        const layerId = layersSelector(getState())?.find((la) => la.name === layer.alternate)?.id;
-                        /*
-                         * Multilang support for only layer title in TOC
-                         */
-                        const title = Object.keys(layer)
-                            .filter(key => key.startsWith('title_'))
-                            .reduce((acc, key) => {
-                                const code = localeCodeToBCP47(key.replace('title_', ''));
-                                acc[code] = layer[key];
-                                return acc;
-                            }, {"default": layer.title}) || layer.title;
-
-                        return Rx.Observable.of(updateNode(layerId, 'layer', {perms: layer.perms, title}));
-                    });
-            }
-            return null;
+            return Rx.Observable.defer(() => getDatasetByName(action.layer?.name))
+                .switchMap((layer = {}) => {
+                    const layerId = layersSelector(getState())?.find((la) => la.name === layer.alternate)?.id;
+                    return Rx.Observable.of(updateNode(layerId, 'layer', {perms: layer.perms}));
+                });
         });
 
 export const updateMapLayoutEpic = msUpdateMapLayoutEpic;

@@ -18,6 +18,7 @@ import { getGeoNodeLocalConfig, parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
 import { determineResourceType } from '@js/utils/FileUtils';
 import { createDefaultStyle } from '@mapstore/framework/utils/StyleUtils';
+import { getSupportedLocales } from '@mapstore/framework/utils/LocaleUtils';
 /**
 * @module utils/ResourceUtils
 */
@@ -153,6 +154,35 @@ export const getDimensions = ({links, has_time: hasTime} = {}) => {
     return dimensions;
 };
 
+const getLocalizedValue = (resource, key, locale = '') => {
+    if (resource[`${key}_${locale}`]) {
+        return resource[`${key}_${locale}`];
+    }
+    const languageCode = locale.split('-')[0];
+    if (resource[`${key}_${languageCode}`]) {
+        return resource[`${key}_${languageCode}`];
+    }
+    return null;
+};
+
+export const getLocalizedValues = (resource, key, defaultValue) => {
+    const supportedLocales = getSupportedLocales() || {};
+    const translations = Object.values(supportedLocales)
+        .map(({ code }) => {
+            const value = getLocalizedValue(resource, key, code);
+            return value ? [code, value] : null;
+        })
+        .filter(value => value !== null);
+
+    if (translations.length) {
+        return {
+            ...Object.fromEntries(translations),
+            'default': defaultValue
+        };
+    }
+    return defaultValue;
+};
+
 /**
 * convert resource layer configuration to a mapstore layer object
 * @param {object} resource geonode layer resource
@@ -165,7 +195,7 @@ export const resourceToLayerConfig = (resource) => {
         attribute_set: attributeSet = [],
         links = [],
         featureinfo_custom_template: template,
-        title,
+        title: defaultTitle,
         perms,
         pk,
         default_style: defaultStyle,
@@ -174,6 +204,8 @@ export const resourceToLayerConfig = (resource) => {
         sourcetype,
         data: layerSettings
     } = resource;
+
+    const title = getLocalizedValues(resource, 'title', defaultTitle);
 
     const bbox = getExtentFromResource(resource);
     const defaultStyleParams = defaultStyle && {
