@@ -216,7 +216,7 @@ export const getSupportedDocumentTypes = () => {
     return allowedDocumentTypes;
 };
 
-export const getSupportedFilesByResourceType = (resourceType, { actions } = {}) => {
+export const getSupportedFilesByResourceType = (resourceType, actions) => {
     if (resourceType === 'document') {
         const allowedDocumentTypes = getSupportedDocumentTypes();
         return allowedDocumentTypes.map((ext) => {

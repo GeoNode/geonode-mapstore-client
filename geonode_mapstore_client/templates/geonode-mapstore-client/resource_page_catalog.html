@@ -14,13 +14,13 @@
                             "id": "my-resources",
                             "labelId": "gnhome.myResources",
                             "type": "filter",
-                            "disableIf": "{!state('user')}"
+                            "disableIf": "{not state('user')}"
                         },
                         {
                             "id": "favorite",
                             "labelId": "gnhome.favorites",
                             "type": "filter",
-                            "disableIf": "{!state('user')}"
+                            "disableIf": "{not state('user')}"
                         },
                         {
                             "id": "featured",
@@ -31,13 +31,13 @@
                             "id": "unpublished",
                             "labelId": "gnhome.unpublished",
                             "type": "filter",
-                            "disableIf": "{!state('user')}"
+                            "disableIf": "{not state('user')}"
                         },
                         {
                             "id": "pending-approval",
                             "labelId": "gnhome.pendingApproval",
                             "type": "filter",
-                            "disableIf": "{!state('user')}"
+                            "disableIf": "{not state('user')}"
                         },
                         ...(filterForm ?? []),
                     ].map(item => [item.id, item])).values()];
@@ -52,7 +52,7 @@
                     },
                     {
                         "type": "divider",
-                        "disableIf": "{!state('user')}"
+                        "disableIf": "{not state('user')}"
                     },
                     {
                         "type": "select",
@@ -93,7 +93,7 @@
             function getPageMenuItem(menuItems) {
                 return [{
                     "labelId": "gnhome.new",
-                    "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
+                    "disableIf": "{not canCreateResourceFromCatalog(state('settings'), state('user'))}",
                     "type": "button",
                     "variant": "primary",
                     ...menuItems

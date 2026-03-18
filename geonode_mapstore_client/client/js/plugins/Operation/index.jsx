@@ -61,24 +61,24 @@ import Message from '@mapstore/framework/components/I18N/Message';
  *      "action": "upload",
  *      "api": {
  *          "upload": {
- *              "url": "{context.getEndpointUrl('uploads', '/upload')}",
+ *              "url": "{getEndpointUrl('uploads', '/upload')}",
  *              "maxParallelUploads": 1,
  *              "enableRemoteUploads": false,
- *              "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['upload'] })}",
+ *              "supportedFiles": "{getSupportedFilesByResourceType('dataset', { actions: ['upload'] })}",
  *              "body": {
  *                  "file": {
- *                      "base_file": "{context.getUploadMainFile}",
- *                      "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
+ *                      "base_file": "{getUploadMainFile}",
+ *                      "resource_pk": "{get(state('gnResourceData'), 'pk')}",
  *                      "action": "upload"
  *                  }
  *              }
  *          },
  *          "executionRequest": {
- *              "url": "{context.getEndpointUrl('executionrequest')}",
+ *              "url": "{getEndpointUrl('executionrequest')}",
  *              "params": {
  *                  "filter{action}": "upload",
  *                  "sort[]": "-created",
- *                  "filter{geonode_resource}": "{context.get(state('gnResourceData'), 'pk')}"
+ *                  "filter{geonode_resource}": "{get(state('gnResourceData'), 'pk')}"
  *              }
  *          }
  *      }

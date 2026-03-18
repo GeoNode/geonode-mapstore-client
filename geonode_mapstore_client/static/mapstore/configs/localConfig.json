@@ -155,7 +155,7 @@
                 "cfg": {
                     "showInMapPopup": true,
                     "viewerOptions": {
-                        "container": "{context.ReactSwipe}"
+                        "container": "{ReactSwipe}"
                     }
                 }
             },
@@ -227,7 +227,7 @@
                 "cfg": {
                     "showInMapPopup": true,
                     "viewerOptions": {
-                        "container": "{context.ReactSwipe}"
+                        "container": "{ReactSwipe}"
                     }
                 }
             },
@@ -295,7 +295,7 @@
                 "name": "Identify",
                 "cfg": {
                     "viewerOptions": {
-                        "container": "{context.ReactSwipe}"
+                        "container": "{ReactSwipe}"
                     }
                 }
             },
@@ -386,7 +386,7 @@
                 "name": "Identify",
                 "cfg": {
                     "viewerOptions": {
-                        "container": "{context.ReactSwipe}"
+                        "container": "{ReactSwipe}"
                     }
                 }
             },
@@ -562,26 +562,26 @@
                             "labelId": "gnviewer.resource",
                             "showPendingChangesIcon": true,
                             "type": "dropdown",
-                            "disableIf": "{!(state('isNewResource') || context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') || context.canCopyResource(state('gnResourceData'), state('user')) || context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase'))}",
+                            "disableIf": "{not canInteractResource(state('isNewResource'), state('gnResourceData'), state('user'))}",
                             "items": [
                                 {
                                     "type": "plugin",
                                     "name": "Save",
-                                    "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}"
+                                    "disableIf": "{not canSaveResource(state('isNewResource'), state('gnResourceData'), state('user'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "SaveAs",
-                                    "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user')) || (!state('selectedLayerPermissions').includes('download_resourcebase') || !context.resourceHasPermission(state('gnResourceData'), 'download_resourcebase'))}"
+                                    "disableIf": "{not canSaveAsDataset(state('isNewResource'), state('gnResourceData'), state('user'), state('selectedLayerPermissions'))}"
                                 },
                                 {
                                     "type": "divider",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "DeleteResource",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
                                 }
                             ]
                         },
@@ -599,54 +599,54 @@
                                 },
                                 {
                                     "type": "link",
-                                    "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
+                                    "href": "{getEditDataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.viewData",
-                                    "disableIf": "{(state('gnResourceData') && ['raster', '3dtiles'].includes(state('gnResourceData').subtype)) || !state('selectedLayerPermissions').includes('download_resourcebase')}"
+                                    "disableIf": "{not hasData(state('gnResourceData'), state('selectedLayerPermissions'))}"
                                 }
                             ]
                         },
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}",
                             "items": [
                                 {
                                     "type": "link",
-                                    "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/data'}",
+                                    "href": "{getEditDataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editData",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_data')}"
+                                    "disableIf": "{not canEditDatasetData(state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "link",
-                                    "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/settings?tab=style'}",
+                                    "href": "{getEditStyleUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editStyle",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
+                                    "disableIf": "{not canEditDatasetStyle(state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "OperationUploadStyle",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
+                                    "disableIf": "{not canEditDatasetStyle(state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "link",
-                                    "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk + '/edit/settings'}",
+                                    "href": "{getEditSettingsUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.layerSettings.title",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_dataset_style')}"
+                                    "disableIf": "{not canEditDatasetStyle(state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "link",
-                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
+                                    "href": "{getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "OperationUploadMetadata",
-                                    "disableIf": "{state('gnResourceData').subtype === '3dtiles'}"
+                                    "disableIf": "{is3DTiles(state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "OperationReplaceDataset",
-                                    "disableIf": "{state('gnResourceData').sourcetype === '3dtiles'}"
+                                    "disableIf": "{is3DTiles(state('gnResourceData'))}"
                                 }
                             ]
                         },
@@ -671,7 +671,7 @@
                         {
                             "type": "plugin",
                             "name": "ShareActionButton",
-                            "disableIf": "{state('isNewResource') || (!state('isNewResource') && !context.canAccessPermissions(state('gnResourceData')))}"
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
                         },
                         {
                             "type": "divider",
@@ -684,9 +684,9 @@
                         },
                         {
                             "type": "link",
-                            "href": "{context.getCreateNewMapLink(state('gnResourceData'))}",
+                            "href": "{getCreateNewMapLink(state('gnResourceData'))}",
                             "labelId": "gnviewer.createMap",
-                            "disableIf": "{!(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}"
+                            "disableIf": "{not canAddResource(state('user'))}"
                         }
                     ]
                 }
@@ -755,7 +755,7 @@
                 "name": "Identify",
                 "cfg": {
                     "viewerOptions": {
-                        "container": "{context.ReactSwipe}"
+                        "container": "{ReactSwipe}"
                     }
                 }
             },
@@ -916,7 +916,7 @@
             {
                 "name": "LayerDownload",
                 "cfg": {
-                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                    "disablePluginIf": "{not canDownloadLayer(state('selectedLayerPermissions'))}",
                     "hideServiceSelector": true,
                     "defaultSelectedService": "wps",
                     "formats": [
@@ -1134,23 +1134,23 @@
                     "action": "resource_style_upload",
                     "api": {
                         "upload": {
-                            "url": "{context.getEndpointUrl('uploads', '/upload')}",
+                            "url": "{getEndpointUrl('uploads', '/upload')}",
                             "maxParallelUploads": 1,
                             "body": {
                                 "file": {
-                                    "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
-                                    "base_file": "{context.getUploadMainFile}",
+                                    "resource_pk": "{get(state('gnResourceData'), 'pk')}",
+                                    "base_file": "{getUploadMainFile}",
                                     "action": "resource_style_upload"
                                 }
                             },
-                            "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['resource_style_upload'] })}"
+                            "supportedFiles": "{getSupportedFilesByResourceType('dataset', ['resource_style_upload'])}"
                         },
                         "executionRequest": {
-                            "url": "{context.getEndpointUrl('executionrequest')}",
+                            "url": "{getEndpointUrl('executionrequest')}",
                             "params": {
                                 "filter{action}": "resource_style_upload",
                                 "sort[]": "-created",
-                                "filter{geonode_resource}": "{context.get(state('gnResourceData'), 'pk')}"
+                                "filter{geonode_resource}": "{get(state('gnResourceData'), 'pk')}"
                             }
                         }
                     }
@@ -1174,23 +1174,23 @@
                     "pageReload": true,
                     "api": {
                         "upload": {
-                            "url": "{context.getEndpointUrl('uploads', '/upload')}",
+                            "url": "{getEndpointUrl('uploads', '/upload')}",
                             "maxParallelUploads": 1,
                             "body": {
                                 "file": {
-                                    "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
-                                    "base_file": "{context.getUploadMainFile}",
+                                    "resource_pk": "{get(state('gnResourceData'), 'pk')}",
+                                    "base_file": "{getUploadMainFile}",
                                     "action": "resource_metadata_upload"
                                 }
                             },
-                            "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['resource_metadata_upload'] })}"
+                            "supportedFiles": "{getSupportedFilesByResourceType('dataset', ['resource_metadata_upload'])}"
                         },
                         "executionRequest": {
-                            "url": "{context.getEndpointUrl('executionrequest')}",
+                            "url": "{getEndpointUrl('executionrequest')}",
                             "params": {
                                 "filter{action}": "resource_metadata_upload",
                                 "sort[]": "-created",
-                                "filter{geonode_resource}": "{context.get(state('gnResourceData'), 'pk')}"
+                                "filter{geonode_resource}": "{get(state('gnResourceData'), 'pk')}"
                             }
                         }
                     }
@@ -1234,23 +1234,23 @@
                                     }
                                 }
                             },
-                            "url": "{context.getEndpointUrl('uploads', '/upload')}",
+                            "url": "{getEndpointUrl('uploads', '/upload')}",
                             "maxParallelUploads": 1,
                             "body": {
                                 "file": {
-                                    "resource_pk": "{context.get(state('gnResourceData'), 'pk')}",
-                                    "base_file": "{context.getUploadMainFile}",
+                                    "resource_pk": "{get(state('gnResourceData'), 'pk')}",
+                                    "base_file": "{getUploadMainFile}",
                                     "action": "replace"
                                 }
                             },
-                            "supportedFiles": "{context.getSupportedFilesByResourceType('dataset', { actions: ['replace', 'upsert'] })}"
+                            "supportedFiles": "{getSupportedFilesByResourceType('dataset', ['replace', 'upsert'])}"
                         },
                         "executionRequest": {
-                            "url": "{context.getEndpointUrl('executionrequest')}",
+                            "url": "{getEndpointUrl('executionrequest')}",
                             "params": {
                                 "filter{action.in}": ["replace", "upsert"],
                                 "sort[]": "-created",
-                                "filter{geonode_resource}": "{context.get(state('gnResourceData'), 'pk')}"
+                                "filter{geonode_resource}": "{get(state('gnResourceData'), 'pk')}"
                             }
                         }
                     }
@@ -1613,9 +1613,8 @@
                     "leftMenuItems": [
                         {
                             "type": "link",
-                            "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk}",
-                            "label": "{'< Go back to ' + (state('gnResourceData') || {}).title}"
-
+                            "href": "{getDatasetUrl(state('gnResourceData'))}",
+                            "label": "{getGoBackToLabel(state('gnResourceData'))}"
                         }
                     ]
                 }
@@ -1745,8 +1744,8 @@
                     "leftMenuItems": [
                         {
                             "type": "link",
-                            "href": "{'#/dataset/' + (state('gnResourceData') || {}).pk}",
-                            "label": "{'< Go back to ' + (state('gnResourceData') || {}).title}"
+                            "href": "{getDatasetUrl(state('gnResourceData'))}",
+                            "label": "{getGoBackToLabel(state('gnResourceData'))}"
                         },
                         {
                             "type": "plugin",
@@ -1779,7 +1778,7 @@
                 "cfg": {
                     "showInMapPopup": true,
                     "viewerOptions": {
-                        "container": "{context.ReactSwipe}"
+                        "container": "{ReactSwipe}"
                     }
                 }
             },
@@ -1874,26 +1873,26 @@
                             "labelId": "gnviewer.resource",
                             "showPendingChangesIcon": true,
                             "type": "dropdown",
-                            "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user')) && !context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}",
+                            "disableIf": "{not canInteractResource(state('isNewResource'), state('gnResourceData'), state('user'))}",
                             "items": [
                                 {
                                     "type": "plugin",
                                     "name": "Save",
-                                    "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}"
+                                    "disableIf": "{not canSaveResource(state('isNewResource'), state('gnResourceData'), state('user'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "SaveAs",
-                                    "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}"
+                                    "disableIf": "{not canSaveAsResource(state('isNewResource'), state('gnResourceData'), state('user'))}"
                                 },
                                 {
                                     "type": "divider",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "DeleteResource",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
                                 }
                             ]
                         },
@@ -1915,35 +1914,35 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "disableIf": "{not canEditExistingResource(state('isNewResource'), state('gnResourceData'))}",
                             "items": [
                                 {
                                     "type": "link",
-                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
+                                    "href": "{getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
                                 },
                                 {
                                     "type": "divider",
-                                    "disableIf": "{state('resourceParams')?.appPk}"
+                                    "disableIf": "{get(state('resourceParams'), 'appPk')}"
                                 },
                                 {
                                     "type": "link",
-                                    "disableIf": "{state('resourceParams')?.appPk}",
-                                    "href": "{'#/viewer/' + 'new/map/' + state('gnResourceData')?.pk}",
+                                    "disableIf": "{get(state('resourceParams'), 'appPk')}",
+                                    "href": "{getNewMapViewerUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.addViewerConfiguration"
                                 },
                                 {
                                     "type": "divider",
-                                    "disableIf": "{!state('resourceParams')?.appPk || !context.resourceHasPermission(state('gnResourceLinkedViewer'), 'change_resourcebase')}"
+                                    "disableIf": "{not canEditMapViewer(state('resourceParams'), state('gnResourceLinkedViewer'))}"
                                 },
                                 {
                                     "type": "plugin",
-                                    "disableIf": "{!state('resourceParams')?.appPk || !context.resourceHasPermission(state('gnResourceLinkedViewer'), 'change_resourcebase')}",
+                                    "disableIf": "{not canEditMapViewer(state('resourceParams'), state('gnResourceLinkedViewer'))}",
                                     "name": "EditMapViewer"
                                 },
                                 {
                                     "type": "plugin",
-                                    "disableIf": "{!state('resourceParams')?.appPk || !context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase') || !context.resourceHasPermission(state('gnResourceLinkedViewer'), 'delete_resourcebase')}",
+                                    "disableIf": "{not canRemoveMapViewer(state('resourceParams'), state('gnResourceData'), state('gnResourceLinkedViewer'))}",
                                     "name": "RemoveMapViewer"
                                 }
                             ]
@@ -1951,25 +1950,25 @@
                         {
                             "type": "plugin",
                             "name": "ShareActionButton",
-                            "disableIf": "{state('isNewResource') || (!state('isNewResource') && !context.canAccessPermissions(state('gnResourceData')))}"
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
                         },
                         {
                             "type": "divider",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource')}"
+                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
                         },
                         {
                             "type": "plugin",
                             "name": "DatasetsCatalog",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource')}"
+                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
                         },
                         {
                             "type": "divider",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource')}"
+                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
                         },
                         {
                             "type": "plugin",
                             "name": "DocumentsCatalog",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource')}"
+                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
                         }
                     ]
                 }
@@ -2004,7 +2003,7 @@
                 "name": "Identify",
                 "cfg": {
                     "viewerOptions": {
-                        "container": "{context.ReactSwipe}"
+                        "container": "{ReactSwipe}"
                     }
                 }
             },
@@ -2184,7 +2183,7 @@
             {
                 "name": "LayerDownload",
                 "cfg": {
-                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
+                    "disablePluginIf": "{not canDownloadLayer(state('selectedLayerPermissions'))}",
                     "hideServiceSelector": true,
                     "defaultSelectedService": "wps",
                     "formats": [
@@ -2418,7 +2417,7 @@
             {
                 "name": "WidgetsBuilder",
                 "cfg": {
-                    "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                    "disablePluginIf": "{not canDownloadLayer(state('selectedLayerPermissions'))}"
                 }
             },
             {
@@ -2491,67 +2490,67 @@
                                 {
                                     "type": "text",
                                     "labelId": "gnviewer.title",
-                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'title')}"
+                                    "value": "{get(state('gnResourceSelectedLayerDataset'), 'title')}"
                                 },
                                 {
                                     "type": "link",
                                     "labelId": "gnviewer.owner",
-                                    "href": "{'/people/profile/' + context.get(state('gnResourceSelectedLayerDataset'), 'owner.username')}",
-                                    "value": "{context.getUserResourceName(context.get(state('gnResourceSelectedLayerDataset'), 'owner'))}",
-                                    "disableIf": "{!context.get(state('gnResourceSelectedLayerDataset'), 'owner.username')}"
+                                    "href": "{getOwnerProfileUrl(state('gnResourceSelectedLayerDataset'))}",
+                                    "value": "{getUserResourceName(get(state('gnResourceSelectedLayerDataset'), 'owner'))}",
+                                    "disableIf": "{not get(state('gnResourceSelectedLayerDataset'), 'owner.username')}"
                                 },
                                 {
                                     "type": "date",
                                     "format": "YYYY-MM-DD HH:mm",
-                                    "labelId": "{'gnviewer.'+context.get(state('gnResourceSelectedLayerDataset'), 'date_type').toLowerCase()}",
-                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'date')}"
+                                    "labelId": "{getDateTypeLabelId(state('gnResourceSelectedLayerDataset'))}",
+                                    "value": "{get(state('gnResourceSelectedLayerDataset'), 'date')}"
                                 },
                                 {
                                     "type": "date",
                                     "format": "YYYY-MM-DD HH:mm",
                                     "labelId": "gnviewer.created",
-                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'created')}"
+                                    "value": "{get(state('gnResourceSelectedLayerDataset'), 'created')}"
                                 },
                                 {
                                     "type": "date",
                                     "format": "YYYY-MM-DD HH:mm",
                                     "labelId": "gnviewer.lastModified",
-                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'last_updated')}"
+                                    "value": "{get(state('gnResourceSelectedLayerDataset'), 'last_updated')}"
                                 },
                                 {
                                     "type": "query",
                                     "labelId": "gnviewer.resourceType",
-                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'resource_type')}",
+                                    "value": "{get(state('gnResourceSelectedLayerDataset'), 'resource_type')}",
                                     "pathname": "/",
                                     "query": {
-                                        "f": "{context.get(state('gnResourceSelectedLayerDataset'), 'resource_type')}"
+                                        "f": "{get(state('gnResourceSelectedLayerDataset'), 'resource_type')}"
                                     }
                                 },
                                 {
-                                    "type": "{context.isDocumentExternalSource(state('gnResourceSelectedLayerDataset')) ? 'link' : 'text'}",
+                                    "type": "{getDocumentSourceFieldType(state('gnResourceSelectedLayerDataset'))}",
                                     "labelId": "gnviewer.sourceType",
-                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'sourcetype', '').toLowerCase()}",
-                                    "href": "{context.get(state('gnResourceSelectedLayerDataset'), 'href')}"
+                                    "value": "{get(state('gnResourceSelectedLayerDataset'), 'sourcetype', '').toLowerCase()}",
+                                    "href": "{get(state('gnResourceSelectedLayerDataset'), 'href')}"
                                 },
                                 {
                                     "type": "query",
                                     "labelId": "gnviewer.category",
-                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'category.gn_description')}",
+                                    "value": "{get(state('gnResourceSelectedLayerDataset'), 'category.gn_description')}",
                                     "pathname": "/",
                                     "query": {
-                                        "filter{category.identifier}": "{context.get(state('gnResourceSelectedLayerDataset'), 'category.identifier')}"
+                                        "filter{category.identifier}": "{get(state('gnResourceSelectedLayerDataset'), 'category.identifier')}"
                                     }
                                 },
                                 {
                                     "type": "link",
                                     "labelId": "gnviewer.pointOfContact",
-                                    "value": "{context.getUserResourceNames(context.get(state('gnResourceSelectedLayerDataset'), 'poc'))}",
-                                    "disableIf": "{!context.get(state('gnResourceSelectedLayerDataset'), 'poc')}"
+                                    "value": "{getUserResourceNames(get(state('gnResourceSelectedLayerDataset'), 'poc'))}",
+                                    "disableIf": "{not get(state('gnResourceSelectedLayerDataset'), 'poc')}"
                                 },
                                 {
                                     "type": "query",
                                     "labelId": "gnviewer.keywords",
-                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'keywords')}",
+                                    "value": "{get(state('gnResourceSelectedLayerDataset'), 'keywords')}",
                                     "valueKey": "name",
                                     "pathname": "/",
                                     "queryTemplate": {
@@ -2561,7 +2560,7 @@
                                 {
                                     "type": "query",
                                     "labelId": "gnviewer.regions",
-                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'regions')}",
+                                    "value": "{get(state('gnResourceSelectedLayerDataset'), 'regions')}",
                                     "valueKey": "code",
                                     "pathname": "/",
                                     "queryTemplate": {
@@ -2571,33 +2570,33 @@
                                 {
                                     "type": "text",
                                     "labelId": "gnviewer.attribution",
-                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'attribution')}"
+                                    "value": "{get(state('gnResourceSelectedLayerDataset'), 'attribution')}"
                                 },
                                 {
                                     "type": "text",
                                     "labelId": "gnviewer.language",
-                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'language')}"
+                                    "value": "{get(state('gnResourceSelectedLayerDataset'), 'language')}"
                                 },
                                 {
                                     "type": "html",
                                     "labelId": "gnviewer.supplementalInformation",
-                                    "value": "{context.get(state('gnResourceSelectedLayerDataset'), 'supplemental_information')}"
+                                    "value": "{get(state('gnResourceSelectedLayerDataset'), 'supplemental_information')}"
                                 },
                                 {
                                     "type": "date",
                                     "format": "YYYY-MM-DD HH:mm",
                                     "labelId": "gnviewer.temporalExtent",
                                     "value": {
-                                        "start": "{context.get(state('gnResourceSelectedLayerDataset'), 'temporal_extent_start')}",
-                                        "end": "{context.get(state('gnResourceSelectedLayerDataset'), 'temporal_extent_end')}"
+                                        "start": "{get(state('gnResourceSelectedLayerDataset'), 'temporal_extent_start')}",
+                                        "end": "{get(state('gnResourceSelectedLayerDataset'), 'temporal_extent_end')}"
                                     }
                                 },
                                 {
                                     "type": "link",
                                     "style": "label",
                                     "labelId": "gnviewer.viewFullMetadata",
-                                    "href": "{context.getMetadataDetailUrl(state('gnResourceSelectedLayerDataset'))}",
-                                    "disableIf": "{!context.getMetadataDetailUrl(state('gnResourceSelectedLayerDataset'))}"
+                                    "href": "{getMetadataDetailUrl(state('gnResourceSelectedLayerDataset'))}",
+                                    "disableIf": "{not getMetadataDetailUrl(state('gnResourceSelectedLayerDataset'))}"
                                 }
                             ]
                         },
@@ -2605,19 +2604,19 @@
                             "type": "locations",
                             "id": "locations",
                             "labelId": "gnviewer.locations",
-                            "items": "{({extent: context.get(state('gnResourceSelectedLayerDataset'), 'extent')})}"
+                            "items": "{getExtentObject(state('gnResourceSelectedLayerDataset'))}"
                         },
                         {
                             "type": "relations",
                             "id": "related",
                             "labelId": "gnviewer.linkedResources.label",
-                            "items": "{context.get(state('gnResourceSelectedLayerDataset'), 'linkedResources')}"
+                            "items": "{get(state('gnResourceSelectedLayerDataset'), 'linkedResources')}"
                         },
                         {
                             "type": "assets",
                             "id": "assets",
                             "labelId": "gnviewer.assets",
-                            "items": "{context.get(state('gnResourceSelectedLayerDataset'), 'assets')}"
+                            "items": "{get(state('gnResourceSelectedLayerDataset'), 'assets')}"
                         }
                     ]
                 }
@@ -2647,35 +2646,35 @@
                             "labelId": "gnviewer.resource",
                             "showPendingChangesIcon": true,
                             "type": "dropdown",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase') && !state('isNewResource') && !context.canCopyResource(state('gnResourceData'), state('user'))}",
+                            "disableIf": "{not canInteractResource(state('isNewResource'), state('gnResourceData'), state('user'))}",
                             "items": [
                                 {
                                     "type": "plugin",
                                     "name": "Save",
-                                    "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}"
+                                    "disableIf": "{not canSaveResource(state('isNewResource'), state('gnResourceData'), state('user'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "SaveAs",
-                                    "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}"
+                                    "disableIf": "{not canSaveAsResource(state('isNewResource'), state('gnResourceData'), state('user'))}"
                                 },
                                 {
                                     "type": "divider",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                                    "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
                                 },
                                 {
                                     "name": "Sync",
                                     "type": "plugin",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                                    "disableIf": "{not canEditExistingResource(state('isNewResource'), state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "divider",
-                                    "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "DeleteResource",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
                                 }
                             ]
                         },
@@ -2697,11 +2696,11 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "disableIf": "{not canEditExistingResource(state('isNewResource'), state('gnResourceData'))}",
                             "items": [
                                 {
                                     "type": "link",
-                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
+                                    "href": "{getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
                                 }
                             ]
@@ -2709,7 +2708,7 @@
                         {
                             "type": "plugin",
                             "name": "ShareActionButton",
-                            "disableIf": "{state('isNewResource') || (!state('isNewResource') && !context.canAccessPermissions(state('gnResourceData')))}"
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
                         }
                     ]
                 }
@@ -2791,7 +2790,7 @@
             {
                 "name": "GeoStoryEditor",
                 "cfg": {
-                    "disablePluginIf": "{!!(state('browser') && state('browser').mobile)}",
+                    "disablePluginIf": "{isMobile(state('browser'))}",
                     "containerPosition": "leftColumn"
                 }
             },
@@ -2835,26 +2834,26 @@
                             "labelId": "gnviewer.resource",
                             "type": "dropdown",
                             "showPendingChangesIcon": true,
-                            "disableIf": "{!(context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') || context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase') || (context.canCopyResource(state('gnResourceData'), state('user')) && context.resourceHasPermission(state('gnResourceData'), 'download_resourcebase') && (state('isNewResource') || state('selectedLayerPermissions').includes('download_resourcebase'))))}",
+                            "disableIf": "{not canManageDocument(state('isNewResource'), state('gnResourceData'), state('user'), state('selectedLayerPermissions'))}",
                             "items": [
                                 {
                                     "type": "plugin",
                                     "name": "Save",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && (!context.canCopyResource(state('gnResourceData'), state('user')) || !context.resourceHasPermission(state('gnResourceData'), 'download_resourcebase'))}"
+                                    "disableIf": "{not canSaveDocument(state('gnResourceData'), state('user'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "SaveAs",
-                                    "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user')) || (!state('selectedLayerPermissions').includes('download_resourcebase') || !context.resourceHasPermission(state('gnResourceData'), 'download_resourcebase'))}"
+                                    "disableIf": "{not canSaveAsResource(state('isNewResource'), state('gnResourceData'), state('user'))}"
                                 },
                                 {
                                     "type": "divider",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "DeleteResource",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
                                 }
                             ]
                         },
@@ -2875,11 +2874,11 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "disableIf": "{not canEditExistingResource(state('isNewResource'), state('gnResourceData'))}",
                             "items": [
                                 {
                                     "type": "link",
-                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
+                                    "href": "{getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
                                 }
                             ]
@@ -2901,7 +2900,7 @@
                         {
                             "type": "plugin",
                             "name": "ShareActionButton",
-                            "disableIf": "{state('isNewResource') || (!state('isNewResource') && !context.canAccessPermissions(state('gnResourceData')))}"
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
                         }
                     ]
                 }
@@ -2958,35 +2957,35 @@
                             "labelId": "gnviewer.resource",
                             "type": "dropdown",
                             "showPendingChangesIcon": true,
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !state('isNewResource') && !context.canCopyResource(state('gnResourceData'), state('user')) && !context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}",
+                            "disableIf": "{not canInteractResource(state('isNewResource'), state('gnResourceData'), state('user'))}",
                             "items": [
                                 {
                                     "type": "plugin",
                                     "name": "Save",
-                                    "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}"
+                                    "disableIf": "{not canSaveResource(state('isNewResource'), state('gnResourceData'), state('user'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "SaveAs",
-                                    "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}"
+                                    "disableIf": "{not canSaveAsResource(state('isNewResource'), state('gnResourceData'), state('user'))}"
                                 },
                                 {
                                     "type": "divider",
-                                    "disableIf": "{state('isNewResource') || (!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user')))}"
+                                    "disableIf": "{not canSaveResource(state('isNewResource'), state('gnResourceData'), state('user'))}"
                                 },
                                 {
                                     "name": "Sync",
                                     "type": "plugin",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                                    "disableIf": "{not canEditExistingResource(state('isNewResource'), state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "divider",
-                                    "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "DeleteResource",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
                                 }
                             ]
                         },
@@ -3008,11 +3007,11 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "disableIf": "{not canEditExistingResource(state('isNewResource'), state('gnResourceData'))}",
                             "items": [
                                 {
                                     "type": "link",
-                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
+                                    "href": "{getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
                                 }
                             ]
@@ -3020,16 +3019,16 @@
                         {
                             "type": "plugin",
                             "name": "ShareActionButton",
-                            "disableIf": "{state('isNewResource') || (!state('isNewResource') && !context.canAccessPermissions(state('gnResourceData')))}"
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
                         },
                         {
                             "type": "divider",
-                            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
                         },
                         {
                             "name": "DashboardEditor",
                             "type": "plugin",
-                            "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
                         }
                     ]
                 }
@@ -3064,10 +3063,10 @@
             {
                 "name": "DashboardEditor",
                 "cfg": {
-                    "disablePluginIf": "{state('gnResourceData') && state('gnResourceData').perms && state('gnResourceData').perms.indexOf('change_resourcebase') === -1 ? true : false}",
+                    "disablePluginIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}",
                     "containerPosition": "leftColumn",
-                    "selectedService": "{state('settings') && state('settings').dashboardCatalogueSelectedService ? state('settings').dashboardCatalogueSelectedService : ''}",
-                    "services": "{state('settings') && state('settings').dashboardCatalogueServices ? state('settings').dashboardCatalogueServices : {}}",
+                    "selectedService": "{get(state('settings'), 'dashboardCatalogueSelectedService', '')}",
+                    "services": "{getDashboardCatalogueServices(state('settings'))}",
                     "disableEmptyMap": true
                 }
             },
@@ -3291,7 +3290,7 @@
                 "cfg": {
                     "showInMapPopup": true,
                     "viewerOptions": {
-                        "container": "{context.ReactSwipe}"
+                        "container": "{ReactSwipe}"
                     }
                 }
             },
@@ -3424,7 +3423,7 @@
                 "cfg": {
                     "showInMapPopup": true,
                     "viewerOptions": {
-                        "container": "{context.ReactSwipe}"
+                        "container": "{ReactSwipe}"
                     }
                 }
             },
@@ -3709,7 +3708,7 @@
                     "menuItems": [
                         {
                             "labelId": "gnhome.addResource",
-                            "disableIf": "{(state('settings') && state('settings').isMobile) || !(state('user') && state('user').perms && state('user').perms.includes('add_resource'))}",
+                            "disableIf": "{not canCreateResourceFromCatalog(state('settings'), state('user'))}",
                             "type": "dropdown",
                             "variant": "primary",
                             "noCaret": true,
@@ -3718,38 +3717,38 @@
                                     "labelId": "gnhome.uploadDataset",
                                     "value": "layer",
                                     "type": "link",
-                                    "href": "{context.getCataloguePath('/catalogue/#/upload/dataset')}"
+                                    "href": "{getCataloguePath('/catalogue/#/upload/dataset')}"
                                 },
                                 {
                                     "labelId": "gnhome.uploadDocument",
                                     "value": "document",
                                     "type": "link",
-                                    "href": "{context.getCataloguePath('/catalogue/#/upload/document')}"
+                                    "href": "{getCataloguePath('/catalogue/#/upload/document')}"
                                 },
                                 {
                                     "labelId": "gnhome.createDataset",
                                     "value": "layer",
                                     "type": "link",
-                                    "href": "{context.getCataloguePath('/catalogue/#/create/dataset')}",
-                                    "disableIf": "{(state('settings') && state('settings').createLayer) ? false : true}"
+                                    "href": "{getCataloguePath('/catalogue/#/create/dataset')}",
+                                    "disableIf": "{not canCreateLayer(state('settings'))}"
                                 },
                                 {
                                     "labelId": "gnhome.createMap",
                                     "value": "map",
                                     "type": "link",
-                                    "href": "{context.getCataloguePath('/catalogue/#/map/new')}"
+                                    "href": "{getCataloguePath('/catalogue/#/map/new')}"
                                 },
                                 {
                                     "labelId": "gnhome.createGeostory",
                                     "value": "geostory",
                                     "type": "link",
-                                    "href": "{context.getCataloguePath('/catalogue/#/geostory/new')}"
+                                    "href": "{getCataloguePath('/catalogue/#/geostory/new')}"
                                 },
                                 {
                                     "labelId": "gnhome.createDashboard",
                                     "value": "dashboard",
                                     "type": "link",
-                                    "href": "{context.getCataloguePath('/catalogue/#/dashboard/new')}"
+                                    "href": "{getCataloguePath('/catalogue/#/dashboard/new')}"
                                 },
                                 {
                                     "labelId": "gnhome.remoteServices",
@@ -3780,13 +3779,13 @@
                                     "id": "my-resources",
                                     "labelId": "gnhome.myResources",
                                     "type": "filter",
-                                    "disableIf": "{!state('user')}"
+                                    "disableIf": "{not state('user')}"
                                 },
                                 {
                                     "id": "favorite",
                                     "labelId": "gnhome.favorites",
                                     "type": "filter",
-                                    "disableIf": "{!state('user')}"
+                                    "disableIf": "{not state('user')}"
                                 },
                                 {
                                     "id": "featured",
@@ -3797,13 +3796,13 @@
                                     "id": "unpublished",
                                     "labelId": "gnhome.unpublished",
                                     "type": "filter",
-                                    "disableIf": "{!state('user')}"
+                                    "disableIf": "{not state('user')}"
                                 },
                                 {
                                     "id": "pending-approval",
                                     "labelId": "gnhome.pendingApproval",
                                     "type": "filter",
-                                    "disableIf": "{!state('user')}"
+                                    "disableIf": "{not state('user')}"
                                 },
                                 {
                                     "id": "remote",
@@ -3866,7 +3865,7 @@
                         },
                         {
                             "type": "divider",
-                            "disableIf": "{!state('user')}"
+                            "disableIf": "{not state('user')}"
                         },
                         {
                             "type": "select",
@@ -3948,9 +3947,9 @@
                     "leftMenuItems": [
                         {
                             "type": "link",
-                            "href": "{'#/map/' + state('resourceParams')?.mapPk}",
+                            "href": "{getMapUrl(state('resourceParams'))}",
                             "labelId": "gnviewer.backToMap",
-                            "disableIf": "{!state('resourceParams')?.mapPk}"
+                            "disableIf": "{not get(state('resourceParams'), 'mapPk')}"
                         },
                         {
                             "type": "plugin",
@@ -3961,26 +3960,26 @@
                             "labelId": "gnviewer.resource",
                             "showPendingChangesIcon": true,
                             "type": "dropdown",
-                            "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user')) && !context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}",
+                            "disableIf": "{not canInteractResource(state('isNewResource'), state('gnResourceData'), state('user'))}",
                             "items": [
                                 {
                                     "type": "plugin",
                                     "name": "Save",
-                                    "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}"
+                                    "disableIf": "{not canSaveResource(state('isNewResource'), state('gnResourceData'), state('user'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "SaveAs",
-                                    "disableIf": "{!state('isNewResource') && !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase') && !context.canCopyResource(state('gnResourceData'), state('user'))}"
+                                    "disableIf": "{not canSaveAsResource(state('isNewResource'), state('gnResourceData'), state('user'))}"
                                 },
                                 {
                                     "type": "divider",
-                                    "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "DeleteResource",
-                                    "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'delete_resourcebase')}"
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
                                 }
                             ]
                         },
@@ -4002,11 +4001,11 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
-                            "disableIf": "{state('isNewResource') || !context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}",
+                            "disableIf": "{not canEditExistingResource(state('isNewResource'), state('gnResourceData'))}",
                             "items": [
                                 {
                                     "type": "link",
-                                    "href": "{context.getMetadataUrl(state('gnResourceData'))}",
+                                    "href": "{getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
                                 }
                             ]
@@ -4014,7 +4013,7 @@
                         {
                             "type": "plugin",
                             "name": "ShareActionButton",
-                            "disableIf": "{state('isNewResource') || (!state('isNewResource') && !context.canAccessPermissions(state('gnResourceData')))}"
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
                         },
                         {
                             "type": "divider"
