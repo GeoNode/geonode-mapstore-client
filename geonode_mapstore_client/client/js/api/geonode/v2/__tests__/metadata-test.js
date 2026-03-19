@@ -40,7 +40,7 @@ const testSchema = {
     }
 };
 
-describe.only('GeoNode v2 metadata api', () => {
+describe('GeoNode v2 metadata api', () => {
     beforeEach(done => {
         global.__DEVTOOLS__ = true;
         mockAxios = new MockAdapter(axios);
