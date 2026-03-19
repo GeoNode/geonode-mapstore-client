@@ -110,7 +110,6 @@ export const parseFileResourceUploads = (prevUploads = [], nextUploads = [], { s
 };
 
 export const validateFileResourceUploads = (uploads = [], { supportedFiles = [] } = {}) => {
-    console.log(uploads, supportedFiles,'validateFileResourceUploads');
     return uploads.map((upload) => {
         if (!upload.supported || upload.type === 'remote') {
             return upload;
