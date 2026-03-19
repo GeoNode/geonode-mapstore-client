@@ -110,6 +110,7 @@ export const parseFileResourceUploads = (prevUploads = [], nextUploads = [], { s
 };
 
 export const validateFileResourceUploads = (uploads = [], { supportedFiles = [] } = {}) => {
+    console.log(uploads, supportedFiles,'validateFileResourceUploads');
     return uploads.map((upload) => {
         if (!upload.supported || upload.type === 'remote') {
             return upload;
@@ -123,7 +124,13 @@ export const validateFileResourceUploads = (uploads = [], { supportedFiles = [] 
                 supported: false
             };
         }
-        const missingExtensions = currentSupportedType.required_ext.filter(ext => !upload.ext.includes(ext));
+        const allUploadsAreOptional = upload.ext.every(ext =>
+                (currentSupportedType.optional_ext || []).includes(ext) &&
+                !currentSupportedType.required_ext.includes(ext)
+            );
+        const missingExtensions = allUploadsAreOptional
+                ? []
+                : currentSupportedType.required_ext.filter(ext => !upload.ext.includes(ext));
         const supportedTypeExtensions = getSupportedTypeExt(currentSupportedType);
         return {
             ...upload,
