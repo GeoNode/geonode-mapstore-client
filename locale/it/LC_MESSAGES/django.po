@@ -106,3 +106,35 @@ msgstr "Una valutazione è stata data a una GeoStory"
 #, python-format
 msgid "%s Type"
 msgstr "%s Tipo"
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_left_menu_items.html:5
+msgid "All Resources"
+msgstr "Tutte le risorse"
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_left_menu_items.html:10
+msgid "Datasets"
+msgstr "Dataset"
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_left_menu_items.html:15
+msgid "Documents"
+msgstr "Documenti"
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_left_menu_items.html:20
+msgid "Maps"
+msgstr "Mappe"
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_left_menu_items.html:25
+msgid "GeoStories"
+msgstr "GeoStories"
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_left_menu_items.html:30
+msgid "Dashboards"
+msgstr "Dashboard"
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_right_menu_items.html:8
+msgid "Register"
+msgstr "Registrati"
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_right_menu_items.html:10
+msgid "Sign in"
+msgstr "Accedi"

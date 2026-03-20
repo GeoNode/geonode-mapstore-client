@@ -106,3 +106,35 @@ msgstr ""
 #, python-format
 msgid "%s Type"
 msgstr ""
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_left_menu_items.html:5
+msgid "All Resources"
+msgstr ""
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_left_menu_items.html:10
+msgid "Datasets"
+msgstr ""
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_left_menu_items.html:15
+msgid "Documents"
+msgstr ""
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_left_menu_items.html:20
+msgid "Maps"
+msgstr ""
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_left_menu_items.html:25
+msgid "GeoStories"
+msgstr ""
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_left_menu_items.html:30
+msgid "Dashboards"
+msgstr ""
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_right_menu_items.html:8
+msgid "Register"
+msgstr ""
+
+#: geonode_mapstore_client/templates/geonode-mapstore-client/snippets/brand_navbar_default_right_menu_items.html:10
+msgid "Sign in"
+msgstr ""
