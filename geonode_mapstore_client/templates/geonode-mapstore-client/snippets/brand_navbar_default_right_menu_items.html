@@ -5,9 +5,9 @@
 
 {% if not request.user.is_authenticated %}
     {% if settings.ACCOUNT_OPEN_SIGNUP and not settings.READ_ONLY %}
-        <li><a href="/account/signup/?next=/" class="nav-link btn btn-default">Register</a></li>
+        <li><a href="/account/signup/?next=/" class="nav-link btn btn-default">{% trans "Register" %}</a></li>
     {% endif %}
-    <li><a id="sign-in" href="/account/login/?next=/" class="nav-link btn btn-default">Sign in</a></li>
+    <li><a id="sign-in" href="/account/login/?next=/" class="nav-link btn btn-default">{% trans "Sign in" %}</a></li>
 {% else %}
     <li>
         <div class="dropdown gn-user-menu-dropdown">
