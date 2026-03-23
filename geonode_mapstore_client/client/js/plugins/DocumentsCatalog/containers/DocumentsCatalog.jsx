@@ -95,6 +95,7 @@ function DocumentsCatalog({
     pageSize = 10,
     monitoredState,
     style,
+    defaultQuery,
     requestResources = getDocuments,
     titleId = 'gnviewer.documentsCatalogTitle',
     theme = 'main',
@@ -367,6 +368,7 @@ function DocumentsCatalog({
                         id={'documents-catalog-filter-form'}
                         extentProps={parsedConfig.extent}
                         query={filters}
+                        defaultQuery={{ ...defaultQuery, f: 'document' }}
                         onChange={(newParams) => {
                             handleFiltersChange(newParams, false);
                         }}

@@ -28,7 +28,12 @@
         },
         {
             "name": "ResourcesFiltersForm",
-            "cfg": {"fields": getPageFilterForm()}
+            "cfg": {
+                "defaultQuery": {
+                    "f": "map"
+                },
+                "fields": getPageFilterForm()
+            }
         }
     ];
 {% endblock ms_plugins %}

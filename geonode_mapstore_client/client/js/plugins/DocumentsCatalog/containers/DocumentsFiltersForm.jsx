@@ -31,6 +31,7 @@ function DocumentsFiltersForm({
     onChange: onSearch,
     onClear,
     query,
+    defaultQuery,
     extent = {
         layers: [
             {
@@ -79,10 +80,12 @@ function DocumentsFiltersForm({
         filterFunc: item => isMenuItemSupportedSupported(item, availableResourceTypes, user)
     });
 
+    const updatedQuery = defaultQuery ? { ...query, ...defaultQuery } : query;
+
     const {
         fields
     } = useFilterFacets({
-        query,
+        query: updatedQuery,
         fields: parsedConfig.fields,
         request: (...args) => getCatalogFacets(...args).toPromise(),
         monitoredState,
@@ -94,7 +97,8 @@ function DocumentsFiltersForm({
             id={id}
             extentProps={parsedConfig.extent}
             fields={fields}
-            query={query}
+            query={updatedQuery}
+            defaultQuery={defaultQuery}
             onChange={(params) => onSearch(params)}
             onClear={onClear}
             onClose={onClose}
