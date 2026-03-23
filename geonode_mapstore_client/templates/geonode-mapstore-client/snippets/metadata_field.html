@@ -1,11 +1,15 @@
+{% load i18n %}
+
 <dt>
     <label id="{{prefix}}_{{name}}__label" class="control-label" for="{{prefix}}_{{name}}">
         <a href="#{{prefix}}_{{name}}__label"><i class="fa fa-link"></i></a>
-        {{ property.schema.title|default:name }}
+        {% blocktrans with property_title=property.schema.title|default:name %}
+            {{ property_title }}
+        {% endblocktrans %}
     </label>
 </dt>
 <dd>
     <div class="gn-metadata-group-value" id="{{prefix}}_{{name}}">
-        {% include 'geonode-mapstore-client/snippets/metadata_field_value.html' with name=name value=property.value schema=property.schema %}
+        {% include 'geonode-mapstore-client/snippets/metadata_field_value.html' with name=name value=property.value schema=property.schema raw=property %}
     </div>
 </dd>

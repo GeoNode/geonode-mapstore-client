@@ -87,7 +87,7 @@ def run_setup_hooks(*args, **kwargs):
             ),
         ),
         re_path(r"^metadata/(?P<pk>[^/]*)$", views.metadata, name='metadata'),
-        re_path(r"^metadata/(?P<pk>[^/]*)/embed$", views.metadata_embed, name='metadata'),
+        re_path(r"^metadata/(?P<pk>[^/]*)/embed$", views.metadata_embed, name='metadata_embed'),
         re_path(r"^api/v2/reqrules$", views.RequestConfigurationView.as_view(), name="request-rules"),
         # required, otherwise will raise no-lookup errors to be analysed
         re_path(r"^api/v2/", include(router.urls)),
