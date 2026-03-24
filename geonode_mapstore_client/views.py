@@ -77,7 +77,7 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
 
     metadata_groups["Responsible"] = {
         "Name": resource.owner.name_long,
-        "email": resource.owner.email,
+        "Email": resource.owner.email,
         "Position": resource.owner.position,
         "Organization": resource.owner.organization,
         "Location": resource.owner.location,
