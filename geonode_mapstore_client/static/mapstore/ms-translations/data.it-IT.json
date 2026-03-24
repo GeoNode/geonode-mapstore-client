@@ -1559,6 +1559,43 @@
         }
       }
     },
+    "layersSelection": {
+      "title": "Selezionare",
+      "tooltip": "Mostra lo strumento di selezione",
+      "description": "Mostra lo strumento di selezione",
+      "hasReachMaxCount": "Numero massimo di elementi raggiunto",
+      "selection": "Selezione",
+      "allLayers": "Tutti i livelli",
+      "featuresCount": "Numero di entità",
+      "button": {
+        "select": "Modalità di selezione",
+        "chooseGeometry": "Scegliere",
+        "selectByPoint": "Punto",
+        "selectByLine": "Linea",
+        "selectByCircle": "Cerchio",
+        "selectByRectangle": "Rettangolo",
+        "selectByPolygon": "Poligono",
+        "clear": "Cancella",
+        "zoomTo": "Zoom su",
+        "statistics": "Statistiche",
+        "createLayer": "Crea livello",
+        "filterData": "Filtra dati",
+        "export": "Esporta",
+        "exportToCsv": "Esporta in CSV",
+        "exportToJson": "Esporta in JSON",
+        "exportToGeoJson": "Esporta in GeoJSON"
+      },
+      "statistics": {
+        "title": "Statistiche",
+        "field": "Campo",
+        "count": "Numero di valori",
+        "sum": "Somma dei valori",
+        "min": "Minimo",
+        "max": "Massimo",
+        "avg": "Media",
+        "std": "Deviazione standard"
+      }
+    },
     "snapshot": {
       "title": "Istantanea",
       "save": "Salva",
@@ -3191,6 +3228,8 @@
       "addTextContent": "Aggiungi testo",
       "addMediaContent": "Aggiungi Media",
       "zoomToContent": "Zoom al contenuto",
+      "duplicateSection": "Duplica sezione",
+      "copyOfPrefix": "Copia di ",
       "addWebPageContent": "Aggiungi contenuto alla pagina Web",
       "emptyTitle": "Questa storia è vuota",
       "delete": "Cancellare geostory",
@@ -3331,6 +3370,10 @@
         "settings": "Impostazioni",
         "settingsSubTitle": "Gestisci le interazioni dell'utente",
         "toc": "Toc",
+        "center": "Centro",
+        "scale": "Scala",
+        "applyToOtherMaps": "Applica alle altre mappe",
+        "appliedSuccessfully": "Applicato con successo alle altre mappe",
         "pan": "Interazione di scorrimento",
         "zoom": "Interazione di zoom",
         "topLeft": "Angolo in alto a sinistra",
@@ -3677,6 +3720,10 @@
       "Permalink": {
         "description": "Permette di creare un permalink della risorsa attualmente in vista",
         "title": "Permalink"
+      },
+      "LayersSelection": {
+        "title": "Selezionare",
+        "description": "Mostra lo strumento di selezione"
       },
       "StreetView": {
         "title": "Street View",
