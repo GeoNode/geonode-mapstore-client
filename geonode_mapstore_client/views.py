@@ -98,13 +98,23 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
 
     metadata_groups["References"] = {
         **{
-            "Link Online": f"<a href='{build_absolute_uri(resource.detail_url)}'>{build_absolute_uri(resource.detail_url)}</a>",
-            "Metadata page": "<a href='{0}'>{0}</a>".format(
-                build_absolute_uri(reverse("metadata", args=[resource.id]))
-            ),
+            "Link Online": {
+                "type": "link",
+                "url": build_absolute_uri(resource.detail_url),
+                "text": build_absolute_uri(resource.detail_url)
+            },
+            "Metadata page": {
+                "type": "link",
+                "url": build_absolute_uri(reverse("metadata", args=[resource.id])),
+                "text": build_absolute_uri(reverse("metadata", args=[resource.id]))
+            },
         },
         **{
-            link.name: f"<a href='{link.url}'>{resource.title}.{link.extension}</a>"
+            link.name: {
+                "type": "link",
+                "url": link.url,
+                "text": f"{resource.title}.{link.extension}"
+            }
             for link in resource.link_set.exclude(link_type="html")
         },
     }

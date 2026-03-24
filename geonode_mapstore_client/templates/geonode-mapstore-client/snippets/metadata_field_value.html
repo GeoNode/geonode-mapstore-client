@@ -2,10 +2,12 @@
 
 {% if not schema.type %}
     {% if raw.type == 'thumbnail' %}
-    <img src="{{raw.value}}"/>
+        <img src="{{raw.value}}"/>
+    {% elif raw.type == 'link' %}
+        <a href="{{ raw.url }}" target="_blank" rel="noopener noreferrer">{{ raw.text }}</a>
     {% else %}
-        {% blocktrans with property=raw|safe %}
-            {{property}}
+        {% blocktrans with property=raw %}
+            {{ property }}
         {% endblocktrans %}
     {% endif %}
 {% elif schema.type == 'object' %}
