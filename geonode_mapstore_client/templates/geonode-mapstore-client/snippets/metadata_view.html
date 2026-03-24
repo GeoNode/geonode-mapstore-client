@@ -1,3 +1,4 @@
+{% load i18n %}
 <div class="gn-metadata-view">
     <div class="gn-metadata">
         <div class="gn-metadata-container">
@@ -6,7 +7,7 @@
                     <div id="gn-metadata-title" class="gn-metadata-title">Metadata: {{resource.title}}</div>
                     {% for group_key, metadata in metadata_groups.items %}
                     <div class="gn-metadata-group gn-metadata-group-view">
-                        <div class="gn-metadata-group-title">{{group_key}}</div>
+                        <div class="gn-metadata-group-title">{% blocktrans %}{{group_key}}{% endblocktrans %}</div>
                         <hr>
                         {% include 'geonode-mapstore-client/snippets/metadata_fields.html' with metadata=metadata prefix='metadata' %}
                     </div>

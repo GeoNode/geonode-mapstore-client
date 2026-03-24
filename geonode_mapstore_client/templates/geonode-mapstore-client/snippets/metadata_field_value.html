@@ -1,5 +1,4 @@
 {% load i18n %}
-{% load translations_tags %}
 
 {% if not schema.type %}
     {% if raw.type == 'thumbnail' %}
@@ -7,7 +6,7 @@
     {% elif raw.type == 'link' %}
         <a href="{{ raw.url }}" target="_blank" rel="noopener noreferrer">{{ raw.text }}</a>
     {% else %}
-        {% gn_translate property %}
+            {{raw}}
     {% endif %} 
 {% elif schema.type == 'object' %}
     {% if value.items|length == 2 and value.id and value.label %}

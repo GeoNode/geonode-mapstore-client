@@ -1,3 +1,4 @@
+from django.urls import reverse
 import os
 import json
 from rest_framework.views import APIView
@@ -9,8 +10,6 @@ from django.conf import settings
 from django.templatetags.static import static
 from rest_framework.response import Response
 from django.core.cache import cache
-from django.urls import reverse
-
 
 def _parse_value(value, schema):
     schema_type = schema.get('type')
@@ -83,7 +82,7 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
         "Organization": resource.owner.organization,
         "Location": resource.owner.location,
         "Voice": resource.owner.voice,
-        "Fax": resource.owner.fax, 
+        "Fax": resource.owner.fax,
     }
 
     # adding information from the resource itself
@@ -118,7 +117,7 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
             }
             for link in resource.link_set.exclude(link_type="html")
         },
-    } 
+    }
 
     return render(
         request,
