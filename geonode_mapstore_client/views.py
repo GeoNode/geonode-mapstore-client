@@ -87,13 +87,13 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
 
     # adding information from the resource itself
     metadata_groups["Information"] = {
-        "identification Image": {"type": "thumbnail", "value": resource.thumbnail_url},
+        "Identification Image": {"type": "thumbnail", "value": resource.thumbnail_url},
         "Projection System": resource.srid,
-        "BBOX": resource.bbox,
-        "Extension x0": resource.bbox_x0,
-        "Extension x1": resource.bbox_x1,
-        "Extension y0": resource.bbox_y0,
-        "Extension y1": resource.bbox_y1,
+        "Bounding Box": resource.bbox,
+        "Extension X0": resource.bbox_x0,
+        "Extension X1": resource.bbox_x1,
+        "Extension Y0": resource.bbox_y0,
+        "Extension Y1": resource.bbox_y1,
     }
 
     metadata_groups["References"] = {
