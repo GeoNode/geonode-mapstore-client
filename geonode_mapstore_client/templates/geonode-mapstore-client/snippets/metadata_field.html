@@ -1,11 +1,12 @@
 {% load i18n %}
+{% load translations_tags %}
 
 <dt>
     <label id="{{prefix}}_{{name}}__label" class="control-label" for="{{prefix}}_{{name}}">
         <a href="#{{prefix}}_{{name}}__label"><i class="fa fa-link"></i></a>
-        {% blocktrans with property_title=property.schema.title|default:name %}
-            {{ property_title }}
-        {% endblocktrans %}
+        {% with property_title=property.schema.title|default:name %}
+            {% gn_translate property_title %}
+        {% endwith %}
     </label>
 </dt>
 <dd>
