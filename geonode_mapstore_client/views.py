@@ -58,7 +58,7 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
     lang = get_language_from_request(request)[:2]
     schema = metadata_manager.get_schema(lang)
     resource = ResourceBase.objects.get(pk=pk)
-    schema_instance = metadata_manager.build_schema_instance(resource)
+    schema_instance = metadata_manager.build_schema_instance(resource, lang)
 
     full_metadata = _parse_schema_instance(schema_instance, schema)
     metadata = full_metadata['value']
