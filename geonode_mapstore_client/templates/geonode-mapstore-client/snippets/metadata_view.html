@@ -7,6 +7,7 @@
                     {% for group_key, metadata in metadata_groups.items %}
                     <div class="gn-metadata-group gn-metadata-group-view">
                         <div class="gn-metadata-group-title">{{group_key}}</div>
+                        <hr>
                         {% include 'geonode-mapstore-client/snippets/metadata_fields.html' with metadata=metadata prefix='metadata' %}
                     </div>
                     {% endfor %}

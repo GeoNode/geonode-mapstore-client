@@ -496,6 +496,10 @@ export const plugins = {
     DynamicLegendPlugin: toModulePlugin(
         'DynamicLegend',
         () => import(/* webpackChunkName: 'plugins/dynamic-legend' */ '@mapstore/framework/plugins/DynamicLegend')
+    ),
+    LayersSelectionPlugin: toModulePlugin(
+        'LayersSelection',
+        () => import(/* webpackChunkName: 'plugins/layersSelection' */ '@mapstore/framework/plugins/LayersSelection')
     )
 };
 

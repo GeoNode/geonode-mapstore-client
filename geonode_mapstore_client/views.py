@@ -1,3 +1,4 @@
+from django.urls import reverse
 import os
 import json
 from rest_framework.views import APIView
@@ -9,7 +10,6 @@ from django.conf import settings
 from django.templatetags.static import static
 from rest_framework.response import Response
 from django.core.cache import cache
-
 
 def _parse_value(value, schema):
     schema_type = schema.get('type')
@@ -53,6 +53,7 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
 
     from geonode.base.models import ResourceBase
     from geonode.metadata.manager import metadata_manager
+    from geonode.utils import build_absolute_uri
 
     lang = get_language_from_request(request)[:2]
     schema = metadata_manager.get_schema(lang)
@@ -74,7 +75,55 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
                 metadata_groups[group] = { }
             metadata_groups[group][key] = property
 
-    return render(request, template, context={ "resource": resource, "metadata_groups": metadata_groups })
+    metadata_groups["Responsible"] = {
+        "Name": resource.owner.name_long,
+        "Email": resource.owner.email,
+        "Position": resource.owner.position,
+        "Organization": resource.owner.organization,
+        "Location": resource.owner.location,
+        "Voice": resource.owner.voice,
+        "Fax": resource.owner.fax,
+    }
+
+    # adding information from the resource itself
+    metadata_groups["Information"] = {
+        "Identification Image": {"type": "thumbnail", "value": resource.thumbnail_url},
+        "Projection System": resource.srid,
+        "Bounding Box": resource.bbox,
+        "Extension X0": resource.bbox_x0,
+        "Extension X1": resource.bbox_x1,
+        "Extension Y0": resource.bbox_y0,
+        "Extension Y1": resource.bbox_y1,
+    }
+
+    metadata_groups["References"] = {
+        **{
+            "Link Online": {
+                "type": "link",
+                "url": build_absolute_uri(resource.detail_url),
+                "text": build_absolute_uri(resource.detail_url)
+            },
+            "Metadata page": {
+                "type": "link",
+                "url": build_absolute_uri(reverse("metadata", args=[resource.id])),
+                "text": build_absolute_uri(reverse("metadata", args=[resource.id]))
+            },
+        },
+        **{
+            link.name: {
+                "type": "link",
+                "url": link.url,
+                "text": f"{resource.title}.{link.extension}"
+            }
+            for link in resource.link_set.exclude(link_type="html")
+        },
+    }
+
+    return render(
+        request,
+        template,
+        context={"resource": resource, "metadata_groups": metadata_groups},
+    )
 
 def metadata_embed(request, pk):
     return metadata(request, pk, template="geonode-mapstore-client/metadata_embed.html")

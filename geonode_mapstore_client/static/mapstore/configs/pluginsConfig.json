@@ -639,6 +639,13 @@
       "title": "plugins.DynamicLegend.title",
       "description": "plugins.DynamicLegend.description",
       "dependencies": ["SidebarMenu"]
+    },
+    {
+      "name": "LayersSelection",
+      "glyph": "hand-down",
+      "title": "plugins.LayersSelection.title",
+      "description": "plugins.LayersSelection.description",
+      "dependencies": ["SidebarMenu"]
     }
   ]
 }
