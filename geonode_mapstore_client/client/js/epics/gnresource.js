@@ -100,6 +100,7 @@ import {
     getCataloguePath,
     isDefaultDatasetSubtype,
     resourceHasPermission,
+    checkIfGeometryAttributeIsNull,
     canEditMap
 } from '@js/utils/ResourceUtils';
 import {
@@ -182,6 +183,7 @@ const resourceTypes = {
                     const [mapConfig, gnLayer, newLayer] = response;
                     const {minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
                     const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
+                    const hasNoGeometry = checkIfGeometryAttributeIsNull(gnLayer.attribute_set);
                     const hasDownloadPermission = gnLayer?.perms?.includes('download_resourcebase');
                     return Observable.of(
                         configureMap({
@@ -206,9 +208,9 @@ const resourceTypes = {
                         setControlProperty('toolbar', 'expanded', false),
                         forceUpdateMapLayout(),
                         selectNode(newLayer.id, 'layer', false),
-                        ...(!options?.isSamePreviousResource ? [setResource(gnLayer)] : []),
+                        ...(!options?.isSamePreviousResource ? [setResource({...gnLayer, hasNoGeometry})] : []),
                         setResourceId(pk),
-                        ...(page === 'dataset_edit_data_viewer'
+                        ...((hasNoGeometry || page === 'dataset_edit_data_viewer')
                             ? [
                                 browseData(newLayer),
                                 ...(hasDownloadPermission ? [] : [setDatasetEditPermissionsError('gnviewer.noEditPermissions')])
