@@ -394,6 +394,12 @@ div#mapstore-globalspinner {
             max-height: calc(100vh - 220px);
         }
     }
+    &:has(.ms-featuregrid-container) {
+        .ms-map-viewer-layout-bottom,
+        .ms-featuregrid-container {
+            height: 100%;
+        }
+    }
 }
 .gn-dataset-layersettings {
     .ms-header {
