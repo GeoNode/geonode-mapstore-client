@@ -19,6 +19,7 @@ import { getMonitoredStateSelector } from '@mapstore/framework/plugins/Resources
 import { userSelector } from '@mapstore/framework/selectors/security';
 import { getCatalogFacets } from '@mapstore/framework/api/persistence';
 import { isMenuItemSupportedSupported } from '@mapstore/framework/utils/ResourcesUtils';
+import { mergeDefaultQuery } from '@mapstore/framework/utils/ResourcesFiltersUtils';
 
 /**
  * This  renders a  configurable input filters for documents catalog
@@ -80,7 +81,7 @@ function DocumentsFiltersForm({
         filterFunc: item => isMenuItemSupportedSupported(item, availableResourceTypes, user)
     });
 
-    const updatedQuery = defaultQuery ? { ...query, ...defaultQuery } : query;
+    const updatedQuery = defaultQuery ? mergeDefaultQuery(query, defaultQuery) : query;
 
     const {
         fields
