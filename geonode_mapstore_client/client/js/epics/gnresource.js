@@ -100,7 +100,6 @@ import {
     getCataloguePath,
     isDefaultDatasetSubtype,
     resourceHasPermission,
-    checkIfGeometryAttributeIsNull,
     canEditMap
 } from '@js/utils/ResourceUtils';
 import {
@@ -183,7 +182,7 @@ const resourceTypes = {
                     const [mapConfig, gnLayer, newLayer] = response;
                     const {minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
                     const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
-                    const hasNoGeometry = checkIfGeometryAttributeIsNull(gnLayer.attribute_set);
+                    const hasNoGeometry = gnLayer?.subtype === 'tabular';
                     const hasDownloadPermission = gnLayer?.perms?.includes('download_resourcebase');
                     return Observable.of(
                         configureMap({
