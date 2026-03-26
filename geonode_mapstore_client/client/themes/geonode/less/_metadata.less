@@ -156,8 +156,8 @@
     overflow: auto;
     flex: 1;
     .gn-metadata-group-title {
-        font-size: 1.5rem;
-        padding: 0.5rem 0.75rem;
+        font-size: 1rem;
+        padding: 0 0.75rem;
     }
     .gn-metadata-group:not(.gn-metadata-group-view) {
         max-width: 60ch;
@@ -169,7 +169,9 @@
     .field {
         padding: 0 0.75rem;
     }
-
+    hr {
+        margin-top: 0 !important;
+    }
     .field-object-properties {
         padding: 0.75rem 0;
         border: 1px solid transparent;
@@ -281,6 +283,7 @@
 .gn-metadata-page {
     position: absolute;
     width: 100%;
+    min-width: 200px;
     height: 100%;
     display: flex;
     flex-direction: column;
