@@ -17,9 +17,9 @@ import { excludeGoogleBackground, extractTileMatrixFromSources, ServerTypes } fr
 import { getGeoNodeLocalConfig, parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
 import { determineResourceType } from '@js/utils/FileUtils';
-import { isGeometryType } from '@mapstore/framework/utils/ogc/WFS/base';
 
 import { createDefaultStyle } from '@mapstore/framework/utils/StyleUtils';
+
 /**
 * @module utils/ResourceUtils
 */
@@ -994,10 +994,6 @@ export const canManageResourceSettings = (resource) => {
 export const canAccessPermissions = (resource) => {
     const { perms } = resource || {};
     return perms?.includes('change_resourcebase_permissions');
-};
-
-export const checkIfGeometryAttributeIsNull = (attributeSet) => {
-    return isEmpty(attributeSet?.find(attribute => isGeometryType({ type: attribute.attribute_type })));
 };
 
 /**
