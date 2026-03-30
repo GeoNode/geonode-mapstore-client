@@ -19,6 +19,8 @@ import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
 import { determineResourceType } from '@js/utils/FileUtils';
 import { createDefaultStyle } from '@mapstore/framework/utils/StyleUtils';
 import { getSupportedLocales } from '@mapstore/framework/utils/LocaleUtils';
+import { shortLocale } from '@js/utils/LocaleUtils';
+
 /**
 * @module utils/ResourceUtils
 */
@@ -158,7 +160,7 @@ const getLocalizedValue = (resource, key, locale = '') => {
     if (resource[`${key}_${locale}`]) {
         return resource[`${key}_${locale}`];
     }
-    const languageCode = locale.split('-')[0];
+    const languageCode = shortLocale(locale);
     if (resource[`${key}_${languageCode}`]) {
         return resource[`${key}_${languageCode}`];
     }

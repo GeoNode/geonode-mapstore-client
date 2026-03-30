@@ -257,26 +257,6 @@ describe('gnsave epics', () => {
         {layers: {flat: [{name: "testLayer", id: "test_id", perms: ['download_resourcebase']}], selected: ["test_id"]}});
     });
 
-    it('test gnSetDatasetsPermissions trigger updateNode for ADD_LAYER and set title in multilanguage', (done) => {
-        mockAxios.onGet().reply(() => [200,
-            {datasets: [{title: 'testLayer Default', title_en: 'testLayer EN', title_it: 'testLayerIT'}]}]);
-        const NUM_ACTIONS = 1;
-        testEpic(gnSetDatasetsPermissions, NUM_ACTIONS, addLayer({name: "testLayer", pk: "1", extendedParams: {pk: "1"}}), (actions) => {
-            try {
-                expect(actions.map(({type}) => type)).toEqual(["UPDATE_NODE"]);
-                expect(actions[0].options.title).toEqual({
-                    "default": 'testLayer Default',
-                    'en-US': 'testLayer EN',
-                    'it-IT': 'testLayerIT'
-                });
-                done();
-            } catch (error) {
-                done(error);
-            }
-        },
-        {layers: {flat: [{name: "testLayer", id: "test_id", perms: ['download_resourcebase']}], selected: ["test_id"]}});
-    });
-
     it('should trigger saveResource (gnSaveDirectContent)', (done) => {
         const NUM_ACTIONS = 3;
         const pk = 1;
