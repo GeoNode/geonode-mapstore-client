@@ -166,7 +166,7 @@ describe('Test Resource Utils', () => {
         const result = permissionsCompactToLists(compactPermissions, user);
 
         expect(result.entries.map(({ id, type, disabled }) => ({ id, type, disabled }))).toEqual([
-            { id: 10, type: 'user', disabled: false },
+            { id: 10, type: 'user', disabled: true },
             { id: 11, type: 'user', disabled: false },
             { id: 100, type: 'group', disabled: false }
         ]);

@@ -353,8 +353,8 @@ export function permissionsListsToCompact({ groups, entries }) {
 }
 
 function getPermissionsListEntry(entry, type, user) {
-    const isCurrentUserEntry = type === 'user' && entry?.id === user?.pk;
-    const disabled = isCurrentUserEntry && entry?.permissions === 'manage';
+    const isCurrentUserEntry = type === 'user' && !!user?.pk && entry?.id === user.pk;
+    const disabled = !!isCurrentUserEntry;
 
     if (type === 'user') {
         return {
