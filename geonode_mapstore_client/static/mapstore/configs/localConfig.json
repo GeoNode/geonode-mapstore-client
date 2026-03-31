@@ -907,16 +907,16 @@
                             ]
                         },
                         {
-                            "name": "application/arcgrid",
-                            "label": "ArcGrid",
+                            "name": "image/tiff",
+                            "label": "TIFF",
                             "type": "raster",
                             "validServices": [
                                 "wps"
                             ]
                         },
                         {
-                            "name": "image/tiff",
-                            "label": "TIFF",
+                            "name": "application/arcgrid",
+                            "label": "ArcGrid",
                             "type": "raster",
                             "validServices": [
                                 "wps"
@@ -1826,16 +1826,16 @@
                             ]
                         },
                         {
-                            "name": "application/arcgrid",
-                            "label": "ArcGrid",
+                            "name": "image/tiff",
+                            "label": "TIFF",
                             "type": "raster",
                             "validServices": [
                                 "wps"
                             ]
                         },
                         {
-                            "name": "image/tiff",
-                            "label": "TIFF",
+                            "name": "application/arcgrid",
+                            "label": "ArcGrid",
                             "type": "raster",
                             "validServices": [
                                 "wps"
@@ -2739,16 +2739,16 @@
                             ]
                         },
                         {
-                            "name": "application/arcgrid",
-                            "label": "ArcGrid",
+                            "name": "image/tiff",
+                            "label": "TIFF",
                             "type": "raster",
                             "validServices": [
                                 "wps"
                             ]
                         },
                         {
-                            "name": "image/tiff",
-                            "label": "TIFF",
+                            "name": "application/arcgrid",
+                            "label": "ArcGrid",
                             "type": "raster",
                             "validServices": [
                                 "wps"
