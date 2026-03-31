@@ -352,14 +352,35 @@ export function permissionsListsToCompact({ groups, entries }) {
     };
 }
 
-export function permissionsCompactToLists({ groups, users, organizations }) {
+function getPermissionsListEntry(entry, type, user) {
+    const isCurrentUserEntry = type === 'user' && entry?.id === user?.pk;
+    const disabled = isCurrentUserEntry && entry?.permissions === 'manage';
+
+    if (type === 'user') {
+        return {
+            ...entry,
+            type,
+            disabled,
+            ...(!entry.parsed && { name: entry.username, avatar: entry.avatar })
+        };
+    }
+
+    return {
+        ...entry,
+        type,
+        disabled,
+        ...(!entry.parsed && { name: entry.title, avatar: entry.logo })
+    };
+}
+
+export function permissionsCompactToLists({ groups, users, organizations }, user) {
     return {
         groups: [
             ...(groups || []).map((entry) => ({ ...entry, type: 'group', ...(!entry.parsed && { name: entry.name, avatar: entry.logo }) }))
         ],
         entries: [
-            ...(users || []).map((entry) => ({ ...entry, type: 'user', ...(!entry.parsed && { name: entry.username, avatar: entry.avatar }) })),
-            ...(organizations || []).map((entry) => ({ ...entry, type: 'group', ...(!entry.parsed && { name: entry.title, avatar: entry.logo }) }))
+            ...(users || []).map((entry) => getPermissionsListEntry(entry, 'user', user)),
+            ...(organizations || []).map((entry) => getPermissionsListEntry(entry, 'group', user))
         ]
     };
 }

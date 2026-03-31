@@ -13,6 +13,7 @@ import set from 'lodash/set';
 import {
     resourceToLayerConfig,
     getResourcePermissions,
+    permissionsCompactToLists,
     availableResourceTypes,
     setAvailableResourceTypes,
     getGeoNodeMapLayers,
@@ -122,6 +123,53 @@ describe('Test Resource Utils', () => {
                 { value: 'view', labelId: `gnviewer.viewPermission`, label: 'View' }
             ]
         });
+    });
+
+    it('should disable current user entry when permission is manage', () => {
+        const compactPermissions = {
+            groups: [],
+            users: [
+                { id: 10, username: 'current.user', permissions: 'manage' }
+            ],
+            organizations: []
+        };
+        const user = { pk: 10 };
+
+        const result = permissionsCompactToLists(compactPermissions, user);
+
+        expect(result.entries).toEqual([
+            {
+                id: 10,
+                username: 'current.user',
+                permissions: 'manage',
+                type: 'user',
+                disabled: true,
+                name: 'current.user',
+                avatar: undefined
+            }
+        ]);
+    });
+
+    it('should not disable non-current-user or non-manage entries', () => {
+        const compactPermissions = {
+            groups: [],
+            users: [
+                { id: 10, username: 'current.user', permissions: 'view' },
+                { id: 11, username: 'other.user', permissions: 'manage' }
+            ],
+            organizations: [
+                { id: 100, title: 'Org 1', permissions: 'manage' }
+            ]
+        };
+        const user = { pk: 10 };
+
+        const result = permissionsCompactToLists(compactPermissions, user);
+
+        expect(result.entries.map(({ id, type, disabled }) => ({ id, type, disabled }))).toEqual([
+            { id: 10, type: 'user', disabled: false },
+            { id: 11, type: 'user', disabled: false },
+            { id: 100, type: 'group', disabled: false }
+        ]);
     });
 
     it('should setAvailableResourceTypes', () => {
