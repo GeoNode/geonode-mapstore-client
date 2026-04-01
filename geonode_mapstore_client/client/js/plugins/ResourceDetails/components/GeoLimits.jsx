@@ -192,7 +192,7 @@ const ConnectedGeoLimits = connect(
             resource
         })
     )
-)(({ entry, onUpdate, resourceId, resource ,disabled }) => {
+)(({ entry, onUpdate, resourceId, resource, disabled }) => {
     const isMounted = useIsMounted();
     const defaultMap = window.overrideNewMapConfig({ map: { layers: [] } });
     const layers = [
