@@ -192,7 +192,7 @@ const ConnectedGeoLimits = connect(
             resource
         })
     )
-)(({ entry, onUpdate, resourceId, resource }) => {
+)(({ entry, onUpdate, resourceId, resource, disabled }) => {
     const isMounted = useIsMounted();
     const defaultMap = window.overrideNewMapConfig({ map: { layers: [] } });
     const layers = [
@@ -246,7 +246,7 @@ const ConnectedGeoLimits = connect(
                 />
             }
         >
-            <Button>
+            <Button disabled={disabled}>
                 <Glyphicon glyph="globe" />
             </Button>
         </Popover>

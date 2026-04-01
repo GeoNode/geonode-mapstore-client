@@ -24,6 +24,7 @@ import {
     getViewedResourceType,
     getResourceData
 } from "@js/selectors/resource";
+import { userSelector } from "@mapstore/framework/selectors/security";
 import { getCurrentResourcePermissionsLoading } from "@js/selectors/resourceservice";
 import {
     availableResourceTypes,
@@ -97,13 +98,15 @@ const Permissions = ({
     permissionsLoading,
     compactPermissions,
     onChangePermissions,
-    resource
+    resource,
+    user
 }) => {
     const enableGeoLimits = resourceType === ResourceTypes.DATASET;
     const isMounted = useIsMounted();
     const [permissionsObject, setPermissionsObject] = useState({});
     const manageAnonymousPermissions = canManageAnonymousPermissions(resource);
     const manageRegisteredMemberPermissions = canManageRegisteredMemberPermissions(resource);
+
 
     useEffect(() => {
         getResourceTypes().then((data) => {
@@ -127,7 +130,7 @@ const Permissions = ({
             </Text>
             <PermissionsComponent
                 editing
-                compactPermissions={permissionsCompactToLists(compactPermissions)}
+                compactPermissions={permissionsCompactToLists(compactPermissions, user)}
                 entriesTabs={entriesTabs}
                 onChange={(value) =>
                     onChangePermissions(permissionsListsToCompact(value))
@@ -151,13 +154,15 @@ export default connect(
             getCompactPermissions,
             getCurrentResourcePermissionsLoading,
             getViewedResourceType,
-            getResourceData
+            getResourceData,
+            userSelector
         ],
-        (compactPermissions, permissionsLoading, type, resource) => ({
+        (compactPermissions, permissionsLoading, type, resource, user) => ({
             compactPermissions,
             permissionsLoading,
             resourceType: type,
-            resource
+            resource,
+            user
         })
     ),
     {
