@@ -42,6 +42,8 @@ import {
     canEditMap
 } from '../ResourceUtils';
 
+import {setSupportedLocales} from '@mapstore/framework/utils/LocaleUtils';
+
 describe('Test Resource Utils', () => {
     it('should keep the wms params from the url if available', () => {
         const newLayer = resourceToLayerConfig({
@@ -1233,6 +1235,38 @@ describe('Test Resource Utils', () => {
             };
             const result = canEditMap(gnresourceState, { isNewCheck: true, resourceTypes: [ResourceTypes.MAP, ResourceTypes.DATASET] });
             expect(result).toBeTruthy();
+        });
+        it('dataset with title in multilanguage', () => {
+            let supportedLocales = {
+                "en": {
+                    code: "en-US",
+                    description: "English"
+                },
+                "it": {
+                    code: "it-IT",
+                    description: "Italiano"
+                },
+                "fr": {
+                    code: "fr-FR",
+                    description: "Français"
+                }
+            };
+            setSupportedLocales(supportedLocales);
+            const newLayer = resourceToLayerConfig({
+                alternate: 'geonode:layer_numtilangue',
+                title: 'Default title',
+                title_en: 'Layer title',
+                title_it: 'Titolo del layer',
+                title_fr: 'Titre de la couche',
+                perms: [],
+                pk: 1
+            });
+            expect(newLayer.title).toEqual({
+                'en-US': 'Layer title',
+                'it-IT': 'Titolo del layer',
+                'fr-FR': 'Titre de la couche',
+                'default': 'Default title'
+            });
         });
     });
 });
