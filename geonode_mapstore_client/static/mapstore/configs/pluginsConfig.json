@@ -547,7 +547,7 @@
       }
     },
     {
-      "name": "MetadataExplorer",
+      "name": "Catalog",
       "glyph": "folder-open",
       "title": "plugins.MetadataExplorer.title",
       "description": "plugins.MetadataExplorer.description",
@@ -555,7 +555,6 @@
         "SidebarMenu"
       ],
       "defaultConfig": {
-        "wrap": true,
         "serviceTypes": [
           { "name": "csw", "label": "CSW" }, 
           { "name": "wms", "label": "WMS" }, 

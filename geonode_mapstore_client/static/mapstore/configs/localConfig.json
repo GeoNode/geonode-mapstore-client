@@ -2458,9 +2458,8 @@
                 "name": "SidebarMenu"
             },
             {
-                "name": "MetadataExplorer",
+                "name": "Catalog",
                 "cfg": {
-                    "wrap": true,
                     "serviceTypes": [
                         { "name": "csw", "label": "CSW" }, 
                         { "name": "wms", "label": "WMS" }, 
@@ -2471,7 +2470,8 @@
                         { "name": "model", "label": "IFC Model" }, 
                         { "name": "arcgis", "label": "ArcGIS" }, 
                         { "name": "cog", "label": "COG" },
-                        { "name": "flatgeobuf", "label": "FlatGeobuf" }
+                        { "name": "flatgeobuf", "label": "FlatGeobuf" },
+                        { "name": "geonode", "label": "GeoNode" }
                     ]
                 }
             },

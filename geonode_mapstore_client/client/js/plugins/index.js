@@ -22,7 +22,7 @@ import Isochrone from "@mapstore/framework/plugins/Isochrone";
 import Itinerary from "@mapstore/framework/plugins/Itinerary";
 import SecurityPopup from "@mapstore/framework/plugins/SecurityPopup";
 import BackgroundSelector from '@mapstore/framework/plugins/BackgroundSelector';
-import MetadataExplorer from '@mapstore/framework/plugins/MetadataExplorer';
+import Catalog from '@mapstore/framework/plugins/Catalog';
 import CameraPosition from '@mapstore/framework/plugins/CameraPosition';
 
 import OperationPlugin from '@js/plugins/Operation';
@@ -93,7 +93,7 @@ export const plugins = {
     ItineraryPlugin: Itinerary,
     SecurityPopupPlugin: SecurityPopup,
     BackgroundSelectorPlugin: BackgroundSelector,
-    MetadataExplorerPlugin: MetadataExplorer,
+    CatalogPlugin: Catalog,
     CameraPositionPlugin: CameraPosition,
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
