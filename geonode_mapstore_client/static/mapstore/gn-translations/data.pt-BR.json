@@ -81,6 +81,7 @@
             "raster": "Raster",
             "remote": "Remoto",
             "timeSeries": "Série temporal",
+            "tabular": "Tabular",
             "filtersCount": "{count, plural, =0 { Filtros } other {Filtros (#)}}",
             "admin": "Admin",
             "logOut": "Sair",
