@@ -71,6 +71,14 @@ export const getResources = ({
         'filter{metadata_only}': false, // exclude resources such as services
         api_preset: API_PRESET.CATALOGS
     };
+
+    if (_params['filter{subtype.in}'] === 'vector') {
+        _params['filter{subtype.in}'] = ['vector', 'flatgeobuf'];
+    }
+    if (_params['filter{subtype.in}'] === 'raster') {
+        _params['filter{subtype.in}'] = ['raster', 'cog'];
+    }
+    
     return axios.get(getEndpointUrl(RESOURCES), {
         params: _params,
         ...config,
@@ -178,6 +186,7 @@ export const getDocuments = ({
         page_size: pageSize,
         'filter{resource_type.in}': 'document'
     };
+
     return axios
         .get(
             getEndpointUrl(DOCUMENTS), {
