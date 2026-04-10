@@ -72,13 +72,15 @@ export const getResources = ({
         api_preset: API_PRESET.CATALOGS
     };
 
-    if (_params['filter{subtype.in}'] === 'vector') {
-        _params['filter{subtype.in}'] = ['vector', 'flatgeobuf'];
+    const subtypeMappings = {
+        vector: ['vector', 'flatgeobuf'],
+        raster: ['raster', 'cog']
+    };
+    const subtypeFilter = _params['filter{subtype.in}'];
+    if (subtypeMappings[subtypeFilter]) {
+        _params['filter{subtype.in}'] = subtypeMappings[subtypeFilter];
     }
-    if (_params['filter{subtype.in}'] === 'raster') {
-        _params['filter{subtype.in}'] = ['raster', 'cog'];
-    }
-    
+
     return axios.get(getEndpointUrl(RESOURCES), {
         params: _params,
         ...config,
