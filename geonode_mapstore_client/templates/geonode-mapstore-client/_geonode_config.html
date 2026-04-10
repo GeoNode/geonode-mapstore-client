@@ -254,13 +254,15 @@
             };
             config.map.zoom = defaultMapZoom;
 
-            config.catalogServices = config.catalogServices || { services: {} };
-            if (catalogueServices) {
-                config.catalogServices.services = Object.assign(config.catalogServices.services || {}, catalogueServices);
-            }
-            if (catalogueSelectedService) {
-                config.catalogServices.selectedService = catalogueSelectedService;
-            }
+            config.catalogServices = Object.keys(catalogueServices || {}).length > 0 ? { services: catalogueServices } :   { services: {
+                geonode: {
+                    type: 'geonode',
+                    title: 'GeoNode',
+                    autoload: true,
+                    url: siteUrl
+                }
+            } };
+            config.catalogServices.selectedService = catalogueSelectedService && `${catalogueSelectedService}`.trim() !== '' ?  config.catalogServices.selectedService : 'geonode';
             return config;
         };
 
