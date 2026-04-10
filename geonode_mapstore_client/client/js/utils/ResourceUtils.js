@@ -715,6 +715,17 @@ export function toMapStoreMapConfig(resource, baseConfig) {
         .filter(mLayer => !layers.find(layer => layer.id !== undefined && mLayer?.extra_params?.msId === layer.id))
         .map(mLayer => resourceToLayerConfig(mLayer?.dataset));
 
+    const catalogServices = {
+        ...(baseConfig?.catalogServices || {}),
+        ...(data?.catalogServices || {}),
+        services: !isEmpty(data?.catalogServices?.services)
+            ? data.catalogServices.services
+            : (baseConfig?.catalogServices?.services || {}),
+        selectedService: data?.catalogServices?.selectedService
+            || baseConfig?.catalogServices?.selectedService
+            || ''
+    };
+
     return {
         ...data,
         map: {
@@ -728,7 +739,8 @@ export function toMapStoreMapConfig(resource, baseConfig) {
                 ...data?.map?.sources,
                 ...baseConfig?.map?.sources
             }
-        }
+        },
+        catalogServices
     };
 }
 
