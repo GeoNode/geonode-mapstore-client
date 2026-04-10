@@ -59,20 +59,6 @@
         let catalogueSelectedService = geoNodeSettings.CATALOGUE_SELECTED_SERVICE || '';
         let dashboardCatalogueServices = geoNodeSettings.DASHBOARD_CATALOGUE_SERVICES || {};
         let dashboardCatalogueSelectedService = geoNodeSettings.DASHBOARD_CATALOGUE_SELECTED_SERVICE || '';
-        const hasCatalogueServices = catalogueServices && Object.keys(catalogueServices).length > 0;
-        const hasCatalogueSelectedService = catalogueSelectedService !== null && `${catalogueSelectedService}`.trim() !== '';
-        if (!hasCatalogueServices && !hasCatalogueSelectedService) {
-            catalogueServices = {
-                geonode: {
-                    type: 'geonode',
-                    title: 'GeoNode',
-                    autoload: true,
-                    url: siteUrl
-
-                }
-            };
-            catalogueSelectedService = 'geonode';
-        }
         let createLayer = geoNodeSettings.CREATE_LAYER || false
         let timeEnabled = geoNodeSettings.TIME_ENABLED || false;
         let allowedDocumentTypes = geoNodeSettings.ALLOWED_DOCUMENT_TYPES || [];
