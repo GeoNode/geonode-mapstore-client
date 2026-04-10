@@ -5,20 +5,11 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
-import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
-import Message from '@mapstore/framework/components/I18N/Message';
-import Button from '@mapstore/framework/components/layout/Button';
 import { getDatasets, getDatasetByPk, getResourceByPk } from '@js/api/geonode/v2';
 import { resourceToLayerConfig, isDefaultDatasetSubtype } from '@js/utils/ResourceUtils';
 import { addLayer } from '@mapstore/framework/actions/layers';
 import { zoomToExtent } from '@mapstore/framework/actions/map';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
-import datasetscatalogEpics from '@js/epics/datasetscatalog';
 import { mapLayoutValuesSelector } from '@mapstore/framework/selectors/maplayout';
 import ResourcesCompactCatalog from '@js/components/ResourcesCompactCatalog';
 import useIsMounted from "@js/hooks/useIsMounted";
@@ -133,6 +124,5 @@ export default createPlugin('DatasetsCatalog', {
             Component: ConnectedDatasetsCatalogButton
         }
     },
-    epics: datasetscatalogEpics,
     reducers: {}
 });

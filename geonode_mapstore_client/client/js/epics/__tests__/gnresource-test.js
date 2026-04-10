@@ -179,7 +179,7 @@ describe('gnresource epics', () => {
         );
 
     });
-    it('close dataset panels on map info panel open', (done) => {
+    it('close annotations panel on map info panel open', (done) => {
         const NUM_ACTIONS = 1;
         const testState = {
             context: {
@@ -195,7 +195,7 @@ describe('gnresource epics', () => {
                 requests: ["something"]
             },
             controls: {
-                datasetsCatalog: {
+                annotations: {
                     enabled: true
                 }
             }
@@ -208,7 +208,7 @@ describe('gnresource epics', () => {
                 try {
                     expect(actions.length).toBe(1);
                     expect(actions[0].type).toBe(SET_CONTROL_PROPERTY);
-                    expect(actions[0].control).toBe("datasetsCatalog");
+                    expect(actions[0].control).toBe("annotations");
                     expect(actions[0].value).toBe(false);
                 } catch (e) {
                     done(e);

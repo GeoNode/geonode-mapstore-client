@@ -441,10 +441,6 @@ export const plugins = {
         'DocumentsCatalog',
         () => import(/* webpackChunkName: 'plugins/documents-catalog' */ '@js/plugins/DocumentsCatalog')
     ),
-    DatasetsCatalogPlugin: toModulePlugin(
-        'DatasetsCatalog',
-        () => import(/* webpackChunkName: 'plugins/dataset-catalog' */ '@js/plugins/DatasetsCatalog')
-    ),
     SyncPlugin: toModulePlugin(
         'Sync',
         () => import(/* webpackChunkName: 'plugins/sync-plugin' */ '@js/plugins/Sync')

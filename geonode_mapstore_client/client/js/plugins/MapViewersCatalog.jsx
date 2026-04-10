@@ -18,7 +18,6 @@ import Button from '@mapstore/framework/components/layout/Button';
 import { getGeoApps } from '@js/api/geonode/v2';
 import { getDefaultPluginsConfig } from '@js/api/geonode/config';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
-import datasetscatalogEpics from '@js/epics/datasetscatalog';
 import contextcreatorEpics from '@js/epics/contextcreator';
 import ResourcesCompactCatalog from '@js/components/ResourcesCompactCatalog';
 import ResizableModal from '@mapstore/framework/components/misc/ResizableModal';
@@ -200,7 +199,6 @@ export default createPlugin('MapViewersCatalog', {
         }
     },
     epics: {
-        ...datasetscatalogEpics,
         ...contextcreatorEpics
     },
     reducers: {}
