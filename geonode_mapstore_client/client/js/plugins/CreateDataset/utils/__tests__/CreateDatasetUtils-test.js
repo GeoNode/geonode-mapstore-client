@@ -594,6 +594,18 @@ describe('Test CreateDatasetUtils', () => {
                 expect(result.dataset.geometry_type).toBe(AttributeTypes.Polygon);
             });
 
+            it('should handle generic Geometry', () => {
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        geom: { "const": AttributeTypes.Geometry }
+                    }
+                };
+
+                const result = parseJSONSchema(schema);
+                expect(result.dataset.geometry_type).toBe(AttributeTypes.Geometry);
+            });
+
             it('should warn for invalid geometry type', () => {
                 const schema = {
                     type: 'object',

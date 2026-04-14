@@ -38,7 +38,9 @@ const CreateDatasetAttributeRow = ({
         ? [
             { value: AttributeTypes.Point, labelId: 'gnviewer.points' },
             { value: AttributeTypes.LineString, labelId: 'gnviewer.lines' },
-            { value: AttributeTypes.Polygon, labelId: 'gnviewer.polygons' }]
+            { value: AttributeTypes.Polygon, labelId: 'gnviewer.polygons' },
+            { value: AttributeTypes.Geometry, labelId: 'gnviewer.geometry' }
+        ]
         : [
             { value: AttributeTypes.String, labelId: 'gnviewer.string' },
             { value: AttributeTypes.Integer, labelId: 'gnviewer.integer' },

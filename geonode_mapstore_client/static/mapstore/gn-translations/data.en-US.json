@@ -508,6 +508,7 @@
             "none": "None",
             "options": "Options",
             "range": "Range",
+            "geometry": "Geometry",
             "points": "Points",
             "lines": "Lines",
             "polygons": "Polygons",

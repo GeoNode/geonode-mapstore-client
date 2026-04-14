@@ -12,6 +12,7 @@ export const AttributeTypes = {
     Point: "Point",
     LineString: "LineString",
     Polygon: "Polygon",
+    Geometry: "Geometry",
     String: "string",
     Integer: "integer",
     Float: "float",
@@ -74,7 +75,12 @@ export const validateSchema = {
         },
         "geometry_type": {
             "type": "string",
-            "enum": [AttributeTypes.Point, AttributeTypes.LineString, AttributeTypes.Polygon]
+            "enum": [
+                AttributeTypes.Point,
+                AttributeTypes.LineString,
+                AttributeTypes.Polygon,
+                AttributeTypes.Geometry
+            ]
         },
         "attributes": {
             "type": "array",
@@ -372,7 +378,8 @@ export const parseJSONSchema = (schema) => {
                 && [
                     AttributeTypes.Point,
                     AttributeTypes.LineString,
-                    AttributeTypes.Polygon
+                    AttributeTypes.Polygon,
+                    AttributeTypes.Geometry
                 ].includes(geomProp.const)
             ) {
                 geometryType = geomProp.const;
