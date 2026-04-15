@@ -269,7 +269,8 @@ export const setFavoriteResource = (pk, favorite) => {
 export const getResourceByPk = (pk) => {
     return axios.get(getEndpointUrl(RESOURCES, `/${pk}`), {
         params: {
-            api_preset: API_PRESET.VIEWER_COMMON
+            api_preset: API_PRESET.VIEWER_COMMON,
+            include_i18n: true
         }
     })
         .then(({ data }) => data.resource);
@@ -316,7 +317,8 @@ export const getResourceByUuid = (uuid) => {
 export const getDatasetByPk = (pk) => {
     return axios.get(getEndpointUrl(DATASETS, `/${pk}`), {
         params: {
-            api_preset: [API_PRESET.VIEWER_COMMON, API_PRESET.DATASET]
+            api_preset: [API_PRESET.VIEWER_COMMON, API_PRESET.DATASET],
+            include_i18n: true
         },
         ...paramsSerializer()
     })
@@ -581,7 +583,8 @@ export const getDatasetByName = name => {
     return axios.get(url, {
         params: {
             exclude: ['*'],
-            include: ['pk', 'perms', 'alternate']
+            include: ['pk', 'perms', 'alternate'],
+            include_i18n: true
         }
     })
         .then(({data}) => data?.datasets[0]);
