@@ -38,6 +38,13 @@ export const DEFAULT_ATTRIBUTE = {
     attributes: []
 };
 
+const VALID_GEOMETRY_TYPES = [
+    AttributeTypes.Point,
+    AttributeTypes.LineString,
+    AttributeTypes.Polygon,
+    AttributeTypes.Geometry
+];
+
 /**
  * Parse a number string to a number
  * @param {string} value - The value to parse
@@ -75,12 +82,7 @@ export const validateSchema = {
         },
         "geometry_type": {
             "type": "string",
-            "enum": [
-                AttributeTypes.Point,
-                AttributeTypes.LineString,
-                AttributeTypes.Polygon,
-                AttributeTypes.Geometry
-            ]
+            "enum": VALID_GEOMETRY_TYPES
         },
         "attributes": {
             "type": "array",
@@ -375,12 +377,7 @@ export const parseJSONSchema = (schema) => {
         let geometryType = AttributeTypes.Point;
         if (geomProp) {
             if (geomProp.const
-                && [
-                    AttributeTypes.Point,
-                    AttributeTypes.LineString,
-                    AttributeTypes.Polygon,
-                    AttributeTypes.Geometry
-                ].includes(geomProp.const)
+                && VALID_GEOMETRY_TYPES.includes(geomProp.const)
             ) {
                 geometryType = geomProp.const;
             } else {
