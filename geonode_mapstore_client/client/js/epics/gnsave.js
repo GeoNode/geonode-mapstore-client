@@ -109,8 +109,21 @@ function parseMapBody(body) {
     };
 }
 
+/**
+ * Check if the selected layer can persist its default style through GeoServer REST.
+ * Only default GeoNode dataset subtypes support this workflow.
+ * @param {object} layer Selected layer configuration.
+ * @param {string} subtype Current dataset subtype.
+ * @returns {boolean} True when the layer supports GeoServer default-style updates.
+ */
+const isGeoServerStyleUpdateAllowed = (layer = {}, subtype) => {
+    return isDefaultDatasetSubtype(subtype)
+        && !!layer?.name;
+};
+
 const setDefaultStyle = (state, id) => {
     const layer = getUpdatedLayer(state);
+    const currentResource = getResourceData(state);
     const styleName = selectedStyleSelector(state);
     let availableStyles = [];
     if (!isEmpty(layer.availableStyles)) {
@@ -122,7 +135,13 @@ const setDefaultStyle = (state, id) => {
     const initialStyleName = getInitialDatasetLayerStyle(state);
     const layers = layersSelector(state);
 
-    if (id && !isEmpty(layers) && initialStyleName && currentStyleName !== initialStyleName) {
+    if (
+        id
+        && !isEmpty(layers)
+        && initialStyleName
+        && currentStyleName !== initialStyleName
+        && isGeoServerStyleUpdateAllowed(layer, currentResource?.subtype)
+    ) {
         const { baseUrl = '' } = styleServiceSelector(state);
         return {
             request: () => LayersAPI.updateDefaultStyle({
