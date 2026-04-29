@@ -113,15 +113,17 @@ function parseMapBody(body) {
 /**
  * Check if the selected layer can persist its default style through GeoServer REST.
  * @param {object} layer Selected layer configuration.
+ * @param {string} subtype Resource subtype.
  * @returns {boolean} True when the layer supports GeoServer default-style updates.
  */
-const isGeoServerStyleUpdateAllowed = (layer = {}) => {
-    return !STYLE_SUPPORTED_LAYER_TYPES.includes(layer?.type) && !!layer?.name;
+const isGeoServerStyleUpdateAllowed = (layer = {}, subtype) => {
+    return STYLE_SUPPORTED_LAYER_TYPES.includes(subtype) && !!layer?.name;
 };
 
 const setDefaultStyle = (state, id) => {
     const layer = getUpdatedLayer(state);
     const styleName = selectedStyleSelector(state);
+    const currentResource = getResourceData(state);
     let availableStyles = [];
     if (!isEmpty(layer.availableStyles)) {
         const defaultStyle = layer.availableStyles.filter(({ name }) => styleName === name);
@@ -137,7 +139,7 @@ const setDefaultStyle = (state, id) => {
         && !isEmpty(layers)
         && initialStyleName
         && currentStyleName !== initialStyleName
-        && isGeoServerStyleUpdateAllowed(layer)
+        && isGeoServerStyleUpdateAllowed(layer, currentResource?.subtype)
     ) {
         const { baseUrl = '' } = styleServiceSelector(state);
         return {
