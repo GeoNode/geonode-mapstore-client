@@ -100,12 +100,14 @@ import {
     getCataloguePath,
     isDefaultDatasetSubtype,
     resourceHasPermission,
-    canEditMap
+    canEditMap,
+    parseMapLayerData
 } from '@js/utils/ResourceUtils';
 import {
     canAddResource,
     getInitialDatasetLayer,
     getInitialDatasetLayerStyle,
+    getMapLayerData,
     getResourceData,
     getResourceId,
     getResourceThumbnail
@@ -113,7 +115,7 @@ import {
 import { updateAdditionalLayer } from '@mapstore/framework/actions/additionallayers';
 import { STYLE_OWNER_NAME } from '@mapstore/framework/utils/StyleEditorUtils';
 import { initStyleService, resetStyleEditor } from '@mapstore/framework/actions/styleeditor';
-import { CLICK_ON_MAP, resizeMap, CHANGE_MAP_VIEW, zoomToExtent, changeCRS } from '@mapstore/framework/actions/map';
+import { CLICK_ON_MAP, resizeMap, zoomToExtent, MAP_PLUGIN_LOAD } from '@mapstore/framework/actions/map';
 import { purgeMapInfoResults, closeIdentify, NEW_MAPINFO_REQUEST } from '@mapstore/framework/actions/mapInfo';
 import { saveError } from '@js/actions/gnsave';
 import {
@@ -142,9 +144,23 @@ import { forceUpdateMapLayout } from '@mapstore/framework/actions/maplayout';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import { searchSelector } from '@mapstore/framework/selectors/router';
 import { CREATE_BACKGROUNDS_LIST, allowBackgroundsDeletion } from '@mapstore/framework/actions/backgroundselector';
-import { setCanEditProjection, setProjectionsConfig } from '@mapstore/framework/actions/crsselector';
+import { setCanEditProjection, setProjectionsConfig } from '@mapstore/framework/plugins/CRSSelector/actions/crsselector';
 
-const FIT_BOUNDS_CONTROL = 'fitBounds';
+// Wait for the Map plugin to finish mounting before dispatching zoomToExtent.
+// Navigating between dataset pages (e.g. dataset_viewer -> dataset_edit_data_viewer)
+// changes the PluginsContainer key in routes/Viewer.jsx, so React tears down and
+// re-mounts the entire plugin tree, which includes re-registering the OL
+// ZOOM_TO_EXTENT_HOOK. MAP_PLUGIN_LOAD with loaded=true fires once that re-mount
+// completes; a small post-delay covers the OL component's own componentDidMount.
+// The timer is a fallback for the case where the plugin tree is reused and
+// MAP_PLUGIN_LOAD doesn't re-fire.
+const fitBoundsAfterMapReady = (action$, extent) =>
+    extent
+        ? Observable.race(
+            action$.ofType(MAP_PLUGIN_LOAD).filter(a => a.loaded).take(1).delay(100),
+            Observable.timer(800)
+        ).map(() => zoomToExtent(extent, 'EPSG:4326', undefined, { duration: 200 }))
+        : Observable.empty();
 
 const resourceTypes = {
     [ResourceTypes.DATASET]: {
@@ -174,60 +190,74 @@ const resourceTypes = {
                         const newLayer = options?.isSamePreviousResource
                             ? selectedLayer // keep configuration for other pages when resource id is the same (eg: filters)
                             : resourceToLayerConfig(gnLayer);
-                        const _gnLayer = {...gnLayer, layerSettings: gnLayer.data};
-                        return [mapConfig, {..._gnLayer, timeseries}, newLayer];
+                        // On same-resource transitions `gnLayer` is the resource record
+                        // currently in state, which the SET_RESOURCE reducer has already
+                        // stripped of its `data` field. Source the dataset payload from
+                        // the dedicated `mapLayerData` slice instead.
+                        const mapLayerData = options?.isSamePreviousResource
+                            ? options.mapLayerData
+                            : parseMapLayerData(gnLayer?.data);
+                        return [mapConfig, {...gnLayer, timeseries}, newLayer, mapLayerData];
                     })
             )
                 .switchMap((response) => {
-                    const [mapConfig, gnLayer, newLayer] = response;
+                    const [mapConfig, gnLayer, newLayer, mapLayerData] = response;
                     const {minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
                     const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
                     const hasNoGeometry = gnLayer?.subtype === 'tabular';
                     const hasDownloadPermission = gnLayer?.perms?.includes('download_resourcebase');
-                    return Observable.of(
-                        configureMap({
-                            ...mapConfig,
-                            map: {
-                                ...mapConfig.map,
-                                zoom: 20, // we are applying high zoom level to mitigate the initial tile blurring due to the zoom to event
-                                visualizationMode: ['3dtiles'].includes(subtype) ? VisualizationModes._3D : VisualizationModes._2D,
-                                layers: [
-                                    ...mapConfig.map.layers,
-                                    {
-                                        ...newLayer,
-                                        isDataset: true,
-                                        _v_: Date.now()
-                                    }
+                    return Observable.concat(
+                        Observable.of(
+                            configureMap({
+                                ...mapConfig,
+                                map: {
+                                    ...mapConfig.map,
+                                    ...mapLayerData?.mapConfig?.map,
+                                    zoom: 20, // start zoomed in to mitigate initial tile blurring before the deferred fit lands
+                                    visualizationMode: ['3dtiles'].includes(subtype) ? VisualizationModes._3D : VisualizationModes._2D,
+                                    layers: [
+                                        ...mapConfig.map.layers,
+                                        {
+                                            ...newLayer,
+                                            isDataset: true,
+                                            _v_: Date.now()
+                                        }
+                                    ]
+                                }
+                            }),
+                            // Always dispatch — an undefined payload resets the slice so a
+                            // projection list from a previously-loaded dataset does not leak
+                            // into a dataset that has no persisted crsSelector config.
+                            setProjectionsConfig(mapLayerData?.mapConfig?.crsSelector),
+                            setControlProperty('toolbar', 'expanded', false),
+                            forceUpdateMapLayout(),
+                            selectNode(newLayer.id, 'layer', false),
+                            ...(!options?.isSamePreviousResource ? [setResource({...gnLayer, hasNoGeometry})] : []),
+                            setResourceId(pk),
+                            ...((hasNoGeometry || page === 'dataset_edit_data_viewer')
+                                ? [
+                                    browseData(newLayer),
+                                    ...(hasDownloadPermission ? [] : [setDatasetEditPermissionsError('gnviewer.noEditPermissions')])
                                 ]
-                            }
-                        }),
-                        ...(extent
-                            ? [ setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', extent) ]
-                            : []),
-                        setControlProperty('toolbar', 'expanded', false),
-                        forceUpdateMapLayout(),
-                        selectNode(newLayer.id, 'layer', false),
-                        ...(!options?.isSamePreviousResource ? [setResource({...gnLayer, hasNoGeometry})] : []),
-                        setResourceId(pk),
-                        ...((hasNoGeometry || page === 'dataset_edit_data_viewer')
-                            ? [
-                                browseData(newLayer),
-                                ...(hasDownloadPermission ? [] : [setDatasetEditPermissionsError('gnviewer.noEditPermissions')])
-                            ]
-                            : []),
-                        ...(page === 'dataset_edit_layer_settings'
-                            ? [
-                                showSettings(newLayer.id, "layers", {opacity: newLayer.opacity ?? 1}),
-                                setControlProperty("layersettings", "activeTab", query.tab ?? "general"),
-                                updateAdditionalLayer(newLayer.id, STYLE_OWNER_NAME, 'override', {}),
-                                resizeMap()
-                            ]
-                            : []),
-                        ...(newLayer?.bboxError
-                            ? [warningNotification({ title: "gnviewer.invalidBbox", message: "gnviewer.invalidBboxMsg" })]
-                            : []),
-                        ...(gnLayer?.data?.crsSelector ? [changeCRS(gnLayer?.data?.crsSelector?.currentProjection)] : []),
-                        ...(gnLayer?.data?.crsSelector ? [setProjectionsConfig(gnLayer?.data?.crsSelector)] : [])
+                                : []),
+                            ...(page === 'dataset_edit_layer_settings'
+                                ? [
+                                    showSettings(newLayer.id, "layers", {opacity: newLayer.opacity ?? 1}),
+                                    setControlProperty("layersettings", "activeTab", query.tab ?? "general"),
+                                    updateAdditionalLayer(newLayer.id, STYLE_OWNER_NAME, 'override', {}),
+                                    resizeMap()
+                                ]
+                                : []),
+                            ...(newLayer?.bboxError
+                                ? [warningNotification({ title: "gnviewer.invalidBbox", message: "gnviewer.invalidBboxMsg" })]
+                                : []),
+                            // unblock the Viewer route so the Map plugin actually mounts
+                            // before fitBoundsAfterMapReady fires the deferred zoomToExtent;
+                            // otherwise the ZOOM_TO_EXTENT hook is not registered and the
+                            // fit falls back to legacyZoomToExtent against default state.
+                            loadingResourceConfig(false)
+                        ),
+                        fitBoundsAfterMapReady(options.action$, extent)
                     );
                 });
         }
@@ -296,28 +326,31 @@ const resourceTypes = {
                     const newLayer = gnLayer ? resourceToLayerConfig(gnLayer) : null;
                     const { minx, miny, maxx, maxy } = newLayer?.bbox?.bounds || {};
                     const extent = newLayer?.bbox?.bounds && [ minx, miny, maxx, maxy ];
-                    return Observable.of(
-                        configureMap(newLayer
-                            ? {
-                                ...mapConfig,
-                                map: {
-                                    ...mapConfig?.map,
-                                    ...(queryDatasetPk !== undefined && {
-                                        visualizationMode: ['3dtiles'].includes(quryDatasetSubtype)
-                                            ? VisualizationModes._3D
-                                            : VisualizationModes._2D
-                                    }),
-                                    layers: [
-                                        ...(mapConfig?.map?.layers || []),
-                                        newLayer
-                                    ]
+                    return Observable.concat(
+                        Observable.of(
+                            configureMap(newLayer
+                                ? {
+                                    ...mapConfig,
+                                    map: {
+                                        ...mapConfig?.map,
+                                        ...(queryDatasetPk !== undefined && {
+                                            visualizationMode: ['3dtiles'].includes(quryDatasetSubtype)
+                                                ? VisualizationModes._3D
+                                                : VisualizationModes._2D
+                                        }),
+                                        layers: [
+                                            ...(mapConfig?.map?.layers || []),
+                                            newLayer
+                                        ]
+                                    }
                                 }
-                            }
-                            : mapConfig),
-                        ...(extent
-                            ? [ setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', extent) ]
-                            : []),
-                        setControlProperty('toolbar', 'expanded', false)
+                                : mapConfig),
+                            setControlProperty('toolbar', 'expanded', false),
+                            // unblock the Viewer route so the Map plugin actually mounts;
+                            // see fitBoundsAfterMapReady comment.
+                            loadingResourceConfig(false)
+                        ),
+                        fitBoundsAfterMapReady(options.action$, extent)
                     );
                 });
         }
@@ -478,7 +511,6 @@ const getResetActions = (state, isSameResource) => {
             ]
         ),
         setControlProperty('rightOverlay', 'enabled', false),
-        setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', null),
         // reset style editor state to avoid persistence service configuration in between resource pages
         initStyleService(),
         resetStyleEditor(),
@@ -521,7 +553,7 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
                     setResourceType(action.resourceType),
                     setResourcePathParameters(action?.options?.params)
                 ),
-                newResourceObservable({ query }),
+                newResourceObservable({ query, action$ }),
                 Observable.of(
                     loadingResourceConfig(false)
                 )
@@ -573,6 +605,7 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                     ...action.options,
                     isSamePreviousResource,
                     resourceData,
+                    mapLayerData: getMapLayerData(state),
                     selectedLayer: isSamePreviousResource && {...getInitialDatasetLayer(state), style: getInitialDatasetLayerStyle(state)},
                     params: {...action?.options?.params, query},
                     action$
@@ -762,37 +795,6 @@ export const gnManageLinkedResource = (action$, store) =>
             );
         });
 
-const MAX_EXTENT_WEB_MERCATOR = [-180, -85, 180, 85];
-
-function validateGeometry(extent, projection) {
-    if (extent && ['EPSG:900913', 'EPSG:3857'].includes(projection)) {
-        const [minx, miny, maxx, maxy] = extent;
-        const [eMinx, eMiny, eMaxx, eMaxy] = MAX_EXTENT_WEB_MERCATOR;
-        return [
-            minx < eMinx ? eMinx : minx,
-            (miny < eMiny || miny > eMaxy) ? eMiny : miny,
-            maxx > eMaxx ? eMaxx : maxx,
-            (maxy > eMaxy || maxy < eMiny) ? eMaxy : maxy
-        ];
-    }
-    return extent;
-}
-
-export const gnZoomToFitBounds = (action$) =>
-    action$.ofType(SET_CONTROL_PROPERTY)
-        .filter(action => action.control === FIT_BOUNDS_CONTROL && !!action.value)
-        .switchMap((action) =>
-            action$.ofType(CHANGE_MAP_VIEW)
-                .take(1)
-                .switchMap(() => {
-                    const extent = validateGeometry(action.value);
-                    return Observable.of(
-                        zoomToExtent(extent, 'EPSG:4326', undefined, { duration: 0 }),
-                        setControlProperty(FIT_BOUNDS_CONTROL, 'geometry', null)
-                    );
-                })
-        );
-
 const getResourceWithDetail = (resource) => ({
     ...resource,
     /* store information related to detail */
@@ -921,7 +923,6 @@ export default {
     closeDatasetCatalogPanel,
     closeResourceDetailsOnMapInfoOpen,
     gnManageLinkedResource,
-    gnZoomToFitBounds,
     gnSelectResourceEpic,
     gnUpdateResourceExtent,
     gnUpdateEditProjectionEpic

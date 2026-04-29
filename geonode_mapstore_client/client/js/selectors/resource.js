@@ -29,6 +29,7 @@ import isNil from 'lodash/isNil';
 import { generateContextResource } from '@mapstore/framework/selectors/contextcreator';
 import { layerSettingSelector, getSelectedLayer as getSelectedNode } from '@mapstore/framework/selectors/layers';
 import { saveLayer } from '@mapstore/framework/utils/LayersUtils';
+import { crsProjectionsConfigSelector } from '@mapstore/framework/plugins/CRSSelector/selectors/crsselector';
 
 const RESOURCE_MANAGEMENT_PROPERTIES_KEYS = Object.keys({...RESOURCE_PUBLISHING_PROPERTIES, ...RESOURCE_OPTIONS_PROPERTIES});
 
@@ -93,6 +94,13 @@ export const isNewResource = (state) => {
 
 export const getResourceData = (state) => {
     return state?.gnresource?.data;
+};
+
+// Returns the dataset persisted payload `{ layerSettings, mapConfig }` from
+// `resource.data`. Source of truth for same-resource page transitions where
+// `gnresource.data` has been stripped of its `data` field by SET_RESOURCE.
+export const getMapLayerData = (state) => {
+    return state?.gnresource?.mapLayerData ?? { layerSettings: {}, mapConfig: {} };
 };
 
 export const getLayerResourceData = (state) => {
@@ -179,14 +187,22 @@ export const getDataPayload = (state, resourceType) => {
         const selectedLayer = getSelectedNode(state);
         const omitKeys = ['extendedParams', 'availableStyles', 'infoFormats', 'style'];
         const data = saveLayer(selectedLayer ?? {});
-        const crsSelector = state?.crsselector?.config;
-        const currentProjection = mapSelector(state)?.projection;
-        return omit({
-            ...data,
-            ...currentLayerSettings,
-            ...(selectedLayer && {fields: selectedLayer?.fields ?? {}}),
-            ...(crsSelector && {crsSelector: {...crsSelector, currentProjection}})
-        }, omitKeys);
+        const mapConfig = mapSaveSelector(state);
+        const crsSelectorConfig = crsProjectionsConfigSelector(state);
+        return {
+            layerSettings: omit({
+                ...data,
+                ...currentLayerSettings,
+                ...(selectedLayer && { fields: selectedLayer?.fields ?? {} })
+            }, omitKeys),
+            mapConfig: {
+                map: pick(mapConfig?.map || {}, [
+                    'projection',
+                    'projections'
+                ]),
+                ...(!isEmpty(crsSelectorConfig) && { crsSelector: crsSelectorConfig })
+            }
+        };
     }
     default:
         return null;

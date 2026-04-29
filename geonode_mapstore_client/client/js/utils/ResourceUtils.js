@@ -35,7 +35,15 @@ function getExtentFromResource({ extent }) {
     // if the extent is greater than the max extent of the WGS84 return null
     const WGS84_MAX_EXTENT = [-180, -90, 180, 90];
     if (minx < WGS84_MAX_EXTENT[0] || miny < WGS84_MAX_EXTENT[1] || maxx > WGS84_MAX_EXTENT[2] || maxy > WGS84_MAX_EXTENT[3]) {
-        return null;
+        return {
+            crs: 'EPSG:4326',
+            bounds: {
+                minx: WGS84_MAX_EXTENT[0],
+                miny: WGS84_MAX_EXTENT[1],
+                maxx: WGS84_MAX_EXTENT[2],
+                maxy: WGS84_MAX_EXTENT[3]
+            }
+        };
     }
     const bbox = {
         crs: 'EPSG:4326',
@@ -207,8 +215,10 @@ export const resourceToLayerConfig = (resource) => {
         ptype,
         subtype,
         sourcetype,
-        data: layerSettings
+        data
     } = resource;
+
+    const layerSettings = data?.layerSettings ?? data;
 
     const title = getLocalizedValues(resource, 'title', defaultTitle);
 
@@ -969,6 +979,35 @@ export const getResourceAdditionalProperties = (_resource = {}) => {
     return {
         ...resource,
         assets: assets.length ? assets : [{_showEmptyState: true}] // add empty state flag to show assets section
+    };
+};
+
+// Normalizes a dataset resource's `data` payload to the shape
+// `{ layerSettings, mapConfig: { map?, crsSelector? } }`. Legacy records stored
+// the layer settings as the top-level `data` object and projection state under
+// `data.crsSelector`; new records nest both halves explicitly. Idempotent on
+// already-normalized payloads so the caller can run it without checking.
+export const parseMapLayerData = (data) => {
+    if (!data || typeof data !== 'object') {
+        return { layerSettings: {}, mapConfig: {} };
+    }
+    if ('layerSettings' in data || 'mapConfig' in data) {
+        return {
+            layerSettings: data.layerSettings ?? {},
+            mapConfig: data.mapConfig ?? {}
+        };
+    }
+    const legacyCrsSelector = data.crsSelector;
+    return {
+        layerSettings: omit(data, ['crsSelector']),
+        mapConfig: {
+            ...(legacyCrsSelector?.currentProjection && {
+                map: { projection: legacyCrsSelector.currentProjection }
+            }),
+            ...(legacyCrsSelector?.projectionList && {
+                crsSelector: { projectionList: legacyCrsSelector.projectionList }
+            })
+        }
     };
 };
 
