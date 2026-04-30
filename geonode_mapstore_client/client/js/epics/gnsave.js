@@ -176,7 +176,7 @@ const SaveAPI = {
                 ...body?.data,
                 layerSettings: {
                     ...body?.data?.layerSettings,
-                    dimensions: timeseries?.has_time ? getDimensions({...body?.data, has_time: true}) : []
+                    dimensions: timeseries?.has_time ? getDimensions({...currentResource, has_time: true}) : []
                 }
             },
             ...(timeseries && { has_time: timeseries?.has_time })
