@@ -117,6 +117,9 @@ export const TIME_ATTRIBUTE_TYPES = ['xsd:date', 'xsd:dateTime', 'xsd:date-time'
 
 export const TIME_PRECISION_STEPS = ['years', 'months', 'days', 'hours', 'minutes', 'seconds'];
 
+// Formats that support styling in GeoServer.
+export const STYLE_SUPPORTED_LAYER_TYPES = ['vector', 'raster', 'vector_time'];
+
 export const isDefaultDatasetSubtype = (subtype) => !subtype || ['vector', 'raster', 'remote', 'vector_time'].includes(subtype);
 
 export const FEATURE_INFO_FORMAT = 'TEMPLATE';
