@@ -24,7 +24,8 @@ function OperationUpload({
     titleMsgId = "gnviewer.uploadFile",
     descriptionMsgId = 'gnviewer.dragAndDropFile',
     refreshTime = 3000,
-    pageReload
+    pageReload,
+    canAddRemote
 }) {
     const [forceRequests, setForceRequests] = useState(0);
     const [loadingRequests, setLoadingRequests] = useState(false);
@@ -77,7 +78,7 @@ function OperationUpload({
         <div className="gn-operation">
             <UploadPanel
                 supportedFiles={api.upload.supportedFiles}
-                enableRemoteUploads={api.upload.enableRemoteUploads}
+                enableRemoteUploads={api.upload.enableRemoteUploads && canAddRemote}
                 maxParallelUploads={api.upload.maxParallelUploads}
                 progress={progress}
                 loading={uploadLoading}
