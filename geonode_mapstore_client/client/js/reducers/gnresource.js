@@ -44,7 +44,9 @@ import {
 import {
     cleanCompactPermissions,
     getGeoLimitsFromCompactPermissions,
-    getResourceAdditionalProperties
+    getResourceAdditionalProperties,
+    parseMapLayerData,
+    ResourceTypes
 } from '@js/utils/ResourceUtils';
 
 const defaultState = {
@@ -88,10 +90,15 @@ function gnresource(state = defaultState, action) {
             updatedResource.linkedResources = linkedResources;
         }
 
+        // Persist the dataset config payload in its own slice field so it
+        // survives same-resource page transitions, where the SET_RESOURCE
+        // reducer otherwise strips `data` from `state.gnresource.data`.
+        const isDataset = state.type === ResourceTypes.DATASET;
         return {...state,
             error: null,
             initialResource: { ...actionData },
             data: updatedResource,
+            ...(isDataset && { mapLayerData: parseMapLayerData(data) }),
             loading: false,
             isNew: false
         };

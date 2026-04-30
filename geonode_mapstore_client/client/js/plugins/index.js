@@ -24,6 +24,7 @@ import SecurityPopup from "@mapstore/framework/plugins/SecurityPopup";
 import BackgroundSelector from '@mapstore/framework/plugins/BackgroundSelector';
 import MetadataExplorer from '@mapstore/framework/plugins/MetadataExplorer';
 import CameraPosition from '@mapstore/framework/plugins/CameraPosition';
+import CRSSelector from '@mapstore/framework/plugins/CRSSelector';
 
 import OperationPlugin from '@js/plugins/Operation';
 import ExecutionTrackerPlugin from '@js/plugins/ExecutionTracker';
@@ -95,6 +96,7 @@ export const plugins = {
     BackgroundSelectorPlugin: BackgroundSelector,
     MetadataExplorerPlugin: MetadataExplorer,
     CameraPositionPlugin: CameraPosition,
+    CRSSelectorPlugin: CRSSelector,
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
         () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload'),
@@ -468,10 +470,6 @@ export const plugins = {
     SearchByBookmarkPlugin: toModulePlugin(
         'SearchByBookmark',
         () => import(/* webpackChunkName: 'plugins/searchByBookmark' */ '@mapstore/framework/plugins/SearchByBookmark')
-    ),
-    CRSSelectorPlugin: toModulePlugin(
-        'CRSSelector',
-        () => import(/* webpackChunkName: 'plugins/CRSSelector' */ '@mapstore/framework/plugins/CRSSelector')
     ),
     SettingsPlugin: toModulePlugin(
         'Settings',
