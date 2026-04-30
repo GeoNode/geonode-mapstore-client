@@ -103,7 +103,7 @@ function Operation({
     descriptionMsgId,
     action,
     pageReload,
-    canAddRemote
+    canAddRemote = false
 }) {
 
     // open the import ui if a blocking execution is still running

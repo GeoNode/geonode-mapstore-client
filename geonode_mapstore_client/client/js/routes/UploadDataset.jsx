@@ -31,7 +31,7 @@ import { canAddRemoteResource } from '@js/selectors/resource';
 function UploadDataset({
     refreshTime = 3000,
     uploadConfig,
-    enableRemoteUploads
+    enableRemoteUploads = false
 }) {
 
     const api = {

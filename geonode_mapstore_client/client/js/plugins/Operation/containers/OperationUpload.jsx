@@ -25,7 +25,7 @@ function OperationUpload({
     descriptionMsgId = 'gnviewer.dragAndDropFile',
     refreshTime = 3000,
     pageReload,
-    canAddRemote
+    canAddRemote = false
 }) {
     const [forceRequests, setForceRequests] = useState(0);
     const [loadingRequests, setLoadingRequests] = useState(false);
