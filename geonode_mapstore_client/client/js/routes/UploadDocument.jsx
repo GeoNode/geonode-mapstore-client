@@ -24,7 +24,7 @@ import {
 } from '@js/utils/UploadUtils';
 import { canAddRemoteResource } from '@js/selectors/resource';
 
-function UploadDocument({uploadConfig, enableRemoteUploads}) {
+function UploadDocument({uploadConfig, enableRemoteUploads = false}) {
 
     const [requests, setRequests] = useState([]);
 
