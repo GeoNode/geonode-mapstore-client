@@ -22,8 +22,9 @@ import {
     hasExtensionInUrl,
     getUploadFileName
 } from '@js/utils/UploadUtils';
+import { canAddRemoteResource } from '@js/selectors/resource';
 
-function UploadDocument({uploadConfig}) {
+function UploadDocument({uploadConfig, enableRemoteUploads}) {
 
     const [requests, setRequests] = useState([]);
 
@@ -78,7 +79,7 @@ function UploadDocument({uploadConfig}) {
     const supportedFiles = getSupportedFilesByResourceType('document');
     return (
         <UploadPanel
-            enableRemoteUploads
+            enableRemoteUploads={enableRemoteUploads}
             supportedFiles={supportedFiles}
             maxParallelUploads={getMaxParallelUploads()}
             maxAllowedSize={getMaxAllowedSizeByResourceType('document')}
@@ -119,7 +120,7 @@ UploadDocument.defaultProps = {
 };
 
 const ConnectedUploadDocument = connect(
-    createSelector([], () => ({}))
+    createSelector([canAddRemoteResource], (enableRemoteUploads) => ({ enableRemoteUploads }))
 )(UploadDocument);
 
 export default ConnectedUploadDocument;
