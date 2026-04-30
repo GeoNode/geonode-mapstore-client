@@ -771,7 +771,7 @@ export function toMapStoreMapConfig(resource, baseConfig) {
                     }
                 };
             }
-            if (!mapLayer && layer?.extendedParams?.pk) {
+            if (!mapLayer && layer?.extendedParams?.mapLayer) {
                 return null;
             }
             return layer;
