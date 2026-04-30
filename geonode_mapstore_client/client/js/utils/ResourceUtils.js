@@ -231,13 +231,7 @@ export const resourceToLayerConfig = (resource) => {
         }
     };
 
-    const extendedParams = {
-        pk,
-        mapLayer: {
-            dataset: resource
-        },
-        ...defaultStyleParams
-    };
+    const extendedParams = { pk };
 
     if (subtype === '3dtiles') {
         const { url: tilesetUrl } = links.find(({ extension }) => (extension === '3dtiles')) || {};
@@ -248,6 +242,7 @@ export const resourceToLayerConfig = (resource) => {
             url: parseDevHostname(tilesetUrl || ''),
             ...(bbox && { bbox }),
             visibility: true,
+            ...layerSettings,
             extendedParams
         };
     }
@@ -263,11 +258,11 @@ export const resourceToLayerConfig = (resource) => {
             }],
             ...(bbox && { bbox }),
             visibility: true,
+            ...layerSettings,
             extendedParams
         };
     }
     if (subtype === 'flatgeobuf') {
-
         const defaultGeomType = 'GeometryCollection';
         const geometryType = attributeSet.find(attr => attr.attribute === 'geometryType')?.attribute_type || defaultGeomType;
 
@@ -281,6 +276,7 @@ export const resourceToLayerConfig = (resource) => {
             url: parseDevHostname(fgbUrl || ''),
             ...(bbox && { bbox }),
             visibility: true,
+            ...layerSettings,
             extendedParams
         };
     }
@@ -300,6 +296,7 @@ export const resourceToLayerConfig = (resource) => {
             ...(bbox && { bbox }),
             title,
             visibility: true,
+            ...layerSettings,
             extendedParams
         };
     }
@@ -342,12 +339,12 @@ export const resourceToLayerConfig = (resource) => {
             visibility: true,
             ...(params && { params }),
             ...(dimensions.length > 0 && ({ dimensions })),
-            extendedParams,
             ...(fields && { fields }),
             ...(sourcetype === SOURCE_TYPES.REMOTE && !wmsUrl.includes('/geoserver/') && {
                 serverType: ServerTypes.NO_VENDOR
             }),
-            ...layerSettings
+            ...layerSettings,
+            extendedParams
         };
     }
 };
@@ -700,17 +697,18 @@ export function cleanStyles(styles = [], excluded = []) {
 
 export function getGeoNodeMapLayers(data) {
     return (data?.map?.layers || [])
-        .filter(layer => layer?.extendedParams?.mapLayer)
+        .filter(layer => layer?.extendedParams?.pk)
         .map((layer, index) => {
             return {
-                ...(layer?.extendedParams?.mapLayer && {
+                ...(layer.extendedParams.mapLayer?.pk && {
                     pk: layer.extendedParams.mapLayer.pk
                 }),
-                current_style: layer.style || '',
                 extra_params: {
                     msId: layer.id
                 },
-                ...(layer.type === 'wms' && { current_style: layer.style || '' }),
+                ...(layer.type === 'wms' && {
+                    current_style: layer.style || ''
+                }),
                 name: layer.name || '',
                 order: index,
                 opacity: layer.opacity ?? 1,
@@ -725,7 +723,27 @@ export function toGeoNodeMapConfig(data) {
     }
     const maplayers = getGeoNodeMapLayers(data);
     return {
-        maplayers
+        maplayers,
+        data: {
+            ...data,
+            map: {
+                ...data?.map,
+                layers: (data?.map?.layers || []).map((layer) => {
+                    return {
+                        ...layer,
+                        // clean up extended params
+                        ...(layer?.extendedParams?.pk && {
+                            extendedParams: {
+                                pk: layer.extendedParams.pk,
+                                ...(layer.extendedParams.mapLayer?.pk && {
+                                    mapLayer: { pk: layer.extendedParams.mapLayer.pk }
+                                })
+                            }
+                        })
+                    };
+                })
+            }
+        }
     };
 }
 
@@ -743,12 +761,14 @@ export function toMapStoreMapConfig(resource, baseConfig) {
                         style: mapLayer.current_style || layer.style || ''
                     }),
                     extendedParams: {
-                        ...layer.extendedParams,
-                        mapLayer
+                        pk: mapLayer.dataset?.pk ?? layer.extendedParams?.pk,
+                        ...(mapLayer.pk !== undefined && {
+                            mapLayer: { pk: mapLayer.pk }
+                        })
                     }
                 };
             }
-            if (!mapLayer && layer?.extendedParams?.mapLayer) {
+            if (!mapLayer && layer?.extendedParams?.pk) {
                 return null;
             }
             return layer;

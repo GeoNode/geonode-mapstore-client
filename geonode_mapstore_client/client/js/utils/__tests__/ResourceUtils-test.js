@@ -192,11 +192,7 @@ describe('Test Resource Utils', () => {
                         url: 'geoserver/wms',
                         style: 'geonode:style',
                         availableStyles: [{ name: 'custom:style', title: 'My Style', format: 'css', metadata: {} }],
-                        extendedParams: {
-                            mapLayer: {
-                                pk: 10
-                            }
-                        },
+                        extendedParams: { pk: 1, mapLayer: { pk: 10 } },
                         opacity: 0.5,
                         visibility: false
                     }
@@ -231,11 +227,7 @@ describe('Test Resource Utils', () => {
                         url: 'geoserver/wms',
                         style: 'geonode:style',
                         availableStyles: [{ name: 'custom:style', title: 'My Style' }],
-                        extendedParams: {
-                            mapLayer: {
-                                pk: 10
-                            }
-                        }
+                        extendedParams: { pk: 1, mapLayer: { pk: 10 } }
                     }
                 ]
             }
@@ -305,18 +297,7 @@ describe('Test Resource Utils', () => {
                             name: 'geonode:layer',
                             url: 'geoserver/wms',
                             style: 'geonode:style01',
-                            extendedParams: {
-                                mapLayer: {
-                                    pk: 10,
-                                    current_style: 'geonode:style01',
-                                    extra_params: {
-                                        msId: '03'
-                                    },
-                                    dataset: {
-                                        pk: 1
-                                    }
-                                }
-                            }
+                            extendedParams: { pk: 1, mapLayer: { pk: 10 } }
                         }
                     ]
                 }
@@ -383,18 +364,7 @@ describe('Test Resource Utils', () => {
                             name: 'geonode:layer',
                             url: 'geoserver/wms',
                             style: 'geonode:style01',
-                            extendedParams: {
-                                mapLayer: {
-                                    pk: 10,
-                                    current_style: 'geonode:style01',
-                                    extra_params: {
-                                        msId: '03'
-                                    },
-                                    dataset: {
-                                        pk: 1
-                                    }
-                                }
-                            },
+                            extendedParams: { pk: 1, mapLayer: { pk: 10 } },
                             featureInfo: { template: "<div>test</div>", format: FEATURE_INFO_FORMAT }
                         }
                     ]
@@ -471,18 +441,7 @@ describe('Test Resource Utils', () => {
                             name: 'geonode:layer',
                             url: 'geoserver/wms',
                             style: 'geonode:style01',
-                            extendedParams: {
-                                mapLayer: {
-                                    pk: 10,
-                                    current_style: 'geonode:style01',
-                                    extra_params: {
-                                        msId: '03'
-                                    },
-                                    dataset: {
-                                        pk: 1
-                                    }
-                                }
-                            }
+                            extendedParams: { pk: 1, mapLayer: { pk: 10 } }
                         }
                     ]
                 }
@@ -541,6 +500,145 @@ describe('Test Resource Utils', () => {
         const layers = mapStoreMapConfig.map.layers;
         expect(layers.length).toBe(1);
         expect(layers[0].featureInfo).toEqual({ template, format: FEATURE_INFO_FORMAT });
+    });
+
+    it('getGeoNodeMapLayers omits pk for fresh-added layers (no maplayer.pk yet)', () => {
+        const data = {
+            map: {
+                layers: [{
+                    id: '03',
+                    type: 'wms',
+                    name: 'geonode:layer',
+                    extendedParams: { pk: 1 }
+                }]
+            }
+        };
+        const mapLayers = getGeoNodeMapLayers(data);
+        expect(mapLayers.length).toBe(1);
+        expect(mapLayers[0].pk).toBe(undefined);
+        expect(mapLayers[0].name).toBe('geonode:layer');
+    });
+
+    it('getGeoNodeMapLayers filters out layers without extendedParams.pk', () => {
+        const data = {
+            map: {
+                layers: [
+                    { id: '01', type: 'osm', source: 'osm' },
+                    { id: '02', type: 'vector', features: [] },
+                    { id: '03', type: 'wms', name: 'remote:wms', extendedParams: {} }
+                ]
+            }
+        };
+        expect(getGeoNodeMapLayers(data)).toEqual([]);
+    });
+
+    it('toGeoNodeMapConfig cleans up extendedParams to { pk, mapLayer: { pk } } and drops other keys', () => {
+        const data = {
+            map: {
+                layers: [{
+                    id: '03',
+                    type: 'wms',
+                    name: 'geonode:layer',
+                    extendedParams: {
+                        pk: 1,
+                        mapLayer: { pk: 10 },
+                        defaultStyle: { name: 'foo', title: 'bar' },
+                        unrelated: 'should be dropped'
+                    }
+                }]
+            }
+        };
+        const result = toGeoNodeMapConfig(data);
+        expect(result.data.map.layers[0].extendedParams).toEqual({
+            pk: 1,
+            mapLayer: { pk: 10 }
+        });
+    });
+
+    it('toGeoNodeMapConfig cleanup omits mapLayer for fresh-add layers', () => {
+        const data = {
+            map: {
+                layers: [{
+                    id: '03',
+                    type: 'wms',
+                    name: 'geonode:layer',
+                    extendedParams: { pk: 1 }
+                }]
+            }
+        };
+        const result = toGeoNodeMapConfig(data);
+        expect(result.data.map.layers[0].extendedParams).toEqual({ pk: 1 });
+    });
+
+    it('toMapStoreMapConfig removes geonode layers without a matching maplayer (orphans)', () => {
+        const resource = {
+            maplayers: [],
+            data: {
+                map: {
+                    layers: [
+                        { id: '01', type: 'osm', source: 'osm', group: 'background', visibility: true },
+                        {
+                            id: '03',
+                            type: 'wms',
+                            name: 'geonode:layer',
+                            extendedParams: { pk: 1, mapLayer: { pk: 10 } }
+                        }
+                    ]
+                }
+            }
+        };
+        const result = toMapStoreMapConfig(resource, { map: { layers: [] } });
+        expect(result.map.layers).toEqual([
+            { id: '01', type: 'osm', source: 'osm', group: 'background', visibility: true }
+        ]);
+    });
+
+    it('toMapStoreMapConfig falls back to layer.extendedParams.pk when mapLayer.dataset is missing', () => {
+        const resource = {
+            maplayers: [{
+                pk: 10,
+                extra_params: { msId: '03' }
+            }],
+            data: {
+                map: {
+                    layers: [{
+                        id: '03',
+                        type: 'wms',
+                        name: 'geonode:layer',
+                        extendedParams: { pk: 1, mapLayer: { pk: 10 } }
+                    }]
+                }
+            }
+        };
+        const result = toMapStoreMapConfig(resource, { map: { layers: [] } });
+        expect(result.map.layers[0].extendedParams).toEqual({
+            pk: 1,
+            mapLayer: { pk: 10 }
+        });
+    });
+
+    it('toGeoNodeMapConfig → toMapStoreMapConfig round-trip preserves the extendedParams shape', () => {
+        const data = {
+            map: {
+                layers: [{
+                    id: '03',
+                    type: 'wms',
+                    name: 'geonode:layer',
+                    style: 'geonode:style',
+                    extendedParams: { pk: 1, mapLayer: { pk: 10 } }
+                }]
+            }
+        };
+        const saved = toGeoNodeMapConfig(data);
+        const resource = {
+            ...saved,
+            maplayers: saved.maplayers.map(ml => ({ ...ml, dataset: { pk: 1 } }))
+        };
+        const reloaded = toMapStoreMapConfig(resource, { map: { layers: [] } });
+        expect(reloaded.map.layers[0].extendedParams).toEqual({
+            pk: 1,
+            mapLayer: { pk: 10 }
+        });
     });
 
     it('should parse style name into accepted format', () => {
