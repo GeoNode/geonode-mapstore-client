@@ -88,6 +88,10 @@ export const canAddResource = (state) => {
     return state?.security?.user?.perms?.includes("add_resource");
 };
 
+export const canAddRemoteResource = (state) => {
+    return !!state?.security?.user?.perms?.includes("add_remote_resource");
+};
+
 export const isNewResource = (state) => {
     return !!state?.gnresource?.isNew;
 };

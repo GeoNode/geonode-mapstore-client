@@ -26,10 +26,12 @@ import {
     UPLOADS,
     EXECUTION_REQUEST
 } from '@js/api/geonode/v2/constants';
+import { canAddRemoteResource } from '@js/selectors/resource';
 
 function UploadDataset({
     refreshTime = 3000,
-    uploadConfig
+    uploadConfig,
+    enableRemoteUploads = false
 }) {
 
     const api = {
@@ -87,7 +89,7 @@ function UploadDataset({
     });
     return (
         <UploadPanel
-            enableRemoteUploads
+            enableRemoteUploads={enableRemoteUploads}
             supportedFiles={getSupportedFilesByResourceType('dataset', ['upload'])}
             maxParallelUploads={getMaxParallelUploads()}
             maxAllowedSize={getMaxAllowedSizeByResourceType('dataset')}
@@ -131,7 +133,7 @@ UploadDataset.defaultProps = {
 };
 
 const ConnectedUploadDataset = connect(
-    createSelector([], () => ({}))
+    createSelector([canAddRemoteResource], (enableRemoteUploads) => ({ enableRemoteUploads }))
 )(UploadDataset);
 
 export default ConnectedUploadDataset;
