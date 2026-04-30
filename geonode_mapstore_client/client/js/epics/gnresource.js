@@ -94,7 +94,6 @@ import {
     SET_CONTROL_PROPERTY
 } from '@mapstore/framework/actions/controls';
 import {
-    resourceToLayerConfig,
     ResourceTypes,
     toMapStoreMapConfig,
     getCataloguePath,
@@ -102,6 +101,7 @@ import {
     resourceHasPermission,
     canEditMap
 } from '@js/utils/ResourceUtils';
+import {resourceToLayerConfig} from '@mapstore/framework/utils/GeoNodeUtils'
 import {
     canAddResource,
     getInitialDatasetLayer,

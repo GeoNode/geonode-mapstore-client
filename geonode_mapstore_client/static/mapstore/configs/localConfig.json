@@ -1959,10 +1959,6 @@
                             "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
                         },
                         {
-                            "type": "divider",
-                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
-                        },
-                        {
                             "type": "plugin",
                             "name": "DocumentsCatalog",
                             "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"

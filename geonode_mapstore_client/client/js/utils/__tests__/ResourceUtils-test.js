@@ -11,7 +11,6 @@ import expect from 'expect';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import {
-    resourceToLayerConfig,
     getResourcePermissions,
     permissionsCompactToLists,
     availableResourceTypes,
@@ -41,6 +40,8 @@ import {
     formatResourceLinkUrl,
     canEditMap
 } from '../ResourceUtils';
+
+import {resourceToLayerConfig} from '@mapstore/framework/utils/GeoNodeUtils'
 
 describe('Test Resource Utils', () => {
     it('should keep the wms params from the url if available', () => {

@@ -12,7 +12,8 @@ import { compareMapChanges } from '@mapstore/framework/utils/MapUtils';
 import { currentStorySelector } from '@mapstore/framework/selectors/geostory';
 import { originalDataSelector } from '@mapstore/framework/selectors/dashboard';
 import { widgetsConfig } from '@mapstore/framework/selectors/widgets';
-import { ResourceTypes, RESOURCE_PUBLISHING_PROPERTIES, RESOURCE_OPTIONS_PROPERTIES, resourceToLayerConfig } from '@js/utils/ResourceUtils';
+import { ResourceTypes, RESOURCE_PUBLISHING_PROPERTIES, RESOURCE_OPTIONS_PROPERTIES } from '@js/utils/ResourceUtils';
+import {resourceToLayerConfig} from '@mapstore/framework/utils/GeoNodeUtils'
 import {
     getCurrentResourceDeleteLoading,
     getCurrentResourceCopyLoading

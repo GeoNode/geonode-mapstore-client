@@ -19,7 +19,6 @@ import { getGeoApps } from '@js/api/geonode/v2';
 import { getDefaultPluginsConfig } from '@js/api/geonode/config';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
 import contextcreatorEpics from '@js/epics/contextcreator';
-import ResourcesCompactCatalog from '@js/components/ResourcesCompactCatalog';
 import ResizableModal from '@mapstore/framework/components/misc/ResizableModal';
 import Portal from '@mapstore/framework/components/misc/Portal';
 import { setResource as setContextCreatorResource } from '@mapstore/framework/actions/contextcreator';
@@ -34,7 +33,7 @@ function MapViewersCatalogPlugin({
     match,
     resourcesParams,
     location,
-    defaultViewerPlugins = ['Annotations', 'TOC', 'BackgroundSelector', 'Identify', 'QueryPanel', 'Measure', 'Print', 'MousePosition', 'Search', 'ScaleBox', 'GlobeViewSwitcher', 'ZoomAll', 'ZoomIn', 'ZoomOut', 'Timeline', 'MetadataExplorer', 'Widgets'],
+    defaultViewerPlugins = ['Annotations', 'TOC', 'BackgroundSelector', 'Identify', 'QueryPanel', 'Measure', 'Print', 'MousePosition', 'Search', 'ScaleBox', 'GlobeViewSwitcher', 'ZoomAll', 'ZoomIn', 'ZoomOut', 'Timeline', 'Catalog', 'Widgets'],
     onReplaceLocation,
     onSetMapViewer,
     onManageLinkedResource,
@@ -54,53 +53,6 @@ function MapViewersCatalogPlugin({
     }, [pk, mapPk]);
     return (
         <>
-            <Portal>
-                <ResizableModal
-                    title={<Message msgId={newViewerModal === 'link'
-                        ? 'gnviewer.selectLinkedMapViewer'
-                        : 'gnviewer.copyConfigurationFromTitle'} />}
-                    show={enabled}
-                    size="lg"
-                    clickOutEnabled={false}
-                    onClose={() => {
-                        onSetControl(false);
-                        setNewViewerModal('');
-                    }}
-                >
-                    <ResourcesCompactCatalog
-                        {...props}
-                        placeholderId={'gnviewer.mapViewersCatalogFilterPlaceholder'}
-                        noResultId={'gnviewer.mapViewersCatalogEntriesNoResults'}
-                        onSelect={(resource) => {
-                            if (newViewerModal === 'link') {
-                                onManageLinkedResource({resourceType: ResourceTypes.VIEWER, source: mapPk, target: resource.pk, processType: ProcessTypes.LINK_RESOURCE});
-                            } else {
-                                getDefaultPluginsConfig()
-                                    .then((pluginsConfig) => {
-                                        onSetMapViewer({ data: resource.data }, pluginsConfig);
-                                    });
-                                onSetControl(false);
-                            }
-                            setNewViewerModal('');
-                        }}
-                        request={(options) => {
-                            return getGeoApps({
-                                ...options,
-                                'filter{resource_type}': 'mapviewer',
-                                ...(pk && pk !== 'new' && { 'filter{-pk}': pk }),
-                                ...(newViewerModal !== 'link' && {
-                                    'include[]': 'data'
-                                })
-                            });
-                        }}
-                        style={{
-                            position: 'relative',
-                            width: '100%',
-                            height: '100%'
-                        }}
-                    />
-                </ResizableModal>
-            </Portal>
             <Portal>
                 <ResizableModal
                     title={""}
