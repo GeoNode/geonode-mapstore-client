@@ -55,7 +55,7 @@ def resource_urls(request):
         "PROJECTION_DEFS_ENDPOINT": getattr(
             settings,
             "MAPSTORE_PROJECTION_DEFS_ENDPOINT",
-            getattr(settings, "SITEURL", "").rstrip("/") + "/geoserver",
+            (getattr(settings, "SITEURL", "") or "").rstrip("/") + "/geoserver",
         ),
         "PLUGINS_CONFIG_PATCH_RULES": getattr(
             settings, "MAPSTORE_PLUGINS_CONFIG_PATCH_RULES", []
