@@ -234,7 +234,10 @@ export const resourceToLayerConfig = (resource) => {
         }
     };
 
-    const extendedParams = { pk };
+    const extendedParams = {
+        pk,
+        alternate
+    };
 
     if (subtype === '3dtiles') {
         const { url: tilesetUrl } = links.find(({ extension }) => (extension === '3dtiles')) || {};
@@ -712,7 +715,7 @@ export function getGeoNodeMapLayers(data) {
                 ...(layer.type === 'wms' && {
                     current_style: layer.style || ''
                 }),
-                name: layer.name || '',
+                name: layer?.extendedParams?.alternate || layer.name || '',
                 order: index,
                 opacity: layer.opacity ?? 1,
                 visibility: layer.visibility
@@ -738,6 +741,7 @@ export function toGeoNodeMapConfig(data) {
                         ...(layer?.extendedParams?.pk && {
                             extendedParams: {
                                 pk: layer.extendedParams.pk,
+                                alternate: layer.extendedParams.alternate,
                                 ...(layer.extendedParams.mapLayer?.pk && {
                                     mapLayer: { pk: layer.extendedParams.mapLayer.pk }
                                 })
@@ -765,6 +769,7 @@ export function toMapStoreMapConfig(resource, baseConfig) {
                     }),
                     extendedParams: {
                         pk: mapLayer.dataset?.pk ?? layer.extendedParams?.pk,
+                        alternate: mapLayer.dataset?.alternate ?? layer.extendedParams?.alternate ?? layer.name,
                         ...(mapLayer.pk !== undefined && {
                             mapLayer: { pk: mapLayer.pk }
                         })
