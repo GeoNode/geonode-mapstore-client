@@ -551,6 +551,7 @@
             "rangeCannotBeEmpty": "Range cannot be empty: {propName}",
             "createDatasetErrorTitle": "Dataset creation",
             "createDatasetErrorDefault": "An error occurred while creating the dataset. Kindly retry",
+            "geometryDatasetWarning": "Multi geometry dataset supports only replace and upsert actions, editing of geometries is not supported yet inside the attribute table.",
             "clearWarnings": "Clear warnings",
             "dragDropAsset": "Drag and drop files here <br/> or",
             "browseFile": "Browse Files",

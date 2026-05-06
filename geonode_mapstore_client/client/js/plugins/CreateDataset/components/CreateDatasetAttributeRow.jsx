@@ -89,7 +89,10 @@ const CreateDatasetAttributeRow = ({
         }
     }
 
+    const showGeomWarning = geometryAttribute && data?.type === AttributeTypes.Geometry;
+
     return (
+        <>
         <tr className="gn-dataset-attribute">
             <td className="gn-attribute-name">
                 <FormGroup
@@ -177,6 +180,17 @@ const CreateDatasetAttributeRow = ({
                 {tools}
             </td>
         </tr>
+        {showGeomWarning ? (
+            <tr>
+                <td
+                    className="gn-attribute-geom-warning"
+                    colSpan={5}
+                >
+                   <Message msgId="gnviewer.geometryDatasetWarning" />
+                </td>
+            </tr>
+        ) : null}
+        </>
     );
 };
 
