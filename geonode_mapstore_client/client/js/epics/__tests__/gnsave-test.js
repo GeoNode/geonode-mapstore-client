@@ -336,6 +336,9 @@ describe('gnsave epics', () => {
                         }
                     }
                 },
+                map: {
+                    present: {}
+                },
                 layers: {
                     flat: [{
                         id: 'layer-1',

@@ -155,5 +155,6 @@ export const getPluginsContext = () => ({
     },
     getDashboardCatalogueServices: (settings) => {
         return settings?.dashboardCatalogueServices || {};
-    }
+    },
+    getProjectionDefsEndpoint: (settings = {}) => settings?.projectionDefsEndpoint || ''
 });

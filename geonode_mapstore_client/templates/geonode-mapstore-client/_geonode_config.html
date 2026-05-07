@@ -64,6 +64,7 @@
         let allowedDocumentTypes = geoNodeSettings.ALLOWED_DOCUMENT_TYPES || [];
         let languages = geoNodeSettings.LANGUAGES;
         let projectionDefs = geoNodeSettings.PROJECTION_DEFS || [];
+        let projectionDefsEndpoint = geoNodeSettings.PROJECTION_DEFS_ENDPOINT || '';
         let pluginsConfigPatchRules  = geoNodeSettings.PLUGINS_CONFIG_PATCH_RULES || [];
         let translationsPath = geoNodeSettings.TRANSLATIONS_PATH;
         let extensionsFolder = geoNodeSettings.EXTENSIONS_FOLDER_PATH;
@@ -238,7 +239,8 @@
                     catalogPagePath: catalogPagePath,
                     isPublishedOptionEnabled: isPublishedOptionEnabled,
                     isApprovedOptionEnabled: isApprovedOptionEnabled,
-                    resourcesSearchIndex: resourcesSearchIndex
+                    resourcesSearchIndex: resourcesSearchIndex,
+                    projectionDefsEndpoint: projectionDefsEndpoint
                 }
             },
         };

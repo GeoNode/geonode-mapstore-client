@@ -52,6 +52,11 @@ def resource_urls(request):
             ["/static/mapstore/ms-translations", "/static/mapstore/gn-translations"],
         ),
         "PROJECTION_DEFS": getattr(settings, "MAPSTORE_PROJECTION_DEFS", []),
+        "PROJECTION_DEFS_ENDPOINT": getattr(
+            settings,
+            "MAPSTORE_PROJECTION_DEFS_ENDPOINT",
+            (getattr(settings, "SITEURL", "") or "").rstrip("/") + "/geoserver",
+        ),
         "PLUGINS_CONFIG_PATCH_RULES": getattr(
             settings, "MAPSTORE_PLUGINS_CONFIG_PATCH_RULES", []
         ),
