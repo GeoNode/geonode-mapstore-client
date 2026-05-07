@@ -11,6 +11,7 @@ DEFAULT_MAP_CRS | crs used by the map and dataset viewers | EPSG:3857
 DEFAULT_MAP_ZOOM | initial zoom of new map | 0
 DEFAULT_TILE_SIZE | tiles size used by map and dataset viewers by default | 512
 DEFAULT_LAYER_FORMAT | tiles format used by map and dataset viewers by default | 'image/png'
+MAPSTORE_PROJECTION_DEFS_ENDPOINT | base URL of a GeoServer instance. Enables the remote projection search feature | SITEURL + '/geoserver' (embedded GeoServer)
 
 
 An example on how to update the `MAPSTORE_BASELAYERS` variable:
