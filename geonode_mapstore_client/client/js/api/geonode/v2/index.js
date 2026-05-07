@@ -22,7 +22,6 @@ import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
 import castArray from 'lodash/castArray';
 import get from 'lodash/get';
-import { getUserInfo } from '@js/api/geonode/user';
 import { ResourceTypes, availableResourceTypes, setAvailableResourceTypes, getDownloadUrlInfo, isDefaultDatasetSubtype } from '@js/utils/ResourceUtils';
 import { mergeConfigsPatch } from '@mapstore/patcher';
 import {
@@ -38,7 +37,8 @@ import {
     getEndpoints as cGetEndpoints,
     getEndpointUrl,
     getQueryParams,
-    UPLOADS
+    UPLOADS,
+    USER_INFO
 } from './constants';
 
 
@@ -507,6 +507,15 @@ export const getUserByPk = (pk, apikey) => {
         }
     })
         .then(({ data }) => data.user);
+};
+
+export const getUserInfo = (apikey) => {
+    return axios.get(getEndpointUrl(USER_INFO), {
+        params: {
+            ...(apikey && { apikey })
+        }
+    })
+        .then(({ data }) => data);
 };
 
 export const getAccountInfo = () => {
