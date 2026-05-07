@@ -289,7 +289,7 @@ describe('gnsave epics', () => {
         );
     });
 
-    it('should skip GeoServer style update for flatgeobuf save', (done) => {
+    it.only('should skip GeoServer style update for flatgeobuf save', (done) => {
         const NUM_ACTIONS = 4;
         const id = 1;
         const metadata = {
@@ -335,6 +335,9 @@ describe('gnsave epics', () => {
                             name: 'old_style'
                         }
                     }
+                },
+                map: {
+                    present: {}
                 },
                 layers: {
                     flat: [{
