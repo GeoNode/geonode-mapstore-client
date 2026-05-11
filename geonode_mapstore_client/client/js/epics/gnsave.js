@@ -192,7 +192,10 @@ const SaveAPI = {
             ...body,
             data: {
                 ...body?.data,
-                dimensions: timeseries?.has_time ? getDimensions({...body?.data, has_time: true}) : []
+                layerSettings: {
+                    ...body?.data?.layerSettings,
+                    dimensions: timeseries?.has_time ? getDimensions({...currentResource, has_time: true}) : []
+                }
             },
             ...(timeseries && { has_time: timeseries?.has_time })
         };
@@ -209,7 +212,7 @@ const SaveAPI = {
                     if (timeseries) {
                         const layerId = layersSelector(state)?.find((l) => l.pk === resource?.pk)?.id;
                         // actions to be dispacted are added to response array
-                        return [resource, updateNode(layerId, 'layers', { dimensions: get(resource, 'data.dimensions', []) }), ...actions];
+                        return [resource, updateNode(layerId, 'layers', { dimensions: get(resource, 'data.layerSettings.dimensions', []) }), ...actions];
                     }
                     return [resource, ...actions];
                 });

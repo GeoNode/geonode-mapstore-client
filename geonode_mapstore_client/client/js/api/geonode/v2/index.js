@@ -270,7 +270,8 @@ export const getResourceByPk = (pk) => {
     return axios.get(getEndpointUrl(RESOURCES, `/${pk}`), {
         params: {
             api_preset: API_PRESET.VIEWER_COMMON,
-            include_i18n: true
+            include_i18n: true,
+            include: ['data']
         }
     })
         .then(({ data }) => data.resource);
@@ -318,7 +319,8 @@ export const getDatasetByPk = (pk) => {
     return axios.get(getEndpointUrl(DATASETS, `/${pk}`), {
         params: {
             api_preset: [API_PRESET.VIEWER_COMMON, API_PRESET.DATASET],
-            include_i18n: true
+            include_i18n: true,
+            include: ['data']
         },
         ...paramsSerializer()
     })

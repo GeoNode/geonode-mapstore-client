@@ -35,7 +35,15 @@ function getExtentFromResource({ extent }) {
     // if the extent is greater than the max extent of the WGS84 return null
     const WGS84_MAX_EXTENT = [-180, -90, 180, 90];
     if (minx < WGS84_MAX_EXTENT[0] || miny < WGS84_MAX_EXTENT[1] || maxx > WGS84_MAX_EXTENT[2] || maxy > WGS84_MAX_EXTENT[3]) {
-        return null;
+        return {
+            crs: 'EPSG:4326',
+            bounds: {
+                minx: WGS84_MAX_EXTENT[0],
+                miny: WGS84_MAX_EXTENT[1],
+                maxx: WGS84_MAX_EXTENT[2],
+                maxy: WGS84_MAX_EXTENT[3]
+            }
+        };
     }
     const bbox = {
         crs: 'EPSG:4326',
@@ -210,8 +218,10 @@ export const resourceToLayerConfig = (resource) => {
         ptype,
         subtype,
         sourcetype,
-        data: layerSettings
+        data
     } = resource;
+
+    const layerSettings = data?.layerSettings ?? data;
 
     const title = getLocalizedValues(resource, 'title', defaultTitle);
 
@@ -226,10 +236,7 @@ export const resourceToLayerConfig = (resource) => {
 
     const extendedParams = {
         pk,
-        mapLayer: {
-            dataset: resource
-        },
-        ...defaultStyleParams
+        alternate
     };
 
     if (subtype === '3dtiles') {
@@ -241,6 +248,7 @@ export const resourceToLayerConfig = (resource) => {
             url: parseDevHostname(tilesetUrl || ''),
             ...(bbox && { bbox }),
             visibility: true,
+            ...layerSettings,
             extendedParams
         };
     }
@@ -256,11 +264,11 @@ export const resourceToLayerConfig = (resource) => {
             }],
             ...(bbox && { bbox }),
             visibility: true,
+            ...layerSettings,
             extendedParams
         };
     }
     if (subtype === 'flatgeobuf') {
-
         const defaultGeomType = 'GeometryCollection';
         const geometryType = attributeSet.find(attr => attr.attribute === 'geometryType')?.attribute_type || defaultGeomType;
 
@@ -274,6 +282,7 @@ export const resourceToLayerConfig = (resource) => {
             url: parseDevHostname(fgbUrl || ''),
             ...(bbox && { bbox }),
             visibility: true,
+            ...layerSettings,
             extendedParams
         };
     }
@@ -293,6 +302,7 @@ export const resourceToLayerConfig = (resource) => {
             ...(bbox && { bbox }),
             title,
             visibility: true,
+            ...layerSettings,
             extendedParams
         };
     }
@@ -335,12 +345,12 @@ export const resourceToLayerConfig = (resource) => {
             visibility: true,
             ...(params && { params }),
             ...(dimensions.length > 0 && ({ dimensions })),
-            extendedParams,
             ...(fields && { fields }),
             ...(sourcetype === SOURCE_TYPES.REMOTE && !wmsUrl.includes('/geoserver/') && {
                 serverType: ServerTypes.NO_VENDOR
             }),
-            ...layerSettings
+            ...layerSettings,
+            extendedParams
         };
     }
 };
@@ -693,18 +703,19 @@ export function cleanStyles(styles = [], excluded = []) {
 
 export function getGeoNodeMapLayers(data) {
     return (data?.map?.layers || [])
-        .filter(layer => layer?.extendedParams?.mapLayer)
+        .filter(layer => layer?.extendedParams?.pk)
         .map((layer, index) => {
             return {
-                ...(layer?.extendedParams?.mapLayer && {
+                ...(layer.extendedParams.mapLayer?.pk && {
                     pk: layer.extendedParams.mapLayer.pk
                 }),
-                current_style: layer.style || '',
                 extra_params: {
                     msId: layer.id
                 },
-                ...(layer.type === 'wms' && { current_style: layer.style || '' }),
-                name: layer.name || '',
+                ...(layer.type === 'wms' && {
+                    current_style: layer.style || ''
+                }),
+                name: layer?.extendedParams?.alternate || layer.name || '',
                 order: index,
                 opacity: layer.opacity ?? 1,
                 visibility: layer.visibility
@@ -718,7 +729,28 @@ export function toGeoNodeMapConfig(data) {
     }
     const maplayers = getGeoNodeMapLayers(data);
     return {
-        maplayers
+        maplayers,
+        data: {
+            ...data,
+            map: {
+                ...data?.map,
+                layers: (data?.map?.layers || []).map((layer) => {
+                    return {
+                        ...layer,
+                        // clean up extended params
+                        ...(layer?.extendedParams?.pk && {
+                            extendedParams: {
+                                pk: layer.extendedParams.pk,
+                                alternate: layer.extendedParams.alternate,
+                                ...(layer.extendedParams.mapLayer?.pk && {
+                                    mapLayer: { pk: layer.extendedParams.mapLayer.pk }
+                                })
+                            }
+                        })
+                    };
+                })
+            }
+        }
     };
 }
 
@@ -736,8 +768,11 @@ export function toMapStoreMapConfig(resource, baseConfig) {
                         style: mapLayer.current_style || layer.style || ''
                     }),
                     extendedParams: {
-                        ...layer.extendedParams,
-                        mapLayer
+                        pk: mapLayer.dataset?.pk ?? layer.extendedParams?.pk,
+                        alternate: mapLayer.dataset?.alternate ?? layer.extendedParams?.alternate ?? layer.name,
+                        ...(mapLayer.pk !== undefined && {
+                            mapLayer: { pk: mapLayer.pk }
+                        })
                     }
                 };
             }
@@ -972,6 +1007,35 @@ export const getResourceAdditionalProperties = (_resource = {}) => {
     return {
         ...resource,
         assets: assets.length ? assets : [{_showEmptyState: true}] // add empty state flag to show assets section
+    };
+};
+
+// Normalizes a dataset resource's `data` payload to the shape
+// `{ layerSettings, mapConfig: { map?, crsSelector? } }`. Legacy records stored
+// the layer settings as the top-level `data` object and projection state under
+// `data.crsSelector`; new records nest both halves explicitly. Idempotent on
+// already-normalized payloads so the caller can run it without checking.
+export const parseMapLayerData = (data) => {
+    if (!data || typeof data !== 'object') {
+        return { layerSettings: {}, mapConfig: {} };
+    }
+    if ('layerSettings' in data || 'mapConfig' in data) {
+        return {
+            layerSettings: data.layerSettings ?? {},
+            mapConfig: data.mapConfig ?? {}
+        };
+    }
+    const legacyCrsSelector = data.crsSelector;
+    return {
+        layerSettings: omit(data, ['crsSelector']),
+        mapConfig: {
+            ...(legacyCrsSelector?.currentProjection && {
+                map: { projection: legacyCrsSelector.currentProjection }
+            }),
+            ...(legacyCrsSelector?.projectionList && {
+                crsSelector: { projectionList: legacyCrsSelector.projectionList }
+            })
+        }
     };
 };
 
