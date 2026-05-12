@@ -9,7 +9,7 @@
 import { Observable } from 'rxjs';
 import { addApi, setApi } from '@mapstore/framework/api/persistence';
 import { getMaps, getMapByPk, getGeoAppByPk, getResources as gnGetResources } from '@js/api/geonode/v2';
-import { getFacetItems } from '@js/api/geonode/v2/facets';
+import { getFacetItems } from '@mapstore/framework/api/GeoNode';
 import { parseCatalogResource, ResourceTypes } from '@js/utils/ResourceUtils';
 import { getCustomMenuFilters } from '@js/selectors/config';
 

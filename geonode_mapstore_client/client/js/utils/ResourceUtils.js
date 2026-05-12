@@ -6,63 +6,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import uuid from 'uuid';
 import url from 'url';
 import { isEmpty, uniqBy, omit, orderBy, isString, isObject } from 'lodash';
 
-import { isImageServerUrl } from '@mapstore/framework/utils/ArcGISUtils';
 import { getConfigProp, convertFromLegacy, normalizeConfig } from '@mapstore/framework/utils/ConfigUtils';
-import { excludeGoogleBackground, extractTileMatrixFromSources, ServerTypes } from '@mapstore/framework/utils/LayersUtils';
+import { excludeGoogleBackground, extractTileMatrixFromSources } from '@mapstore/framework/utils/LayersUtils';
+import { SOURCE_TYPES, FEATURE_INFO_FORMAT, GXP_PTYPES, ResourceTypes, isDefaultDatasetSubtype, getDimensions, resourceToLayers, resourceToLayerConfig } from '@mapstore/framework/utils/GeoNodeUtils';
 
 import { getGeoNodeLocalConfig, parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes, ProcessStatus } from '@js/utils/ResourceServiceUtils';
 import { determineResourceType } from '@js/utils/FileUtils';
 
-import { createDefaultStyle } from '@mapstore/framework/utils/StyleUtils';
-import { getSupportedLocales } from '@mapstore/framework/utils/LocaleUtils';
-import { shortLocale } from '@js/utils/LocaleUtils';
+export { SOURCE_TYPES, FEATURE_INFO_FORMAT, GXP_PTYPES, ResourceTypes, isDefaultDatasetSubtype, getDimensions, resourceToLayers, resourceToLayerConfig };
 
 /**
 * @module utils/ResourceUtils
 */
-
-function getExtentFromResource({ extent }) {
-    if (isEmpty(extent?.coords)) {
-        return null;
-    }
-    const [minx, miny, maxx, maxy] = extent.coords;
-
-    // if the extent is greater than the max extent of the WGS84 return null
-    const WGS84_MAX_EXTENT = [-180, -90, 180, 90];
-    if (minx < WGS84_MAX_EXTENT[0] || miny < WGS84_MAX_EXTENT[1] || maxx > WGS84_MAX_EXTENT[2] || maxy > WGS84_MAX_EXTENT[3]) {
-        return {
-            crs: 'EPSG:4326',
-            bounds: {
-                minx: WGS84_MAX_EXTENT[0],
-                miny: WGS84_MAX_EXTENT[1],
-                maxx: WGS84_MAX_EXTENT[2],
-                maxy: WGS84_MAX_EXTENT[3]
-            }
-        };
-    }
-    const bbox = {
-        crs: 'EPSG:4326',
-        bounds: { minx, miny, maxx, maxy }
-    };
-    return bbox;
-}
-
-export const GXP_PTYPES = {
-    'AUTO': 'gxp_wmscsource',
-    'OWS': 'gxp_wmscsource',
-    'WMS': 'gxp_wmscsource',
-    'WFS': 'gxp_wmscsource',
-    'WCS': 'gxp_wmscsource',
-    'REST_MAP': 'gxp_arcrestsource',
-    'REST_IMG': 'gxp_arcrestsource',
-    'HGL': 'gxp_hglsource',
-    'GN_WMS': 'gxp_geonodecataloguesource'
-};
 
 const RESOURCE_PUBLISHING_PROPERTIES_BASE = {
     'is_published': {
@@ -127,233 +86,6 @@ export const TIME_PRECISION_STEPS = ['years', 'months', 'days', 'hours', 'minute
 
 // Formats that support styling in GeoServer.
 export const STYLE_SUPPORTED_LAYER_TYPES = ['vector', 'raster', 'vector_time'];
-
-export const isDefaultDatasetSubtype = (subtype) => !subtype || ['vector', 'raster', 'remote', 'vector_time'].includes(subtype);
-
-export const FEATURE_INFO_FORMAT = 'TEMPLATE';
-
-export const SOURCE_TYPES = {
-    LOCAL: 'LOCAL',
-    REMOTE: 'REMOTE'
-};
-
-const datasetAttributeSetToFields = ({ attribute_set: attributeSet = [] }) => {
-    return attributeSet
-        .filter(({ attribute_type: type }) => !type.includes('gml:'))
-        .map(({
-            attribute,
-            attribute_label: alias,
-            attribute_type: type
-        }) => {
-            return {
-                name: attribute,
-                alias: alias,
-                type: type
-            };
-        });
-};
-
-export const getDimensions = ({links, has_time: hasTime} = {}) => {
-    const { url: wmsUrl } = links?.find(({ link_type: linkType }) => linkType === 'OGC:WMS') || {};
-    const { url: wmtsUrl } = links?.find(({ link_type: linkType }) => linkType === 'OGC:WMTS') || {};
-    const dimensions = [
-        ...(hasTime ? [{
-            name: 'time',
-            source: {
-                type: 'multidim-extension',
-                url: wmtsUrl || (wmsUrl || '').split('/geoserver/')[0] + '/geoserver/gwc/service/wmts'
-            }
-        }] : [])
-    ];
-    return dimensions;
-};
-
-
-const getLocalizedValue = (resource, key, locale = '') => {
-    if (resource[`${key}_${locale}`]) {
-        return resource[`${key}_${locale}`];
-    }
-    const languageCode = shortLocale(locale);
-    if (resource[`${key}_${languageCode}`]) {
-        return resource[`${key}_${languageCode}`];
-    }
-    return null;
-};
-
-export const getLocalizedValues = (resource, key, defaultValue) => {
-    const supportedLocales = getSupportedLocales() || {};
-    const translations = Object.values(supportedLocales)
-        .map(({ code }) => {
-            const value = getLocalizedValue(resource, key, code);
-            return value ? [code, value] : null;
-        })
-        .filter(value => value !== null);
-
-    if (translations.length) {
-        return {
-            ...Object.fromEntries(translations),
-            'default': defaultValue
-        };
-    }
-    return defaultValue;
-};
-
-
-/**
-* convert resource layer configuration to a mapstore layer object
-* @param {object} resource geonode layer resource
-* @return {object}
-*/
-export const resourceToLayerConfig = (resource) => {
-
-    const {
-        alternate,
-        attribute_set: attributeSet = [],
-        links = [],
-        featureinfo_custom_template: template,
-        title: defaultTitle,
-        perms,
-        pk,
-        default_style: defaultStyle,
-        ptype,
-        subtype,
-        sourcetype,
-        data
-    } = resource;
-
-    const layerSettings = data?.layerSettings ?? data;
-
-    const title = getLocalizedValues(resource, 'title', defaultTitle);
-
-
-    const bbox = getExtentFromResource(resource);
-    const defaultStyleParams = defaultStyle && {
-        defaultStyle: {
-            title: defaultStyle.sld_title,
-            name: defaultStyle.workspace ? `${defaultStyle.workspace}:${defaultStyle.name}` : defaultStyle.name
-        }
-    };
-
-    const extendedParams = {
-        pk,
-        alternate
-    };
-
-    if (subtype === '3dtiles') {
-        const { url: tilesetUrl } = links.find(({ extension }) => (extension === '3dtiles')) || {};
-        return {
-            id: uuid(),
-            type: '3dtiles',
-            title,
-            url: parseDevHostname(tilesetUrl || ''),
-            ...(bbox && { bbox }),
-            visibility: true,
-            ...layerSettings,
-            extendedParams
-        };
-    }
-    if (subtype === 'cog') {
-        const { url: cogUrl } = links.find(({ extension }) => (extension === 'cog')) || {};
-        return {
-            perms,
-            id: uuid(),
-            type: 'cog',
-            title,
-            sources: [{
-                url: parseDevHostname(cogUrl || '')
-            }],
-            ...(bbox && { bbox }),
-            visibility: true,
-            ...layerSettings,
-            extendedParams
-        };
-    }
-    if (subtype === 'flatgeobuf') {
-        const defaultGeomType = 'GeometryCollection';
-        const geometryType = attributeSet.find(attr => attr.attribute === 'geometryType')?.attribute_type || defaultGeomType;
-
-        const { url: fgbUrl } = links.find(({ extension }) => (extension === 'flatgeobuf')) || {};
-        return {
-            perms,
-            id: uuid(),
-            type: 'flatgeobuf',
-            title,
-            style: createDefaultStyle({ geometryType }),
-            url: parseDevHostname(fgbUrl || ''),
-            ...(bbox && { bbox }),
-            visibility: true,
-            ...layerSettings,
-            extendedParams
-        };
-    }
-    switch (ptype) {
-    case GXP_PTYPES.REST_MAP:
-    case GXP_PTYPES.REST_IMG: {
-        const { url: arcgisUrl } = links.find(({ mime, link_type: linkType }) => (mime === 'text/html' && linkType === 'image')) || {};
-        return {
-            perms,
-            id: uuid(),
-            pk,
-            type: 'arcgis',
-            ...(isImageServerUrl(arcgisUrl)
-                ? { queryable: false }
-                : { name: alternate.replace('remoteWorkspace:', '') }),
-            url: arcgisUrl,
-            ...(bbox && { bbox }),
-            title,
-            visibility: true,
-            ...layerSettings,
-            extendedParams
-        };
-    }
-    default:
-        const { url: wfsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WFS') || {};
-        const { url: wmsUrl } = links.find(({ link_type: linkType }) => linkType === 'OGC:WMS') || {};
-
-        const dimensions = getDimensions(resource);
-
-        const params = wmsUrl && url.parse(wmsUrl, true).query;
-        const {
-            defaultLayerFormat = 'image/png',
-            defaultTileSize = 512
-        } = getConfigProp('geoNodeSettings') || {};
-        const fields = datasetAttributeSetToFields(resource);
-        return {
-            perms,
-            id: uuid(),
-            pk,
-            type: 'wms',
-            name: alternate,
-            url: wmsUrl || '',
-            format: defaultLayerFormat,
-            ...(wfsUrl && {
-                search: {
-                    type: 'wfs',
-                    url: wfsUrl
-                }
-            }),
-            ...(bbox ? { bbox } : { bboxError: true }),
-            ...(template && {
-                featureInfo: {
-                    format: FEATURE_INFO_FORMAT,
-                    template
-                }
-            }),
-            style: defaultStyleParams?.defaultStyle?.name || '',
-            title,
-            tileSize: defaultTileSize,
-            visibility: true,
-            ...(params && { params }),
-            ...(dimensions.length > 0 && ({ dimensions })),
-            ...(fields && { fields }),
-            ...(sourcetype === SOURCE_TYPES.REMOTE && !wmsUrl.includes('/geoserver/') && {
-                serverType: ServerTypes.NO_VENDOR
-            }),
-            ...layerSettings,
-            extendedParams
-        };
-    }
-};
 
 function updateUrlQueryParameter(requestUrl = '', query) {
     const parsedUrl = url.parse(requestUrl, true);
@@ -464,15 +196,6 @@ export const resourceHasPermission = (resource, perm) => {
     return !!resource?.perms?.includes(perm);
 };
 
-
-export const ResourceTypes = {
-    DATASET: 'dataset',
-    MAP: 'map',
-    DOCUMENT: 'document',
-    GEOSTORY: 'geostory',
-    DASHBOARD: 'dashboard',
-    VIEWER: 'mapviewer'
-};
 
 export const isDocumentExternalSource = (resource) => {
     return resource && resource.resource_type === ResourceTypes.DOCUMENT && resource.sourcetype === SOURCE_TYPES.REMOTE;
@@ -789,8 +512,21 @@ export function toMapStoreMapConfig(resource, baseConfig) {
         .filter(mLayer => !layers.find(layer => layer.id !== undefined && mLayer?.extra_params?.msId === layer.id))
         .map(mLayer => resourceToLayerConfig(mLayer?.dataset));
 
+    const { catalogueServices = {}, catalogueSelectedService = '' } = getConfigProp('geoNodeSettings') || {};
+    const existingServices = data?.catalogServices?.services || {};
+    const missingServices = Object.fromEntries(
+        Object.entries(catalogueServices).filter(([key]) => !existingServices[key])
+    );
+    const catalogServices = Object.keys(missingServices).length > 0
+        ? {
+            services: { ...missingServices, ...existingServices },
+            selectedService: data?.catalogServices?.selectedService || catalogueSelectedService
+        }
+        : data?.catalogServices;
+
     return {
         ...data,
+        ...(catalogServices && { catalogServices }),
         map: {
             ...data?.map,
             layers: [
@@ -1075,28 +811,6 @@ export const parseCatalogResource = (resource, user) => {
             status: getResourceStatuses(resource, user)
         }
     };
-};
-
-export const resourceToLayers = (resource) => {
-    if (resource?.resource_type === ResourceTypes.DATASET) {
-        return [{...resourceToLayerConfig(resource), isDataset: true}];
-    }
-    if (resource.maplayers && resource?.resource_type === ResourceTypes.MAP) {
-        return resource.maplayers
-            .map(maplayer => {
-                maplayer.dataset ? resourceToLayerConfig(maplayer.dataset) : null;
-                if (maplayer.dataset) {
-                    const layer = resourceToLayerConfig(maplayer.dataset);
-                    return {
-                        ...layer,
-                        style: maplayer.current_style
-                    };
-                }
-                return null;
-            })
-            .filter(value => value);
-    }
-    return [];
 };
 
 export const canManageResourcePublishing = (resource) => {

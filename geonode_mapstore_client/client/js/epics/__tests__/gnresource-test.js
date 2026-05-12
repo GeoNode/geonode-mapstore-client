@@ -29,6 +29,7 @@ import {
 } from '@js/actions/gnresource';
 import { clickOnMap } from '@mapstore/framework/actions/map';
 import { SET_CONTROL_PROPERTY } from '@mapstore/framework/actions/controls';
+import { CATALOG_CLOSE } from '@mapstore/framework/actions/catalog';
 import {
     SHOW_NOTIFICATION
 } from '@mapstore/framework/actions/notifications';
@@ -194,7 +195,7 @@ describe('gnresource epics', () => {
                 requests: ["something"]
             },
             controls: {
-                datasetsCatalog: {
+                metadataexplorer: {
                     enabled: true
                 }
             }
@@ -206,9 +207,7 @@ describe('gnresource epics', () => {
             (actions) => {
                 try {
                     expect(actions.length).toBe(1);
-                    expect(actions[0].type).toBe(SET_CONTROL_PROPERTY);
-                    expect(actions[0].control).toBe("datasetsCatalog");
-                    expect(actions[0].value).toBe(false);
+                    expect(actions[0].type).toBe(CATALOG_CLOSE);
                 } catch (e) {
                     done(e);
                 }

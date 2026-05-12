@@ -1961,15 +1961,6 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "DatasetsCatalog",
-                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
-                        },
-                        {
-                            "type": "divider",
-                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
-                        },
-                        {
-                            "type": "plugin",
                             "name": "DocumentsCatalog",
                             "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
                         }
@@ -2443,10 +2434,6 @@
             },
             {
                 "mandatory": true,
-                "name": "DatasetsCatalog"
-            },
-            {
-                "mandatory": true,
                 "name": "DocumentsCatalog"
             },
             { 
@@ -2459,20 +2446,66 @@
                 "name": "SidebarMenu"
             },
             {
-                "name": "MetadataExplorer",
+                "name": "Catalog",
                 "cfg": {
-                    "wrap": true,
+                    "hideIdentifier": true,
                     "serviceTypes": [
-                        { "name": "csw", "label": "CSW" }, 
-                        { "name": "wms", "label": "WMS" }, 
-                        { "name": "wmts", "label": "WMTS" }, 
-                        { "name": "tms", "label": "TMS", "allowedProviders": ["OpenStreetMap", "OpenSeaMap", "Stamen"] }, 
-                        { "name": "wfs", "label": "WFS" }, 
-                        { "name": "3dtiles", "label": "3D Tiles" }, 
-                        { "name": "model", "label": "IFC Model" }, 
-                        { "name": "arcgis", "label": "ArcGIS" }, 
+                        { "name": "csw", "label": "CSW" },
+                        { "name": "wms", "label": "WMS" },
+                        { "name": "wmts", "label": "WMTS" },
+                        { "name": "tms", "label": "TMS", "allowedProviders": ["OpenStreetMap", "OpenSeaMap", "Stamen"] },
+                        { "name": "wfs", "label": "WFS" },
+                        { "name": "3dtiles", "label": "3D Tiles" },
+                        { "name": "model", "label": "IFC Model" },
+                        { "name": "arcgis", "label": "ArcGIS" },
                         { "name": "cog", "label": "COG" },
-                        { "name": "flatgeobuf", "label": "FlatGeobuf" }
+                        { "name": "flatgeobuf", "label": "FlatGeobuf" },
+                        { "name": "geonode", "label": "GeoNode" }
+                    ],
+                    "filterFormFields": [
+                        {
+                            "type": "tabs",
+                            "id": "catalog-filter-tabs",
+                            "persistSelection": true,
+                            "items": [
+                                {
+                                    "label": "Filters",
+                                    "items": [
+                                        { "id": "category", "type": "select", "order": 5, "facet": "category", "label": "Category", "key": "filter{category.identifier.in}" },
+                                        { "id": "keyword", "type": "select", "order": 6, "facet": "keyword", "label": "Keyword", "key": "filter{keywords.slug.in}" },
+                                        { "id": "region", "type": "select", "order": 7, "facet": "place", "label": "Region", "key": "filter{regions.code.in}" },
+                                        { "type": "date-range", "filterKey": "date", "labelId": "resourcesCatalog.creationFilter" },
+                                        { "label": "Extent Filter", "type": "extent" }
+                                    ]
+                                },
+                                {
+                                    "label": "Quick Filters",
+                                    "items": [
+                                        {
+                                            "type": "accordion",
+                                            "id": "quick-categories",
+                                            "label": "Category",
+                                            "items": [
+                                                { "type": "filter", "id": "boundaries", "label": "Boundaries", "filterKey": "filter{category.identifier.in}", "filterValue": "boundaries" },
+                                                { "type": "filter", "id": "economy", "label": "Economy", "filterKey": "filter{category.identifier.in}", "filterValue": "economy" },
+                                                { "type": "filter", "id": "elevation", "label": "Elevation", "filterKey": "filter{category.identifier.in}", "filterValue": "elevation" },
+                                                { "type": "filter", "id": "environment", "label": "Environment", "filterKey": "filter{category.identifier.in}", "filterValue": "environment" }
+                                            ]
+                                        },
+                                        {
+                                            "type": "accordion",
+                                            "id": "quick-keywords",
+                                            "label": "Keywords",
+                                            "items": [
+                                                { "type": "filter", "id": "open-data", "label": "Open Data", "filterKey": "filter{keywords.slug.in}", "filterValue": "open-data" },
+                                                { "type": "filter", "id": "climate", "label": "Climate", "filterKey": "filter{keywords.slug.in}", "filterValue": "climate" },
+                                                { "type": "filter", "id": "urban", "label": "Urban", "filterKey": "filter{keywords.slug.in}", "filterValue": "urban" }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
                     ]
                 }
             },
