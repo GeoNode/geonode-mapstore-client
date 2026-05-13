@@ -11,7 +11,6 @@ import expect from 'expect';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import {
-    resourceToLayerConfig,
     getResourcePermissions,
     permissionsCompactToLists,
     availableResourceTypes,
@@ -33,7 +32,6 @@ import {
     getCataloguePath,
     getResourceWithLinkedResources,
     getResourceAdditionalProperties,
-    getDimensions,
     canManageResourcePublishing,
     canManageResourceOptions,
     canManageResourceSettings,
@@ -42,63 +40,7 @@ import {
     canEditMap
 } from '../ResourceUtils';
 
-import {setSupportedLocales} from '@mapstore/framework/utils/LocaleUtils';
-
 describe('Test Resource Utils', () => {
-    it('should keep the wms params from the url if available', () => {
-        const newLayer = resourceToLayerConfig({
-            alternate: 'geonode:layer_name',
-            links: [{
-                extension: 'html',
-                link_type: 'OGC:WMS',
-                name: 'OGC WMS Service',
-                mime: 'text/html',
-                url: 'http://localhost:8080/geoserver/wms?map=name&map_resolution=91'
-            }],
-            title: 'Layer title',
-            perms: [],
-            pk: 1
-        });
-        expect(newLayer.params).toEqual({ map: 'name', map_resolution: '91' });
-    });
-    it('test resourceToLayerConfig with layer settings of the dataset', () => {
-        const newLayer = resourceToLayerConfig({
-            alternate: 'geonode:layer_name',
-            links: [{
-                extension: 'html',
-                link_type: 'OGC:WMS',
-                name: 'OGC WMS Service',
-                mime: 'text/html',
-                url: 'http://localhost:8080/geoserver/wms?map=name&map_resolution=91'
-            }],
-            title: 'Layer title',
-            perms: [],
-            pk: 1,
-            data: {opacity: 0.8}
-        });
-        expect(newLayer.opacity).toBe(0.8);
-    });
-
-    it('should parse arcgis dataset', () => {
-        const newLayer = resourceToLayerConfig({
-            alternate: 'remoteWorkspace:1',
-            title: 'Layer title',
-            perms: [],
-            links: [{
-                extension: 'html',
-                link_type: 'image',
-                mime: 'text/html',
-                name: 'ArcGIS REST ImageServer',
-                url: 'http://localhost:8080/MapServer'
-            }],
-            pk: 1,
-            ptype: 'gxp_arcrestsource'
-        });
-        expect(newLayer.type).toBe('arcgis');
-        expect(newLayer.name).toBe('1');
-        expect(newLayer.url).toBe('http://localhost:8080/MapServer');
-    });
-
     it('should getViewedResourcePermissions', () => {
         const data = [{
             name: "testType",
@@ -1162,54 +1104,6 @@ describe('Test Resource Utils', () => {
         }))
             .toEqual({pk: 1, links: [{}], assets: [{_showEmptyState: true}]});
     });
-    describe('getDimensions', () => {
-        it('should return empty array if no links and has_time is false', () => {
-            const result = getDimensions();
-            expect(result).toEqual([]);
-        });
-
-        it('should return dimensions with time if has_time is true and WMTS link is present', () => {
-            const links = [{ link_type: 'OGC:WMTS', url: 'http://example.com/wmts' }];
-            const result = getDimensions({ links, has_time: true });
-            expect(result).toEqual([{
-                name: 'time',
-                source: {
-                    type: 'multidim-extension',
-                    url: 'http://example.com/wmts'
-                }
-            }]);
-        });
-
-        it('should return dimensions with time if has_time is true and only WMS link is present', () => {
-            const links = [{ link_type: 'OGC:WMS', url: 'http://example.com/geoserver/wms' }];
-            const result = getDimensions({ links, has_time: true });
-            expect(result).toEqual([{
-                name: 'time',
-                source: {
-                    type: 'multidim-extension',
-                    url: 'http://example.com/geoserver/gwc/service/wmts'
-                }
-            }]);
-        });
-
-        it('should return empty array if has_time is false', () => {
-            const links = [{ link_type: 'OGC:WMTS', url: 'http://example.com/wmts' }];
-            const result = getDimensions({ links, has_time: false });
-            expect(result).toEqual([]);
-        });
-
-        it('should return default url if no matching link types are found', () => {
-            const links = [{ link_type: 'OGC:OTHER', url: 'http://example.com/other' }];
-            const result = getDimensions({ links, has_time: true });
-            expect(result).toEqual([{
-                name: 'time',
-                source: {
-                    type: 'multidim-extension',
-                    url: '/geoserver/gwc/service/wmts'
-                }
-            }]);
-        });
-    });
     it('canManageResourcePublishing', () => {
         expect(canManageResourcePublishing({ perms: ['publish_resourcebase'] })).toBeTruthy();
 
@@ -1341,124 +1235,8 @@ describe('Test Resource Utils', () => {
             const result = canEditMap(gnresourceState, { isNewCheck: true, resourceTypes: [ResourceTypes.MAP, ResourceTypes.DATASET] });
             expect(result).toBeTruthy();
         });
-        it('dataset with title in multilanguage', () => {
-            let supportedLocales = {
-                "en": {
-                    code: "en-US",
-                    description: "English"
-                },
-                "it": {
-                    code: "it-IT",
-                    description: "Italiano"
-                },
-                "fr": {
-                    code: "fr-FR",
-                    description: "Français"
-                }
-            };
-            setSupportedLocales(supportedLocales);
-            const newLayer = resourceToLayerConfig({
-                alternate: 'geonode:layer_numtilangue',
-                title: 'Default title',
-                title_en: 'Layer title',
-                title_it: 'Titolo del layer',
-                title_fr: 'Titre de la couche',
-                perms: [],
-                pk: 1
-            });
-            expect(newLayer.title).toEqual({
-                'en-US': 'Layer title',
-                'it-IT': 'Titolo del layer',
-                'fr-FR': 'Titre de la couche',
-                'default': 'Default title'
-            });
-        });
     });
     describe('alternate is propagated through extendedParams', () => {
-        // parseDevHostname references __DEVTOOLS__ (a webpack DefinePlugin global
-        // not declared in the karma test config); the 3dtiles/cog/flatgeobuf
-        // branches call it, so define it here to avoid ReferenceError
-        let prevDevtools;
-        before(() => {
-            prevDevtools = window.__DEVTOOLS__;
-            window.__DEVTOOLS__ = false;
-        });
-        after(() => {
-            window.__DEVTOOLS__ = prevDevtools;
-        });
-
-        it('resourceToLayerConfig (default WMS) includes alternate in extendedParams', () => {
-            const newLayer = resourceToLayerConfig({
-                alternate: 'geonode:layer_name',
-                links: [{
-                    extension: 'html',
-                    link_type: 'OGC:WMS',
-                    name: 'OGC WMS Service',
-                    mime: 'text/html',
-                    url: '/geoserver/wms'
-                }],
-                title: 'Layer title',
-                perms: [],
-                pk: 1
-            });
-            expect(newLayer.extendedParams).toEqual({ pk: 1, alternate: 'geonode:layer_name' });
-        });
-
-        it('resourceToLayerConfig (3dtiles) includes alternate in extendedParams', () => {
-            const newLayer = resourceToLayerConfig({
-                alternate: 'geonode:tileset',
-                subtype: '3dtiles',
-                links: [{ extension: '3dtiles', url: '/tileset.json' }],
-                title: 'Tileset',
-                perms: [],
-                pk: 2
-            });
-            expect(newLayer.extendedParams).toEqual({ pk: 2, alternate: 'geonode:tileset' });
-        });
-
-        it('resourceToLayerConfig (cog) includes alternate in extendedParams', () => {
-            const newLayer = resourceToLayerConfig({
-                alternate: 'geonode:cog_layer',
-                subtype: 'cog',
-                links: [{ extension: 'cog', url: '/raster.tif' }],
-                title: 'COG',
-                perms: [],
-                pk: 3
-            });
-            expect(newLayer.extendedParams).toEqual({ pk: 3, alternate: 'geonode:cog_layer' });
-        });
-
-        it('resourceToLayerConfig (flatgeobuf) includes alternate in extendedParams', () => {
-            const newLayer = resourceToLayerConfig({
-                alternate: 'geonode:fgb_layer',
-                subtype: 'flatgeobuf',
-                attribute_set: [],
-                links: [{ extension: 'flatgeobuf', url: '/data.fgb' }],
-                title: 'FGB',
-                perms: [],
-                pk: 4
-            });
-            expect(newLayer.extendedParams).toEqual({ pk: 4, alternate: 'geonode:fgb_layer' });
-        });
-
-        it('resourceToLayerConfig (arcgis) includes alternate in extendedParams', () => {
-            const newLayer = resourceToLayerConfig({
-                alternate: 'remoteWorkspace:1',
-                title: 'Layer title',
-                perms: [],
-                links: [{
-                    extension: 'html',
-                    link_type: 'image',
-                    mime: 'text/html',
-                    name: 'ArcGIS REST ImageServer',
-                    url: '/MapServer'
-                }],
-                pk: 5,
-                ptype: 'gxp_arcrestsource'
-            });
-            expect(newLayer.extendedParams).toEqual({ pk: 5, alternate: 'remoteWorkspace:1' });
-        });
-
         it('getGeoNodeMapLayers prefers extendedParams.alternate over layer.name', () => {
             const data = {
                 map: {

@@ -134,39 +134,6 @@ export const getMaps = ({
         });
 };
 
-export const getDatasets = ({
-    q,
-    pageSize = 20,
-    page = 1,
-    sort
-}) => {
-    return axios
-        .get(
-            getEndpointUrl(RESOURCES), {
-                // axios will format query params array to `key[]=value1&key[]=value2`
-                params: {
-                    'filter{resource_type.in}': 'dataset',
-                    'filter{metadata_only}': false,
-                    ...(q && {
-                        search: q,
-                        search_index: getResourcesSearchIndex()
-                    }),
-                    ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
-                    page,
-                    page_size: pageSize,
-                    api_preset: API_PRESET.CATALOGS
-                },
-                ...paramsSerializer()
-            })
-        .then(({ data }) => {
-            return {
-                totalCount: data.total,
-                isNextPageAvailable: !!data.links.next,
-                resources: (data.resources || [])
-            };
-        });
-};
-
 export const getDocuments = ({
     q,
     pageSize = 10,
@@ -843,7 +810,6 @@ export default {
     deleteResource,
     copyResource,
     downloadResource,
-    getDatasets,
     deleteExecutionRequest,
     getResourceByTypeAndByPk,
     createDataset,

@@ -1961,15 +1961,6 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "DatasetsCatalog",
-                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
-                        },
-                        {
-                            "type": "divider",
-                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
-                        },
-                        {
-                            "type": "plugin",
                             "name": "DocumentsCatalog",
                             "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
                         }
@@ -2443,10 +2434,6 @@
             },
             {
                 "mandatory": true,
-                "name": "DatasetsCatalog"
-            },
-            {
-                "mandatory": true,
                 "name": "DocumentsCatalog"
             },
             { 
@@ -2459,20 +2446,21 @@
                 "name": "SidebarMenu"
             },
             {
-                "name": "MetadataExplorer",
+                "name": "Catalog",
                 "cfg": {
-                    "wrap": true,
+                    "hideIdentifier": true,
                     "serviceTypes": [
-                        { "name": "csw", "label": "CSW" }, 
-                        { "name": "wms", "label": "WMS" }, 
-                        { "name": "wmts", "label": "WMTS" }, 
-                        { "name": "tms", "label": "TMS", "allowedProviders": ["OpenStreetMap", "OpenSeaMap", "Stamen"] }, 
-                        { "name": "wfs", "label": "WFS" }, 
-                        { "name": "3dtiles", "label": "3D Tiles" }, 
-                        { "name": "model", "label": "IFC Model" }, 
-                        { "name": "arcgis", "label": "ArcGIS" }, 
+                        { "name": "csw", "label": "CSW" },
+                        { "name": "wms", "label": "WMS" },
+                        { "name": "wmts", "label": "WMTS" },
+                        { "name": "tms", "label": "TMS", "allowedProviders": ["OpenStreetMap", "OpenSeaMap", "Stamen"] },
+                        { "name": "wfs", "label": "WFS" },
+                        { "name": "3dtiles", "label": "3D Tiles" },
+                        { "name": "model", "label": "IFC Model" },
+                        { "name": "arcgis", "label": "ArcGIS" },
                         { "name": "cog", "label": "COG" },
-                        { "name": "flatgeobuf", "label": "FlatGeobuf" }
+                        { "name": "flatgeobuf", "label": "FlatGeobuf" },
+                        { "name": "geonode", "label": "GeoNode" }
                     ]
                 }
             },

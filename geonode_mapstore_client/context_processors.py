@@ -17,17 +17,27 @@ from geonode.utils import get_supported_datasets_file_types
 
 def resource_urls(request):
     """Global values to pass to templates"""
+    SITE_URL = (getattr(settings, "SITEURL", "") or "").rstrip("/")
+    default_catalogue_selected_service = "GeoNode"
+    default_catalogue_services = {
+        "GeoNode": {
+            "type": "geonode",
+            "url": SITE_URL,
+            "autoload": True,
+            "title": "GeoNode"
+        }
+    }
     defaults = dict(GEOAPPS=["GeoStory", "GeoDashboard", "MapViewer"])
     defaults["GEONODE_SETTINGS"] = {
         "MAP_BASELAYERS": getattr(settings, "MAPSTORE_BASELAYERS", []),
         "MAP_BASELAYERS_SOURCES": getattr(settings, "MAPSTORE_BASELAYERS_SOURCES", {}),
-        "CATALOGUE_SERVICES": getattr(settings, "MAPSTORE_CATALOGUE_SERVICES", {}),
+        "CATALOGUE_SERVICES": getattr(settings, "MAPSTORE_CATALOGUE_SERVICES", default_catalogue_services),
         "CATALOGUE_SELECTED_SERVICE": getattr(
-            settings, "MAPSTORE_CATALOGUE_SELECTED_SERVICE", None
+            settings, "MAPSTORE_CATALOGUE_SELECTED_SERVICE", default_catalogue_selected_service
         ),
-        "DASHBOARD_CATALOGUE_SERVICES": getattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SERVICES", {}),
+        "DASHBOARD_CATALOGUE_SERVICES": getattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SERVICES", default_catalogue_services),
         "DASHBOARD_CATALOGUE_SELECTED_SERVICE": getattr(
-            settings, "MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE", None
+            settings, "MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE", default_catalogue_selected_service
         ),
         "CREATE_LAYER": getattr(settings, "CREATE_LAYER", False),
         "DEFAULT_MAP_CENTER_X": getattr(settings, "DEFAULT_MAP_CENTER_X", 0),
@@ -55,7 +65,7 @@ def resource_urls(request):
         "PROJECTION_DEFS_ENDPOINT": getattr(
             settings,
             "MAPSTORE_PROJECTION_DEFS_ENDPOINT",
-            (getattr(settings, "SITEURL", "") or "").rstrip("/") + "/geoserver",
+            SITE_URL + "/geoserver",
         ),
         "PLUGINS_CONFIG_PATCH_RULES": getattr(
             settings, "MAPSTORE_PLUGINS_CONFIG_PATCH_RULES", []

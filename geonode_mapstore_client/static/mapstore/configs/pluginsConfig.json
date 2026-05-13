@@ -547,7 +547,7 @@
       }
     },
     {
-      "name": "MetadataExplorer",
+      "name": "Catalog",
       "glyph": "folder-open",
       "title": "plugins.MetadataExplorer.title",
       "description": "plugins.MetadataExplorer.description",
@@ -555,17 +555,19 @@
         "SidebarMenu"
       ],
       "defaultConfig": {
-        "wrap": true,
+        "hideIdentifier": true,
         "serviceTypes": [
-          { "name": "csw", "label": "CSW" }, 
-          { "name": "wms", "label": "WMS" }, 
-          { "name": "wmts", "label": "WMTS" }, 
-          { "name": "tms", "label": "TMS", "allowedProviders": ["OpenStreetMap", "OpenSeaMap", "Stamen"] }, 
-          { "name": "wfs", "label": "WFS" }, 
-          { "name": "3dtiles", "label": "3D Tiles" }, 
-          { "name": "model", "label": "IFC Model" }, 
-          { "name": "arcgis", "label": "ArcGIS" }, 
-          { "name": "cog", "label": "COG" }
+            { "name": "csw", "label": "CSW" },
+            { "name": "wms", "label": "WMS" },
+            { "name": "wmts", "label": "WMTS" },
+            { "name": "tms", "label": "TMS", "allowedProviders": ["OpenStreetMap", "OpenSeaMap", "Stamen"] },
+            { "name": "wfs", "label": "WFS" },
+            { "name": "3dtiles", "label": "3D Tiles" },
+            { "name": "model", "label": "IFC Model" },
+            { "name": "arcgis", "label": "ArcGIS" },
+            { "name": "cog", "label": "COG" },
+            { "name": "flatgeobuf", "label": "FlatGeobuf" },
+            { "name": "geonode", "label": "GeoNode" }
         ]
       }
     },

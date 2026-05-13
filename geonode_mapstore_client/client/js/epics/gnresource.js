@@ -138,7 +138,7 @@ import { REDUCERS_LOADED } from '@mapstore/framework/actions/storemanager';
 import { wrapStartStop } from '@mapstore/framework/observables/epics';
 import { parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
-import { catalogClose } from '@mapstore/framework/actions/catalog';
+import { catalogClose, addLayerAndDescribe } from '@mapstore/framework/actions/catalog';
 import { VisualizationModes } from '@mapstore/framework/utils/MapTypeUtils';
 import { forceUpdateMapLayout } from '@mapstore/framework/actions/maplayout';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
@@ -206,6 +206,27 @@ const resourceTypes = {
                     const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
                     const hasNoGeometry = gnLayer?.subtype === 'tabular';
                     const hasDownloadPermission = gnLayer?.perms?.includes('download_resourcebase');
+                    const isNewLoad = !options?.isSamePreviousResource;
+
+                    // page-specific layer actions shared between the two paths
+                    const pageSpecificActions = [
+                        selectNode(newLayer.id, 'layer', false),
+                        ...((hasNoGeometry || page === 'dataset_edit_data_viewer')
+                            ? [
+                                browseData(newLayer),
+                                ...(hasDownloadPermission ? [] : [setDatasetEditPermissionsError('gnviewer.noEditPermissions')])
+                            ]
+                            : []),
+                        ...(page === 'dataset_edit_layer_settings'
+                            ? [
+                                showSettings(newLayer.id, "layers", {opacity: newLayer.opacity ?? 1}),
+                                setControlProperty("layersettings", "activeTab", query.tab ?? "general"),
+                                updateAdditionalLayer(newLayer.id, STYLE_OWNER_NAME, 'override', {}),
+                                resizeMap()
+                            ]
+                            : [])
+                    ];
+
                     return Observable.concat(
                         Observable.of(
                             configureMap({
@@ -215,13 +236,11 @@ const resourceTypes = {
                                     ...mapLayerData?.mapConfig?.map,
                                     zoom: 20, // start zoomed in to mitigate initial tile blurring before the deferred fit lands
                                     visualizationMode: ['3dtiles'].includes(subtype) ? VisualizationModes._3D : VisualizationModes._2D,
+                                    // on same-resource navigation the layer is already described;
+                                    // on new loads it is added via addLayerAndDescribe below
                                     layers: [
                                         ...mapConfig.map.layers,
-                                        {
-                                            ...newLayer,
-                                            isDataset: true,
-                                            _v_: Date.now()
-                                        }
+                                        ...(!isNewLoad ? [{ ...newLayer, isDataset: true, _v_: Date.now() }] : [])
                                     ]
                                 }
                             }),
@@ -231,23 +250,15 @@ const resourceTypes = {
                             setProjectionsConfig(mapLayerData?.mapConfig?.crsSelector),
                             setControlProperty('toolbar', 'expanded', false),
                             forceUpdateMapLayout(),
-                            selectNode(newLayer.id, 'layer', false),
-                            ...(!options?.isSamePreviousResource ? [setResource({...gnLayer, hasNoGeometry})] : []),
+                            // on new loads: configureMap (= MAP_CONFIG_LOADED) has already updated
+                            // the layers state, so addLayerAndDescribe safely appends + describes
+                            ...(isNewLoad
+                                ? [addLayerAndDescribe({ ...newLayer, isDataset: true, _v_: Date.now() }, { zoomToLayer: false })]
+                                : []
+                            ),
+                            ...pageSpecificActions,
+                            ...(isNewLoad ? [setResource({...gnLayer, hasNoGeometry})] : []),
                             setResourceId(pk),
-                            ...((hasNoGeometry || page === 'dataset_edit_data_viewer')
-                                ? [
-                                    browseData(newLayer),
-                                    ...(hasDownloadPermission ? [] : [setDatasetEditPermissionsError('gnviewer.noEditPermissions')])
-                                ]
-                                : []),
-                            ...(page === 'dataset_edit_layer_settings'
-                                ? [
-                                    showSettings(newLayer.id, "layers", {opacity: newLayer.opacity ?? 1}),
-                                    setControlProperty("layersettings", "activeTab", query.tab ?? "general"),
-                                    updateAdditionalLayer(newLayer.id, STYLE_OWNER_NAME, 'override', {}),
-                                    resizeMap()
-                                ]
-                                : []),
                             ...(newLayer?.bboxError
                                 ? [warningNotification({ title: "gnviewer.invalidBbox", message: "gnviewer.invalidBboxMsg" })]
                                 : []),
@@ -338,13 +349,13 @@ const resourceTypes = {
                                                 ? VisualizationModes._3D
                                                 : VisualizationModes._2D
                                         }),
-                                        layers: [
-                                            ...(mapConfig?.map?.layers || []),
-                                            newLayer
-                                        ]
+                                        // configureMap (= MAP_CONFIG_LOADED) updates the layers state
+                                        // synchronously, so addLayerAndDescribe below safely appends + describes
+                                        layers: [...(mapConfig?.map?.layers || [])]
                                     }
                                 }
                                 : mapConfig),
+                            ...(newLayer ? [addLayerAndDescribe(newLayer, { zoomToLayer: false })] : []),
                             setControlProperty('toolbar', 'expanded', false),
                             // unblock the Viewer route so the Map plugin actually mounts;
                             // see fitBoundsAfterMapReady comment.
@@ -651,7 +662,7 @@ export const closeInfoPanelOnMapClick = (action$, store) => action$.ofType(CLICK
     .switchMap(() => Observable.of(setControlProperty('rightOverlay', 'enabled', false)));
 
 
-// Check which control is enabled between annotations, datasetsCatalog and documentsCatalog
+// Check which control is enabled between annotations, metadataexplorer and documentsCatalog
 const oneOfTheOther = (control) => {
     if (control === 'rightOverlay') return null;
 
@@ -659,10 +670,10 @@ const oneOfTheOther = (control) => {
     if (control === 'annotations') {
         return {
             control,
-            alternates: ['datasetsCatalog', 'documentsCatalog']
+            alternates: ['metadataexplorer', 'documentsCatalog']
         };
     }
-    if (control === 'datasetsCatalog') {
+    if (control === 'metadataexplorer') {
         return {
             control,
             alternates: ['annotations', 'documentsCatalog']
@@ -671,7 +682,7 @@ const oneOfTheOther = (control) => {
     if (control === 'documentsCatalog') {
         return {
             control,
-            alternates: ['annotations', 'datasetsCatalog']
+            alternates: ['annotations', 'metadataexplorer']
         };
     }
 
@@ -693,15 +704,11 @@ export const closeOpenPanels = (action$, store) => action$.ofType(SET_CONTROL_PR
             if (isMapInfoOpen(state)) {
                 setActions.push(purgeMapInfoResults(), closeIdentify());
             }
-            const isDatasetCatalogPanelOpen = get(state, "controls.datasetsCatalog.enabled");
             const isDocumentsCatalogPanelOpen = get(state, "controls.documentsCatalog.enabled");
             const isCatalogOpen = get(state, "controls.metadataexplorer.enabled");
             const isVisualStyleEditorOpen = get(state, "controls.visualStyleEditor.enabled");
-            if ((isDatasetCatalogPanelOpen || isDocumentsCatalogPanelOpen || isVisualStyleEditorOpen) && isCatalogOpen) {
+            if (isVisualStyleEditorOpen && isCatalogOpen) {
                 setActions.push(catalogClose());
-            }
-            if (isDatasetCatalogPanelOpen && isVisualStyleEditorOpen) {
-                setActions.push(setControlProperty('datasetsCatalog', 'enabled', false));
             }
             if (isDocumentsCatalogPanelOpen && isVisualStyleEditorOpen) {
                 setActions.push(setControlProperty('documentsCatalog', 'enabled', false));
@@ -730,21 +737,21 @@ export const closeOpenPanels = (action$, store) => action$.ofType(SET_CONTROL_PR
     });
 
 /**
- * Close dataset and documents panels on map info panel open
+ * Close catalog and documents panels on map info panel open
  */
 export const closeDatasetCatalogPanel = (action$, store) => action$.ofType(NEW_MAPINFO_REQUEST)
     .filter(() => {
         const state = store.getState();
         return isMapInfoOpen(state) &&
-               (get(state, "controls.datasetsCatalog.enabled") ||
+               (get(state, "controls.metadataexplorer.enabled") ||
                 get(state, "controls.documentsCatalog.enabled"));
     })
     .switchMap(() => {
         const state = store.getState();
         const actions = [];
 
-        if (get(state, "controls.datasetsCatalog.enabled")) {
-            actions.push(setControlProperty('datasetsCatalog', 'enabled', false));
+        if (get(state, "controls.metadataexplorer.enabled")) {
+            actions.push(catalogClose());
         }
 
         if (get(state, "controls.documentsCatalog.enabled")) {
