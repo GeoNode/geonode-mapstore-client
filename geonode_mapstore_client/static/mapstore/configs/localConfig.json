@@ -2461,51 +2461,6 @@
                         { "name": "cog", "label": "COG" },
                         { "name": "flatgeobuf", "label": "FlatGeobuf" },
                         { "name": "geonode", "label": "GeoNode" }
-                    ],
-                    "filterFormFields": [
-                        {
-                            "type": "tabs",
-                            "id": "catalog-filter-tabs",
-                            "persistSelection": true,
-                            "items": [
-                                {
-                                    "label": "Filters",
-                                    "items": [
-                                        { "id": "category", "type": "select", "order": 5, "facet": "category", "label": "Category", "key": "filter{category.identifier.in}" },
-                                        { "id": "keyword", "type": "select", "order": 6, "facet": "keyword", "label": "Keyword", "key": "filter{keywords.slug.in}" },
-                                        { "id": "region", "type": "select", "order": 7, "facet": "place", "label": "Region", "key": "filter{regions.code.in}" },
-                                        { "type": "date-range", "filterKey": "date", "labelId": "resourcesCatalog.creationFilter" },
-                                        { "label": "Extent Filter", "type": "extent" }
-                                    ]
-                                },
-                                {
-                                    "label": "Quick Filters",
-                                    "items": [
-                                        {
-                                            "type": "accordion",
-                                            "id": "quick-categories",
-                                            "label": "Category",
-                                            "items": [
-                                                { "type": "filter", "id": "boundaries", "label": "Boundaries", "filterKey": "filter{category.identifier.in}", "filterValue": "boundaries" },
-                                                { "type": "filter", "id": "economy", "label": "Economy", "filterKey": "filter{category.identifier.in}", "filterValue": "economy" },
-                                                { "type": "filter", "id": "elevation", "label": "Elevation", "filterKey": "filter{category.identifier.in}", "filterValue": "elevation" },
-                                                { "type": "filter", "id": "environment", "label": "Environment", "filterKey": "filter{category.identifier.in}", "filterValue": "environment" }
-                                            ]
-                                        },
-                                        {
-                                            "type": "accordion",
-                                            "id": "quick-keywords",
-                                            "label": "Keywords",
-                                            "items": [
-                                                { "type": "filter", "id": "open-data", "label": "Open Data", "filterKey": "filter{keywords.slug.in}", "filterValue": "open-data" },
-                                                { "type": "filter", "id": "climate", "label": "Climate", "filterKey": "filter{keywords.slug.in}", "filterValue": "climate" },
-                                                { "type": "filter", "id": "urban", "label": "Urban", "filterKey": "filter{keywords.slug.in}", "filterValue": "urban" }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
                     ]
                 }
             },
