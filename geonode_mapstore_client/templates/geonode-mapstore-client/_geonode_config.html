@@ -167,23 +167,6 @@
                     url: '{{UPDATED_PROXY_URL|safe }}',
                     useCORS: useCORS
                 },
-                useAuthenticationRules: true,
-                authenticationRules: [
-                    {
-                        urlPattern: geoServerPublicLocation + '.*',
-                        authkeyParamName: 'access_token',
-                        method: 'authkey'
-                    },
-                    {
-                        urlPattern: siteUrl + 'gs.*',
-                        authkeyParamName: 'access_token',
-                        method: 'authkey'
-                    },
-                    {
-                        urlPattern: siteUrl + 'api/v2.*',
-                        method: 'bearer'
-                    }
-                ],
                 extensionsFolder: extensionsFolder,
                 printUrl: geoServerPublicLocation + 'pdf/info.json',
                 mapboxAccessToken: '{{ MAPBOX_ACCESS_TOKEN }}',
@@ -290,6 +273,7 @@
             get
         }
         */
+
         return _.mergeWith(localConfig, {
             // ...my override config
         }, function(objValue, srcValue, key) {
