@@ -5,7 +5,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Text from '@mapstore/framework/components/layout/Text';
-import SelectInfiniteScroll from '@mapstore/framework/plugins/ResourcesCatalog/components/SelectInfiniteScroll';
+import SelectInfiniteScroll from '@mapstore/framework/components/catalog/resources/SelectInfiniteScroll';
 import { getGroups } from '@js/api/geonode/v2';
 import { canManageResourcePublishing, canManageResourceOptions, RESOURCE_PUBLISHING_PROPERTIES, RESOURCE_OPTIONS_PROPERTIES } from '@js/utils/ResourceUtils';
 

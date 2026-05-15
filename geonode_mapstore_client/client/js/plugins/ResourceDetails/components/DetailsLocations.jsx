@@ -15,7 +15,7 @@ import wk from 'wellknown';
 
 import BaseMap from "@mapstore/framework/components/map/BaseMap";
 import mapTypeHOC from "@mapstore/framework/components/map/enhancers/mapType";
-import ZoomTo from '@mapstore/framework/plugins/ResourcesCatalog/components/ZoomTo';
+import ZoomTo from '@mapstore/framework/components/catalog/resources/ZoomTo';
 import { getPolygonFromExtent, bboxToFeatureGeometry } from "@mapstore/framework/utils/CoordinatesUtils";
 import DrawSupport from "../components/DrawExtent";
 import Message from "@mapstore/framework/components/I18N/Message";
