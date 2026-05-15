@@ -14,7 +14,7 @@ import { Glyphicon } from 'react-bootstrap';
 
 import Message from '@mapstore/framework/components/I18N/Message';
 import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
-import InputControl from '@mapstore/framework/plugins/ResourcesCatalog/components/InputControl';
+import InputControl from '@mapstore/framework/components/catalog/resources/InputControl';
 import {
     canExpand,
     descriptionId,

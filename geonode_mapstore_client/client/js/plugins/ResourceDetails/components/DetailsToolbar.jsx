@@ -13,7 +13,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Button from '@mapstore/framework/components/layout/Button';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';
-import ResourceStatus from '@mapstore/framework/plugins/ResourcesCatalog/components/ResourceStatus';
+import ResourceStatus from '@mapstore/framework/components/catalog/resources/ResourceStatus';
 import useIsMounted from '@mapstore/framework/hooks/useIsMounted';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import { formatResourceLinkUrl } from '@js/utils/ResourceUtils';

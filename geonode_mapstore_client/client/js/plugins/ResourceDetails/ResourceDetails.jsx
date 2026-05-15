@@ -19,6 +19,7 @@ import { mapInfoSelector } from '@mapstore/framework/selectors/map';
 import ResourcesPanelWrapper from '@mapstore/framework/plugins/ResourcesCatalog/components/ResourcesPanelWrapper';
 import TargetSelectorPortal from '@mapstore/framework/plugins/ResourcesCatalog/components/TargetSelectorPortal';
 import useResourcePanelWrapper from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useResourcePanelWrapper';
+
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import { setShowDetails, setSelectedResource, setDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
 import PendingStatePrompt from '@mapstore/framework/plugins/ResourcesCatalog/containers/PendingStatePrompt';
