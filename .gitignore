@@ -27,3 +27,21 @@ geonode_mapstore_client/client/package-lock.json
 #dist/
 
 /dist/
+
+# AI tools
+.claude/
+CLAUDE.md
+.gemini/
+.geminiignore
+GEMINI.md
+.cursor/
+.cursorignore
+.cursorindexingignore
+.aider*
+.continue/
+.codeium/
+.tabnine/
+.supermaven/
+AGENTS.md
+.copilot/
+.github/copilot-instructions.md
