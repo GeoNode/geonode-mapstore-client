@@ -3,8 +3,10 @@ import os
 import json
 from rest_framework.views import APIView
 from django.shortcuts import render
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.utils.translation.trans_real import get_language_from_request
+from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import PermissionDenied
 from dateutil import parser
 from django.conf import settings
 from django.templatetags.static import static
@@ -53,11 +55,23 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
 
     from geonode.base.models import ResourceBase
     from geonode.metadata.manager import metadata_manager
-    from geonode.utils import build_absolute_uri
+    from geonode.utils import build_absolute_uri, resolve_object
+
+    try:
+        resource = resolve_object(
+            request,
+            ResourceBase,
+            {"pk": pk},
+            permission="base.view_resourcebase",
+            permission_msg=_("You are not allowed to view this resource."),
+        )
+    except PermissionDenied:
+        return HttpResponse(_("Not allowed"), status=403)
+    except Http404:
+        raise Http404(_("Not found"))
 
     lang = get_language_from_request(request)[:2]
     schema = metadata_manager.get_schema(lang)
-    resource = ResourceBase.objects.get(pk=pk)
     schema_instance = metadata_manager.build_schema_instance(resource)
 
     full_metadata = _parse_schema_instance(schema_instance, schema)

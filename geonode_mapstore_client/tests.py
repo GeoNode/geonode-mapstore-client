@@ -4,15 +4,18 @@ import zipfile
 from io import BytesIO
 
 from django.conf import settings
+from django.contrib.auth.models import AnonymousUser
 from django.core.cache import cache
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase, override_settings
+from django.http import Http404
+from django.test import RequestFactory, TestCase, override_settings
 from django.urls import reverse
 from rest_framework.test import APIClient
 
 from geonode.tests.base import GeoNodeBaseTestSupport
 
+from . import views
 from .utils import validate_zip_file
 from .admin import ExtensionAdminForm
 from .models import Extension
@@ -22,6 +25,34 @@ from unittest import mock
 # Define temporary directories for testing to avoid affecting the real media/static roots
 TEST_MEDIA_ROOT = os.path.join(settings.PROJECT_ROOT, "test_media")
 TEST_STATIC_ROOT = os.path.join(settings.PROJECT_ROOT, "test_static")
+
+
+class MetadataViewPermissionsTestCase(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    @mock.patch("geonode.utils.resolve_object")
+    def test_metadata_requires_view_resourcebase_permission(self, mocked_resolve_object):
+        mocked_resolve_object.side_effect = PermissionDenied
+        request = self.factory.get("/metadata/1")
+        request.user = AnonymousUser()
+
+        response = views.metadata(request, 1)
+
+        self.assertEqual(response.status_code, 403)
+        mocked_resolve_object.assert_called_once()
+        self.assertEqual(
+            mocked_resolve_object.call_args.kwargs["permission"], "base.view_resourcebase"
+        )
+
+    @mock.patch("geonode.utils.resolve_object")
+    def test_metadata_raises_404_for_missing_resource(self, mocked_resolve_object):
+        mocked_resolve_object.side_effect = Http404
+        request = self.factory.get("/metadata/99999")
+        request.user = AnonymousUser()
+
+        with self.assertRaises(Http404):
+            views.metadata(request, 99999)
 
 
 @override_settings(
