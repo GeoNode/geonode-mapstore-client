@@ -3,7 +3,7 @@ import os
 import json
 from rest_framework.views import APIView
 from django.shortcuts import render
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponseForbidden
 from django.utils.translation.trans_real import get_language_from_request
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import PermissionDenied
@@ -66,7 +66,7 @@ def metadata(request, pk, template="geonode-mapstore-client/metadata.html"):
             permission_msg=_("You are not allowed to view this resource."),
         )
     except PermissionDenied:
-        return HttpResponse(_("Not allowed"), status=403)
+        return HttpResponseForbidden(_("Not allowed"))
     except Http404:
         raise Http404(_("Not found"))
 
