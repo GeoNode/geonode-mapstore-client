@@ -192,7 +192,11 @@
                 "name": "Notifications"
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                  "expandLimit": 20,
+                  "containerPosition": "bottom"
+                }
             },
             {
                 "name": "Playback"
@@ -261,7 +265,11 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                  "expandLimit": 20,
+                  "containerPosition": "bottom"
+                }
             },
             {
                 "name": "Playback"
@@ -352,7 +360,11 @@
                 "name": "Notifications"
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                  "expandLimit": 20,
+                  "containerPosition": "bottom"
+                }
             },
             {
                 "name": "Playback"
@@ -460,7 +472,11 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                  "expandLimit": 20,
+                  "containerPosition": "bottom"
+                }
             },
             {
                 "name": "Playback"
@@ -905,7 +921,11 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                  "expandLimit": 20,
+                  "containerPosition": "bottom"
+                }
             },
             {
                 "name": "Playback"
@@ -2169,7 +2189,11 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                  "expandLimit": 20,
+                  "containerPosition": "bottom"
+                }
             },
             {
                 "name": "Playback"

@@ -474,7 +474,10 @@
       "description": "plugins.Timeline.description",
       "dependencies": [
         "Playback"
-      ]
+      ],
+      "defaultConfig": {
+        "containerPosition": "bottom"
+      }
     },
     {
       "name": "Playback",
