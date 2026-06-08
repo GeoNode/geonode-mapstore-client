@@ -145,6 +145,8 @@ import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/sel
 import { searchSelector } from '@mapstore/framework/selectors/router';
 import { CREATE_BACKGROUNDS_LIST, allowBackgroundsDeletion } from '@mapstore/framework/actions/backgroundselector';
 import { setCanEditProjection, setProjectionsConfig } from '@mapstore/framework/actions/crsselector';
+import { getResolutionsForProjection, getZoomFromResolution } from '@mapstore/framework/utils/MapUtils';
+import { reprojectBbox } from '@mapstore/framework/utils/CoordinatesUtils';
 
 // Wait for the Map plugin to finish mounting before dispatching zoomToExtent.
 // Navigating between dataset pages (e.g. dataset_viewer -> dataset_edit_data_viewer)
@@ -159,8 +161,30 @@ const fitBoundsAfterMapReady = (action$, extent) =>
         ? Observable.race(
             action$.ofType(MAP_PLUGIN_LOAD).filter(a => a.loaded).take(1).delay(100),
             Observable.timer(800)
-        ).map(() => zoomToExtent(extent, 'EPSG:4326', undefined, { duration: 200 }))
+        ).map(() => zoomToExtent(extent, 'EPSG:4326', undefined, { duration: 0 })) // ste duration to 0 to avoid problem with 3D mdoe
         : Observable.empty();
+
+const DATASET_FALLBACK_ZOOM = 20;
+const REFERENCE_SIZE = 768; // notional viewport size in px
+
+const getApproximateViewForExtent = (extent4326, projection = 'EPSG:3857') => {
+    const [minx, miny, maxx, maxy] = extent4326 || [];
+    const center = {
+        x: (minx + maxx) / 2,
+        y: (miny + maxy) / 2,
+        crs: 'EPSG:4326'
+    };
+    const projExtent = reprojectBbox(extent4326, 'EPSG:4326', projection);
+    const extentWidth = projExtent && projExtent[2] - projExtent[0];
+    const extentHeight = projExtent && projExtent[3] - projExtent[1];
+    const zoom = extentWidth > 0 && extentHeight > 0
+        ? getZoomFromResolution(
+            Math.max(extentWidth, extentHeight) / REFERENCE_SIZE,
+            getResolutionsForProjection(projection)
+        )
+        : DATASET_FALLBACK_ZOOM;
+    return { center, zoom };
+};
 
 const resourceTypes = {
     [ResourceTypes.DATASET]: {
@@ -206,6 +230,13 @@ const resourceTypes = {
                     const extent = newLayer?.bbox?.bounds && [minx, miny, maxx, maxy ];
                     const hasNoGeometry = gnLayer?.subtype === 'tabular';
                     const hasDownloadPermission = gnLayer?.perms?.includes('download_resourcebase');
+
+                    const projection = mapLayerData?.mapConfig?.map?.projection || mapConfig.map?.projection || 'EPSG:3857';
+                    // try to center the map on the correct location and zoom level
+                    const initialView = extent
+                        ? getApproximateViewForExtent(extent, projection)
+                        : { zoom: DATASET_FALLBACK_ZOOM };
+
                     return Observable.concat(
                         Observable.of(
                             configureMap({
@@ -213,7 +244,7 @@ const resourceTypes = {
                                 map: {
                                     ...mapConfig.map,
                                     ...mapLayerData?.mapConfig?.map,
-                                    zoom: 20, // start zoomed in to mitigate initial tile blurring before the deferred fit lands
+                                    ...initialView,
                                     visualizationMode: ['3dtiles'].includes(subtype) ? VisualizationModes._3D : VisualizationModes._2D,
                                     layers: [
                                         ...mapConfig.map.layers,
