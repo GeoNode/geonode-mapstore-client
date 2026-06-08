@@ -18,6 +18,7 @@ import {
     isThumbnailChanged,
     canEditPermissions,
     canManageResourcePermissions,
+    canAddRemoteResource,
     isNewMapDirty,
     isNewDashboardDirty,
     isNewGeoStoryDirty,
@@ -104,6 +105,42 @@ describe('resource selector', () => {
         state.gnresource.data.perms = ['change_resourcebase', 'view_resourcebase'];
         expect(canManageResourcePermissions(state)).toBeFalsy();
         state.gnresource.data.perms = undefined;
+    });
+
+    it('canAddRemoteResource returns true when user has add_remote_resource perm', () => {
+        const state = {
+            security: {
+                user: {
+                    perms: ['add_resource', 'add_remote_resource']
+                }
+            }
+        };
+        expect(canAddRemoteResource(state)).toBe(true);
+    });
+
+    it('canAddRemoteResource returns false when user lacks add_remote_resource perm', () => {
+        const state = {
+            security: {
+                user: {
+                    perms: ['add_resource']
+                }
+            }
+        };
+        expect(canAddRemoteResource(state)).toBe(false);
+    });
+
+    it('canAddRemoteResource returns false when user has no perms array', () => {
+        const state = {
+            security: {
+                user: {}
+            }
+        };
+        expect(canAddRemoteResource(state)).toBe(false);
+    });
+
+    it('canAddRemoteResource returns false when security/user is missing', () => {
+        expect(canAddRemoteResource({})).toBe(false);
+        expect(canAddRemoteResource({ security: {} })).toBe(false);
     });
     it('test defaultViewerPluginsSelector', () => {
         let state = {...testState};
