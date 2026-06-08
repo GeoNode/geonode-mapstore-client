@@ -156,8 +156,8 @@
     overflow: auto;
     flex: 1;
     .gn-metadata-group-title {
-        font-size: 1.5rem;
-        padding: 0.5rem 0.75rem;
+        font-size: 1rem;
+        padding: 0 0.75rem;
     }
     .gn-metadata-group:not(.gn-metadata-group-view) {
         max-width: 60ch;
@@ -169,7 +169,9 @@
     .field {
         padding: 0 0.75rem;
     }
-
+    hr {
+        margin-top: 0;
+    }
     .field-object-properties {
         padding: 0.75rem 0;
         border: 1px solid transparent;
@@ -191,6 +193,7 @@
         grid-template-columns: max-content auto;
         padding: 0 0.75rem;
         dt {
+            min-width: 200px;
             padding: 0.25rem;
             text-align: right;
             grid-column-start: 1;

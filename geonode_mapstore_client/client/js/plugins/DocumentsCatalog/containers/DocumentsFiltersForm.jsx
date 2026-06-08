@@ -10,15 +10,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import FiltersForm from '@mapstore/framework/plugins/ResourcesCatalog/components/FiltersForm';
+import FiltersForm from '@mapstore/framework/components/catalog/resources/FiltersForm';
 import useParsePluginConfigExpressions from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useParsePluginConfigExpressions';
-import useFilterFacets from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useFilterFacets';
+import useFilterFacets from '@mapstore/framework/components/catalog/hooks/useFilterFacets';
 import { getMonitoredStateSelector } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 
 
 import { userSelector } from '@mapstore/framework/selectors/security';
 import { getCatalogFacets } from '@mapstore/framework/api/persistence';
 import { isMenuItemSupportedSupported } from '@mapstore/framework/utils/ResourcesUtils';
+import { mergeDefaultQuery } from '@mapstore/framework/utils/ResourcesFiltersUtils';
 
 /**
  * This  renders a  configurable input filters for documents catalog
@@ -80,7 +81,7 @@ function DocumentsFiltersForm({
         filterFunc: item => isMenuItemSupportedSupported(item, availableResourceTypes, user)
     });
 
-    const updatedQuery = defaultQuery ? { ...query, ...defaultQuery } : query;
+    const updatedQuery = defaultQuery ? mergeDefaultQuery(query, defaultQuery) : query;
 
     const {
         fields

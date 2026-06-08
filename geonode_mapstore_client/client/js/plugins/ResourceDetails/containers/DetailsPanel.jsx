@@ -25,16 +25,16 @@ import {
 import Message from '@mapstore/framework/components/I18N/Message';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import DetailsInfoComp from '@mapstore/framework/plugins/ResourcesCatalog/components/DetailsInfo';
+import DetailsHeader from '@mapstore/framework/plugins/ResourcesCatalog/components/DetailsHeader';
+import ALink from '@mapstore/framework/components/catalog/resources/ALink';
 import { replaceResourcePaths } from '@mapstore/framework/utils/ResourcesUtils';
 import Text from '@mapstore/framework/components/layout/Text';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import DetailsPreview from '../components/DetailsPreview';
-import DetailsHeader from '@mapstore/framework/plugins/ResourcesCatalog/components/DetailsHeader';
 import DetailsToolbar from '../components/DetailsToolbar';
 import moment from 'moment';
 import DetailsThumbnail from '../components/DetailsThumbnail';
-import ALink from '@mapstore/framework/plugins/ResourcesCatalog/components/ALink';
 import { parseCatalogResource } from '@js/utils/ResourceUtils';
 import useParsePluginConfigExpressions from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useParsePluginConfigExpressions';
 import { hashLocationToHref } from '@mapstore/framework/utils/ResourcesFiltersUtils';

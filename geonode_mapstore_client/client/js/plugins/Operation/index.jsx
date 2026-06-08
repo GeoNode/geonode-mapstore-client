@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import Button from '@mapstore/framework/components/layout/Button';
 import { selectOperation, reloadOperation } from './actions/operation';
-import { getResourceData } from '@js/selectors/resource';
+import { getResourceData, canAddRemoteResource } from '@js/selectors/resource';
 import operation from './reducers/operation';
 import epics from './epics/operation';
 import OperationUpload from './containers/OperationUpload';
@@ -102,7 +102,8 @@ function Operation({
     titleMsgId,
     descriptionMsgId,
     action,
-    pageReload
+    pageReload,
+    canAddRemote = false
 }) {
 
     // open the import ui if a blocking execution is still running
@@ -135,6 +136,7 @@ function Operation({
             titleMsgId={titleMsgId}
             descriptionMsgId={descriptionMsgId}
             pageReload={pageReload}
+            canAddRemote={canAddRemote}
         />
     );
 }
@@ -142,10 +144,12 @@ function Operation({
 const OperationPlugin = connect(
     createSelector([
         state => state?.operation?.selected,
-        getResourceData
-    ], (selected, resource) => ({
+        getResourceData,
+        canAddRemoteResource
+    ], (selected, resource, canAddRemote) => ({
         selected,
-        resource
+        resource,
+        canAddRemote
     })),
     {
         onSelect: selectOperation,

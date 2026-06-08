@@ -38,7 +38,9 @@ const CreateDatasetAttributeRow = ({
         ? [
             { value: AttributeTypes.Point, labelId: 'gnviewer.points' },
             { value: AttributeTypes.LineString, labelId: 'gnviewer.lines' },
-            { value: AttributeTypes.Polygon, labelId: 'gnviewer.polygons' }]
+            { value: AttributeTypes.Polygon, labelId: 'gnviewer.polygons' },
+            { value: AttributeTypes.Geometry, labelId: 'gnviewer.geometry' }
+        ]
         : [
             { value: AttributeTypes.String, labelId: 'gnviewer.string' },
             { value: AttributeTypes.Integer, labelId: 'gnviewer.integer' },
@@ -87,7 +89,10 @@ const CreateDatasetAttributeRow = ({
         }
     }
 
+    const showGeomWarning = geometryAttribute && data?.type === AttributeTypes.Geometry;
+
     return (
+        <>
         <tr className="gn-dataset-attribute">
             <td className="gn-attribute-name">
                 <FormGroup
@@ -175,6 +180,17 @@ const CreateDatasetAttributeRow = ({
                 {tools}
             </td>
         </tr>
+        {showGeomWarning ? (
+            <tr>
+                <td
+                    className="gn-attribute-geom-warning"
+                    colSpan={5}
+                >
+                   <Message msgId="gnviewer.geometryDatasetWarning" />
+                </td>
+            </tr>
+        ) : null}
+        </>
     );
 };
 

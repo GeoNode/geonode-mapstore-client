@@ -14,7 +14,6 @@ import {
     gnViewerSetNewResourceThumbnail,
     closeInfoPanelOnMapClick,
     closeDatasetCatalogPanel,
-    gnZoomToFitBounds,
     closeResourceDetailsOnMapInfoOpen,
     gnUpdateResourceExtent,
     gnUpdateBackgroundEditEpic,
@@ -28,8 +27,9 @@ import {
     UPDATE_RESOURCE_EXTENT_LOADING,
     updateResourceExtent
 } from '@js/actions/gnresource';
-import { clickOnMap, changeMapView, ZOOM_TO_EXTENT } from '@mapstore/framework/actions/map';
-import { SET_CONTROL_PROPERTY, setControlProperty } from '@mapstore/framework/actions/controls';
+import { clickOnMap } from '@mapstore/framework/actions/map';
+import { SET_CONTROL_PROPERTY } from '@mapstore/framework/actions/controls';
+import { CATALOG_CLOSE } from '@mapstore/framework/actions/catalog';
 import {
     SHOW_NOTIFICATION
 } from '@mapstore/framework/actions/notifications';
@@ -195,7 +195,7 @@ describe('gnresource epics', () => {
                 requests: ["something"]
             },
             controls: {
-                datasetsCatalog: {
+                metadataexplorer: {
                     enabled: true
                 }
             }
@@ -207,9 +207,7 @@ describe('gnresource epics', () => {
             (actions) => {
                 try {
                     expect(actions.length).toBe(1);
-                    expect(actions[0].type).toBe(SET_CONTROL_PROPERTY);
-                    expect(actions[0].control).toBe("datasetsCatalog");
-                    expect(actions[0].value).toBe(false);
+                    expect(actions[0].type).toBe(CATALOG_CLOSE);
                 } catch (e) {
                     done(e);
                 }
@@ -257,26 +255,6 @@ describe('gnresource epics', () => {
 
     });
 
-    it('should zoom to extent with the fitBounds control', (done) => {
-        const NUM_ACTIONS = 2;
-        const testState = {};
-        testEpic(gnZoomToFitBounds,
-            NUM_ACTIONS,
-            [setControlProperty('fitBounds', 'geometry', [-180, -90, 180, 90]), changeMapView()],
-            (actions) => {
-                try {
-                    expect(actions.length).toBe(2);
-                    expect(actions[0].type).toBe(ZOOM_TO_EXTENT);
-                    expect(actions[1].type).toBe(SET_CONTROL_PROPERTY);
-                } catch (e) {
-                    done(e);
-                }
-                done();
-            },
-            testState
-        );
-
-    });
     it('should update resource extent on UPDATE_RESOURCE_EXTENT action', (done) => {
         const NUM_ACTIONS = 3;
         const pk = 1;

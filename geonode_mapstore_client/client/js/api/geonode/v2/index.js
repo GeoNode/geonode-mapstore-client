@@ -22,7 +22,6 @@ import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
 import castArray from 'lodash/castArray';
 import get from 'lodash/get';
-import { getUserInfo } from '@js/api/geonode/user';
 import { ResourceTypes, availableResourceTypes, setAvailableResourceTypes, getDownloadUrlInfo, isDefaultDatasetSubtype } from '@js/utils/ResourceUtils';
 import { mergeConfigsPatch } from '@mapstore/patcher';
 import {
@@ -38,7 +37,8 @@ import {
     getEndpoints as cGetEndpoints,
     getEndpointUrl,
     getQueryParams,
-    UPLOADS
+    UPLOADS,
+    USER_INFO
 } from './constants';
 
 
@@ -71,6 +71,16 @@ export const getResources = ({
         'filter{metadata_only}': false, // exclude resources such as services
         api_preset: API_PRESET.CATALOGS
     };
+
+    const subtypeMappings = {
+        vector: ['vector', 'flatgeobuf'],
+        raster: ['raster', 'cog']
+    };
+    const subtypeFilter = _params['filter{subtype.in}'];
+    if (subtypeMappings[subtypeFilter]) {
+        _params['filter{subtype.in}'] = subtypeMappings[subtypeFilter];
+    }
+
     return axios.get(getEndpointUrl(RESOURCES), {
         params: _params,
         ...config,
@@ -124,39 +134,6 @@ export const getMaps = ({
         });
 };
 
-export const getDatasets = ({
-    q,
-    pageSize = 20,
-    page = 1,
-    sort
-}) => {
-    return axios
-        .get(
-            getEndpointUrl(RESOURCES), {
-                // axios will format query params array to `key[]=value1&key[]=value2`
-                params: {
-                    'filter{resource_type.in}': 'dataset',
-                    'filter{metadata_only}': false,
-                    ...(q && {
-                        search: q,
-                        search_index: getResourcesSearchIndex()
-                    }),
-                    ...(sort && { sort: isArray(sort) ? sort : [ sort ]}),
-                    page,
-                    page_size: pageSize,
-                    api_preset: API_PRESET.CATALOGS
-                },
-                ...paramsSerializer()
-            })
-        .then(({ data }) => {
-            return {
-                totalCount: data.total,
-                isNextPageAvailable: !!data.links.next,
-                resources: (data.resources || [])
-            };
-        });
-};
-
 export const getDocuments = ({
     q,
     pageSize = 10,
@@ -178,6 +155,7 @@ export const getDocuments = ({
         page_size: pageSize,
         'filter{resource_type.in}': 'document'
     };
+
     return axios
         .get(
             getEndpointUrl(DOCUMENTS), {
@@ -258,7 +236,9 @@ export const setFavoriteResource = (pk, favorite) => {
 export const getResourceByPk = (pk) => {
     return axios.get(getEndpointUrl(RESOURCES, `/${pk}`), {
         params: {
-            api_preset: API_PRESET.VIEWER_COMMON
+            api_preset: API_PRESET.VIEWER_COMMON,
+            include_i18n: true,
+            include: ['data']
         }
     })
         .then(({ data }) => data.resource);
@@ -305,7 +285,9 @@ export const getResourceByUuid = (uuid) => {
 export const getDatasetByPk = (pk) => {
     return axios.get(getEndpointUrl(DATASETS, `/${pk}`), {
         params: {
-            api_preset: [API_PRESET.VIEWER_COMMON, API_PRESET.DATASET]
+            api_preset: [API_PRESET.VIEWER_COMMON, API_PRESET.DATASET],
+            include_i18n: true,
+            include: ['data']
         },
         ...paramsSerializer()
     })
@@ -496,6 +478,15 @@ export const getUserByPk = (pk, apikey) => {
         .then(({ data }) => data.user);
 };
 
+export const getUserInfo = (apikey) => {
+    return axios.get(getEndpointUrl(USER_INFO), {
+        params: {
+            ...(apikey && { apikey })
+        }
+    })
+        .then(({ data }) => data);
+};
+
 export const getAccountInfo = () => {
     const apikey = getApiToken();
     return getUserInfo(apikey)
@@ -570,7 +561,8 @@ export const getDatasetByName = name => {
     return axios.get(url, {
         params: {
             exclude: ['*'],
-            include: ['pk', 'perms', 'alternate']
+            include: ['pk', 'perms', 'alternate'],
+            include_i18n: true
         }
     })
         .then(({data}) => data?.datasets[0]);
@@ -818,7 +810,6 @@ export default {
     deleteResource,
     copyResource,
     downloadResource,
-    getDatasets,
     deleteExecutionRequest,
     getResourceByTypeAndByPk,
     createDataset,

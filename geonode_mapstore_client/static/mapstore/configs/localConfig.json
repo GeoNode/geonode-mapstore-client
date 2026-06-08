@@ -192,7 +192,11 @@
                 "name": "Notifications"
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                  "expandLimit": 20,
+                  "containerPosition": "bottom"
+                }
             },
             {
                 "name": "Playback"
@@ -261,7 +265,11 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                  "expandLimit": 20,
+                  "containerPosition": "bottom"
+                }
             },
             {
                 "name": "Playback"
@@ -352,7 +360,11 @@
                 "name": "Notifications"
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                  "expandLimit": 20,
+                  "containerPosition": "bottom"
+                }
             },
             {
                 "name": "Playback"
@@ -460,7 +472,11 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                  "expandLimit": 20,
+                  "containerPosition": "bottom"
+                }
             },
             {
                 "name": "Playback"
@@ -740,7 +756,7 @@
                             }
                         }
                     },
-                    "containerPosition":"background",
+                    "containerPosition": "background",
                     "toolsOptions": {
                         "scalebar": {
                             "container": "#footer-scalebar-container"
@@ -905,7 +921,11 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                  "expandLimit": 20,
+                  "containerPosition": "bottom"
+                }
             },
             {
                 "name": "Playback"
@@ -929,16 +949,16 @@
                             ]
                         },
                         {
-                            "name": "application/arcgrid",
-                            "label": "ArcGrid",
+                            "name": "image/tiff",
+                            "label": "TIFF",
                             "type": "raster",
                             "validServices": [
                                 "wps"
                             ]
                         },
                         {
-                            "name": "image/tiff",
-                            "label": "TIFF",
+                            "name": "application/arcgrid",
+                            "label": "ArcGrid",
                             "type": "raster",
                             "validServices": [
                                 "wps"
@@ -1265,6 +1285,14 @@
                 "name": "MetadataViewer"
             },
             {
+                "name": "FeatureEditor",
+                "cfg": {
+                    "hideCloseButton": true,
+                    "hideLayerTitle": true,
+                    "primaryKeyAttributes": ["fid"]
+                }
+            },
+            {
                 "name": "ExecutionTracker",
                 "cfg": {
                     "containerPosition": "header"
@@ -1273,10 +1301,330 @@
             {
                 "name": "CRSSelector",
                 "cfg": {
+                    "projectionDefsEndpoint": "{getProjectionDefsEndpoint(state('settings'))}",
                     "availableProjections": [
                         { "value": "EPSG:4326", "label": "EPSG:4326" },
                         { "value": "EPSG:3857", "label": "EPSG:3857" }
                     ]
+                }
+            }
+        ],
+        "dataset_viewer_non_spatial": [
+            {
+                "name": "ActionNavbar",
+                "cfg": {
+                    "containerPosition": "header",
+                    "leftMenuItems": [
+                        {
+                            "type": "plugin",
+                            "size": "md",
+                            "name": "ResourceDetailsButton"
+                        },
+                        {
+                            "labelId": "gnviewer.resource",
+                            "showPendingChangesIcon": true,
+                            "type": "dropdown",
+                            "disableIf": "{not canInteractResource(state('isNewResource'), state('gnResourceData'), state('user'))}",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "Save",
+                                    "disableIf": "{not canSaveResource(state('isNewResource'), state('gnResourceData'), state('user'))}"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "SaveAs",
+                                    "disableIf": "{not canSaveAsDataset(state('isNewResource'), state('gnResourceData'), state('user'), state('selectedLayerPermissions'))}"
+                                },
+                                {
+                                    "type": "divider",
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "DeleteResource",
+                                    "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
+                                }
+                            ]
+                        },
+                        {
+                            "labelId": "gnviewer.view",
+                            "type": "dropdown",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "ResourceDetailsButton"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "MetadataViewer"
+                                }
+                            ]
+                        },
+                        {
+                            "labelId": "gnviewer.edit",
+                            "type": "dropdown",
+                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "EditDataActionButton",
+                                    "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
+                                },
+                                {
+                                    "type": "link",
+                                    "href": "{getMetadataUrl(state('gnResourceData'))}",
+                                    "labelId": "gnviewer.editMetadata"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "OperationUploadMetadata",
+                                    "disableIf": "{is3DTiles(state('gnResourceData'))}"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "OperationReplaceDataset",
+                                    "disableIf": "{is3DTiles(state('gnResourceData'))}"
+                                }
+                            ]
+                        },
+                        {
+                            "labelId": "gnviewer.download",
+                            "type": "dropdown",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "DownloadResource"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "LayerDownload"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "IsoDownload"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "ShareActionButton",
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
+                        },
+                        {
+                            "type": "divider",
+                            "disableIf": "{state('isNewResource')}"
+                        },
+                        {
+                            "type": "plugin",
+                            "name": "FilterLayer",
+                            "disableIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "SaveAs",
+                "cfg": {
+                    "disablePermission": true
+                }
+            },
+            {
+                "name": "Save",
+                "cfg": {
+                    "disablePermission": true
+                }
+            },
+            {
+                "name": "ResourceDetails",
+                "cfg": {
+                    "headerNodeSelector": ".gn-main-header",
+                    "containerPosition": "header",
+                    "defaultOpen": true,
+                    "closeOnClickOut": true
+                }
+            },
+            {
+                "name": "DeleteResource",
+                "cfg": {
+                    "redirectTo": "/"
+                }
+            },
+            {
+                "name": "DownloadResource",
+                "cfg": {
+                    "downloadMsgId": "gnhome.dataset",
+                    "tooltipId": "gnviewer.download",
+                    "allowedSources": ["LOCAL"]
+                }
+            },
+            {
+                "name": "Toolbar",
+                "id": "NavigationBar",
+                "cfg": {
+                    "id": "navigationBar",
+                    "layout": "horizontal"
+                }
+            },
+            {
+                "name": "IsoDownload"
+            },
+            {
+                "name": "LayerDownload",
+                "cfg": {
+                    "disablePluginIf": "{not canDownloadLayer(state('selectedLayerPermissions'))}",
+                    "hideServiceSelector": true,
+                    "defaultSelectedService": "wps",
+                    "formats": [
+                        {
+                            "name": "text/csv",
+                            "label": "CSV",
+                            "type": "vector",
+                            "validServices": [
+                                "wps"
+                            ]
+                        },
+                        {
+                            "name": "application/vnd.ms-excel",
+                            "label": "Excel",
+                            "type": "vector",
+                            "validServices": [
+                                "wps"
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "QueryPanel",
+                "cfg": {
+                    "activateQueryTool": true,
+                    "toolsOptions": {
+                        "hideCrossLayer": true,
+                        "hideSpatialFilter": true
+                    }
+                }
+            },
+            {
+                "name": "Notifications"
+            },
+            {
+                "name": "Operation",
+                "cfg": {
+                    "id": "upload-metadata",
+                    "labelId": "gnviewer.metadataUpload",
+                    "containerPosition": "header",
+                    "iconName": "code",
+                    "titleMsgId": "gnviewer.uploadDatasetMetadata",
+                    "blocking": true,
+                    "action": "resource_metadata_upload",
+                    "pageReload": true,
+                    "api": {
+                        "upload": {
+                            "url": "{getEndpointUrl('uploads', '/upload')}",
+                            "maxParallelUploads": 1,
+                            "body": {
+                                "file": {
+                                    "resource_pk": "{get(state('gnResourceData'), 'pk')}",
+                                    "base_file": "{getUploadMainFile}",
+                                    "action": "resource_metadata_upload"
+                                }
+                            },
+                            "supportedFiles": "{getSupportedFilesByResourceType('dataset', ['resource_metadata_upload'])}"
+                        },
+                        "executionRequest": {
+                            "url": "{getEndpointUrl('executionrequest')}",
+                            "params": {
+                                "filter{action}": "resource_metadata_upload",
+                                "sort[]": "-created",
+                                "filter{geonode_resource}": "{get(state('gnResourceData'), 'pk')}"
+                            }
+                        }
+                    }
+                },
+                "override": {
+                    "ActionNavbar": {
+                        "name": "OperationUploadMetadata"
+                    }
+                }
+            },
+            {
+                "name": "Operation",
+                "cfg": {
+                    "id": "replace-dataset",
+                    "labelId": "gnviewer.updateDataset",
+                    "containerPosition": "header",
+                    "iconName": "refresh",
+                    "titleMsgId": "gnviewer.updateDatasetTitle",
+                    "blocking": true,
+                    "action": "replace",
+                    "pageReload": true,
+                    "api": {
+                        "uploadActions": [
+                            {
+                                "labelId": "gnviewer.update",
+                                "action": "upsert"
+                            },
+                            {
+                                "labelId": "gnviewer.replace",
+                                "action": "replace",
+                                "variant": "danger",
+                                "showConfirm": true
+                            }
+                        ],
+                        "upload": {
+                            "bodyExtra": {
+                                "replace": {
+                                    "file": {
+                                        "store_spatial_files": true,
+                                        "overwrite_existing_layer": true
+                                    }
+                                }
+                            },
+                            "url": "{getEndpointUrl('uploads', '/upload')}",
+                            "maxParallelUploads": 1,
+                            "body": {
+                                "file": {
+                                    "resource_pk": "{get(state('gnResourceData'), 'pk')}",
+                                    "base_file": "{getUploadMainFile}",
+                                    "action": "replace"
+                                }
+                            },
+                            "supportedFiles": "{getSupportedFilesByResourceType('dataset', ['replace', 'upsert'])}"
+                        },
+                        "executionRequest": {
+                            "url": "{getEndpointUrl('executionrequest')}",
+                            "params": {
+                                "filter{action.in}": ["replace", "upsert"],
+                                "sort[]": "-created",
+                                "filter{geonode_resource}": "{get(state('gnResourceData'), 'pk')}"
+                            }
+                        }
+                    }
+                },
+                "override": {
+                    "ActionNavbar": {
+                        "name": "OperationReplaceDataset"
+                    }
+                }
+            },
+            {
+                "name": "MetadataViewer"
+            },
+            {
+                "name": "FeatureEditor",
+                "cfg": {
+                    "hideCloseButton": true,
+                    "hideLayerTitle": true,
+                    "primaryKeyAttributes": ["fid"],
+                    "containerPosition": "bottom",
+                    "resizable": false
+                }
+            },
+            {
+                "name": "ExecutionTracker",
+                "cfg": {
+                    "containerPosition": "header"
                 }
             }
         ],
@@ -1308,7 +1656,7 @@
                             }
                         }
                     },
-                    "containerPosition":"background",
+                    "containerPosition": "background",
                     "toolsOptions": {
                         "scalebar": {
                             "container": "#footer-scalebar-container"
@@ -1322,7 +1670,7 @@
                     "hideCloseButton": true,
                     "hideLayerTitle": true,
                     "primaryKeyAttributes": ["fid"],
-                    "containerPosition":"bottom"
+                    "containerPosition": "bottom"
                 }
             },
             {
@@ -1521,7 +1869,7 @@
                             }
                         }
                     },
-                    "containerPosition":"background",
+                    "containerPosition": "background",
                     "toolsOptions": {
                         "scalebar": {
                             "container": "#footer-scalebar-container"
@@ -1626,15 +1974,6 @@
                             "type": "plugin",
                             "name": "ShareActionButton",
                             "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
-                        },
-                        {
-                            "type": "divider",
-                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
-                        },
-                        {
-                            "type": "plugin",
-                            "name": "DatasetsCatalog",
-                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
                         },
                         {
                             "type": "divider",
@@ -1850,7 +2189,11 @@
                 }
             },
             {
-                "name": "Timeline"
+                "name": "Timeline",
+                "cfg": {
+                  "expandLimit": 20,
+                  "containerPosition": "bottom"
+                }
             },
             {
                 "name": "Playback"
@@ -1871,16 +2214,16 @@
                             ]
                         },
                         {
-                            "name": "application/arcgrid",
-                            "label": "ArcGrid",
+                            "name": "image/tiff",
+                            "label": "TIFF",
                             "type": "raster",
                             "validServices": [
                                 "wps"
                             ]
                         },
                         {
-                            "name": "image/tiff",
-                            "label": "TIFF",
+                            "name": "application/arcgrid",
+                            "label": "ArcGrid",
                             "type": "raster",
                             "validServices": [
                                 "wps"
@@ -1986,7 +2329,7 @@
                 "cfg": {
                     "primaryKeyAttributes": ["fid"],
                     "disablePluginIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}",
-                    "containerPosition":"bottom"
+                    "containerPosition": "bottom"
                 }
             },
             {
@@ -2115,10 +2458,6 @@
             },
             {
                 "mandatory": true,
-                "name": "DatasetsCatalog"
-            },
-            {
-                "mandatory": true,
                 "name": "DocumentsCatalog"
             },
             { 
@@ -2131,20 +2470,21 @@
                 "name": "SidebarMenu"
             },
             {
-                "name": "MetadataExplorer",
+                "name": "Catalog",
                 "cfg": {
-                    "wrap": true,
+                    "hideIdentifier": true,
                     "serviceTypes": [
-                        { "name": "csw", "label": "CSW" }, 
-                        { "name": "wms", "label": "WMS" }, 
-                        { "name": "wmts", "label": "WMTS" }, 
-                        { "name": "tms", "label": "TMS", "allowedProviders": ["OpenStreetMap", "OpenSeaMap", "Stamen"] }, 
-                        { "name": "wfs", "label": "WFS" }, 
-                        { "name": "3dtiles", "label": "3D Tiles" }, 
-                        { "name": "model", "label": "IFC Model" }, 
-                        { "name": "arcgis", "label": "ArcGIS" }, 
+                        { "name": "csw", "label": "CSW" },
+                        { "name": "wms", "label": "WMS" },
+                        { "name": "wmts", "label": "WMTS" },
+                        { "name": "tms", "label": "TMS", "allowedProviders": ["OpenStreetMap", "OpenSeaMap", "Stamen"] },
+                        { "name": "wfs", "label": "WFS" },
+                        { "name": "3dtiles", "label": "3D Tiles" },
+                        { "name": "model", "label": "IFC Model" },
+                        { "name": "arcgis", "label": "ArcGIS" },
                         { "name": "cog", "label": "COG" },
-                        { "name": "flatgeobuf", "label": "FlatGeobuf" }
+                        { "name": "flatgeobuf", "label": "FlatGeobuf" },
+                        { "name": "geonode", "label": "GeoNode" }
                     ]
                 }
             },
@@ -2299,6 +2639,7 @@
             {
                 "name": "CRSSelector",
                 "cfg": {
+                    "projectionDefsEndpoint": "{getProjectionDefsEndpoint(state('settings'))}",
                     "availableProjections": [
                         { "value": "EPSG:4326", "label": "EPSG:4326" },
                         { "value": "EPSG:3857", "label": "EPSG:3857" }
@@ -2817,16 +3158,16 @@
                           ]
                       },
                       {
-                          "name": "application/arcgrid",
-                          "label": "ArcGrid",
+                          "name": "image/tiff",
+                          "label": "TIFF",
                           "type": "raster",
                           "validServices": [
                               "wps"
                           ]
                       },
                       {
-                          "name": "image/tiff",
-                          "label": "TIFF",
+                          "name": "application/arcgrid",
+                          "label": "ArcGrid",
                           "type": "raster",
                           "validServices": [
                               "wps"
@@ -3175,6 +3516,34 @@
                 "name": "Notifications"
             }
         ],
+        "dataset_viewer_non_spatial_mobile": [
+            {
+                "name": "ActionNavbar",
+                "cfg": {
+                    "containerPosition": "header"
+                }
+            },
+            {
+                "name": "OmniBar"
+            },
+            {
+                "name": "Toolbar",
+                "id": "NavigationBar",
+                "cfg": {
+                    "id": "navigationBar",
+                    "layout": "horizontal"
+                }
+            },
+            {
+                "name": "Expander"
+            },
+            {
+                "name": "Notifications"
+            },
+            {
+                "name": "MetadataViewer"
+            }
+        ],
         "geostory_viewer_mobile": [
             {
                 "name": "ActionNavbar",
@@ -3440,12 +3809,6 @@
                                     "type": "filter"
                                 },
                                 {
-                                    "id": "unpublished",
-                                    "labelId": "gnhome.unpublished",
-                                    "type": "filter",
-                                    "disableIf": "{not state('user')}"
-                                },
-                                {
                                     "id": "pending-approval",
                                     "labelId": "gnhome.pendingApproval",
                                     "type": "filter",
@@ -3479,6 +3842,11 @@
                                         {
                                             "id": "3dtiles",
                                             "labelId": "gnhome.3dtiles",
+                                            "type": "filter"
+                                        },
+                                        {
+                                            "id": "tabular",
+                                            "labelId": "gnhome.tabular",
                                             "type": "filter"
                                         }
                                     ]

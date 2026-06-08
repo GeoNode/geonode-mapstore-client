@@ -288,4 +288,67 @@ describe('gnsave epics', () => {
             {map: {info: {id: pk}}}
         );
     });
+
+    it('should skip GeoServer style update for flatgeobuf save', (done) => {
+        const NUM_ACTIONS = 4;
+        const id = 1;
+        const metadata = {
+            name: 'Remote FGB',
+            description: 'Description'
+        };
+        mockAxios.onPatch(new RegExp(`resources/${id}`)).reply(() => [200, { resource: { pk: id } }]);
+
+        testEpic(
+            gnSaveContent,
+            NUM_ACTIONS,
+            saveContent(id, metadata, false, false),
+            (actions) => {
+                try {
+                    expect(actions.map(({ type }) => type))
+                        .toEqual([
+                            SAVING_RESOURCE,
+                            SAVE_SUCCESS,
+                            SET_RESOURCE,
+                            UPDATE_SINGLE_RESOURCE
+                        ]);
+                    expect(mockAxios.history.get.length).toBe(0);
+                    expect(mockAxios.history.patch.length).toBe(1);
+                    expect(mockAxios.history.patch[0].url).toContain(`/api/v2/resources/${id}`);
+                } catch (e) {
+                    done(e);
+                    return;
+                }
+                done();
+            },
+            {
+                gnresource: {
+                    data: {
+                        pk: id,
+                        title: 'Remote FGB',
+                        resource_type: 'dataset',
+                        subtype: 'flatgeobuf'
+                    },
+                    initialResource: {
+                        resource_type: 'dataset',
+                        subtype: 'flatgeobuf',
+                        default_style: {
+                            name: 'old_style'
+                        }
+                    }
+                },
+                map: {
+                    present: {}
+                },
+                layers: {
+                    flat: [{
+                        id: 'layer-1',
+                        type: 'flatgeobuf',
+                        style: 'new_style',
+                        availableStyles: [{ name: 'new_style', title: 'New Style' }]
+                    }],
+                    selected: ['layer-1']
+                }
+            }
+        );
+    });
 });

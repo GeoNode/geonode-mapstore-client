@@ -16,7 +16,7 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import { getFileNameAndExtensionFromUrl } from "@js/utils/FileUtils";
 import { isNotSupported, getErrorMessageId  } from "@js/utils/UploadUtils";
 import ErrorMessageWithTooltip from './ErrorMessageWithTooltip';
-import InputControl from '@mapstore/framework/plugins/ResourcesCatalog/components/InputControl';
+import InputControl from '@mapstore/framework/components/catalog/resources/InputControl';
 
 const PendingUploadUrl = ({
     data,

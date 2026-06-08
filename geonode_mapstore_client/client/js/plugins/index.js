@@ -22,8 +22,9 @@ import Isochrone from "@mapstore/framework/plugins/Isochrone";
 import Itinerary from "@mapstore/framework/plugins/Itinerary";
 import SecurityPopup from "@mapstore/framework/plugins/SecurityPopup";
 import BackgroundSelector from '@mapstore/framework/plugins/BackgroundSelector';
-import MetadataExplorer from '@mapstore/framework/plugins/MetadataExplorer';
 import CameraPosition from '@mapstore/framework/plugins/CameraPosition';
+import CRSSelector from '@mapstore/framework/plugins/CRSSelector';
+import CatalogPlugin from '@mapstore/framework/plugins/Catalog';
 
 import OperationPlugin from '@js/plugins/Operation';
 import ExecutionTrackerPlugin from '@js/plugins/ExecutionTracker';
@@ -93,8 +94,8 @@ export const plugins = {
     ItineraryPlugin: Itinerary,
     SecurityPopupPlugin: SecurityPopup,
     BackgroundSelectorPlugin: BackgroundSelector,
-    MetadataExplorerPlugin: MetadataExplorer,
     CameraPositionPlugin: CameraPosition,
+    CRSSelectorPlugin: CRSSelector,
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
         () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload'),
@@ -441,10 +442,7 @@ export const plugins = {
         'DocumentsCatalog',
         () => import(/* webpackChunkName: 'plugins/documents-catalog' */ '@js/plugins/DocumentsCatalog')
     ),
-    DatasetsCatalogPlugin: toModulePlugin(
-        'DatasetsCatalog',
-        () => import(/* webpackChunkName: 'plugins/dataset-catalog' */ '@js/plugins/DatasetsCatalog')
-    ),
+    CatalogPlugin,
     SyncPlugin: toModulePlugin(
         'Sync',
         () => import(/* webpackChunkName: 'plugins/sync-plugin' */ '@js/plugins/Sync')
@@ -468,10 +466,6 @@ export const plugins = {
     SearchByBookmarkPlugin: toModulePlugin(
         'SearchByBookmark',
         () => import(/* webpackChunkName: 'plugins/searchByBookmark' */ '@mapstore/framework/plugins/SearchByBookmark')
-    ),
-    CRSSelectorPlugin: toModulePlugin(
-        'CRSSelector',
-        () => import(/* webpackChunkName: 'plugins/CRSSelector' */ '@mapstore/framework/plugins/CRSSelector')
     ),
     SettingsPlugin: toModulePlugin(
         'Settings',
