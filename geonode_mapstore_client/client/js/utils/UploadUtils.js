@@ -125,17 +125,17 @@ export const validateFileResourceUploads = (uploads = [], { supportedFiles = [] 
         }
         const allUploadsAreOptional = upload.ext.every(ext =>
                 (currentSupportedType.optional_ext || []).includes(ext) &&
-                !currentSupportedType.required_ext.includes(ext)
+                !(currentSupportedType.required_ext || []).includes(ext)
             );
         const missingExtensions = allUploadsAreOptional
                 ? []
-                : currentSupportedType.required_ext.filter(ext => !upload.ext.includes(ext));
+                : (currentSupportedType.required_ext || []).filter(ext => !upload.ext.includes(ext));
         const supportedTypeExtensions = getSupportedTypeExt(currentSupportedType);
         return {
             ...upload,
             ext: [...upload.ext].sort((a, b) => supportedTypeExtensions.indexOf(a) - supportedTypeExtensions.indexOf(b)),
             ready: missingExtensions.length === 0,
-            missingExtensions: missingExtensions.length > 0 && missingExtensions.length === currentSupportedType.required_ext.length
+            missingExtensions: missingExtensions.length > 0 && missingExtensions.length === (currentSupportedType.required_ext || []).length
                 ? ['*']
                 : missingExtensions
         };
