@@ -1,3 +1,10 @@
+/*
+ * Copyright 2026, GeoSolutions Sas.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import {useEffect, useRef} from 'react';
 import get from 'lodash/get';
 import template from 'lodash/template';
@@ -11,8 +18,9 @@ export default ({
     name
 }) => {
     const uiOptions = uiSchema?.['ui:options'];
-    const referenceValuePath = uiOptions?.['geonode-ui:referencevalue'];
+    const referenceValuePath = uiOptions?.['geonode-ui:referencevalue']; // example is: "dcatapit_themes.[${index}].theme.id"
     const referenceKey = uiOptions?.['geonode-ui:referencekey'];
+    const referenceParent = referenceValuePath ? referenceValuePath.split('.').slice(0, -1).pop().split('-')[0] : null; // get the parent field name from the referenceValuePath
 
     // Extract index from the ID schema
     const match = idSchema.$id.match(/_(\d+)(_|$)/);
@@ -43,5 +51,5 @@ export default ({
         }
     }, [referenceValuePath, referenceValue]);
 
-    return { referenceValue, referenceKey };
+    return { referenceValue, referenceKey, referenceValuePath, referenceParent };
 };
