@@ -32,9 +32,8 @@ function gnDownload(state = defaultState, action) {
     }
     case DOWNLOAD_METADATA_COMPLETE: {
         const linkType = action?.link?.split(' ').join('');
-        // copy the link bucket before deleting so the previous state is not mutated
-        const remaining = { ...(state.downloads[linkType] || {}) };
-        delete remaining[action.pk];
+        // omit the completed pk immutably so the previous state is not mutated
+        const { [action.pk]: removed, ...remaining } = state.downloads[linkType] || {};
         return {
             ...state,
             downloads: {
