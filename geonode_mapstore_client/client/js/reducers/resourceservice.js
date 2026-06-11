@@ -75,10 +75,8 @@ function resourceservice(state = defaultState, action) {
     case DOWNLOAD_COMPLETE: {
         return {
             ...state,
-            downloads: [
-                ...state.downloads.filter((download) =>
-                    download?.pk !== action?.resource?.pk)
-            ]
+            downloads: state.downloads.filter((download) =>
+                download?.pk !== action?.resource?.pk)
         };
     }
     default:
