@@ -34,4 +34,11 @@ describe('gndownload reducer', () => {
             }
         });
     });
+    it('downloadMetaDataComplete does not mutate the previous state', () => {
+        const previousLinkState = { 1: true };
+        const state = { downloads: { ISO: previousLinkState, DublinCore: {} } };
+        gndownload(state, downloadMetaDataComplete('ISO', 1));
+        // a reducer must be pure: the previous state object must remain untouched
+        expect(previousLinkState).toEqual({ 1: true });
+    });
 });
