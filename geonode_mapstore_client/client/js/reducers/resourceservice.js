@@ -77,7 +77,7 @@ function resourceservice(state = defaultState, action) {
             ...state,
             downloads: [
                 ...state.downloads.filter((download) =>
-                    (download?.resource?.pk === action?.resource?.pk))
+                    download?.pk !== action?.resource?.pk)
             ]
         };
     }
