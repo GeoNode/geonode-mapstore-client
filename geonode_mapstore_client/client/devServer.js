@@ -61,6 +61,11 @@ module.exports = (devServerDefault, projectConfig) => {
                     '!**/docs/**'
                 ],
                 target: proxyTargetURL,
+                onProxyReq: (proxyReq, req, res) => {
+                  // Force the proxy to use the raw, unaltered URL from the browser
+                  // This completely bypasses the Express URL normalization that strips the '//'
+                  proxyReq.path = req.originalUrl;
+                },
                 headers: {
                     Host: proxyTargetHost,
                     Referer: `${proxyTargetURL}/`
@@ -78,7 +83,7 @@ module.exports = (devServerDefault, projectConfig) => {
                 pathRewrite: {
                     '/static/mapstore/ms-translations': '/node_modules/mapstore/web/client/translations',
                     '/static/mapstore/dist/js/web-ifc': '/node_modules/web-ifc'
-                }
+                },
             }
         ]
     };
