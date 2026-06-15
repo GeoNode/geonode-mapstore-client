@@ -20,7 +20,6 @@ export default ({
     const uiOptions = uiSchema?.['ui:options'];
     const referenceValuePath = uiOptions?.['geonode-ui:referencevalue']; // example is: "dcatapit_themes.[${index}].theme.id"
     const referenceKey = uiOptions?.['geonode-ui:referencekey'];
-    const referenceParent = referenceValuePath ? referenceValuePath.split('.').slice(0, -1).pop().split('-')[0] : null; // get the parent field name from the referenceValuePath
 
     // Extract index from the ID schema
     const match = idSchema.$id.match(/_(\d+)(_|$)/);
@@ -51,5 +50,5 @@ export default ({
         }
     }, [referenceValuePath, referenceValue]);
 
-    return { referenceValue, referenceKey, referenceValuePath, referenceParent };
+    return { referenceValue, referenceKey, referenceValuePath };
 };
