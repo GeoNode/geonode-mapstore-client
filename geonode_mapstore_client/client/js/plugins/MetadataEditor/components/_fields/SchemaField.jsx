@@ -5,7 +5,6 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
 import React from 'react';
 import axios from '@mapstore/framework/libs/ajax';
 import castArray from 'lodash/castArray';
@@ -36,6 +35,22 @@ function shouldHideLabel({
     return false;
 }
 
+function extractErrors(errorSchema, hideError) {
+    return (!hideError ? castArray(errorSchema) : [])
+        .reduce((acc, errorEntry) => {
+            if (errorEntry?.__errors) {
+                acc.push({ messages: errorEntry.__errors });
+            } else {
+                Object.keys(errorEntry || {}).forEach((key) => {
+                    if (errorEntry[key]?.__errors) {
+                        acc.push({ key, messages: errorEntry[key].__errors });
+                    }
+                });
+            }
+            return acc;
+        }, []);
+}
+
 /**
  * `SchemaField` is an enhanced component that overrides `@rjsf`'s default `SchemaField`
  * - Customizes the rendering of object and array fields with custom functionality, such as support for autocomplete fields.
@@ -59,15 +74,25 @@ const SchemaField = (props) => {
     const uiWidget = uiSchema?.['ui:widget']?.toLowerCase();
     const uiOptions = uiSchema?.['ui:options'];
     const autocomplete = uiOptions?.['geonode-ui:autocomplete'];
-    const isSchemaItemString = schema?.items?.type === 'string';
-    const isSchemaItemObject = schema?.items?.type === 'object';
-    const isMultiSelect = schema?.type === 'array' && (isSchemaItemString ||
-        (isSchemaItemObject && !isEmpty(schema?.items?.properties))
+    const {items, type, properties} = schema || {};
+    const isSchemaItemString = items?.type === 'string';
+    const isSchemaItemObject = items?.type === 'object';
+
+    const isMultiSelect = type === 'array' && (
+        isSchemaItemString ||
+        (isSchemaItemObject && !isEmpty(items?.properties))
     );
-    const isSingleSelect = schema?.type === 'object' && !isEmpty(schema?.properties);
-    const { referenceValue, referenceKey } = useSchemaReference({...props, isMultiSelect });
+    const isSingleSelect = type === 'object' && !isEmpty(properties);
+
+    const {
+        referenceValue,
+        referenceKey,
+        referenceValuePath
+    } = useSchemaReference({...props, isMultiSelect });
+
 
     if (autocomplete && (isMultiSelect || isSingleSelect)) {
+
         const {
             classNames,
             style,
@@ -79,35 +104,29 @@ const SchemaField = (props) => {
             placeholder: autoCompletePlaceholder,
             title
         } = uiOptions;
-        const errors = (!hideError ? castArray(errorSchema) : [])
-            .reduce((acc, errorEntry) => {
-                if (errorEntry?.__errors) {
-                    acc.push({ messages: errorEntry.__errors });
-                } else {
-                    Object.keys(errorEntry || {}).forEach((key) => {
-                        if (errorEntry[key]?.__errors) {
-                            acc.push({ key, messages: errorEntry[key].__errors });
-                        }
-                    });
-                }
-                return acc;
-            }, []);
+
+        let forceDisabled = disabled;
+        const errors = extractErrors(errorSchema, hideError);
         const autocompleteOptions = isString(autocomplete)
             ? { url: autocomplete }
             : autocomplete;
         let autocompleteUrl = autocompleteOptions?.url;
-        if (referenceValue) {
-            autocompleteUrl = template(autocompleteUrl)({[referenceKey ?? 'id']: referenceValue });
-        }
-        const queryKey = autocompleteOptions?.queryKey || 'q';
-        const resultsKey = autocompleteOptions?.resultsKey || 'results';
-        const valueKey = autocompleteOptions?.valueKey || 'id';
-        const labelKey = autocompleteOptions?.labelKey || 'label';
-        const creatable = !!autocompleteOptions?.creatable;
-        const placeholder = autoCompletePlaceholder ?? ' ';
 
-        let autoCompleteProps = {
-            className: `field${classNames ? ' ' + classNames : ''} ${formContext?.capitalizeTitle ? 'capitalize' : ''}`,
+        if (referenceValue && isString(autocompleteUrl)) {
+            autocompleteUrl = template(autocompleteUrl)({ [referenceKey ?? 'id']: referenceValue });
+        } else if (referenceValuePath && !referenceValue) {
+            forceDisabled = true;
+        }
+        const queryKey = autocompleteOptions?.queryKey ?? 'q';
+        const resultsKey = autocompleteOptions?.resultsKey ?? 'results';
+        const valueKey = autocompleteOptions?.valueKey ?? 'id';
+        const labelKey = autocompleteOptions?.labelKey ?? 'label';
+        const creatable = autocompleteOptions?.creatable ?? false;
+        const placeholder = autoCompletePlaceholder ?? ' ';
+        const className = `field${classNames ? ' ' + classNames : ''} ${formContext?.capitalizeTitle ? 'capitalize' : ''}`;
+
+        const autoCompleteProps = {
+            className,
             clearable: !required,
             creatable,
             id: idSchema.$id,
@@ -121,7 +140,7 @@ const SchemaField = (props) => {
             valueKey,
             helpTitleIcon: true,
             description: helpText ?? description ?? schema.description, // Help text is preferred over description and displayed as a tooltip
-            disabled: disabled || props?.readonly || schema?.readOnly,
+            disabled: forceDisabled || props?.readonly || schema?.readOnly,
             style,
             required,
             onChange: (selected) => {
@@ -151,21 +170,20 @@ const SchemaField = (props) => {
                         ...(q && { [queryKey]: q }),
                         page: params.page
                     }
-                })
-                    .then(({ data }) => {
-                        return {
-                            isNextPageAvailable: !!data.pagination?.more,
-                            results: data?.[resultsKey].map((result) => {
-                                return {
-                                    selectOption: {
-                                        result,
-                                        [valueKey]: isString(result) ? result : result[valueKey],
-                                        [labelKey]: isString(result) ? result : result[labelKey]
-                                    }
-                                };
-                            })
-                        };
-                    });
+                }).then(({ data }) => {
+                    return {
+                        isNextPageAvailable: !!data.pagination?.more,
+                        results: data?.[resultsKey].map((result) => {
+                            return {
+                                selectOption: {
+                                    result,
+                                    [valueKey]: isString(result) ? result : result[valueKey],
+                                    [labelKey]: isString(result) ? result : result[labelKey]
+                                }
+                            };
+                        })
+                    };
+                });
             },
             error: isEmpty(errors) ? null : <>
                 {errors.map((entry, idx) => {
@@ -183,7 +201,6 @@ const SchemaField = (props) => {
         return <Autocomplete {...autoCompleteProps}/>;
     }
 
-    // this override ObjectFieldTemplate
     if (uiWidget === 'textwidgetmultilang') {
         return <TextWidgetMultiLang {...props} />;
     }
