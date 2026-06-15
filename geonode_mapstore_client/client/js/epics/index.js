@@ -29,7 +29,7 @@ import { startAsyncProcess, STOP_ASYNC_PROCESS } from "@js/actions/resourceservi
 import { error as errorNotification } from "@mapstore/framework/actions/notifications";
 import { getProcessErrorInfo } from "@js/utils/ErrorUtils";
 import { getResourcePerms, getViewedResourceType } from "@js/selectors/resource";
-import { ResourceTypes } from '@mapstore/framework/utils/GeoNodeUtils';
+import { ResourceTypes } from '@js/utils/ResourceUtils';
 // We need to include missing epics. The plugins that normally include this epic is not used.
 
 /**
