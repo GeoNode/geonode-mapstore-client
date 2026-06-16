@@ -275,7 +275,7 @@ export const getInitialDatasetLayerStyle = (state) => {
     return initialResource ? resourceToLayerConfig(initialResource)?.style : null;
 };
 
-function isResourceDataEqual(state, initialData = {}, currentData = {}) {
+export function isResourceDataEqual(state, initialData = {}, currentData = {}) {
     const resourceType = state?.gnresource?.type;
     if (isEmpty(initialData) || isEmpty(currentData)) {
         return true;
@@ -351,13 +351,14 @@ function isResourceDataEqual(state, initialData = {}, currentData = {}) {
         const isSettingsEqual = compareObjects(omit(currentData, ['style', 'fields']),
             omit(initialLayerData, ['style', 'fields', 'extendedParams', 'pk', '_v_', 'isDataset', 'perms']));
         const isStyleEqual = isEmpty(initialStyle) || isEmpty(selectedLayer?.style) ? true
-            : selectedLayer?.style === initialStyle;
+            // string comparison is preferred to avoid issues with different key in style, in some case contains empty properties
+            : initialStyle?.metadata?.styleJSON === selectedLayer?.style?.metadata?.styleJSON;
+
         const isAttributesEqual = isEmpty(selectedLayer) ? true
             : !isEmpty(initialLayerData) && isEqual(
                 isEmpty(initialLayerData?.fields) ? {} : initialLayerData?.fields,
                 isEmpty(selectedLayer?.fields) ? {} : selectedLayer?.fields
             );
-
         return isSettingsEqual && isAttributesEqual && isStyleEqual;
     }
     default:
