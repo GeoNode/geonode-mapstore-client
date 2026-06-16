@@ -22,7 +22,8 @@ import {
     isNewMapDirty,
     isNewDashboardDirty,
     isNewGeoStoryDirty,
-    defaultViewerPluginsSelector
+    defaultViewerPluginsSelector,
+    isResourceDataEqual
 } from '../resource';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 
@@ -472,5 +473,70 @@ describe('resource selector', () => {
             }
         };
         expect(isNewGeoStoryDirty(state)).toBeFalsy();
+    });
+
+    it('test isResourceDataEqual DATASET return false if style.metadata.styleJSON is changed', () => {
+        const styleJSON1 = '{"rules":[{"name":"","ruleId":"899cce30","symbolizers":[{"color":"#00ff00","symbolizerId":"899cce31"}]}]}';
+        const styleJSON2 = '{"rules":[{"name":"","ruleId":"899cce30","symbolizers":[{"color":"#ff0000","symbolizerId":"899cce31"}]}]}';
+
+        const initialStyle = {
+            metadata: {
+                styleJSON: styleJSON1
+            }
+        };
+        const currentStyle = {
+            metadata: {
+                styleJSON: styleJSON2
+            }
+        };
+
+        const initialData = {
+            type: ResourceTypes.DATASET,
+            id: 'layer-1',
+            name: 'geonode:layer',
+            fields: {},
+            style: {
+                ...initialStyle
+            }
+        };
+        const currentData = {
+            type: ResourceTypes.DATASET,
+            id: 'layer-1',
+            name: 'geonode:layer',
+            fields: {},
+            style: {
+                ...currentStyle
+            }
+        };
+        const state = {
+            gnresource: {
+                type: ResourceTypes.DATASET,
+                initialResource: {
+                    resource_type: ResourceTypes.DATASET,
+                    pk: 1,
+                    alternate: 'geonode:layer',
+                    title: 'Layer',
+                    links: [{
+                        link_type: 'OGC:WMS',
+                        url: 'https://example.com/geoserver/wms'
+                    }],
+                    data: {
+                        style: initialStyle
+                    }
+                }
+            },
+            layers: {
+                flat: [{
+                    id: 'layer-1',
+                    type: 'wms',
+                    name: 'geonode:layer',
+                    fields: {},
+                    style: currentStyle
+                }],
+                selected: ['layer-1']
+            }
+        };
+        expect(isResourceDataEqual(state, initialData, currentData)).toBeFalsy();
+
     });
 });
