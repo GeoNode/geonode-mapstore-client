@@ -12,17 +12,34 @@ import {
     LOAD_REQUESTS_RULES,
     UPDATE_REQUESTS_RULES,
     updateRequestsRules,
-    loadRequestsRulesError
+    loadRequestsRulesError,
+    SESSION_VALID,
+    sessionValid,
+    LOGOUT
 } from '@mapstore/framework/actions/security';
 import { getRequestRules } from '@js/api/geonode/security';
-import { RULE_EXPIRED, ruleExpired } from '@js/actions/gnsecurity';
-import { requestsRulesSelector } from '@mapstore/framework/selectors/security';
+import { getUserInfo } from '@js/api/geonode/v2';
+import {
+    RULE_EXPIRED, ruleExpired,
+    START_LOGIN_MONITORING,
+    STOP_LOGIN_MONITORING,
+    startLoginMonitoring, stopLoginMonitoring
+} from '@js/actions/gnsecurity';
+import { requestsRulesSelector, isLoggedIn, authProviderSelector } from '@mapstore/framework/selectors/security';
+import { LOCATION_CHANGE } from 'connected-react-router';
+import { getGeoNodeLocalConfig } from '@js/utils/APIUtils';
+import { setControlProperty } from '@mapstore/framework/actions/controls';
+import { SESSION_MONITORING_DIALOG } from '@js/selectors/monitoring';
 
 /**
 * @module epics/security
 */
 
 const RULE_EXPIRATION_CHECK_INTERVAL = 60 * 1000;
+const DEFAULT_CHECK_SESSION_INTERVAL = 15 * 60 * 1000; // 15 minutes
+
+const checkSessionInterval = getGeoNodeLocalConfig('geoNodeSettings.checkSessionInterval', DEFAULT_CHECK_SESSION_INTERVAL);
+//const checkSessionInterval = 3000;
 
 /**
  * Epic to fetch request configuration rules and update the store
@@ -80,7 +97,61 @@ export const gnRuleExpiredEpic = (action$, store) => {
         });
 };
 
+/**
+ * Epic to monitor user session status and redirect to login if the session is expired server-side
+ */
+export const gnMonitorLogin = (action$) =>
+    Observable.merge(
+        action$.ofType(SESSION_VALID)
+            .mapTo(startLoginMonitoring()),
+
+        action$.ofType(LOGOUT)
+            .mapTo(stopLoginMonitoring()),
+
+        action$.ofType(START_LOGIN_MONITORING)
+            .switchMap(() =>
+                Observable.interval(checkSessionInterval)
+                    .exhaustMap(() =>
+                        Observable.defer(() =>
+                            getUserInfo().then(data => {
+                                //console.log('[gnMonitorLogin] session active', data);
+                                return data;
+                            })
+                        )
+                            .mapTo(null)
+                            .catch(err => {
+                                const status = err?.response?.status || err?.status;
+                                if (status === 401) {
+                                    console.log('[gnMonitorLogin] session expired', err); // eslint-disable-line no-console
+                                    return Observable.of(
+                                        setControlProperty(SESSION_MONITORING_DIALOG, 'enabled', true),
+                                        stopLoginMonitoring()
+                                    );
+                                }
+                                return Observable.of(null);
+                            })
+                    )
+                    .filter(action => action !== null)
+                    .takeUntil(action$.ofType(STOP_LOGIN_MONITORING))
+            )
+    );
+
+/**
+ * Epic to check session validity on every navigation and dispatch SESSION_VALID if the user is logged in.
+ */
+export const gnCheckSession = (action$, store) =>
+    action$.ofType(LOCATION_CHANGE)
+        .filter(() => checkSessionInterval !== 0 && !!isLoggedIn(store.getState()))
+        .switchMap(() => {
+            const authProvider = authProviderSelector(store.getState());
+            return Observable.defer(() => getUserInfo())
+                .map(data => sessionValid(data, authProvider))
+                .catch(() => Observable.empty());
+        });
+
 export default {
     gnUpdateRequestConfigurationRulesEpic,
-    gnRuleExpiredEpic
+    gnRuleExpiredEpic,
+    gnMonitorLogin,
+    gnCheckSession
 };

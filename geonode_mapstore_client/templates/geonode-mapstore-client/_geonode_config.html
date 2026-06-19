@@ -135,6 +135,7 @@
         let geoServerPublicLocation = '{{ GEOSERVER_PUBLIC_LOCATION }}' || '';
         let isMobile = '{{ request.user_agent.is_mobile }}' === 'True' ? true : false;
         let useCORS = geoNodeSettings.USE_CORS || [];
+        let checkSessionInterval = geoNodeSettings.CHECK_SESSION_INTERVAL || 15 * 60 * 1000; // 15 minutes
 
         const searchServicesPayload =  {{SEARCH_SERVICES_PAYLOAD|safe}};
         let searchServicesPatchRules = searchServicesPayload.length ? ['map_viewer', 'dataset_viewr', 'map_viewer_mobile', 'dataset_viewer_mobile'].map(
@@ -223,7 +224,8 @@
                     isPublishedOptionEnabled: isPublishedOptionEnabled,
                     isApprovedOptionEnabled: isApprovedOptionEnabled,
                     resourcesSearchIndex: resourcesSearchIndex,
-                    projectionDefsEndpoint: projectionDefsEndpoint
+                    projectionDefsEndpoint: projectionDefsEndpoint,
+                    checkSessionInterval: checkSessionInterval
                 }
             },
         };

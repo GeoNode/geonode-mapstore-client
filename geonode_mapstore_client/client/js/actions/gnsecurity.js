@@ -7,9 +7,17 @@
  */
 
 export const RULE_EXPIRED = 'GEONODE_SECURITY:RULE_EXPIRED';
+export const START_LOGIN_MONITORING = 'GEONODE_SECURITY:START_LOGIN_MONITORING';
+export const STOP_LOGIN_MONITORING = 'GEONODE_SECURITY:STOP_LOGIN_MONITORING';
 
 export function ruleExpired() {
-    return {
-        type: RULE_EXPIRED
-    };
+    return { type: RULE_EXPIRED };
+}
+
+export function startLoginMonitoring() {
+    return { type: START_LOGIN_MONITORING };
+}
+
+export function stopLoginMonitoring() {
+    return { type: STOP_LOGIN_MONITORING };
 }

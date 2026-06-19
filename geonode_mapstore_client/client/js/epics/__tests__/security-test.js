@@ -13,13 +13,16 @@ import { testEpic } from '@mapstore/framework/epics/__tests__/epicTestUtils';
 import {
     LOAD_REQUESTS_RULES,
     UPDATE_REQUESTS_RULES,
+    SESSION_VALID,
     updateRequestsRules,
     loadRequestsRulesError
 } from '@mapstore/framework/actions/security';
+import { LOCATION_CHANGE } from 'connected-react-router';
 import { ruleExpired } from '@js/actions/gnsecurity';
 import {
     gnUpdateRequestConfigurationRulesEpic,
-    gnRuleExpiredEpic
+    gnRuleExpiredEpic,
+    gnCheckSession
 } from '../security';
 
 let mockAxios;
@@ -522,6 +525,86 @@ describe('security epics', () => {
                 gnRuleExpiredEpic,
                 NUM_ACTIONS,
                 updateRequestsRules(rulesArray),
+                (actions) => {
+                    try {
+                        expect(actions.length).toBe(0);
+                        done();
+                    } catch (e) {
+                        done(e);
+                    }
+                },
+                testState
+            );
+        });
+    });
+
+    describe('gnCheckSession', () => {
+        it('should dispatch SESSION_VALID when user is logged in and userinfo succeeds', (done) => {
+            const NUM_ACTIONS = 1;
+            const mockUserInfo = { username: 'testuser', pk: 1 };
+            const testState = {
+                security: {
+                    user: { username: 'testuser' },
+                    authProvider: 'geonode'
+                }
+            };
+
+            mockAxios.onGet('/api/v2/userinfo/').reply(200, mockUserInfo);
+            testEpic(
+                gnCheckSession,
+                NUM_ACTIONS,
+                { type: LOCATION_CHANGE },
+                (actions) => {
+                    try {
+                        expect(actions.length).toBe(1);
+                        expect(actions[0].type).toBe(SESSION_VALID);
+                        done();
+                    } catch (e) {
+                        done(e);
+                    }
+                },
+                testState
+            );
+        });
+
+        it('should not dispatch any action when user is not logged in', (done) => {
+            const NUM_ACTIONS = 0;
+            const testState = {
+                security: {
+                    user: null
+                }
+            };
+
+            testEpic(
+                gnCheckSession,
+                NUM_ACTIONS,
+                { type: LOCATION_CHANGE },
+                (actions) => {
+                    try {
+                        expect(actions.length).toBe(0);
+                        done();
+                    } catch (e) {
+                        done(e);
+                    }
+                },
+                testState
+            );
+        });
+
+        it('should not dispatch any action when userinfo call fails', (done) => {
+            const NUM_ACTIONS = 0;
+            const testState = {
+                security: {
+                    user: { username: 'testuser' },
+                    authProvider: 'geonode'
+                }
+            };
+
+            mockAxios.onGet('/api/v2/userinfo/').reply(401);
+            testEpic(
+                gnCheckSession,
+                NUM_ACTIONS,
+                { type: LOCATION_CHANGE },
                 (actions) => {
                     try {
                         expect(actions.length).toBe(0);

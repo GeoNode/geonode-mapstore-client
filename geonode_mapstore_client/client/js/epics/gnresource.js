@@ -148,6 +148,8 @@ import { setCanEditProjection, setProjectionsConfig } from '@mapstore/framework/
 import { getResolutionsForProjection, getZoomFromResolution } from '@mapstore/framework/utils/MapUtils';
 import { reprojectBbox } from '@mapstore/framework/utils/CoordinatesUtils';
 
+import { LOGIN_URL } from '@js/api/geonode/v2/constants';
+
 // Wait for the Map plugin to finish mounting before dispatching zoomToExtent.
 // Navigating between dataset pages (e.g. dataset_viewer -> dataset_edit_data_viewer)
 // changes the PluginsContainer key in routes/Viewer.jsx, so React tears down and
@@ -568,7 +570,7 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
                 const pathname = state?.router?.location?.pathname;
                 const formattedUrl = url.format({
                     ...window.location,
-                    pathname: '/account/login/',
+                    pathname: LOGIN_URL,
                     hash: '',
                     search: `?next=${getCataloguePath('/catalogue')}${pathname ? `/#${pathname}` : ''}`
                 });
