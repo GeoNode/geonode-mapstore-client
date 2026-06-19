@@ -1,1 +1,1 @@
-geonode-mapstore-client-vmaster-1f209b1feb32257a7e9497fa48d79de7ab814b82
+geonode-mapstore-client-vmaster-c141373350309821c1d2259d87559b815e1094ab
