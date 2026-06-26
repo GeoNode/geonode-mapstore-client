@@ -8,7 +8,7 @@
 
 import { Observable } from 'rxjs';
 import axios from '@mapstore/framework/libs/ajax';
-import uuid from "uuid";
+import { v4 as uuid } from "uuid";
 import url from "url";
 import get from 'lodash/get';
 import isNil from 'lodash/isNil';
