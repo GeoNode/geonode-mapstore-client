@@ -9,7 +9,7 @@
 import url from 'url';
 import castArray from 'lodash/castArray';
 import omit from 'lodash/omit';
-import uuid from 'uuid/v1';
+import { v4 as uuid } from 'uuid';
 
 export const hashLocationToHref = ({
     location,

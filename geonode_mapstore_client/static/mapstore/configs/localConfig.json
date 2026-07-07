@@ -2433,10 +2433,7 @@
                 "name": "Locate"
             },
             {
-                "name": "WidgetsBuilder",
-                "cfg": {
-                    "disablePluginIf": "{not canDownloadLayer(state('selectedLayerPermissions'))}"
-                }
+                "name": "WidgetsBuilder"
             },
             {
                 "mandatory": true,
