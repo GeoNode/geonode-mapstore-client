@@ -426,7 +426,7 @@ export function cleanStyles(styles = [], excluded = []) {
 
 export function getGeoNodeMapLayers(data) {
     return (data?.map?.layers || [])
-        .filter(layer => layer?.extendedParams?.pk)
+        .filter(layer => layer?.extendedParams?.pk && layer?.group !== "background")
         .map((layer, index) => {
             return {
                 ...(layer.extendedParams.mapLayer?.pk && {

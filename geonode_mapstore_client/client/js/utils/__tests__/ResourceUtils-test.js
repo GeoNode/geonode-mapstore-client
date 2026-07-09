@@ -137,6 +137,16 @@ describe('Test Resource Utils', () => {
                         extendedParams: { pk: 1, mapLayer: { pk: 10 } },
                         opacity: 0.5,
                         visibility: false
+                    },
+                    {
+                        id: '04',
+                        type: 'wms',
+                        name: 'geonode:layer_bg',
+                        url: 'geoserver/wms',
+                        group: "background",
+                        extendedParams: { pk: 1, mapLayer: { pk: 10 } },
+                        opacity: 0.5,
+                        visibility: false
                     }
                 ]
             }
