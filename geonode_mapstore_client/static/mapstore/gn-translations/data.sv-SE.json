@@ -356,6 +356,7 @@
             "addWidget": "Add widget",
             "backToMap": "Back to map",
             "copyConfigurationFrom": "Copy configuration from",
+            "addLayerButton": "Add Layer",
             "copyConfigurationFromTitle": "Copy map viewer configuration",
             "selectLinkedMapViewer": "Select map viewer",
             "mapViewersCatalogFilterPlaceholder": "Filter map viewer resources...",

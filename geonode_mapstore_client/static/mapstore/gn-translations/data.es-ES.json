@@ -395,6 +395,7 @@
             "addWidget": "Agregar widget",
             "backToMap": "Volver al mapa",
             "copyConfigurationFrom": "Copiar configuración de",
+            "addLayerButton": "Add Layer",
             "copyConfigurationFromTitle": "Copiar configuración del visor de mapas",
             "selectLinkedMapViewer": "Seleccionar visor de mapas",
             "mapViewersCatalogFilterPlaceholder": "Filtrar recursos del visor de mapas...",

@@ -359,6 +359,7 @@
             "addWidget": "Adicionar widget",
             "backToMap": "Voltar para o mapa",
             "copyConfigurationFrom": "Copiar configuração de",
+            "addLayerButton": "Add Layer",
             "copyConfigurationFromTitle": "Copiar configuração do visualizador de mapa",
             "selectLinkedMapViewer": "Selecionar visualizador de mapa",
             "mapViewersCatalogFilterPlaceholder": "Filtrar recursos de visualização de mapa...",

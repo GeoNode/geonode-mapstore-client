@@ -1981,8 +1981,7 @@
                         },
                         {
                             "type": "plugin",
-                            "name": "DocumentsCatalog",
-                            "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}"
+                            "name": "AddLayerButton"
                         }
                     ]
                 }
@@ -1997,6 +1996,10 @@
             {
                 "mandatory": true,
                 "name": "MapViewerConfiguration"
+            },
+            {
+                "mandatory": true,
+                "name": "MapViewersCatalog"
             },
             {
                 "mandatory": true,
@@ -2453,10 +2456,6 @@
                     "symbolsPath": "/static/mapstore/symbols/"
                 }
             },
-            {
-                "mandatory": true,
-                "name": "DocumentsCatalog"
-            },
             { 
                 "name": "StyleEditor",
                 "cfg": {
@@ -2470,6 +2469,7 @@
                 "name": "Catalog",
                 "cfg": {
                     "hideIdentifier": true,
+                    "resourceTypes": ["dataset", "document", "map"],
                     "serviceTypes": [
                         { "name": "csw", "label": "CSW" },
                         { "name": "wms", "label": "WMS" },
