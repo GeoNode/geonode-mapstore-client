@@ -18,7 +18,7 @@ import {
 } from '@js/selectors/monitoring';
 
 const goToLogin = (url) => {
-    const nextUrl = url || window.location.href || '/';
+    const nextUrl = url || (window.location.pathname + window.location.search + window.location.hash) || '/';
     window.location.href = LOGIN_URL + '?next=' + encodeURIComponent(nextUrl);
 };
 
