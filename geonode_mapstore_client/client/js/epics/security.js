@@ -39,7 +39,6 @@ const RULE_EXPIRATION_CHECK_INTERVAL = 60 * 1000;
 const DEFAULT_CHECK_SESSION_INTERVAL = 15 * 60 * 1000; // 15 minutes
 
 const checkSessionInterval = getGeoNodeLocalConfig('geoNodeSettings.checkSessionInterval', DEFAULT_CHECK_SESSION_INTERVAL);
-//const checkSessionInterval = 3000;
 
 /**
  * Epic to fetch request configuration rules and update the store
@@ -112,26 +111,19 @@ export const gnMonitorLogin = (action$) =>
             .switchMap(() =>
                 Observable.interval(checkSessionInterval)
                     .exhaustMap(() =>
-                        Observable.defer(() =>
-                            getUserInfo().then(data => {
-                                //console.log('[gnMonitorLogin] session active', data);
-                                return data;
-                            })
-                        )
-                            .mapTo(null)
+                         Observable.fromPromise(getUserInfo())
+                            .ignoreElements()
                             .catch(err => {
                                 const status = err?.response?.status || err?.status;
                                 if (status === 401) {
-                                    console.log('[gnMonitorLogin] session expired', err); // eslint-disable-line no-console
                                     return Observable.of(
                                         setControlProperty(SESSION_MONITORING_DIALOG, 'enabled', true),
                                         stopLoginMonitoring()
                                     );
                                 }
-                                return Observable.of(null);
+                                return Observable.empty();
                             })
                     )
-                    .filter(action => action !== null)
                     .takeUntil(action$.ofType(STOP_LOGIN_MONITORING))
             )
     );
