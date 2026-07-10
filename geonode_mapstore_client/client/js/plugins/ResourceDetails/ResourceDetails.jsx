@@ -462,9 +462,9 @@ export default createPlugin('ResourceDetails', {
                 () => ({}),
                 { onClick: toggleEditMode }
             )(({ onClick, size }) => {
-                return <Button size={size} onClick={onClick}>
+                return (<Button size={size} onClick={onClick}>
                     <Message msgId="gnviewer.editData" />
-                </Button>;
+                </Button>);
             }),
             priority: 1,
             doNotHide: true

@@ -93,103 +93,103 @@ const CreateDatasetAttributeRow = ({
 
     return (
         <>
-        <tr className="gn-dataset-attribute">
-            <td className="gn-attribute-name">
-                <FormGroup
-                    controlId={getAttributeControlId(data, 'name')}
-                    validationState={errors?.name ? 'error' : undefined}
-                >
-                    <FormControl
-                        type="text"
-                        value={data?.name || ''}
-                        disabled={!!geometryAttribute || disabled}
-                        onChange={(event) => handleOnChange({ name: event.target.value })}
-                    />
-                    {errors?.name ? <HelpBlock><Message msgId={errors.name} /></HelpBlock> : null}
-                </FormGroup>
-            </td>
-            <td className="gn-attribute-type">
-                <FormGroup controlId={getAttributeControlId(data, 'type')}>
-                    <FormControl
-                        value={data?.type || ''}
-                        componentClass="select"
-                        placeholder="select"
-                        onChange={handleTypeChange}
-                        disabled={disabled}
-                    >
-                        {typesOptions.map(({ labelId, value }) =>
-                            <option key={value} value={value}>
-                                {getMessageById(context.messages, labelId)}
-                            </option>
-                        )}
-                    </FormControl>
-                </FormGroup>
-            </td>
-            <td className="gn-attribute-nillable">
-                <FormGroup controlId={getAttributeControlId(data, 'nillable')}>
-                    <Checkbox
-                        style={{ paddingTop: 6 }}
-                        checked={!!data?.nillable}
-                        disabled={!!geometryAttribute || disabled}
-                        onChange={(event) =>
-                            handleOnChange({ nillable: event.target.checked })
-                        }
-                    />
-                </FormGroup>
-            </td>
-            <td>
-                <FlexBox column gap="sm">
+            <tr className="gn-dataset-attribute">
+                <td className="gn-attribute-name">
                     <FormGroup
-                        controlId={getAttributeControlId(data, 'restrictions')}
-                        validationState={errors?.restrictionsType ? 'error' : undefined}>
+                        controlId={getAttributeControlId(data, 'name')}
+                        validationState={errors?.name ? 'error' : undefined}
+                    >
                         <FormControl
-                            value={data?.restrictionsType}
+                            type="text"
+                            value={data?.name || ''}
+                            disabled={!!geometryAttribute || disabled}
+                            onChange={(event) => handleOnChange({ name: event.target.value })}
+                        />
+                        {errors?.name ? <HelpBlock><Message msgId={errors.name} /></HelpBlock> : null}
+                    </FormGroup>
+                </td>
+                <td className="gn-attribute-type">
+                    <FormGroup controlId={getAttributeControlId(data, 'type')}>
+                        <FormControl
+                            value={data?.type || ''}
                             componentClass="select"
                             placeholder="select"
-                            disabled={!!geometryAttribute || disabled}
-                            onChange={(event) =>
-                                handleOnChange({ restrictionsType: event.target.value })
-                            }
+                            onChange={handleTypeChange}
+                            disabled={disabled}
                         >
-                            {restrictionsOptions.map(({ labelId, value }) =>
+                            {typesOptions.map(({ labelId, value }) =>
                                 <option key={value} value={value}>
                                     {getMessageById(context.messages, labelId)}
                                 </option>
                             )}
                         </FormControl>
-                        {errors?.restrictionsType ? <HelpBlock>{errors.restrictionsType}</HelpBlock> : null}
                     </FormGroup>
-                    {data?.restrictionsType === RestrictionsTypes.Range ?
-                        <RangeRestriction
-                            errors={errors}
-                            data={data}
-                            handleOnChange={handleOnChange}
-                            disabled={disabled}
-                        /> : null}
-                    {data?.restrictionsType === RestrictionsTypes.Options
-                        ? <EnumRestriction
-                            index={index}
-                            data={data}
-                            handleOnChange={handleOnChange}
-                            getErrorByPath={getErrorByPath}
-                            disabled={disabled}
-                        /> : null}
-                </FlexBox>
-            </td>
-            <td className="gn-attribute-tools">
-                {tools}
-            </td>
-        </tr>
-        {showGeomWarning ? (
-            <tr>
-                <td
-                    className="gn-attribute-geom-warning"
-                    colSpan={5}
-                >
-                   <Message msgId="gnviewer.geometryDatasetWarning" />
+                </td>
+                <td className="gn-attribute-nillable">
+                    <FormGroup controlId={getAttributeControlId(data, 'nillable')}>
+                        <Checkbox
+                            style={{ paddingTop: 6 }}
+                            checked={!!data?.nillable}
+                            disabled={!!geometryAttribute || disabled}
+                            onChange={(event) =>
+                                handleOnChange({ nillable: event.target.checked })
+                            }
+                        />
+                    </FormGroup>
+                </td>
+                <td>
+                    <FlexBox column gap="sm">
+                        <FormGroup
+                            controlId={getAttributeControlId(data, 'restrictions')}
+                            validationState={errors?.restrictionsType ? 'error' : undefined}>
+                            <FormControl
+                                value={data?.restrictionsType}
+                                componentClass="select"
+                                placeholder="select"
+                                disabled={!!geometryAttribute || disabled}
+                                onChange={(event) =>
+                                    handleOnChange({ restrictionsType: event.target.value })
+                                }
+                            >
+                                {restrictionsOptions.map(({ labelId, value }) =>
+                                    <option key={value} value={value}>
+                                        {getMessageById(context.messages, labelId)}
+                                    </option>
+                                )}
+                            </FormControl>
+                            {errors?.restrictionsType ? <HelpBlock>{errors.restrictionsType}</HelpBlock> : null}
+                        </FormGroup>
+                        {data?.restrictionsType === RestrictionsTypes.Range ?
+                            <RangeRestriction
+                                errors={errors}
+                                data={data}
+                                handleOnChange={handleOnChange}
+                                disabled={disabled}
+                            /> : null}
+                        {data?.restrictionsType === RestrictionsTypes.Options
+                            ? <EnumRestriction
+                                index={index}
+                                data={data}
+                                handleOnChange={handleOnChange}
+                                getErrorByPath={getErrorByPath}
+                                disabled={disabled}
+                            /> : null}
+                    </FlexBox>
+                </td>
+                <td className="gn-attribute-tools">
+                    {tools}
                 </td>
             </tr>
-        ) : null}
+            {showGeomWarning ? (
+                <tr>
+                    <td
+                        className="gn-attribute-geom-warning"
+                        colSpan={5}
+                    >
+                        <Message msgId="gnviewer.geometryDatasetWarning" />
+                    </td>
+                </tr>
+            ) : null}
         </>
     );
 };
