@@ -25,7 +25,7 @@ import {
     STOP_LOGIN_MONITORING,
     startLoginMonitoring, stopLoginMonitoring
 } from '@js/actions/gnsecurity';
-import { requestsRulesSelector, isLoggedIn, authProviderSelector } from '@mapstore/framework/selectors/security';
+import { requestsRulesSelector, isLoggedIn, authProviderSelector, userSelector } from '@mapstore/framework/selectors/security';
 import { LOCATION_CHANGE } from 'connected-react-router';
 import { getGeoNodeLocalConfig } from '@js/utils/APIUtils';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
@@ -111,7 +111,7 @@ export const gnMonitorLogin = (action$) =>
             .switchMap(() =>
                 Observable.interval(checkSessionInterval)
                     .exhaustMap(() =>
-                         Observable.fromPromise(getUserInfo())
+                        Observable.fromPromise(getUserInfo())
                             .ignoreElements()
                             .catch(err => {
                                 const status = err?.response?.status || err?.status;
@@ -135,9 +135,11 @@ export const gnCheckSession = (action$, store) =>
     action$.ofType(LOCATION_CHANGE)
         .filter(() => checkSessionInterval !== 0 && !!isLoggedIn(store.getState()))
         .switchMap(() => {
-            const authProvider = authProviderSelector(store.getState());
+            const state = store.getState();
+            const authProvider = authProviderSelector(state);
+            const user = userSelector(state);
             return Observable.defer(() => getUserInfo())
-                .map(data => sessionValid(data, authProvider))
+                .map(data => sessionValid({User: {...user, ...data}}, authProvider))
                 .catch(() => Observable.empty());
         });
 
