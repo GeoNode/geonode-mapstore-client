@@ -616,6 +616,41 @@ describe('security epics', () => {
                 testState
             );
         });
+
+
+        it('should merge the user in state with the userinfo response in the SESSION_VALID payload', (done) => {
+            const NUM_ACTIONS = 1;
+            const mockUserInfo = { sub: '1', email: 'test@geonode.org', preferred_username: 'testuser' };
+            const stateUser = { username: 'testuser', info: { groups: ['registered'] } };
+            const testState = {
+                security: {
+                    user: stateUser,
+                    authProvider: 'geonode'
+                }
+            };
+
+            mockAxios.onGet('/api/v2/userinfo/').reply(200, mockUserInfo);
+            testEpic(
+                gnCheckSession,
+                NUM_ACTIONS,
+                { type: LOCATION_CHANGE },
+                (actions) => {
+                    try {
+                        expect(actions.length).toBe(1);
+                        expect(actions[0].type).toBe(SESSION_VALID);
+                        expect(actions[0].userDetails.User).toEqual({
+                            ...stateUser,
+                            ...mockUserInfo
+                        });
+                        expect(actions[0].authProvider).toBe('geonode');
+                        done();
+                    } catch (e) {
+                        done(e);
+                    }
+                },
+                testState
+            );
+        });
     });
 });
 
