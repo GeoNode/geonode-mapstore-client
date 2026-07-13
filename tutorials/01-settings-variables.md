@@ -20,7 +20,7 @@ THUMBNAIL_SIZE | default size of resource thumbnails | `{"width": 500, "height":
 MAPSTORE_TRANSLATIONS_PATH | list of paths where the client looks for translation files | `["/static/mapstore/ms-translations", "/static/mapstore/gn-translations"]`
 MAPSTORE_PROJECTION_DEFS | list of custom projection definitions to register in the client | []
 MAPSTORE_PROJECTION_DEFS_ENDPOINT | base URL of a GeoServer instance. Enables the remote projection search feature | SITEURL + '/geoserver' (embedded GeoServer)
-
+CHECK_SESSION_INTERVAL | interval in milliseconds to check if the user session is logged (0 for disable the polling) | 900000 (15 minutes)
 
 An example on how to update the `MAPSTORE_BASELAYERS` variable:
 

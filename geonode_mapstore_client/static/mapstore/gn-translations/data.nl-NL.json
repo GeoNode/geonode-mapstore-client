@@ -540,7 +540,10 @@
             "noEditPermissions": "You don't have permission to edit this resource.",
             "errorCloningTitle": "Kan de resource niet klonen",
             "errorDeletingTitle": "Kan de resource niet verwijderen",
-            "errorOperationTitle": "Fout bij het uitvoeren van de bewerking"
+            "errorOperationTitle": "Fout bij het uitvoeren van de bewerking",
+            "sessionExpiredTitle": "Sessie verlopen",
+            "sessionExpiredDescription": "Je sessie is verlopen. Log opnieuw in om door te gaan.",
+            "goToLogin": "Ga naar inloggen"            
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

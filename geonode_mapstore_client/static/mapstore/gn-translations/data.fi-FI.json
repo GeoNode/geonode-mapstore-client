@@ -540,7 +540,10 @@
             "noEditPermissions": "You don't have permission to edit this resource.",
             "errorCloningTitle": "Resurssia ei voi kloonata",
             "errorDeletingTitle": "Resurssia ei voi poistaa",
-            "errorOperationTitle": "Virhe toimenpiteen suorittamisessa"
+            "errorOperationTitle": "Virhe toimenpiteen suorittamisessa",
+            "sessionExpiredTitle": "Istunto vanhentunut",
+            "sessionExpiredDescription": "Istuntosi on vanhentunut. Kirjaudu uudelleen jatkaaksesi.",
+            "goToLogin": "Siirry kirjautumiseen"            
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

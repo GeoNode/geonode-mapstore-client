@@ -568,7 +568,10 @@
             "noEditPermissions": "No tienes permiso para editar este recurso.",
             "errorCloningTitle": "No se puede clonar el recurso",
             "errorDeletingTitle": "No se puede eliminar el recurso",
-            "errorOperationTitle": "Error al realizar la operación"
+            "errorOperationTitle": "Error al realizar la operación",
+            "sessionExpiredTitle": "Sesión expirada",
+            "sessionExpiredDescription": "Tu sesión ha expirado. Por favor, inicia sesión nuevamente para continuar.",
+            "goToLogin": "Ir a iniciar sesión"
         },
         "resourcesCatalog": {
             "anonymous": "Cualquiera",

@@ -569,7 +569,10 @@
             "noEditPermissions": "Vous n'avez pas l'autorisation de modifier cette ressource.",
             "errorCloningTitle": "Impossible de cloner la ressource",
             "errorDeletingTitle": "Impossible de supprimer la ressource",
-            "errorOperationTitle": "Erreur lors de l'exécution de l'opération"
+            "errorOperationTitle": "Erreur lors de l'exécution de l'opération",
+            "sessionExpiredTitle": "Session expirée",
+            "sessionExpiredDescription": "Votre session a expiré. Veuillez vous reconnecter pour continuer.",
+            "goToLogin": "Aller à la connexion"            
         },
         "resourcesCatalog": {
             "anonymous": "N'importe qui",

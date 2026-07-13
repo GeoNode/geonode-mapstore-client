@@ -570,7 +570,10 @@
             "noEditPermissions": "Sie haben keine Berechtigung, diese Ressource zu bearbeiten.",
             "errorCloningTitle": "Ressource kann nicht geklont werden",
             "errorDeletingTitle": "Ressource kann nicht gelöscht werden",
-            "errorOperationTitle": "Fehler beim Ausführen der Operation"
+            "errorOperationTitle": "Fehler beim Ausführen der Operation",
+            "sessionExpiredTitle": "Session abgelaufen",
+            "sessionExpiredDescription": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an, um fortzufahren.",
+            "goToLogin": "Zur Anmeldung"
         },
         "resourcesCatalog": {
             "anonymous": "Jeder",

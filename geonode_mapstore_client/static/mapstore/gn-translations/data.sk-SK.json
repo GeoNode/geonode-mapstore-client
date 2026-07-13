@@ -540,7 +540,10 @@
             "noEditPermissions": "You don't have permission to edit this resource.",
             "errorCloningTitle": "Nie je možné klonovať zdroj",
             "errorDeletingTitle": "Nie je možné vymazať zdroj",
-            "errorOperationTitle": "Pri vykonávaní operácie došlo k chybe"
+            "errorOperationTitle": "Pri vykonávaní operácie došlo k chybe",
+            "sessionExpiredTitle": "Relácia vypršala",
+            "sessionExpiredDescription": "Vaša relácia vypršala. Ak chcete pokračovať, prihláste sa znova.",
+            "goToLogin": "Prejsť na prihlásenie"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

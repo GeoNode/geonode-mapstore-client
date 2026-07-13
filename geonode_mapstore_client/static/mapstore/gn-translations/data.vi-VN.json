@@ -540,7 +540,10 @@
             "noEditPermissions": "You don't have permission to edit this resource.",
             "errorCloningTitle": "Không thể sao chép tài nguyên",
             "errorDeletingTitle": "Không thể xóa tài nguyên",
-            "errorOperationTitle": "Đã xảy ra lỗi khi thực hiện thao tác"
+            "errorOperationTitle": "Đã xảy ra lỗi khi thực hiện thao tác",
+            "sessionExpiredTitle": "Phiên đã hết hạn",
+            "sessionExpiredDescription": "Phiên của bạn đã hết hạn. Vui lòng đăng nhập lại để tiếp tục.",
+            "goToLogin": "Đến trang đăng nhập"            
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

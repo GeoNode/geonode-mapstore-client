@@ -16,7 +16,9 @@ import Theme from '@mapstore/framework/components/theme/Theme';
 import { ErrorBoundary } from 'react-error-boundary';
 import history from '@mapstore/framework/stores/History';
 import ErrorFallback from '@js/components/ErrorFallback';
+import MonitoringDialog from '@js/containers/MonitoringDialog';
 import url from 'url';
+import { LOGIN_URL } from '@js/api/geonode/v2/constants';
 
 export const withRoutes = (routes) => (Component) => {
     const WithRoutes = forwardRef((props, ref) => {
@@ -79,6 +81,8 @@ const Router = forwardRef(({
                         loadingError={locale.localeError}
                     >
                         <ConnectedRouter history={history}>
+                            <>
+                            <MonitoringDialog />
                             <ErrorBoundary
                                 FallbackComponent={ErrorFallback}
                                 onError={e => {
@@ -88,7 +92,7 @@ const Router = forwardRef(({
                                     const routeConfig = route.pageConfig || {};
                                     const Component = route.component;
                                     if (route.protectedRoute && !user && urlHash === route.hash) {
-                                        window.location.href = `/account/login/?next=${encodeURIComponent(window.location.pathname + urlHash)}`;
+                                        window.location.href = `${LOGIN_URL}?next=${encodeURIComponent(window.location.pathname + urlHash)}`;
                                         return null;
                                     }
                                     return (
@@ -110,6 +114,7 @@ const Router = forwardRef(({
                                     );
                                 })}
                             </ErrorBoundary>
+                            </>
                         </ConnectedRouter>
                     </Localized>
                     <Debug />

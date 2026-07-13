@@ -540,7 +540,10 @@
             "noEditPermissions": "You don't have permission to edit this resource.",
             "errorCloningTitle": "无法克隆资源",
             "errorDeletingTitle": "无法删除资源",
-            "errorOperationTitle": "执行操作时发生错误"
+            "errorOperationTitle": "执行操作时发生错误",
+            "sessionExpiredTitle": "会话已过期",
+            "sessionExpiredDescription": "您的会话已过期。请重新登录以继续。",
+            "goToLogin": "前往登录"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

@@ -540,7 +540,10 @@
             "noEditPermissions": "You don't have permission to edit this resource.",
             "errorCloningTitle": "Nije moguće klonirati resurs",
             "errorDeletingTitle": "Nije moguće obrisati resurs",
-            "errorOperationTitle": "Došlo je do greške prilikom izvođenja operacije"
+            "errorOperationTitle": "Došlo je do greške prilikom izvođenja operacije",
+            "sessionExpiredTitle": "Sesija je istekla",
+            "sessionExpiredDescription": "Vaša sesija je istekla. Molimo prijavite se ponovno kako biste nastavili.",
+            "goToLogin": "Idi na prijavu"            
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

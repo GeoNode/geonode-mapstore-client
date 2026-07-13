@@ -571,7 +571,10 @@
             "noEditPermissions": "Non hai l'autorizzazione per modificare questa risorsa.",
             "errorCloningTitle": "Impossibile clonare la risorsa",
             "errorDeletingTitle": "Impossibile eliminare la risorsa",
-            "errorOperationTitle": "Errore durante l'esecuzione dell'operazione"
+            "errorOperationTitle": "Errore durante l'esecuzione dell'operazione",
+            "sessionExpiredTitle": "Sessione scaduta",
+            "sessionExpiredDescription": "La tua sessione è scaduta. Effettua nuovamente il login per continuare.",
+            "goToLogin": "Vai al login"            
         },
         "resourcesCatalog": {
             "anonymous": "Chiunque",

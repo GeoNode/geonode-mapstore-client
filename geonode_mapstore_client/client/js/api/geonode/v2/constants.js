@@ -56,6 +56,8 @@ export const ASSETS = 'assets';
 export const RULES = 'rules';
 export const USER_INFO = 'userinfo';
 
+export const LOGIN_URL = '/account/login/';
+
 export const setEndpoints = (data) => {
     endpoints = { ...endpoints, ...data };
 };

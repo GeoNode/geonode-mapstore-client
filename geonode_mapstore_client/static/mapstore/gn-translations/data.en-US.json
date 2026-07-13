@@ -571,7 +571,10 @@
             "noEditPermissions": "You don't have permission to edit this resource.",
             "errorCloningTitle": "Cannot clone the resource",
             "errorDeletingTitle": "Cannot delete the resource",
-            "errorOperationTitle": "Error occurred while performing the operation"
+            "errorOperationTitle": "Error occurred while performing the operation",
+            "sessionExpiredTitle": "Session Expired",
+            "sessionExpiredDescription": "Your session has expired. Please log in again to continue.",
+            "goToLogin": "Go to Login"
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",

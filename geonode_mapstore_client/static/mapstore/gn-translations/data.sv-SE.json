@@ -541,7 +541,10 @@
             "noEditPermissions": "You don't have permission to edit this resource.",
             "errorCloningTitle": "Kan inte klona resursen",
             "errorDeletingTitle": "Kan inte ta bort resursen",
-            "errorOperationTitle": "Ett fel uppstod vid utförandet av operationen"
+            "errorOperationTitle": "Ett fel uppstod vid utförandet av operationen",
+            "sessionExpiredTitle": "Sessionen har upphört",
+            "sessionExpiredDescription": "Din session har upphört. Vänligen logga in igen för att fortsätta.",
+            "goToLogin": "Gå till inloggning" 
         },
         "resourcesCatalog": {
             "anonymous": "Anyone",
