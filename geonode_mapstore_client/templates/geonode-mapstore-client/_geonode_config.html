@@ -276,6 +276,20 @@
         }
         */
 
+        Object.keys(localConfig.plugins)
+           .filter((pageName) => pageName.indexOf('map_viewer') !== -1)
+           .forEach((pageName) => {
+               localConfig.plugins[pageName].forEach((plugin) => {
+                   if (plugin.name === 'Map') {
+                       plugin.cfg = {
+                           ...plugin.cfg,
+                           coalesceWMSLayers: true,
+                           coalesceWMSLayersMaxGroupSize: 10
+                       };
+                   }
+               });
+           });
+           
         return _.mergeWith(localConfig, {
             // ...my override config
         }, function(objValue, srcValue, key) {
