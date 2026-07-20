@@ -1858,6 +1858,8 @@
             {
                 "name": "Map",
                 "cfg": {
+                    "coalesceWMSLayers": true,
+                    "coalesceWMSLayersMaxGroupSize": 10,
                     "mapOptions": {
                         "openlayers": {
                             "attribution": {
