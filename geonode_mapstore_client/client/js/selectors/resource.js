@@ -139,7 +139,7 @@ export const getPermissionsPayload = (state) => {
 };
 
 const inheritsPerms = (user = null, groups = []) => {
-    return user && groups.some(group => user.info.groups.some(userGroup => userGroup === group.name) && group.permissions === 'manage') || false;
+    return user && groups.some(group => user.groups.some(userGroup => userGroup === group.name) && group.permissions === 'manage') || false;
 };
 
 export const canEditPermissions = (state) => {
