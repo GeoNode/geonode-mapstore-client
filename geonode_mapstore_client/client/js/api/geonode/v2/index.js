@@ -491,7 +491,7 @@ export const getAccountInfo = () => {
     const apikey = getApiToken();
     return getUserInfo(apikey)
         .then((info) => {
-            const {preferred_username: username, sub: pk } = info
+            const {preferred_username: username, sub: pk } = info;
             return {
                 ...info,
                 pk,
