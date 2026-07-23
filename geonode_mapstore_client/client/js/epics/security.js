@@ -13,8 +13,6 @@ import {
     UPDATE_REQUESTS_RULES,
     updateRequestsRules,
     loadRequestsRulesError,
-    SESSION_VALID,
-    sessionValid,
     LOGOUT
 } from '@mapstore/framework/actions/security';
 import { getRequestRules } from '@js/api/geonode/security';
@@ -25,7 +23,7 @@ import {
     STOP_LOGIN_MONITORING,
     startLoginMonitoring, stopLoginMonitoring
 } from '@js/actions/gnsecurity';
-import { requestsRulesSelector, isLoggedIn, authProviderSelector, userSelector } from '@mapstore/framework/selectors/security';
+import { requestsRulesSelector, isLoggedIn } from '@mapstore/framework/selectors/security';
 import { LOCATION_CHANGE } from 'connected-react-router';
 import { getGeoNodeLocalConfig } from '@js/utils/APIUtils';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
@@ -99,9 +97,10 @@ export const gnRuleExpiredEpic = (action$, store) => {
 /**
  * Epic to monitor user session status and redirect to login if the session is expired server-side
  */
-export const gnMonitorLogin = (action$) =>
+export const gnMonitorLogin = (action$, store) =>
     Observable.merge(
-        action$.ofType(SESSION_VALID)
+        action$.ofType(LOCATION_CHANGE)
+            .filter(() => checkSessionInterval !== 0 && !!isLoggedIn(store.getState()))
             .mapTo(startLoginMonitoring()),
 
         action$.ofType(LOGOUT)
@@ -128,24 +127,8 @@ export const gnMonitorLogin = (action$) =>
             )
     );
 
-/**
- * Epic to check session validity on every navigation and dispatch SESSION_VALID if the user is logged in.
- */
-export const gnCheckSession = (action$, store) =>
-    action$.ofType(LOCATION_CHANGE)
-        .filter(() => checkSessionInterval !== 0 && !!isLoggedIn(store.getState()))
-        .switchMap(() => {
-            const state = store.getState();
-            const authProvider = authProviderSelector(state);
-            const user = userSelector(state);
-            return Observable.defer(() => getUserInfo())
-                .map(data => sessionValid({User: {...user, ...data}}, authProvider))
-                .catch(() => Observable.empty());
-        });
-
 export default {
     gnUpdateRequestConfigurationRulesEpic,
     gnRuleExpiredEpic,
-    gnMonitorLogin,
-    gnCheckSession
+    gnMonitorLogin
 };
