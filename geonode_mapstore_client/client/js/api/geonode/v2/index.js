@@ -491,14 +491,14 @@ export const getAccountInfo = () => {
     const apikey = getApiToken();
     return getUserInfo(apikey)
         .then((info) => {
-            return getUserByPk(info.sub, apikey)
-                .then((user) => ({
-                    ...user,
-                    info,
-                    // TODO: remove when the href is provided by the server
-                    hrefProfile: `/people/profile/${user.username}/`
-                }))
-                .catch(() => ({ info }));
+            const {preferred_username: username, sub: pk } = info;
+            return {
+                ...info,
+                pk,
+                username,
+                // TODO: remove when the href is provided by the server
+                hrefProfile: `/people/profile/${username}/`
+            };
         })
         .catch(() => null);
 };

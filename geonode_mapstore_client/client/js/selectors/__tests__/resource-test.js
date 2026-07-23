@@ -52,9 +52,7 @@ const testState = {
     },
     security: {
         user: {
-            info: {
-                groups: ['test-group']
-            }
+            groups: ['test-group']
         }
     }
 };

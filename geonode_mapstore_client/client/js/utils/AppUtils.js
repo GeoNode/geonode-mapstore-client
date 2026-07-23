@@ -188,11 +188,11 @@ export function setupConfiguration({
     setConfigProp('locale', locale);
     const geoNodeResourcesInfo = getConfigProp('geoNodeResourcesInfo') || {};
     setConfigProp('geoNodeResourcesInfo', { ...geoNodeResourcesInfo, ...resourcesTotalCount });
-    const securityState = user?.info?.access_token
+    const securityState = user?.access_token
         ? {
             security: {
                 user: user,
-                token: user.info.access_token
+                token: user.access_token
             }
         }
         : undefined;
