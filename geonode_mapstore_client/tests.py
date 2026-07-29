@@ -523,3 +523,32 @@ class BaseConfigurationRuleHandlerTestCase(GeoNodeBaseTestSupport):
         
         self.assertTrue(token1_found, "User1's token should be in their rules")
         self.assertTrue(token2_found, "User2's token should be in their rules")
+
+
+class MetadataUrlizeTestCase(TestCase):
+    """
+    Test cases for the gn_urlize filter used by the metadata view templates.
+    """
+
+    def render(self, value):
+        from django.template import Context, Template
+
+        template = Template("{% load metadata_tags %}{{ value|gn_urlize }}")
+        return template.render(Context({"value": value})).strip()
+
+    def test_url_becomes_a_link_opening_in_a_new_page(self):
+        self.assertEqual(
+            self.render("https://test.example.com"),
+            '<a href="https://test.example.com" target="_blank" '
+            'rel="noopener noreferrer">https://test.example.com</a>',
+        )
+
+    def test_urls_are_linked_within_a_text(self):
+        rendered = self.render("See http://a.example.com and https://b.example.com now")
+        self.assertEqual(rendered.count("<a href="), 2)
+        self.assertTrue(rendered.startswith("See <a href="))
+        self.assertTrue(rendered.endswith("</a> now"))
+
+    def test_text_without_url_is_unchanged(self):
+        self.assertEqual(self.render("No abstract provided"), "No abstract provided")
+
