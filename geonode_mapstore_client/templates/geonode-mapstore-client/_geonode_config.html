@@ -65,6 +65,8 @@
         let languages = geoNodeSettings.LANGUAGES;
         let projectionDefs = geoNodeSettings.PROJECTION_DEFS || [];
         let projectionDefsEndpoint = geoNodeSettings.PROJECTION_DEFS_ENDPOINT || '';
+        let wmsMaxURLLength = geoNodeSettings.WMS_MAX_URL_LENGTH || Infinity;
+        let coalesceWMSLayers = geoNodeSettings.COALESCE_WMS_LAYERS;
         let pluginsConfigPatchRules  = geoNodeSettings.PLUGINS_CONFIG_PATCH_RULES || [];
         let translationsPath = geoNodeSettings.TRANSLATIONS_PATH;
         let extensionsFolder = geoNodeSettings.EXTENSIONS_FOLDER_PATH;
@@ -193,6 +195,10 @@
                     }
                 },
                 projectionDefs: projectionDefs,
+                miscSettings: {
+                    maxURLLength: wmsMaxURLLength,
+                    coalesceWMSLayers: coalesceWMSLayers
+                },
                 geoNodeCustomFilters: customFilters,
                 geoNodeCardsMenuItems: cardsMenuItems,
                 // the properties inside geoNodeSettings are stored in the state

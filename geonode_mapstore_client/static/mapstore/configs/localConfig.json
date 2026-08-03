@@ -90,6 +90,10 @@
         }
     ],
     "projectionDefs": [],
+    "miscSettings": {
+        "maxURLLength": null,
+        "coalesceWMSLayers": false
+    },
     "supportedLocales": {
         "en": {
             "code": "en-US",
@@ -1875,6 +1879,12 @@
                             "container": "#footer-scalebar-container"
                         }
                     }
+                }
+            },
+            {
+                "name": "Settings",
+                "cfg": {
+                    "wrap": true
                 }
             },
             {
