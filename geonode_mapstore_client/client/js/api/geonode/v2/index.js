@@ -491,7 +491,8 @@ export const getAccountInfo = () => {
     const apikey = getApiToken();
     return getUserInfo(apikey)
         .then((info) => {
-            const {preferred_username: username, sub: pk } = info;
+            let {preferred_username: username, sub: pk } = info;
+            pk = Number.isNaN(Number(pk)) ? pk : Number(pk);
             return {
                 ...info,
                 pk,
