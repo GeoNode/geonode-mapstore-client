@@ -1,9 +1,11 @@
+{% load metadata_tags %}
+
 <div class="gn-metadata-view">
     <div class="gn-metadata">
         <div class="gn-metadata-container">
             <div class="gn-metadata-layout">
                 <div class="gn-metadata-groups">
-                    <div id="gn-metadata-title" class="gn-metadata-title">Metadata: {{resource.title}}</div>
+                    <div id="gn-metadata-title" class="gn-metadata-title">Metadata: {{resource.title|gn_urlize}}</div>
                     {% for group_key, metadata in metadata_groups.items %}
                     <div class="gn-metadata-group gn-metadata-group-view">
                         <div class="gn-metadata-group-title">{{group_key}}</div>
