@@ -190,13 +190,47 @@ const ConnectedMapViewersCatalogButton = connect(
     }
 )((MapViewersCatalogButton));
 
+const AddLayerActionButton = ({
+    onClick,
+    size,
+    variant
+}) => {
+
+    const handleClickButton = () => {
+        onClick();
+    };
+
+    return (
+        <Button
+            size={size}
+            onClick={handleClickButton}
+            variant={variant}
+        >
+            <Message msgId="gnviewer.addLayerButton" />
+        </Button>
+    );
+};
+
+const ConnectedAddLayerActionButton = connect(
+    createSelector([], () => ({})),
+    {
+        onClick: setControlProperty.bind(null, 'metadataexplorer', 'enabled', true, true)
+    }
+)((AddLayerActionButton));
+
 export default createPlugin('MapViewersCatalog', {
     component: ConnectedMapViewersCatalogPlugin,
     containers: {
-        ActionNavbar: {
-            name: 'MapViewersCatalog',
-            Component: ConnectedMapViewersCatalogButton
-        }
+        ActionNavbar: [
+            {
+                name: 'AddLayerButton',
+                Component: ConnectedAddLayerActionButton
+            },
+            {
+                name: 'MapViewersCatalog',
+                Component: ConnectedMapViewersCatalogButton
+            }
+        ]
     },
     epics: {
         ...contextcreatorEpics
