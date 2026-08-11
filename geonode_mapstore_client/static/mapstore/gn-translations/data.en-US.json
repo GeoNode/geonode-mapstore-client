@@ -477,6 +477,8 @@
             "replaceDatasetTitle": "Replace dataset",
             "updateDataset": "Update Dataset",
             "updateDatasetTitle": "Update dataset",
+            "updateDocument": "Update Document",
+            "updateDocumentTitle": "Update document",
             "metadataFor": "Metadata:",
             "metadataUpdateError": "It was not possible to update the metadata",
             "metadataNotFound": "Metadata not found for the selected resource",

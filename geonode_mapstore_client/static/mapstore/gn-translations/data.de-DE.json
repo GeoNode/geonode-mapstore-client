@@ -476,6 +476,8 @@
             "replaceDatasetTitle": "Datensatz ersetzen",
             "updateDataset": "Datensatz aktualisieren",
             "updateDatasetTitle": "Datensatz aktualisieren",
+            "updateDocument": "Dokument aktualisieren",
+            "updateDocumentTitle": "Dokument aktualisieren",
             "metadataFor": "Metadaten:",
             "metadataUpdateError": "Die Metadaten konnten nicht aktualisiert werden",
             "metadataNotFound": "Für die ausgewählte Ressource wurden keine Metadaten gefunden",

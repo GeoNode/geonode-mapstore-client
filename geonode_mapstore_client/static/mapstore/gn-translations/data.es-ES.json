@@ -474,6 +474,8 @@
             "replaceDatasetTitle": "Reemplazar conjunto de datos",
             "updateDataset": "Actualizar Conjunto De Datos",
             "updateDatasetTitle": "Actualizar conjunto de datos",
+            "updateDocument": "Actualizar Documento",
+            "updateDocumentTitle": "Actualizar documento",
             "metadataFor": "Metadatos:",
             "metadataUpdateError": "No fue posible actualizar los metadatos",
             "metadataNotFound": "No se encontraron metadatos para el recurso seleccionado",

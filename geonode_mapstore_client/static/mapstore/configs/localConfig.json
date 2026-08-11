@@ -2896,6 +2896,10 @@
                                     "type": "link",
                                     "href": "{getMetadataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editMetadata"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "OperationReplaceDocument"
                                 }
                             ]
                         },
@@ -2956,6 +2960,54 @@
             },
             {
                 "name": "MetadataViewer"
+            },
+            {
+                "name": "Operation",
+                "cfg": {
+                    "id": "replace-document",
+                    "labelId": "gnviewer.updateDocument",
+                    "containerPosition": "header",
+                    "iconName": "refresh",
+                    "titleMsgId": "gnviewer.updateDocumentTitle",
+                    "blocking": true,
+                    "action": "replace",
+                    "pageReload": true,
+                    "api": {
+                        "uploadActions": [
+                            {
+                                "labelId": "gnviewer.replace",
+                                "action": "document_replace",
+                                "variant": "danger",
+                                "showConfirm": true
+                            }
+                        ],
+                        "upload": {
+                            "url": "{getEndpointUrl('uploads', '/upload')}",
+                            "maxParallelUploads": 1,
+                            "body": {
+                                "file": {
+                                    "resource_pk": "{get(state('gnResourceData'), 'pk')}",
+                                    "base_file": "{getUploadMainFile}",
+                                    "action": "document_replace"
+                                }
+                            },
+                            "supportedFiles": "{getSupportedFilesByResourceType('document')}"
+                        },
+                        "executionRequest": {
+                            "url": "{getEndpointUrl('executionrequest')}",
+                            "params": {
+                                "filter{action.in}": ["document_replace"],
+                                "sort[]": "-created",
+                                "filter{geonode_resource}": "{get(state('gnResourceData'), 'pk')}"
+                            }
+                        }
+                    }
+                },
+                "override": {
+                    "ActionNavbar": {
+                        "name": "OperationReplaceDocument"
+                    }
+                }
             }
         ],
         "dashboard_viewer": [
