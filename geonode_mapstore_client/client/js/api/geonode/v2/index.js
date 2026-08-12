@@ -698,7 +698,7 @@ export const copyResource = (resource) => {
         ...(resource.data && { data: resource.data })
     };
     const action = resource.resource_type === "document" ? "document_clone" : "";
-    const cloneData = 'defaults=' + JSON.stringify(defaults) + (action ? '&action=' + action : '');
+    const cloneData = {'defaults': defaults, ...(action && {action})};
     return axios.put(getEndpointUrl(RESOURCES, `/${resource.pk}/copy`), cloneData)
         .then(({ data }) => data);
 };
