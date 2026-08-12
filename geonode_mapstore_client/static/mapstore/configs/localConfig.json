@@ -2645,6 +2645,12 @@
                         { "value": "EPSG:3857", "label": "EPSG:3857" }
                     ]
                 }
+            },
+            {
+                "name": "ExecutionTracker",
+                "cfg": {
+                    "containerPosition": "header"
+                }
             }
         ],
         "geostory_viewer": [
@@ -3007,6 +3013,12 @@
                     "ActionNavbar": {
                         "name": "OperationReplaceDocument"
                     }
+                }
+            },
+            {
+                "name": "ExecutionTracker",
+                "cfg": {
+                    "containerPosition": "header"
                 }
             }
         ],
