@@ -500,6 +500,11 @@ describe('Test Resource Utils', () => {
                         id: 'layer_wms_no_style',
                         type: 'wms',
                         extendedParams: { pk: 5 }
+                    },
+                    {
+                        id: 'layer_no_dataset_pk',
+                        type: 'wms',
+                        extendedParams: { alternate: "test" }
                     }
                 ]
             }
