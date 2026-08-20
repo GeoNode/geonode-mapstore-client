@@ -29,6 +29,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 */
 
 /*!
+  Copyright (c) 2015 Jed Watson.
+  Based on code that is Copyright 2013-2015, Facebook, Inc.
+  All rights reserved.
+*/
+
+/*!
   Copyright (c) 2016 Jed Watson.
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/classnames
@@ -39,6 +45,18 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/react-select
 */
+
+/*!
+ * Adapted from jQuery UI core
+ *
+ * http://jqueryui.com
+ *
+ * Copyright 2014 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/category/ui-core/
+ */
 
 /*!
  * Programatically add the following
