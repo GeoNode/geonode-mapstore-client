@@ -2976,7 +2976,7 @@
                     "iconName": "refresh",
                     "titleMsgId": "gnviewer.updateDocumentTitle",
                     "blocking": true,
-                    "action": "replace",
+                    "action": "document_replace",
                     "pageReload": true,
                     "api": {
                         "uploadActions": [

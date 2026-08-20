@@ -121,7 +121,8 @@ function UploadDocument({
 }
 
 UploadDocument.propTypes = {
-    location: PropTypes.object
+    location: PropTypes.object,
+    refreshTime: PropTypes.number
 };
 
 UploadDocument.defaultProps = {
