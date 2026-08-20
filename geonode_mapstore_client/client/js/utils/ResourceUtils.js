@@ -428,13 +428,12 @@ export function getGeoNodeMapLayers(data) {
     return (data?.map?.layers || [])
         .filter(layer => layer?.extendedParams?.pk && layer?.group !== "background")
         .map((layer, index) => {
+            let { mapLayer, pk: datasetPk } = layer?.extendedParams ?? {};
+            datasetPk = isNaN(Number(datasetPk)) ? datasetPk : Number(datasetPk);
             return {
-                ...(layer.extendedParams.mapLayer?.pk && {
-                    pk: layer.extendedParams.mapLayer.pk
-                }),
-                extra_params: {
-                    msId: layer.id
-                },
+                ...(mapLayer?.pk && { pk: mapLayer.pk }),
+                ...(datasetPk && { dataset: datasetPk }),
+                extra_params: { msId: layer.id },
                 ...(layer.type === 'wms' && {
                     current_style: layer.style || ''
                 }),
