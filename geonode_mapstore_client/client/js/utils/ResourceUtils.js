@@ -315,7 +315,7 @@ export const getResourceStatuses = (resource, userInfo) => {
         isDeleting,
         isCopying,
         items: [
-            ...(resource.advertised === false ? [{
+            ...(resource?.advertised === false ? [{
                 type: 'icon',
                 tooltipId: 'resourcesCatalog.unadvertised',
                 glyph: 'eye-slash'
