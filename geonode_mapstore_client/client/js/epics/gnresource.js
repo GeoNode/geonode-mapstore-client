@@ -136,7 +136,7 @@ import {
 import { setContext, setResource as setResourceContext } from '@mapstore/framework/actions/context';
 import { REDUCERS_LOADED } from '@mapstore/framework/actions/storemanager';
 import { wrapStartStop } from '@mapstore/framework/observables/epics';
-import { parseDevHostname } from '@js/utils/APIUtils';
+import { getStatusMessage, parseDevHostname } from '@js/utils/APIUtils';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { catalogClose, addLayerAndDescribe } from '@mapstore/framework/actions/catalog';
 import { VisualizationModes } from '@mapstore/framework/utils/MapTypeUtils';
@@ -604,7 +604,7 @@ export const gnViewerRequestNewResourceConfig = (action$, store) =>
                 .catch((error) => {
                     return Observable.of(
                         ...getResetActions(),
-                        resourceConfigError(error?.data?.detail || error?.statusText || error?.message)
+                        resourceConfigError(error?.data?.detail || getStatusMessage(error) || error?.message)
                     );
                 });
         });
@@ -660,7 +660,7 @@ export const gnViewerRequestResourceConfig = (action$, store) =>
                 .catch((error) => {
                     return Observable.of(
                         ...getResetActions(),
-                        resourceConfigError(error?.data?.detail || error?.statusText || error?.message)
+                        resourceConfigError(error?.data?.detail || getStatusMessage(error) || error?.message)
                     );
                 });
         });
