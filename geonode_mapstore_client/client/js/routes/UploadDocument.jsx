@@ -13,37 +13,64 @@ import { createSelector } from 'reselect';
 import UploadPanel from '@js/plugins/Operation/components/UploadPanel';
 import ExecutionRequestTable from '@js/plugins/Operation/components/ExecutionRequestTable';
 import useUpload from '@js/plugins/Operation/hooks/useUpload';
+import useExecutionRequest from '@js/plugins/Operation/hooks/useExecutionRequest';
 import {
     getUploadMainFile,
     getUploadProperty,
     getSupportedFilesByResourceType,
     getMaxParallelUploads,
     getMaxAllowedSizeByResourceType,
-    hasExtensionInUrl,
-    getUploadFileName
+    hasExtensionInUrl
 } from '@js/utils/UploadUtils';
+import {
+    getEndpointUrl,
+    UPLOADS,
+    EXECUTION_REQUEST
+} from '@js/api/geonode/v2/constants';
 import { canAddRemoteResource } from '@js/selectors/resource';
 
-function UploadDocument({uploadConfig, enableRemoteUploads = false}) {
-
-    const [requests, setRequests] = useState([]);
+function UploadDocument({
+    refreshTime,
+    uploadConfig,
+    enableRemoteUploads = false
+}) {
 
     const api = {
         upload: {
-            url: '/documents/upload?no__redirect=true',
+            url: getEndpointUrl(UPLOADS, '/upload'),
             body: {
                 file: {
-                    'title': getUploadFileName,
-                    'doc_file': getUploadMainFile
+                    'base_file': getUploadMainFile,
+                    'action': "document_upload"
                 },
                 remote: {
-                    'title': getUploadFileName,
-                    'doc_url': getUploadProperty('url'),
-                    'extension': getUploadProperty('remoteType')
+                    'url': getUploadProperty('url'),
+                    'extension': getUploadProperty('remoteType'),
+                    'action': "document_upload"
                 }
+            }
+        },
+        executionRequest: {
+            url: getEndpointUrl(EXECUTION_REQUEST),
+            params: {
+                'filter{action}': 'document_upload',
+                'sort[]': '-created'
             }
         }
     };
+
+    const [forceRequests, setForceRequests] = useState(0);
+
+    const {
+        requests,
+        uploadsToRequest,
+        deleteRequest
+    } = useExecutionRequest({
+        api: api.executionRequest,
+        forceRequests,
+        refreshTime,
+        onRefresh: () => {}
+    });
 
     const {
         progress,
@@ -54,25 +81,9 @@ function UploadDocument({uploadConfig, enableRemoteUploads = false}) {
         uploadRequest
     } = useUpload({
         api: api.upload,
-        onComplete: (responses, successfulUploads) => {
-            setRequests(prevRequests =>[
-                ...successfulUploads.map(({ data, upload }) => {
-                    return {
-                        exec_id: upload.id,
-                        name: getUploadFileName({ upload }),
-                        created: Date.now(),
-                        status: 'finished',
-                        output_params: {
-                            resources: [
-                                {
-                                    detail_url: data.url
-                                }
-                            ]
-                        }
-                    };
-                }),
-                ...prevRequests
-            ]);
+        onComplete: (_, successfulUploads) => {
+            uploadsToRequest(successfulUploads);
+            setForceRequests(prevForceRequests => prevForceRequests + 1);
         }
     });
 
@@ -102,9 +113,7 @@ function UploadDocument({uploadConfig, enableRemoteUploads = false}) {
                 titleMsgId="gnviewer.uploadDocument"
                 descriptionMsgId="gnviewer.dragAndDropFile"
                 requests={requests}
-                onDelete={(deleteId) => {
-                    setRequests(prevRequests => prevRequests.filter(request => request.exec_id !== deleteId));
-                }}
+                onDelete={deleteRequest}
                 {...uploadConfig}
             />
         </UploadPanel>
@@ -112,11 +121,12 @@ function UploadDocument({uploadConfig, enableRemoteUploads = false}) {
 }
 
 UploadDocument.propTypes = {
-    location: PropTypes.object
+    location: PropTypes.object,
+    refreshTime: PropTypes.number
 };
 
 UploadDocument.defaultProps = {
-
+    refreshTime: 3000
 };
 
 const ConnectedUploadDocument = connect(

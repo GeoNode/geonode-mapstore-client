@@ -155,6 +155,7 @@ describe('Test Resource Utils', () => {
         expect(mapLayers.length).toBe(1);
         expect(mapLayers[0]).toEqual({
             pk: 10,
+            dataset: 1,
             extra_params: {
                 msId: '03'
             },
@@ -471,7 +472,78 @@ describe('Test Resource Utils', () => {
         const mapLayers = getGeoNodeMapLayers(data);
         expect(mapLayers.length).toBe(1);
         expect(mapLayers[0].pk).toBe(undefined);
+        expect(mapLayers[0].dataset).toBe(1);
         expect(mapLayers[0].name).toBe('geonode:layer');
+    });
+
+    it('getGeoNodeMapLayers handle dataset payload', () => {
+        const data = {
+            map: {
+                layers: [
+                    {
+                        id: 'layer_1',
+                        type: 'wms',
+                        name: 'geonode:layer_1',
+                        extendedParams: { pk: '1', mapLayer: { pk: 101 }, alternate: 'geonode:custom_alternate' },
+                        style: 'custom_style',
+                        visibility: true
+                    },
+                    {
+                        id: 'layer_2',
+                        type: 'vector',
+                        name: 'geonode:layer_2',
+                        extendedParams: { pk: 'non-numeric-uuid' },
+                        opacity: 0,
+                        visibility: false
+                    },
+                    {
+                        id: 'layer_wms_no_style',
+                        type: 'wms',
+                        extendedParams: { pk: 5 }
+                    },
+                    {
+                        id: 'layer_no_dataset_pk',
+                        type: 'wms',
+                        extendedParams: { alternate: "test" }
+                    }
+                ]
+            }
+        };
+        const mapLayers = getGeoNodeMapLayers(data);
+        expect(mapLayers.length).toBe(3);
+        expect(mapLayers[0]).toEqual({
+            pk: 101,
+            dataset: 1,
+            extra_params: {
+                msId: 'layer_1'
+            },
+            current_style: 'custom_style',
+            name: 'geonode:custom_alternate',
+            order: 0,
+            opacity: 1,
+            visibility: true
+        });
+        expect(mapLayers[1]).toEqual({
+            dataset: 'non-numeric-uuid',
+            extra_params: {
+                msId: 'layer_2'
+            },
+            name: 'geonode:layer_2',
+            order: 1,
+            opacity: 0,
+            visibility: false
+        });
+        expect(mapLayers[2]).toEqual({
+            dataset: 5,
+            extra_params: {
+                msId: 'layer_wms_no_style'
+            },
+            current_style: '',
+            name: '',
+            order: 2,
+            opacity: 1,
+            visibility: undefined
+        });
     });
 
     it('getGeoNodeMapLayers filters out layers without extendedParams.pk', () => {

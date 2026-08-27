@@ -24,7 +24,18 @@ def resource_urls(request):
             "type": "geonode",
             "url": SITE_URL,
             "autoload": True,
-            "title": "GeoNode"
+            "title": "GeoNode",
+            "resourceTypes": ["dataset", "document", "map"],
+        }
+    }
+    default_dashboard_catalogue_selected_service = "GeoNode"
+    default_dashboard_catalogue_services = {
+        "GeoNode": {
+            "type": "geonode",
+            "url": SITE_URL,
+            "autoload": True,
+            "title": "GeoNode",
+            "resourceTypes": ["dataset"],
         }
     }
     defaults = dict(GEOAPPS=["GeoStory", "GeoDashboard", "MapViewer"])
@@ -35,9 +46,9 @@ def resource_urls(request):
         "CATALOGUE_SELECTED_SERVICE": getattr(
             settings, "MAPSTORE_CATALOGUE_SELECTED_SERVICE", default_catalogue_selected_service
         ),
-        "DASHBOARD_CATALOGUE_SERVICES": getattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SERVICES", default_catalogue_services),
+        "DASHBOARD_CATALOGUE_SERVICES": getattr(settings, "MAPSTORE_DASHBOARD_CATALOGUE_SERVICES", default_dashboard_catalogue_services),
         "DASHBOARD_CATALOGUE_SELECTED_SERVICE": getattr(
-            settings, "MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE", default_catalogue_selected_service
+            settings, "MAPSTORE_DASHBOARD_CATALOGUE_SELECTED_SERVICE", default_dashboard_catalogue_selected_service
         ),
         "CREATE_LAYER": getattr(settings, "CREATE_LAYER", False),
         "DEFAULT_MAP_CENTER_X": getattr(settings, "DEFAULT_MAP_CENTER_X", 0),
@@ -57,6 +68,7 @@ def resource_urls(request):
         "ALLOWED_DOCUMENT_TYPES": getattr(settings, "ALLOWED_DOCUMENT_TYPES", []),
         "LANGUAGES": getattr(settings, "LANGUAGES", []),
         "WMS_MAX_URL_LENGTH": getattr(settings, "WMS_MAX_URL_LENGTH", None),
+        "COALESCE_WMS_LAYERS": getattr(settings, "COALESCE_WMS_LAYERS", False),
         "TRANSLATIONS_PATH": getattr(
             settings,
             "MAPSTORE_TRANSLATIONS_PATH",

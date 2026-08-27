@@ -24,8 +24,8 @@ import SecurityPopup from "@mapstore/framework/plugins/SecurityPopup";
 import BackgroundSelector from '@mapstore/framework/plugins/BackgroundSelector';
 import CameraPosition from '@mapstore/framework/plugins/CameraPosition';
 import CRSSelector from '@mapstore/framework/plugins/CRSSelector';
-import CatalogPlugin from '@mapstore/framework/plugins/Catalog';
 
+import CatalogPlugin from '@js/plugins/Catalog';
 import OperationPlugin from '@js/plugins/Operation';
 import ExecutionTrackerPlugin from '@js/plugins/ExecutionTracker';
 import MetadataEditorPlugin from '@js/plugins/MetadataEditor';
@@ -437,10 +437,6 @@ export const plugins = {
     MapViewerConfigurationPlugin: toModulePlugin(
         'MapViewerConfiguration',
         () => import(/* webpackChunkName: 'plugins/map-viewer-configuration' */ '@js/plugins/MapViewerConfiguration')
-    ),
-    DocumentsCatalogPlugin: toModulePlugin(
-        'DocumentsCatalog',
-        () => import(/* webpackChunkName: 'plugins/documents-catalog' */ '@js/plugins/DocumentsCatalog')
     ),
     CatalogPlugin,
     SyncPlugin: toModulePlugin(
