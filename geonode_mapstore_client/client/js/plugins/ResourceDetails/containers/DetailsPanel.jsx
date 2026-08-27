@@ -23,6 +23,7 @@ import {
     updatingThumbnailResource
 } from '@js/selectors/resource';
 import Message from '@mapstore/framework/components/I18N/Message';
+import SafeHtml from '@mapstore/framework/components/misc/SafeHtml';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import DetailsInfoComp from '@mapstore/framework/plugins/ResourcesCatalog/components/DetailsInfo';
 import DetailsHeader from '@mapstore/framework/plugins/ResourcesCatalog/components/DetailsHeader';
@@ -147,7 +148,7 @@ function DetailsPanel({
                     {(resource?.date_type && resource?.date) ? <>{' '}/{' '}{moment(resource.date).format('MMMM Do YYYY')}</> : null}
                 </Text>
                 {resource?.abstract
-                    ? <Text classNames={['_padding-sm']} dangerouslySetInnerHTML={{ __html: resource?.abstract }} />
+                    ? <SafeHtml className="ms-text _padding-sm" html={resource?.abstract} />
                     : null}
                 {enablePreview ? <DetailsPreview
                     resource={resource}

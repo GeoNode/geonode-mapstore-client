@@ -22,6 +22,7 @@ MAPSTORE_PROJECTION_DEFS | list of custom projection definitions to register in 
 MAPSTORE_PROJECTION_DEFS_ENDPOINT | base URL of a GeoServer instance. Enables the remote projection search feature | SITEURL + '/geoserver' (embedded GeoServer)
 CHECK_SESSION_INTERVAL | interval in milliseconds to check if the user session is logged (0 for disable the polling) | 900000 (15 minutes)
 WMS_MAX_URL_LENGTH | maximum length of a WMS http get request URL (requests longer than this value will be converted to POST) | None (no limit)
+COALESCE_WMS_LAYERS | global default for combining adjacent WMS layers coming from the same source into a single GetMap request (background layers excluded); priority: map settings > plugin `cfg` > this global default > `false`, and any layer can opt out with `coalesce: false` | False
 
 An example on how to update the `MAPSTORE_BASELAYERS` variable:
 

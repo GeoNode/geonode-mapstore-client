@@ -693,69 +693,40 @@ export const closeInfoPanelOnMapClick = (action$, store) => action$.ofType(CLICK
     .filter(() => store.getState().controls?.rightOverlay?.enabled === 'Share')
     .switchMap(() => Observable.of(setControlProperty('rightOverlay', 'enabled', false)));
 
-
-// Check which control is enabled between annotations, metadataexplorer and documentsCatalog
-const oneOfTheOther = (control) => {
-    if (control === 'rightOverlay') return null;
-
-    // Handle three-way alternates
-    if (control === 'annotations') {
-        return {
-            control,
-            alternates: ['metadataexplorer', 'documentsCatalog']
-        };
-    }
-    if (control === 'metadataexplorer') {
-        return {
-            control,
-            alternates: ['annotations', 'documentsCatalog']
-        };
-    }
-    if (control === 'documentsCatalog') {
-        return {
-            control,
-            alternates: ['annotations', 'metadataexplorer']
-        };
-    }
-
-    return {
-        control,
-        alternates: []
-    };
-};
-
 /**
  * Close open panels on new panel open
  */
 export const closeOpenPanels = (action$, store) => action$.ofType(SET_CONTROL_PROPERTY, SET_SHOW_DETAILS)
     .filter((action) => !!action.value || action.show)
     .switchMap((action) => {
+        // Check which control is enabled between annotations, metadataexplorer or other panels
+        const ALTERNATE_PANELS = {
+            annotations: ['metadataexplorer'],
+            metadataexplorer: ['annotations']
+        };
         const state = store.getState();
         const getActions = () => {
             const setActions = [];
             if (isMapInfoOpen(state)) {
                 setActions.push(purgeMapInfoResults(), closeIdentify());
             }
-            const isDocumentsCatalogPanelOpen = get(state, "controls.documentsCatalog.enabled");
+
             const isCatalogOpen = get(state, "controls.metadataexplorer.enabled");
             const isVisualStyleEditorOpen = get(state, "controls.visualStyleEditor.enabled");
             if (isVisualStyleEditorOpen && isCatalogOpen) {
                 setActions.push(catalogClose());
             }
-            if (isDocumentsCatalogPanelOpen && isVisualStyleEditorOpen) {
-                setActions.push(setControlProperty('documentsCatalog', 'enabled', false));
-            }
             const isResourceDetailsOpen = !action.show && getShowDetails(state);
             if (isResourceDetailsOpen) {
                 setActions.push(setShowDetails(false));
             }
-            const control = oneOfTheOther(action.control);
-            if (control?.control || action.show) {
+            // skip when the panel being opened is rightOverlay itself, to avoid immediately closing it again
+            if (action.control !== 'rightOverlay') {
                 if (state.controls?.rightOverlay?.enabled === 'Share') {
                     setActions.push(setControlProperty('rightOverlay', 'enabled', false));
                 } else {
                     // Close all alternate panels
-                    control.alternates?.forEach(alternate => {
+                    (ALTERNATE_PANELS[action.control] || []).forEach(alternate => {
                         if (state.controls?.[alternate]?.enabled) {
                             setActions.push(setControlProperty(alternate, 'enabled', false));
                         }
@@ -769,14 +740,12 @@ export const closeOpenPanels = (action$, store) => action$.ofType(SET_CONTROL_PR
     });
 
 /**
- * Close catalog and documents panels on map info panel open
+ * Close catalog panel on map info panel open
  */
 export const closeDatasetCatalogPanel = (action$, store) => action$.ofType(NEW_MAPINFO_REQUEST)
     .filter(() => {
         const state = store.getState();
-        return isMapInfoOpen(state) &&
-               (get(state, "controls.metadataexplorer.enabled") ||
-                get(state, "controls.documentsCatalog.enabled"));
+        return isMapInfoOpen(state) && get(state, "controls.metadataexplorer.enabled");
     })
     .switchMap(() => {
         const state = store.getState();
@@ -784,10 +753,6 @@ export const closeDatasetCatalogPanel = (action$, store) => action$.ofType(NEW_M
 
         if (get(state, "controls.metadataexplorer.enabled")) {
             actions.push(catalogClose());
-        }
-
-        if (get(state, "controls.documentsCatalog.enabled")) {
-            actions.push(setControlProperty('documentsCatalog', 'enabled', false));
         }
 
         return Observable.of(...actions);
