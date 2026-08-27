@@ -132,6 +132,22 @@ export const paramsSerializer = () => {
     };
 };
 
+/**
+ * A simple fallback for status text, which may be empty in HTTP/2 responses.
+ * This is used to avoid infinite loading (spinner) on resource viewer.
+ * @param {object} error error object
+ * @returns {string} status message
+ */
+export const getStatusMessage = (error) => {
+    const statusMessages = {
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        500: 'Internal Server Error'
+    };
+    return error?.statusText || statusMessages[error?.status] || 'Unknown Error';
+};
+
 export const getResourcesSearchIndex = () => {
     return getGeoNodeLocalConfig('geoNodeSettings.resourcesSearchIndex');
 };
