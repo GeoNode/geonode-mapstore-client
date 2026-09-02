@@ -115,7 +115,7 @@ function DetailsPanel({
     }
 
     return (
-        <div className="ms-details-panel" ref={panelRef}>
+        <div className="ms-details-panel" ref={panelRef} data-ms-id="dataset-view-sidepanel">
             <DetailsHeader
                 resource={resource}
                 loading={loading}

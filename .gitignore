@@ -6,6 +6,8 @@
 *.tmp
 pip-log.txt
 
+*.chunk.js
+
 .idea/
 .vscode/
 .pytest_cache/

@@ -34,7 +34,8 @@ function ActionNavbarMenuItem({
     loading,
     glyph,
     labelId,
-    onClick
+    onClick,
+    dataMsId
 }) {
     return (
         <li>
@@ -45,6 +46,7 @@ function ActionNavbarMenuItem({
                 tooltipPosition="bottom"
                 onClick={onClick}
                 className={className}
+                {...({ 'data-ms-id': dataMsId })}
             >
                 {loading ? <Spinner /> : <Glyphicon glyph={glyph} />}
             </ButtonWithTooltip>
@@ -57,7 +59,8 @@ ActionNavbarMenuItem.propTypes = {
     loading: PropTypes.bool,
     glyph: PropTypes.string,
     labelId: PropTypes.string,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    dataMsId: PropTypes.string
 };
 
 ActionNavbarMenuItem.defaultProps = {
@@ -119,7 +122,9 @@ function ActionNavbarPlugin(
         const parsedMenuItems = menuItems
             .map((menuItem) => {
                 if (menuItem.type === 'plugin') {
-                    return pluginNoTargetMenuItems.find(plugin => plugin.name === menuItem.name);
+                    const plugin = pluginNoTargetMenuItems.find(({ name }) => name === menuItem.name);
+                    // Keep plugin component wiring and preserve menu-level overrides (e.g. dataMsId).
+                    return plugin ? { ...plugin, ...menuItem } : undefined;
                 }
                 return menuItem;
             })
@@ -139,6 +144,7 @@ function ActionNavbarPlugin(
     return (
         <FlexBox
             id="ms-action-navbar"
+            {...{ 'data-ms-id': 'dataset-view-navbar' }}
             classNames={[
                 'ms-action-navbar',
                 'ms-main-colors',

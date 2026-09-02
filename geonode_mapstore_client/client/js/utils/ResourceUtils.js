@@ -474,13 +474,26 @@ export const getResourceStatuses = (resource, userInfo) => {
     const isProcessing = !!runningExecutions.length;
     const isDeleting = runningExecutions.some(({ func_name: funcName }) => ['delete', ProcessTypes.DELETE_RESOURCE].includes(funcName));
     const isCopying = runningExecutions.some(({ func_name: funcName }) => ['copy', 'copy_geonode_resource', ProcessTypes.COPY_RESOURCE].includes(funcName));
+    const isPending = !isApproved || !resource?.is_published;
     return {
         isApproved,
         isPublished,
         isProcessing,
         isDeleting,
         isCopying,
+        isPending,
+        ...(!isPublished && !isProcessing ? {
+            cardTooltipId: !isApproved ? 'gnviewer.pendingApproval' : 'gnviewer.pendingPublish',
+            cardClassNames: ['gn-resource-status-pending']
+        } : {}),
         items: [
+            ...(!isPublished && !isProcessing ? [{
+                type: 'icon',
+                tooltipId: !isApproved ? 'gnviewer.pendingApproval' : 'gnviewer.pendingPublish',
+                glyph: 'info-circle',
+                className: 'gn-resource-status-pending',
+                'data-ms-id': 'resource-status-pending'
+            }] : []),
             ...(resource.advertised === false ? [{
                 type: 'icon',
                 tooltipId: 'resourcesCatalog.unadvertised',

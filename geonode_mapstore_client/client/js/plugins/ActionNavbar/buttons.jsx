@@ -67,6 +67,7 @@ const LayerDownloadActionButtonComponent = ({
     onClick,
     variant,
     size,
+    dataMsId,
     data,
     nodeTypes,
     items,
@@ -122,6 +123,7 @@ const LayerDownloadActionButtonComponent = ({
         <Component
             variant={variant}
             size={size}
+            {...(dataMsId ? { 'data-ms-id': dataMsId } : {})}
             onClick={() => onClick()}
             {...showIcon && { tooltipId }}
         >
@@ -163,7 +165,8 @@ export const FilterLayerActionButton = connect(
     onClick,
     variant,
     size,
-    layer
+    layer,
+    dataMsId
 }) => {
     const active = !!layer?.layerFilter;
     if (!layer?.search) {
@@ -174,6 +177,7 @@ export const FilterLayerActionButton = connect(
             variant={variant}
             className={active ? 'ms-notification-circle warning' : ''}
             size={size}
+            {...(dataMsId ? { 'data-ms-id': dataMsId } : {})}
             onClick={() => onClick()}
         >
             <Message msgId="gnhome.filter" />
@@ -197,6 +201,7 @@ export const AddWidgetActionButton = connect(
             variant={variant}
             size={size}
             disabled={enabled}
+            data-ms-id="btn-dashboard-add-widget"
             onClick={() => onClick()}
         >
             <Message msgId="gnviewer.addWidget" />
