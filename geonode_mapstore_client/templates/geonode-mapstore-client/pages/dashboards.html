@@ -22,13 +22,16 @@
                 "targetSelector": "#dashboard-all",
                 "menuItems": getPageMenuItem({
                     "value": "dashboard",
-                    "href": "{context.getCataloguePath('/catalogue/#/dashboard/new')}"
+                    "href": "{getCataloguePath('/catalogue/#/dashboard/new')}"
                 })
             }
         },
         {
             "name": "ResourcesFiltersForm",
             "cfg": {
+                "defaultQuery": {
+                    "f": "dashboard"
+                },
                 "fields": getPageFilterForm()
             }
         }

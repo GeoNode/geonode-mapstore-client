@@ -88,7 +88,7 @@ function UploadDataset({
     return (
         <UploadPanel
             enableRemoteUploads
-            supportedFiles={getSupportedFilesByResourceType('dataset', { actions: ['upload'] })}
+            supportedFiles={getSupportedFilesByResourceType('dataset', ['upload'])}
             maxParallelUploads={getMaxParallelUploads()}
             maxAllowedSize={getMaxAllowedSizeByResourceType('dataset')}
             progress={progress}

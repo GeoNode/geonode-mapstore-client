@@ -28,7 +28,8 @@ import { UPDATE_RESOURCES } from "@mapstore/framework/plugins/ResourcesCatalog/a
 import { startAsyncProcess, STOP_ASYNC_PROCESS } from "@js/actions/resourceservice";
 import { error as errorNotification } from "@mapstore/framework/actions/notifications";
 import { getProcessErrorInfo } from "@js/utils/ErrorUtils";
-
+import { getResourcePerms, getViewedResourceType } from "@js/selectors/resource";
+import { ResourceTypes } from '@js/utils/ResourceUtils';
 // We need to include missing epics. The plugins that normally include this epic is not used.
 
 /**
@@ -46,7 +47,13 @@ export const gnCheckSelectedDatasetPermissions = (action$, { getState } = {}) =>
             const state = getState() || {};
             const layer = getSelectedLayer(state);
             const permissions = layer?.perms || [];
-            const canEditStyles = permissions.includes("change_dataset_style");
+            const resourceType = getViewedResourceType(state);
+            const resourcePerms = getResourcePerms(state);
+            // user with edit permession on a map resource
+            // should be able to edit all the styles excluding the default one
+            const canEditStyles = resourceType === ResourceTypes.MAP
+                ? resourcePerms.includes("change_resourcebase")
+                : permissions.includes("change_dataset_style");
             const canEdit = permissions.includes("change_dataset_data");
             return layer
                 ? Rx.Observable.of(

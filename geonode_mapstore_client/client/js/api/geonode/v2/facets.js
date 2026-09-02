@@ -20,18 +20,19 @@ import { parseIcon } from '@js/utils/SearchUtils';
 import { addFilters, getFilterByField } from '@mapstore/framework/utils/ResourcesFiltersUtils';
 import { getCustomMenuFilters } from '@js/selectors/config';
 
-const parseTopicsItems = (items, { facet, style }) => {
+const parseTopicsItems = (items = [], { facet, style }) => {
     return items.map((item) => {
         const value = String(item.key);
         return {
             type: "filter",
             // TODO remove when api send isLocalized for all facets response
             ...(item.is_localized ? { labelId: item.label } : { label: item.label }),
-            count: item.count,
+            count: item.count ?? 0,
             filterKey: facet.filter,
             filterValue: value,
             value,
             style,
+            facetName: facet.name,
             icon: parseIcon(item.fa_class),
             image: item.image
         };
@@ -61,6 +62,7 @@ const applyFacetToFields = (fields, facets = [], { customFilters }) => {
                 const label = facet.label;
                 return {
                     id: facet.name,
+                    name: facet.name,
                     type,
                     style,
                     order,
@@ -84,8 +86,7 @@ const applyFacetToFields = (fields, facets = [], { customFilters }) => {
                                 const total = topics?.total;
                                 const isNextPageAvailable = (Math.ceil(Number(total) / Number(pageSize)) - (page + 1)) !== 0;
                                 const items = parseTopicsItems(topics.items, { facet, style });
-
-                                const filterField = { key: facet.filter };
+                                const filterField = { key: facet.filter, style, name: facet.name };
                                 // if the items are empty and items are selected
                                 // we should still see them with count equal 0
                                 // to allow user to deselect the filter
@@ -95,6 +96,7 @@ const applyFacetToFields = (fields, facets = [], { customFilters }) => {
 
                                     const appliedFilters = castArray(facetQuery)
                                         .map((val) => getFilterByField(filterField, val))
+                                        .filter(Boolean)
                                         .map(appliedFilter => ({ ...appliedFilter, count: 0 }));
                                     // store all filters information
                                     addFilters(filterField, appliedFilters);
@@ -159,7 +161,7 @@ const updateFacets = (fields, facets = [], query = {}) => {
                     ...paramsSerializer()
                 })
                     .then(({ data } = {}) => {
-                        const filterField = { key: queryFacet.filter };
+                        const filterField = { key: queryFacet.filter, style, name: queryFacet.name };
                         const topics = data?.topics ?? {};
                         const items = parseTopicsItems(topics.items, { facet: queryFacet, style });
                         // store all filters information

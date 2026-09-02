@@ -67,7 +67,7 @@ Note: not all configuration can be applied to the geonode-mapstore-client becaus
                                     {
                                         "type": "text",
                                         "labelId": "gnviewer.title",
-                                        "value": "{context.get(state('gnResourceData'), 'title')}"
+                                        "value": "{get(state('gnResourceData'), 'title')}"
                                     }
                                 ]
                             },
@@ -75,40 +75,40 @@ Note: not all configuration can be applied to the geonode-mapstore-client becaus
                                 "type": "locations",
                                 "id": "locations",
                                 "labelId": "gnviewer.locations",
-                                "items": "{({extent: context.get(state('gnResourceData'), 'extent')})}"
+                                "items": "{getExtentObject(state('gnResourceData'))}"
                             },
                             {
                                 "type": "relations",
                                 "id": "related",
                                 "labelId": "gnviewer.linkedResources.label",
-                                "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
+                                "items": "{get(state('gnResourceData'), 'linkedResources')}"
                             },
                             {
                                 "type": "assets",
                                 "id": "assets",
                                 "labelId": "gnviewer.assets",
-                                "items": "{context.get(state('gnResourceData'), 'assets')}",
-                                "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+                                "items": "{get(state('gnResourceData'), 'assets')}",
+                                "disableIf": "{not resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
                             },
                             {
                                 "type": "data",
                                 "id": "data",
                                 "labelId": "gnviewer.data",
-                                "disableIf": "{context.get(state('gnResourceData'), 'resource_type') !== 'dataset'}",
-                                "items": "{context.get(state('gnResourceData'), 'attribute_set')}"
+                                "disableIf": "{get(state('gnResourceData'), 'resource_type') !== 'dataset'}",
+                                "items": "{get(state('gnResourceData'), 'attribute_set')}"
                             },
                             {
                                 "type": "share",
                                 "id": "share",
                                 "labelId": "gnviewer.share",
-                                "disableIf": "{!context.canAccessPermissions(state('gnResourceData'))}",
+                                "disableIf": "{not canAccessPermissions(state('gnResourceData'))}",
                                 "items": [true]
                             },
                             {
                                 "type": "settings",
                                 "id": "settings",
                                 "labelId": "gnviewer.settings",
-                                "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
+                                "disableIf": "{not canManageResourceSettings(state('gnResourceData'))}",
                                 "items": [true]
                             }
                         ]

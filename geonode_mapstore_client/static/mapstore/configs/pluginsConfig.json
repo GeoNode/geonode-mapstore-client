@@ -165,7 +165,7 @@
       "defaultConfig": {
         "showHighlightFeatureButton": true,
         "viewerOptions": {
-          "container": "{context.ReactSwipe}"
+          "container": "{ReactSwipe}"
         }
       },
       "children": [

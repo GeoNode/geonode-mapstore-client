@@ -93,7 +93,14 @@ export const getMetadataByPk = (pk) => {
                     const resource = response?.[1]?.data?.resource || {};
                     let { extraErrors, ...metadata } = metadataResponse;
                     metadata = removeNullValueRecursive(metadata, schema?.properties);
-                    metadata = getDefaultFormState(validator, schema, metadata);
+                    metadata = getDefaultFormState(validator, schema, metadata, schema, false,
+                        // to avoid populating with empty items in arrays
+                        {
+                            arrayMinItems: {
+                                populate: 'never'
+                            }
+                        }
+                    );
                     return {
                         schema,
                         uiSchema,

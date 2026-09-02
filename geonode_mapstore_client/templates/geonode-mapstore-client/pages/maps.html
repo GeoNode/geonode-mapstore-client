@@ -22,13 +22,18 @@
                 "targetSelector": "#map-all",
                 "menuItems": getPageMenuItem({
                     "value": "map",
-                    "href": "{context.getCataloguePath('/catalogue/#/map/new')}"
+                    "href": "{getCataloguePath('/catalogue/#/map/new')}"
                 })
             }
         },
         {
             "name": "ResourcesFiltersForm",
-            "cfg": {"fields": getPageFilterForm()}
+            "cfg": {
+                "defaultQuery": {
+                    "f": "map"
+                },
+                "fields": getPageFilterForm()
+            }
         }
     ];
 {% endblock ms_plugins %}

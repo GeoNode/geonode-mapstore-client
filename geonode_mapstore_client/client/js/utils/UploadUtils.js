@@ -111,7 +111,13 @@ export const validateFileResourceUploads = (uploads = [], { supportedFiles = [] 
                 supported: false
             };
         }
-        const missingExtensions = currentSupportedType.required_ext.filter(ext => !upload.ext.includes(ext));
+        const allUploadsAreOptional = upload.ext.every(ext =>
+                (currentSupportedType.optional_ext || []).includes(ext) &&
+                !currentSupportedType.required_ext.includes(ext)
+            );
+        const missingExtensions = allUploadsAreOptional
+                ? []
+                : currentSupportedType.required_ext.filter(ext => !upload.ext.includes(ext));
         const supportedTypeExtensions = getSupportedTypeExt(currentSupportedType);
         return {
             ...upload,
@@ -199,7 +205,7 @@ export const getSupportedDocumentTypes = () => {
     return allowedDocumentTypes;
 };
 
-export const getSupportedFilesByResourceType = (resourceType, { actions } = {}) => {
+export const getSupportedFilesByResourceType = (resourceType, actions) => {
     if (resourceType === 'document') {
         const allowedDocumentTypes = getSupportedDocumentTypes();
         return allowedDocumentTypes.map((ext) => {

@@ -194,8 +194,8 @@ describe('Test Upload Utils', () => {
                 ext: [ 'sld' ],
                 files: { sld: {} },
                 supported: true,
-                ready: false,
-                missingExtensions: [ '*' ]
+                ready: true,
+                missingExtensions: []
             }
         ]);
         expect(validateFileResourceUploads([

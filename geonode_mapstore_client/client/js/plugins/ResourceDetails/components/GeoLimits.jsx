@@ -26,6 +26,7 @@ import { getExtent } from '@js/utils/CoordinatesUtils';
 import { getGeoLimits } from "@js/api/geonode/security";
 import { getResourceData, getResourceId } from "@js/selectors/resource";
 import { resourceToLayers } from '@js/utils/ResourceUtils';
+import { getEntryIdKey } from '@mapstore/framework/plugins/ResourcesCatalog/utils/PermissionUtils';
 
 const Map = mapTypeHOC(BaseMap);
 Map.displayName = 'Map';
@@ -202,11 +203,11 @@ const ConnectedGeoLimits = connect(
 
     function handleRequestGeoLimits(_entry) {
         if (!_entry.geoLimitsLoading) {
-            onUpdate(_entry.id, { geoLimitsLoading: true }, true);
+            onUpdate(getEntryIdKey(_entry), { geoLimitsLoading: true }, true);
             getGeoLimits(resourceId, _entry.id, _entry.type)
                 .then((collection) => {
                     isMounted(() => {
-                        onUpdate(_entry.id, {
+                        onUpdate(getEntryIdKey(_entry), {
                             geoLimitsLoading: false,
                             features: collection.features || [],
                             isGeoLimitsChanged: false
@@ -215,7 +216,7 @@ const ConnectedGeoLimits = connect(
                 })
                 .catch(() => {
                     isMounted(() => {
-                        onUpdate(_entry.id, {
+                        onUpdate(getEntryIdKey(_entry), {
                             geoLimitsLoading: false,
                             features: [],
                             isGeoLimitsChanged: false
@@ -240,7 +241,7 @@ const ConnectedGeoLimits = connect(
                     features={entry.features}
                     loading={entry.geoLimitsLoading}
                     onChange={(changes) =>
-                        onUpdate(entry.id, { ...changes, isGeoLimitsChanged: true })
+                        onUpdate(getEntryIdKey(entry), { ...changes, isGeoLimitsChanged: true })
                     }
                     onRefresh={handleRequestGeoLimits.bind(null, entry)}
                 />

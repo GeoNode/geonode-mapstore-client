@@ -60,34 +60,34 @@ import DetailsPanel from '@js/plugins/ResourceDetails/containers/DetailsPanel';
  *                  {
  *                      "type": "text",
  *                      "labelId": "gnviewer.title",
- *                      "value": "{context.get(state('gnResourceData'), 'title')}"
+ *                      "value": "{get(state('gnResourceData'), 'title')}"
  *                  },
  *                  {
  *                      "type": "link",
  *                      "labelId": "gnviewer.owner",
- *                      "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
- *                      "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
- *                      "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
+ *                      "href": "{getOwnerProfileUrl(state('gnResourceData'))}",
+ *                      "value": "{getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
+ *                      "disableIf": "{not get(state('gnResourceData'), 'owner.username')}"
  *                  },
  *                  {
  *                      "type": "date",
  *                      "format": "MMMM Do YYYY",
- *                      "labelId": "gnviewer.published",
- *                      "value": "{context.get(state('gnResourceData'), 'date')}"
+ *                      "labelId": "{getDateTypeLabelId(state('gnResourceData'))}",
+ *                      "value": "{get(state('gnResourceData'), 'date')}"
  *                  },
  *                  {
  *                      "type": "query",
  *                      "labelId": "gnviewer.resourceType",
- *                      "valueId": "{'gnviewer.' + context.get(state('gnResourceData'), 'resource_type')}",
+ *                      "valueId": "{getResourceTypeLabelId(state('gnResourceData'))}",
  *                      "pathname": "/",
  *                      "query": {
- *                          "f": "{context.get(state('gnResourceData'), 'resource_type')}"
+ *                          "f": "{get(state('gnResourceData'), 'resource_type')}"
  *                      }
  *                  },
  *                  {
  *                      "type": "html",
  *                      "labelId": "gnviewer.supplementalInformation",
- *                      "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
+ *                      "value": "{get(state('gnResourceData'), 'supplemental_information')}"
  *                  }
  *              ]
  *          }
@@ -105,67 +105,67 @@ function ResourceDetailsPanel({
                 {
                     "type": "text",
                     "labelId": "gnviewer.title",
-                    "value": "{context.get(state('gnResourceData'), 'title')}"
+                    "value": "{get(state('gnResourceData'), 'title')}"
                 },
                 {
                     "type": "link",
                     "labelId": "gnviewer.owner",
-                    "href": "{'/people/profile/' + context.get(state('gnResourceData'), 'owner.username')}",
-                    "value": "{context.getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
-                    "disableIf": "{!context.get(state('gnResourceData'), 'owner.username')}"
+                    "href": "{getOwnerProfileUrl(state('gnResourceData'))}",
+                    "value": "{getUserResourceName(context.get(state('gnResourceData'), 'owner'))}",
+                    "disableIf": "{not get(state('gnResourceData'), 'owner.username')}"
                 },
                 {
                     "type": "date",
                     "format": "YYYY-MM-DD HH:mm",
-                    "labelId": "{'gnviewer.'+context.get(state('gnResourceData'), 'date_type').toLowerCase()}",
-                    "value": "{context.get(state('gnResourceData'), 'date')}"
+                    "labelId": "{getDateTypeLabelId(state('gnResourceData'))}",
+                    "value": "{get(state('gnResourceData'), 'date')}"
                 },
                 {
                     "type": "date",
                     "format": "YYYY-MM-DD HH:mm",
                     "labelId": "gnviewer.created",
-                    "value": "{context.get(state('gnResourceData'), 'created')}"
+                    "value": "{get(state('gnResourceData'), 'created')}"
                 },
                 {
                     "type": "date",
                     "format": "YYYY-MM-DD HH:mm",
                     "labelId": "gnviewer.lastModified",
-                    "value": "{context.get(state('gnResourceData'), 'last_updated')}"
+                    "value": "{get(state('gnResourceData'), 'last_updated')}"
                 },
                 {
                     "type": "query",
                     "labelId": "gnviewer.resourceType",
-                    "valueId": "{'gnviewer.' + context.get(state('gnResourceData'), 'resource_type')}",
+                    "valueId": "{getResourceTypeLabelId(state('gnResourceData'))}",
                     "pathname": "/",
                     "query": {
-                        "f": "{context.get(state('gnResourceData'), 'resource_type')}"
+                        "f": "{get(state('gnResourceData'), 'resource_type')}"
                     }
                 },
                 {
-                    "type": "{context.isDocumentExternalSource(state('gnResourceData')) ? 'link' : 'text'}",
+                    "type": "{getDocumentSourceFieldType(state('gnResourceSelectedLayerDataset'))}",
                     "labelId": "gnviewer.sourceType",
-                    "value": "{context.get(state('gnResourceData'), 'sourcetype', '').toLowerCase()}",
-                    "href": "{context.get(state('gnResourceData'), 'href')}"
+                    "value": "{get(state('gnResourceData'), 'sourcetype', '').toLowerCase()}",
+                    "href": "{get(state('gnResourceData'), 'href')}"
                 },
                 {
                     "type": "query",
                     "labelId": "gnviewer.category",
-                    "value": "{context.get(state('gnResourceData'), 'category.gn_description')}",
+                    "value": "{get(state('gnResourceData'), 'category.gn_description')}",
                     "pathname": "/",
                     "query": {
-                        "filter{category.identifier.in}": "{context.get(state('gnResourceData'), 'category.identifier')}"
+                        "filter{category.identifier.in}": "{get(state('gnResourceData'), 'category.identifier')}"
                     }
                 },
                 {
                     "type": "link",
                     "labelId": "gnviewer.pointOfContact",
-                    "value": "{context.getUserResourceNames(context.get(state('gnResourceData'), 'poc'))}",
-                    "disableIf": "{!context.get(state('gnResourceData'), 'poc')}"
+                    "value": "{getUserResourceNames(get(state('gnResourceData'), 'poc'))}",
+                    "disableIf": "{not get(state('gnResourceData'), 'poc')}"
                 },
                 {
                     "type": "query",
                     "labelId": "gnviewer.keywords",
-                    "value": "{context.get(state('gnResourceData'), 'keywords')}",
+                    "value": "{get(state('gnResourceData'), 'keywords')}",
                     "valueKey": "name",
                     "pathname": "/",
                     "queryTemplate": {
@@ -175,7 +175,7 @@ function ResourceDetailsPanel({
                 {
                     "type": "query",
                     "labelId": "gnviewer.regions",
-                    "value": "{context.get(state('gnResourceData'), 'regions')}",
+                    "value": "{get(state('gnResourceData'), 'regions')}",
                     "valueKey": "name",
                     "pathname": "/",
                     "queryTemplate": {
@@ -185,33 +185,33 @@ function ResourceDetailsPanel({
                 {
                     "type": "text",
                     "labelId": "gnviewer.attribution",
-                    "value": "{context.get(state('gnResourceData'), 'attribution')}"
+                    "value": "{get(state('gnResourceData'), 'attribution')}"
                 },
                 {
                     "type": "text",
                     "labelId": "gnviewer.language",
-                    "value": "{context.get(state('gnResourceData'), 'language')}"
+                    "value": "{get(state('gnResourceData'), 'language')}"
                 },
                 {
                     "type": "html",
                     "labelId": "gnviewer.supplementalInformation",
-                    "value": "{context.get(state('gnResourceData'), 'supplemental_information')}"
+                    "value": "{get(state('gnResourceData'), 'supplemental_information')}"
                 },
                 {
                     "type": "date",
                     "format": "YYYY-MM-DD HH:mm",
                     "labelId": "gnviewer.temporalExtent",
                     "value": {
-                        "start": "{context.get(state('gnResourceData'), 'temporal_extent_start')}",
-                        "end": "{context.get(state('gnResourceData'), 'temporal_extent_end')}"
+                        "start": "{get(state('gnResourceData'), 'temporal_extent_start')}",
+                        "end": "{get(state('gnResourceData'), 'temporal_extent_end')}"
                     }
                 },
                 {
                     "type": "link",
                     "style": "label",
                     "labelId": "gnviewer.viewFullMetadata",
-                    "href": "{context.getMetadataDetailUrl(state('gnResourceData'))}",
-                    "disableIf": "{!context.getMetadataDetailUrl(state('gnResourceData'))}"
+                    "href": "{getMetadataDetailUrl(state('gnResourceData'))}",
+                    "disableIf": "{not getMetadataDetailUrl(state('gnResourceData'))}"
                 }
             ]
         },
@@ -219,40 +219,40 @@ function ResourceDetailsPanel({
             "type": "locations",
             "id": "locations",
             "labelId": "gnviewer.locations",
-            "items": "{({extent: context.get(state('gnResourceData'), 'extent')})}"
+            "items": "{getExtentObject(state('gnResourceData'))}"
         },
         {
             "type": "relations",
             "id": "related",
             "labelId": "gnviewer.linkedResources.label",
-            "items": "{context.get(state('gnResourceData'), 'linkedResources')}"
+            "items": "{get(state('gnResourceData'), 'linkedResources')}"
         },
         {
             "type": "assets",
             "id": "assets",
             "labelId": "gnviewer.assets",
-            "items": "{context.get(state('gnResourceData'), 'assets')}",
-            "disableIf": "{!context.resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
+            "items": "{get(state('gnResourceData'), 'assets')}",
+            "disableIf": "{not resourceHasPermission(state('gnResourceData'), 'change_resourcebase')}"
         },
         {
             "type": "data",
             "id": "data",
             "labelId": "gnviewer.data",
-            "disableIf": "{context.get(state('gnResourceData'), 'resource_type') !== 'dataset'}",
-            "items": "{context.get(state('gnResourceData'), 'attribute_set')}"
+            "disableIf": "{get(state('gnResourceData'), 'resource_type') !== 'dataset'}",
+            "items": "{get(state('gnResourceData'), 'attribute_set')}"
         },
         {
             "type": "share",
             "id": "share",
             "labelId": "gnviewer.share",
-            "disableIf": "{!context.canAccessPermissions(state('gnResourceData'))}",
+            "disableIf": "{not canAccessPermissions(state('gnResourceData'))}",
             "items": [true]
         },
         {
             "type": "settings",
             "id": "settings",
             "labelId": "gnviewer.settings",
-            "disableIf": "{!context.canManageResourceSettings(state('gnResourceData'))}",
+            "disableIf": "{not canManageResourceSettings(state('gnResourceData'))}",
             "items": [true]
         }
     ],
