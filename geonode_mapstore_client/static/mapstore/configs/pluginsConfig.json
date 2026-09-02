@@ -167,10 +167,7 @@
         "viewerOptions": {
           "container": "{ReactSwipe}"
         }
-      },
-      "children": [
-        "Settings"
-      ]
+      }
     },
     {
       "name": "Locate",
@@ -611,6 +608,7 @@
     {
       "name": "Settings",
       "glyph": "cog",
+      "mandatory": true,
       "title": "plugins.Settings.title",
       "description": "plugins.Settings.description",
       "dependencies": [
