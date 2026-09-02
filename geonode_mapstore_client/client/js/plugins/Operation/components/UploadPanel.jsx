@@ -25,10 +25,10 @@ import {
     validateFileResourceUploads,
     parseFileResourceUploads
 } from '../../../utils/UploadUtils';
-function ErrorButton(props) {
+function ErrorButton({ dataMsId, ...props }) {
     return (
         <div {...props} style={{ width: 'fit-content', margin: 'auto' }} className="gn-disabled-upload">
-            <Button disabled variant="primary">
+            <Button disabled variant="primary" data-ms-id={dataMsId}>
                 <Message msgId="gnviewer.upload" />
             </Button>
         </div>
@@ -57,7 +57,7 @@ function UploadPanel({
     remoteTypeErrorMessageId,
     remoteTypeFromUrl,
     isRemoteTypesDisabled,
-    uploadActions=[{ labelId: 'gnviewer.upload' }],
+    uploadActions = [{ labelId: 'gnviewer.upload' }]
 }) {
 
     const inputFile = useRef();
@@ -113,7 +113,6 @@ function UploadPanel({
         return handleAdd([getDefaultRemoteResource({ id: uuidv1(), type: 'remote', url: '' })]);
     };
 
-    
 
     const supportedLabels = uniq(supportedFiles.map(supportedFile => supportedFile.label)).join(', ');
     const uploadsList = uploads.filter(upload => upload.type === 'file' ? upload.supported : true);
@@ -156,26 +155,37 @@ function UploadPanel({
                 activeClassName="gn-dropzone-active"
                 rejectClassName="gn-dropzone-reject"
                 disableClick
+                data-ms-id="document-upload-page"
             >
                 <ViewerLayout
                     rightColumn={rightColumn}
-                    leftColumn={<div className="gn-upload-list">
-                        <div className="gn-upload-list-header">
-                            <input disabled={disabledAdd} ref={inputFile} value="" type="file" multiple onChange={(event) => handleFile([...event?.target?.files])} style={{ display: 'none' }} />
-                            <Button disabled={disabledAdd} onClick={() => inputFile?.current?.click()}>
+                    leftColumn={<div className="gn-upload-list" data-ms-id="document-upload-list">
+                        <div className="gn-upload-list-header" data-ms-id="document-upload-header">
+                            <input disabled={disabledAdd} ref={inputFile} value="" type="file" multiple onChange={(event) => handleFile([...event?.target?.files])} style={{ display: 'none' }} data-ms-id="document-upload-file-input" />
+                            <Button
+                                disabled={disabledAdd}
+                                data-ms-id="btn-select-files"
+                                onClick={() => inputFile?.current?.click()}
+                            >
                                 <Glyphicon glyph="plus" /><Message msgId="gnviewer.selectFiles" />
                             </Button>
-                            {enableRemoteUploads && <Button disabled={disabledAdd} className={"add-url"} onClick={() => handleRemote()}>
+                            {enableRemoteUploads && <Button
+                                disabled={disabledAdd}
+                                className={"add-url"}
+                                data-ms-id="btn-add-from-url"
+                                onClick={() => handleRemote()}
+                            >
                                 <Glyphicon glyph="plus" /><Message msgId="gnviewer.addFromUrl" />
                             </Button>}
                         </div>
                         {uploadsList.length > 0
                             ? (
                                 <ul>
-                                    {uploadsList.map((upload) => {
+                                    {uploadsList.map((upload, idx) => {
                                         return (
-                                            <li key={upload.id}>
+                                            <li key={upload.id} data-ms-id={`upload-card-${idx}`}>
                                                 <PendingUploadCard
+                                                    dataMsIdPrefix={`upload-card-${idx}`}
                                                     data={upload}
                                                     progress={progress[upload.id]}
                                                     loading={loading}
@@ -215,29 +225,38 @@ function UploadPanel({
                                 <Message msgId="gnviewer.unsupportedFiles" />{unsupportedLabels ? `: ${unsupportedLabels}` : ''}
                             </Alert> : null}
                             {(uploads.length > 0 && getExceedingFileSize(uploads, maxAllowedSize)) ?
-                                <ButtonWithTooltip noTooltipWhenDisabled tooltip={<Message msgId="gnviewer.exceedingFileMsg" msgParams={{ limit: maxAllowedSize }} />} >
+                                <ButtonWithTooltip
+                                    noTooltipWhenDisabled
+                                    dataMsId="btn-upload"
+                                    tooltip={<Message msgId="gnviewer.exceedingFileMsg" msgParams={{ limit: maxAllowedSize }} />}
+                                >
                                     <Message msgId="gnviewer.upload" />
                                 </ButtonWithTooltip>
                                 : supportedUploads.length > maxParallelUploads ?
-                                    <ButtonWithTooltip noTooltipWhenDisabled tooltip={<Message msgId="gnviewer.parallelUploadLimit" msgParams={{ limit: maxParallelUploads }} />} >
+                                    <ButtonWithTooltip
+                                        noTooltipWhenDisabled
+                                        dataMsId="btn-upload"
+                                        tooltip={<Message msgId="gnviewer.parallelUploadLimit" msgParams={{ limit: maxParallelUploads }} />}
+                                    >
                                         <Message msgId="gnviewer.upload" />
                                     </ButtonWithTooltip>
                                     :
                                     !loading ? (
-                                    <>
-                                        {uploadActions?.map(({ labelId, variant, action, showConfirm: shouldConfirm }, id) => (
-                                            <Button
-                                                key={id}
-                                                variant={variant ? variant : "primary"}
-                                                disabled={readyUploads.length === 0 || disabled}
-                                                style={{ marginRight: id < uploadActions.length - 1 ? 8 : 0 }}
-                                                onClick={() => handleUpload(shouldConfirm, action)}
-                                            >
-                                                <Message msgId={labelId} />
-                                            </Button>
-                                        ))}
+                                        <>
+                                            {uploadActions?.map(({ labelId, variant, action, showConfirm: shouldConfirm }, id) => (
+                                                <Button
+                                                    key={id}
+                                                    variant={variant ? variant : "primary"}
+                                                    data-ms-id="btn-upload"
+                                                    disabled={readyUploads.length === 0 || disabled}
+                                                    style={{ marginRight: id < uploadActions.length - 1 ? 8 : 0 }}
+                                                    onClick={() => handleUpload(shouldConfirm, action)}
+                                                >
+                                                    <Message msgId={labelId} />
+                                                </Button>
+                                            ))}
                                         </>
-                                        ) : <Button
+                                    ) : <Button
                                         variant="primary"
                                         onClick={() => onCancel(readyUploads.map((upload) => upload.id))}
                                     >
@@ -251,7 +270,7 @@ function UploadPanel({
                 </ViewerLayout>
             </Dropzone>
         </>
-        
+
     );
 }
 

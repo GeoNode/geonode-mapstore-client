@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -38,22 +38,51 @@ function Legend({
 }) {
 
     const [expandLegend, setExpandLegend] = useState(false);
+    const tocContainerRef = useRef(null);
 
     const expand = () => {
         setExpandLegend(ex => !ex);
     };
+
+    // Apply data-ms-id attributes to layer items after rendering
+    useEffect(() => {
+        if (expandLegend && tocContainerRef.current) {
+            // Find all layer title containers (MapStore TOC structure)
+            const titleContainers = tocContainerRef.current.querySelectorAll('.ms-node-title-container');
+            titleContainers.forEach((container) => {
+                const titleText = container.querySelector('.ms-node-title');
+                if (titleText) {
+                    const layerName = titleText.textContent?.trim() || '';
+                    // Add data-ms-id to the title container
+                    container.setAttribute('data-ms-id', `ms-node-title-container-${layerName.replace(/\s+/g, '-').toLowerCase()}`);
+                    // Add data-ms-id to the title itself
+                    titleText.setAttribute('data-ms-id', `ms-node-title-${layerName.replace(/\s+/g, '-').toLowerCase()}`);
+                }
+            });
+
+            // Also find all layer node headers
+            const nodeHeaders = tocContainerRef.current.querySelectorAll('[id^="node-"]');
+            nodeHeaders.forEach((node) => {
+                const layerId = node.id.replace('node-', '');
+                const titleContainer = node.querySelector('.ms-node-title-container');
+                if (titleContainer) {
+                    node.setAttribute('data-ms-id', `gn-legend-layer-${layerId}`);
+                }
+            });
+        }
+    }, [expandLegend, layers]);
 
     if (!layers.length) {
         return null;
     }
 
     return (
-        <div className="shadow gn-legend-wrapper" style={{ position: 'absolute', margin: 4, width: 'auto', zIndex: 50 }}>
-            <div onClick={expand} className="gn-legend-head" style={{ padding: '4px 8px', fontSize: '0.75rem' }}>
-                <span role="button" className={`identify-icon glyphicon glyphicon-${expandLegend ? 'bottom' : 'next'}`} title="Expand layer legend" />
+        <div className="shadow gn-legend-wrapper" style={{ position: 'absolute', margin: 4, width: 'auto', zIndex: 50 }} {...{ 'data-ms-id': 'gn-legend-wrapper' }}>
+            <div onClick={expand} className="gn-legend-head" style={{ padding: '4px 8px', fontSize: '0.75rem' }} {...{ 'data-ms-id': 'gn-legend-head' }}>
+                <span role="button" className={`identify-icon glyphicon glyphicon-${expandLegend ? 'bottom' : 'next'}`} title="Expand layer legend" {...{ 'data-ms-id': 'gn-legend-toggle' }} />
                 <span className="gn-legend-list-item" style={{ paddingLeft: 4 }}><Message msgId="gnviewer.legend" /></span>
             </div>
-            <div style={{ display: expandLegend ? 'block' : 'none' }}>
+            <div style={{ display: expandLegend ? 'block' : 'none' }} {...{ 'data-ms-id': 'gn-legend-content' }} ref={tocContainerRef}>
                 <TOC
                     map={{
                         layers: layers.map(applyVersionParamToLegend),

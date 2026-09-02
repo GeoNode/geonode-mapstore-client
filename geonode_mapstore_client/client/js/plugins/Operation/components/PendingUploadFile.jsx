@@ -21,22 +21,23 @@ function PendingUploadFile({
     progress,
     error,
     onCancel,
-    onRemove
+    onRemove,
+    dataMsIdPrefix
 }) {
     const { id, missingExtensions: uploadMissingExtension = [], baseName, ext: extensions, files } = data;
     const missingMainFile = uploadMissingExtension.length === 1 && uploadMissingExtension[0] === '*';
     const missingExtensions = missingMainFile ? [] : uploadMissingExtension;
     return (
-        <div className="gn-upload-card">
+        <div className="gn-upload-card" data-ms-id={dataMsIdPrefix}>
             <div className="gn-upload-card-header">
                 {(missingExtensions.length > 0 || missingMainFile) ? <div className="gn-upload-card-error"><Glyphicon glyph="exclamation-sign" /></div> : null}
-                <div className="gn-upload-card-title">{baseName}</div>
+                <div className="gn-upload-card-title" data-ms-id={`${dataMsIdPrefix}-title`}>{baseName}</div>
                 <div>
                     {error ? <ErrorMessageWithTooltip tooltipId={<Message msgId="gnviewer.invalidUploadMessageErrorTooltip" />} /> : null}
                     {onRemove
-                        ? (!loading || !progress) ? <Button size="xs" onClick={() => onRemove(id)}>
+                        ? (!loading || !progress) ? <Button size="xs" data-ms-id={`${dataMsIdPrefix}-btn-remove`} onClick={() => onRemove(id)}>
                             <Glyphicon glyph="trash" />
-                        </Button> : <Button size="xs" onClick={() => onCancel([id])}>
+                        </Button> : <Button size="xs" data-ms-id={`${dataMsIdPrefix}-btn-remove`} onClick={() => onCancel([id])}>
                             <Glyphicon glyph="stop" />
                         </Button>
                         : null}
@@ -53,7 +54,7 @@ function PendingUploadFile({
                 </div>
             </div>}
             <div className="gn-upload-card-bottom">
-                <ul>
+                <ul data-ms-id={`${dataMsIdPrefix}-ul-filetype`}>
                     {extensions.map(ext => {
                         return (
                             <li key={ext}>
@@ -64,10 +65,10 @@ function PendingUploadFile({
                 </ul>
                 {
                     (loading && progress) ?
-                        <div className="gn-upload-card-progress-read">
+                        <div className="gn-upload-card-progress-read" data-ms-id={`${dataMsIdPrefix}-size`}>
                             {progress < 100 ? `${progress}%` : <Spinner />}
                         </div> :
-                        <div>{getSize(files, true)}</div>
+                        <div data-ms-id={`${dataMsIdPrefix}-size`}>{getSize(files, true)}</div>
                 }
             </div>
             {(loading && progress) ? <div style={{ position: 'relative' }}>

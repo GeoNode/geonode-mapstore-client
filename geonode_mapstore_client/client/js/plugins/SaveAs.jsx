@@ -111,7 +111,8 @@ function SaveAsButton({
     size,
     resource,
     dirtyState,
-    disabled
+    disabled,
+    dataMsId
 }) {
 
     return (
@@ -121,6 +122,7 @@ function SaveAsButton({
             disabled={disabled}
             onClick={() => onClick([ resource ])}
             className={dirtyState ? 'ms-notification-circle warning' : ''}
+            data-ms-id="btn-save-as"
         >
             <Message msgId="saveAs"/>
         </Button>
@@ -167,7 +169,9 @@ function CopyMenuItem({
     resource,
     canCopy,
     onCopy,
-    component
+    component,
+    cardMsIdPrefix,
+    dataMsId
 }) {
     if (!canCopy(resource)) {
         return null;
@@ -180,6 +184,9 @@ function CopyMenuItem({
             }
             labelId="gnviewer.clone"
             glyph="duplicate"
+            cardMsIdPrefix={cardMsIdPrefix}
+            dataMsId={dataMsId}
+            {...(dataMsId ? { 'data-ms-id': dataMsId } : {})}
         />
     );
 }

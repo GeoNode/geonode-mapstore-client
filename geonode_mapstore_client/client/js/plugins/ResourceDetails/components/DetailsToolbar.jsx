@@ -31,6 +31,12 @@ function DetailsToolbarButton({
     loading,
     ...props
 }) {
+    const { ['data-ms-id']: dataMsIdProp, ...buttonProps } = props;
+    const resolvedDataMsId = dataMsIdProp
+        || (['download', 'download-alt', 'new-window', 'floppy-disk', 'save'].includes(glyph) ? 'dataset-view-sidepanel-btn-download' : null)
+        || (glyph === 'share-alt' ? 'dataset-view-sidepanel-btn-copy-url' : null)
+        || (glyph === 'globe' ? 'dataset-view-sidepanel-btn-copy-ogc' : null);
+
     function handleOnClick(event) {
         event.stopPropagation();
         if (onClick) {
@@ -42,7 +48,8 @@ function DetailsToolbarButton({
             variant={variant}
             square={square}
             borderTransparent={borderTransparent}
-            {...props}
+            {...buttonProps}
+            {...resolvedDataMsId ? { 'data-ms-id': resolvedDataMsId } : {}}
             tooltipId={square && labelId ? labelId : null}
             onClick={handleOnClick}
         >
@@ -84,12 +91,18 @@ function DetailsToolbar({
         <FlexBox style={{ alignItems: 'flex-start' }}>
             <FlexBox gap="xs" centerChildrenVertically>
                 <ResourceStatus statusItems={status?.items} />
-                {items.map(({ name, Component }) => (<Component
-                    showIcon
-                    key={name}
-                    resource={resource}
-                    component={DetailsToolbarButton}
-                />))}
+                {items.map(({ name, Component }) => {
+                    const dataMsId = ['DownloadResource', 'LayerDownload', 'IsoDownload'].includes(name)
+                        ? 'dataset-view-sidepanel-btn-download'
+                        : undefined;
+                    return (<Component
+                        showIcon
+                        key={name}
+                        resource={resource}
+                        component={DetailsToolbarButton}
+                        dataMsId={dataMsId}
+                    />);
+                })}
                 <CopyToClipboard
                     tooltipPosition="top"
                     tooltipId={
@@ -101,6 +114,7 @@ function DetailsToolbar({
                 >
                     <Button
                         variant="default"
+                        data-ms-id="dataset-view-sidepanel-btn-copy-url"
                         onClick={()=> handleCopyPermalink('resource')}>
                         <Glyphicon glyph="share-alt" />
                     </Button>
@@ -116,6 +130,7 @@ function DetailsToolbar({
                 >
                     <Button
                         variant="default"
+                        data-ms-id="dataset-view-sidepanel-btn-copy-ogc"
                         onClick={()=> handleCopyPermalink('datasetowsurl')}>
                         <Glyphicon glyph="globe" />
                     </Button>
@@ -125,6 +140,7 @@ function DetailsToolbar({
                         <Button
                             variant="primary"
                             href={info?.viewerUrl}
+                            data-ms-id="resource-view"
                             rel="noopener noreferrer">
                             <Message msgId={`gnhome.view${info?.typeName}`} />
                         </Button>
@@ -134,6 +150,7 @@ function DetailsToolbar({
                             <Button
                                 variant="primary"
                                 href={info?.metadataDetailUrl}
+                                data-ms-id="resource-view"
                                 rel="noopener noreferrer">
                                 <Message msgId={`gnhome.viewMetadata`} />
                             </Button>

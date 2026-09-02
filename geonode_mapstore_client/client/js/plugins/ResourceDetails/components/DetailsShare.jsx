@@ -22,7 +22,7 @@ import { updateResourceCompactPermissions } from "@js/actions/gnresource";
 import {
     getCompactPermissions,
     getViewedResourceType,
-    getResourceData,
+    getResourceData
 } from "@js/selectors/resource";
 import { getCurrentResourcePermissionsLoading } from "@js/selectors/resourceservice";
 import {
@@ -111,11 +111,11 @@ const Permissions = ({
             let responseOptions;
             if (resourceIndex !== -1) {
                 responseOptions = getResourcePermissions(
-                    data[resourceIndex].allowed_perms.compact , compactPermissions?.groups ,manageAnonymousPermissions, manageRegisteredMemberPermissions
+                    data[resourceIndex].allowed_perms.compact, compactPermissions?.groups, manageAnonymousPermissions, manageRegisteredMemberPermissions
                 );
             } else {
                 // set a default permission object
-                responseOptions = getResourcePermissions(data[0].allowed_perms.compact, compactPermissions?.groups ,manageAnonymousPermissions, manageRegisteredMemberPermissions);
+                responseOptions = getResourcePermissions(data[0].allowed_perms.compact, compactPermissions?.groups, manageAnonymousPermissions, manageRegisteredMemberPermissions);
             }
             isMounted(() => setPermissionsObject(responseOptions));
         });
@@ -151,7 +151,7 @@ export default connect(
             getCompactPermissions,
             getCurrentResourcePermissionsLoading,
             getViewedResourceType,
-            getResourceData,
+            getResourceData
         ],
         (compactPermissions, permissionsLoading, type, resource) => ({
             compactPermissions,
