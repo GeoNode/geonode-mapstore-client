@@ -256,7 +256,7 @@
       "title": "plugins.Print.title",
       "description": "plugins.Print.description",
       "dependencies": [
-        "SidebarMenu"
+        "SidebarMenu "
       ],
       "children": [
         "PrintScale",

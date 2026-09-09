@@ -2,7 +2,7 @@
 {% load translations_tags %}
 
 <dt>
-    <label id="{{prefix}}_{{name}}__label" class="control-label" for="{{prefix}}_{{name}}">
+    <label id="{{prefix}}_{{name}}__label" class="control-label" for="{{prefix}}_{{name}}" data-ms-id="metadata-field-{{name}}">
         <a href="#{{prefix}}_{{name}}__label"><i class="fa fa-link"></i></a>
         {% with property_title=property.schema.title|default:name %}
             {% gn_translate property_title %}

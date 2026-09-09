@@ -28,6 +28,12 @@
                             "type": "filter"
                         },
                         {
+                            "id": "unpublished",
+                            "labelId": "gnhome.unpublished",
+                            "type": "filter",
+                            "disableIf": "{not state('user')}"
+                        },
+                        {
                             "id": "pending-approval",
                             "labelId": "gnhome.pendingApproval",
                             "type": "filter",
@@ -114,7 +120,7 @@
                                 defaultConfig[name] = {};
                             }
                         });
-                        
+
                         return [
                             ...cataloguePlugins.filter(plugin => !msPluginsBlocksNames.has(plugin.name)),
                             ...msPluginsBlocks.map(msPluginBlock => {

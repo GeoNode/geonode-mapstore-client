@@ -15,22 +15,25 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 function RichTextEditor({
     value,
     onChange,
+    id,
     ...props
 }) {
     const [editorState, setEditorState] = useState(htmlToDraftJSEditorState(value || ''));
     return (
-        <Editor
-            {...props}
-            editorState={editorState}
-            onEditorStateChange={(newEditorState) => {
-                const previousHTML = draftJSEditorStateToHtml(editorState);
-                const newHTML = draftJSEditorStateToHtml(newEditorState);
-                if (newHTML !== previousHTML) {
-                    onChange(newHTML);
-                    setEditorState(newEditorState);
-                }
-            }}
-        />
+        <div {...{ 'data-ms-id': `${id}-rich-text-editor` }}>
+            <Editor
+                {...props}
+                editorState={editorState}
+                onEditorStateChange={(newEditorState) => {
+                    const previousHTML = draftJSEditorStateToHtml(editorState);
+                    const newHTML = draftJSEditorStateToHtml(newEditorState);
+                    if (newHTML !== previousHTML) {
+                        onChange(newHTML);
+                        setEditorState(newEditorState);
+                    }
+                }}
+            />
+        </div>
     );
 }
 

@@ -19,7 +19,7 @@ geonode-project-name/
 - add the following block extension in the `geostory_resources_page.html` template
 
 ```html
-{% extends "geonode-mapstore-client/resource_page_catalog.html" %} 
+{% extends "geonode-mapstore-client/resource_page_catalog.html" %}
 {% load i18n %}
 {% block content %}
     {% comment %}

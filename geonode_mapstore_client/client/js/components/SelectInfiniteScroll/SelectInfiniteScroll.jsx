@@ -140,6 +140,38 @@ function SelectInfiniteScroll({
         });
     };
 
+    // Custom components with data-ms-id attributes
+    const customComponents = {
+        Option: (optionProps) => {
+            const { innerRef, innerProps, data, ...restProps } = optionProps;
+            return (
+                <div
+                    ref={innerRef}
+                    {...innerProps}
+                    {...restProps}
+                    data-ms-id={`metadata-autocomplete-option-${data?.[valueKey] || ''}`}
+                    style={{ ...optionProps.getStyles?.('option', optionProps), cursor: 'pointer' }}
+                >
+                    {optionProps.children}
+                </div>
+            );
+        },
+        Menu: (menuProps) => {
+            const { innerRef, innerProps, ...restProps } = menuProps;
+            return (
+                <div
+                    ref={innerRef}
+                    {...innerProps}
+                    {...restProps}
+                    data-ms-id="metadata-autocomplete-menu"
+                    style={{ ...menuProps.getStyles?.('menu', menuProps) }}
+                >
+                    {menuProps.children}
+                </div>
+            );
+        }
+    };
+
     return (
         <SelectSync
             {...props}
@@ -151,6 +183,7 @@ function SelectInfiniteScroll({
             onClose={() => setOpen(false)}
             filterOptions={filterOptions}
             onInputChange={(q) => handleInputChange(q)}
+            components={customComponents}
             onMenuScrollToBottom={() => {
                 if (!loading && isNextPageAvailable) {
                     setPage(page + 1);
