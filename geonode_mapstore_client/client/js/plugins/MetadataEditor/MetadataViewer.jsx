@@ -69,13 +69,16 @@ const PreviewButton = ({
     variant,
     pendingChanges,
     setPreview = () => {},
-    labelId = 'gnviewer.viewMetadata'
+    labelId = 'gnviewer.viewMetadata',
+    dataMsId
 }) => {
+    const resolvedDataMsId = dataMsId || 'metadata-edit-view';
     return (
         <Button
             size={size}
             variant={variant}
             disabled={pendingChanges}
+            {...(resolvedDataMsId ? { 'data-ms-id': resolvedDataMsId } : {})}
             onClick={() => setPreview(true)}
         >
             <Message msgId={labelId} />

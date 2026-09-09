@@ -133,7 +133,7 @@ import {
     loadFinished,
     setCreationStep
 } from '@mapstore/framework/actions/contextcreator';
-import { setContext, setResource as setResourceContext } from '@mapstore/framework/actions/context';
+import { setContext } from '@mapstore/framework/actions/context';
 import { REDUCERS_LOADED } from '@mapstore/framework/actions/storemanager';
 import { wrapStartStop } from '@mapstore/framework/observables/epics';
 import { parseDevHostname } from '@js/utils/APIUtils';

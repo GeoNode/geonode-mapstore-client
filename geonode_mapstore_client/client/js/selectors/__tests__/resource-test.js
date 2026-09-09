@@ -143,6 +143,7 @@ describe('resource selector', () => {
         expect(canAddRemoteResource({})).toBe(false);
         expect(canAddRemoteResource({ security: {} })).toBe(false);
     });
+
     it('test defaultViewerPluginsSelector', () => {
         let state = {...testState};
         state.gnresource = {...state.gnresource, defaultViewerPlugins: ["TOC"]};

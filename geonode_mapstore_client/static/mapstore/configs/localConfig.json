@@ -556,22 +556,28 @@
                         {
                             "type": "plugin",
                             "size": "md",
-                            "name": "ResourceDetailsButton"
+                            "name": "ResourceDetailsButton",
+                            "dataMsId": "dataset-view-navbar-properties"
                         },
                         {
                             "labelId": "gnviewer.resource",
                             "showPendingChangesIcon": true,
                             "type": "dropdown",
+                            "toggleAttributes": {
+                                "data-ms-id": "dataset-view-navbar-resource"
+                            },
                             "disableIf": "{not canInteractResource(state('isNewResource'), state('gnResourceData'), state('user'))}",
                             "items": [
                                 {
                                     "type": "plugin",
                                     "name": "Save",
+                                    "dataMsId": "dataset-view-navbar-resource-save",
                                     "disableIf": "{not canSaveResource(state('isNewResource'), state('gnResourceData'), state('user'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "SaveAs",
+                                    "dataMsId": "dataset-view-navbar-resource-save-as",
                                     "disableIf": "{not canSaveAsDataset(state('isNewResource'), state('gnResourceData'), state('user'), state('selectedLayerPermissions'))}"
                                 },
                                 {
@@ -581,6 +587,7 @@
                                 {
                                     "type": "plugin",
                                     "name": "DeleteResource",
+                                    "dataMsId": "dataset-view-navbar-resource-delete",
                                     "disableIf": "{not canDeleteResource(state('isNewResource'), state('gnResourceData'))}"
                                 }
                             ]
@@ -588,19 +595,27 @@
                         {
                             "labelId": "gnviewer.view",
                             "type": "dropdown",
+                            "toggleAttributes": {
+                                "data-ms-id": "dataset-view-navbar-view"
+                            },
                             "items": [
                                 {
                                     "type": "plugin",
-                                    "name": "ResourceDetailsButton"
+                                    "name": "ResourceDetailsButton",
+                                    "dataMsId": "dataset-view-navbar-properties"
                                 },
                                 {
                                     "type": "plugin",
-                                    "name": "MetadataViewer"
+                                    "name": "MetadataViewer",
+                                    "dataMsId": "dataset-view-navbar-view-metadata"
                                 },
                                 {
                                     "type": "link",
                                     "href": "{getEditDataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.viewData",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "dataset-view-navbar-view-data"
+                                    },
                                     "disableIf": "{not hasData(state('gnResourceData'), state('selectedLayerPermissions'))}"
                                 }
                             ]
@@ -608,44 +623,62 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
+                            "toggleAttributes": {
+                                "data-ms-id": "dataset-view-navbar-edit"
+                            },
                             "disableIf": "{not canEditResource(state('isNewResource'), state('gnResourceData'))}",
                             "items": [
                                 {
                                     "type": "link",
                                     "href": "{getEditDataUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editData",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "dataset-view-navbar-edit-data"
+                                    },
                                     "disableIf": "{not canEditDatasetData(state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "link",
                                     "href": "{getEditStyleUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.editStyle",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "dataset-view-navbar-edit-style"
+                                    },
                                     "disableIf": "{not canEditDatasetStyle(state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "OperationUploadStyle",
+                                    "dataMsId": "dataset-view-navbar-edit-upload-style",
                                     "disableIf": "{not canEditDatasetStyle(state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "link",
                                     "href": "{getEditSettingsUrl(state('gnResourceData'))}",
                                     "labelId": "gnviewer.layerSettings.title",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "dataset-view-navbar-edit-map-layer-settings"
+                                    },
                                     "disableIf": "{not canEditDatasetStyle(state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "link",
                                     "href": "{getMetadataUrl(state('gnResourceData'))}",
-                                    "labelId": "gnviewer.editMetadata"
+                                    "labelId": "gnviewer.editMetadata",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "dataset-view-navbar-edit-metadata"
+                                    }
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "OperationUploadMetadata",
+                                    "dataMsId": "dataset-view-navbar-edit-upload-metadata",
                                     "disableIf": "{is3DTiles(state('gnResourceData'))}"
                                 },
                                 {
                                     "type": "plugin",
                                     "name": "OperationReplaceDataset",
+                                    "dataMsId": "dataset-view-navbar-edit-upload-dataset",
                                     "disableIf": "{is3DTiles(state('gnResourceData'))}"
                                 }
                             ]
@@ -653,24 +686,31 @@
                         {
                             "labelId": "gnviewer.download",
                             "type": "dropdown",
+                            "toggleAttributes": {
+                                "data-ms-id": "dataset-view-navbar-download"
+                            },
                             "items": [
                                 {
                                     "type": "plugin",
-                                    "name": "DownloadResource"
+                                    "name": "DownloadResource",
+                                    "dataMsId": "dataset-view-navbar-download-dataset"
                                 },
                                 {
                                     "type": "plugin",
-                                    "name": "LayerDownload"
+                                    "name": "LayerDownload",
+                                    "dataMsId": "dataset-view-navbar-download-export"
                                 },
                                 {
                                     "type": "plugin",
-                                    "name": "IsoDownload"
+                                    "name": "IsoDownload",
+                                    "dataMsId": "dataset-view-navbar-download-iso-metadata"
                                 }
                             ]
                         },
                         {
                             "type": "plugin",
                             "name": "ShareActionButton",
+                            "dataMsId": "dataset-view-navbar-share",
                             "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
                         },
                         {
@@ -680,12 +720,16 @@
                         {
                             "type": "plugin",
                             "name": "FilterLayer",
+                            "dataMsId": "dataset-view-navbar-filter",
                             "disableIf": "{!state('selectedLayerPermissions').includes('download_resourcebase')}"
                         },
                         {
                             "type": "link",
                             "href": "{getCreateNewMapLink(state('gnResourceData'))}",
                             "labelId": "gnviewer.createMap",
+                            "menuItemAttributes": {
+                                "data-ms-id": "dataset-view-navbar-createmap"
+                            },
                             "disableIf": "{not canAddResource(state('user'))}"
                         }
                     ]
@@ -1875,6 +1919,9 @@
                             "labelId": "gnviewer.resource",
                             "showPendingChangesIcon": true,
                             "type": "dropdown",
+                            "toggleAttributes": {
+                                "data-ms-id": "map-view-navbar-resource"
+                            },
                             "disableIf": "{not canInteractResource(state('isNewResource'), state('gnResourceData'), state('user'))}",
                             "items": [
                                 {
@@ -1921,7 +1968,10 @@
                                 {
                                     "type": "link",
                                     "href": "{getMetadataUrl(state('gnResourceData'))}",
-                                    "labelId": "gnviewer.editMetadata"
+                                    "labelId": "gnviewer.editMetadata",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "dataset-view-edit-metadata"
+                                    }
                                 },
                                 {
                                     "type": "divider",
@@ -2648,6 +2698,9 @@
                             "labelId": "gnviewer.resource",
                             "showPendingChangesIcon": true,
                             "type": "dropdown",
+                            "toggleAttributes": {
+                                "data-ms-id": "geostory-view-navbar-resource"
+                            },
                             "disableIf": "{not canInteractResource(state('isNewResource'), state('gnResourceData'), state('user'))}",
                             "items": [
                                 {
@@ -2698,12 +2751,18 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
+                            "toggleAttributes": {
+                                "data-ms-id": "geostory-view-navbar-edit"
+                            },
                             "disableIf": "{not canEditExistingResource(state('isNewResource'), state('gnResourceData'))}",
                             "items": [
                                 {
                                     "type": "link",
                                     "href": "{getMetadataUrl(state('gnResourceData'))}",
-                                    "labelId": "gnviewer.editMetadata"
+                                    "labelId": "gnviewer.editMetadata",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "geostory-view-navbar-edit-metadata"
+                                    }
                                 }
                             ]
                         },
@@ -2836,6 +2895,9 @@
                             "labelId": "gnviewer.resource",
                             "type": "dropdown",
                             "showPendingChangesIcon": true,
+                            "toggleAttributes": {
+                                "data-ms-id": "document-view-navbar-resource"
+                            },
                             "disableIf": "{not canManageDocument(state('isNewResource'), state('gnResourceData'), state('user'), state('selectedLayerPermissions'))}",
                             "items": [
                                 {
@@ -2876,12 +2938,18 @@
                         {
                             "labelId": "gnviewer.edit",
                             "type": "dropdown",
+                            "toggleAttributes": {
+                                "data-ms-id": "document-view-navbar-edit"
+                            },
                             "disableIf": "{not canEditExistingResource(state('isNewResource'), state('gnResourceData'))}",
                             "items": [
                                 {
                                     "type": "link",
                                     "href": "{getMetadataUrl(state('gnResourceData'))}",
-                                    "labelId": "gnviewer.editMetadata"
+                                    "labelId": "gnviewer.editMetadata",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "document-view-navbar-edit-metadata"
+                                    }
                                 }
                             ]
                         },
@@ -2959,6 +3027,9 @@
                             "labelId": "gnviewer.resource",
                             "type": "dropdown",
                             "showPendingChangesIcon": true,
+                            "toggleAttributes": {
+                                "data-ms-id": "dashboard-view-navbar-resource"
+                            },
                             "disableIf": "{not canInteractResource(state('isNewResource'), state('gnResourceData'), state('user'))}",
                             "items": [
                                 {
@@ -3713,50 +3784,74 @@
                             "disableIf": "{not canCreateResourceFromCatalog(state('settings'), state('user'))}",
                             "type": "dropdown",
                             "variant": "primary",
+                            "toggleAttributes": {
+                                "data-ms-id": "btn-add-resource"
+                            },
                             "noCaret": true,
                             "items": [
                                 {
                                     "labelId": "gnhome.uploadDataset",
                                     "value": "layer",
                                     "type": "link",
-                                    "href": "{getCataloguePath('/catalogue/#/upload/dataset')}"
+                                    "href": "{getCataloguePath('/catalogue/#/upload/dataset')}",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "btn-add-resource-upload-dataset"
+                                    }
                                 },
                                 {
                                     "labelId": "gnhome.uploadDocument",
                                     "value": "document",
                                     "type": "link",
-                                    "href": "{getCataloguePath('/catalogue/#/upload/document')}"
+                                    "href": "{getCataloguePath('/catalogue/#/upload/document')}",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "btn-add-resource-upload-document"
+                                    }
                                 },
                                 {
                                     "labelId": "gnhome.createDataset",
                                     "value": "layer",
                                     "type": "link",
                                     "href": "{getCataloguePath('/catalogue/#/create/dataset')}",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "btn-add-resource-create-dataset"
+                                    },
                                     "disableIf": "{not canCreateLayer(state('settings'))}"
                                 },
                                 {
                                     "labelId": "gnhome.createMap",
                                     "value": "map",
                                     "type": "link",
-                                    "href": "{getCataloguePath('/catalogue/#/map/new')}"
+                                    "href": "{getCataloguePath('/catalogue/#/map/new')}",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "btn-add-resource-create-map"
+                                    }
                                 },
                                 {
                                     "labelId": "gnhome.createGeostory",
                                     "value": "geostory",
                                     "type": "link",
-                                    "href": "{getCataloguePath('/catalogue/#/geostory/new')}"
+                                    "href": "{getCataloguePath('/catalogue/#/geostory/new')}",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "btn-add-resource-create-geostory"
+                                    }
                                 },
                                 {
                                     "labelId": "gnhome.createDashboard",
                                     "value": "dashboard",
                                     "type": "link",
-                                    "href": "{getCataloguePath('/catalogue/#/dashboard/new')}"
+                                    "href": "{getCataloguePath('/catalogue/#/dashboard/new')}",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "btn-add-resource-create-dashboard"
+                                    }
                                 },
                                 {
                                     "labelId": "gnhome.remoteServices",
                                     "value": "remote",
                                     "type": "link",
-                                    "href": "/services/?limit=5"
+                                    "href": "/services/?limit=5",
+                                    "menuItemAttributes": {
+                                        "data-ms-id": "btn-add-resource-remote-services"
+                                    }
                                 }
                             ]
                         }
@@ -3961,6 +4056,9 @@
                             "labelId": "gnviewer.resource",
                             "showPendingChangesIcon": true,
                             "type": "dropdown",
+                            "toggleAttributes": {
+                                "data-ms-id": "viewer-navbar-resource"
+                            },
                             "disableIf": "{not canInteractResource(state('isNewResource'), state('gnResourceData'), state('user'))}",
                             "items": [
                                 {
