@@ -134,13 +134,7 @@ const setDefaultStyle = (state, id) => {
     const initialStyleName = getInitialDatasetLayerStyle(state);
     const layers = layersSelector(state);
 
-    if (
-        id
-        && !isEmpty(layers)
-        && initialStyleName
-        && currentStyleName !== initialStyleName
-        && isGeoServerStyleUpdateAllowed(layer, currentResource?.subtype)
-    ) {
+    if (id && !isEmpty(layers) && initialStyleName && currentStyleName !== initialStyleName) {
         const { baseUrl = '' } = styleServiceSelector(state);
         return {
             request: () => LayersAPI.updateDefaultStyle({
