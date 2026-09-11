@@ -1064,6 +1064,7 @@
       "serviceslistempty": "Nessun servizio definito",
       "service_missing": "Il servizio {serviceType} non è configurato",
       "generic_error": "Un errore e' occorso durante la ricerca: Dettagli errore: {message}",
+      "services_error": "Se han producido algunos errores durante la búsqueda en los servicios: {message}",
       "showGFI": "Mostra GFI",
       "errors": {
         "nonQueriableLayers": "Il layer indicato nell'url non è queriable o non è visibile in mappa",
