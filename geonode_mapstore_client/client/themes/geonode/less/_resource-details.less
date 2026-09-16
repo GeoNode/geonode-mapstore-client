@@ -26,6 +26,10 @@
                 }
             }
         }
+
+        .gn-details-assets-date {
+            .color-var(@theme-vars[placeholder-color]);
+        }
     }
 }
 
@@ -48,6 +52,9 @@
     }
 
     .gn-details-assets {
+        height: 100%;
+        min-height: 0;
+
         .gn-details-assets-loading {
             position: absolute;
             top: 0;
@@ -61,28 +68,60 @@
             justify-content: center;
         }
 
-        .gn-details-assets-list {
-            max-height: 300px;
-            overflow-y: auto;
+        .gn-details-assets-filter {
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            position: relative;
 
-            &.full-height {
-                max-height: 100%;
+            .form-control {
+                width: 100%;
+                padding-right: 2rem;
             }
+
+            .ms-spinner,
+            .btn {
+                position: absolute;
+                right: 1px;
+                padding: 0.25rem 0.5rem;
+            }
+        }
+
+        .gn-details-assets-list {
+            flex: 1 1 auto;
+            min-height: 0;
+            height: 100%;
+            overflow-y: auto;
+            margin-bottom: 0;
 
             .gn-details-assets-empty {
                 padding: 10px;
             }
+
+            table {
+                margin-bottom: 0;
+            }
+        }
+
+        .gn-details-assets-date {
+            white-space: nowrap;
         }
 
         .gn-details-assets-item {
-            justify-content: space-between;
+            .gn-details-assets-actions {
+                text-align: right;
+                white-space: nowrap;
+            }
 
+            .gn-details-assets-download,
             .gn-details-assets-delete {
                 margin: 2px;
                 padding: 2px 4px;
                 width: 24px;
                 height: 24px;
+            }
 
+            .gn-details-assets-delete {
                 .gn-details-assets-delete-loader {
                     margin-left: 2px;
                 }

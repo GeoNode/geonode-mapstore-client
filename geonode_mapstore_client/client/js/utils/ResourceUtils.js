@@ -744,13 +744,7 @@ export const getResourceWithLinkedResources = (resource = {}) => {
 };
 
 export const getResourceAdditionalProperties = (_resource = {}) => {
-    const resource =  getResourceWithLinkedResources(_resource);
-    const links = resource?.links || [];
-    const assets = links.filter(link => link?.extras?.type === 'asset' && link?.extras?.content?.title);
-    return {
-        ...resource,
-        assets: assets.length ? assets : [{_showEmptyState: true}] // add empty state flag to show assets section
-    };
+    return getResourceWithLinkedResources(_resource);
 };
 
 // Normalizes a dataset resource's `data` payload to the shape

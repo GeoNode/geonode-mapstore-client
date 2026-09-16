@@ -765,6 +765,16 @@ export const deleteAsset = (pk, assetId) => {
     });
 };
 
+export const getAssetsByPk = (pk) => {
+    return axios.get(getEndpointUrl(RESOURCES, `/${pk}/asset`), {
+        params: {
+            page: 1,
+            page_size: 99999
+        }
+    })
+        .then(({ data }) => (isArray(data) ? data : (data?.assets ?? [])));
+};
+
 export const createDataset = (body) => {
     return axios.post(getEndpointUrl(UPLOADS) + '/upload', body)
         .then(({ data }) => data);
@@ -796,6 +806,7 @@ export default {
     getUserByPk,
     uploadAsset,
     deleteAsset,
+    getAssetsByPk,
     getUsers,
     getAccountInfo,
     getConfiguration,

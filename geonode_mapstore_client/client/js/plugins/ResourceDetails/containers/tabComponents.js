@@ -24,7 +24,7 @@ const tabComponents = {
         loadingUpdateResourceExtent
     })), { onSetExtent: setResourceExtent, onUpdateExtent: updateResourceExtent })(DetailsLocations),
     'relations': DetailsLinkedResources,
-    'assets': connect(() => ({}), { onNotify: show, onChange: updateResourceProperties })(DetailsAssets),
+    'assets': connect(() => ({}), { onNotify: show })(DetailsAssets),
     'data': connect(() => ({}), { onChange: updateResourceProperties })(DetailsData),
     'share': DetailsShare,
     'settings': connect(() => ({}), { onChange: updateResourceProperties })(DetailsSettings)
