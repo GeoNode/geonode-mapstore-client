@@ -184,7 +184,7 @@ Example flow: `localConfig.json` → `ActionNavbar` plugin config → `ActionNav
 #### Resource Catalog (Grid of Cards)
 | UI Element | Source File |
 |---|---|
-| Resource card grid container | `node_modules/mapstore/.../ResourcesCatalog/components/ResourcesContainer.jsx` — data-ms-id: `dataset-card-{idx}` |
+| Resource card grid container | `node_modules/mapstore/.../ResourcesCatalog/components/ResourcesContainer.jsx` — data-ms-id: `resource-card-{resource.id}` |
 | Individual resource card | `node_modules/mapstore/.../ResourcesCatalog/components/ResourceCard.jsx` — supports `dataMsId`, `cardMsIdPrefix` props → `data-ms-id` on card, `{prefix}-link`, `{prefix}-title` |
 | Resource card action buttons | `node_modules/mapstore/.../ResourcesCatalog/components/ResourceCardActionButtons.jsx` — `{cardMsIdPrefix}-actions` |
 | Menu items (dropdowns) | `node_modules/mapstore/.../ResourcesCatalog/components/MenuItem.jsx` — passes `dataMsId` through |
@@ -203,8 +203,8 @@ Example flow: `localConfig.json` → `ActionNavbar` plugin config → `ActionNav
 | UI Element | Source File |
 |---|---|
 | Details panel container | `js/plugins/ResourceDetails/containers/DetailsPanel.jsx` |
-| Details header (title + close) | `node_modules/mapstore/.../ResourcesCatalog/components/DetailsHeader.jsx` — data-ms-id: `dataset-view-sidepanel-close`, `dataset-view-sidepanel-title` |
-| Details info tabs | `node_modules/mapstore/.../ResourcesCatalog/components/DetailsInfo.jsx` — data-ms-id on tab titles and `dataset-view-sidepanel-tab-content` |
+| Details header (title + close) | `node_modules/mapstore/.../ResourcesCatalog/components/DetailsHeader.jsx` — data-ms-id: `resource-details-close`, `resource-details-title` |
+| Details info tabs | `node_modules/mapstore/.../ResourcesCatalog/components/DetailsInfo.jsx` — data-ms-id on tab titles: `resource-details-tab-{tab.id}`, tab content: `resource-details-tab-{tab.id}-content` |
 | Details toolbar (copy URL, download) | `js/plugins/ResourceDetails/components/DetailsToolbar.jsx` — auto-assigns data-ms-id based on glyph: `dataset-view-sidepanel-btn-download`, `dataset-view-sidepanel-btn-copy-url`, `dataset-view-sidepanel-btn-copy-ogc` |
 | Details thumbnail | `js/plugins/ResourceDetails/components/DetailsThumbnail.jsx` |
 | Details preview (expandable iframe) | `js/plugins/ResourceDetails/components/DetailsPreview.jsx` |
@@ -242,9 +242,9 @@ Example flow: `localConfig.json` → `ActionNavbar` plugin config → `ActionNav
 #### Export / Download Dialog
 | UI Element | Source File |
 |---|---|
-| Export dialog | `node_modules/mapstore/.../components/data/download/DownloadDialog.jsx` — data-ms-id: `dataset-export-box`, `dataset-export-box-close`, `dataset-export-box-export` |
-| Format select | `node_modules/mapstore/.../components/data/download/DownloadOptions.jsx` — data-ms-id: `dataset-export-select-format` |
-| Advanced options (SRS) | `node_modules/mapstore/.../components/data/download/DownloadWPSOptions.jsx` — data-ms-id: `dataset-export-toggle-advanced`, `dataset-export-select-reference-system` |
+| Export dialog | `node_modules/mapstore/.../components/data/download/DownloadDialog.jsx` — data-ms-id: `layer-download-dialog`, `layer-download-dialog-close`, `layer-download-submit` |
+| Format select | `node_modules/mapstore/.../components/data/download/DownloadOptions.jsx` — data-ms-id: `layer-download-format` |
+| Advanced options (SRS) | `node_modules/mapstore/.../components/data/download/DownloadWPSOptions.jsx` — data-ms-id: `layer-download-advanced-toggle`, `layer-download-srs` |
 
 #### Media Viewers
 | UI Element | Source File |
