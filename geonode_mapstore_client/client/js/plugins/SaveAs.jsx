@@ -170,8 +170,7 @@ function CopyMenuItem({
     canCopy,
     onCopy,
     component,
-    cardMsIdPrefix,
-    dataMsId
+    cardMsIdPrefix
 }) {
     if (!canCopy(resource)) {
         return null;
@@ -184,9 +183,7 @@ function CopyMenuItem({
             }
             labelId="gnviewer.clone"
             glyph="duplicate"
-            cardMsIdPrefix={cardMsIdPrefix}
-            dataMsId={dataMsId}
-            {...(dataMsId ? { 'data-ms-id': dataMsId } : {})}
+            dataMsId={cardMsIdPrefix ? `${cardMsIdPrefix}-clone` : undefined}
         />
     );
 }
