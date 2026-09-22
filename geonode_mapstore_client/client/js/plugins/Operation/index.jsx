@@ -158,10 +158,16 @@ function OperationButton({
     labelId,
     size,
     variant,
+    dataMsId,
     onClick
 }) {
     return (
-        <Button size={size} variant={variant} onClick={() => onClick(id)}>
+        <Button
+            size={size}
+            variant={variant}
+            {...(dataMsId ? { 'data-ms-id': dataMsId } : {})}
+            onClick={() => onClick(id)}
+        >
             <Message msgId={labelId} />
         </Button>
     );

@@ -17,9 +17,14 @@ import { gnDownloadMetaData } from '@js/epics/gndownload';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import gnDownload from '@js/reducers/gndownload';
 
-function IsoDownload({ onDownload, resourcePk, isDownloading }) {
+function IsoDownload({ onDownload, resourcePk, isDownloading, dataMsId }) {
     return (
-        <Button variant="default" onClick={() => onDownload('ISO', resourcePk)} className="isobutton">
+        <Button
+            variant="default"
+            className="isobutton"
+            {...(dataMsId ? { 'data-ms-id': dataMsId } : {})}
+            onClick={() => onDownload('ISO', resourcePk)}
+        >
             {isDownloading && <Spinner animation="border" role="status">
                 <span className="sr-only">Loading...</span>
             </Spinner>} <Message msgId="gnviewer.iso" />

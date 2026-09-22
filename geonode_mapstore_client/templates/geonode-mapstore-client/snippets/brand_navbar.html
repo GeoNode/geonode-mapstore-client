@@ -9,7 +9,7 @@
 <nav id="gn-brand-navbar" class="gn-brand-navbar ms-main-colors _padding-md ms-flex-box _flex">
     <div class="ms-flex-fill ms-flex-box _flex _flex-gap-sm _flex-center-v">
         {% block logo %}
-            <a href="/">
+            <a href="/" data-ms-id="navbar-logo">
                 {% if custom_theme.logo and custom_theme.logo.url %}
                     <img src="{{ custom_theme.logo.url }}">
                 {% else %}

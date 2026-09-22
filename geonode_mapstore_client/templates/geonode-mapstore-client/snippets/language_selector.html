@@ -16,6 +16,7 @@
                     data-lang-code="{{lang.0}}"
                     data-lang-state="{% if lang.0 == LANGUAGE %}active{% else %}{% endif %}"
                     class="btn btn-primary {% if lang.0 == LANGUAGE %} active{% else %}{% endif %}"
+                    data-ms-id="language-{{lang.0}}"
                 >
                     {{lang.0}}
                 </button>
@@ -54,6 +55,7 @@
                     type="button"
                     class="dropdown-toggle btn btn-{{variant|default:'default'}}"
                     data-toggle="dropdown"
+                    data-ms-id="language-selector"
                 >
                     {{ lang_info.name_local }}
                 </button>
@@ -61,7 +63,7 @@
                     {% for lang in LANGUAGES %}
                         {% if lang.0 != LANGUAGE %} 
                             <li>
-                                <a style="cursor:pointer;" data-lang-code="{{lang.0}}">{{ lang.1 }}</a>
+                                <a style="cursor:pointer;" data-lang-code="{{lang.0}}" data-ms-id="language-{{lang.0}}">{{ lang.1 }}</a>
                             </li>
                         {% endif %}
                     {% endfor %}

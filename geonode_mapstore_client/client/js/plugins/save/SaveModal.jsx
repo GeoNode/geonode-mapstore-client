@@ -64,6 +64,17 @@ function SaveModal({
 
     const isLoading = loading || saving;
 
+    useEffect(() => {
+        if (!enabled || !currentModal.current) {
+            return;
+        }
+        const modalContainer = currentModal.current.querySelector('#ms-resizable-modal');
+        modalContainer?.setAttribute('data-ms-id', 'dataset-save-box');
+
+        const topCloseButton = currentModal.current.querySelector('.modal-header .square-button');
+        topCloseButton?.setAttribute('data-ms-id', 'dataset-save-box-close-top');
+    }, [enabled, isLoading]);
+
     const handleEnterPress = options => {
         const {title, isUpdate, content, image, text, reload} = options;
         return onSave(
@@ -93,12 +104,14 @@ function SaveModal({
                         : [
                             {
                                 text: <Message msgId="close"/>,
+                                'data-ms-id': 'dataset-save-box-close',
                                 onClick: () => onClose()
                             },
                             {
                                 text: <Message msgId={labelId}/>,
                                 disabled: !!nameValidation,
                                 bsStyle: 'primary',
+                                'data-ms-id': 'dataset-save-box-save',
                                 onClick: () => onSave(
                                     update ? contentId : undefined,
                                     {
@@ -128,6 +141,7 @@ function SaveModal({
                             <FormControl
                                 autoFocus
                                 placeholder="gnviewer.titlePlaceholder"
+                                {...{ 'data-ms-id': 'dataset-save-box-input' }}
                                 value={name}
                                 onChange={(event) => {
                                     setName(event.target.value);

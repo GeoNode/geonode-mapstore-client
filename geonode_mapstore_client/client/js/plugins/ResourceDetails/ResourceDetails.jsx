@@ -105,7 +105,8 @@ function ResourceDetailsPanel({
                 {
                     "type": "text",
                     "labelId": "gnviewer.title",
-                    "value": "{get(state('gnResourceData'), 'title')}"
+                    "value": "{get(state('gnResourceData'), 'title')}",
+                    "data-ms-id": "resource-metadata-info-value"
                 },
                 {
                     "type": "link",
@@ -211,7 +212,8 @@ function ResourceDetailsPanel({
                     "style": "label",
                     "labelId": "gnviewer.viewFullMetadata",
                     "href": "{getMetadataDetailUrl(state('gnResourceData'))}",
-                    "disableIf": "{not getMetadataDetailUrl(state('gnResourceData'))}"
+                    "disableIf": "{not getMetadataDetailUrl(state('gnResourceData'))}",
+                    "data-ms-id": "metadata-view-full"
                 }
             ]
         },
@@ -335,6 +337,7 @@ function ResourceDetailsPanel({
         <TargetSelectorPortal targetSelector={targetSelector}>
             <ResourcesPanelWrapper
                 className="ms-resource-detail shadow-xl"
+                data-ms-id="resource-detail-view"
                 top={stickyTop}
                 bottom={stickyBottom}
                 show={show}
@@ -405,7 +408,7 @@ export default createPlugin('ResourceDetails', {
     containers: {
         ActionNavbar: [{
             name: 'ResourceDetailsButton',
-            Component: connect((state) => ({resource: getResourceData(state)}), { onShow: setShowDetails })(({ component, resourcesGridId, onShow, resource }) => {
+            Component: connect((state) => ({resource: getResourceData(state)}), { onShow: setShowDetails })(({ component, resourcesGridId, onShow, resource, dataMsId }) => {
                 if (!resource?.pk) return null;
 
                 const Component = component;
@@ -418,6 +421,8 @@ export default createPlugin('ResourceDetails', {
                         glyph="details"
                         square
                         labelId="resourcesCatalog.viewResourceProperties"
+                        dataMsId={dataMsId}
+                        {...(dataMsId ? { 'data-ms-id': dataMsId } : {})}
                     />
                 ) : null;
             }),
@@ -438,10 +443,11 @@ export default createPlugin('ResourceDetails', {
                     onSelectTab: setDetailPanelTab,
                     onShowDetails: setShowDetails
                 }
-            )(({ enabled, size, onSelectTab, onShowDetails }) => {
+            )(({ enabled, size, onSelectTab, onShowDetails, dataMsId }) => {
                 return enabled
                     ? <Button
                         size={size}
+                        {...(dataMsId ? { 'data-ms-id': dataMsId } : {})}
                         onClick={() => {
                             onShowDetails(true);
                             onSelectTab('share');
@@ -466,7 +472,7 @@ export default createPlugin('ResourceDetails', {
                     onSelect: requestResource,
                     onShow: setShowDetails
                 }
-            )(({ resourcesGridId, resource, onSelect, component, selectedResource, onShow }) => {
+            )(({ resourcesGridId, resource, onSelect, component, selectedResource, onShow, cardMsIdPrefix }) => {
                 const Component = component;
                 function handleClick() {
                     if (!selectedResource['@ms-detail'] || selectedResource?.pk !== resource?.pk) {
@@ -480,6 +486,7 @@ export default createPlugin('ResourceDetails', {
                         glyph="details"
                         square
                         labelId="resourcesCatalog.viewResourceProperties"
+                        cardMsIdPrefix={cardMsIdPrefix}
                     />
                 );
             }),

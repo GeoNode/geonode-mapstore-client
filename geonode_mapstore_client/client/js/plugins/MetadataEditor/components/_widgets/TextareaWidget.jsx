@@ -20,15 +20,17 @@ function TextareaWidget(props) {
     if (options?.['geonode-ui:richTextEditor']) {
         return (
             <Suspense fallback={null}>
-                <RichTextEditor
-                    id={id}
-                    value={value}
-                    onChange={onChange}
-                />
+                <div {...{ 'data-ms-id': `${id}-widget` }}>
+                    <RichTextEditor
+                        id={id}
+                        value={value}
+                        onChange={onChange}
+                    />
+                </div>
             </Suspense>
         );
     }
-    return (<DefaultTextareaWidget {...props}/>);
+    return (<DefaultTextareaWidget {...props} {...{ 'data-ms-id': `${id}-widget` }}/>);
 }
 
 export default TextareaWidget;

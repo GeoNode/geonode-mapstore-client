@@ -84,7 +84,7 @@ function OperationUpload({
                 errors={errors}
                 completed={completed}
                 disabled={loadingRequests}
-                rightColumn={<div>
+                rightColumn={<div data-ms-id="resource-viewer-right-overlay">
                     {blocking ? <Button
                         disabled={loading}
                         className="square-button"

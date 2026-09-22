@@ -234,6 +234,7 @@ const CreateDataset = ({
                 '_absolute',
                 '_padding-lr-md'
             ]}
+            {...{'data-ms-id': 'dataset-create-form'}}
         >
             <FlexBox
                 column
@@ -257,6 +258,7 @@ const CreateDataset = ({
                         autoComplete="off"
                         value={dataset?.title}
                         disabled={loading}
+                        data-ms-id="dataset-create-title"
                         onChange={(event) =>
                             setDataset({
                                 ...dataset,
@@ -379,6 +381,7 @@ const CreateDataset = ({
                         className="gn-attribute-button"
                         variant="success"
                         disabled={!!allErrors.length || loading}
+                        data-ms-id="dataset-create-submit"
                         onClick={handleCreate}>
                         <Message msgId="gnviewer.createNewDataset" />
                         {loading ? <Spinner /> : null}

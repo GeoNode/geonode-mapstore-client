@@ -60,6 +60,7 @@ function DetailsSettings({ resource, onChange }) {
                                     disabled={disabled(resource?.perms || [])}
                                     checked={!!resource?.[key]}
                                     onChange={(event) => onChange({ [key]: !!event.target.checked })}
+                                    data-ms-id={`settings-publishing-${key}`}
                                 >
                                     <MessageTooltip msgId={labelId} tooltipId={tooltipId}/>
                                 </Checkbox>
@@ -82,6 +83,7 @@ function DetailsSettings({ resource, onChange }) {
                                     disabled={disabled(resource?.perms || [])}
                                     checked={!!resource?.[key]}
                                     onChange={(event) => onChange({ [key]: !!event.target.checked })}
+                                    data-ms-id={`settings-options-${key}`}
                                 >
                                     <MessageTooltip msgId={labelId} tooltipId={tooltipId}/>
                                 </Checkbox>

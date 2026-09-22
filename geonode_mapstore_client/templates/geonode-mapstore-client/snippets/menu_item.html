@@ -7,6 +7,7 @@
                 href="{{ menu_item.href }}"
                 target="{{ menu_item.target }}"
                 class="nav-link btn btn-{{variant|default:'default'}}"
+                data-ms-id="navbar-{{ menu_item.id|default:menu_item.label|slugify }}"
             >
                 {% trans menu_item.label %}
             </a>

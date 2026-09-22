@@ -27,6 +27,7 @@ function AddButton({
             className="square-button-md"
             onClick={onClick}
             variant="primary"
+            {...{ 'data-ms-id': 'metadata-edit-array-add' }}
         >
             <Glyphicon glyph="plus" />
         </Button>
@@ -42,6 +43,7 @@ function MoveUpButton({
             disabled={disabled}
             className="square-button-md"
             onClick={onClick}
+            {...{ 'data-ms-id': 'metadata-edit-array-move-up' }}
         >
             <Glyphicon glyph="arrow-up" />
         </Button>
@@ -57,6 +59,7 @@ function MoveDownButton({
             disabled={disabled}
             className="square-button-md"
             onClick={onClick}
+            {...{ 'data-ms-id': 'metadata-edit-array-move-down' }}
         >
             <Glyphicon glyph="arrow-down" />
         </Button>
@@ -72,6 +75,7 @@ function RemoveButton({
             disabled={disabled}
             className="square-button-md"
             onClick={onClick}
+            {...{ 'data-ms-id': 'metadata-edit-array-remove' }}
         >
             <Glyphicon glyph="trash" />
         </Button>
