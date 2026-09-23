@@ -25,6 +25,7 @@ import {
     parseUploadResponse,
     cleanUrl,
     getResourceTypesInfo,
+    parseCatalogResource,
     ResourceTypes,
     FEATURE_INFO_FORMAT,
     isDocumentExternalSource,
@@ -878,6 +879,7 @@ describe('Test Resource Utils', () => {
                 icon,
                 canPreviewed,
                 hasPermission,
+                canDownload,
                 formatMetadataUrl,
                 metadataPreviewUrl,
                 name
@@ -893,6 +895,16 @@ describe('Test Resource Utils', () => {
             expect(name).toBe('Document');
             expect(formatMetadataUrl(resource)).toBe('#/metadata/100');
             expect(metadataPreviewUrl(resource)).toBe('/metadata/100/embed');
+            expect(canDownload(resource)).toBeTruthy();
+            const viewOnlyResource = {
+                perms: ['view_resourcebase'],
+                pk: "100",
+                extension: "pdf"
+            };
+            expect(canPreviewed(viewOnlyResource)).toBeFalsy();
+            expect(hasPermission(viewOnlyResource)).toBeTruthy();
+            expect(canDownload(viewOnlyResource)).toBeFalsy();
+            expect(hasPermission({ perms: [], pk: "100" })).toBeFalsy();
         });
         it('test geostory of getResourceTypesInfo', () => {
             const {
@@ -1578,5 +1590,25 @@ describe('Test Resource Utils', () => {
             const reloaded = toMapStoreMapConfig(resource, { map: { layers: [] } });
             expect(reloaded.map.layers[0].extendedParams.alternate).toBe('geonode:roundtrip');
         });
+    });
+    it('parseCatalogResource should provide viewer url for document with only view permission', () => {
+        const prevDevtools = window.__DEVTOOLS__;
+        window.__DEVTOOLS__ = false;
+        const resource = {
+            pk: 1,
+            title: 'Document',
+            resource_type: 'document',
+            extension: 'pdf',
+            detail_url: '/catalogue/#/document/1',
+            embed_url: '/documents/1/embed',
+            perms: ['view_resourcebase']
+        };
+        const { info } = parseCatalogResource(resource)['@extras'];
+        expect(info.viewerUrl).toBe('/catalogue/#/document/1');
+        expect(info.viewerPath).toBe('/document/1');
+        expect(info.embedUrl).toBeFalsy();
+        const noPermsInfo = parseCatalogResource({ ...resource, perms: [] })['@extras'].info;
+        expect(noPermsInfo.viewerUrl).toBeFalsy();
+        window.__DEVTOOLS__ = prevDevtools;
     });
 });
