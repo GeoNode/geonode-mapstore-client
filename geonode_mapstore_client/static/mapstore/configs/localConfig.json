@@ -91,7 +91,7 @@
     ],
     "projectionDefs": [],
     "miscSettings": {
-        "maxURLLength": 2048,
+        "maxURLLength": null,
         "coalesceWMSLayers": false
     },
     "supportedLocales": {
