@@ -45,6 +45,16 @@ describe('Test Media', () => {
         expect(mediaViewer).toBeTruthy();
     });
 
+    it('should render metadata preview if resource has only view perms', () => {
+        ReactDOM.render( <Media resource={{href: "http://example.com", resource_type: "document", extension: "jpeg", "abstract": "test", pk: 1, perms: [
+            "view_resourcebase"
+        ] }}/>, document.getElementById("container"));
+        expect(document.querySelector('.ms-media')).toBeFalsy();
+        const metadataPreview = document.querySelector('.gn-metadata-preview');
+        expect(metadataPreview).toBeTruthy();
+        expect(metadataPreview.querySelector('iframe').getAttribute('src')).toBe('/metadata/1/embed');
+    });
+
     it('should render error message if resource has not download perms', () => {
         ReactDOM.render( <Media resource={{href: "http://example.com", resource_type: "document", extension: "jpeg", "abstract": "test", pk: 1 }}/>, document.getElementById("container"));
         const ErrorMess = document.querySelector('.gn-main-event-text');

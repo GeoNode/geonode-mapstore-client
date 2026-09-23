@@ -56,11 +56,11 @@ const Media = ({ resource, ...props }) => {
 
     const mediaTypes = getResourceTypesInfo();
     const {
-        hasPermission, metadataPreviewUrl = () => {}
+        hasPermission, canDownload, metadataPreviewUrl = () => {}
     } = resource && (mediaTypes[resource.resource_type]) || {};
     const viewResource = resource?.pk && hasPermission && hasPermission(resource);
     if (resource && viewResource) {
-        const mediaType = determineResourceType(resource.extension);
+        const mediaType = canDownload && !canDownload(resource) ? 'unsupported' : determineResourceType(resource.extension);
         const MediaViewer =  mediaMap[mediaType];
         return (<Suspense fallback={null}>
             <MediaViewer
