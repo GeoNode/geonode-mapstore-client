@@ -47,11 +47,7 @@ export const gnUpdateRequestConfigurationRulesEpic = (action$) =>
             return Observable.defer(() => getRequestRules())
                 .switchMap((data) => {
                     const uniqRules = uniqBy(data.rules ?? [], 'urlPattern');
-                    const _uniqRules = uniqRules.concat({
-                        urlPattern: "https://geoserver-d.eugeadev.iasp.tgscloud.net/geoserver/.*",
-                        params: {ak: "d45e7856-42b8-4756-ad47-9e763cd5eed0"}
-                    });
-                    return Observable.of(updateRequestsRules(_uniqRules));
+                    return Observable.of(updateRequestsRules(uniqRules));
                 })
                 .catch((error) => Observable.of(loadRequestsRulesError(error)));
         });
