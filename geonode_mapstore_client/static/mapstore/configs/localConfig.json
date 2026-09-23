@@ -1864,6 +1864,7 @@
                 "cfg": {
                     "mapOptions": {
                         "openlayers": {
+                            "maxTilesLoading": 128,
                             "attribution": {
                                 "container": "#footer-attribution-container"
                             },
