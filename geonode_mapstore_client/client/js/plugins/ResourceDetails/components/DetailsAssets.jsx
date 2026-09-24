@@ -6,11 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Dropzone from 'react-dropzone';
 import { Glyphicon } from 'react-bootstrap';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
+import moment from 'moment';
 
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Text from '@mapstore/framework/components/layout/Text';
@@ -18,25 +19,17 @@ import Message from '@mapstore/framework/components/I18N/Message';
 import HTML from '@mapstore/framework/components/I18N/HTML';
 import Button from '@mapstore/framework/components/layout/Button';
 import Loader from '@mapstore/framework/components/misc/Loader';
+import Spinner from '@mapstore/framework/components/layout/Spinner';
+import InputControl from '@mapstore/framework/components/catalog/resources/InputControl';
 
-import { uploadAsset, deleteAsset } from '@js/api/geonode/v2';
-import { ASSETS, getEndpointUrl } from '@js/api/geonode/v2/constants';
+import { uploadAsset, deleteAsset, getAssetsByPk } from '@js/api/geonode/v2';
 import { getFileNameParts } from '@js/utils/FileUtils';
+import useIsMounted from '@js/hooks/useIsMounted';
 import {
     getMaxParallelUploads,
     getMaxAllowedSizeByResourceType,
     getSupportedDocumentTypes
 } from '@js/utils/UploadUtils';
-
-// Get asset download and link URLs
-const getAssetUrls = (assetData = {}) => {
-    const { asset_id: assetId, link_id: linkId } = assetData;
-    const baseUrl = getEndpointUrl(ASSETS);
-    return {
-        downloadUrl: assetId ? `${baseUrl}/${assetId}/download` : null,
-        linkUrl: linkId ? `${baseUrl}/${linkId}/link` : null
-    };
-};
 
 // Make safe call, handling partial success and errors
 const safe = (promise) => {
@@ -45,12 +38,16 @@ const safe = (promise) => {
         .catch(error => ({ status: "rejected", reason: error }));
 };
 
-// Extract asset ID from download URL
-const extractAssetIdFromUrl = (url) => {
-    if (!url || typeof url !== 'string') return null;
-    const match = url.match(/\/assets\/(\d+)\//);
-    return match ? parseInt(match[1], 10) : null;
-};
+// Normalize an asset entry returned by GET /resources/<pk>/asset
+// into the shape used by this component: { id, title, created, deletable, linkUrl, downloadUrl }
+const parseAsset = (asset = {}) => ({
+    id: asset.id,
+    title: asset.title ?? '',
+    created: asset.created,
+    deletable: !!asset.deletable,
+    linkUrl: get(asset, 'urls.link'),
+    downloadUrl: get(asset, 'urls.download_url')
+});
 
 const AssetUploadWidget = ({
     resourcePk,
@@ -99,24 +96,15 @@ const AssetUploadWidget = ({
 
         // Make safe the uploadAsset call, handling partial success and errors
         Promise.all(
-            files.map((file) =>
-                safe(uploadAsset(resourcePk, file)
-                    .then((asset) =>
-                        ({...getAssetUrls(asset), title: file.name})
-                    ))
-            ))
-            .then((assets) => {
-                let successfulAssets = [];
-                let rejectedAssets = [];
-                assets.forEach(({ status, value, reason }) =>
-                    status === "fulfilled"
-                        ? successfulAssets.push(value)
-                        : rejectedAssets.push(reason)
-                );
-                const isPartialSuccess = !isEmpty(successfulAssets) && !isEmpty(rejectedAssets);
+            files.map((file) => safe(uploadAsset(resourcePk, file)))
+        )
+            .then((results) => {
+                const successfulUploads = results.filter(({ status }) => status === "fulfilled");
+                const rejectedUploads = results.filter(({ status }) => status === "rejected");
+                const isPartialSuccess = !isEmpty(successfulUploads) && !isEmpty(rejectedUploads);
 
                 // Handle rejected assets & partial success
-                if (!isEmpty(rejectedAssets)) {
+                if (!isEmpty(rejectedUploads)) {
                     onNotify({
                         title: 'gnviewer.assetUpload',
                         message: `gnviewer.${isPartialSuccess
@@ -125,8 +113,8 @@ const AssetUploadWidget = ({
                     }, isPartialSuccess ? 'warning' : 'error');
                 }
                 // Handle successful assets
-                if (!isEmpty(successfulAssets)) {
-                    onAssetsUploaded(successfulAssets);
+                if (!isEmpty(successfulUploads)) {
+                    onAssetsUploaded();
                     if (!isPartialSuccess) {
                         onNotify({
                             title: 'gnviewer.assetUpload',
@@ -197,51 +185,49 @@ const AssetUploadWidget = ({
 };
 
 const DetailsAssets = ({
-    fields,
     editing: canEdit,
     resource,
-    onNotify,
-    onChange
+    onNotify
 }) => {
-    const [loading, setLoading] = useState(false);
+    const isMounted = useIsMounted();
+    const [uploading, setUploading] = useState(false);
+    const [assets, setAssets] = useState([]);
+    const [loadingAssets, setLoadingAssets] = useState(false);
+    const [loadError, setLoadError] = useState(false);
+    const [filterText, setFilterText] = useState('');
     const [deletingAsset, setDeletingAsset] = useState(null);
 
-    const getValidFields = (_fields) => {
-        return (_fields ?? []).filter(field => !field?._showEmptyState);
-    };
+    const fetchAssets = useCallback(() => {
+        if (!resource?.pk) {
+            return;
+        }
+        setLoadingAssets(true);
+        getAssetsByPk(resource.pk)
+            .then((response) => {
+                isMounted(() => {
+                    setAssets((response ?? []).map(parseAsset));
+                    setLoadError(false);
+                });
+            })
+            .catch(() => {
+                isMounted(() => setLoadError(true));
+            })
+            .finally(() => {
+                isMounted(() => setLoadingAssets(false));
+            });
+    }, [resource?.pk]);
 
-    const onAssetsUploaded = useCallback((assets) => {
-        // Create the asset entry in the format expected by the resource
-        const newAssets = assets.map(asset => {
-            return {
-                url: asset.linkUrl,
-                extras: {
-                    type: 'asset',
-                    deletable: true,
-                    content: {
-                        title: asset.title,
-                        download_url: asset.downloadUrl
-                    }
-                }
-            };
-        });
+    useEffect(() => {
+        fetchAssets();
+    }, [fetchAssets]);
 
-        // Update the resource with the new asset
-        const updatedAssets = [...newAssets, ...getValidFields(fields)];
-        onChange({ assets: updatedAssets });
-    }, [fields, onChange]);
-
-    const handleDeleteAsset = useCallback((assetId, assetIndex) => {
+    const handleDeleteAsset = useCallback((assetId) => {
         if (!resource?.pk || deletingAsset !== null) return;
 
-        setDeletingAsset(assetIndex);
+        setDeletingAsset(assetId);
         deleteAsset(resource.pk, assetId)
             .then(() => {
-                let updatedAssets = getValidFields(fields)
-                    .filter((_, index) => index !== assetIndex);
-                // add empty state flag to show assets section if no assets are left
-                updatedAssets = updatedAssets.length ? updatedAssets : [{_showEmptyState: true}];
-                onChange({ assets: updatedAssets });
+                setAssets((prevAssets) => prevAssets.filter(asset => asset.id !== assetId));
                 onNotify({
                     title: 'gnviewer.assetDelete',
                     message: 'gnviewer.assetDeleteSuccessMessage'
@@ -258,79 +244,109 @@ const DetailsAssets = ({
             .finally(() => {
                 setDeletingAsset(null);
             });
-    }, [fields, onChange, resource.pk, deletingAsset]);
+    }, [onNotify, resource?.pk, deletingAsset]);
 
     const allowUpload = canEdit && resource?.pk;
 
+    const filteredAssets = filterText.trim()
+        ? assets.filter(asset =>
+            (asset.title || '').toLowerCase().includes(filterText.trim().toLowerCase()))
+        : assets;
+
     return (
         <FlexBox column gap="md" className="gn-details-assets _padding-tb-md">
-            {loading && <div className="gn-details-assets-loading">
+            {uploading && <div className="gn-details-assets-loading">
                 <Loader size={150} />
-            </div> }
-            <FlexBox column className={`gn-details-assets-list ${!allowUpload ? 'full-height' : ''}`}>
-                {fields.map((field, idx) => {
-                    if (field?._showEmptyState) {
-                        return (
-                            <FlexBox
-                                key={idx}
-                                column
-                                centerChildrenVertically
-                                className="gn-details-assets-empty"
-                            >
-                                <Text fontSize="sm" strong>
-                                    <Message msgId="gnviewer.noAssets" />
-                                </Text>
-                            </FlexBox>
-                        );
-                    }
-                    const asset = get(field, 'extras.content', {});
-                    const isDeletable = get(field, 'extras.deletable', false);
-                    const assetId = extractAssetIdFromUrl(asset.download_url);
-                    const isDeleting = deletingAsset === idx;
-                    const showDelete = canEdit && isDeletable && assetId;
-
-                    return (
-                        <FlexBox
-                            gap="sm"
-                            centerChildrenVertically
-                            component={Text}
-                            key={idx}
-                            fontSize="sm"
-                            classNames={["gn-details-assets-item", "_row"]}
-                        >
-                            <FlexBox gap="sm" centerChildrenVertically>
-                                <Glyphicon glyph="file" />
-                                {asset.download_url ? <a
-                                    download
-                                    href={asset.download_url}
-                                >
-                                    {asset.title}{' '}<Glyphicon glyph="download" />
-                                </a> : asset.title}
-                            </FlexBox>
-                            <Button
-                                size="sm"
-                                onClick={() => showDelete && handleDeleteAsset(assetId, idx)}
-                                disabled={isDeleting || !!deletingAsset || !showDelete}
-                                style={{ visibility: showDelete ? 'visible' : 'hidden' }}
-                                className={`gn-details-assets-delete`}
-                            >
-                                {isDeleting
-                                    ? <Loader className="gn-details-assets-delete-loader" size={12} />
-                                    : <Glyphicon glyph="trash" />}
-                            </Button>
-                        </FlexBox>
-                    );
-                })}
-            </FlexBox>
+            </div>}
             {allowUpload && <FlexBox>
                 <AssetUploadWidget
-                    uploading={loading}
-                    setUploading={setLoading}
+                    uploading={uploading}
+                    setUploading={setUploading}
                     onNotify={onNotify}
                     resourcePk={resource.pk}
-                    onAssetsUploaded={onAssetsUploaded}
+                    onAssetsUploaded={fetchAssets}
                 />
             </FlexBox>}
+            <FlexBox centerChildrenVertically gap="sm" className="gn-details-assets-filter">
+                <InputControl
+                    placeholder="gnviewer.filterAssets"
+                    value={filterText}
+                    debounceTime={300}
+                    onChange={(value) => setFilterText(value)}
+                />
+                {filterText && <Button onClick={() => setFilterText('')}>
+                    <Glyphicon glyph="remove" />
+                </Button>}
+                {loadingAssets && <Spinner />}
+            </FlexBox>
+            <FlexBox column className="gn-details-assets-list">
+                {loadError ? (
+                    <FlexBox column centerChildrenVertically className="gn-details-assets-empty">
+                        <Text fontSize="sm" strong>
+                            <Message msgId="gnviewer.assetsLoadError" />
+                        </Text>
+                    </FlexBox>
+                ) : isEmpty(filteredAssets) ? (
+                    <FlexBox column centerChildrenVertically className="gn-details-assets-empty">
+                        <Text fontSize="sm" strong>
+                            <Message msgId={filterText ? 'gnviewer.noFilteredAssets' : 'gnviewer.noAssets'} />
+                        </Text>
+                    </FlexBox>
+                ) : (
+                    <Text fontSize="sm">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th><Message msgId="gnviewer.name" /></th>
+                                    <th><Message msgId="gnviewer.date" /></th>
+                                    <th />
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredAssets.map((asset) => {
+                                    const isDeleting = deletingAsset === asset.id;
+                                    const showDelete = canEdit && asset.deletable && asset.id;
+
+                                    return (
+                                        <tr key={asset.id} className="gn-details-assets-item">
+                                            <td>
+                                                <FlexBox gap="sm" centerChildrenVertically>
+                                                    <Glyphicon glyph="file" />
+                                                    {asset.linkUrl ? <a href={asset.linkUrl}>{asset.title}</a> : asset.title}
+                                                </FlexBox>
+                                            </td>
+                                            <td className="gn-details-assets-date">
+                                                {asset.created ? moment(asset.created).format('DD/MM/YYYY') : null}
+                                            </td>
+                                            <td className="gn-details-assets-actions">
+                                                {asset.downloadUrl && <Button
+                                                    size="sm"
+                                                    href={asset.downloadUrl}
+                                                    download
+                                                    className="gn-details-assets-download"
+                                                >
+                                                    <Glyphicon glyph="download" />
+                                                </Button>}
+                                                <Button
+                                                    size="sm"
+                                                    onClick={() => showDelete && handleDeleteAsset(asset.id)}
+                                                    disabled={isDeleting || deletingAsset !== null || !showDelete}
+                                                    style={{ visibility: showDelete ? 'visible' : 'hidden' }}
+                                                    className="gn-details-assets-delete"
+                                                >
+                                                    {isDeleting
+                                                        ? <Loader className="gn-details-assets-delete-loader" size={12} />
+                                                        : <Glyphicon glyph="trash" />}
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </Text>
+                )}
+            </FlexBox>
         </FlexBox>
     );
 };

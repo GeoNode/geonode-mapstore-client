@@ -2634,7 +2634,7 @@
                             "type": "assets",
                             "id": "assets",
                             "labelId": "gnviewer.assets",
-                            "items": "{get(state('gnResourceSelectedLayerDataset'), 'assets')}"
+                            "items": [true]
                         }
                     ]
                 }
