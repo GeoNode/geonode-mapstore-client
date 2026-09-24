@@ -60,7 +60,7 @@ jobs:
         working-directory: ${{env.working-directory}}
 
       - name: "Run ESlint"
-        run: npm run lint
+        run: npm run lint:ci
         working-directory: ${{env.working-directory}}
 
       - name: "Run Unit Tests"
