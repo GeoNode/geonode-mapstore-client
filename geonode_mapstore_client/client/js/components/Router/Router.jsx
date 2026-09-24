@@ -82,38 +82,38 @@ const Router = forwardRef(({
                     >
                         <ConnectedRouter history={history}>
                             <>
-                            <MonitoringDialog />
-                            <ErrorBoundary
-                                FallbackComponent={ErrorFallback}
-                                onError={e => {
-                                    console.error(e); // eslint-disable-line no-console
-                                }}>
-                                {routes.map((route, i) => {
-                                    const routeConfig = route.pageConfig || {};
-                                    const Component = route.component;
-                                    if (route.protectedRoute && !user && urlHash === route.hash) {
-                                        window.location.href = `${LOGIN_URL}?next=${encodeURIComponent(window.location.pathname + urlHash)}`;
-                                        return null;
-                                    }
-                                    return (
-                                        <Route
-                                            key={(route.name || route.path) + i}
-                                            exact
-                                            path={route.path}
-                                            component={(props) =>
-                                                <Component
-                                                    {...props}
-                                                    name={route.name}
-                                                    plugins={plugins}
-                                                    pluginsConfig={pluginsConfig}
-                                                    loaderComponent={loaderComponent}
-                                                    geoNodeConfiguration={geoNodeConfiguration}
-                                                    {...routeConfig}
-                                                />}
-                                        />
-                                    );
-                                })}
-                            </ErrorBoundary>
+                                <MonitoringDialog />
+                                <ErrorBoundary
+                                    FallbackComponent={ErrorFallback}
+                                    onError={e => {
+                                        console.error(e); // eslint-disable-line no-console
+                                    }}>
+                                    {routes.map((route, i) => {
+                                        const routeConfig = route.pageConfig || {};
+                                        const Component = route.component;
+                                        if (route.protectedRoute && !user && urlHash === route.hash) {
+                                            window.location.href = `${LOGIN_URL}?next=${encodeURIComponent(window.location.pathname + urlHash)}`;
+                                            return null;
+                                        }
+                                        return (
+                                            <Route
+                                                key={(route.name || route.path) + i}
+                                                exact
+                                                path={route.path}
+                                                component={(props) =>
+                                                    <Component
+                                                        {...props}
+                                                        name={route.name}
+                                                        plugins={plugins}
+                                                        pluginsConfig={pluginsConfig}
+                                                        loaderComponent={loaderComponent}
+                                                        geoNodeConfiguration={geoNodeConfiguration}
+                                                        {...routeConfig}
+                                                    />}
+                                            />
+                                        );
+                                    })}
+                                </ErrorBoundary>
                             </>
                         </ConnectedRouter>
                     </Localized>
