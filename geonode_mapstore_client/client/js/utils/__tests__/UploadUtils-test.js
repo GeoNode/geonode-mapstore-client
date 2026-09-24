@@ -232,6 +232,33 @@ describe('Test Upload Utils', () => {
             }
         ]);
     });
+    it('validateFileResourceUploads does not throw for a supported type without required_ext', () => {
+        // Regression: getSupportedTypeExt() guards required_ext with `|| []`, but
+        // validateFileResourceUploads dereferenced it directly. A supported type
+        // declaring only optional_ext (no required_ext) matched the upload and then
+        // threw `TypeError: Cannot read properties of undefined (reading 'includes')`.
+        const optionalOnlySupportedFiles = [
+            {
+                id: 'style',
+                label: 'Style',
+                optional_ext: ['sld'],
+                source: ['upload'],
+                format: 'vector'
+            }
+        ];
+        expect(validateFileResourceUploads([
+            { type: 'file', ext: ['sld'], files: { sld: {} }, supported: true }
+        ], { supportedFiles: optionalOnlySupportedFiles })).toEqual([
+            {
+                type: 'file',
+                ext: ['sld'],
+                files: { sld: {} },
+                supported: true,
+                ready: true,
+                missingExtensions: []
+            }
+        ]);
+    });
     it('validateRemoteResourceUploads sets COG type for .tif/.tiff URLs', () => {
         const uploads = [
             { url: 'http://example.com/data.tif', remoteType: '', type: 'remote' },
