@@ -14,13 +14,14 @@ import Rx from "rxjs";
 import { setEditPermissionStyleEditor, INIT_STYLE_SERVICE } from "@mapstore/framework/actions/styleeditor";
 import { getSelectedLayer, layersSelector } from "@mapstore/framework/selectors/layers";
 import { getConfigProp } from "@mapstore/framework/utils/ConfigUtils";
-import { getDatasetByName, getDatasetsByName, getDatasetByPk } from '@js/api/geonode/v2';
+import { getDatasetsByPk, getDatasetByPk } from '@js/api/geonode/v2';
 import { MAP_CONFIG_LOADED } from '@mapstore/framework/actions/config';
 import { setPermission } from '@mapstore/framework/actions/featuregrid';
 import { SELECT_NODE, updateNode, ADD_LAYER } from '@mapstore/framework/actions/layers';
 import { setSelectedDatasetPermissions, setSelectedLayer, updateLayerDataset, setLayerDataset } from '@js/actions/gnresource';
 import { updateMapLayoutEpic as msUpdateMapLayoutEpic } from '@mapstore/framework/epics/maplayout';
 import isEmpty from 'lodash/isEmpty';
+import uniq from 'lodash/uniq';
 import { userSelector } from "@mapstore/framework/selectors/security";
 import { getCurrentProcesses } from "@js/selectors/resourceservice";
 import { extractExecutionsFromResources, ProcessStatus } from "@js/utils/ResourceServiceUtils";
@@ -102,38 +103,43 @@ export const gnFetchMissingLayerData = (action$, { getState } = {}) =>
         });
 
 
+const isGeoNodeLayer = (layer) => layer?.group !== 'background' && !!layer?.extendedParams?.pk;
+
+const getDatasetPk = (layer) => layer?.extendedParams?.pk ? String(layer.extendedParams.pk) : undefined;
+
+/**
+ * Returns an updateNode action for each layer in the map, duplicates included,
+ * that matches one of the datasets by pk
+ */
+const updateLayersPermissions = (datasets = [], layers = []) => {
+    const permsByPk = datasets.reduce((acc, dataset) => ({
+        ...acc,
+        [String(dataset.pk)]: dataset.perms || []
+    }), {});
+    return Rx.Observable.from(
+        layers
+            .filter((layer) => !!permsByPk[getDatasetPk(layer)])
+            .map((layer) => updateNode(layer.id, 'layer', { perms: permsByPk[getDatasetPk(layer)] }))
+    );
+};
+
 /**
  * Checks the permissions for layers when a map is loaded and when a new layer is added
  * to a map
  */
-export const gnSetDatasetsPermissions = (actions$, { getState = () => {}} = {}) =>
+export const gnSetDatasetsPermissions = (actions$, { getState = () => {} } = {}) =>
     actions$.ofType(MAP_CONFIG_LOADED, ADD_LAYER)
-        .switchMap((action) => {
-            if (action.type === MAP_CONFIG_LOADED) {
-                let layerNames = action.config?.map?.layers?.filter((l) =>
-                    l?.group !== "background" && !!l?.extendedParams?.pk // skip layers of non-geonode origin
-                )?.map((l) => l.name) ?? [];
-                if (layerNames.length === 0) {
-                    return Rx.Observable.empty();
-                }
-                return Rx.Observable.defer(() => getDatasetsByName(layerNames))
-                    .switchMap((layers = []) => {
-                        const stateLayers = layers.map((l) => ({
-                            ...l,
-                            id: layersSelector(getState())?.find((la) => la.name === l.alternate)?.id
-                        }));
-                        return Rx.Observable.of(...stateLayers.map((l) => updateNode(l.id, 'layer', {perms: l.perms || []}) ));
-                    });
+        .mergeMap((action) => {
+            const layers = action.type === MAP_CONFIG_LOADED
+                ? (action.config?.map?.layers ?? []).filter(isGeoNodeLayer)
+                : [action.layer];
+            const pks = uniq(layers.map(getDatasetPk).filter(pk => !!pk));
+            if (!pks.length) {
+                return Rx.Observable.empty();
             }
-
-            // skip layers of non-geonode origin
-            if (!action.layer?.extendedParams?.pk) return Rx.Observable.empty();
-
-            return Rx.Observable.defer(() => getDatasetByName(action.layer?.name))
-                .switchMap((layer = {}) => {
-                    const layerId = layersSelector(getState())?.find((la) => la.name === layer.alternate)?.id;
-                    return Rx.Observable.of(updateNode(layerId, 'layer', {perms: layer.perms}));
-                });
+            return Rx.Observable.defer(() => getDatasetsByPk(pks))
+                .switchMap((datasets) => updateLayersPermissions(datasets, layersSelector(getState())))
+                .catch(() => Rx.Observable.empty());
         });
 
 export const updateMapLayoutEpic = msUpdateMapLayoutEpic;
