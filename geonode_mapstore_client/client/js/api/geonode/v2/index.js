@@ -582,6 +582,20 @@ export const getDatasetsByName = names => {
         .then(({data}) => data?.datasets);
 };
 
+export const getDatasetsByPk = (pk) => {
+    const pks = castArray(pk);
+    return axios.get(getEndpointUrl(DATASETS), {
+        params: {
+            'filter{pk.in}': pks,
+            page_size: pks.length,
+            exclude: ['*'],
+            include: ['pk', 'perms', 'alternate']
+        },
+        ...paramsSerializer()
+    })
+        .then(({ data }) => data?.datasets);
+};
+
 export const getResourcesTotalCount = () => {
     return axios.get('/api/v2/resources/resource_types')
         .then(({ data }) => data.resource_types)
