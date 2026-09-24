@@ -229,7 +229,7 @@ describe('gnsave epics', () => {
 
     it('test gnSetDatasetsPermissions trigger updateNode for MAP_CONFIG_LOADED', (done) => {
         mockAxios.onGet().reply(() => [200,
-            {datasets: [{perms: ['change_dataset_style', 'change_dataset_data'], alternate: "testLayer"}]}]);
+            {datasets: [{pk: 1, perms: ['change_dataset_style', 'change_dataset_data'], alternate: "testLayer"}]}]);
         const NUM_ACTIONS = 1;
         testEpic(gnSetDatasetsPermissions, NUM_ACTIONS, configureMap({map: {layers: [{name: "testLayer", id: "test_id", extendedParams: {pk: "1"}}]}}), (actions) => {
             try {
@@ -239,12 +239,12 @@ describe('gnsave epics', () => {
                 done(error);
             }
         },
-        {layers: {flat: [{name: "testLayer", id: "test_id", perms: ['download_resourcebase']}], selected: ["test_id"]}});
+        {layers: {flat: [{name: "testLayer", id: "test_id", extendedParams: {pk: "1"}, perms: ['download_resourcebase']}], selected: ["test_id"]}});
     });
 
     it('test gnSetDatasetsPermissions trigger updateNode for ADD_LAYER', (done) => {
         mockAxios.onGet().reply(() => [200,
-            {datasets: [{perms: ['change_dataset_style', 'change_dataset_data'], alternate: "testLayer"}]}]);
+            {datasets: [{pk: 1, perms: ['change_dataset_style', 'change_dataset_data'], alternate: "testLayer"}]}]);
         const NUM_ACTIONS = 1;
         testEpic(gnSetDatasetsPermissions, NUM_ACTIONS, addLayer({name: "testLayer", pk: "1", extendedParams: {pk: "1"}}), (actions) => {
             try {
@@ -254,7 +254,54 @@ describe('gnsave epics', () => {
                 done(error);
             }
         },
-        {layers: {flat: [{name: "testLayer", id: "test_id", perms: ['download_resourcebase']}], selected: ["test_id"]}});
+        {layers: {flat: [{name: "testLayer", id: "test_id", extendedParams: {pk: "1"}, perms: ['download_resourcebase']}], selected: ["test_id"]}});
+    });
+
+    it('test gnSetDatasetsPermissions updates all layers with the same pk for MAP_CONFIG_LOADED', (done) => {
+        const perms = ['change_dataset_style', 'change_dataset_data'];
+        mockAxios.onGet().reply(() => [200,
+            {datasets: [{pk: 1, perms, alternate: "geonode:testLayer"}]}]);
+        const NUM_ACTIONS = 2;
+        testEpic(gnSetDatasetsPermissions, NUM_ACTIONS, configureMap({map: {layers: [
+            {name: "testLayer", id: "test_id_1", extendedParams: {pk: "1"}},
+            {name: "testLayer", id: "test_id_2", extendedParams: {pk: 1}},
+            {name: "testLayer", id: "background_id", group: "background", extendedParams: {pk: "2"}}
+        ]}}), (actions) => {
+            try {
+                expect(actions.map(({type}) => type)).toEqual(["UPDATE_NODE", "UPDATE_NODE"]);
+                expect(actions.map(({node}) => node)).toEqual(["test_id_1", "test_id_2"]);
+                expect(actions.map(({options}) => options.perms)).toEqual([perms, perms]);
+                done();
+            } catch (error) {
+                done(error);
+            }
+        },
+        {layers: {flat: [
+            {name: "testLayer", id: "test_id_1", extendedParams: {pk: "1"}},
+            {name: "testLayer", id: "test_id_2", extendedParams: {pk: 1}},
+            {name: "testLayer", id: "background_id", group: "background", extendedParams: {pk: "2"}}
+        ]}});
+    });
+
+    it('test gnSetDatasetsPermissions updates all layers with the same pk for ADD_LAYER', (done) => {
+        const perms = ['change_dataset_style', 'change_dataset_data'];
+        mockAxios.onGet().reply(() => [200,
+            {datasets: [{pk: 1, perms, alternate: "geonode:testLayer"}]}]);
+        const NUM_ACTIONS = 2;
+        testEpic(gnSetDatasetsPermissions, NUM_ACTIONS, addLayer({name: "testLayer", id: "test_id_2", extendedParams: {pk: "1"}}), (actions) => {
+            try {
+                expect(actions.map(({type}) => type)).toEqual(["UPDATE_NODE", "UPDATE_NODE"]);
+                expect(actions.map(({node}) => node)).toEqual(["test_id_1", "test_id_2"]);
+                expect(actions.map(({options}) => options.perms)).toEqual([perms, perms]);
+                done();
+            } catch (error) {
+                done(error);
+            }
+        },
+        {layers: {flat: [
+            {name: "testLayer", id: "test_id_1", extendedParams: {pk: "1"}, perms},
+            {name: "testLayer", id: "test_id_2", extendedParams: {pk: "1"}}
+        ]}});
     });
 
     it('should trigger saveResource (gnSaveDirectContent)', (done) => {
