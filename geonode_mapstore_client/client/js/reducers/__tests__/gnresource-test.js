@@ -37,7 +37,6 @@ describe('gnresource reducer', () => {
             'thumbnail_url': 'thumbnail.jpeg'
         };
         const state = gnresource({}, setResource(resource));
-        resource.assets = [ { _showEmptyState: true } ];
         expect(state).toEqual({
             error: null,
             isNew: false,
@@ -133,8 +132,7 @@ describe('gnresource reducer', () => {
 
         expect(state).toEqual({
             viewerLinkedResource: {
-                id: "test",
-                assets: [ { _showEmptyState: true } ]
+                id: "test"
             }
         });
     });

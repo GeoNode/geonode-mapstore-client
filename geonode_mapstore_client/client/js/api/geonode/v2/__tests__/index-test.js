@@ -11,7 +11,8 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from '@mapstore/framework/libs/ajax';
 import {
     createMap,
-    updateMap
+    updateMap,
+    getAssetsByPk
 } from '@js/api/geonode/v2';
 
 let mockAxios;
@@ -68,5 +69,57 @@ describe('GeoNode v2 api', () => {
             });
 
         updateMap(id, mapConfiguration);
+    });
+    it('should get assets from resource pk, unwrapping a bare array (getAssetsByPk)', (done) => {
+        const pk = 1;
+        const assets = [{
+            id: 1,
+            title: 'points.png',
+            description: '',
+            type: 'png',
+            created: '2026-08-27T17:06:28.407146Z',
+            deletable: true,
+            urls: {
+                download_url: '/api/v2/assets/1/download',
+                link: '/api/v2/assets/1/link'
+            }
+        }];
+        mockAxios.onGet(new RegExp(`/api/v2/resources/${pk}/asset`))
+            .reply(200, assets);
+
+        getAssetsByPk(pk).then((response) => {
+            try {
+                expect(response).toEqual(assets);
+            } catch (e) {
+                done(e);
+                return;
+            }
+            done();
+        });
+    });
+    it('should get assets from resource pk, unwrapping an envelope with an assets key (getAssetsByPk)', (done) => {
+        const pk = 1;
+        const assets = [{
+            id: 1,
+            title: 'points.png',
+            created: '2026-08-27T17:06:28.407146Z',
+            deletable: true,
+            urls: {
+                download_url: '/api/v2/assets/1/download',
+                link: '/api/v2/assets/1/link'
+            }
+        }];
+        mockAxios.onGet(new RegExp(`/api/v2/resources/${pk}/asset`))
+            .reply(200, { assets });
+
+        getAssetsByPk(pk).then((response) => {
+            try {
+                expect(response).toEqual(assets);
+            } catch (e) {
+                done(e);
+                return;
+            }
+            done();
+        });
     });
 });
