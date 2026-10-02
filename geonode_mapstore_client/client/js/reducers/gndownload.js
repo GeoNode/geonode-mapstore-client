@@ -31,17 +31,14 @@ function gnDownload(state = defaultState, action) {
         };
     }
     case DOWNLOAD_METADATA_COMPLETE: {
-        const newState = { ...state };
         const linkType = action?.link?.split(' ').join('');
-        const downloads = newState.downloads[linkType];
-        delete downloads[action.pk];
+        // omit the completed pk immutably so the previous state is not mutated
+        const { [action.pk]: removed, ...remaining } = state.downloads[linkType] || {};
         return {
-            ...newState,
+            ...state,
             downloads: {
-                ...newState.downloads,
-                [linkType]: {
-                    ...downloads
-                }
+                ...state.downloads,
+                [linkType]: remaining
             }
         };
     }
