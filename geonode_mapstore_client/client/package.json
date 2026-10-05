@@ -22,6 +22,7 @@
     "test": "mapstore-project test",
     "test:watch": "mapstore-project test:watch",
     "lint": "eslint js --ext .jsx,.js --fix",
+    "lint:ci": "eslint js --ext .jsx,.js",
     "docs": "jsdoc -r js/plugins js/utils/AppUtils.js ./README.md -d ../../docs -u ../../tutorials -t ./docs-template"
   },
   "author": "GeoSolutions",
