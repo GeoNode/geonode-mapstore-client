@@ -40,7 +40,8 @@ import {
     canManageResourceSettings,
     canAccessPermissions,
     formatResourceLinkUrl,
-    canEditMap
+    canEditMap,
+    getResourceStatuses
 } from '../ResourceUtils';
 
 import {setSupportedLocales} from '@mapstore/framework/utils/LocaleUtils';
@@ -121,6 +122,13 @@ describe('Test Resource Utils', () => {
         expect(newLayer.url).toBe('http://localhost:8080/MapServer');
     });
 
+    it('getResourceStatuses does not throw for a null resource', () => {
+        const status = getResourceStatuses(null);
+        expect(status.isProcessing).toBe(false);
+        expect(status.isDeleting).toBe(false);
+        expect(status.isCopying).toBe(false);
+        expect(status.items).toEqual([]);
+    });
     it('should getViewedResourcePermissions', () => {
         const data = [{
             name: "testType",
