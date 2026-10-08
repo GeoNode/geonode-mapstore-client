@@ -79,6 +79,27 @@ describe('Test Resource Utils', () => {
         });
         expect(newLayer.opacity).toBe(0.8);
     });
+    it('test resourceToLayerConfig does not override generated id and bbox with the persisted layer settings', () => {
+        const geonodeBbox = { crs: 'EPSG:4326', bounds: { minx: 0, miny: 0, maxx: 1, maxy: 1 } };
+        const resource = {
+            alternate: 'geonode:layer_name',
+            links: [{ link_type: 'OGC:WMS', url: '/geoserver/wms' }],
+            title: 'Layer title',
+            perms: [],
+            pk: 1,
+            extent: { coords: [10, 20, 30, 40] }
+        };
+        [
+            { layerSettings: { id: 'geonode-id', bbox: geonodeBbox, opacity: 0.5 } },
+            { id: 'geonode-id', bbox: geonodeBbox, opacity: 0.5 } // legacy format
+        ].forEach((data) => {
+            const firstLayer = resourceToLayerConfig({ ...resource, data });
+            const secondLayer = resourceToLayerConfig({ ...resource, data });
+            expect(firstLayer.id).toBeTruthy();
+            expect(firstLayer.id).toNotBe('geonode-id');
+            expect(firstLayer.id).toNotBe(secondLayer.id);
+        });
+    });
 
     it('should parse arcgis dataset', () => {
         const newLayer = resourceToLayerConfig({

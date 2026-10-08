@@ -190,6 +190,9 @@ export const getDataPayload = (state, resourceType) => {
             (value, key) => key === "opacity" && value === 1); // skip default value
         const selectedLayer = getSelectedNode(state);
         const omitKeys = [
+            // we need to omit id and bbox as they are generated any time when the dataset is converted to a layer from Geonode resource
+            'id',
+            'bbox',
             'extendedParams',
             'availableStyles',
             'infoFormats',
@@ -345,7 +348,12 @@ export function isResourceDataEqual(state, initialData = {}, currentData = {}) {
     case ResourceTypes.DATASET: {
         const selectedLayer = getSelectedNode(state);
         const selectedLayerInitial = getSelectedLayer(state);
-        const initialLayerData = {...selectedLayerInitial, ...initialData};
+        const initialLayerData = {
+            ...selectedLayerInitial,
+            ...initialData,
+            // id and bbox could be persisted by previous versions, but they are not part of the saved payload anymore
+            ...(initialData?.layerSettings && { layerSettings: omit(initialData.layerSettings, ['id', 'bbox']) })
+        };
         const initialStyle = getInitialDatasetLayerStyle(state);
 
         const isSettingsEqual = compareObjects(omit(currentData, ['style', 'fields']),

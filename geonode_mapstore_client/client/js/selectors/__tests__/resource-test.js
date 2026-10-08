@@ -23,7 +23,8 @@ import {
     isNewDashboardDirty,
     isNewGeoStoryDirty,
     defaultViewerPluginsSelector,
-    isResourceDataEqual
+    isResourceDataEqual,
+    getDataPayload
 } from '../resource';
 import { ResourceTypes } from '@js/utils/ResourceUtils';
 
@@ -538,5 +539,58 @@ describe('resource selector', () => {
         };
         expect(isResourceDataEqual(state, initialData, currentData)).toBeFalsy();
 
+    });
+    it('test getDataPayload DATASET does not persist id and bbox from Geonode', () => {
+        const state = {
+            gnresource: {
+                type: ResourceTypes.DATASET
+            },
+            map: {
+                present: {
+                    center: { x: 0, y: 0, crs: 'EPSG:4326' },
+                    zoom: 1,
+                    projection: 'EPSG:3857'
+                }
+            },
+            layers: {
+                flat: [{
+                    id: 'layer-1',
+                    type: 'wms',
+                    name: 'geonode:layer',
+                    opacity: 0.5,
+                    bbox: { crs: 'EPSG:4326', bounds: { minx: 0, miny: 0, maxx: 1, maxy: 1 } }
+                }],
+                selected: ['layer-1']
+            }
+        };
+        const { layerSettings } = getDataPayload(state);
+        expect(layerSettings.id).toBe(undefined);
+        expect(layerSettings.bbox).toBe(undefined);
+        expect(layerSettings.name).toBe('geonode:layer');
+        expect(layerSettings.opacity).toBe(0.5);
+    });
+    it('test isResourceDataEqual DATASET ignores id and bbox persisted in the initial layer settings', () => {
+        const initialData = {
+            layerSettings: {
+                id: 'persisted-id',
+                bbox: { crs: 'EPSG:4326', bounds: { minx: 0, miny: 0, maxx: 1, maxy: 1 } },
+                name: 'geonode:layer',
+                opacity: 0.5
+            },
+            mapConfig: {}
+        };
+        const currentData = {
+            layerSettings: {
+                name: 'geonode:layer',
+                opacity: 0.5
+            },
+            mapConfig: {}
+        };
+        const state = {
+            gnresource: {
+                type: ResourceTypes.DATASET
+            }
+        };
+        expect(isResourceDataEqual(state, initialData, currentData)).toBeTruthy();
     });
 });

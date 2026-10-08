@@ -221,7 +221,9 @@ export const resourceToLayerConfig = (resource) => {
         data
     } = resource;
 
-    const layerSettings = data?.layerSettings ?? data;
+    // persisted id and bbox must not override the generated ones:
+    // every layer instance needs its own id and the bbox must follow the current resource extent
+    const layerSettings = omit(data?.layerSettings ?? data, ['id', 'bbox']);
 
     const title = getLocalizedValues(resource, 'title', defaultTitle);
 
