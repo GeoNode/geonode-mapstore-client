@@ -90,6 +90,10 @@
       "style": "Style",
       "transparent": "Transparent",
       "singleTile": "Tuile unique",
+      "cropToProjectionExtent": {
+        "label": "Recadrer à l'étendue de la projection",
+        "tooltip": "La couche est recadrée à l'étendue de la projection lorsqu'elle est ajoutée à la carte avec cette option activée"
+      },
       "cached": "Utiliser les options de cache",
       "styleCustom": "Utiliser un style nommé \"{value} \"",
       "styleListLoadError": "Une erreur s'est produite lors du chargement de la liste des styles",
@@ -131,6 +135,8 @@
       "templatePreview": "Aperçu du modèle",
       "heightOffset": "Décalage en hauteur (m)",
       "wmsLayerTileSize": "Taille de la tuile (WMS)",
+      "maxFeaturesInView": "Nombre maximal d'entités dans la vue",
+      "maxFeaturesInViewTooltip": "Lorsque la valeur est indéfinie, la fonctionnalité actuelle fonctionne comme d'habitude (c'est-à-dire charger toutes les entités)",
       "serverType": "Type de serveur",
       "formatError": "Il n'a pas été possible de récupérer le format et le format de la fiche d'information à partir du service configuré. Vous utilisez probablement un service No Vendor et celui-ci n'est pas pris en charge (par exemple GeoNetwork)",
       "serverTypeOption": {
@@ -319,18 +325,25 @@
     "mapScale": "Échelle :",
     "showMousePositionCoordinates": "Montrer/cacher les coordonnées",
     "showCrsSelector": "Sélectionnez la projection",
-    "crsSelectorFilterPlaceholder": "Projection de filtre",
-    "crsSelectorSelectedCRS": "Choisi:",
     "crsSelector": {
       "availableProjections": "Projections disponibles",
-      "searchProjection": "Rechercher une projection...",
+      "searchProjection": "Filtrer les projections configurées...",
+      "searchProjectionUnified": "Filtrer les projections configurées ou rechercher sur GeoServer...",
       "label": "Libellé",
       "authorityId": "ID de l’autorité",
       "selectedProjection": "La projection sélectionnée sera utilisée sur la carte",
-      "quickSwitch": "La projection sélectionnée sera ajoutée à la liste de changement rapide",
       "help": "Cochez la case pour ajouter une projection au changement rapide. Cliquez sur une ligne pour la définir comme projection par défaut.",
-      "save": "Enregistrer",
-      "close": "Fermer"
+      "remoteSuggestionsHeader": "Depuis GeoServer ({shown} sur {total})",
+      "noRemoteResults": "Aucune projection correspondante sur le serveur",
+      "noFilteredMatch": "Aucune projection de la liste configurée ne correspond au filtre",
+      "loadMore": "Charger plus",
+      "alreadyAdded": "Déjà dans la liste configurée",
+      "useAsMapProjection": "Utiliser comme projection de la carte",
+      "removeProjection": "Supprimer cette projection",
+      "loadingProjection": "Chargement de la définition de la projection...",
+      "failedToLoad": "Échec du chargement de la projection. Cliquez pour réessayer",
+      "zoomToProjectionExtent": "Zoomer sur l'étendue de la projection",
+      "unregisteredProjections": "Les projections suivantes ont été configurées mais ne sont pas disponibles : {projections}"
     },
     "menu": "Menu",
     "options": "Options",
@@ -1687,11 +1700,31 @@
         "label": "Télécharger les métadonnées du fichier lors de l'enregistrement",
         "tooltip": "Cette option récupérera les métadonnées pour prendre en charge le zoom sur la couche. Cela peut ralentir l'opération de recherche si les images sont trop grandes ou trop nombreuses."
       },
+      "tagFilterType": {
+        "label": "Type de filtre de tag",
+        "category": "Catégorie",
+        "keyword": "Mot-clé"
+      },
+      "listView": "Vue en liste",
+      "gridView": "Vue en grille",
+      "selectAll": "Tout sélectionner",
+      "layers": "Couches",
+      "edit": "Modifier",
+      "backToList": "Retour au catalogue",
+      "close": "Fermer",
+      "showFullContent": "Afficher tout le contenu",
+      "hideFullContent": "Masquer tout le contenu",
       "clearValueText": "Effacer la sélection",
       "noResultsText": "Aucun résultat trouvé",
       "addToMap": "Ajouter à la carte",
       "getWMSLink": "Lien WMS",
       "error": "Une erreur s'est produite lors du chargement des données.",
+      "errors": {
+        "unauthorized": "Une authentification est requise pour accéder au service de catalogue (HTTP 401).",
+        "forbidden": "L'accès au service de catalogue a été refusé (HTTP 403). Vérifiez vos autorisations.",
+        "http": "La requête au service de catalogue a échoué (HTTP {status}).",
+        "serviceUnavailable": "Le service de catalogue n'a pas pu être contacté. La requête a peut-être été bloquée."
+      },
       "pageInfo": "{start}-{end} résultats parmi {total}",
       "resultInfo": "{total, plural, =0 {Pas d'objet} =1 {{total} sur {total}} other {{start}-{end} sur {total}}}",
       "pageInfoInfinite": "{total, plural, =undefined {} =0 {Aucun résultat} =1 {{total} sur {total} trouvés} other {chargé {loaded} sur {total} trouvés}}",
@@ -1727,7 +1760,8 @@
         "cog": "e.g. https://mydomain.com/cog.tif",
         "model": "e.g. https://mydomain.com/filename.ifc",
         "arcgis": "e.g. https://mydomain.com/arcgis/rest/services",
-        "flatgeobuf": "e.g. https://mydomain.com/filename.fgb"
+        "flatgeobuf": "e.g. https://mydomain.com/filename.fgb",
+        "geonode": "e.g https://mydomaingeonode.com"
       },
       "type": "Type",
       "serviceTitle": "Titre",
@@ -2305,7 +2339,7 @@
         "placeholder": "Entrez le nom de la carte",
         "selectLabel": "Sélectionnez une carte",
         "infoOnHide": "Développer le widget pour voir le sélecteur de carte",
-        "subTitle": "<p>Pour la multi-sélection,<br>sur Windows utilisez CTRL + clic <br> et sur Mac utilisez contrôle + clic</p>"
+        "subTitle": "<p>Vous pouvez sélectionner plusieurs calques</p>"
       },
       "mapWidget": {
         "showBackgroundSelector": "Afficher le sélecteur de fond",
@@ -2321,7 +2355,7 @@
         "placeholder": "Entrez le nom du graphique",
         "selectLabel": "Graphique",
         "infoOnHide": "Développer le widget pour voir le sélecteur de graphique",
-        "subTitle": "<p>Pour la multi-sélection,<br>sur Windows utilisez CTRL + clic <br> et sur Mac utilisez contrôle + clic</p>"
+        "subTitle": "<p>Vous pouvez sélectionner plusieurs calques</p>"
       },
       "chartType": {
         "bar": {
@@ -2635,14 +2669,7 @@
         "expandTray": "Développer la barre de widgets",
         "collapseTray": "Réduire la barre des widgets",
         "expandAll": "Développer tous les widgets",
-        "collapseAll": "Réduire tous les widgets",
-        "notifications": {
-          "collapsed": {
-            "message": "La timeline et les widgets ne peuvent pas être utilisés en même temps. Utilisez la barre de widget pour basculer entre les deux",
-            "timelineTitle": "La timeline a été réduite",
-            "widgetsTitle": "Les widgets ont été réduits"
-          }
-        }
+        "collapseAll": "Réduire tous les widgets"
       }
     },
     "dashboard": {
@@ -3123,6 +3150,7 @@
       "disableRange": "Désactiver la plage de temps",
       "enablePlayBack": "Activer les contrôles de lecture",
       "disablePlayBack": "Désactiver les contrôles de lecture",
+      "hiddenGuideLayerWarning": "Le couche de référence est masquée dans la TOC et sur la carte, mais continue de contrôler l'accrochage de la chronologie.",
       "expand": "Développer le curseur temporel",
       "collapse": "Réduire le curseur temporel",
       "reset": {
@@ -4512,6 +4540,10 @@
       "loadingAPI": "Chargement de l'API...",
       "cyclomedia": {
         "initializing": "Initialisation de l'API Street Smart...",
+        "logout": "Déconnexion Street Smart",
+        "tryForceLogout": "Forcer la déconnexion Street Smart",
+        "confirmLogout": "Êtes-vous sûr de vouloir vous déconnecter de Street Smart ?",
+        "loggingOut": "Déconnexion de Street Smart en cours...",
         "loadingAPI": "Chargement de l'API Street Smart...",
         "changeCredentials": "Modifier les identifiants Street Smart",
         "insertCredentials": "Insérer vos identifiants Street Smart",
@@ -4522,8 +4554,10 @@
         "zoomIn": "Veuillez zoomer sur la carte pour voir la couverture Street View",
         "errorOccurred": "Une erreur s'est produite : ",
         "errors": {
+          "notLoggedIn": "Vous n'êtes pas connecté",
           "invalidCredentials": "Identifiants invalides",
-          "projectionNotAvailable": "La projection {srs} configurée n'est pas disponible. Veuillez contacter l'administrateur."
+          "projectionNotAvailable": "La projection {srs} configurée n'est pas disponible. Veuillez contacter l'administrateur.",
+          "apiLoadFailed": "Impossible de charger l'API Street Smart. Vérifiez votre connexion réseau ou contactez l'administrateur."
         },
         "reloadAPI": "Recharger l'API"
       },
@@ -4802,10 +4836,11 @@
         "error500": "Erreur interne du serveur",
         "errorDefault": "Erreur réseau"
       },
-      "myResources": "My resources",
+      "myResources": "Mes ressources",
+      "select": "Sélectionner",
       "creationFilter": {
-        "from": "Creation date from",
-        "to": "Creation date to"
+        "from": "Date de création à partir du",
+        "to": "Date de création au"
       },
       "deleteTagTitle": "Êtes-vous sûr de vouloir supprimer cette balise ?",
       "deleteTagDescription": "Cette balise sera supprimée, y compris l'association avec les ressources existantes",
