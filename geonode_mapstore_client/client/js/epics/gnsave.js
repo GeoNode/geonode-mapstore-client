@@ -57,7 +57,7 @@ import {
     updateResource as updateResourceAPI
 } from '@js/api/geonode/v2';
 import { parseDevHostname } from '@js/utils/APIUtils';
-import uuid from 'uuid';
+import { v4 as uuid } from 'uuid';
 import {
     getResourceName,
     getResourceDescription,

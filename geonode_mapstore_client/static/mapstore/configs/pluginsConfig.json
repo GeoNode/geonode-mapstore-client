@@ -547,7 +547,7 @@
       }
     },
     {
-      "name": "MetadataExplorer",
+      "name": "Catalog",
       "glyph": "folder-open",
       "title": "plugins.MetadataExplorer.title",
       "description": "plugins.MetadataExplorer.description",

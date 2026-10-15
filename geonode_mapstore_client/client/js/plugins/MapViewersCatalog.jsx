@@ -35,7 +35,7 @@ function MapViewersCatalogPlugin({
     match,
     resourcesParams,
     location,
-    defaultViewerPlugins = ['Annotations', 'TOC', 'BackgroundSelector', 'Identify', 'QueryPanel', 'Measure', 'Print', 'MousePosition', 'Search', 'ScaleBox', 'GlobeViewSwitcher', 'ZoomAll', 'ZoomIn', 'ZoomOut', 'Timeline', 'MetadataExplorer', 'Widgets'],
+    defaultViewerPlugins = ['Annotations', 'TOC', 'BackgroundSelector', 'Identify', 'QueryPanel', 'Measure', 'Print', 'MousePosition', 'Search', 'ScaleBox', 'GlobeViewSwitcher', 'ZoomAll', 'ZoomIn', 'ZoomOut', 'Timeline', 'Catalog', 'Widgets'],
     onReplaceLocation,
     onSetMapViewer,
     onManageLinkedResource,

@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import uuid from 'uuid';
+import { v4 as uuid } from 'uuid';
 import url from 'url';
 import { isEmpty, uniqBy, omit, orderBy, isString, isObject } from 'lodash';
 
@@ -221,7 +221,9 @@ export const resourceToLayerConfig = (resource) => {
         data
     } = resource;
 
-    const layerSettings = data?.layerSettings ?? data;
+    // persisted id and bbox must not override the generated ones:
+    // every layer instance needs its own id and the bbox must follow the current resource extent
+    const layerSettings = omit(data?.layerSettings ?? data, ['id', 'bbox']);
 
     const title = getLocalizedValues(resource, 'title', defaultTitle);
 
@@ -585,7 +587,7 @@ export const getResourceStatuses = (resource, userInfo) => {
         isDeleting,
         isCopying,
         items: [
-            ...(resource.advertised === false ? [{
+            ...(resource?.advertised === false ? [{
                 type: 'icon',
                 tooltipId: 'resourcesCatalog.unadvertised',
                 glyph: 'eye-slash'

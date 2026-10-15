@@ -14,8 +14,8 @@ import Button from '@mapstore/framework/components/layout/Button';
 import useInfiniteScroll from '@js/hooks/useInfiniteScroll';
 import Spinner from '@mapstore/framework/components/layout/Spinner';
 import Loader from '@mapstore/framework/components/misc/Loader';
-import ResourceCard from '@mapstore/framework/plugins/ResourcesCatalog/components/ResourceCard';
-import InputControl from '@mapstore/framework/plugins/ResourcesCatalog/components/InputControl';
+import ResourceCard from '@mapstore/framework/components/catalog/resources/ResourceCard';
+import InputControl from '@mapstore/framework/components/catalog/resources/InputControl';
 
 function ResourcesCompactCatalog({
     request,

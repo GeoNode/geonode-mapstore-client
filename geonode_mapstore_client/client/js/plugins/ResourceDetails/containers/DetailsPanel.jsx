@@ -23,6 +23,7 @@ import {
     updatingThumbnailResource
 } from '@js/selectors/resource';
 import Message from '@mapstore/framework/components/I18N/Message';
+import SafeHtml from '@mapstore/framework/components/misc/SafeHtml';
 import { mapSelector } from '@mapstore/framework/selectors/map';
 import DetailsInfoComp from '@mapstore/framework/plugins/ResourcesCatalog/components/DetailsInfo';
 import { replaceResourcePaths } from '@mapstore/framework/utils/ResourcesUtils';
@@ -34,7 +35,7 @@ import DetailsHeader from '@mapstore/framework/plugins/ResourcesCatalog/componen
 import DetailsToolbar from '../components/DetailsToolbar';
 import moment from 'moment';
 import DetailsThumbnail from '../components/DetailsThumbnail';
-import ALink from '@mapstore/framework/plugins/ResourcesCatalog/components/ALink';
+import ALink from '@mapstore/framework/components/catalog/resources/ALink';
 import { parseCatalogResource } from '@js/utils/ResourceUtils';
 import useParsePluginConfigExpressions from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useParsePluginConfigExpressions';
 import { hashLocationToHref } from '@mapstore/framework/utils/ResourcesFiltersUtils';
@@ -147,7 +148,7 @@ function DetailsPanel({
                     {(resource?.date_type && resource?.date) ? <>{' '}/{' '}{moment(resource.date).format('MMMM Do YYYY')}</> : null}
                 </Text>
                 {resource?.abstract
-                    ? <Text classNames={['_padding-sm']} dangerouslySetInnerHTML={{ __html: resource?.abstract }} />
+                    ? <SafeHtml className="ms-text _padding-sm" html={resource?.abstract} />
                     : null}
                 {enablePreview ? <DetailsPreview
                     resource={resource}

@@ -8,7 +8,7 @@
 
 import { Observable } from 'rxjs';
 import axios from '@mapstore/framework/libs/ajax';
-import uuid from "uuid";
+import { v4 as uuid } from "uuid";
 import url from "url";
 import get from 'lodash/get';
 import isNil from 'lodash/isNil';
@@ -144,7 +144,7 @@ import { forceUpdateMapLayout } from '@mapstore/framework/actions/maplayout';
 import { getShowDetails } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 import { searchSelector } from '@mapstore/framework/selectors/router';
 import { CREATE_BACKGROUNDS_LIST, allowBackgroundsDeletion } from '@mapstore/framework/actions/backgroundselector';
-import { setCanEditProjection, setProjectionsConfig } from '@mapstore/framework/actions/crsselector';
+import { setCanEditProjection, setProjectionsConfig } from '@mapstore/framework/plugins/CRSSelector/actions/crsselector';
 import { getResolutionsForProjection, getZoomFromResolution } from '@mapstore/framework/utils/MapUtils';
 import { reprojectBbox } from '@mapstore/framework/utils/CoordinatesUtils';
 

@@ -7,7 +7,7 @@
  */
 
 
-import uuid from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { getDocumentByPk } from '@js/api/geonode/v2';
 import isEmpty from "lodash/isEmpty";
 import { getPolygonFromExtent } from "@mapstore/framework/utils/CoordinatesUtils";

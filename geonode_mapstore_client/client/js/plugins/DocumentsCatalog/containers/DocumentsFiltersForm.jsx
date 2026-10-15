@@ -10,9 +10,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import FiltersForm from '@mapstore/framework/plugins/ResourcesCatalog/components/FiltersForm';
+import FiltersForm from '@mapstore/framework/components/catalog/resources/FiltersForm';
 import useParsePluginConfigExpressions from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useParsePluginConfigExpressions';
-import useFilterFacets from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useFilterFacets';
+import useFilterFacets from '@mapstore/framework/components/catalog/hooks/useFilterFacets';
 import { getMonitoredStateSelector } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
 
 

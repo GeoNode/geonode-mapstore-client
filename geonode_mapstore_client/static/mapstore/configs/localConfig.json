@@ -2458,7 +2458,7 @@
                 "name": "SidebarMenu"
             },
             {
-                "name": "MetadataExplorer",
+                "name": "Catalog",
                 "cfg": {
                     "wrap": true,
                     "serviceTypes": [

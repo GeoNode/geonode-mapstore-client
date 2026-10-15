@@ -9,7 +9,7 @@
 import axios from '@mapstore/framework/libs/ajax';
 import WKT from 'ol/format/WKT';
 import GeoJSON from 'ol/format/GeoJSON';
-import uuid from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { getEndpointUrl, RULES } from '../v2/constants';
 
 const wktFormat = new WKT();

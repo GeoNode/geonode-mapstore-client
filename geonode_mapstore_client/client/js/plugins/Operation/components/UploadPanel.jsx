@@ -13,7 +13,7 @@ import Dropzone from 'react-dropzone';
 
 import Message from '@mapstore/framework/components/I18N/Message';
 import ConfirmDialog from '@mapstore/framework/components/layout/ConfirmDialog';
-import uuidv1 from 'uuid/v1';
+import { v1 as uuidv1 } from 'uuid';
 import uniq from 'lodash/uniq';
 import { getFileNameParts } from '@js/utils/FileUtils';
 import tooltip from '@mapstore/framework/components/misc/enhancers/tooltip';

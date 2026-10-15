@@ -90,6 +90,10 @@
       "style": "Stil",
       "transparent": "Transparent",
       "singleTile": "Single Tile",
+      "cropToProjectionExtent": {
+        "label": "Auf Projektionserweiterung zuschneiden",
+        "tooltip": "Die Ebene wird auf die Projektionserweiterung zugeschnitten, wenn sie mit aktivierter Option zur Karte hinzugefügt wird."
+      },
       "cached": "Verwenden Sie Cache-Optionen",
       "styleCustom": "Stil \"{value}\" nutzen",
       "styleListLoadError": "Es gab einen Fehler beim Laden der Liste von Stilen",
@@ -131,6 +135,8 @@
       "templatePreview": "Vorschau template",
       "heightOffset": "Höhenversatz (m)",
       "wmsLayerTileSize": "Kachelgröße (WMS)",
+      "maxFeaturesInView": "Maximale Anzahl von Features in der Ansicht",
+      "maxFeaturesInViewTooltip": "Wenn der Wert undefiniert ist, funktioniert die aktuelle Funktionalität wie gewohnt (d. h. alle Features laden)",
       "serverType": "Servertyp",
       "formatError": "Es war nicht möglich, Format und Informationsblattformat vom konfigurierten Dienst abzurufen. Wahrscheinlich verwenden Sie einen No-Vendor-Dienst und dieser wird nicht unterstützt (z. B. GeoNetwork).",
       "serverTypeOption": {
@@ -319,18 +325,25 @@
     "mapScale": "Maßstab:",
     "showMousePositionCoordinates": "Koordinaten anzeigen/ausblenden",
     "showCrsSelector": "Wähle Projektion",
-    "crsSelectorFilterPlaceholder": "Projektionen filtern",
-    "crsSelectorSelectedCRS": "Ausgewählt:",
     "crsSelector": {
       "availableProjections": "Verfügbare Projektionen",
-      "searchProjection": "Projektion suchen...",
+      "searchProjection": "Konfigurierte Projektionen filtern...",
+      "searchProjectionUnified": "Konfigurierte filtern oder auf GeoServer suchen...",
       "label": "Bezeichnung",
       "authorityId": "Authority-ID",
       "selectedProjection": "Die ausgewählte Projektion wird in der Karte verwendet",
-      "quickSwitch": "Die ausgewählte Projektion wird der Schnellwechsel-Liste hinzugefügt",
       "help": "Aktivieren Sie das Kontrollkästchen, um eine Projektion zum Schnellwechsel hinzuzufügen. Klicken Sie auf eine Zeile, um sie als Standardprojektion festzulegen.",
-      "save": "Speichern",
-      "close": "Schließen"
+      "remoteSuggestionsHeader": "Von GeoServer ({shown} von {total})",
+      "noRemoteResults": "Keine passenden Projektionen auf dem Server",
+      "noFilteredMatch": "Keine Projektion in der konfigurierten Liste entspricht dem Filter",
+      "loadMore": "Mehr laden",
+      "alreadyAdded": "Bereits in der konfigurierten Liste",
+      "useAsMapProjection": "Als Kartenprojektion verwenden",
+      "removeProjection": "Diese Projektion entfernen",
+      "loadingProjection": "Projektionsdefinition wird geladen...",
+      "failedToLoad": "Laden der Projektion fehlgeschlagen. Klicken zum Wiederholen",
+      "zoomToProjectionExtent": "Auf Projektionsausdehnung zoomen",
+      "unregisteredProjections": "Die folgenden Projektionen wurden konfiguriert, sind aber nicht verfügbar: {projections}"
     },
     "menu": "Menü",
     "options": "Optionen",
@@ -1274,6 +1287,7 @@
         }
       },
       "spatialfilter": {
+        "notAvailable": "Die räumliche Filterung ist für diese Ebene nicht verfügbar.",
         "filterType": "Filtertyp",
         "geometric_operation": "Geometrische Operation",
         "spatial_filter_header": "Interessensgebiet",
@@ -1725,11 +1739,31 @@
         "label": "Dateimetadaten beim Speichern herunterladen",
         "tooltip": "Diese Option ruft Metadaten ab, um das Zoomen auf Ebene zu unterstützen. Es kann den Suchvorgang verlangsamen, wenn die Bilder zu groß oder zu viele sind."
       },
+      "tagFilterType": {
+        "label": "Tag-Filtertyp",
+        "category": "Kategorie",
+        "keyword": "Schlüsselwort"
+      },
+      "listView": "Listenansicht",
+      "gridView": "Rasteransicht",
+      "selectAll": "Alle auswählen",
+      "layers": "Ebenen",
+      "edit": "Bearbeiten",
+      "backToList": "Zurück zum Katalog",
+      "close": "Schließen",
+      "showFullContent": "Vollen Inhalt anzeigen",
+      "hideFullContent": "Vollen Inhalt verbergen",
       "clearValueText": "Auswahl aufheben",
       "noResultsText": "keine Ergebnisse gefunden",
       "addToMap": "Zur Karte hinzufügen",
       "getWMSLink": "WMS Link erhalten",
       "error": "Beim Laden der Daten ist ein Fehler aufgetreten",
+      "errors": {
+        "unauthorized": "Für den Zugriff auf den Katalogdienst ist eine Authentifizierung erforderlich (HTTP 401).",
+        "forbidden": "Der Zugriff auf den Katalogdienst wurde verweigert (HTTP 403). Überprüfen Sie Ihre Berechtigungen.",
+        "http": "Die Anfrage an den Katalogdienst ist fehlgeschlagen (HTTP {status}).",
+        "serviceUnavailable": "Der Katalogdienst konnte nicht erreicht werden. Möglicherweise wurde die Anfrage blockiert."
+      },
       "pageInfo": "Resultat {start}-{end} von {total}",
       "resultInfo": "{total, plural, =0 {Keine Gegenstände} =1 {{total} von {total} stimmt überein} other {{start}-{end} von {total}}}",
       "pageInfoInfinite": "{total, plural, =undefined {} =0 {Keine Ergebnisse} =1 {{total} von {total} stimmt überein} other {Geladen {loaded} von {total} übereinstimmend}",
@@ -1765,7 +1799,8 @@
         "cog": "z.B. https://mydomain.com/cog.tif",
         "model": "z.B. https://mydomain.com/filename.ifc",
         "arcgis": "z.B. https://mydomain.com/arcgis/rest/services",
-        "flatgeobuf": "e.g. https://mydomain.com/filename.fgb"
+        "flatgeobuf": "e.g. https://mydomain.com/filename.fgb",
+        "geonode": "e.g https://mydomaingeonode.com"
       },
       "type": "Typ",
       "serviceTitle": "Titel",
@@ -2343,7 +2378,7 @@
         "placeholder": "Kartennamen eingeben",
         "selectLabel": "Wählen Sie eine Karte aus",
         "infoOnHide": "Erweitern Sie das Widget, um den Kartenwechsler anzuzeigen",
-        "subTitle": "<p>Für die Mehrfachauswahl<br>verwenden Sie unter Windows STRG + Klicken <br> und unter Mac verwenden Sie Strg + Klicken</p>"
+        "subTitle": "<p>Sie können mehrere Ebenen auswählen</p>"
       },
       "mapWidget": {
         "showBackgroundSelector": "Hintergrundselektor anzeigen",
@@ -2359,7 +2394,7 @@
         "placeholder": "Diagrammnamen eingeben",
         "selectLabel": "Diagramm",
         "infoOnHide": "Erweitern Sie das Widget, um den Kartenwechsler anzuzeigen",
-        "subTitle": "<p>Für die Mehrfachauswahl<br>verwenden Sie unter Windows STRG + Klicken <br> und unter Mac verwenden Sie Strg + Klicken</p>"
+        "subTitle": "<p>Sie können mehrere Ebenen auswählen</p>"
       },
       "chartType": {
         "bar": {
@@ -2673,14 +2708,7 @@
         "expandTray": "Widgetleiste erweitern",
         "collapseTray": "Widgetleiste ausblenden",
         "expandAll": "Alle Widgets öffnen",
-        "collapseAll": "Alle Widgets schließen",
-        "notifications": {
-          "collapsed": {
-            "message": "Zeitleiste und Widgets können nicht gleichzeitig bleiben. In der Taskleiste des Widgets verwenden, um zwischen Zeitleiste und Widgets zu wechseln",
-            "timelineTitle": "Zeitleiste wurde reduziert",
-            "widgetsTitle": "Widgets wurden reduziert"
-          }
-        }
+        "collapseAll": "Alle Widgets schließen"
       }
     },
     "dashboard": {
@@ -3161,6 +3189,7 @@
       "disableRange": "Zeitbereich deaktivieren",
       "enablePlayBack": "Aktivieren Sie die Wiedergabesteuerung",
       "disablePlayBack": "Deaktivieren Sie die Wiedergabesteuerung",
+      "hiddenGuideLayerWarning": "Die Führungslayer ist im Inhaltsverzeichnis und auf der Karte ausgeblendet, steuert aber weiterhin das Einrasten der Zeitleiste.",
       "expand": "Erweitern Sie den Zeitschieberegler",
       "collapse": "Schieberegler für die Zeitspanne reduzieren",
       "reset": {
@@ -4550,6 +4579,10 @@
       "loadingAPI": "API wird geladen...",
       "cyclomedia": {
         "initializing": "Initialisiere Street Smart API...",
+        "logout": "Street Smart Abmelden",
+        "tryForceLogout": "Street Smart Abmeldung erzwingen",
+        "confirmLogout": "Sind Sie sicher, dass Sie sich von Street Smart abmelden möchten?",
+        "loggingOut": "Street Smart Abmeldung läuft...",
         "loadingAPI": "Lade Street Smart API...",
         "changeCredentials": "Street Smart-Anmeldeinformationen ändern",
         "insertCredentials": "Geben Sie Ihre Street Smart-Anmeldeinformationen ein",
@@ -4560,8 +4593,10 @@
         "zoomIn": "Bitte zoomen Sie in die Karte, um die Street-View-Abdeckung zu sehen",
         "errorOccurred": "Fehler aufgetreten: ",
         "errors": {
+          "notLoggedIn": "Nicht angemeldet",
           "invalidCredentials": "Ungültige Anmeldeinformationen",
-          "projectionNotAvailable": "Die konfigurierte Projektion {srs} ist nicht verfügbar. Bitte kontaktieren Sie den Administrator."
+          "projectionNotAvailable": "Die konfigurierte Projektion {srs} ist nicht verfügbar. Bitte kontaktieren Sie den Administrator.",
+          "apiLoadFailed": "Die Street Smart API konnte nicht geladen werden. Bitte überprüfen Sie Ihre Netzwerkverbindung oder kontaktieren Sie den Administrator."
         },
         "reloadAPI": "API neu laden"
       },
@@ -4841,6 +4876,7 @@
         "errorDefault": "Netzwerkfehler"
       },
       "myResources": "Meine Ressourcen",
+      "select": "Auswählen",
       "creationFilter": {
         "from": "Erstellungsdatum von",
         "to": "Erstellungsdatum bis"
