@@ -3752,7 +3752,7 @@
                                 "labelId": "gnviewer.columnTitle"
                             },
                             {
-                                "path": "description",
+                                "path": "raw_abstract",
                                 "width": 30,
                                 "labelId": "resourcesCatalog.columnDescription"
                             },
