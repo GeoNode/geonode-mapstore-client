@@ -21,9 +21,9 @@ export const isProcessCompleted = (state, payload) => {
 
 export const processingDownload = (state) => {
     const resource = getResourceData(state);
-    const pks = (resource.resource_type === ResourceTypes.MAP
+    const pks = (resource?.resource_type === ResourceTypes.MAP
         ? resource?.maplayers?.map(layer => layer?.dataset?.pk)
-        : [resource?.pk])?.filter(Boolean);
+        : [resource?.pk])?.filter(Boolean) || [];
     const isProcessingDownload = state?.resourceservice?.downloads?.find((download) =>
         pks.includes(download?.pk)
     );

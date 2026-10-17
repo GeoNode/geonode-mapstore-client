@@ -51,6 +51,31 @@ describe('resourceservice selector', () => {
         };
         expect(processingDownload(testState)).toEqual(true);
     });
+    it('test processingDownload when the resource data is not available', () => {
+        const testState = {
+            gnresource: {
+                data: null
+            },
+            resourceservice: {
+                downloads: [{ pk: 1 }]
+            }
+        };
+        expect(processingDownload(testState)).toEqual(false);
+    });
+    it('test processingDownload when a map has no maplayers', () => {
+        const testState = {
+            gnresource: {
+                data: {
+                    pk: 1,
+                    resource_type: ResourceTypes.MAP
+                }
+            },
+            resourceservice: {
+                downloads: [{ pk: 2 }]
+            }
+        };
+        expect(processingDownload(testState)).toEqual(false);
+    });
 
     it('test getCurrentResourceClonedUrl when completed copy process has clonedResourceUrl', () => {
         const testState = {
