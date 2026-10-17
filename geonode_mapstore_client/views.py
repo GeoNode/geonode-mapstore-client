@@ -2,7 +2,7 @@ from django.urls import reverse
 import os
 import json
 from rest_framework.views import APIView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseForbidden
 from django.utils.translation.trans_real import get_language_from_request
 from django.utils.translation import gettext_lazy as _
@@ -248,3 +248,16 @@ class RequestConfigurationView(APIView):
         registry = RequestConfigurationRulesRegistry()
         rules = registry.get_rules(request)
         return Response(rules)
+
+def resolve_uuid(request, uuid):
+    from geonode.base.models import ResourceBase
+    from geonode.utils import resolve_object
+
+    resource = resolve_object(request, ResourceBase, {"uuid": uuid})
+    url = resource.get_absolute_url()
+    query_string = request.META.get("QUERY_STRING")
+    if query_string:
+        separator = "&" if "?" in url else "?"
+        url = f"{url}{separator}{query_string}"
+    return redirect(url)
+

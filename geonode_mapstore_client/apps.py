@@ -19,7 +19,7 @@ def run_setup_hooks(*args, **kwargs):
     from geonode.urls import urlpatterns
     from django.conf import settings
     from django.conf.urls import include
-    from django.urls import re_path
+    from django.urls import path, re_path
     from geonode.api.urls import router
     from geonode.security.permissions import VIEW_PERMISSIONS, OWNER_PERMISSIONS
     from geonode.groups.conf import settings as groups_settings
@@ -77,6 +77,8 @@ def run_setup_hooks(*args, **kwargs):
         pass
 
     urlpatterns += [
+        path(r"uuid/<uuid>", views.resolve_uuid, name="resolve_uuid"),
+        
         re_path("/client/extensions", views.ExtensionsView.as_view(), name="mapstore-extension"),
         re_path("/client/pluginsconfig", views.PluginsConfigView.as_view(), name="mapstore-pluginsconfig"),
 

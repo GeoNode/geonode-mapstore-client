@@ -209,6 +209,7 @@
             "permissionsEntriesNoResults": "Sem Resultados...",
             "shareThisResource": "Compartilhar com pessoas ou grupos",
             "embed": "Embarcar em",
+            "security": "Segurança",
             "deleteResourceTitle": "{count, plural, =1 {Tem certeza que quer excluir este recurso?} other {Tem certeza que quer excluir estes recursos?}}",
             "deleteResourceNo": "{count, plural, =1 {Não, não exclua} other {Não, não exclua}}",
             "deleteResourceYes": "Sim, tenho certeza",

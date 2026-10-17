@@ -217,6 +217,7 @@
             "permissionsEntriesNoResults": "Keine Ergebnisse...",
             "shareThisResource": "Mit Personen oder Gruppen teilen",
             "embed": "Einbetten",
+            "security": "Sicherheit",
             "deleteResourceTitle": "{count, plural, =1 {Möchten Sie diese Ressource wirklich löschen?} other {Möchten Sie diese Ressourcen wirklich löschen?}}",
             "deleteResourceNo": "{count, plural, =1 {Nein, nicht löschen} other {Nein, lösche sie nicht}}",
             "deleteResourceYes": "Ja, ich bin sicher",

@@ -57,7 +57,8 @@ function DetailsToolbarButton({
 function DetailsToolbar({
     resource,
     items = [],
-    showViewerButton = false
+    showViewerButton = false,
+    onToggleShare = () => {}
 }) {
 
     const {
@@ -66,7 +67,6 @@ function DetailsToolbar({
     } = resource?.['@extras'] || {};
 
     const [copiedUrl, setCopiedUrl] = useState({
-        resource: false,
         datasetowsurl: false
     });
 
@@ -80,6 +80,14 @@ function DetailsToolbar({
         }, 700);
     };
 
+    function handleShare(event) {
+        event.stopPropagation();
+        onToggleShare({
+            shareUrl: formatResourceLinkUrl(resource),
+            categoryName: (resource?.category?.name || '').toLowerCase()
+        });
+    }
+
     return (
         <FlexBox style={{ alignItems: 'flex-start' }}>
             <FlexBox gap="xs" centerChildrenVertically>
@@ -90,21 +98,14 @@ function DetailsToolbar({
                     resource={resource}
                     component={DetailsToolbarButton}
                 />))}
-                <CopyToClipboard
+                <ButtonWithTooltip
                     tooltipPosition="top"
-                    tooltipId={
-                        copiedUrl.resource
-                            ? 'gnhome.copiedResourceUrl'
-                            : 'gnhome.copyResourceUrl'
-                    }
-                    text={formatResourceLinkUrl(resource)}
+                    tooltipId="share.title"
+                    variant="default"
+                    onClick={handleShare}
                 >
-                    <Button
-                        variant="default"
-                        onClick={()=> handleCopyPermalink('resource')}>
-                        <Glyphicon glyph="share-alt" />
-                    </Button>
-                </CopyToClipboard>
+                    <Glyphicon glyph="share-alt" />
+                </ButtonWithTooltip>
                 {resource?.dataset_ows_url && <CopyToClipboard
                     tooltipPosition="top"
                     tooltipId={

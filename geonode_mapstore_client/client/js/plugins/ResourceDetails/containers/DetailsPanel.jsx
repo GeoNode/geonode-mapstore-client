@@ -43,6 +43,7 @@ import { getMonitoredStateSelector, getRouterLocation, getDetailPanelTab } from 
 import withScrollableTabs from '@js/components/enhancers/withScrollableTabs';
 import { getMessageById } from '@mapstore/framework/utils/LocaleUtils';
 import { setDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/actions/resources';
+import { toggleControl, setControlProperty } from '@mapstore/framework/actions/controls';
 const DetailsInfo = withScrollableTabs(DetailsInfoComp);
 
 const transformValue = (obj, messages) => {
@@ -97,7 +98,8 @@ function DetailsPanel({
     panelRef,
     showViewerButton,
     selectedTab,
-    onSelectTab
+    onSelectTab,
+    onToggleShare
 }, context) {
 
     const resource = parseCatalogResource(resourceProp);
@@ -124,6 +126,7 @@ function DetailsPanel({
                     resource={resource}
                     items={toolbarItems}
                     showViewerButton={showViewerButton}
+                    onToggleShare={onToggleShare}
                 />}
                 onClose={onClose}
                 thumbnailComponent={ConnectedDetailsThumbnail}
@@ -188,9 +191,13 @@ const ConnectedDetailsPanel = connect(
         location: getRouterLocation,
         selectedTab: getDetailPanelTab
     }),
-    {
-        onSelectTab: setDetailPanelTab
-    }
+    (dispatch) => ({
+        onSelectTab: (...args) => dispatch(setDetailPanelTab(...args)),
+        onToggleShare: (...args) => {
+            dispatch(toggleControl('share', null));
+            dispatch(setControlProperty('share', 'resource', ...args));
+        }
+    })
 )(DetailsPanel);
 
 export default ConnectedDetailsPanel;
