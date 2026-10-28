@@ -20,6 +20,7 @@ const testSchema = {
         keywords: {
             type: 'object',
             properties: {
+                note: { type: ['string', 'null'] },
                 'test-thesaurus': {
                     type: 'array',
                     title: 'Test Thesaurus',
@@ -81,6 +82,26 @@ describe('GeoNode v2 metadata api', () => {
                 try {
                     expect(schema).toEqual(testSchema);
                     expect(mockAxios.history.get.filter(r => /schema/.test(r.url)).length).toBe(0);
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            })
+            .catch(done);
+    });
+
+    it('should keep a null value when a nested schema property allows null (getMetadataByPk)', (done) => {
+        mockAxios.onGet(/\/api\/v2\/metadata\/instance\/2/).reply(200, {
+            title: 'Test Resource',
+            keywords: { note: null }
+        });
+        mockAxios.onGet(/\/api\/v2\/resources\/2/).reply(200, {
+            resource: { pk: 2, title: 'Test Resource' }
+        });
+        getMetadataByPk(2)
+            .then(({ metadata }) => {
+                try {
+                    expect(metadata.keywords.note).toBe(null);
                     done();
                 } catch (e) {
                     done(e);
