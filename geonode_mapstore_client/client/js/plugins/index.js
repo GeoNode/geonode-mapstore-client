@@ -32,6 +32,7 @@ import MetadataEditorPlugin from '@js/plugins/MetadataEditor';
 import MetadataViewerPlugin from '@js/plugins/MetadataEditor/MetadataViewer';
 import FavoritesPlugin from '@js/plugins/Favorites';
 import CreateDatasetPlugin from '@js/plugins/CreateDataset';
+import SharePlugin from '@js/plugins/Share';
 import {
     ResourcesGridPlugin,
     ResourcesFiltersFormPlugin
@@ -96,6 +97,7 @@ export const plugins = {
     BackgroundSelectorPlugin: BackgroundSelector,
     CameraPositionPlugin: CameraPosition,
     CRSSelectorPlugin: CRSSelector,
+    SharePlugin,
     LayerDownloadPlugin: toModulePlugin(
         'LayerDownload',
         () => import(/* webpackChunkName: 'plugins/layer-download' */ '@mapstore/framework/plugins/LayerDownload'),

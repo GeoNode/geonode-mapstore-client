@@ -247,7 +247,7 @@ function ResourceDetailsPanel({
         {
             "type": "share",
             "id": "share",
-            "labelId": "gnviewer.share",
+            "labelId": "gnviewer.security",
             "disableIf": "{not canAccessPermissions(state('gnResourceData'))}",
             "items": [true]
         },
@@ -427,7 +427,7 @@ export default createPlugin('ResourceDetails', {
             priority: 1,
             doNotHide: true
         }, {
-            name: 'ShareActionButton',
+            name: 'PermissionButton',
             Component: connect(
                 createSelector(
                     isNewResource,
@@ -450,7 +450,7 @@ export default createPlugin('ResourceDetails', {
                             onSelectTab('share');
                         }}
                     >
-                        <Message msgId="share.title"/>
+                        <Message msgId="gnviewer.security"/>
                     </Button>
                     : null;
             }),

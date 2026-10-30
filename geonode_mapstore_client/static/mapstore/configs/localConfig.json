@@ -689,9 +689,19 @@
                             ]
                         },
                         {
-                            "type": "plugin",
-                            "name": "ShareActionButton",
-                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
+                            "labelId": "gnviewer.share",
+                            "type": "dropdown",
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "ShareActionButton"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "PermissionButton"
+                                }
+                            ]
                         },
                         {
                             "type": "divider",
@@ -1311,6 +1321,20 @@
                         { "value": "EPSG:3857", "label": "EPSG:3857" }
                     ]
                 }
+            },
+            {
+                "name": "Share",
+                "mandatory": true,
+                "hideFrom": ["SidebarMenu"],
+                "cfg": {
+                    "showAPI": false,
+                    "socialPanel": false,
+                    "advancedSettings": false,
+                    "embedOptions": {
+                        "showTOCToggle": false,
+                        "allowFullScreen": false
+                    }
+                }
             }
         ],
         "dataset_viewer_non_spatial": [
@@ -1411,9 +1435,19 @@
                             ]
                         },
                         {
-                            "type": "plugin",
-                            "name": "ShareActionButton",
-                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
+                            "labelId": "gnviewer.share",
+                            "type": "dropdown",
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "ShareActionButton"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "PermissionButton"
+                                }
+                            ]
                         },
                         {
                             "type": "divider",
@@ -1981,9 +2015,19 @@
                             ]
                         },
                         {
-                            "type": "plugin",
-                            "name": "ShareActionButton",
-                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
+                            "labelId": "gnviewer.share",
+                            "type": "dropdown",
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "ShareActionButton"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "PermissionButton"
+                                }
+                            ]
                         },
                         {
                             "type": "divider",
@@ -2014,6 +2058,14 @@
                     "headerNodeSelector": ".gn-main-header",
                     "containerPosition": "header",
                     "closeOnClickOut": true
+                }
+            },
+            {
+                "name": "Share",
+                "hideFrom": ["SidebarMenu"],
+                "mandatory": true,
+                "cfg": {
+                    "socialPanel": false
                 }
             },
             {
@@ -2731,9 +2783,19 @@
                             ]
                         },
                         {
-                            "type": "plugin",
-                            "name": "ShareActionButton",
-                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
+                            "labelId": "gnviewer.share",
+                            "type": "dropdown",
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "ShareActionButton"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "PermissionButton"
+                                }
+                            ]
                         }
                     ]
                 }
@@ -2842,6 +2904,19 @@
             },
             {
                 "name": "MetadataViewer"
+            },
+            {
+                "name": "Share",
+                "mandatory": true,
+                "cfg": {
+                    "showAPI": false,
+                    "socialPanel": false,
+                    "advancedSettings": false,
+                    "embedOptions": {
+                        "showTOCToggle": false,
+                        "allowFullScreen": false
+                    }
+                }
             }
         ],
         "document_viewer": [
@@ -2927,9 +3002,19 @@
                             ]
                         },
                         {
-                            "type": "plugin",
-                            "name": "ShareActionButton",
-                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
+                            "labelId": "gnviewer.share",
+                            "type": "dropdown",
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "ShareActionButton"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "PermissionButton"
+                                }
+                            ]
                         }
                     ]
                 }
@@ -3023,6 +3108,19 @@
                 "cfg": {
                     "containerPosition": "header"
                 }
+            },
+            {
+                "name": "Share",
+                "mandatory": true,
+                "cfg": {
+                    "showAPI": false,
+                    "socialPanel": false,
+                    "advancedSettings": false,
+                    "embedOptions": {
+                        "showTOCToggle": false,
+                        "allowFullScreen": false
+                    }
+                }
             }
         ],
         "dashboard_viewer": [
@@ -3100,9 +3198,19 @@
                             ]
                         },
                         {
-                            "type": "plugin",
-                            "name": "ShareActionButton",
-                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
+                            "labelId": "gnviewer.share",
+                            "type": "dropdown",
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "ShareActionButton"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "PermissionButton"
+                                }
+                            ]
                         },
                         {
                             "type": "divider",
@@ -3328,6 +3436,19 @@
                 "cfg": {
                     "titleMsgId": "widgets.mapWidget.mapEditorTitle",
                     "overrideDefaultPlugins": ["FeatureEditor"]
+                }
+            },
+            {
+                "name": "Share",
+                "mandatory": true,
+                "cfg": {
+                    "showAPI": false,
+                    "socialPanel": false,
+                    "advancedSettings": false,
+                    "embedOptions": {
+                        "showTOCToggle": false,
+                        "allowFullScreen": false
+                    }
                 }
             }
         ],
@@ -4019,6 +4140,20 @@
             },
             {
                 "name": "Favorites"
+            },
+            {
+                "name": "Share",
+                "cfg": {
+                    "showAPI": false,
+                    "socialPanel": false,
+                    "draggable": false,
+                    "advancedSettings": false,
+                    "embedOptions": {
+                        "showTOCToggle": false,
+                        "allowFullScreen": false
+                    }
+                },
+                "mandatory": true
             }
         ],
         "viewer": [
@@ -4093,9 +4228,19 @@
                             ]
                         },
                         {
-                            "type": "plugin",
-                            "name": "ShareActionButton",
-                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}"
+                            "labelId": "gnviewer.share",
+                            "type": "dropdown",
+                            "disableIf": "{not canShareResource(state('isNewResource'), state('gnResourceData'))}",
+                            "items": [
+                                {
+                                    "type": "plugin",
+                                    "name": "ShareActionButton"
+                                },
+                                {
+                                    "type": "plugin",
+                                    "name": "PermissionButton"
+                                }
+                            ]
                         },
                         {
                             "type": "divider"
@@ -4158,6 +4303,19 @@
             },
             {
                 "name": "MetadataViewer"
+            },
+            {
+                "name": "Share",
+                "mandatory": true,
+                "cfg": {
+                    "showAPI": false,
+                    "socialPanel": false,
+                    "advancedSettings": false,
+                    "embedOptions": {
+                        "showTOCToggle": false,
+                        "allowFullScreen": false
+                    }
+                }
             }
         ],
         "metadata": [
