@@ -59,7 +59,21 @@ https://github.com/nodeca/pako/blob/main/LICENSE
  */
 
 /*!
+ * Platform.js v1.3.6
+ * Copyright 2014-2020 Benjamin Tan
+ * Copyright 2011-2013 John-David Dalton
+ * Available under MIT license
+ */
+
+/*!
  * Programatically add the following
+ */
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
  */
 
 /*!
@@ -168,6 +182,12 @@ https://github.com/nodeca/pako/blob/main/LICENSE
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * @license qrcode.react
+ * Copyright (c) Paul O'Shannessy
+ * SPDX-License-Identifier: ISC
  */
 
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
