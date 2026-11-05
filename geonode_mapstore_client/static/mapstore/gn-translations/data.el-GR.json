@@ -462,7 +462,7 @@
             "publishResource": "Δημοσιευμένο",
             "featureResource": "Προτεινόμενο",
             "advertiseResource": "Διαφημισμένο",
-            "preserveUploadedMetadataTooltip": "Διατήρηση του ανέβηκε αρχείου ISO μεταδεδομένων αντί να δημιουργηθεί νέο",
+            "preserveUploadedMetadataTooltip": "Διατήρηση του ανεβασμένου αρχείου ISO μεταδεδομένων αντί να δημιουργηθεί νέο",
             "approveResourceTooltip": "Εγκρίνετε αυτόν τον πόρο (χρησιμοποιείται από την Προχωρημένη Ροή Εργασίας)",
             "publishResourceTooltip": "Δημοσιεύστε αυτόν τον πόρο (χρησιμοποιείται από την Προχωρημένη Ροή Εργασίας)",
             "featureResourceTooltip": "Προσθέστε αυτόν τον πόρο στους προτεινόμενους πόρους",
