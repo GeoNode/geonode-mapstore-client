@@ -10,14 +10,14 @@ const UNUSED_OUTPUT_DIRECTORIES = [
     'node_modules'
 ];
 
-class CleanupPlugin {
+class PostBuildPlugin {
 
     constructor(directories = UNUSED_OUTPUT_DIRECTORIES) {
         this.directories = directories;
     }
 
     apply(compiler) {
-        compiler.hooks.afterEmit.tap('CleanupPlugin', (compilation) => {
+        compiler.hooks.afterEmit.tap('PostBuildPlugin', (compilation) => {
             const outputPath = compilation.getPath(compiler.outputPath);
 
             // Move web-ifc from outputPath to outputPath/js/web-ifc
@@ -58,5 +58,5 @@ class CleanupPlugin {
     }
 }
 
-module.exports = CleanupPlugin;
+module.exports = PostBuildPlugin;
 module.exports.UNUSED_OUTPUT_DIRECTORIES = UNUSED_OUTPUT_DIRECTORIES;

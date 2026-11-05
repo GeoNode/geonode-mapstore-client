@@ -6,7 +6,7 @@ const ModuleFederationPlugin = require('../MapStore2/build/moduleFederation').pl
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const createDevServer = require('./devServer');
 const createCopyPatterns = require('./copyPatterns');
-const CleanupPlugin = require('./cleanupPlugin');
+const PostBuildPlugin = require('./postBuildPlugin');
 const DIST_PATH = require('./distPath');
 const projectConfig = require('./projectConfig');
 
@@ -42,7 +42,7 @@ function createWebpackConfig({ prod = false, isCompileDev = false } = {}) {
         bundles,
         themeEntries,
         paths,
-        plugins: [extractThemesPlugin, ModuleFederationPlugin, new CopyWebpackPlugin(createCopyPatterns(paths)), new CleanupPlugin()],
+        plugins: [extractThemesPlugin, ModuleFederationPlugin, new CopyWebpackPlugin(createCopyPatterns(paths)), new PostBuildPlugin()],
         prod,
         ...(prod ? {
             mode: isCompileDev ? 'development' : 'production',
