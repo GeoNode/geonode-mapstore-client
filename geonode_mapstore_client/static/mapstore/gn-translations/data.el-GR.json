@@ -221,7 +221,7 @@
             "deleteResourceNo": "{count, plural, =1 {Όχι, μην τον διαγράψετε} other {Όχι, μην τους διαγράψετε}}",
             "deleteResourceYes": "Ναι, είμαι σίγουρος",
             "notApproved": "Μη εγκεκριμένο",
-            "unpublish": "Αναδημοσίευση",
+            "unpublish": "Κατάργηση δημοσίευσης",
             "deleted": "Διαγράφηκε",
             "deleting": "Διαγραφή...",
             "cloning": "Αντιγραφή...",
