@@ -1,11 +1,14 @@
 {
     "compilerOptions": {
-        "target": "es2015",
+        "target": "es2020",
         "allowSyntheticDefaultImports": false,
         "baseUrl": "./",
         "paths": {
             "@mapstore/framework/*": [
-                "./node_modules/mapstore/web/client/*"
+                "./MapStore2/web/client/*"
+            ],
+            "@mapstore/*": [
+                "./MapStore2/web/client/*"
             ],
             "@js/*": [
                 "./js/*"
@@ -13,8 +16,11 @@
         }
     },
     "include": [
-        "node_modules/mapstore/web/client/**/*",
-        "node_modules/@mapstore/project/**/*",
+        "MapStore2/web/client/**/*",
         "js/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "MapStore2/node_modules"
     ]
 }
