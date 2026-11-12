@@ -7,8 +7,14 @@
  */
 
 import expect from 'expect';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { IntlProvider } from 'react-intl';
+import { MemoryRouter } from 'react-router-dom';
+import { getConfigProp, setConfigProp } from '@mapstore/framework/utils/ConfigUtils';
 
-import { mergeConfig } from '../ResourceDetails';
+import { mergeConfig, ResourceDetailsPanel } from '../ResourceDetails';
 
 describe('mergeConfig', () => {
     const defaultTabs = [
@@ -178,5 +184,143 @@ describe('mergeConfig', () => {
             { id: 'a', value: 3 },
             { id: 'b', value: 2 }
         ]);
+    });
+});
+
+describe('ResourceDetailsPanel tabs and tabsOverride', () => {
+    const resource = {
+        pk: 1,
+        title: 'Test Resource',
+        resource_type: 'dataset',
+        owner: { username: 'admin' },
+        perms: []
+    };
+
+    const createStore = () => ({
+        dispatch: () => {},
+        subscribe: () => {},
+        getState: () => ({
+            resources: {},
+            gnresource: { data: resource },
+            router: { location: { search: '' } }
+        })
+    });
+
+    const renderPanel = (props = {}) => {
+        ReactDOM.render(
+            <Provider store={createStore()}>
+                <MemoryRouter>
+                    <IntlProvider locale="en" messages={{}}>
+                        <ResourceDetailsPanel
+                            show
+                            resource={resource}
+                            onShow={() => {}}
+                            onClose={() => {}}
+                            onClearResource={() => {}}
+                            {...props}
+                        />
+                    </IntlProvider>
+                </MemoryRouter>
+            </Provider>,
+            document.getElementById('container')
+        );
+    };
+
+    let prevGeoNodeSettings;
+
+    beforeEach((done) => {
+        document.body.innerHTML = '<div id="container"></div>';
+        prevGeoNodeSettings = getConfigProp('geoNodeSettings');
+        setConfigProp('geoNodeSettings', { defaultThumbnailSize: { width: 200, height: 500 } });
+        window.overrideNewMapConfig = (cfg) => cfg;
+        setTimeout(done);
+    });
+
+    afterEach((done) => {
+        ReactDOM.unmountComponentAtNode(document.getElementById('container'));
+        document.body.innerHTML = '';
+        setConfigProp('geoNodeSettings', prevGeoNodeSettings);
+        delete window.overrideNewMapConfig;
+        setTimeout(done);
+    });
+
+    const getTabTitles = () => Array.from(document.querySelectorAll('.ms-details-info .nav li a')).map(el => el.textContent);
+    const getInfoText = () => document.querySelector('.ms-details-info-fields')?.textContent || '';
+
+    it('uses default tabs when tabs is undefined', () => {
+        renderPanel();
+        const tabTitles = getTabTitles();
+        expect(tabTitles).toContain('gnviewer.info');
+        expect(tabTitles).toContain('gnviewer.assets');
+        expect(tabTitles).toContain('gnviewer.security');
+        expect(tabTitles).toContain('gnviewer.settings');
+        expect(getInfoText()).toContain('gnviewer.viewFullMetadata');
+    });
+
+    it('replaces default tabs completely when tabs is provided', () => {
+        renderPanel({
+            tabs: [
+                {
+                    id: 'custom',
+                    type: 'tab',
+                    label: 'Custom Tab',
+                    items: [{ id: 'customField', type: 'text', label: 'Custom Label', value: 'Custom Value' }]
+                }
+            ]
+        });
+        expect(getTabTitles()).toEqual(['Custom Tab']);
+        expect(getInfoText()).toContain('Custom Value');
+        expect(getInfoText()).toExclude('gnviewer.viewFullMetadata');
+    });
+
+    it('overrides default tabs by id when tabsOverride is provided without tabs', () => {
+        renderPanel({
+            tabsOverride: [
+                {
+                    id: 'info',
+                    labelId: 'custom.info',
+                    items: [{ id: 'customField', type: 'text', label: 'Added Field', value: 'Override Value' }]
+                },
+                {
+                    id: 'extra',
+                    type: 'tab',
+                    label: 'Extra Tab',
+                    items: [{ id: 'extraItem', type: 'text', label: 'Extra', value: 'Added' }]
+                }
+            ]
+        });
+        const tabTitles = getTabTitles();
+        expect(tabTitles).toContain('custom.info');
+        expect(tabTitles).toContain('Extra Tab');
+        expect(tabTitles).toExclude('gnviewer.info');
+        expect(getInfoText()).toContain('Override Value');
+        expect(getInfoText()).toContain('gnviewer.viewFullMetadata');
+    });
+
+    it('applies tabsOverride by id on top of custom tabs', () => {
+        renderPanel({
+            tabs: [
+                {
+                    id: 'custom',
+                    type: 'tab',
+                    label: 'Custom Tab',
+                    items: [
+                        { id: 'first', type: 'text', label: 'First', value: 'Initial' },
+                        { id: 'second', type: 'text', label: 'Second', value: 'Keep' }
+                    ]
+                }
+            ],
+            tabsOverride: [
+                {
+                    id: 'custom',
+                    label: 'Custom Overridden',
+                    items: [{ id: 'first', value: 'Updated' }]
+                }
+            ]
+        });
+        expect(getTabTitles()).toEqual(['Custom Overridden']);
+        expect(getInfoText()).toContain('Updated');
+        expect(getInfoText()).toContain('Keep');
+        expect(getInfoText()).toExclude('Initial');
     });
 });

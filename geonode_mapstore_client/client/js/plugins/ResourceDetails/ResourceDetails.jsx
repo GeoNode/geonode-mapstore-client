@@ -52,6 +52,7 @@ import { toggleEditMode } from '@mapstore/framework/actions/featuregrid';
  * render a panel for detail information about a resource inside the viewer pages
  * @name ResourceDetails
  * @prop {array} tabs array of tab object representing the structure of the displayed info properties
+ * @prop {array} tabsOverride array of partial tab override objects merged by id onto tabs
  * @example
  * {
  *  "name": "ResourceDetails",
@@ -327,7 +328,8 @@ export const mergeConfig = (defaults = [], overrides = []) => {
     return result;
 };
 export function ResourceDetailsPanel({
-    tabs: propsTabs,
+    tabs: propsTabs = DEFAULT_TABS,
+    tabsOverride,
     items,
     editable = true,
     canEdit,
@@ -352,7 +354,10 @@ export function ResourceDetailsPanel({
     onClearResource
 }, context) {
 
-    const tabs = useMemo(() => mergeConfig(cloneDeep(DEFAULT_TABS), propsTabs), [propsTabs]);
+    const tabs = useMemo(
+        () => mergeConfig(cloneDeep(propsTabs), tabsOverride),
+        [propsTabs, tabsOverride]
+    );
 
     const [confirmModal, setConfirmModal] = useState(false);
     const editing = canEdit && editable;
