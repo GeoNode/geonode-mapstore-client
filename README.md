@@ -8,5 +8,5 @@ GeoNode MapStore Client is a frontend application that interacts with the GeoNod
 
 ## Tools tested versions
 
-- node 20.13.1
-- npm 10.5.2
+- node >=22 (recommended 24)
+- npm >=10
