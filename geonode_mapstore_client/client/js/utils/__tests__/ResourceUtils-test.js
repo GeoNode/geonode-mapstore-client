@@ -32,6 +32,7 @@ import {
     getDownloadUrlInfo,
     getCataloguePath,
     getResourceWithLinkedResources,
+    excludeMapViewerLinks,
     getResourceAdditionalProperties,
     canManageResourcePublishing,
     canManageResourceOptions,
@@ -1086,6 +1087,24 @@ describe('Test Resource Utils', () => {
             .toEqual({pk: 1, linkedResources: {linkedBy: ["1"], linkedTo: ["1"]}});
         expect(getResourceWithLinkedResources({linked_resources: {linked_to: ["1"], linked_by: ["1"]}}))
             .toEqual({linkedResources: {linkedBy: ["1"], linkedTo: ["1"]}});
+    });
+    it('excludeMapViewerLinks', () => {
+        const viewer = { pk: 1, resource_type: 'mapviewer', relation_type: 'related' };
+        const map = { pk: 2, resource_type: 'map', relation_type: 'related' };
+        const document = { pk: 3, resource_type: 'document', relation_type: 'related' };
+        const viewerClone = { pk: 4, resource_type: 'mapviewer', relation_type: 'clone_of' };
+        expect(excludeMapViewerLinks()).toEqual({});
+        expect(excludeMapViewerLinks({ linkedTo: [viewer], linkedBy: [] }, { resource_type: 'map' })).toEqual({});
+        expect(excludeMapViewerLinks({ linkedTo: [viewer, document], linkedBy: [document] }, { resource_type: 'map' }))
+            .toEqual({ linkedTo: [document], linkedBy: [document] });
+        // the map is hidden on the viewer side too, other relations are kept
+        expect(excludeMapViewerLinks({ linkedTo: [], linkedBy: [map, viewerClone, document] }, { resource_type: 'mapviewer' }))
+            .toEqual({ linkedTo: [], linkedBy: [viewerClone, document] });
+        // a viewer is a regular linked resource for the other resource types
+        expect(excludeMapViewerLinks({ linkedTo: [viewer], linkedBy: [] }, { resource_type: 'document' }))
+            .toEqual({ linkedTo: [viewer], linkedBy: [] });
+        // older backends do not return the relation type
+        expect(excludeMapViewerLinks({ linkedTo: [{ pk: 1, resource_type: 'mapviewer' }] }, { resource_type: 'map' })).toEqual({});
     });
     it('getResourceAdditionalProperties', () => {
         expect(getResourceAdditionalProperties({})).toEqual({});

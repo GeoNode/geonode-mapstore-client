@@ -134,8 +134,10 @@ const RemoveMapViewerButton = (props) => {
     const resourceType = ResourceTypes.VIEWER;
     const { linkedResources, ...mapViewerResource } = props.viewerLinkedResource ?? {};
 
-    // when map viewer has one association
-    const allowDelete = linkedResources?.linkedBy?.length === 1;
+    // when map viewer has one association, the clones of the viewer are not counted
+    const associations = (linkedResources?.linkedBy ?? [])
+        .filter(({ relation_type: relationType }) => !relationType || relationType === 'related');
+    const allowDelete = associations.length === 1;
 
     const handleOnClick = () => {
         if (allowDelete) {

@@ -36,7 +36,7 @@ import DetailsPreview from '../components/DetailsPreview';
 import DetailsToolbar from '../components/DetailsToolbar';
 import moment from 'moment';
 import DetailsThumbnail from '../components/DetailsThumbnail';
-import { parseCatalogResource } from '@js/utils/ResourceUtils';
+import { parseCatalogResource, excludeMapViewerLinks } from '@js/utils/ResourceUtils';
 import useParsePluginConfigExpressions from '@mapstore/framework/plugins/ResourcesCatalog/hooks/useParsePluginConfigExpressions';
 import { hashLocationToHref } from '@mapstore/framework/utils/ResourcesFiltersUtils';
 import { getMonitoredStateSelector, getRouterLocation, getDetailPanelTab } from '@mapstore/framework/plugins/ResourcesCatalog/selectors/resources';
@@ -105,6 +105,8 @@ function DetailsPanel({
     const resource = parseCatalogResource(resourceProp);
     const parsedConfig = useParsePluginConfigExpressions(monitoredState, { tabs }, context?.plugins?.requires);
     const transformedTabs = transformValue(parsedConfig?.tabs ?? [], context?.messages);
+    const detailsTabs = replaceResourcePaths(transformedTabs, resource, [])
+        .map((tab) => tab?.type === 'relations' ? { ...tab, items: excludeMapViewerLinks(tab.items, resource) } : tab);
 
     const { query } = url.parse(location.search, true);
     const updatedLocation = useRef();
@@ -160,7 +162,7 @@ function DetailsPanel({
             {!loading ? <DetailsInfo
                 className="_padding-lr-md"
                 key={resource?.pk || resource?.id}
-                tabs={replaceResourcePaths(transformedTabs, resource, [])}
+                tabs={detailsTabs}
                 tabComponents={tabComponents}
                 query={query}
                 formatHref={handleFormatHref}

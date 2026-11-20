@@ -36,33 +36,39 @@ const DetailLinkedResource = ({resources, type}) => {
     );
 };
 
+// message ids of each relation type, for the linked_to and linked_by directions
+const relations = [
+    { relationType: 'related', linkedTo: 'linkedTo', linkedBy: 'linkedBy' },
+    { relationType: 'uses', linkedTo: 'uses', linkedBy: 'usedBy' },
+    { relationType: 'clone_of', linkedTo: 'cloneOf', linkedBy: 'clonedBy' }
+];
+
+const getRelationType = ({ relation_type: relationType, internal }) => {
+    // older backends only return the internal flag
+    const type = relationType ?? (internal ? 'uses' : 'related');
+    return relations.some((relation) => relation.relationType === type) ? type : 'related';
+};
+
 const DetailsLinkedResources = ({ fields }) => {
 
-    const linkedToFields = fields?.linkedTo?.map(parseCatalogResource);
-    const linkedByFields = fields?.linkedBy?.map(parseCatalogResource);
+    const linkedToFields = (fields?.linkedTo ?? []).map(parseCatalogResource);
+    const linkedByFields = (fields?.linkedBy ?? []).map(parseCatalogResource);
 
-    const linkedResources = [
+    const linkedResources = relations.reduce((acc, { relationType, linkedTo, linkedBy }) => [
+        ...acc,
         {
-            resources: linkedToFields?.filter(resource => !resource.internal) ?? [],
-            type: 'linkedTo'
+            resources: linkedToFields.filter(resource => getRelationType(resource) === relationType),
+            type: linkedTo
         },
         {
-            resources: linkedByFields?.filter(resource => !resource.internal) ?? [],
-            type: 'linkedBy'
-        },
-        {
-            resources: linkedToFields.filter(resource => resource.internal) ?? [],
-            type: 'uses'
-        },
-        {
-            resources: linkedByFields.filter(resource => resource.internal) ?? [],
-            type: 'usedBy'
+            resources: linkedByFields.filter(resource => getRelationType(resource) === relationType),
+            type: linkedBy
         }
-    ];
+    ], []);
 
     return (
         <FlexBox column gap="xs" className="gn-details-relations _padding-tb-md">
-            {linkedResources.map(({resources, type})=> <DetailLinkedResource resources={resources} type={type}/>)}
+            {linkedResources.map(({resources, type})=> <DetailLinkedResource key={type} resources={resources} type={type}/>)}
         </FlexBox>
     );
 };
