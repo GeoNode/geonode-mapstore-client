@@ -744,6 +744,18 @@ export const getResourceWithLinkedResources = (resource = {}) => {
     return resource;
 };
 
+// the link between a map and its viewer is an internal detail
+export const excludeMapViewerLinks = (linkedResources = {}, resource = {}) => {
+    const isGenericLink = ({ relation_type: relationType }) => !relationType || relationType === 'related';
+    const isMap = resource?.resource_type === ResourceTypes.MAP;
+    const isViewer = resource?.resource_type === ResourceTypes.VIEWER;
+    const linkedTo = (linkedResources?.linkedTo ?? [])
+        .filter((target) => !(isMap && target.resource_type === ResourceTypes.VIEWER && isGenericLink(target)));
+    const linkedBy = (linkedResources?.linkedBy ?? [])
+        .filter((source) => !(isViewer && source.resource_type === ResourceTypes.MAP && isGenericLink(source)));
+    return isEmpty(linkedTo) && isEmpty(linkedBy) ? {} : { linkedTo, linkedBy };
+};
+
 export const getResourceAdditionalProperties = (_resource = {}) => {
     return getResourceWithLinkedResources(_resource);
 };
