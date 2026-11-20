@@ -28,11 +28,13 @@ const getGroups = () => [...document.querySelectorAll('.gn-details-relations > *
 
 describe('DetailsLinkedResources component', () => {
     beforeEach((done) => {
+        global.__DEVTOOLS__ = true;
         document.body.innerHTML = '<div id="container"></div>';
         setTimeout(done);
     });
 
     afterEach((done) => {
+        delete global.__DEVTOOLS__;
         ReactDOM.unmountComponentAtNode(document.getElementById('container'));
         document.body.innerHTML = '';
         setTimeout(done);
