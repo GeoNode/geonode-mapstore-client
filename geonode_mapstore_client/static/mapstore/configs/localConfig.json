@@ -3866,7 +3866,7 @@
                         ]
                     },
                     "metadata": {
-                        "list": [
+                        "table": [
                             {
                                 "path": "title",
                                 "width": 20,
@@ -3891,6 +3891,32 @@
                                 "icon": { "glyph": "user" },
                                 "image": { "path": "owner.avatar" },
                                 "width": 10,
+                                "labelId": "gnviewer.columnOwner",
+                                "noDataLabelId": "resourcesCatalog.emptyUnknown"
+                            }
+                        ],
+                        "list": [
+                            {
+                                "path": "title",
+                                "labelId": "gnviewer.columnTitle",
+                                "target": "header"
+                            },
+                            {
+                                "path": "raw_abstract",
+                                "labelId": "resourcesCatalog.columnDescription"
+                            },
+                            {
+                                "path": "created",
+                                "type": "date",
+                                "labelId": "resourcesCatalog.columnCreated",
+                                "format": "MMM Do YY, h:mm:ss a",
+                                "icon": { "glyph": "time" },
+                                "noDataLabelId": "resourcesCatalog.emptyNA"
+                            },
+                            {
+                                "path": "owner.username",
+                                "icon": { "glyph": "user" },
+                                "image": { "path": "owner.avatar" },
                                 "labelId": "gnviewer.columnOwner",
                                 "noDataLabelId": "resourcesCatalog.emptyUnknown"
                             }
