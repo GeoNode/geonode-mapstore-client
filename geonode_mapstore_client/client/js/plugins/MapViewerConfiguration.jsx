@@ -10,6 +10,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import isNil from 'lodash/isNil';
 import { createSelector } from 'reselect';
 import { Glyphicon } from 'react-bootstrap';
 
@@ -18,7 +19,7 @@ import { createPlugin } from '@mapstore/framework/utils/PluginsUtils';
 import { manageLinkedResource, processResources } from '@js/actions/gnresource';
 import Message from '@mapstore/framework/components/I18N/Message';
 import Loader from '@mapstore/framework/components/misc/Loader';
-import { ResourceTypes } from '@js/utils/ResourceUtils';
+import { ResourceTypes, getRelationType } from '@js/utils/ResourceUtils';
 import Portal from '@mapstore/framework/components/misc/Portal';
 import { ProcessTypes } from '@js/utils/ResourceServiceUtils';
 import { setControlProperty } from '@mapstore/framework/actions/controls';
@@ -130,13 +131,13 @@ const ButtonLinkedResource = ({  hide, loading, labelId, showLoader, ...props}) 
     ) : null;
 };
 
-const RemoveMapViewerButton = (props) => {
+export const RemoveMapViewerButton = (props) => {
     const resourceType = ResourceTypes.VIEWER;
     const { linkedResources, ...mapViewerResource } = props.viewerLinkedResource ?? {};
 
     // when map viewer has one association, the clones of the viewer are not counted
     const associations = (linkedResources?.linkedBy ?? [])
-        .filter(({ relation_type: relationType }) => !relationType || relationType === 'related');
+        .filter((resource) => getRelationType(resource) === 'related');
     const allowDelete = associations.length === 1;
 
     const handleOnClick = () => {
@@ -145,7 +146,7 @@ const RemoveMapViewerButton = (props) => {
         } else {
             const sourcePk = props.resource?.pk;
             const targetPk = mapViewerResource?.pk;
-            if (!isEmpty(sourcePk) && !isEmpty(targetPk) && resourceType) {
+            if (!isNil(sourcePk) && !isNil(targetPk) && resourceType) {
                 props.onRemove({
                     resourceType,
                     source: sourcePk,

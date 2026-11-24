@@ -13,7 +13,7 @@ import { Glyphicon } from 'react-bootstrap';
 import Message from '@mapstore/framework/components/I18N/Message';
 import FlexBox from '@mapstore/framework/components/layout/FlexBox';
 import Text from '@mapstore/framework/components/layout/Text';
-import { parseCatalogResource } from '@js/utils/ResourceUtils';
+import { parseCatalogResource, getRelationType } from '@js/utils/ResourceUtils';
 
 const DetailLinkedResource = ({resources, type}) => {
     return !isEmpty(resources) && (
@@ -42,12 +42,6 @@ const relations = [
     { relationType: 'uses', linkedTo: 'uses', linkedBy: 'usedBy' },
     { relationType: 'clone_of', linkedTo: 'cloneOf', linkedBy: 'clonedBy' }
 ];
-
-const getRelationType = ({ relation_type: relationType, internal }) => {
-    // older backends only return the internal flag
-    const type = relationType ?? (internal ? 'uses' : 'related');
-    return relations.some((relation) => relation.relationType === type) ? type : 'related';
-};
 
 const DetailsLinkedResources = ({ fields }) => {
 

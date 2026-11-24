@@ -744,15 +744,22 @@ export const getResourceWithLinkedResources = (resource = {}) => {
     return resource;
 };
 
+export const getRelationType = (resource = {}) => {
+    const { relation_type: relationType, internal } = resource ?? {};
+    // older backends only return the internal flag
+    const type = relationType ?? (internal ? 'uses' : 'related');
+    return ['related', 'uses', 'clone_of'].includes(type) ? type : 'related';
+};
+
 // the link between a map and its viewer is an internal detail
 export const excludeMapViewerLinks = (linkedResources = {}, resource = {}) => {
-    const isGenericLink = ({ relation_type: relationType }) => !relationType || relationType === 'related';
+    const isGenericLink = (item) => getRelationType(item) === 'related';
     const isMap = resource?.resource_type === ResourceTypes.MAP;
     const isViewer = resource?.resource_type === ResourceTypes.VIEWER;
     const linkedTo = (linkedResources?.linkedTo ?? [])
-        .filter((target) => !(isMap && target.resource_type === ResourceTypes.VIEWER && isGenericLink(target)));
+        .filter((target) => !(isMap && target?.resource_type === ResourceTypes.VIEWER && isGenericLink(target)));
     const linkedBy = (linkedResources?.linkedBy ?? [])
-        .filter((source) => !(isViewer && source.resource_type === ResourceTypes.MAP && isGenericLink(source)));
+        .filter((source) => !(isViewer && source?.resource_type === ResourceTypes.MAP && isGenericLink(source)));
     return isEmpty(linkedTo) && isEmpty(linkedBy) ? {} : { linkedTo, linkedBy };
 };
 
