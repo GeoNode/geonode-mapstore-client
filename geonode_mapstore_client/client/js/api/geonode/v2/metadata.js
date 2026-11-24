@@ -74,7 +74,7 @@ const removeNullValueRecursive = (metadata = {}, schema = {}) => {
         return {
             ...acc,
             [key]: !isArray(metadata[key]) && isObject(metadata[key])
-                ? removeNullValueRecursive(metadata[key], schema[key])
+                ? removeNullValueRecursive(metadata[key], schema?.[key]?.properties)
                 : metadata[key]
         };
     }, {});
