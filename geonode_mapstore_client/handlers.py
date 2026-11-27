@@ -21,9 +21,12 @@ class BaseConfigurationRuleHandler(BaseRequestConfigurationRuleHandler):
             [
                 {
                     "urlPattern": f"{settings.GEOSERVER_WEB_UI_LOCATION.rstrip('/')}/.*",
-                    "params": {"access_token": access_token},
+                    "headers": {"Authorization": f"Bearer {access_token}"},
                 },
-                {"urlPattern": f"{settings.SITEURL.rstrip('/')}/gs.*", "params": {"access_token": access_token}},
+                {
+                    "urlPattern": f"{settings.SITEURL.rstrip('/')}/gs.*",
+                    "headers": {"Authorization": f"Bearer {access_token}"},
+                },
                 {
                     "urlPattern": f"{settings.SITEURL.rstrip('/')}/api/v2.*",
                     "headers": {"Authorization": f"Bearer {access_token}"},
