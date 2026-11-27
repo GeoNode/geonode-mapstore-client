@@ -2,11 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const childProcess = require('child_process');
 
+// NOTE: 'MapStore2' must NOT be listed here: webpack removing it was introduced by #2732 (8a25ccc69) and caused 404s on map creation
+// see https://github.com/GeoNode/geonode-mapstore-client/issues/2748
 const UNUSED_OUTPUT_DIRECTORIES = [
     'bootstrap',
     'react-nouislider',
     'web-ifc',
-    'MapStore2',
     'node_modules'
 ];
 
