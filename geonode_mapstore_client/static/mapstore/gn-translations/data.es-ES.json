@@ -375,7 +375,9 @@
                 "linkedBy": "Vinculado por",
                 "linkedTo": "Vinculado a",
                 "uses": "Usos",
-                "usedBy": "Usado por"
+                "usedBy": "Usado por",
+                "cloneOf": "Clon de",
+                "clonedBy": "Clonado por"
             },
             "extent": "Extensión",
             "dateFilter": {
